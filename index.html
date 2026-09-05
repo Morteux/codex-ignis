@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Archivo de conocimiento personal de Stellaris." />
+    <meta name="theme-color" content="#07110c" />
+    <title>Archivo Stellaris</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#archivo">Saltar al archivo</a>
+    <main class="terminal-shell">
+      <header class="topbar" aria-label="Cabecera del archivo">
+        <a class="brand" href="./" aria-label="Archivo Stellaris: inicio">
+          <span class="brand-mark" aria-hidden="true">✦</span>
+          <span>ARCHIVO_STELLARIS</span>
+        </a>
+        <div class="connection" aria-label="Sistema en línea">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>EN LÍNEA</span>
+        </div>
+      </header>
+
+      <section class="terminal-intro" aria-labelledby="page-title">
+        <p class="prompt"><span aria-hidden="true">›</span> knowledge-terminal / inicio</p>
+        <h1 id="page-title">Archivo de conocimiento</h1>
+        <p class="intro-copy">Base personal para registrar y explorar información de Stellaris.</p>
+      </section>
+
+      <section class="workspace" id="archivo" aria-label="Explorador del archivo">
+        <aside class="navigator" aria-label="Navegación de conocimiento">
+          <div class="panel-heading">
+            <span>ÍNDICE</span>
+            <span id="entry-count" aria-label="Número de entradas">00</span>
+          </div>
+
+          <label class="search-label" for="knowledge-search">Buscar registros</label>
+          <div class="search-control">
+            <span aria-hidden="true">/</span>
+            <input id="knowledge-search" type="search" placeholder="Buscar cuando haya entradas…" autocomplete="off" />
+          </div>
+          <p id="search-status" class="search-status" aria-live="polite">Esperando registros del archivo.</p>
+
+          <div class="index-empty" id="index-empty">
+            <span aria-hidden="true">└─</span>
+            <span>sin entradas activas</span>
+          </div>
+        </aside>
+
+        <article class="reader" aria-labelledby="reader-title">
+          <div class="reader-meta">
+            <span>SECTOR / STELLARIS</span>
+            <span>ESTADO / INICIALIZADO</span>
+          </div>
+          <div class="empty-state" id="reader-empty">
+            <p class="empty-glyph" aria-hidden="true">[ 00 ]</p>
+            <h2 id="reader-title">El archivo está listo.</h2>
+            <p>Las futuras entradas aparecerán aquí con búsqueda, navegación directa y espacios de lectura optimizados.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="ad-slot" data-ad-slot="index-footer" aria-label="Espacio publicitario reservado" hidden></section>
+
+      <footer class="footer">
+        <p>ARCHIVO_STELLARIS <span aria-hidden="true">·</span> conocimiento personal en construcción</p>
+        <nav aria-label="Información legal">
+          <a href="privacy.html">Privacidad</a>
+          <a href="cookies.html">Cookies</a>
+        </nav>
+      </footer>
+    </main>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
