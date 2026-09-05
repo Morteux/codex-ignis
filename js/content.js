@@ -1,5 +1,17 @@
 /**
- * Fuente de datos para futuros artículos de la wiki.
- * Añade objetos con { slug, title, icon, blocks } sin modificar la interfaz.
+ * Fuente de datos para los artículos de la wiki.
+ *
+ * Ejemplo rápido: elimina las barras // del bloque inferior y cambia el slug,
+ * título y bloques. El slug crea una URL como #/mi-registro.
  */
-export const knowledgeBase = [];
+export const knowledgeBase = [
+  {
+    slug: "mi-registro",
+    title: "Mi registro",
+    icon: "✦",
+    blocks: [
+      { type: "paragraph", text: "Escribe aquí tu contenido." },
+      { type: "list", items: ["Primer apunte", "Segundo apunte"] }
+    ]
+  }
+];

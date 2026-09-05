@@ -85,7 +85,9 @@ h1 { max-width: 640px; margin-bottom: 1rem; font-size: clamp(2.2rem, 7vw, 5rem);
 .search-control input { width: 100%; min-width: 0; border: 0; outline: 0; color: var(--text); background: transparent; font: .8rem var(--mono); }
 .search-control input::placeholder { color: #5c7765; opacity: 1; }
 .search-status { min-height: 2.5rem; margin: .8rem 0 0; color: var(--muted); font-size: .78rem; line-height: 1.45; }
-.index-empty { display: flex; gap: .5rem; margin-top: 2.3rem; color: #72927a; font: .76rem var(--mono); }
+.index-empty { display: grid; gap: .35rem; margin-top: 2.3rem; color: #72927a; font: .76rem var(--mono); }
+.entry-button { width: 100%; padding: .55rem 0; border: 0; color: var(--text); background: transparent; font: inherit; text-align: left; cursor: pointer; }
+.entry-button:hover { color: var(--accent); }
 
 .reader { display: flex; flex-direction: column; padding: 1.35rem; }
 .reader-meta { padding-bottom: 1.2rem; border-bottom: 1px solid var(--line-soft); }
@@ -93,6 +95,11 @@ h1 { max-width: 640px; margin-bottom: 1rem; font-size: clamp(2.2rem, 7vw, 5rem);
 .empty-glyph { margin-bottom: 1rem; color: var(--accent); font: 700 .8rem var(--mono); letter-spacing: .15em; }
 .empty-state h2 { margin-bottom: .8rem; font-size: clamp(1.5rem, 3vw, 2.25rem); letter-spacing: -.035em; }
 .empty-state p:last-child { margin-bottom: 0; color: var(--muted); line-height: 1.7; }
+.entry-content { max-width: 680px; padding: clamp(2rem, 7vw, 4rem) 1rem; }
+.entry-content h2 { margin-bottom: 1.5rem; font-size: clamp(1.7rem, 4vw, 2.75rem); letter-spacing: -.04em; }
+.entry-content p, .entry-list { color: var(--muted); line-height: 1.75; }
+.entry-list { padding-left: 1.2rem; }
+.entry-list li + li { margin-top: .4rem; }
 
 .ad-slot[hidden] { display: none; }
 .ad-slot:not([hidden]) { min-height: 120px; margin-top: 1.5rem; border: 1px dashed var(--line); }
