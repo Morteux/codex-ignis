@@ -101,6 +101,12 @@ a {
     font-size: 1.2rem;
 }
 
+.topbar-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .connection {
     display: inline-flex;
     gap: .5rem;
@@ -109,10 +115,12 @@ a {
     font-size: .68rem;
 }
 
-.topbar-status {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+.status-dot {
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 .24rem rgba(167, 245, 106, .1);
 }
 
 .lang-switch {
@@ -141,21 +149,13 @@ a {
     border-color: var(--accent);
 }
 
-.status-dot {
-    width: .5rem;
-    height: .5rem;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 .24rem rgba(167, 245, 106, .1);
-}
-
 .terminal-intro {
     max-width: 720px;
     padding: 4vh 1vh 3vh 1vh;
 }
 
 .prompt {
-    /* margin: 0 0 1rem; */
+    margin: 0 0 1rem;
     color: var(--accent);
     font-size: .76rem;
     text-transform: uppercase;
@@ -293,6 +293,12 @@ h1 {
     border-bottom: 1px solid var(--line-soft);
 }
 
+.reader-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
 .empty-state {
     display: grid;
     place-content: center;
@@ -337,28 +343,12 @@ h1 {
     line-height: 1.75;
 }
 
-.entry-content p {
-    margin-bottom: 1.1rem;
-}
-
-.entry-content strong {
-    color: var(--text);
-    font-weight: 700;
-}
-
-.entry-content a {
-    color: var(--accent);
-    text-decoration-color: var(--accent-dim);
-    text-underline-offset: .2em;
-}
-
-.entry-content a:hover {
-    color: var(--focus);
-}
-
 .entry-list {
     padding-left: 1.2rem;
-    margin-bottom: 1.1rem;
+}
+
+.entry-list li+li {
+    margin-top: .4rem;
 }
 
 .hl-marker {
@@ -366,115 +356,6 @@ h1 {
     color: var(--background);
     background: var(--accent);
     border-radius: .15em;
-}
-
-.entry-list li+li {
-    margin-top: .4rem;
-}
-
-/* ── Encabezados de sección dentro de un artículo ─────────────────────── */
-.entry-heading {
-    margin: 2rem 0 1rem;
-    color: var(--text);
-    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
-    letter-spacing: -.02em;
-}
-
-.entry-heading:first-child {
-    margin-top: 0;
-}
-
-/* ── Lista de enlaces útiles ───────────────────────────────────────────── */
-.entry-links {
-    display: grid;
-    gap: .6rem;
-    padding: 0;
-    margin: 0 0 1.1rem;
-    list-style: none;
-}
-
-.entry-links li {
-    padding: .7rem .9rem;
-    border: 1px solid var(--line);
-    background: rgba(8, 22, 14, .5);
-    line-height: 1.6;
-}
-
-.entry-links a {
-    color: var(--accent);
-    font-weight: 700;
-    text-decoration-color: var(--accent-dim);
-}
-
-.entry-links a:hover {
-    color: var(--focus);
-}
-
-.entry-links-description {
-    color: var(--muted);
-}
-
-/* ── Imágenes dentro de un artículo ────────────────────────────────────── */
-.entry-image {
-    margin: 0 0 1.5rem;
-}
-
-.entry-image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border: 1px solid var(--line);
-}
-
-.entry-image figcaption {
-    margin-top: .5rem;
-    color: var(--muted);
-    font-size: .8rem;
-    font-family: var(--mono);
-}
-
-/* ── Recuadro de nota / aviso ──────────────────────────────────────────── */
-.entry-note {
-    padding: .9rem 1rem;
-    margin: 0 0 1.1rem;
-    border: 1px solid var(--accent-dim);
-    border-left-width: 3px;
-    background: rgba(167, 245, 106, .06);
-    color: var(--text);
-    line-height: 1.65;
-}
-
-/* ── Cita destacada ────────────────────────────────────────────────────── */
-.entry-quote {
-    padding: .2rem 0 .2rem 1.1rem;
-    margin: 0 0 1.1rem;
-    border-left: 3px solid var(--line);
-    color: var(--text);
-    font-style: italic;
-}
-
-.entry-quote p {
-    margin-bottom: .4rem;
-}
-
-.entry-quote cite {
-    display: block;
-    color: var(--muted);
-    font-size: .78rem;
-    font-style: normal;
-    font-family: var(--mono);
-}
-
-/* ── Separador ─────────────────────────────────────────────────────────── */
-.entry-content hr {
-    margin: 1.6rem 0;
-    border: 0;
-    border-top: 1px solid var(--line);
-}
-
-/* ── Resaltado automático de palabras ──────────────────────────────────── */
-.highlight-word {
-    font-weight: 700;
 }
 
 .ad-slot[hidden] {

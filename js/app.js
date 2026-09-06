@@ -183,16 +183,16 @@ function applyStaticStrings() {
   document.documentElement.lang = currentLang;
   document.title = t(currentLang, "pageTitle");
   if (metaDescription) metaDescription.setAttribute("content", t(currentLang, "documentDescription"));
-  skipLink.textContent = t(currentLang, "skipLink");
-  connectionStatus.textContent = t(currentLang, "onlineStatus");
-  introPromptText.textContent = t(currentLang, "introPrompt");
-  introCopy.textContent = t(currentLang, "introCopy");
-  indexHeading.textContent = t(currentLang, "indexHeading");
-  searchLabel.textContent = t(currentLang, "searchLabel");
-  searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));
-  footerText.textContent = t(currentLang, "footerText");
-  privacyLink.textContent = t(currentLang, "privacyLink");
-  cookiesLink.textContent = t(currentLang, "cookiesLink");
+  if (skipLink) skipLink.textContent = t(currentLang, "skipLink");
+  if (connectionStatus) connectionStatus.textContent = t(currentLang, "onlineStatus");
+  if (introPromptText) introPromptText.textContent = t(currentLang, "introPrompt");
+  if (introCopy) introCopy.textContent = t(currentLang, "introCopy");
+  if (indexHeading) indexHeading.textContent = t(currentLang, "indexHeading");
+  if (searchLabel) searchLabel.textContent = t(currentLang, "searchLabel");
+  if (searchInput) searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));
+  if (footerText) footerText.textContent = t(currentLang, "footerText");
+  if (privacyLink) privacyLink.textContent = t(currentLang, "privacyLink");
+  if (cookiesLink) cookiesLink.textContent = t(currentLang, "cookiesLink");
   langButtons.forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
   });
