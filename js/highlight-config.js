@@ -14,13 +14,17 @@
  * Ejemplo rápido: descomenta y ajusta las líneas de abajo.
  */
 export const highlightWords = {
-  "Emperador": "#f5c344",
-  "titán": "#7fd1ff",
-  "titanes": "#7fd1ff",
-  "aura": "#a7f56a",
-  "auras": "#a7f56a",
-  "ofensiva": "#ff8a65",
-  "ofensivas": "#ff8a65",
-  "defensiva": "#63c7ff",
-  "defensivas": "#63c7ff"
+  "corbeta": "#d3d3d3",
+  "corbetas": "#d3d3d3",
+  "destructor": "#55ff37",
+  "destructores": "#55ff37",
+  "crucero": "#375cff",
+  "cruceros": "#375cff",
+  "acorazado": "#ca29ff",
+  "acorazados": "#ca29ff",
+  "titán": "#fff42b",
+  "titanes": "#fff42b",
+  
+  "aura": "#ff2c2c",
+  "auras": "#ff2c2c"
 };

@@ -39,15 +39,6 @@
  */
 export const knowledgeBase = [
     {
-        slug: "mi-registro",
-        title: "Mi registro",
-        icon: "✦",
-        blocks: [
-            { type: "paragraph", text: "Contenido de prueba para el articulo en formato de párrafo." },
-            { type: "list", items: ["Primer apunte", "Segundo apunte"] }
-        ]
-    },
-    {
         slug: "titanes-aura",
         title: "Sobre los titanes y sus auras",
         icon: "✦",
@@ -62,34 +53,40 @@ export const knowledgeBase = [
     },
     {
         slug: "simulacion-combate",
-        title: "Simulación de combate",
+        title: "Preparando la simulación de combate",
         icon: "✦",
         blocks: [
             { type: "paragraph", text: "Guía rápida para montar una partida de pruebas y comprobar diseños de flota, auras de titán o composiciones de combate sin depender del avance normal de una partida." },
             { type: "note", text: "Necesitas tener activado el modo de comandos: inicia la partida con **-debug_mode** en las opciones de lanzamiento de Steam, o simplemente escribe los comandos con la consola abierta (**Mayús + ²** / **Mayús + `** según el teclado)." },
             { type: "heading", text: "1. Preparar el escenario" },
-            { type: "list", items: [
-                "Crea una partida nueva con un mapa pequeño (1 estrella o pocas) para minimizar variables externas.",
-                "Desactiva crisis, invasiones y eventos aleatorios en las opciones avanzadas de la galaxia si solo quieres testear combate directo.",
-                "Añade una segunda potencia (IA o jugador) que sea la que reciba tu flota de pruebas."
-            ] },
+            {
+                type: "list", items: [
+                    "Crea una partida nueva con un mapa pequeño (1 estrella o pocas) para minimizar variables externas.",
+                    "Desactiva crisis, invasiones y eventos aleatorios en las opciones avanzadas de la galaxia si solo quieres testear combate directo.",
+                    "Añade una segunda potencia (IA o jugador) que sea la que reciba tu flota de pruebas."
+                ]
+            },
             { type: "heading", text: "2. Comandos de consola útiles" },
-            { type: "list", items: [
-                "**research_all_technologies** — desbloquea toda la tecnología para poder construir cualquier diseño de nave sin esperar.",
-                "**activate_all_traditions** — activa todas las tradiciones, útil si quieres testear con bonificaciones de combate concretas.",
-                "**effect add_resource = { energy = 99999 minerals = 99999 alloys = 99999 influence = 999 }** — te da recursos de sobra para construir flotas grandes al instante.",
-                "**instant_build** — construye edificios, naves y estructuras de forma instantánea.",
-                "**debugtooltip** — muestra información extendida en los tooltips, útil para comparar valores de daño y escudo entre diseños.",
-                "**observe** — pasas a modo observador, útil para ver el combate desde fuera sin controlar ningún bando."
-            ] },
+            {
+                type: "list", items: [
+                    "**research_all_technologies** — desbloquea toda la tecnología para poder construir cualquier diseño de nave sin esperar.",
+                    "**activate_all_traditions** — activa todas las tradiciones, útil si quieres testear con bonificaciones de combate concretas.",
+                    "**effect add_resource = { energy = 99999 minerals = 99999 alloys = 99999 influence = 999 }** — te da recursos de sobra para construir flotas grandes al instante.",
+                    "**instant_build** — construye edificios, naves y estructuras de forma instantánea.",
+                    "**debugtooltip** — muestra información extendida en los tooltips, útil para comparar valores de daño y escudo entre diseños.",
+                    "**observe** — pasas a modo observador, útil para ver el combate desde fuera sin controlar ningún bando."
+                ]
+            },
             { type: "note", text: "Los nombres exactos de comandos pueden variar entre versiones del juego. Si alguno no funciona, escribe **help** en la consola para ver el listado actualizado de tu versión." },
             { type: "heading", text: "3. Configuración recomendada para pruebas" },
-            { type: "list", items: [
-                "Diseña las dos flotas que quieras comparar en el diseñador de naves antes de abrir la consola.",
-                "Usa **instant_build** después de encolar la construcción de ambas flotas para tenerlas listas al momento.",
-                "Sitúa ambas flotas en el mismo sistema y deja que el combate se resuelva automáticamente, o usa **observe** para verlo en directo.",
-                "Repite el combate varias veces (guardando y cargando la partida) si quieres comprobar la variabilidad del daño aleatorio."
-            ] },
+            {
+                type: "list", items: [
+                    "Diseña las dos flotas que quieras comparar en el diseñador de naves antes de abrir la consola.",
+                    "Usa **instant_build** después de encolar la construcción de ambas flotas para tenerlas listas al momento.",
+                    "Sitúa ambas flotas en el mismo sistema y deja que el combate se resuelva automáticamente, o usa **observe** para verlo en directo.",
+                    "Repite el combate varias veces (guardando y cargando la partida) si quieres comprobar la variabilidad del daño aleatorio."
+                ]
+            },
             { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." }
         ]
     },
@@ -99,14 +96,21 @@ export const knowledgeBase = [
         icon: "✦",
         blocks: [
             { type: "paragraph", text: "Recopilación de páginas externas que uso o recomiendo para consultar información sobre Stellaris." },
-            { type: "links", items: [
-                { label: "Stellaris Wiki oficial", url: "https://stellaris.paradoxwikis.com/", description: "Wiki de referencia con todas las mecánicas, tecnologías y componentes del juego." },
-                { label: "Foro oficial de Paradox", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "Anuncios oficiales, notas de parche y discusión con desarrolladores." },
-                { label: "r/Stellaris", url: "https://www.reddit.com/r/Stellaris/", description: "Comunidad activa para dudas, memes y compartir partidas." },
-                { label: "Stellaris en Steam", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "Página de la tienda, DLCs y foro de discusiones de Steam." }
-            ] },
-            { type: "divider" },
-            { type: "paragraph", text: "También puedes seguir el canal y unirte a la comunidad de Discord, con los enlaces disponibles en la portada del sitio." }
+            {
+                type: "links", items: [
+                    { label: "📖Stellaris Wiki oficial", url: "https://stellaris.paradoxwikis.com/", description: "Wiki de referencia con todas las mecánicas, tecnologías y componentes del juego." },
+                    { label: "💻Foro oficial de Paradox", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "Anuncios oficiales, notas de parche y discusión con desarrolladores." },
+                    { label: "🔬Árbol de tecnología", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "Visualización interactiva del árbol de tecnología del juego. [Versión desactualizada](https://turanar.github.io/stellaris-tech-tree/index.html)." },
+                    { label: "🌌Álbum oficial", url: "https://imgur.com/a/stellaris-wallpapers-Ao8zhxE", description: "Álbum de fondos de pantalla oficiales de Stellaris." },
+                    { label: "🖥️Stellaris Assets", url: "https://tuttu.github.io/StellarisAssets/", description: "Repositorio de recursos y assets para Stellaris." },
+                    { label: "📰Xenonion", url: "https://xenonion.com/", description: "Tu noticiero galáctico de confianza." },
+                    { label: "🧮Calculadora de recursos por distritos", url: "https://www.desmos.com/calculator/wgmehijwu3?lang=es", description: "Calculadora para estimar los recursos generados por diferentes tipos de distritos en Stellaris." },
+                    { label: "👷‍♂️Community Builds", url: "https://stellaris-build.com/", description: "Diseños de imperios creados por la comunidad." },
+                    { label: "🌏Comunidad de Stellaris en Reddit", url: "https://www.reddit.com/r/Stellaris/", description: "Comunidad activa para dudas, memes y compartir partidas." },
+                    { label: "🎮Stellaris en Steam", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "Página de la tienda y DLCs de Steam." },
+                    { label: "🕹️Discord de @IgnisStellaris", url: "https://discord.com/invite/PE2vGqxZpz", description: "Servidor de Discord de la comunidad de @IgnisStellaris." }
+                ]
+            }
         ]
     }
 ];
