@@ -216,7 +216,7 @@ function renderEntry(entry) {
 
   const meta = document.createElement("div");
   meta.className = "reader-meta";
-  meta.innerHTML = "<span>SECTOR / STELLARIS</span><span>REGISTRO / ACTIVO</span>";
+  meta.innerHTML = "<span class=\"prompt\"><span aria-hidden=\"true\">›</span> Terminal de conocimiento / Inicio</span><span>SECTOR / STELLARIS</span>";
 
   const content = document.createElement("div");
   content.className = "entry-content";

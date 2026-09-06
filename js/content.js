@@ -39,6 +39,26 @@
  */
 export const knowledgeBase = [
     {
+        slug: "diseño-corbetas",
+        title: "Diseño de naves máquina: corbetas",
+        icon: "✦",
+        blocks: [
+            { type: "image", src: "img/naves/Corbeta generalista.jpg", alt: "Corbeta generalista", caption: "Corbeta generalista." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Corbeta contra fauna.jpg", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." },
+        ]
+    },
+    {
+        slug: "diseño-fragatas",
+        title: "Diseño de naves máquina: fragatas",
+        icon: "✦",
+        blocks: [
+            { type: "image", src: "img/naves/Fragata torpedera de corto alcance.jpg", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Fragata torpedera de largo alcance.jpg", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." },
+        ]
+    },
+    {
         slug: "titanes-aura",
         title: "Sobre los titanes y sus auras",
         icon: "✦",
@@ -48,7 +68,7 @@ export const knowledgeBase = [
             { type: "list", items: ["**Defensivas**: estas auras SOLO afectan a la flota que tiene el titán. Por ejemplo, si tienes un titán con aura de regeneración que está en un sistema con otras 4 flotas, solo la flota del titán se aprovecha de la regeneración, las otras 4 flotas no.", "**Ofensivas**: estas auras afectan a TODAS las flotas enemigas en el sistema que esté el titán."] },
             { type: "paragraph", text: "Con esto en mente tenemos dos opciones dependiendo del número de titanes que podamos tener. Si tenemos poca capacidad de titanes, recomiendo distribuir un titan con aura ofensiva en cada flota que puedas. Este titán sigue el mismo esquema que los acorazados artilleros XL pero con el aura ofensiva como extra. Por otro lado, si tenemos mucha capacidad, aconsejo concentrarlos en poca flotas, teniendo flotas con 6 titanes (cada uno con un tipo de aura defensia y ofensiva) de tal forma que tengas flotas insignia con todas las auras acompañadas de flotas sin titanes que se beneficien de las 3 ofensivas. Así aseguras la supervivencia de la flota con los 6 titanes ya que combinar todas las auras es una bonificación muy poderosa." },
             { type: "paragraph", text: "Podemos decir que esta última opción de flotas de acorazados más 6 titanes es la flota definitiva que apoyada por los portahangares las convierte en un anti-todo general, por supuesto es superior a su versión sin titanes." },
-            { type: "paragraph", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento." },
+            { type: "note", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y, si no es tuyo, queda devastado. La resistencia es inútil. No hay crisis o xeno que pueda huir o esconderse. Se hace la voluntad del **Emperador** o se muere en el intento." },
         ]
     },
     {
@@ -108,7 +128,7 @@ export const knowledgeBase = [
                     { label: "👷‍♂️Community Builds", url: "https://stellaris-build.com/", description: "Diseños de imperios creados por la comunidad." },
                     { label: "🌏Comunidad de Stellaris en Reddit", url: "https://www.reddit.com/r/Stellaris/", description: "Comunidad activa para dudas, memes y compartir partidas." },
                     { label: "🎮Stellaris en Steam", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "Página de la tienda y DLCs de Steam." },
-                    { label: "🕹️Discord de @IgnisStellaris", url: "https://discord.com/invite/PE2vGqxZpz", description: "Servidor de Discord de la comunidad de @IgnisStellaris." }
+                    { label: "🕹️Discord de @IgnisStellaris", url: "https://discord.com/invite/PE2vGqxZpz", description: "Servidor de Discord de la comunidad de [@IgnisStellaris](https://www.youtube.com/@IgnisStellaris)." }
                 ]
             }
         ]
