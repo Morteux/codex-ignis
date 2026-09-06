@@ -1,4 +1,4 @@
-# Archivo Stellaris
+# Codex Ignis
 
 Una wiki personal estática de Stellaris con una interfaz de terminal navegable.
 
