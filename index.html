@@ -24,6 +24,10 @@
                 <span class="status-dot" aria-hidden="true"></span>
                 <span>EN LÍNEA</span>
             </div>
+            <div class="lang-switch" id="lang-switch" role="group" aria-label="Selector de idioma">
+                <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+                <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+            </div>
         </header>
 
         <section class="terminal-intro" aria-labelledby="page-title">
@@ -43,8 +47,7 @@
                 <label class="search-label" for="knowledge-search">Buscar registros</label>
                 <div class="search-control">
                     <span aria-hidden="true">/</span>
-                    <input id="knowledge-search" type="search" placeholder="Buscar…"
-                        autocomplete="off" />
+                    <input id="knowledge-search" type="search" placeholder="Buscar…" autocomplete="off" />
                 </div>
                 <p id="search-status" class="search-status" aria-live="polite">Esperando registros del archivo.</p>
 
@@ -53,6 +56,13 @@
                     <span>Sin entradas activas</span>
                 </div>
             </aside>
+
+            <article class="reader" aria-labelledby="reader-title">
+                <div class="reader-meta" id="reader-meta"></div>
+                <div class="reader-body" id="reader-body"></div>
+                <div class="ad-slot" data-ad-slot="article-inline" id="article-ad-slot"
+                    aria-label="Espacio publicitario reservado" hidden></div>
+            </article>
 
             <article class="reader" aria-labelledby="reader-title">
                 <div class="reader-meta">

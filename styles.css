@@ -109,6 +109,38 @@ a {
     font-size: .68rem;
 }
 
+.topbar-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.lang-switch {
+    display: inline-flex;
+    gap: .35rem;
+}
+
+.lang-btn {
+    padding: .3rem .55rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: transparent;
+    font: 700 .68rem var(--mono);
+    letter-spacing: .06em;
+    cursor: pointer;
+}
+
+.lang-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--text);
+}
+
+.lang-btn[aria-pressed="true"] {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
 .status-dot {
     width: .5rem;
     height: .5rem;
@@ -329,6 +361,13 @@ h1 {
     margin-bottom: 1.1rem;
 }
 
+.hl-marker {
+    padding: 0 .1em;
+    color: var(--background);
+    background: var(--accent);
+    border-radius: .15em;
+}
+
 .entry-list li+li {
     margin-top: .4rem;
 }
@@ -527,6 +566,9 @@ h1 {
 
     .topbar {
         min-height: 4.5rem;
+        flex-wrap: wrap;
+        gap: .5rem;
+        row-gap: .5rem;
     }
 
     .workspace {

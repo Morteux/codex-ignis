@@ -1,10 +1,21 @@
 import { adsConfig } from "./ads-config.js";
 
+/**
+ * Punto de extensión para conectar una plataforma de gestión del consentimiento
+ * (CMP) antes de activar AdSense. De momento siempre devuelve true porque el
+ * sitio no carga anuncios (adsConfig.enabled = false) ni CMP todavía; cuando
+ * se integre una CMP real, sustituye esta función por la comprobación de
+ * consentimiento correspondiente.
+ */
+function hasAdConsent() {
+  return true;
+}
+
 /** Activa unidades manuales únicamente cuando la configuración está completa. */
 export function initializeAds() {
   const { enabled, publisherId, slots } = adsConfig;
 
-  if (!enabled || !publisherId || !slots.indexFooter) {
+  if (!enabled || !publisherId || !slots.indexFooter || !hasAdConsent()) {
     return;
   }
 

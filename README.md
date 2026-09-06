@@ -19,3 +19,5 @@ La integración está deliberadamente desactivada en `js/ads-config.js`. Solo se
 - Quiero que se resalte en el texto de los contents como si estuviera pintado con un marcador (cuando buscas con ctrl+f en navegador) las palabras que pongas en el cuadro de busqueda
 - Implementa la opcion de cambiar entre español e inglés y quizás a futuro más idiomas.
 - Quiero preparar la inclusion de ads con google adsense
+
+- Quiero que puedas pulsar en una imagen y se abra más grande, como haciendo un zoom

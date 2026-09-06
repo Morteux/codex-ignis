@@ -1,297 +1,223 @@
-import { knowledgeBase } from "./content.js";
+import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
-import { highlightWords } from "./highlight-config.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
 const entryCount = document.querySelector("#entry-count");
 const entryList = document.querySelector("#index-empty");
-const reader = document.querySelector(".reader");
+const readerMeta = document.querySelector("#reader-meta");
+const readerBody = document.querySelector("#reader-body");
+const skipLink = document.querySelector("#skip-link");
+const connectionStatus = document.querySelector("#connection-status");
+const introPromptText = document.querySelector("#intro-prompt-text");
+const introCopy = document.querySelector("#intro-copy");
+const indexHeading = document.querySelector("#index-heading");
+const searchLabel = document.querySelector("#search-label");
+const footerText = document.querySelector("#footer-text");
+const privacyLink = document.querySelector("#privacy-link");
+const cookiesLink = document.querySelector("#cookies-link");
+const langButtons = document.querySelectorAll(".lang-btn");
+const metaDescription = document.querySelector('meta[name="description"]');
 
-entryCount.textContent = String(knowledgeBase.length).padStart(2, "0");
+let currentLang = detectInitialLang();
+let currentQuery = "";
+let currentEntry = null; // entrada base (sin localizar) actualmente abierta, o null
 
-/* ── Resaltado automático de palabras ─────────────────────────────────── */
-
-let highlightRegex;
-let highlightLookup;
-
-function buildHighlightIndex() {
-  const words = Object.keys(highlightWords || {});
-  highlightLookup = new Map(words.map((word) => [word.toLocaleLowerCase("es"), highlightWords[word]]));
-
-  if (!words.length) {
-    highlightRegex = null;
-    return;
-  }
-
-  const escaped = words
-    .slice()
-    .sort((a, b) => b.length - a.length)
-    .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
-
-  // Límites de palabra compatibles con acentos: no usamos \b porque \w no
-  // incluye letras acentuadas y rompería palabras como "titán".
-  highlightRegex = new RegExp(`(?<![\\p{L}\\p{N}_])(${escaped.join("|")})(?![\\p{L}\\p{N}_])`, "giu");
+/** Quita diacríticos y pasa a minúsculas para comparar texto sin acentos. */
+function normalize(str) {
+  return str
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("es");
 }
 
-buildHighlightIndex();
-
-/** Añade texto plano a un contenedor, coloreando las palabras del diccionario. */
-function appendHighlighted(container, text) {
-  if (!highlightRegex) {
-    container.append(document.createTextNode(text));
-    return;
-  }
-
-  highlightRegex.lastIndex = 0;
-  let lastIndex = 0;
-  let match;
-
-  while ((match = highlightRegex.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      container.append(document.createTextNode(text.slice(lastIndex, match.index)));
-    }
-
-    const span = document.createElement("span");
-    span.className = "highlight-word";
-    span.style.color = highlightLookup.get(match[0].toLocaleLowerCase("es")) || "";
-    span.textContent = match[0];
-    container.append(span);
-
-    lastIndex = highlightRegex.lastIndex;
-    if (match.index === highlightRegex.lastIndex) highlightRegex.lastIndex += 1;
-  }
-
-  if (lastIndex < text.length) {
-    container.append(document.createTextNode(text.slice(lastIndex)));
-  }
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, (ch) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[ch]));
 }
 
-/* ── Formato inline: **negrita** y [texto](url) ───────────────────────── */
-
-const INLINE_PATTERN = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*/g;
-
-function tokenizeInline(text) {
-  const tokens = [];
-  let lastIndex = 0;
-  let match;
-
-  INLINE_PATTERN.lastIndex = 0;
-  while ((match = INLINE_PATTERN.exec(text)) !== null) {
-    if (match.index > lastIndex) {
-      tokens.push({ type: "text", content: text.slice(lastIndex, match.index) });
-    }
-
-    if (match[1] !== undefined) {
-      tokens.push({ type: "link", content: match[1], href: match[2] });
-    } else {
-      tokens.push({ type: "bold", content: match[3] });
-    }
-
-    lastIndex = INLINE_PATTERN.lastIndex;
-  }
-
-  if (lastIndex < text.length) {
-    tokens.push({ type: "text", content: text.slice(lastIndex) });
-  }
-
-  return tokens;
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** Añade texto con formato (negrita/enlaces) y resaltado a un contenedor. */
-function appendInline(parent, text) {
-  tokenizeInline(text).forEach((token) => {
-    if (token.type === "bold") {
-      const strong = document.createElement("strong");
-      appendHighlighted(strong, token.content);
-      parent.append(strong);
-    } else if (token.type === "link") {
-      const a = document.createElement("a");
-      a.href = token.href;
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      appendHighlighted(a, token.content);
-      parent.append(a);
-    } else {
-      appendHighlighted(parent, token.content);
-    }
-  });
+/** Escapa el texto y convierte **negrita** en <strong>. */
+function formatText(text) {
+  return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
 }
 
-/* ── Render de bloques ─────────────────────────────────────────────────── */
+/** Resalta, como si estuviera pintado con un marcador, las palabras de la búsqueda. */
+function highlightMatches(html, rawQuery) {
+  const query = rawQuery.trim();
+  if (!query) return html;
+  const words = query.split(/\s+/).filter(Boolean).map(escapeRegExp);
+  if (!words.length) return html;
+  const pattern = new RegExp(`(${words.join("|")})`, "gi");
+  return html.replace(pattern, '<mark class="hl-marker">$1</mark>');
+}
 
-function renderBlock(block) {
-  switch (block.type) {
-    case "list": {
-      const list = document.createElement("ul");
-      list.className = "entry-list";
-      block.items.forEach((item) => {
-        const listItem = document.createElement("li");
-        appendInline(listItem, item);
-        list.append(listItem);
-      });
-      return list;
-    }
-
-    case "links": {
-      const list = document.createElement("ul");
-      list.className = "entry-links";
-      block.items.forEach((item) => {
-        const listItem = document.createElement("li");
-        const link = document.createElement("a");
-        link.href = item.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.textContent = item.label;
-        listItem.append(link);
-        if (item.description) {
-          const description = document.createElement("span");
-          description.className = "entry-links-description";
-          appendInline(description, item.description);
-          listItem.append(" — ", description);
-        }
-        list.append(listItem);
-      });
-      return list;
-    }
-
-    case "image": {
-      const figure = document.createElement("figure");
-      figure.className = "entry-image";
-      const img = document.createElement("img");
-      img.src = block.src;
-      img.alt = block.alt || "";
-      img.loading = "lazy";
-      figure.append(img);
-      if (block.caption) {
-        const caption = document.createElement("figcaption");
-        appendInline(caption, block.caption);
-        figure.append(caption);
-      }
-      return figure;
-    }
-
-    case "heading": {
-      const heading = document.createElement("h3");
-      heading.className = "entry-heading";
-      appendInline(heading, block.text);
-      return heading;
-    }
-
-    case "note": {
-      const note = document.createElement("aside");
-      note.className = "entry-note";
-      appendInline(note, block.text);
-      return note;
-    }
-
-    case "quote": {
-      const quote = document.createElement("blockquote");
-      quote.className = "entry-quote";
-      const p = document.createElement("p");
-      appendInline(p, block.text);
-      quote.append(p);
-      if (block.cite) {
-        const cite = document.createElement("cite");
-        cite.textContent = block.cite;
-        quote.append(cite);
-      }
-      return quote;
-    }
-
-    case "divider":
-      return document.createElement("hr");
-
-    case "paragraph":
-    default: {
-      const paragraph = document.createElement("p");
-      appendInline(paragraph, block.text);
-      return paragraph;
-    }
+function renderBlock(block, query) {
+  if (block.type === "list") {
+    const list = document.createElement("ul");
+    list.className = "entry-list";
+    block.items.forEach((item) => {
+      const listItem = document.createElement("li");
+      listItem.innerHTML = highlightMatches(formatText(item), query);
+      list.append(listItem);
+    });
+    return list;
   }
+
+  const paragraph = document.createElement("p");
+  paragraph.innerHTML = highlightMatches(formatText(block.text), query);
+  return paragraph;
+}
+
+function renderEmptyReader() {
+  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusInitialized")}</span>`;
+
+  const empty = document.createElement("div");
+  empty.className = "empty-state";
+
+  const glyph = document.createElement("p");
+  glyph.className = "empty-glyph";
+  glyph.setAttribute("aria-hidden", "true");
+  glyph.textContent = t(currentLang, "emptyGlyph");
+
+  const heading = document.createElement("h2");
+  heading.id = "reader-title";
+  heading.textContent = t(currentLang, "readyTitle");
+
+  const welcome = document.createElement("p");
+  welcome.innerHTML = t(currentLang, "welcomeHtml");
+
+  empty.append(glyph, heading, welcome);
+  readerBody.replaceChildren(empty);
 }
 
 function renderEntry(entry) {
-  reader.replaceChildren();
+  const localized = localizeEntry(entry, currentLang);
 
-  const meta = document.createElement("div");
-  meta.className = "reader-meta";
-  meta.innerHTML = "<span class=\"prompt\"><span aria-hidden=\"true\">›</span> Terminal de conocimiento / Inicio</span><span>SECTOR / STELLARIS</span>";
+  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusActive")}</span>`;
 
   const content = document.createElement("div");
   content.className = "entry-content";
   const title = document.createElement("h2");
-  title.textContent = `${entry.icon || "·"} ${entry.title}`;
-  content.append(title, ...entry.blocks.map(renderBlock));
-  reader.append(meta, content);
+  title.id = "reader-title";
+  title.textContent = `${localized.icon || "·"} ${localized.title}`;
+  content.append(title, ...localized.blocks.map((block) => renderBlock(block, currentQuery)));
+  readerBody.replaceChildren(content);
 }
 
 function openEntry(entry) {
   window.location.hash = `/${entry.slug}`;
-  renderEntry(entry);
+  currentEntry = entry;
+  refresh();
 }
 
-/* ── Índice y búsqueda (título + contenido de cada bloque) ────────────── */
+/** Un easter egg solo aparece si el texto buscado coincide (total o parcialmente) con algún trigger. */
+function matchesEasterEgg(entry, normalizedQuery) {
+  if (!normalizedQuery) return false;
+  const triggers = entry.triggers || [];
+  return triggers.some((trigger) => {
+    const normalizedTrigger = normalize(trigger);
+    return normalizedQuery.includes(normalizedTrigger) || normalizedTrigger.includes(normalizedQuery);
+  });
+}
 
-/** Extrae todo el texto buscable de una entrada, incluyendo sus bloques. */
-function getEntrySearchText(entry) {
-  const parts = [entry.title];
+function updateEntryCount() {
+  const visibleCount = knowledgeBase.filter((entry) => !entry.hidden).length;
+  entryCount.textContent = String(visibleCount).padStart(2, "0");
+}
 
-  entry.blocks.forEach((block) => {
-    switch (block.type) {
-      case "paragraph":
-      case "heading":
-      case "note":
-      case "quote":
-        parts.push(block.text || "");
-        if (block.cite) parts.push(block.cite);
-        break;
-      case "list":
-        parts.push(...(block.items || []));
-        break;
-      case "links":
-        (block.items || []).forEach((item) => {
-          parts.push(item.label || "", item.description || "");
-        });
-        break;
-      case "image":
-        parts.push(block.alt || "", block.caption || "");
-        break;
-      default:
-        break;
+function renderIndexList() {
+  const normalizedQuery = normalize(currentQuery);
+  const catalogued = knowledgeBase.filter((entry) => !entry.hidden);
+
+  const visible = knowledgeBase.filter((entry) => {
+    if (entry.hidden) {
+      return matchesEasterEgg(entry, normalizedQuery);
     }
+    const localized = localizeEntry(entry, currentLang);
+    return normalize(localized.title).includes(normalizedQuery);
   });
 
-  return parts.join(" ");
-}
-
-function renderIndex(query = "") {
-  const normalizedQuery = query.toLocaleLowerCase("es");
-  const matches = knowledgeBase.filter((entry) => getEntrySearchText(entry).toLocaleLowerCase("es").includes(normalizedQuery));
   entryList.replaceChildren();
 
-  if (!knowledgeBase.length) {
-    entryList.textContent = "└─ sin entradas activas";
-    searchStatus.textContent = query ? "No hay registros disponibles para buscar todavía." : "Esperando registros del archivo.";
+  if (!catalogued.length) {
+    entryList.textContent = `└─ ${t(currentLang, "noActiveEntriesIndex")}`;
+    searchStatus.textContent = currentQuery ? t(currentLang, "noRecordsToSearch") : t(currentLang, "waitingRecords");
     return;
   }
 
-  searchStatus.textContent = matches.length ? `${matches.length} registro(s) encontrado(s).` : "No hay coincidencias.";
-  matches.forEach((entry) => {
+  searchStatus.textContent = visible.length
+    ? t(currentLang, "matchesFound")(visible.length)
+    : t(currentLang, "noMatches");
+
+  visible.forEach((entry) => {
+    const localized = localizeEntry(entry, currentLang);
     const button = document.createElement("button");
     button.className = "entry-button";
     button.type = "button";
-    button.textContent = `${entry.icon || "·"} ${entry.title}`;
+    button.textContent = `${localized.icon || "·"} ${localized.title}`;
     button.addEventListener("click", () => openEntry(entry));
     entryList.append(button);
   });
 }
 
-searchInput.addEventListener("input", () => renderIndex(searchInput.value.trim()));
+function refresh() {
+  renderIndexList();
+  if (currentEntry) {
+    renderEntry(currentEntry);
+  } else {
+    renderEmptyReader();
+  }
+}
 
+function applyStaticStrings() {
+  document.documentElement.lang = currentLang;
+  document.title = t(currentLang, "pageTitle");
+  if (metaDescription) metaDescription.setAttribute("content", t(currentLang, "documentDescription"));
+  skipLink.textContent = t(currentLang, "skipLink");
+  connectionStatus.textContent = t(currentLang, "onlineStatus");
+  introPromptText.textContent = t(currentLang, "introPrompt");
+  introCopy.textContent = t(currentLang, "introCopy");
+  indexHeading.textContent = t(currentLang, "indexHeading");
+  searchLabel.textContent = t(currentLang, "searchLabel");
+  searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));
+  footerText.textContent = t(currentLang, "footerText");
+  privacyLink.textContent = t(currentLang, "privacyLink");
+  cookiesLink.textContent = t(currentLang, "cookiesLink");
+  langButtons.forEach((btn) => {
+    btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
+  });
+}
+
+function setLanguage(lang) {
+  currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
+  storeLang(currentLang);
+  applyStaticStrings();
+  refresh();
+}
+
+searchInput.addEventListener("input", () => {
+  currentQuery = searchInput.value.trim();
+  refresh();
+});
+
+langButtons.forEach((btn) => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+// Permite abrir un easter egg directamente si alguien conoce/comparte su URL exacta.
 const initialSlug = window.location.hash.replace(/^#\//, "");
-const initialEntry = knowledgeBase.find((entry) => entry.slug === initialSlug);
-if (initialEntry) renderEntry(initialEntry);
-renderIndex();
+currentEntry = knowledgeBase.find((entry) => entry.slug === initialSlug) || null;
 
+updateEntryCount();
+setLanguage(currentLang);
 initializeAds();
