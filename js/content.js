@@ -43,9 +43,9 @@ export const knowledgeBase = [
         title: "Diseño de naves máquina: corbetas",
         icon: "✦",
         blocks: [
-            { type: "image", src: "img/naves/Corbeta generalista.jpg", alt: "Corbeta generalista", caption: "Corbeta generalista." },
+            { type: "image", src: "img/naves/Corbeta generalista.png", alt: "Corbeta generalista", caption: "Corbeta generalista." },
             { type: "divider" },
-            { type: "image", src: "img/naves/Corbeta contra fauna.jpg", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." },
+            { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." },
         ]
     },
     {
@@ -53,9 +53,9 @@ export const knowledgeBase = [
         title: "Diseño de naves máquina: fragatas",
         icon: "✦",
         blocks: [
-            { type: "image", src: "img/naves/Fragata torpedera de corto alcance.jpg", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." },
+            { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." },
             { type: "divider" },
-            { type: "image", src: "img/naves/Fragata torpedera de largo alcance.jpg", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." },
+            { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." },
         ]
     },
     {
