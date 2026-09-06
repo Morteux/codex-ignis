@@ -15,7 +15,7 @@ Las futuras entradas se definen en `js/content.js`. La interfaz está preparada 
 La integración está deliberadamente desactivada en `js/ads-config.js`. Solo se debe activar después de tener contenido suficiente, aprobación del sitio, un ID de editor `ca-pub-…`, unidades publicitarias y el consentimiento configurado cuando corresponda. Añade `ads.txt` en la raíz únicamente con el valor oficial de Google.
 
 ## TO DO
-- Un endpoint "Simulación de Combate" donde explicaré con un texto estático que configuración usar para configurar una partida usando consola de comandos para hacer pruebas de combate dentro del juego.
-- Quiero muchos más type dentro de blocks (enlaces, letras en negrita, insertar imagenes y otras cosas utiles que se te ocurran)
-- Quiero que la web auto coloree ciertas palabras dentro de cada entrada de la base de conocimiento. Quiero una lista que asocie una palabra con un color y se busque dicha palabra ignorando mayusculas o minisculas y se aplique dicho color automáticamente solo a esa palabra.
-- Quiero un buscador de palabras no solo de titulos, también que busque dentro de cada block/entry
+- Quiero meter easter eggs, así que crea un tipo de entry en content que solo se muestre cuando buscas palabras y alguna coincide con lo que haya escrito dentro, pero por defecto no aparezca en la lista
+- Quiero que se resalte en el texto de los contents como si estuviera pintado con un marcador (cuando buscas con ctrl+f en navegador) las palabras que pongas en el cuadro de busqueda
+- Implementa la opcion de cambiar entre español e inglés y quizás a futuro más idiomas.
+- Quiero preparar la inclusion de ads con google adsense
