@@ -94,7 +94,12 @@ export const knowledgeBase = [
         blocks: [
             { type: "paragraph", text: "**Siguen la misma plantilla que un acorazado artillero**, excepto por su aura, que se explica en profundidad a continuación." },
             { type: "paragraph", text: "Sobre los titanes tenemos dos opciones para combinarlos con la flota de acorazados, pero antes hay que aclarar como funcionan sus auras que básicamente es su razón de ser. Tenemos dos tipos de auras, ofensivas y defensivas, dicho esto:" },
-            { type: "list", items: ["**Defensivas**: estas auras SOLO afectan a la flota que tiene el titán. Por ejemplo, si tienes un titán con aura de regeneración que está en un sistema con otras 4 flotas, solo la flota del titán se aprovecha de la regeneración, las otras 4 flotas no.", "**Ofensivas**: estas auras afectan a TODAS las flotas enemigas en el sistema que esté el titán."] },
+            {
+                type: "list", items: [
+                    "**Defensivas**: estas auras SOLO afectan a la flota que tiene el titán. Por ejemplo, si tienes un titán con aura de regeneración que está en un sistema con otras 4 flotas, solo la flota del titán se aprovecha de la regeneración, las otras 4 flotas no.",
+                    "**Ofensivas**: estas auras afectan a TODAS las flotas enemigas en el sistema que esté el titán."
+                ]
+            },
             { type: "paragraph", text: "Con esto en mente tenemos dos opciones dependiendo del número de titanes que podamos tener. Si tenemos poca capacidad de titanes, recomiendo distribuir un titan con aura ofensiva en cada flota que puedas. Este titán sigue el mismo esquema que los acorazados artilleros XL pero con el aura ofensiva como extra. Por otro lado, si tenemos mucha capacidad, aconsejo concentrarlos en poca flotas, teniendo flotas con 6 titanes (cada uno con un tipo de aura defensia y ofensiva) de tal forma que tengas flotas insignia con todas las auras acompañadas de flotas sin titanes que se beneficien de las 3 ofensivas. Así aseguras la supervivencia de la flota con los 6 titanes ya que combinar todas las auras es una bonificación muy poderosa." },
             { type: "paragraph", text: "Podemos decir que esta última opción de flotas de acorazados más 6 titanes es la flota definitiva que apoyada por los portahangares las convierte en un anti-todo general, por supuesto es superior a su versión sin titanes." },
             { type: "paragraph", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento." },
@@ -105,7 +110,12 @@ export const knowledgeBase = [
                 blocks: [
                     { type: "paragraph", text: "**They follow the same build as an artillery battleship**, except for their aura, which is explained in detail below." },
                     { type: "paragraph", text: "For titans we have two options to combine them with the battleship fleet, but first we need to clarify how their auras work, since that's basically their whole reason to exist. There are two types of auras, offensive and defensive:" },
-                    { type: "list", items: ["**Defensive**: these auras ONLY affect the fleet the titan belongs to. For example, if you have a titan with a regeneration aura sitting in a system with 4 other fleets, only the titan's own fleet benefits from the regeneration; the other 4 fleets don't.", "**Offensive**: these auras affect ALL enemy fleets in the system the titan is in."] },
+                    {
+                        type: "list", items: [
+                            "**Defensive**: these auras ONLY affect the fleet the titan belongs to. For example, if you have a titan with a regeneration aura sitting in a system with 4 other fleets, only the titan's own fleet benefits from the regeneration; the other 4 fleets don't.",
+                            "**Offensive**: these auras affect ALL enemy fleets in the system the titan is in."
+                        ]
+                    },
                     { type: "paragraph", text: "With this in mind, there are two approaches depending on how many titans you can field. If titan capacity is low, spread one titan with an offensive aura across as many fleets as you can. This titan follows the same build as an XL artillery battleship but with the offensive aura as a bonus. If you have high capacity instead, concentrate them into fewer fleets, building fleets of 6 titans (each with a defensive and an offensive aura type), so you get flagship fleets with every aura, accompanied by titan-less fleets that still benefit from the 3 offensive auras. That way you protect the 6-titan fleet, since stacking every aura is an extremely powerful bonus." },
                     { type: "paragraph", text: "This last option — battleship fleets plus 6 titans — is arguably the ultimate fleet, which combined with carriers turns it into a general anti-everything force; naturally it's superior to the version without titans." },
                     { type: "paragraph", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying." }
@@ -118,44 +128,94 @@ export const knowledgeBase = [
         title: "Preparando la simulación de combate",
         icon: "✦",
         blocks: [
-            { type: "paragraph", text: "Guía rápida para montar una partida de pruebas y comprobar diseños de flota, auras de titán o composiciones de combate sin depender del avance normal de una partida." },
-            { type: "note", text: "Necesitas tener activado el modo de comandos: inicia la partida con **-debug_mode** en las opciones de lanzamiento de Steam, o simplemente escribe los comandos con la consola abierta (**Mayús + ²** / **Mayús + `** según el teclado)." },
-            { type: "heading", text: "1. Preparar el escenario" },
+            { type: "paragraph", text: "Guía completa para preparar una partida óptima para probar diseños de naves y flotas." },
+            { type: "note", text: "La configuración es independiente de los DLCs." },
+
+            { type: "heading", text: "1. Configurar la partida" },
             {
                 type: "list", items: [
-                    "Crea una partida nueva con un mapa pequeño (1 estrella o pocas) para minimizar variables externas.",
-                    "Desactiva crisis, invasiones y eventos aleatorios en las opciones avanzadas de la galaxia si solo quieres testear combate directo.",
-                    "Añade una segunda potencia (IA o jugador) que sea la que reciba tu flota de pruebas."
+                    "**OBLIGATORIO:** Desactiva el modo Hombre de Hierro.",
+                    "Recomiendo no incluir ningún imperio controlado por la IA (imperios normales, caidos, merodeadores, nómadas, etc.).",
+                    "El resto de opciones son a tu gusto.",
                 ]
             },
+            { type: "paragraph", text: "Ya puedes iniciar la partida." },
+
             { type: "heading", text: "2. Comandos de consola útiles" },
+            { type: "paragraph", text: "Por defecto, puedes abrir la consola pulsando la tecla 'º' (a la izquierda de la tecla 1 en teclados QWERTY)." },
+            { type: "paragraph", text: "Te recomiendo que actives las opciones de explorar, comunicaciones e inteligencia automática. Además, activa la opción de construcción instantánea para construir y reparar naves rápidamente. " },
+
+            { type: "paragraph", text: "Ejecuta los siguientes comandos en orden en la consola." },
             {
                 type: "list", items: [
-                    "**research_all_technologies** — desbloquea toda la tecnología para poder construir cualquier diseño de nave sin esperar.",
-                    "**activate_all_traditions** — activa todas las tradiciones, útil si quieres testear con bonificaciones de combate concretas.",
-                    "**effect add_resource = { energy = 99999 minerals = 99999 alloys = 99999 influence = 999 }** — te da recursos de sobra para construir flotas grandes al instante.",
-                    "**instant_build** — construye edificios, naves y estructuras de forma instantánea.",
-                    "**debugtooltip** — muestra información extendida en los tooltips, útil para comparar valores de daño y escudo entre diseños.",
-                    "**observe** — pasas a modo observador, útil para ver el combate desde fuera sin controlar ningún bando."
+                    "**research_all_technologies 1 0**: desbloquea toda la tecnología para poder construir cualquier diseño de nave sin esperar.",
+                    "**max_resources**: rellena todos los recursos al máximo, útil para construir flotas grandes sin esperar.",
+                    "**unlock_edicts**: desbloquea todos los edictos de combate.",
+                    "**create_navy <Percentage>**: crea una flota de combate con el porcentaje de fuerza que indiques. Será la flota que simule al imperio IA con los diseños de naves automátizados con los que empiezas la partida",
                 ]
             },
             { type: "note", text: "Los nombres exactos de comandos pueden variar entre versiones del juego. Si alguno no funciona, escribe **help** en la consola para ver el listado actualizado de tu versión." },
-            { type: "heading", text: "3. Configuración recomendada para pruebas" },
+            { type: "paragraph", text: "Para hacer pruebas de combate contra crisis, puedes forzar su aparición con los siguientes comandos:" },
             {
                 type: "list", items: [
-                    "Diseña las dos flotas que quieras comparar en el diseñador de naves antes de abrir la consola.",
-                    "Usa **instant_build** después de encolar la construcción de ambas flotas para tenerlas listas al momento.",
-                    "Sitúa ambas flotas en el mismo sistema y deja que el combate se resuelva automáticamente, o usa **observe** para verlo en directo.",
-                    "Repite el combate varias veces (guardando y cargando la partida) si quieres comprobar la variabilidad del daño aleatorio."
+                    "**event crisis.199**: Activa la crisis del Azote Prethoryn",
+                    "**event crisis.1000**: Activa la crisis de los Invasores Extradimensionales Inesperados",
+                    "**event crisis.1100**: Activa la crisis de los Invasores Extradimensionales Aberrantes. No requieren a los Inesperados",
+                    "**event crisis.1200**: Activa la crisis de los Invasores Extradimensionales Vehementes. Requieren a los Inesperados",
+                    "**event crisis.2000**: Activa la crisis de la Contigencia",
+                    "**event crisis.8005**: Activa la crisis de la Reina Sintética"
                 ]
             },
+            { type: "heading", text: "3. Simulaciones de combate" },
+            { type: "paragraph", text: "Tras crear tus dos flotas de prueba, sitúa ambas flotas en el mismo sistema y activa el comando **attackallfleets**, el cual hace que todas tus flotas ataquen a todas las flotas en el sistema actual, incluyendo tus propias flotas. Útil para probar combates entre tus diseños de flota sin depender de un segundo imperio IA o jugador." },
             { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." }
         ],
         i18n: {
             en: {
                 title: "Preparing the combat simulation",
                 blocks: [
-                    { type: "paragraph", text: "" },
+                    { type: "paragraph", text: "Complete guide to setting up an optimal game for testing ship and fleet designs." },
+                    { type: "note", text: "The setup is independent of DLCs." },
+
+                    { type: "heading", text: "1. Setting up the game" },
+                    {
+                        type: "list", items: [
+                            "**REQUIRED:** Disable Ironman Mode.",
+                            "I recommend not including any AI-controlled empires (normal empires, fallen empires, marauders, nomads, etc.).",
+                            "The rest of the options are up to you.",
+                        ]
+                    },
+                    { type: "paragraph", text: "You can now start the game." },
+
+                    { type: "heading", text: "2. Useful console commands" },
+                    { type: "paragraph", text: "By default, you can open the console by pressing the 'º' key (to the left of the 1 key on QWERTY keyboards)." },
+                    { type: "paragraph", text: "I recommend enabling the exploration, communications, and automatic intelligence options. Also enable the instant construction option to build and repair ships quickly." },
+
+                    { type: "paragraph", text: "Run the following commands in order in the console." },
+                    {
+                        type: "list", items: [
+                            "**research_all_technologies 1 0**: unlocks all technologies so you can build any ship design without waiting.",
+                            "**max_resources**: fills all resources to their maximum, which is useful for building large fleets without waiting.",
+                            "**unlock_edicts**: unlocks all combat edicts.",
+                            "**create_navy <Percentage>**: creates a combat fleet with the percentage of fleet power you specify. This will be the fleet used to simulate an AI empire using the automated ship designs you start the game with.",
+                        ]
+                    },
+                    { type: "note", text: "The exact command names may vary between game versions. If a command does not work, type **help** in the console to see the updated list for your version." },
+                    { type: "paragraph", text: "To test combat against crises, you can force them to appear with the following commands:" },
+                    {
+                        type: "list", items: [
+                            "**event crisis.199**: Activates the Prethoryn Scourge crisis.",
+                            "**event crisis.1000**: Activates the Unbidden crisis.",
+                            "**event crisis.1100**: Activates the Aberrant crisis. They do not require the Unbidden.",
+                            "**event crisis.1200**: Activates the Vehement crisis. They require the Unbidden.",
+                            "**event crisis.2000**: Activates the Contingency crisis.",
+                            "**event crisis.8005**: Activates the Synthetic Queen crisis."
+                        ]
+                    },
+
+                    { type: "heading", text: "3. Combat simulations" },
+                    { type: "paragraph", text: "After creating your two test fleets, place both fleets in the same system and use the **attackallfleets** command. This makes all your fleets attack every fleet in the current system, including your own fleets. This is useful for testing battles between your fleet designs without relying on a second AI empire or player." },
+                    { type: "paragraph", text: "This allows you to iterate through fleet designs very quickly: change a component, rebuild using instant_build, and repeat the battle, all without having to play through an entire game." }
                 ]
             }
         }
