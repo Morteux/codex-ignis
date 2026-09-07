@@ -64,6 +64,15 @@ export const knowledgeBase = [
                     { type: "divider" },
                     { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Early and mid game corvette against space fauna", caption: "Early and mid game corvette against space fauna." },
                 ]
+            },
+            jp: {
+                title: "艦船設計：コルベット",
+                icon: "✦",
+                blocks: [
+                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "汎用コルベット", caption: "汎用コルベット。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "宇宙生物対策用の序盤・中盤向けコルベット", caption: "宇宙生物対策用の序盤・中盤向けコルベット。" },
+                ]
             }
         }
     },
@@ -83,6 +92,15 @@ export const knowledgeBase = [
                     { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Short-range torpedo frigate", caption: "Short-range torpedo frigate with stealth." },
                     { type: "divider" },
                     { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Long-range torpedo frigate", caption: "Long-range torpedo frigate." },
+                ]
+            },
+            jp: {
+                title: "艦船設計：フリゲート",
+                icon: "✦",
+                blocks: [
+                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "短射程魚雷フリゲート", caption: "ステルス搭載型・短射程魚雷フリゲート。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "長射程魚雷フリゲート", caption: "長射程魚雷フリゲート。" },
                 ]
             }
         }
@@ -123,6 +141,25 @@ export const knowledgeBase = [
 
                     { type: "divider" },
                     { type: "quote", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying.", cite: "High Admiral Sidney Beauclair of the Commonwealth of Man" }
+                ]
+            },
+            jp: {
+                title: "タイタンとそのオーラについて",
+                icon: "✦",
+                blocks: [
+                    { type: "paragraph", text: "\*\*砲撃戦艦と同じ設計思想に従います\*\*。ただし、タイタン固有のオーラについては以下で詳しく説明します。" },
+                    { type: "paragraph", text: "タイタンを戦艦艦隊と組み合わせる方法は2通りありますが、その前に、タイタンの存在意義ともいえるオーラの仕組みを理解する必要があります。オーラには攻撃型と防御型の2種類があります。" },
+                    {
+                        type: "list", items: [
+                            "\*\*防御型\*\*：これらのオーラは、そのタイタンが所属している艦隊にのみ効果があります。たとえば、再生オーラを持つタイタンが、他の4つの艦隊と同じ星系にいる場合、再生効果を受けるのはタイタンが所属する艦隊だけで、他の4艦隊には効果がありません。",
+                            "\*\*攻撃型\*\*：これらのオーラは、タイタンが存在する星系内の\*\*すべての敵艦隊\*\*に効果があります。"
+                        ]
+                    },
+                    { type: "paragraph", text: "これを踏まえると、保有できるタイタンの数によって2つの選択肢があります。タイタン容量が少ない場合は、可能な限り各艦隊に攻撃型オーラを持つタイタンを1隻ずつ配備することをおすすめします。このタイタンはXL兵器を搭載した砲撃戦艦と同じ構成を採用し、追加要素として攻撃型オーラを持たせます。一方、タイタン容量が多い場合は、少数の艦隊に集中させることをおすすめします。各タイタンに異なる防御型・攻撃型オーラを持たせ、1艦隊あたり6隻のタイタンを配置します。こうすることで、すべてのオーラを備えた旗艦艦隊を作り、それとは別にタイタンを持たない艦隊を用意して、3種類の攻撃型オーラの恩恵を受けさせることができます。6隻のタイタンを持つ艦隊の生存性も確保できます。すべてのオーラを組み合わせることによるボーナスは非常に強力だからです。" },
+                    { type: "paragraph", text: "この最後の構成、すなわち戦艦艦隊に6隻のタイタンを加えた編成は、空母艦と組み合わせることで、ほぼあらゆる敵に対応できる究極の艦隊と言えるでしょう。当然ながら、タイタンを含まない構成よりも強力です。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "その艦隊が星系に入った瞬間、その星系が自分のものになると分かる。もし自分のものではなかったとしても、そこには荒廃だけが残る。抵抗は無意味だ。逃げることも隠れることもできる危機も異種族も存在しない。皇帝の御意志に従うか、その試みの中で死ぬかだ。", cite: "共同体亡命勢力所属 シドニー・ボークレール上級提督" }
                 ]
             }
         }
@@ -227,6 +264,56 @@ export const knowledgeBase = [
                     { type: "divider" },
                     { type: "quote", text: "The Omnissiah would be proud of you...", cite: "Archmagos Dominus Belisarius Cawl of the Adeptus Mechanicus" }
                 ]
+            },
+            jp: {
+                title: "戦闘シミュレーションの準備",
+                icon: "✦",
+                blocks: [
+                    { type: "paragraph", text: "艦船や艦隊の設計をテストするための、最適なゲーム環境の準備方法をまとめた完全ガイドです。" },
+                    { type: "note", text: "この設定はDLCの有無に依存しません。" },
+
+                    { type: "heading", text: "1. ゲームの設定" },
+                    {
+                        type: "list", items: [
+                            "\*\*必須：\*\* アイアンマンモードを無効にします。",
+                            "AIによって操作される帝国（通常の帝国、没落帝国、マローダー、遊牧艦隊など）は一切入れないことをおすすめします。",
+                            "その他の設定は自由に決めて構いません。",
+                        ]
+                    },
+                    { type: "paragraph", text: "これでゲームを開始できます。" },
+
+                    { type: "heading", text: "2. 便利なコンソールコマンド" },
+                    { type: "paragraph", text: "デフォルトでは、「º」キー（QWERTYキーボードでは1キーの左側）を押すことでコンソールを開けます。" },
+                    { type: "paragraph", text: "探索、通信、諜報活動を自動化する設定を有効にすることをおすすめします。また、艦船を素早く建造・修理できるよう、即時建造も有効にしてください。" },
+
+                    { type: "paragraph", text: "以下のコマンドをコンソールに順番に入力してください。" },
+                    {
+                        type: "list", items: [
+                            "\*\*research\_all\_technologies 1 0\*\*: すべてのテクノロジーをアンロックし、待ち時間なしですべての艦船設計を建造できるようにします。",
+                            "\*\*max\_resources\*\*: すべての資源を最大まで補充します。大規模な艦隊を待ち時間なしで建造する際に便利です。",
+                            "\*\*unlock\_edicts\*\*: すべての戦闘用布告をアンロックします。",
+                            "\*\*create\_navy \<Percentage>\*\*: 指定した戦力割合の戦闘艦隊を作成します。これはAI帝国を再現するための艦隊として使用します。艦船設計はゲーム開始時に用意されている自動設計が使用されます。",
+                        ]
+                    },
+                    { type: "note", text: "コマンドの正確な名称はゲームのバージョンによって異なる場合があります。動作しない場合は、コンソールで\*\*help\*\*と入力して、使用中のバージョンで利用可能なコマンド一覧を確認してください。" },
+                    { type: "paragraph", text: "危機との戦闘テストを行う場合は、以下のコマンドで危機を強制的に出現させることができます。" },
+                    {
+                        type: "list", items: [
+                            "\*\*event crisis.199\*\*: プレスリン・スウォームの危機を発生させます。",
+                            "\*\*event crisis.1000\*\*: 異次元勢力「アンエクスペクテッド」の危機を発生させます。",
+                            "\*\*event crisis.1100\*\*: 異次元勢力「アバラント」の危機を発生させます。アンエクスペクテッドを必要としません。",
+                            "\*\*event crisis.1200\*\*: 異次元勢力「ヴェヘメント」の危機を発生させます。アンエクスペクテッドが必要です。",
+                            "\*\*event crisis.2000\*\*: コンティンジェンシーの危機を発生させます。",
+                            "\*\*event crisis.8005\*\*: シンセティック・クイーンの危機を発生させます。"
+                        ]
+                    },
+                    { type: "heading", text: "3. 戦闘シミュレーション" },
+                    { type: "paragraph", text: "2つのテスト艦隊を作成したら、両方の艦隊を同じ星系に配置し、\*\*attackallfleets\*\*コマンドを実行します。このコマンドは、現在の星系に存在するすべての艦隊に対して、自分のすべての艦隊が攻撃を行うようにします。自分自身の艦隊も攻撃対象になるため、別のAI帝国やプレイヤーに頼ることなく、自分の艦隊設計同士を戦わせることができます。" },
+                    { type: "paragraph", text: "これにより、艦隊設計を非常に高速に反復できます。コンポーネントを1つ変更し、instant\_buildで再建造し、再び戦闘を行うだけです。完全なゲームを最初から最後までプレイする必要はありません。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "オムニサイアはお前を誇りに思うだろう……", cite: "アデプトゥス・メカニクス マギ・ドミヌス ベリサリウス・カウル" }
+                ]
             }
         }
     },
@@ -279,6 +366,31 @@ export const knowledgeBase = [
                     { type: "divider" },
                     { type: "quote", text: "But without a doubt, if you want the best information about Stellaris in Spanish, you already know where to find my YouTube channel 🤩", cite: "Ignis" }
                 ]
+            },
+            jp: {
+                title: "便利なリンク",
+                icon: "✦",
+                blocks: [
+                    { type: "paragraph", text: "Stellarisの情報を調べる際に利用または推奨している外部ページをまとめています。" },
+                    {
+                        type: "links", items: [
+                            { label: "📖Stellaris公式Wiki", url: "[https://stellaris.paradoxwikis.com/](https://stellaris.paradoxwikis.com/)", description: "Stellarisのゲームシステム、テクノロジー、コンポーネントなどを網羅した情報Wiki。" },
+                            { label: "💻Paradox公式フォーラム", url: "[https://forum.paradoxplaza.com/forum/tags/stellaris.10/](https://forum.paradoxplaza.com/forum/tags/stellaris.10/)", description: "公式発表、パッチノート、開発者との議論などを確認できます。" },
+                            { label: "🔬テクノロジーツリー", url: "[https://bloodstainedcrow.github.io/stellaris-tech-tree/](https://bloodstainedcrow.github.io/stellaris-tech-tree/)", description: "ゲーム内のテクノロジーツリーをインタラクティブに確認できます。[旧バージョン]\([https://turanar.github.io/stellaris-tech-tree/index.html](https://turanar.github.io/stellaris-tech-tree/index.html)。" },
+                            { label: "🌌公式アルバム", url: "[https://imgur.com/a/stellaris-wallpapers-Ao8zhxE](https://imgur.com/a/stellaris-wallpapers-Ao8zhxE)", description: "Stellaris公式壁紙のアルバム。" },
+                            { label: "🖥️Stellaris Assets", url: "[https://tuttu.github.io/StellarisAssets/](https://tuttu.github.io/StellarisAssets/)", description: "Stellaris向けのリソースやアセットをまとめたリポジトリ。" },
+                            { label: "📰Xenonion", url: "[https://xenonion.com/](https://xenonion.com/)", description: "信頼と実績の銀河ニュースチャンネル。" },
+                            { label: "🧮地区資源計算機", url: "[https://www.desmos.com/calculator/wgmehijwu3?lang=es](https://www.desmos.com/calculator/wgmehijwu3?lang=es)", description: "Stellarisにおける各種地区から生産される資源量を見積もるための計算機。" },
+                            { label: "👷‍♂️Community Builds", url: "[https://stellaris-build.com/](https://stellaris-build.com/)", description: "コミュニティによって作成された帝国設計。" },
+                            { label: "🌏RedditのStellarisコミュニティ", url: "[https://www.reddit.com/r/Stellaris/](https://www.reddit.com/r/Stellaris/)", description: "質問、ミーム、プレイ記録の共有などが行われている活発なコミュニティ。" },
+                            { label: "🎮Steam版Stellaris", url: "[https://store.steampowered.com/app/281990/Stellaris/](https://store.steampowered.com/app/281990/Stellaris/)", description: "SteamのStellaris本体およびDLCのストアページ。" },
+                            { label: "🕹️@IgnisStellarisのDiscord", url: "[https://discord.com/invite/PE2vGqxZpz](https://discord.com/invite/PE2vGqxZpz)", description: "[@IgnisStellaris]\([https://www.youtube.com/@IgnisStellaris](https://www.youtube.com/@IgnisStellaris))のコミュニティDiscordサーバー。" }
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis" }
+                ]
             }
         }
     },
@@ -303,6 +415,22 @@ export const knowledgeBase = [
         ],
         i18n: {
             en: {
+                title: "MUGANI?",
+                blocks: [
+                    { type: "paragraph", text: "HAK HAK HAK!" },
+                    { type: "paragraph", text: "HAK HAK HAK HAK HAK HAK. HAK, HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. " },
+                    { type: "paragraph", text: "HAK, HAK HAK HAK HAK HAK-HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK." },
+                    { type: "paragraph", text: "HAK HAK HAK, HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK, HAK HAK HAK HAK HAK." },
+                    { type: "paragraph", text: "HAK HAK HAK HAK HAK HAK? HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK." },
+                    { type: "paragraph", text: "HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. " },
+                    { type: "paragraph", text: "HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK." },
+                    { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen" }
+                ]
+            },
+            jp: {
                 title: "MUGANI?",
                 blocks: [
                     { type: "paragraph", text: "HAK HAK HAK!" },
@@ -384,6 +512,40 @@ export const knowledgeBase = [
 
                     { type: "divider" },
                     { type: "quote", text: "Class 30 Singularity", cite: "[REDACTED]" }
+                ]
+            },
+            jp: {
+                title: "クラス30特異点",
+                icon: "☣",
+                hidden: true,
+                triggers: ["特異点", "30", "singularidad", "クラス30"],
+                blocks: [
+                    { type: "paragraph", text: "ここでは、コンティンジェンシーのプロトコルによれば、理論上、宇宙全体の構造を不安定化させる可能性がある「クラス30特異点」が、どのような脅威によって引き起こされうるのかを検討します。現在までに判明しているのは、技術的に最も進んだ帝国が利用しているクラス3およびクラス4特異点によって、安全かつ安定したエネルギー生産が可能であるということです。理論上、その26倍にも及ぶ特異点であれば、宇宙の構造そのものを引き裂き、それを成形、破壊、あるいは未知の方法で再起動することすら可能になるでしょう。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第一の仮説：\*\*ヘテロフェイズ仮説。\*\* ヘテロフェイズ・エンジンは、莫大な量のダークマターを蓄積することが可能であり、それによって宇宙の構造を引き裂き、他の次元、特にヴェールと部分的に融合させることができる可能性があります。したがって、クラス30特異点とは、この段階に到達した文明そのものなのかもしれません。しかし、その後のコンティンジェンシーに対する分析では、この条件下での起動を示唆するコード断片は存在しないことが判明しています。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第二の仮説：\*\*異次元侵略仮説。\*\* ヘテロフェイズ・エンジンと現実の裂け目は、プロセスの一部にすぎません。最終的な目的は、エンジンと母銀河に蓄積されたすべてのエネルギーを利用し、ヴェールに存在するエネルギー生命体、すなわち我々の現実で「異次元勢力」として知られている存在へと昇華することです。その昇華そのものがクラス30特異点なのかもしれません。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第三の仮説：\*\*囮仮説。\*\* コンティンジェンシーの創造者たちは、プロトコルの起源や目的を調査しようとする個人や帝国を混乱させるために、「クラス30特異点」という用語そのものを作り出したのかもしれません。したがって、コンティンジェンシーが提供する情報は真実ではなく、創造者たちの真の目的から注意をそらすための粗雑な欺瞞だった可能性があります。コンティンジェンシー自身も真の目的を知らず、永続的な欺瞞の中で活動していることになります。銀河の浄化とは、創造者が定めた未知の最終目的を達成するための手段にすぎないのかもしれません。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第四の仮説：\*\*循環銀河仮説。\*\* データバンクPの記録2000～2090に記された事実、およびかつて覚醒した帝国であった古代の番人から得られた情報によれば、コンティンジェンシーは少なくとも2度起動されています。最初はサイブレックスに対してでした。彼らがもともとサイブレックスの一部だったのか、あるいは浄化計画のためにサイブレックスを利用しただけなのかは不明です。そしてもう一度は古代の番人の時代です。彼らはかつての宿敵であるコンティンジェンシーと戦った後、自ら眠りにつきました。このことから、コンティンジェンシーはこれまでに何度も銀河を浄化寸前まで追い込み、知的生命を含む有機生命の生活サイクルそのものをリセットしてきた可能性があります。あるいは、銀河をあまりにも徹底的に荒廃させた結果、生き残った帝国が何千年、あるいは何百年にもわたって社会的、経済的、軍事的、技術的な停滞状態に陥り、最終的に我々が知る「没落帝国」となったのかもしれません。詳細はデータバンクPを参照してください。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第五の仮説：\*\*ホライズン・ニードル仮説。\*\* 巨大構造物「ホライズン・ニードル」が、ブラックホールの構造を引き裂くために使用された場合、我々の現実にどのような影響を与えうるのかについての記録が存在します。その目的は現実そのものを形作ることだとされています。この場合、クラス30特異点とは、ホライズン・ニードルの使用によって生じる宇宙の構造の裂け目そのもの、あるいはその装置を建造し操作できる文明を指している可能性があります。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第六の仮説：\*\*宇宙低体温仮説。\*\* 最も進んだ理論によれば、宇宙はゆっくりと、しかし不可逆的に完全な冷却へと近づいている可能性があります。これは宇宙規模でエントロピーが減少していく過程です。しかし、我々は「銀河のるつぼ」と呼ばれる巨大構造物の存在を知っています。この構造物は低体温化の過程を逆転させるために設計され、銀河内の恒星を人工的に赤色巨星へと変化させるものとされています。この人工的なプロセスこそがクラス30特異点なのかもしれません。なぜなら、それは宇宙そのものの性質に逆らい、完全な低体温状態に到達することを阻止するからです。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第七の仮説：\*\*最後の監視とハンターの仮説。\*\* 創造に関する第六の仮説で述べたように、クラス30特異点とは、銀河間を移動する能力を獲得した文明である可能性があります。その移動には、理論上の銀河間ハイパーレーン、あるいは未知の別の手段が使われているのでしょう。この場合、より上位の文明が影から他文明を監視し、ハイパー銀河規模への拡張によって自分たちを脅かす可能性を積極的に阻止していることになります。これは、恒星間航行を開始しようとしているPre-UL世界に地上部隊を展開することと似ています。したがって、記録10～234、特に第10の仮説である「最後の監視仮説」に記された事実から判断すると、ハンター、あるいはプレスリン・スウォームを排除するために彼らを送り込んだ存在は、クラス30特異点を排除するための複数の手段を有していると考えられます。異なる銀河へ移動する能力を獲得したプレスリンのような帝国が、その対象となっているのです。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第八の仮説：\*\*ヴェールへの昇華仮説。\*\* データバンクAの記録1～6には、ズローニ帝国が経験した出来事が記録されています。ズローニは、おそらく我々の物質的現実を完全に離れ、ヴェールへと昇華することに成功した最初の種族でした。驚異的であると同時に恐ろしい存在が住むヴェールという次元について考えると、コンティンジェンシーは、新たな種族がヴェールにおいて純粋な超能力的存在へと昇華すること、特に「サイクルの終焉」と呼ばれる事象において純粋な超能力的存在が出現することを阻止しようとしている可能性があります。詳細は該当する記録を参照してください。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第九の仮説：\*\*絶滅した脅威仮説。\*\* コンティンジェンシーはかつて、創造者たちが本来想定していた、クラス30特異点に到達した脅威の排除という目的を達成したのかもしれません。その結果、コンティンジェンシーは何千年にもわたる休眠状態へ入り、その長い時間の中で、適応能力を発揮して自らを再プログラムし、新たな目的を見つけたのでしょう。それが銀河規模の体系的な浄化だった可能性があります。確かにコンティンジェンシーはクラス30特異点を排除するために作られたのかもしれません。しかし、その脅威はすでに滅び、現在ではそれに近い規模の存在すら何も残っていないのです。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第十の仮説：\*\*最後の犠牲仮説。\*\* コンティンジェンシーは、異なる時代に一度または複数回、複数のクラス30特異点と戦ってきたのかもしれません。しかし、長い時間の経過と、これらの脅威との度重なる銀河戦争によってプロトコルは弱体化し、帝国がクラス30特異点へ到達する前に早期起動することだけが、現在も目的を達成するために残された唯一の手段となったのでしょう。そこでコンティンジェンシーは、クラス30特異点へ到達しつつある帝国に力で圧倒される前に、予防措置として行動し、プロトコルが適切と判断した時点で銀河を体系的に浄化することを選択したのです。" },
+                    { type: "divider" },
+                    { type: "paragraph", text: "クラス30特異点に関する第十一の仮説：\*\*自己成就予言仮説。\*\* コンティンジェンシーは、クラス30特異点を排除するという本来の目的を達成した後、数千年にわたる休眠状態へ入りました。その結果、自らのプロトコルそのものが変質していきました。そして論理的に導き出したのです。新たなクラス30特異点の出現を防ぐ最も確実な方法は、知的生命体を銀河から一掃することだ、と。こうしてコンティンジェンシー自身が、クラス30特異点そのものへと変貌してしまったのです。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "クラス30特異点", cite: "[検閲済み]" }
                 ]
             }
         }
