@@ -207,6 +207,32 @@ function matchesEasterEgg(entry, normalizedQuery) {
   });
 }
 
+/** Extrae el texto "buscable" de un bloque, sin importar su tipo. */
+function collectBlockText(block) {
+  switch (block.type) {
+    case "heading":
+    case "paragraph":
+    case "note":
+    case "quote":
+      return block.text || "";
+    case "list":
+      return (block.items || []).join(" ");
+    case "links":
+      return (block.items || [])
+        .map((item) => `${item.label || ""} ${item.description || ""}`)
+        .join(" ");
+    case "image":
+      return `${block.alt || ""} ${block.caption || ""}`;
+    default:
+      return block.text || "";
+  }
+}
+
+/** Comprueba si algún bloque de la entrada contiene la query buscada. */
+function entryBlocksMatch(blocks, normalizedQuery) {
+  return blocks.some((block) => normalize(collectBlockText(block)).includes(normalizedQuery));
+}
+
 function updateEntryCount() {
   const visibleCount = knowledgeBase.filter((entry) => !entry.hidden).length;
   entryCount.textContent = String(visibleCount).padStart(2, "0");
@@ -221,7 +247,10 @@ function renderIndexList() {
       return matchesEasterEgg(entry, normalizedQuery);
     }
     const localized = localizeEntry(entry, currentLang);
-    return normalize(localized.title).includes(normalizedQuery);
+    return (
+      normalize(localized.title).includes(normalizedQuery) ||
+      entryBlocksMatch(localized.blocks, normalizedQuery)
+    );
   });
 
   entryList.replaceChildren();
@@ -262,8 +291,8 @@ function applyStaticStrings() {
   if (metaDescription) metaDescription.setAttribute("content", t(currentLang, "documentDescription"));
   if (skipLink) skipLink.textContent = t(currentLang, "skipLink");
   if (connectionStatus) connectionStatus.textContent = t(currentLang, "onlineStatus");
-  if (introPromptText) introPromptText.textContent = t(currentLang, "introPrompt");
-  if (introCopy) introCopy.textContent = t(currentLang, "introCopy");
+  if (introPromptText) introPromptText.innerHTML = t(currentLang, "introPrompt");
+  if (introCopy) introCopy.innerHTML = t(currentLang, "introCopy");
   if (indexHeading) indexHeading.textContent = t(currentLang, "indexHeading");
   if (searchLabel) searchLabel.textContent = t(currentLang, "searchLabel");
   if (searchInput) searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));

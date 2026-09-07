@@ -305,7 +305,6 @@ export const knowledgeBase = [
         hidden: true,
         triggers: ["Singularidad", "30", "singularidad", "clase 30",],
         blocks: [
-            { type: "heading", text: "Singularidad de clase 30" },
             { type: "paragraph", text: "Pasaremos a evaluar qué posibles amenazas constituyen una Singularidad de Clase 30 que, según el Protocolo de Contingencia, en teoría, podría desestabilizar el tejido de todo el universo. Lo que conocemos hasta ahora es que existe la producción de energía de manera segura y estable a través de las Singularidades de Clase 3 y 4 utilizadas por los imperios más avanzados tecnológicamente. En teoría, una Singularidad 26 veces superior, sería capaz de desgarrar el tejido del universo, ya sea para moldearlo, destruirlo o reiniciarlo de alguna forma desconocida." },
             { type: "divider" },
             { type: "paragraph", text: "Primera hipótesis sobre la Singularidad de Clase 30: **la hipótesis de la heterofasia.** Un motor heterofásico sería capaz de acumular una cantidad tan ingente de materia oscura, que podría desgarrar el tejido del universo para fusionarlo parcialmente con otras dimensiones, presumiblemente el Velo. Por tanto, una Singularidad de Clase 30, podría ser una civilización que alcance este hito. Aunque análisis posteriores de la Contingencia, indican que no hay fragmentos de código que referencien una posible activación bajo dichas condiciones." },
@@ -334,7 +333,6 @@ export const knowledgeBase = [
             en: {
                 title: "Class 30 Singularity",
                 blocks: [
-                    { type: "heading", text: "Class 30 Singularity" },
                     { type: "paragraph", text: "We will now assess what possible threats could constitute a Class 30 Singularity which, according to the Contingency Protocol, could theoretically destabilize the fabric of the entire universe. What we know so far is that energy can be produced safely and stably through the Class 3 and 4 Singularities used by the most technologically advanced empires. In theory, a Singularity 26 times greater would be capable of tearing apart the fabric of the universe, whether to reshape it, destroy it, or restart it in some unknown manner." },
                     { type: "divider" },
                     { type: "paragraph", text: "First hypothesis regarding the Class 30 Singularity: **the heterophasic hypothesis.** A heterophasic engine would be capable of accumulating such an immense amount of dark matter that it could tear apart the fabric of the universe and partially merge it with other dimensions, presumably the Shroud. Therefore, a Class 30 Singularity could be a civilization that reaches this milestone. However, subsequent analyses of the Contingency indicate that there are no fragments of code referencing a possible activation under such conditions." },
