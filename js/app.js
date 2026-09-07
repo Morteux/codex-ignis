@@ -185,7 +185,7 @@ function renderBlock(block, query) {
 }
 
 function renderEmptyReader() {
-  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusInitialized")}</span>`;
+  readerMeta.innerHTML = `<span>${t(currentLang, "introPrompt")}</span><span>${t(currentLang, "statusInitialized")}</span>`;
 
   const empty = document.createElement("div");
   empty.className = "empty-state";
@@ -209,7 +209,7 @@ function renderEmptyReader() {
 function renderEntry(entry) {
   const localized = localizeEntry(entry, currentLang);
 
-  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusActive")}</span>`;
+  readerMeta.innerHTML = `<span>${t(currentLang, "introPrompt")}</span><span>${t(currentLang, "statusActive")}</span>`;
 
   const content = document.createElement("div");
   content.className = "entry-content";
