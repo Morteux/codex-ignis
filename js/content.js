@@ -102,6 +102,8 @@ export const knowledgeBase = [
             },
             { type: "paragraph", text: "Con esto en mente tenemos dos opciones dependiendo del número de titanes que podamos tener. Si tenemos poca capacidad de titanes, recomiendo distribuir un titan con aura ofensiva en cada flota que puedas. Este titán sigue el mismo esquema que los acorazados artilleros XL pero con el aura ofensiva como extra. Por otro lado, si tenemos mucha capacidad, aconsejo concentrarlos en poca flotas, teniendo flotas con 6 titanes (cada uno con un tipo de aura defensia y ofensiva) de tal forma que tengas flotas insignia con todas las auras acompañadas de flotas sin titanes que se beneficien de las 3 ofensivas. Así aseguras la supervivencia de la flota con los 6 titanes ya que combinar todas las auras es una bonificación muy poderosa." },
             { type: "paragraph", text: "Podemos decir que esta última opción de flotas de acorazados más 6 titanes es la flota definitiva que apoyada por los portahangares las convierte en un anti-todo general, por supuesto es superior a su versión sin titanes." },
+
+            { type: "divider" },
             { type: "quote", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento.", cite: "Alto Almirante del Exilio del Mancomunado" }
         ],
         i18n: {
@@ -118,6 +120,8 @@ export const knowledgeBase = [
                     },
                     { type: "paragraph", text: "With this in mind, there are two approaches depending on how many titans you can field. If titan capacity is low, spread one titan with an offensive aura across as many fleets as you can. This titan follows the same build as an XL artillery battleship but with the offensive aura as a bonus. If you have high capacity instead, concentrate them into fewer fleets, building fleets of 6 titans (each with a defensive and an offensive aura type), so you get flagship fleets with every aura, accompanied by titan-less fleets that still benefit from the 3 offensive auras. That way you protect the 6-titan fleet, since stacking every aura is an extremely powerful bonus." },
                     { type: "paragraph", text: "This last option — battleship fleets plus 6 titans — is arguably the ultimate fleet, which combined with carriers turns it into a general anti-everything force; naturally it's superior to the version without titans." },
+
+                    { type: "divider" },
                     { type: "quote", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying.", cite: "High Admiral of the Exiled Commonwealth" }
                 ]
             }
@@ -168,7 +172,10 @@ export const knowledgeBase = [
             },
             { type: "heading", text: "3. Simulaciones de combate" },
             { type: "paragraph", text: "Tras crear tus dos flotas de prueba, sitúa ambas flotas en el mismo sistema y activa el comando **attackallfleets**, el cual hace que todas tus flotas ataquen a todas las flotas en el sistema actual, incluyendo tus propias flotas. Útil para probar combates entre tus diseños de flota sin depender de un segundo imperio IA o jugador." },
-            { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." }
+            { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." },
+
+            { type: "divider" },
+            { type: "quote", text: "El Omnissiah estaría orgulloso de tí...", cite: "Archimago Dominus Belisarius Cawl del Adeptus Mechanicus" }
         ],
         i18n: {
             en: {
@@ -215,7 +222,10 @@ export const knowledgeBase = [
 
                     { type: "heading", text: "3. Combat simulations" },
                     { type: "paragraph", text: "After creating your two test fleets, place both fleets in the same system and use the **attackallfleets** command. This makes all your fleets attack every fleet in the current system, including your own fleets. This is useful for testing battles between your fleet designs without relying on a second AI empire or player." },
-                    { type: "paragraph", text: "This allows you to iterate through fleet designs very quickly: change a component, rebuild using instant_build, and repeat the battle, all without having to play through an entire game." }
+                    { type: "paragraph", text: "This allows you to iterate through fleet designs very quickly: change a component, rebuild using instant_build, and repeat the battle, all without having to play through an entire game." },
+
+                    { type: "divider" },
+                    { type: "quote", text: "The Omnissiah would be proud of you...", cite: "Archmagos Dominus Belisarius Cawl of the Adeptus Mechanicus" }
                 ]
             }
         }
@@ -240,7 +250,10 @@ export const knowledgeBase = [
                     { label: "🎮Stellaris en Steam", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "Página de la tienda y DLCs de Steam." },
                     { label: "🕹️Discord de @IgnisStellaris", url: "https://discord.com/invite/PE2vGqxZpz", description: "Servidor de Discord de la comunidad de [@IgnisStellaris](https://www.youtube.com/@IgnisStellaris)." }
                 ]
-            }
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "Pero, sin duda, si quieres la mejor información sobre Stellaris en español, ya sabes donde encontrar mi canal de YouTube 🤩", cite: "Ignis" }
         ],
         i18n: {
             en: {
@@ -261,7 +274,10 @@ export const knowledgeBase = [
                             { label: "🎮Stellaris on Steam", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "Steam store page and DLCs." },
                             { label: "🕹️@IgnisStellaris Discord", url: "https://discord.com/invite/PE2vGqxZpz", description: "[@IgnisStellaris](https://www.youtube.com/@IgnisStellaris)'s hispanic community Discord server." }
                         ]
-                    }
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "But without a doubt, if you want the best information about Stellaris in Spanish, you already know where to find my YouTube channel 🤩", cite: "Ignis" }
                 ]
             }
         }
@@ -280,7 +296,10 @@ export const knowledgeBase = [
             { type: "paragraph", text: "HAK HAK HAK HAK HAK HAK? HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK." },
             { type: "paragraph", text: "HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. " },
             { type: "paragraph", text: "HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK." },
-            { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" }
+            { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
+
+            { type: "divider" },
+            { type: "quote", text: "MUGANI?", cite: "Reina Prethoryn" }
         ],
         i18n: {
             en: {
@@ -293,7 +312,10 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "HAK HAK HAK HAK HAK HAK? HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK." },
                     { type: "paragraph", text: "HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. " },
                     { type: "paragraph", text: "HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK, HAK HAK HAK HAK HAK HAK. HAK, HAK HAK HAK HAK HAK HAK HAK HAK HAK." },
-                    { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" }
+                    { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen" }
                 ]
             }
         }
@@ -327,7 +349,10 @@ export const knowledgeBase = [
             { type: "divider" },
             { type: "paragraph", text: "Décima hipótesis sobre la Singularidad de Clase 30: **la hipótesis del último sacrificio.** La Contingencia, se enfrentó una o varias veces, en distintas épocas, a distintas Singularidades de Clase 30, pero el desgaste temporal y las sucesivas guerras galácticas contra estas amenazas, ha desgastado al protocolo hasta tal punto que su activación prematura, antes de que un imperio alcance la Singularidad de Clase 30, es la única posibilidad que tiene ahora de lograr su objetivo. Así pues, antes de verse opacada en fuerzas por un posible imperio en camino a alcanzar la Singularidad de Clase 30, la Contingencia ha decidido tomar acciones preventivas y esterilizar sistemáticamente la galaxia cuando su protocolo estima oportuno." },
             { type: "divider" },
-            { type: "paragraph", text: "Undécima hipótesis sobre la Singularidad de Clase 30: **la hipótesis de la profecía autocumplida.** La Contingencia, tras cumplir su propósito de eliminar a una Singularidad de Clase 30, entró en un letargo milenario, que le provocó la caída en desgracia de su propio protocolo. Pues este, infirió lógicamente, que la mejor manera de evitar una nueva Singularidad de Clase 30, era esterilizando la galaxia de vida sintiente. Convirtiéndose en el proceso, en la propia Singularidad de Clase 30." }
+            { type: "paragraph", text: "Undécima hipótesis sobre la Singularidad de Clase 30: **la hipótesis de la profecía autocumplida.** La Contingencia, tras cumplir su propósito de eliminar a una Singularidad de Clase 30, entró en un letargo milenario, que le provocó la caída en desgracia de su propio protocolo. Pues este, infirió lógicamente, que la mejor manera de evitar una nueva Singularidad de Clase 30, era esterilizando la galaxia de vida sintiente. Convirtiéndose en el proceso, en la propia Singularidad de Clase 30." },
+
+            { type: "divider" },
+            { type: "quote", text: "Singularidad de Clase 30", cite: "[CENSURADO]" }
         ],
         i18n: {
             en: {
@@ -355,8 +380,10 @@ export const knowledgeBase = [
                     { type: "divider" },
                     { type: "paragraph", text: "Tenth hypothesis regarding the Class 30 Singularity: **the final sacrifice hypothesis.** The Contingency has faced one or several Class 30 Singularities at different times throughout history, but the passage of time and successive galactic wars against these threats have weakened the protocol to such an extent that its premature activation, before an empire reaches Class 30 Singularity status, is now the only possibility it has of accomplishing its objective. Thus, before being overwhelmed by a potential empire on the path to reaching Class 30 Singularity status, the Contingency has decided to take preventive action and systematically sterilize the galaxy whenever its protocol deems it appropriate." },
                     { type: "divider" },
-                    { type: "paragraph", text: "Eleventh hypothesis regarding the Class 30 Singularity: **the self-fulfilling prophecy hypothesis.** The Contingency, after fulfilling its purpose of eliminating a Class 30 Singularity, entered a millennia-long slumber, which ultimately caused its own protocol to fall into disrepair. It logically inferred that the best way to prevent another Class 30 Singularity was to sterilize the galaxy of sentient life. In doing so, it became the Class 30 Singularity itself." }
+                    { type: "paragraph", text: "Eleventh hypothesis regarding the Class 30 Singularity: **the self-fulfilling prophecy hypothesis.** The Contingency, after fulfilling its purpose of eliminating a Class 30 Singularity, entered a millennia-long slumber, which ultimately caused its own protocol to fall into disrepair. It logically inferred that the best way to prevent another Class 30 Singularity was to sterilize the galaxy of sentient life. In doing so, it became the Class 30 Singularity itself." },
 
+                    { type: "divider" },
+                    { type: "quote", text: "Class 30 Singularity", cite: "[REDACTED]" }
                 ]
             }
         }
