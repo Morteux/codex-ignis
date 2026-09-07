@@ -48,59 +48,211 @@
 
 export const knowledgeBase = [
     {
-        slug: "diseño-corbetas",
-        title: "Diseño de naves máquina: corbetas",
+        slug: "diseño-naves-maquina",
+        title: "Diseño de naves máquina",
         icon: "✦",
         blocks: [
+            { type: "heading", text: "Corbeta" },
             { type: "image", src: "img/naves/Corbeta generalista.png", alt: "Corbeta generalista", caption: "Corbeta generalista." },
             { type: "divider" },
             { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." },
-        ],
-        i18n: {
-            en: {
-                title: "Machine ship design: corvettes",
-                blocks: [
-                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "General use corvette", caption: "General use corvette." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Early and mid game corvette against space fauna", caption: "Early and mid game corvette against space fauna." },
-                ]
-            },
-            jp: {
-                title: "艦船設計：コルベット",
-                icon: "✦",
-                blocks: [
-                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "汎用コルベット", caption: "汎用コルベット。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "宇宙生物対策用の序盤・中盤向けコルベット", caption: "宇宙生物対策用の序盤・中盤向けコルベット。" },
-                ]
-            }
-        }
-    },
-    {
-        slug: "diseño-fragatas",
-        title: "Diseño de naves máquina: fragatas",
-        icon: "✦",
-        blocks: [
+
+            { type: "heading", text: "Fragata" },
             { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." },
             { type: "divider" },
             { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." },
+
+            { type: "heading", text: "Destructor" },
+            { type: "image", src: "img/naves/Destructor artillero.png", alt: "Destructor artillero", caption: "Destructor artillero." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destructor con defensa de punto", caption: "Destructor con defensa de punto." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Destructor anti corbetas", caption: "Destructor anti corbetas." },
+
+            { type: "heading", text: "Crucero" },
+            { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Crucero torpedero con defensas de corto alcance", caption: "Crucero torpedero con defensas de corto alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Crucero torpedero de corto alcance con sigilo", caption: "Crucero torpedero de corto alcance con sigilo." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Crucero portahangares con defensas de corto alcance", caption: "Cruceros portahangares con defensas de corto alcance." },
+
+            { type: "heading", text: "Acorazado" },
+            { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Acorazado portahangares", caption: "Acorazado portahangares." },
+
+            { type: "heading", text: "Titán" },
+            { type: "image", src: "img/naves/Titán artillero.png", alt: "Titán artillero", caption: "Titán artillero. Uno por cada tipo de aura ofensiva y defensiva." },
+
+            { type: "heading", text: "Gigante" },
+            { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Gigante artillero de apoyo", caption: "Gigante artillero de apoyo." },
+
+            { type: "heading", text: "Coloso" },
+            { type: "image", src: "img/naves/Coloso.png", alt: "Coloso", caption: "" },
+
+            { type: "heading", text: "Base estelar" },
+            { type: "image", src: "img/naves/Base estelar artillada.png", alt: "Base estelar artillada", caption: "Base estelar artillada." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Base estelar portahangares", caption: "Base estelar portahangares." },
+
+            { type: "heading", text: "Plataforma de defensa" },
+            { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Plataforma portahangar de largo alcance", caption: "Plataforma portahangar de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Plataforma torpedera de corto alcance", caption: "Plataforma torpedera de corto alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
+
+            { type: "heading", text: "Cañón de iones" },
+            { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+
+            { type: "heading", text: "Ciudadela de espacio profundo" },
+            { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
         ],
         i18n: {
             en: {
-                title: "Machine ship design: frigates",
+                title: "Machine ship design",
+                icon: "✦",
                 blocks: [
-                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Short-range torpedo frigate", caption: "Short-range torpedo frigate with stealth." },
+                    { type: "heading", text: "Corvette" },
+                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "General-purpose Corvette", caption: "General-purpose Corvette." },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Long-range torpedo frigate", caption: "Long-range torpedo frigate." },
+                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Early- and mid-game Corvette against space fauna", caption: "Early- and mid-game Corvette against space fauna." },
+
+                    { type: "heading", text: "Frigate" },
+                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Short-range torpedo Frigate", caption: "Short-range torpedo Frigate with cloaking." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Long-range torpedo Frigate", caption: "Long-range torpedo Frigate." },
+
+                    { type: "heading", text: "Destroyer" },
+                    { type: "image", src: "img/naves/Destructor artillero.png", alt: "Artillery Destroyer", caption: "Artillery Destroyer." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destroyer with point defense", caption: "Destroyer with point defense." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Anti-Corvette Destroyer", caption: "Anti-Corvette Destroyer." },
+
+                    { type: "heading", text: "Cruiser" },
+                    { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Torpedo Cruiser with short-range defenses", caption: "Torpedo Cruiser with short-range defenses." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Short-range torpedo Cruiser with cloaking", caption: "Short-range torpedo Cruiser with cloaking." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Torpedo Cruiser with long-range missiles", caption: "Torpedo Cruiser with long-range missiles." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Carrier Cruiser with short-range defenses", caption: "Carrier Cruiser with short-range defenses." },
+
+                    { type: "heading", text: "Battleship" },
+                    { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Artillery Battleship", caption: "Artillery Battleship." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Carrier Battleship", caption: "Carrier Battleship." },
+
+                    { type: "heading", text: "Titan" },
+                    { type: "image", src: "img/naves/Titán artillero.png", alt: "Artillery Titan", caption: "Artillery Titan. One for each type of offensive and defensive aura." },
+
+                    { type: "heading", text: "Juggernaut" },
+                    { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Artillery support Juggernaut", caption: "Artillery support Juggernaut." },
+
+                    { type: "heading", text: "Colossus" },
+                    { type: "image", src: "img/naves/Coloso.png", alt: "Colossus", caption: "" },
+
+                    { type: "heading", text: "Starbase" },
+                    { type: "image", src: "img/naves/Base estelar artillada.png", alt: "Artillery Starbase", caption: "Artillery Starbase." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Carrier Starbase", caption: "Carrier Starbase." },
+
+                    { type: "heading", text: "Defense Platform" },
+                    { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Long-range carrier Defense Platform", caption: "Long-range carrier Defense Platform." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Short-range torpedo Defense Platform", caption: "Short-range torpedo Defense Platform." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Short-range artillery Defense Platform", caption: "Short-range artillery Defense Platform." },
+
+                    { type: "heading", text: "Ion Cannon" },
+                    { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." },
+
+                    { type: "heading", text: "Deep Space Citadel" },
+                    { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Long-range Citadel I", caption: "Long-range Citadel I." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Long-range Citadel II", caption: "Long-range Citadel II." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Long-range Citadel III", caption: "Long-range Citadel III." },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Short-range Citadel III", caption: "Short-range Citadel III." },
                 ]
             },
             jp: {
-                title: "艦船設計：フリゲート",
+                title: "艦船設計",
                 icon: "✦",
                 blocks: [
-                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "短射程魚雷フリゲート", caption: "ステルス搭載型・短射程魚雷フリゲート。" },
+                    { type: "heading", text: "コルベット" },
+                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "汎用コルベット", caption: "汎用コルベット。" },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "長射程魚雷フリゲート", caption: "長射程魚雷フリゲート。" },
+                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "序盤・中盤の宇宙生物対策コルベット", caption: "序盤・中盤の宇宙生物対策コルベット。" },
+
+                    { type: "heading", text: "フリゲート" },
+                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "近距離魚雷フリゲート", caption: "ステルス機能を備えた近距離魚雷フリゲート。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "長距離魚雷フリゲート", caption: "長距離魚雷フリゲート。" },
+
+                    { type: "heading", text: "駆逐艦" },
+                    { type: "image", src: "img/naves/Destructor artillero.png", alt: "砲撃駆逐艦", caption: "砲撃駆逐艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "ポイント防御搭載駆逐艦", caption: "ポイント防御搭載駆逐艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "対コルベット駆逐艦", caption: "対コルベット駆逐艦。" },
+
+                    { type: "heading", text: "巡洋艦" },
+                    { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "近距離防御搭載魚雷巡洋艦", caption: "近距離防御搭載魚雷巡洋艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "ステルス搭載近距離魚雷巡洋艦", caption: "ステルス搭載近距離魚雷巡洋艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "長距離ミサイル搭載魚雷巡洋艦", caption: "長距離ミサイル搭載魚雷巡洋艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "近距離防御搭載空母巡洋艦", caption: "近距離防御搭載空母巡洋艦。" },
+
+                    { type: "heading", text: "戦艦" },
+                    { type: "image", src: "img/naves/Acorazado artillero.png", alt: "砲撃戦艦", caption: "砲撃戦艦。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "空母戦艦", caption: "空母戦艦。" },
+
+                    { type: "heading", text: "タイタン" },
+                    { type: "image", src: "img/naves/Titán artillero.png", alt: "砲撃タイタン", caption: "砲撃タイタン。攻撃用・防御用の各種オーラにつき1隻。" },
+
+                    { type: "heading", text: "ジャガーノート" },
+                    { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "砲撃支援ジャガーノート", caption: "砲撃支援ジャガーノート。" },
+
+                    { type: "heading", text: "コロッサス" },
+                    { type: "image", src: "img/naves/Coloso.png", alt: "コロッサス", caption: "" },
+
+                    { type: "heading", text: "スターべース" },
+                    { type: "image", src: "img/naves/Base estelar artillada.png", alt: "砲撃スターべース", caption: "砲撃スターべース。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "空母スターべース", caption: "空母スターべース。" },
+
+                    { type: "heading", text: "防衛プラットフォーム" },
+                    { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "長距離空母型防衛プラットフォーム", caption: "長距離空母型防衛プラットフォーム。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "近距離魚雷防衛プラットフォーム", caption: "近距離魚雷防衛プラットフォーム。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "近距離砲撃防衛プラットフォーム", caption: "近距離砲撃防衛プラットフォーム。" },
+
+                    { type: "heading", text: "イオン砲" },
+                    { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "標準バランス型イオン砲", caption: "標準バランス型イオン砲。" },
+
+                    { type: "heading", text: "深宇宙要塞" },
+                    { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "長距離型シタデル I", caption: "長距離型シタデル I。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "長距離型シタデル II", caption: "長距離型シタデル II。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "長距離型シタデル III", caption: "長距離型シタデル III。" },
+                    { type: "divider" },
+                    { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "近距離型シタデル III", caption: "近距離型シタデル III。" },
                 ]
             }
         }
