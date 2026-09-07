@@ -3,18 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro no encontrado · Codex Ignis</title>
+    <title data-i18n="notFoundPageTitle">Registro no encontrado · Codex Ignis</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="img/Ignis Stellaris icon.png" />
   </head>
   <body>
     <main class="legal-page">
       <header>
-        <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
-        <p class="eyebrow">Error 404</p>
-        <h1>Registro no encontrado.</h1>
+        <div class="legal-topbar">
+          <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
+          <div class="lang-switch" role="group" aria-label="Selector de idioma">
+            <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+            <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+            <button type="button" class="lang-btn" data-lang="ja" aria-pressed="false">JA</button>
+          </div>
+        </div>
+        <p class="eyebrow" data-i18n="error404Label">Error 404</p>
+        <h1 data-i18n="notFoundHeading">Registro no encontrado.</h1>
       </header>
-      <article class="legal-content"><p>La coordenada solicitada no existe en este codex.</p><p><a href="./">Volver al inicio</a></p></article>
+      <article class="legal-content">
+        <p data-i18n="notFoundText">La coordenada solicitada no existe en este codex.</p>
+        <p><a href="./" data-i18n="notFoundBackLink">Volver al inicio</a></p>
+      </article>
     </main>
+    <script type="module" src="js/legal.js"></script>
   </body>
 </html>

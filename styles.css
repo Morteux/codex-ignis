@@ -497,6 +497,14 @@ h1 {
     border-bottom: 1px solid var(--line);
 }
 
+.legal-topbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .legal-page .eyebrow {
     color: var(--accent);
     font: .73rem var(--mono);
