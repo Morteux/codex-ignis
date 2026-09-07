@@ -105,7 +105,7 @@ export const knowledgeBase = [
             { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
 
             { type: "heading", text: "Cañón de iones" },
-            { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
 
             { type: "heading", text: "Ciudadela de espacio profundo" },
             { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
@@ -174,7 +174,7 @@ export const knowledgeBase = [
                     { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Short-range artillery Defense Platform", caption: "Short-range artillery Defense Platform." },
 
                     { type: "heading", text: "Ion Cannon" },
-                    { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." },
+                    { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." },
 
                     { type: "heading", text: "Deep Space Citadel" },
                     { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Long-range Citadel I", caption: "Long-range Citadel I." },
@@ -243,7 +243,7 @@ export const knowledgeBase = [
                     { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "近距離砲撃防衛プラットフォーム", caption: "近距離砲撃防衛プラットフォーム。" },
 
                     { type: "heading", text: "イオン砲" },
-                    { type: "image", src: "img/naves/Cañón de iones equilibrado estándar.png", alt: "標準バランス型イオン砲", caption: "標準バランス型イオン砲。" },
+                    { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "標準バランス型イオン砲", caption: "標準バランス型イオン砲。" },
 
                     { type: "heading", text: "深宇宙要塞" },
                     { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "長距離型シタデル I", caption: "長距離型シタデル I。" },
