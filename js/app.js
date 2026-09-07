@@ -1,6 +1,7 @@
 import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { highlightWords } from "./highlight-config.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
@@ -46,9 +47,37 @@ function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces. */
+// Mapa en minúsculas palabra → color, para poder buscar el color sin importar
+// las mayúsculas/minúsculas con las que se escribió la palabra en el artículo.
+const highlightWordsByLowerCase = new Map(
+  Object.entries(highlightWords).map(([word, color]) => [word.toLowerCase(), color])
+);
+
+// Un único patrón con todas las palabras de highlight-config.js, delimitado por
+// límites de palabra "manuales" (en vez de \b) para que funcione bien con
+// palabras acentuadas y no coincida con partes de palabras más largas.
+const highlightWordsPattern = highlightWordsByLowerCase.size
+  ? new RegExp(
+      `(?<![\\p{L}\\p{N}_])(${[...highlightWordsByLowerCase.keys()]
+        .map(escapeRegExp)
+        .join("|")})(?![\\p{L}\\p{N}_])`,
+      "giu"
+    )
+  : null;
+
+/** Colorea automáticamente las palabras definidas en js/highlight-config.js. */
+function applyWordHighlights(html) {
+  if (!highlightWordsPattern) return html;
+  return html.replace(highlightWordsPattern, (match) => {
+    const color = highlightWordsByLowerCase.get(match.toLowerCase());
+    return `<span class="hl-word" style="color: ${color}">${match}</span>`;
+  });
+}
+
+/** Escapa el texto, colorea palabras clave, convierte **negrita** en <strong> y [texto](url) en enlaces. */
 function formatText(text) {
   let html = escapeHtml(text);
+  html = applyWordHighlights(html);
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   return html;

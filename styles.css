@@ -444,6 +444,10 @@ h1 {
     border-top: 1px solid var(--line);
 }
 
+.hl-word {
+    font-weight: 600;
+}
+
 .hl-marker {
     padding: 0 .1em;
     color: var(--background);
