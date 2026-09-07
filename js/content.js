@@ -104,7 +104,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Podemos decir que esta última opción de flotas de acorazados más 6 titanes es la flota definitiva que apoyada por los portahangares las convierte en un anti-todo general, por supuesto es superior a su versión sin titanes." },
 
             { type: "divider" },
-            { type: "quote", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento.", cite: "Alto Almirante del Exilio del Mancomunado" }
+            { type: "quote", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento.", cite: "Alta Almirante Sidney Beauclair del Exilio del Mancomunado" }
         ],
         i18n: {
             en: {
@@ -122,7 +122,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "This last option — battleship fleets plus 6 titans — is arguably the ultimate fleet, which combined with carriers turns it into a general anti-everything force; naturally it's superior to the version without titans." },
 
                     { type: "divider" },
-                    { type: "quote", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying.", cite: "High Admiral of the Exiled Commonwealth" }
+                    { type: "quote", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying.", cite: "High Admiral Sidney Beauclair of the Commonwealth of Man" }
                 ]
             }
         }
@@ -303,7 +303,7 @@ export const knowledgeBase = [
         ],
         i18n: {
             en: {
-                title: "Preparing the combat simulation",
+                title: "MUGANI?",
                 blocks: [
                     { type: "paragraph", text: "HAK HAK HAK!" },
                     { type: "paragraph", text: "HAK HAK HAK HAK HAK HAK. HAK, HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK. HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK HAK. " },
