@@ -84,7 +84,7 @@ export const knowledgeBase = [
             { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Acorazado portahangares", caption: "Acorazado portahangares." },
 
             { type: "heading", text: "Titán" },
-            { type: "image", src: "img/naves/Titán artillero.png", alt: "Titán artillero", caption: "Titán artillero. Uno por cada tipo de aura ofensiva y defensiva." },
+            { type: "image", src: "img/naves/Titan artillero.png", alt: "Titán artillero", caption: "Titán artillero. Uno por cada tipo de aura ofensiva y defensiva." },
 
             { type: "heading", text: "Gigante" },
             { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Gigante artillero de apoyo", caption: "Gigante artillero de apoyo." },
@@ -153,7 +153,7 @@ export const knowledgeBase = [
                     { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Carrier Battleship", caption: "Carrier Battleship." },
 
                     { type: "heading", text: "Titan" },
-                    { type: "image", src: "img/naves/Titán artillero.png", alt: "Artillery Titan", caption: "Artillery Titan. One for each type of offensive and defensive aura." },
+                    { type: "image", src: "img/naves/Titan artillero.png", alt: "Artillery Titan", caption: "Artillery Titan. One for each type of offensive and defensive aura." },
 
                     { type: "heading", text: "Juggernaut" },
                     { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Artillery support Juggernaut", caption: "Artillery support Juggernaut." },
@@ -222,7 +222,7 @@ export const knowledgeBase = [
                     { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "空母戦艦", caption: "空母戦艦。" },
 
                     { type: "heading", text: "タイタン" },
-                    { type: "image", src: "img/naves/Titán artillero.png", alt: "砲撃タイタン", caption: "砲撃タイタン。攻撃用・防御用の各種オーラにつき1隻。" },
+                    { type: "image", src: "img/naves/Titan artillero.png", alt: "砲撃タイタン", caption: "砲撃タイタン。攻撃用・防御用の各種オーラにつき1隻。" },
 
                     { type: "heading", text: "ジャガーノート" },
                     { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "砲撃支援ジャガーノート", caption: "砲撃支援ジャガーノート。" },
