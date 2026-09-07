@@ -18,6 +18,8 @@ export const highlightWords = {
     ////////////////////////////////////////////////////////// Español
     "corbeta": "#d3d3d3",
     "corbetas": "#d3d3d3",
+    "fragata": "#beffa0",
+    "fragatas": "#beffa0",
     "destructor": "#55ff37",
     "destructores": "#55ff37",
     "crucero": "#375cff",
@@ -26,6 +28,17 @@ export const highlightWords = {
     "acorazados": "#ca29ff",
     "titán": "#fff42b",
     "titanes": "#fff42b",
+
+    "base estelar": "#2bff2b",
+    "bases estelares": "#2bff2b",
+    "plataforma de defensa": "#20c420",
+    "plataformas de defensa": "#20c420",
+    "coloso": "#ff2b2b",
+    "colosos": "#ff2b2b",
+    "cañón de iones": "#20c420",
+    "cañones de iones": "#20c420",
+    "ciudadela de espacio profundo": "#75ff75",
+    "ciudadelas de espacio profundo": "#75ff75",
 
     "inesperados": "#332cff",
     "vehements": "#fbff2c",
@@ -39,9 +52,13 @@ export const highlightWords = {
     "cineticas": "#ffae2c",
     "energia": "#2c33ff",
     "energias": "#2c33ff",
+    "penetración": "#ff2cce",
+    "endurecimiento": "#ad208c",
 
-    "casco": "#ffae2c",
-    "cascos": "#ffae2c",
+    "casco": "#ff5752",
+    "cascos": "#ff5752",
+    "blindaje": "#ffae2c",
+    "blindajes": "#ffae2c",
     "escudo": "#2c33ff",
     "escudos": "#2c33ff",
 

@@ -588,7 +588,7 @@ export const knowledgeBase = [
                     "**event crisis.1000**: Activa la crisis de los Invasores Extradimensionales Inesperados",
                     "**event crisis.1100**: Activa la crisis de los Invasores Extradimensionales Aberrantes. No requieren a los Inesperados",
                     "**event crisis.1200**: Activa la crisis de los Invasores Extradimensionales Vehementes. Requieren a los Inesperados",
-                    "**event crisis.2000**: Activa la crisis de la Contigencia",
+                    "**event crisis.2000**: Activa la crisis de la Contingencia",
                     "**event crisis.8005**: Activa la crisis de la Reina Sintética"
                 ]
             },
