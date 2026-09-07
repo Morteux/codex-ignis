@@ -351,6 +351,99 @@ h1 {
     margin-top: .4rem;
 }
 
+.entry-heading {
+    margin: 2.2rem 0 1rem;
+    color: var(--text);
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    letter-spacing: -.01em;
+}
+
+.entry-content > .entry-heading:first-child {
+    margin-top: 0;
+}
+
+.entry-note {
+    padding: .9rem 1.1rem;
+    margin: 1.2rem 0;
+    color: var(--text);
+    background: rgba(167, 245, 106, .06);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    line-height: 1.7;
+}
+
+.entry-quote {
+    padding: .2rem 0 .2rem 1.1rem;
+    margin: 1.2rem 0;
+    border-left: 3px solid var(--accent-dim);
+}
+
+.entry-quote p {
+    margin: 0;
+    color: var(--text);
+    font-style: italic;
+}
+
+.entry-quote cite {
+    display: block;
+    margin-top: .4rem;
+    color: var(--muted);
+    font-size: .78rem;
+    font-style: normal;
+}
+
+.entry-image {
+    margin: 1.4rem 0;
+}
+
+.entry-image img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+}
+
+.entry-image figcaption {
+    margin-top: .5rem;
+    color: var(--muted);
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+.entry-links {
+    padding-left: 0;
+    list-style: none;
+}
+
+.entry-links li {
+    padding: .75rem 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.entry-links li:first-child {
+    padding-top: 0;
+}
+
+.entry-links a {
+    color: var(--accent);
+    text-decoration-color: var(--accent-dim);
+    text-underline-offset: .2em;
+}
+
+.entry-links .link-description {
+    margin: .3rem 0 0;
+    color: var(--muted);
+    font-size: .85rem;
+    line-height: 1.55;
+}
+
+.entry-content hr {
+    margin: 1.6rem 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+}
+
 .hl-marker {
     padding: 0 .1em;
     color: var(--background);

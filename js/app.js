@@ -46,9 +46,12 @@ function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-/** Escapa el texto y convierte **negrita** en <strong>. */
+/** Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces. */
 function formatText(text) {
-  return escapeHtml(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  let html = escapeHtml(text);
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  return html;
 }
 
 /** Resalta, como si estuviera pintado con un marcador, las palabras de la búsqueda. */
@@ -62,24 +65,98 @@ function highlightMatches(html, rawQuery) {
 }
 
 function renderBlock(block, query) {
-  if (block.type === "list") {
-    const list = document.createElement("ul");
-    list.className = "entry-list";
-    block.items.forEach((item) => {
-      const listItem = document.createElement("li");
-      listItem.innerHTML = highlightMatches(formatText(item), query);
-      list.append(listItem);
-    });
-    return list;
-  }
+  switch (block.type) {
+    case "heading": {
+      const heading = document.createElement("h3");
+      heading.className = "entry-heading";
+      heading.innerHTML = highlightMatches(formatText(block.text), query);
+      return heading;
+    }
 
-  const paragraph = document.createElement("p");
-  paragraph.innerHTML = highlightMatches(formatText(block.text), query);
-  return paragraph;
+    case "list": {
+      const list = document.createElement("ul");
+      list.className = "entry-list";
+      block.items.forEach((item) => {
+        const listItem = document.createElement("li");
+        listItem.innerHTML = highlightMatches(formatText(item), query);
+        list.append(listItem);
+      });
+      return list;
+    }
+
+    case "links": {
+      const list = document.createElement("ul");
+      list.className = "entry-links";
+      block.items.forEach((item) => {
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.innerHTML = highlightMatches(formatText(item.label), query);
+        listItem.append(link);
+        if (item.description) {
+          const description = document.createElement("p");
+          description.className = "link-description";
+          description.innerHTML = highlightMatches(formatText(item.description), query);
+          listItem.append(description);
+        }
+        list.append(listItem);
+      });
+      return list;
+    }
+
+    case "image": {
+      const figure = document.createElement("figure");
+      figure.className = "entry-image";
+      const img = document.createElement("img");
+      img.src = block.src;
+      img.alt = block.alt || "";
+      img.loading = "lazy";
+      figure.append(img);
+      if (block.caption) {
+        const caption = document.createElement("figcaption");
+        caption.innerHTML = highlightMatches(formatText(block.caption), query);
+        figure.append(caption);
+      }
+      return figure;
+    }
+
+    case "note": {
+      const note = document.createElement("div");
+      note.className = "entry-note";
+      note.innerHTML = highlightMatches(formatText(block.text), query);
+      return note;
+    }
+
+    case "quote": {
+      const quote = document.createElement("blockquote");
+      quote.className = "entry-quote";
+      const text = document.createElement("p");
+      text.innerHTML = highlightMatches(formatText(block.text), query);
+      quote.append(text);
+      if (block.cite) {
+        const cite = document.createElement("cite");
+        cite.textContent = block.cite;
+        quote.append(cite);
+      }
+      return quote;
+    }
+
+    case "divider": {
+      return document.createElement("hr");
+    }
+
+    default: {
+      const paragraph = document.createElement("p");
+      paragraph.innerHTML = highlightMatches(formatText(block.text), query);
+      return paragraph;
+    }
+  }
 }
 
 function renderEmptyReader() {
-  readerMeta.innerHTML = `<span>${t(currentLang, "introPrompt")}</span><span>${t(currentLang, "statusInitialized")}</span>`;
+  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusInitialized")}</span>`;
 
   const empty = document.createElement("div");
   empty.className = "empty-state";
@@ -103,7 +180,7 @@ function renderEmptyReader() {
 function renderEntry(entry) {
   const localized = localizeEntry(entry, currentLang);
 
-  readerMeta.innerHTML = `<span>${t(currentLang, "introPrompt")}</span><span>${t(currentLang, "statusActive")}</span>`;
+  readerMeta.innerHTML = `<span>${t(currentLang, "sectorLabel")}</span><span>${t(currentLang, "statusActive")}</span>`;
 
   const content = document.createElement("div");
   content.className = "entry-content";
