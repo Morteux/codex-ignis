@@ -23,8 +23,14 @@
  * { type: "paragraph", text: "..." }
  *   Un párrafo normal.
  *
- * { type: "heading", text: "..." }
+ * { type: "heading", text: "...", level: 1 }
  *   Un subtítulo dentro del artículo (útil para dividir en secciones).
+ *   "level" es opcional (por defecto 1) y controla el tamaño:
+ *     1 → subtítulo normal (el de siempre, el que ya usan todas las entradas)
+ *     2 → subsubtítulo, más pequeño (para dividir dentro de un subtítulo)
+ *     3 → subsubsubtítulo, aún más pequeño y en mayúsculas discretas
+ *   No hace falta tocar las entradas existentes: si no se indica "level",
+ *   se sigue viendo exactamente igual que antes.
  *
  * { type: "list", items: ["...", "..."] }
  *   Lista con viñetas.
@@ -33,7 +39,23 @@
  *   Lista de enlaces externos. "description" es opcional.
  *
  * { type: "image", src: "ruta-o-url.jpg", alt: "texto alternativo", caption: "..." }
- *   Imagen con pie de foto opcional. "caption" es opcional.
+ *   Imagen con pie de foto opcional. "caption" es opcional. Al hacer clic en
+ *   ella se abre automáticamente en grande, centrada en pantalla y a su
+ *   resolución original (no hace falta configurar nada extra para esto).
+ *
+ * { type: "columns", columns: [ [bloque, bloque, ...], [bloque, bloque, ...] ] }
+ *   Dos columnas de contenido en paralelo (texto, imágenes, listas... lo que
+ *   sea). Cada columna es un array con los mismos tipos de bloque de esta
+ *   lista (puedes meter varios bloques por columna). En pantallas estrechas
+ *   (móvil) las columnas se apilan automáticamente una debajo de la otra.
+ *   Ejemplo:
+ *   {
+ *     type: "columns",
+ *     columns: [
+ *       [{ type: "image", src: "img/a.png", alt: "A", caption: "Diseño A" }],
+ *       [{ type: "image", src: "img/b.png", alt: "B", caption: "Diseño B" }]
+ *     ]
+ *   }
  *
  * { type: "note", text: "..." }
  *   Recuadro destacado para avisos o consejos.
@@ -76,7 +98,6 @@ export const knowledgeBase = [
             { type: "divider" },
             { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." },
             { type: "divider" },
-            { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Crucero portahangares con defensas de corto alcance", caption: "Crucero portahangares con defensas de corto alcance." },
 
             { type: "heading", text: "Acorazado" },
             { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." },
@@ -777,6 +798,456 @@ export const knowledgeBase = [
                     { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis" }
                 ]
             }
+        }
+    },
+    {
+        slug: "diseño-naves-biologicas",
+        title: "Diseño de naves biológicas",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Macero" },
+            { type: "image", src: "Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
+            { type: "image", src: "Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
+            { type: "divider" },
+
+            { type: "heading", text: "Tejedor" },
+            { type: "image", src: "Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
+            { type: "image", src: "Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
+            { type: "image", src: "Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
+            { type: "divider" },
+
+            { type: "heading", text: "Heraldo" },
+            { type: "image", src: "Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
+            { type: "image", src: "Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
+            { type: "divider" },
+
+            { type: "heading", text: "Aguijón" },
+            { type: "image", src: "Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
+            { type: "divider" },
+
+            { type: "heading", text: "Titanes" },
+            { type: "image", src: "Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
+            { type: "divider" },
+
+            { type: "heading", text: "Gigante" },
+            { type: "image", src: "Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
+            { type: "divider" },
+
+            { type: "heading", text: "Coloso" },
+            { type: "image", src: "Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
+            { type: "divider" },
+
+            { type: "heading", text: "Plataforma de defensa" },
+            { type: "image", src: "Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
+            { type: "image", src: "Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
+            { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
+            { type: "image", src: "Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
+            { type: "divider" },
+
+            { type: "heading", text: "Cañón de iones" },
+            { type: "image", src: "Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            { type: "divider" },
+
+            { type: "heading", text: "Ciudadela de espacio profundo" },
+            { type: "image", src: "Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
+            { type: "image", src: "Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
+            { type: "image", src: "Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {
+        slug: "diseño-flotas-biologicas",
+        title: "Diseño de flotas biológicas",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Inicio de juego" },
+
+            { type: "note", text: "Solo maceros" },
+            { type: "paragraph", text: "Lo más básico para el año 2200." },
+            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
+            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
+            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
+            { type: "paragraph", text: "Recomendado usar láser de dron minero si lo tienes disponible hasta contar con plasma y/o cañones automáticos." },
+
+            { type: "note", text: "Sobre los tejedores" },
+            { type: "paragraph", text: "Mejor no usarlos tan pronto. Se vuelven de mayor valor cuando los combinas con heraldos y aguijones." },
+            { type: "divider" },
+
+            { type: "heading", text: "Mitad de juego" },
+
+            { type: "note", text: "Solo maceros" },
+            { type: "paragraph", text: "Mantenemos una flota de solo maceros, a ser posible ancianos, con armas híbridas. En este caso, los maceros al contar con las pinzas de armas G que escalan contra naves de mayor tamaño, tenemos una flota decente contra naves pequeñas por las armas equilibradas de tamaño S y contra naves medianas y grandes porque llevamos las pinzas." },
+            { type: "paragraph", text: "No obstante, debemos tener cuidado porque tendremos muy poca movilidad en comparación con las corbetas tradicionales. Estos maceros serán nuestra línea de combate principal, pero también una gran fuente de daño a corta distancia. El problema es que tiene poca velocidad sublumínica y poca evasión en comparación con las corbetas, por tanto sufrirán muchas bajas antes de alcanzar a naves más grandes en la retaguardia enemiga." },
+
+            { type: "note", text: "Heraldos y tejedores" },
+            { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de protones/neutrones desde ahora." },
+            { type: "paragraph", text: "Los heraldos ya se pueden beneficiar de los tejedores usando el arma de apoyo que aumenta la velocidad sublumínica y la evasión (Dardos de evasión) y el arma que protege y recupera blindaje (Lanzador de esporas adaptativas inteligente)." },
+            { type: "paragraph", text: "La proporción será de cada una de estas armas de apoyo por heraldo." },
+            { type: "divider" },
+
+            { type: "heading", text: "Juego tardío" },
+
+            { type: "note", text: "Heraldos y tejedores" },
+            { type: "paragraph", text: "La evolución lógica del diseño de flotas de Middle Game. Debemos asegurar que tenemos heraldos con hangares y lanzadores de protones listos. Equipándolos con postquemadores para reducir la mayor cantidad de daño entrante mientras huímos del enemigo y atacamos con nuestras naves de ataque y nuestros torpedos de largo alcance." },
+            { type: "paragraph", text: "La configuración mimetiza a las flotas de acorazados portahangares. En este caso, tendremos mucha mayor potencia de fuego contra naves grande al utilizar armas G, pero perdemos el alcance de las armas X. En cuanto a defensa contra naves pequeñas y medianas, si bien no tenemos espacios de armas S y M, tendremos muchos más hangares para cumplir dicho rol." },
+            { type: "paragraph", text: "Los tejedores seguirán cubriendo el rol de apoyo para reparar daños y mejorar nuestra potencia de ataque y supervivencia." },
+
+            { type: "note", text: "Solo maceros de sigilo de corto alcance" },
+            { type: "paragraph", text: "Con la llegada del daño colateral de las armas T, las flotas de carne de cañón ya no son recomendables. Por tanto, el mejor uso para los maceros es el de emboscadores sigilosos." },
+            { type: "divider" },
+
+            { type: "heading", text: "Final de juego" },
+
+            { type: "note", text: "Heraldos y titanes" },
+            { type: "paragraph", text: "Opcional añadir de 1 a 3 titanes. El resto todo heraldos con hangares y armas G de largo alcance." },
+            { type: "paragraph", text: "Especialmente recomendado en este caso dividir los titanes en una flota única propia, ya que los heraldos no se van a ver tan beneficiados por las auras aliadas de los titanes en su propia flota, ya que la principal fuente de daño de los heraldos son las naves de ataque." },
+
+            { type: "note", text: "Tejedores" },
+            {
+                type: "list", items: [
+                    "**Apoyo:** los tejedores se dedicarán a apoyar a las naves aliadas. Solo queremos usarlos con nuestros aguijones y heraldos y podemos tener conflictos al usarlos con maceros.",
+                    "**Supresor:** los tejedores aturden a las naves enemigas. Con el arma de supresión que aturde con un 90% de probabilidad, es suficiente siempre que estés en igualdad numérica de armas/cantidad de enemigos. Especialmente recomendada contra enemigos en altas dificultades, como crisis de mitad o fin de juego o imperios caídos/despertados. Importante destacar que no funcionan contra leviatanes."
+                ]
+            },
+
+            { type: "note", text: "Maceros con sigilo" },
+            { type: "paragraph", text: "Flota de emboscada con sigilo: debido a que cuentan con la mejor movilidad de las naves biológicas y las pinzas como armas G, podemos usarlas en sus versiones ancianas para tener más daño y resistencia en la corta distancia. Eficaces contra flotas de naves medianas y grandes, como, por ejemplo, las de imperio caído/despertado." },
+
+            { type: "note", text: "Problemas con los heraldos, maceros y tejedores en la misma batalla" },
+            { type: "paragraph", text: "Hay que tener en cuenta que los tejedores de apoyo seguirán a las naves aliadas para usar sus armas de apoyo. Es por esto que usar maceros con flotas de aguijones, heraldos y tejedores puede ser contraproducente para el rendimiento de los tejedores. Como puedes tener mayor cantidad de maceros que de heraldos por flota, al usar tejedores de apoyo, estos tendrán muchas más probabilidades de elegir a un macero como objetivo de apoyo en contraparte con los heraldos del campo de batalla. Eso hace que los tejedores de apoyo, que deberían mantenerse en la seguridad de la retaguardia de los heraldos, carguen de frente junto con los maceros para apoyarles y pueden sufrir una cantidad considerable de bajas en cada batalla, haciéndolos contraproducentes." },
+            { type: "divider" },
+
+            { type: "heading", text: "Defensas" },
+
+            { type: "note", text: "Combinación de plataformas de defensa con cañones de iones." },
+            { type: "paragraph", text: "Puedes combinar plataformas y cañones de formas distintas según la necesidad, aunque una vez construyas las defensas de una base estelar, difícilmente podrás cambiarla hasta que sean destruidas." },
+            {
+                type: "list", items: [
+                    "**Un cañón de iones con muchas plataformas de defensa:** efectiva contra flotas de imperios de IA. Se utiliza un único cañón de iones por dos motivos: el principal, es poder tener rango suficiente para atacar a naves en cualquier parte del sistema, de forma que ninguna pueda cruzar por el borde sin que la base estelar la ataque por estar fuera de rango; el segundo, tener algo de daño extra contra naves de gran tamaño como titanes, acorazados y bionaves ancianas. Por otro lado, las plataformas de defensas, ya sean de hangares o torpedos de largo alcance, serán la fuente principal de daño para cualquier tipo de naves, especialmente las de pequeño y mediano tamaño. Puede funcionar como única defensa en el sistema, dañando seriamente la flota enemiga o incluso repeliendo el ataque. No obstante, sufrirá muchisimas bajas y es recomendable usar una flota completa que reciba principalmente el daño.",
+                    "**Todos los cañones de iones posibles y rellenar los espacios sobrantes con plataformas de defensa:** efectiva contra flotas de imperios caídos/despertados y crisis de mitad y fin de juego. Los cañones de iones serán capaces de casi barrer al completo las naves grandes en las primeras dos salvas, mientras que estarán desprotegidas contra naves pequeñas. Por esto, recomiendo rellenar los huevos con plataformas de defensa con hangares, que proporcionan algo de defensa extra contra misiles y torpedos. No obstante, este tipo de defensas suelen usarse como apoyo a una flota completa y nunca como defensa única. Aunque gracias al daño colateral de las armas T, ahora es viable utilizar solo cañones de iones, ya que podrán acabar con flotas enteras de naves pequeñas si consiguen acertar dos o tres disparos de un arma T."
+                ]
+            },
+
+            { type: "note", text: "Posicionamiento de la ciudadela de espacio profundo." },
+            { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
+            { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {
+        slug: "fauna-espacial",
+        title: "Fauna espacial",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Entidades cristalinas" },
+            { type: "image", src: "Cohorte de cristal de zafiro.png", alt: "Cohorte de cristal de zafiro", caption: "Cohorte de cristal de zafiro." },
+            { type: "image", src: "Soberano de cristal de zafiro.png", alt: "Soberano de cristal de zafiro", caption: "Soberano de cristal de zafiro." },
+            { type: "image", src: "Centinela de cristal de zafiro.png", alt: "Centinela de cristal de zafiro", caption: "Centinela de cristal de zafiro." },
+            { type: "divider" },
+
+            { type: "heading", text: "Amebas espaciales" },
+            { type: "image", src: "Ameba espacial.png", alt: "Ameba espacial", caption: "Ameba espacial." },
+            { type: "image", src: "Ameba espacial madre.png", alt: "Ameba espacial madre", caption: "Ameba espacial madre." },
+            { type: "divider" },
+
+            { type: "heading", text: "Tiyanki" },
+            { type: "image", src: "Cria de ballena espacial.png", alt: "Cría de ballena espacial", caption: "Cría de ballena espacial." },
+            { type: "image", src: "Ballenato espacial.png", alt: "Ballenato espacial", caption: "Ballenato espacial." },
+            { type: "divider" },
+            { type: "image", src: "Ballena hembra espacial.png", alt: "Ballena hembra espacial", caption: "Ballena hembra espacial." },
+            { type: "image", src: "Ballena macho espacial.png", alt: "Ballena macho espacial", caption: "Ballena macho espacial." },
+            { type: "divider" },
+            { type: "image", src: "Buey ballena espacial.png", alt: "Buey ballena espacial", caption: "Buey ballena espacial." },
+            { type: "divider" },
+
+            { type: "heading", text: "Gusanos del vacío" },
+            { type: "image", src: "Ninfa de gusano del vacio.png", alt: "Ninfa de gusano del vacío", caption: "Ninfa de gusano del vacío." },
+            { type: "image", src: "Cria de gusano del vacio.png", alt: "Cría de gusano del vacío", caption: "Cría de gusano del vacío." },
+            { type: "image", src: "Gusano del vacio adulto.png", alt: "Gusano del vacío adulto", caption: "Gusano del vacío adulto." },
+            { type: "image", src: "Troika de gusanos del vacio.png", alt: "Troika de gusanos del vacío", caption: "Troika de gusanos del vacío." },
+            { type: "divider" },
+
+            { type: "heading", text: "Cutuloides" },
+            { type: "image", src: "Cria cutuloide.png", alt: "Cría cutuloide", caption: "Cría cutuloide." },
+            { type: "image", src: "Cutuloide adolescente.png", alt: "Cutuloide adolescente", caption: "Cutuloide adolescente." },
+            { type: "image", src: "Cutuloides.png", alt: "Cutuloides", caption: "Cutuloides." },
+            { type: "divider" },
+
+            { type: "heading", text: "Diseños de flotas" },
+            { type: "note", text: "Guía de flotas estándar (no máquina ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
+
+            { type: "heading", text: "Inicio de juego" },
+            { type: "note", text: "Solo corbetas" },
+            { type: "paragraph", text: "Lo más básico para el año 2200." },
+            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
+            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
+            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
+            { type: "note", text: "Solo destructores" },
+            { type: "paragraph", text: "Muy caros en el early game y muy débiles contra corbetas, mejor no usarlos." },
+            { type: "divider" },
+
+            { type: "heading", text: "Mitad de juego" },
+            { type: "note", text: "Solo corbetas" },
+            { type: "paragraph", text: "En caso de una flota solo de corbetas, son útiles con disruptores, muy destructivos. En cambio, te aseguras pérdidas en cada combate." },
+            { type: "note", text: "Solo cruceros" },
+            { type: "paragraph", text: "Si has centrado tu investigación militar en misiles, es posible que tengas ya los misiles de remolino de primer nivel. Aunque son menos eficaces, ya puedes empezar a montar tu flota de cruceros artilleros de misiles." },
+            { type: "divider" },
+
+            { type: "heading", text: "Juego tardío" },
+            { type: "note", text: "Solo cruceros" },
+            { type: "paragraph", text: "Una opción rápida de investigar y muy eficaz contra flotas de IA. Solo cruceros artilleros de misiles son más que suficientes para hacer frente incluso a flotas superiores en potencia de flota. Solo necesitan dos armas, los misiles de remolino y los misiles merodeadores, así que es muy sencillo obtener el máximo daño muy pronto. Además, los cruceros con triple postquemador tienen una gran velocidad, ideal antes de tener portales o mientras construyes tu red de hiperrelés." },
+            { type: "paragraph", text: "Hay que destacar un punto negativo, y es que estos cruceros sufren mucho contra flotas de artillería que no son de misiles o contra flotas muy buffadas por la dificultad, como las de crisis de mitad de juego, los imperios caídos y despertados y la crisis de fin de juego. En el caso de las crisis de mitad de juego, lo más probable es que puedas superarlas con estas flotas aunque sufriendo algunas pérdidas. Sin embargo, contra imperios caídos/despertados y crisis de fin de juego, si no eres capaz de ganar en una sola batalla, sufrirás tantas pérdidas a pesar de ganar algunos combates iniciales, que perderás por desgaste, ya que no serás capaz de destruir las flotas enemigas al completo y simplemente huirán mientras que las tuyas sí sufrirán pérdidas batalla tras batalla." },
+            { type: "note", text: "Solo acorazados" },
+            { type: "paragraph", text: "Acorazados artilleros combinados con acorazados portahangares. Esta combinación es la definitiva, si bien es mucho más cara de construir y de investigar, pero merece la pena. Los artilleros son tu fuente principal de daño contra objetivos grandes y medianos, mientras que los portahangares son el escudo defensivo de los artilleros, además de la fuente principal de daño contra objetivos pequeños y medianos. Eficaces contra imperios caídos/despertados y crisis de mitad y fin de juego por igual. No obstante, es posible que a esta altura aún no cuentes con la artillería cinética o algún arma X necesaria para que esta combinación funcione adecuadamente." },
+            { type: "divider" },
+
+            { type: "heading", text: "Final de juego" },
+            { type: "note", text: "Acorazados" },
+            { type: "paragraph", text: "De 1 a 3 titanes, el resto mitad de acorazados artilleros y mitad de acorazados portahangares." },
+            {
+                type: "list", items: [
+                    "El titán sirve de buffer/debuffer. Si llevas más de uno, cada uno debe llevar un aura ofensiva distinta.",
+                    "Los acorazados artilleros son la principal fuente de daño.",
+                    "Los acorazados portahangares sirven de escudo defensivo contra naves más pequeñas como corbetas, destructores, naves de ataque y fragatas, para que no alcancen a los acorazados artilleros."
+                ]
+            },
+            { type: "note", text: "Cruceros" },
+            { type: "paragraph", text: "Solo cruceros artilleros de misiles." },
+            { type: "paragraph", text: "Meta contra flotas de imperios de la IA. Menos eficaz contra imperios caídos, despertados y crisis de mitad y final de juego." },
+            { type: "paragraph", text: "Gracias al ordenador de combate de artillería, estos cruceros tratarán de alejarse continuamente de los enemigos mientras lanzan una saturación de misiles imposible de detener por defensa de punto normal." },
+            { type: "paragraph", text: "Solo pueden ser superados por naves con mayor rango de ataque, por ejemplo, la flota mixta de acorazados, las naves de imperio caído o las de crisis." },
+            { type: "paragraph", text: "Su extrema velocidad con triple postquemador hace que sean más rápidas que cualquier otra nave del juego, excepto las corbetas." },
+            { type: "note", text: "Corbetas" },
+            { type: "paragraph", text: "El enjambre de corbetas con disruptores tiene dos usos principales en los que destaca por encima de todas las demás." },
+            {
+                type: "list", items: [
+                    "**Carne de cañón:** en grandes combates de flotas, los acorazados portahangares no son suficientes para proteger a los acorazados artilleros. Por tanto, se suman grandes cantidades de corbetas como muro desechable.",
+                    "**Flota defensiva pírrica:** en caso de necesidad, esta flota puede ganar en 1vs1 a cualquier otra flota del juego que no sea especializada contra ella (como cruceros de disruptores), aunque sufriendo en muchos casos una victoria pírrica, siendo suficiente para expulsar invasores. Además, al ser una flota de corbetas, tiene una mucho mayor velocidad para llegar a cualquier rincón de tu imperio."
+                ]
+            },
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {
+        slug: "flotas-contra-crisis",
+        title: "Flotas contra las crisis",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Diseños recomendados por crisis" },
+            { type: "note", text: "Plantillas de nave pensadas específicamente para enfrentarse a cada crisis de fin de juego." },
+
+            { type: "heading", text: "Prethoryn" },
+            {
+                type: "list", items: [
+                    "**Acorazado (Portahangares):** Ratio: todo · Módulos: X-SSPPHH-MM.",
+                    "**Armamento:** 1 lanza de taquiones, 2 plasma S, 2 defensa de punto, 2 hangar, 2 plasma M.",
+                    "**Ordenador:** artillería · **Accesorio:** 3 control de fuego auxiliar.",
+                    "**Defensas:** 6 blindajes."
+                ]
+            },
+
+            { type: "heading", text: "Invasores extradimensionales" },
+            {
+                type: "list", items: [
+                    "**Acorazado (Artillería):** Ratio: todo · Módulos: X-LLL-L.",
+                    "**Armamento:** 1 gigacañón, 4 artillería cinética.",
+                    "**Ordenador:** artillería · **Accesorio:** 1 control de fuego auxiliar, 1 potenciador de reactor.",
+                    "**Defensas:** 5 escudos + 1 blindaje."
+                ]
+            },
+
+            { type: "heading", text: "Contingencia" },
+            {
+                type: "list", items: [
+                    "**Acorazado (Artillero):** Ratio: todo · Módulos: X-LLL-MM.",
+                    "**Armamento:** 1 emisor de arcos concentrado.",
+                    "**Ordenador:** artillería · **Accesorio:** 3 postquemador.",
+                    "**Defensas:** ninguna."
+                ]
+            },
+
+            { type: "heading", text: "Cetana" },
+            {
+                type: "list", items: [
+                    "**Acorazado (Anti flotas NO Cetana):** Ratio: todo · Módulos: X-SSPPHH-MM.",
+                    "**Armamento:** 1 emisor de arcos, 2 misiles merodeadores, 2 antiaéreos, 2 hangares, 2 misiles de remolino.",
+                    "**Ordenador:** portahangares · **Accesorio:** 3 endurecedor de escudos.",
+                    "**Defensas:** 5 escudos + 1 blindaje imbuido de cristales.",
+                    "**Crucero (Anti Cetana):** Ratio: todo · Módulos: GSS-GSS-SS.",
+                    "**Armamento:** 3 torpedos devastadores.",
+                    "**Ordenador:** torpedo · **Accesorio:** 3 endurecedor de escudos.",
+                    "**Defensas:** 5 escudos + 3 blindajes."
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Composición de las flotas enemigas" },
+
+            { type: "heading", text: "Flotas Prethoryn" },
+            { type: "paragraph", text: "**Flotas:**" },
+            {
+                type: "list", items: [
+                    "Acorazados, cruceros, destructores y corbetas.",
+                    "Vanguardia: 30 corbetas.",
+                    "Nidos: 1 acorazado, 8 cruceros, 10 destructores, y 35 corbetas."
+                ]
+            },
+            { type: "paragraph", text: "**Defensas:** blindaje." },
+            { type: "paragraph", text: "**Armas:** torpedos, hangares y cinética." },
+            { type: "divider" },
+
+            { type: "heading", text: "Flotas Invasores Extradimensionales" },
+            { type: "paragraph", text: "**Flotas:**" },
+            {
+                type: "list", items: [
+                    "Acorazados, cruceros y destructores.",
+                    "Iniciales: 8 acorazados, 12 cruceros y 20 destructores.",
+                    "Refuerzos: 5 acorazados, 8 cruceros y 15 destructores.",
+                    "Portal: 20 acorazados, 30 cruceros y 45 destructores."
+                ]
+            },
+            { type: "paragraph", text: "**Defensas:** escudos." },
+            { type: "paragraph", text: "**Armas:** casi todo armas de energía, poca defensa de punto." },
+            { type: "divider" },
+
+            { type: "heading", text: "Flotas Contingencia" },
+            { type: "paragraph", text: "**Flotas:**" },
+            {
+                type: "list", items: [
+                    "Acorazados y cruceros.",
+                    "Arietes: 10 acorazados y 20 cruceros.",
+                    "Hub: 25 acorazados y 50 cruceros."
+                ]
+            },
+            { type: "paragraph", text: "**Defensas:** compensados escudos y blindajes (poco casco)." },
+            { type: "paragraph", text: "**Armas:** solo armas de energía." },
+            { type: "divider" },
+
+            { type: "heading", text: "Flotas Cetana" },
+            { type: "paragraph", text: "**Flotas:**" },
+            {
+                type: "list", items: [
+                    "Acorazados y cruceros (Defensores y heraldos).",
+                    "Flotas iniciales: 3 defensores y 18 heraldos.",
+                    "Flotas defensivas: 1 defensor y 6 heraldos.",
+                    "Convoyes: 1 defensor y 6 heraldos.",
+                    "Flotas en sistemas demandados: 18 heraldos."
+                ]
+            },
+            { type: "paragraph", text: "**Defensas:**" },
+            {
+                type: "list", items: [
+                    "Cetana: blindaje de pulsos con 100% endurecimiento de blindaje, extra escudos y regeneración de casco y blindaje.",
+                    "Defensores: mitad blindaje de pulsos con 25% endurecimiento de escudos y mitad escudos de materia oscura y regeneración de casco y blindaje.",
+                    "Heraldos: blindaje de pulsos con un poco de regeneración de casco y blindaje."
+                ]
+            },
+            { type: "paragraph", text: "**Armas:**" },
+            {
+                type: "list", items: [
+                    "Cetana: armas T de energía, muchos hangares, armas de energía y defensa de punto y antiaéreos.",
+                    "Defensores: armas X de energía, muchos hangares y armas de energía.",
+                    "Heraldos: un arma X de energía y antiaéreos.",
+                    "Bases estelares: arma X de energía, armas de energía y defensa de punto."
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Potencia de flota por crisis" },
+            { type: "note", text: "En el documento original solo la fila de dificultad Gran Almirante tiene valores rellenos (el resto de dificultades y algunas columnas están vacías); cada celda muestra tres cifras separadas por barras tal cual aparecen en la fuente." },
+            {
+                type: "list", items: [
+                    "**Prethoryn (Gran Almirante):** 32,5 / 9,25 / 1 — 130 / 37 / 1 — 260 / 74 / 1 — 390 / 111 / 1 — 520 / 148 / 1 — 650 / 185 / 1 — 1.3M / 370K / 1 — 3250 / 925 / 1.",
+                    "**Unbidden (Gran Almirante):** 95 / 30 / 0 — 380 / 120 / 0 — 760 / 240 / 0 — 1140 / 360 / 0 — 1520 / 480 / 0 — 1900 / 600 / 0 — 3800 / 1200 / 0 — 9.5M / 3M / ?.",
+                    "**Contingency (Gran Almirante):** 100 / 40 / 6 — 400 / 160 / 24 — 800 / 320 / 48 — 1200 / 480 / 72 — 1600 / 640 / 96 — 2000 / 800 / 120 — 3.2M / 1.2M / 266K — 10M / 4M / 600K.",
+                    "**Cetana (Gran Almirante):** 3.2M / 1.2M / 266K — 10M / 4M / 600K (solo hay valores en las dos últimas columnas)."
+                ]
+            }
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {
+        slug: "flotas-especiales",
+        title: "Flotas especiales",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Amenazantes" },
+
+            { type: "heading", text: "Enjambre de corbetas amenazantes" },
+            { type: "image", src: ".png", alt: "Enjambre de corbetas amenazantes", caption: "" },
+            { type: "image", src: ".png", alt: "Enjambre de corbetas amenazantes", caption: "" },
+            { type: "paragraph", text: "Las corbetas amenazantes no tienen costes añadidos según el tipo de componente, el mantenimiento es mucho menor que el de una corbeta normal, el coste de construcción siempre es fijo en minerales, se construyen más rápido, tienen bonus al daño de armas de la nave, las estadísticas base son superiores a las de una corbeta normal y tienen un espacio de componente auxiliar extra. Todo esto hace que sean extremadamente superiores a las corbetas normales, dejándolas en un segundo plano." },
+            { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los lanzadores de nubes de nanomisiles antiguos son una versión mejorada de los disruptores, a cambio de necesitar un espacio S por fuerza." },
+
+            { type: "heading", text: "Comedor de estrellas" },
+            { type: "image", src: ".png", alt: "Comedor de estrellas", caption: "" },
+            { type: "image", src: ".png", alt: "Comedor de estrellas", caption: "" },
+            { type: "paragraph", text: "Estas naves tienen mayor poder destructivo que un gigante, a cambio de no tener armas X ni aura, siendo de hecho inferiores para enfrentar otros objetivos de gran tamaño ni sirven como buffers. Además, no tienen un coste fijo en minerales, lo que las hace inferiores en el armamento que nos podamos permitir ponerles." },
+
+            { type: "heading", text: "Destructores amenazantes" },
+            { type: "image", src: ".png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." },
+
+            { type: "heading", text: "Cruceros amenazantes" },
+            { type: "image", src: ".png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." },
+            { type: "divider" },
+
+            { type: "heading", text: "Imperio caído máquina" },
+
+            { type: "heading", text: "Escoltas misteriosas" },
+            { type: "image", src: ".png", alt: "Escolta artillera", caption: "Escolta artillera." },
+            { type: "image", src: ".png", alt: "Escolta torpedera de corto alcance con sigilo", caption: "Escolta torpedera de corto alcance con sigilo." },
+            { type: "image", src: ".png", alt: "Escolta torpedera de largo alcance", caption: "Escolta torpedera de largo alcance." },
+            { type: "divider" },
+
+            { type: "heading", text: "Crucero de batalla" },
+            { type: "image", src: ".png", alt: "Cruceros de batalla artilleros a larga distancia", caption: "Cruceros de batalla artilleros a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+            { type: "image", src: ".png", alt: "Cruceros de batalla torpederos a corta distancia", caption: "Cruceros de batalla torpederos a corta distancia. Este diseño es poco recomendado, ya que las armas X, que no sean el emisor de arcos, no podrán ser utilizadas mientras usas las armas G y viceversa." },
+            { type: "image", src: ".png", alt: "Cruceros de batalla torpederos a larga distancia", caption: "Cruceros de batalla torpederos a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+            { type: "divider" },
+
+            { type: "heading", text: "Titán paradójico" },
+            { type: "image", src: ".png", alt: "Titán paradójico", caption: "" },
+            { type: "paragraph", text: "Como cualquier titán normal, su principal uso es de buffer/debuffer. Aunque esta versión es mucho más poderosa que un titán normal y será capaz de eliminar con una salva de sus dos armas T a cualquier otra nave." },
+            { type: "divider" },
+
+            { type: "heading", text: "Imperio caído biológico" },
+            { type: "image", src: ".png", alt: "Macero cifrador de corto alcance", caption: "Macero cifrador de corto alcance." },
+            { type: "image", src: ".png", alt: "Tejedores de dilema de apoyo de largo alcance", caption: "Tejedores de dilema de apoyo de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: ".png", alt: "Heraldos de laberinto con torpedos de largo alcance", caption: "Heraldos de laberinto con torpedos de largo alcance." },
+            { type: "image", src: ".png", alt: "Aguijón críptico como titanes artilleros", caption: "Aguijón críptico como titanes artilleros." },
+            { type: "divider" },
+
+            { type: "heading", text: "Naves nanorrobot" },
+
+            { type: "heading", text: "Enjambrador de nanorrobots" },
+            { type: "image", src: ".png", alt: "Enjambre de naves de ataque", caption: "Enjambre de naves de ataque." },
+            { type: "image", src: ".png", alt: "Enjambre de torpedos de corta distancia con sigilo", caption: "Enjambre de torpedos de corta distancia con sigilo." },
+            { type: "divider" },
+            { type: "image", src: ".png", alt: "Enjambre de torpedos de larga distancia", caption: "Enjambre de torpedos de larga distancia." },
+
+            { type: "heading", text: "Interdictor nanorrobot" },
+            { type: "image", src: ".png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
+            { type: "image", src: ".png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
+            { type: "image", src: ".png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
+        ],
+        i18n: {
+            en: {},
+            jp: {}
         }
     },
     {

@@ -358,7 +358,24 @@ h1 {
     letter-spacing: -.01em;
 }
 
-.entry-content > .entry-heading:first-child {
+.entry-heading-sub {
+    margin: 1.8rem 0 .85rem;
+    color: var(--text);
+    font-size: clamp(1.02rem, 1.8vw, 1.22rem);
+    letter-spacing: -.005em;
+}
+
+.entry-heading-subsub {
+    margin: 1.5rem 0 .65rem;
+    color: var(--muted);
+    font-size: .95rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.entry-content > .entry-heading:first-child,
+.entry-content > .entry-heading-sub:first-child,
+.entry-content > .entry-heading-subsub:first-child {
     margin-top: 0;
 }
 
@@ -402,6 +419,11 @@ h1 {
     max-width: 100%;
     height: auto;
     border: 1px solid var(--line);
+    cursor: zoom-in;
+}
+
+.entry-image img:hover {
+    border-color: var(--accent-dim);
 }
 
 .entry-image figcaption {
@@ -444,6 +466,21 @@ h1 {
     border-top: 1px solid var(--line);
 }
 
+.entry-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+    margin: 1.4rem 0;
+}
+
+.entry-column > *:first-child {
+    margin-top: 0;
+}
+
+.entry-column > *:last-child {
+    margin-bottom: 0;
+}
+
 .hl-word {
     font-weight: 600;
 }
@@ -463,6 +500,51 @@ h1 {
     min-height: 120px;
     margin-top: 1.5rem;
     border: 1px dashed var(--line);
+}
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vh 4vw;
+    background: rgba(4, 10, 6, .92);
+    cursor: zoom-out;
+}
+
+.lightbox[hidden] {
+    display: none;
+}
+
+.lightbox-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    border: 1px solid var(--line);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, .5);
+    cursor: default;
+}
+
+.lightbox-close {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: rgba(8, 22, 14, .85);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.lightbox-close:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
 }
 
 .footer {
@@ -578,5 +660,10 @@ h1 {
     .footer {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .entry-columns {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
     }
 }

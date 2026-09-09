@@ -20,6 +20,9 @@ const privacyLink = document.querySelector("#privacy-link");
 const cookiesLink = document.querySelector("#cookies-link");
 const langButtons = document.querySelectorAll(".lang-btn");
 const metaDescription = document.querySelector('meta[name="description"]');
+const lightbox = document.querySelector("#image-lightbox");
+const lightboxImage = document.querySelector("#lightbox-image");
+const lightboxClose = document.querySelector("#lightbox-close");
 
 let currentLang = detectInitialLang();
 let currentQuery = "";
@@ -93,11 +96,45 @@ function highlightMatches(html, rawQuery) {
   return html.replace(pattern, '<mark class="hl-marker">$1</mark>');
 }
 
+/** Abre la imagen en grande, centrada y a su resolución original (limitada al viewport). */
+function openLightbox(src, alt) {
+  if (!lightbox || !lightboxImage || !src) return;
+  lightboxImage.src = src;
+  lightboxImage.alt = alt || "";
+  lightbox.hidden = false;
+}
+
+function closeLightbox() {
+  if (!lightbox || !lightboxImage) return;
+  lightbox.hidden = true;
+  lightboxImage.src = "";
+}
+
+if (lightbox && lightboxImage && lightboxClose) {
+  lightboxClose.addEventListener("click", closeLightbox);
+  // Cerrar al pulsar fuera de la imagen (sobre el fondo oscurecido).
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) closeLightbox();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+  });
+}
+
+/** Nivel de un bloque "heading": 1 = subtítulo, 2 = sub-subtítulo, 3 = sub-sub-subtítulo. */
+function headingLevelInfo(level) {
+  const normalized = level === 2 || level === 3 ? level : 1;
+  if (normalized === 2) return { tag: "h4", className: "entry-heading-sub" };
+  if (normalized === 3) return { tag: "h5", className: "entry-heading-subsub" };
+  return { tag: "h3", className: "entry-heading" };
+}
+
 function renderBlock(block, query) {
   switch (block.type) {
     case "heading": {
-      const heading = document.createElement("h3");
-      heading.className = "entry-heading";
+      const { tag, className } = headingLevelInfo(block.level);
+      const heading = document.createElement(tag);
+      heading.className = className;
       heading.innerHTML = highlightMatches(formatText(block.text), query);
       return heading;
     }
@@ -142,6 +179,9 @@ function renderBlock(block, query) {
       img.src = block.src;
       img.alt = block.alt || "";
       img.loading = "lazy";
+      if (block.src) {
+        img.addEventListener("click", () => openLightbox(block.src, block.alt || ""));
+      }
       figure.append(img);
       if (block.caption) {
         const caption = document.createElement("figcaption");
@@ -149,6 +189,20 @@ function renderBlock(block, query) {
         figure.append(caption);
       }
       return figure;
+    }
+
+    case "columns": {
+      const wrapper = document.createElement("div");
+      wrapper.className = "entry-columns";
+      (block.columns || []).forEach((columnBlocks) => {
+        const column = document.createElement("div");
+        column.className = "entry-column";
+        (columnBlocks || []).forEach((subBlock) => {
+          column.append(renderBlock(subBlock, query));
+        });
+        wrapper.append(column);
+      });
+      return wrapper;
     }
 
     case "note": {
@@ -252,6 +306,11 @@ function collectBlockText(block) {
         .join(" ");
     case "image":
       return `${block.alt || ""} ${block.caption || ""}`;
+    case "columns":
+      return (block.columns || [])
+        .flat()
+        .map((subBlock) => collectBlockText(subBlock))
+        .join(" ");
     default:
       return block.text || "";
   }
