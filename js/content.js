@@ -321,18 +321,20 @@ export const knowledgeBase = [
             { type: "heading", text: "Acorazados", level: 2 },
             { type: "paragraph", text: "De 1 a 3 titanes (opcional), el resto mitad de acorazados artilleros y mitad de acorazados portahangares." },
             {
-                type: "list", items: [
-                    "Si elijes llevar titán, sirve de apoyo con sus auras. Si llevas más de uno, cada uno debe llevar un aura ofensiva distinta.",
-                    "Los acorazados portahangares sirve de escudo defensivo contra naves más pequeñas como corbetas, destructores, naves de ataque y fragatas, mientras que lo hacen bien contra naves más grandes. Además, cuenta con un arma X que le sirve de artillería contra objetivos grandes."
+                type: "columns",
+                columns: [
+                    [{ type: "paragraph", text: "Si elijes llevar titán, sirve de apoyo con sus auras. Si llevas más de uno, cada uno debe llevar un aura ofensiva distinta." }],
+                    [{ type: "paragraph", text: "Los acorazados portahangares sirve de escudo defensivo contra naves más pequeñas como corbetas, destructores, naves de ataque y fragatas, mientras que lo hacen bien contra naves más grandes. Además, cuenta con un arma X que le sirve de artillería contra objetivos grandes." }]
                 ]
             },
 
             { type: "heading", text: "Cruceros", level: 2 },
             { type: "paragraph", text: "Solo cruceros torpederos." },
             {
-                type: "list", items: [
-                    "Si elijes cruceros torpederos de corto alcance con sigilo. Son el ariete que derrumba grandes objetivos haciendo un daño absurdamente devastador contra enemigos estáticos o de gran tamaño, como naves capitales, titanes, estaciones estelars, leviatanes, etc. Corres el riesgo de sufrir grandes pérdidas.",
-                    "Si elijes cruceros torpederos de largo alance. Son la artillería de asedio que destruye puntos de choque y otras defensa desde la seguridad de la distancia. Brindan la potencia destructora del fuego de artillería que tienen más limitados los acorazados portahangares. Cabe destacar que son muy débiles cuando el enemigo te supera o iguala en alcance de armas."
+                type: "columns",
+                columns: [
+                    [{ type: "paragraph", text: "Si elijes cruceros torpederos de corto alcance con sigilo. Son el ariete que derrumba grandes objetivos haciendo un daño absurdamente devastador contra enemigos estáticos o de gran tamaño, como naves capitales, titanes, estaciones estelars, leviatanes, etc. Corres el riesgo de sufrir grandes pérdidas." }],
+                    [{ type: "paragraph", text: "Si elijes cruceros torpederos de largo alance. Son la artillería de asedio que destruye puntos de choque y otras defensa desde la seguridad de la distancia. Brindan la potencia destructora del fuego de artillería que tienen más limitados los acorazados portahangares. Cabe destacar que son muy débiles cuando el enemigo te supera o iguala en alcance de armas." }]
                 ]
             },
 

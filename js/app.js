@@ -274,8 +274,34 @@ function renderEntry(entry) {
   readerBody.replaceChildren(content);
 }
 
+/**
+ * Lee el slug actual desde location.hash (formato "#/slug"), decodificándolo.
+ * Los navegadores pueden dejar el hash codificado con %XX cuando contiene
+ * caracteres no ASCII (como "ñ"), así que hay que revertir esa codificación
+ * antes de comparar contra los slugs "en crudo" de content.js.
+ */
+function getSlugFromHash() {
+  const raw = window.location.hash.replace(/^#\//, "");
+  if (!raw) return "";
+  try {
+    return decodeURIComponent(raw);
+  } catch (error) {
+    // Si el hash no es una secuencia %XX válida, se usa tal cual.
+    return raw;
+  }
+}
+
+/** Busca en knowledgeBase la entrada cuyo slug coincide con el hash actual. */
+function findEntryFromHash() {
+  const slug = getSlugFromHash();
+  if (!slug) return null;
+  return knowledgeBase.find((entry) => entry.slug === slug) || null;
+}
+
 function openEntry(entry) {
-  window.location.hash = `/${entry.slug}`;
+  // encodeURIComponent asegura que slugs con "ñ" u otros caracteres no ASCII
+  // queden codificados de forma consistente y puedan decodificarse después.
+  window.location.hash = `/${encodeURIComponent(entry.slug)}`;
   currentEntry = entry;
   refresh();
 }
@@ -408,9 +434,16 @@ langButtons.forEach((btn) => {
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });
 
-// Permite abrir un easter egg directamente si alguien conoce/comparte su URL exacta.
-const initialSlug = window.location.hash.replace(/^#\//, "");
-currentEntry = knowledgeBase.find((entry) => entry.slug === initialSlug) || null;
+// Si el hash cambia (botones atrás/adelante del navegador, o alguien edita
+// la URL a mano estando ya en la página), se actualiza la entrada mostrada.
+window.addEventListener("hashchange", () => {
+  currentEntry = findEntryFromHash();
+  refresh();
+});
+
+// Permite abrir una entrada (incluyendo easter eggs) directamente si alguien
+// conoce/comparte su URL exacta con el slug, aunque contenga caracteres como "ñ".
+currentEntry = findEntryFromHash();
 
 updateEntryCount();
 setLanguage(currentLang);
