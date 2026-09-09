@@ -41,7 +41,7 @@ export const highlightWords = {
     "ciudadelas de espacio profundo": "#75ff75",
 
     "inesperados": "#332cff",
-    "vehements": "#fbff2c",
+    "vehementes": "#fbff2c",
     "aberrantes": "#2cff30",
     "prethoryn": "#ffb92c",
     "contingencia": "#ff0000",

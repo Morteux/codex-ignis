@@ -76,7 +76,7 @@ export const knowledgeBase = [
             { type: "divider" },
             { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." },
             { type: "divider" },
-            { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Crucero portahangares con defensas de corto alcance", caption: "Cruceros portahangares con defensas de corto alcance." },
+            { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Crucero portahangares con defensas de corto alcance", caption: "Crucero portahangares con defensas de corto alcance." },
 
             { type: "heading", text: "Acorazado" },
             { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." },
@@ -777,6 +777,43 @@ export const knowledgeBase = [
                     { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis" }
                 ]
             }
+        }
+    },
+    {
+        slug: "lista-de-deseos-ignis",
+        title: "Lista de deseos de Ignis",
+        icon: "📝",
+        hidden: true,
+        triggers: ["lista de deseos", "wishlist", "deseos de ignis", "lista de deseos de ignis"],
+        blocks: [
+            { type: "paragraph", text: "Ideas y mecánicas que me gustaría ver en Stellaris algún día, recopiladas mientras juego. Los puntos marcados como **(añadido)** ya han sido implementados por Paradox desde que se apuntaron aquí." },
+            {
+                type: "list", items: [
+                    "(visto) Permitir pactos a nivel de federaciones.",
+                    "**(añadido)** Base estelar megaacorazada (megaestructura).",
+                    "Granja hidropónica gigante (megaestructura).",
+                    "Marcar las partidas guardadas que han alcanzado el año de victoria y si has ganado o perdido.",
+                    "Que la potencia de crisis muestre la potencia de flota de la crisis en el menú de nueva partida.",
+                    "Potencia de crisis dinámica, que se recalcule antes de aparecer según el poder del mejor imperio de la partida.",
+                    "Poder cambiar el tipo de federación con una penalización al nivel y a la cohesión.",
+                    "Poder comprar las sucursales de megacorporación para quitarlas de tus planetas.",
+                    "Casus belli para disolver una federación.",
+                    "Poder hacer tus propias plantillas de planetas que se vayan construyendo solas con los recursos que asignes a los sectores (un nuevo menú de Diseño Planetario, igual que el de las naves).",
+                    "Nuevos líderes para naves de construcción (ingenieros/arquitectos), con sus propios rasgos, que puedas asignar a los planetas para ayudar con la velocidad de construcción.",
+                    "Nueva crisis: un megaimperio caído en el centro de la galaxia.",
+                    "Nueva ley en la federación o en la comunidad galáctica para un depósito de recursos que \"rescate\" a los miembros en déficit de ese recurso; usar el depósito te obliga a dar favores al resto de miembros, y puedes decidir si usarlo o no.",
+                    "Anillos orbitales y estaciones en pestañas separadas dentro del breviario.",
+                    "Poder elegir el diseño del gigante (ahora mismo no se puede elegir).",
+                    "Que los imperios caídos empiecen con hiperrelés.",
+                    "**(añadido)** Dividir algunos rasgos de las poblaciones en educación/experiencia, que se van ganando conforme se realiza un trabajo (una población produce más créditos cuanto más tiempo lleva trabajando como técnico).",
+                    "Poder ver, dentro de la partida, toda la configuración inicial que elegiste.",
+                    "Que la IA juegue en torno al metajuego de combate a partir de ciertas dificultades, sin perder parte de su personalidad."
+                ]
+            }
+        ],
+        i18n: {
+            en: {},
+            jp: {}
         }
     },
     {
