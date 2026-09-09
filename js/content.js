@@ -92,19 +92,26 @@ export const knowledgeBase = [
             },
 
             { type: "heading", text: "Destructor" },
-            { type: "image", src: "img/naves/Destructor artillero.png", alt: "Destructor artillero", caption: "Destructor artillero." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destructor con defensa de punto", caption: "Destructor con defensa de punto." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Destructor artillero.png", alt: "Destructor artillero", caption: "Destructor artillero." }],
+                    [{ type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destructor con defensa de punto", caption: "Destructor con defensa de punto." }]
+                ]
+            },
             { type: "divider" },
             { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Destructor anti corbetas", caption: "Destructor anti corbetas." },
 
             { type: "heading", text: "Crucero" },
-            { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Crucero torpedero con defensas de corto alcance", caption: "Crucero torpedero con defensas de corto alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Crucero torpedero de corto alcance con sigilo", caption: "Crucero torpedero de corto alcance con sigilo." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Crucero torpedero con defensas de corto alcance", caption: "Crucero torpedero con defensas de corto alcance." }],
+                    [{ type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Crucero torpedero de corto alcance con sigilo", caption: "Crucero torpedero de corto alcance con sigilo." }]
+                ]
+            },
             { type: "divider" },
             { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." },
-            { type: "divider" },
 
             { type: "heading", text: "Acorazado" },
             { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." },
