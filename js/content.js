@@ -75,14 +75,21 @@ export const knowledgeBase = [
         icon: "✦",
         blocks: [
             { type: "heading", text: "Corbeta" },
-            { type: "image", src: "img/naves/Corbeta generalista.png", alt: "Corbeta generalista", caption: "Corbeta generalista." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." },
-
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Corbeta generalista.png", alt: "Corbeta generalista", caption: "Corbeta generalista." }],
+                    [{ type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Corbeta early y mid game contra fauna espacial", caption: "Corbeta early y mid game contra fauna espacial." }]
+                ]
+            },
             { type: "heading", text: "Fragata" },
-            { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Fragata torpedera de corto alcance", caption: "Fragata torpedera de corto alcance con sigilo." }],
+                    [{ type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Fragata torpedera de largo alcance", caption: "Fragata torpedera de largo alcance." }]
+                ]
+            },
 
             { type: "heading", text: "Destructor" },
             { type: "image", src: "img/naves/Destructor artillero.png", alt: "Destructor artillero", caption: "Destructor artillero." },
@@ -399,18 +406,20 @@ export const knowledgeBase = [
                     { type: "heading", text: "Battleships", level: 2 },
                     { type: "paragraph", text: "1 to 3 Titans (optional), with the rest split evenly between artillery battleships and carrier battleships." },
                     {
-                        type: "list", items: [
-                            "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each one should carry a different offensive aura.",
-                            "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. In addition, they have an X-slot weapon that serves as artillery against large targets."
+                        type: "columns",
+                        columns: [
+                            [{ type: "paragraph", text: "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each one should carry a different offensive aura." }],
+                            [{ type: "paragraph", text: "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. In addition, they have an X-slot weapon that serves as artillery against large targets." }]
                         ]
                     },
 
                     { type: "heading", text: "Cruisers", level: 2 },
                     { type: "paragraph", text: "Torpedo cruisers only." },
                     {
-                        type: "list", items: [
-                            "If you choose short-range stealth torpedo cruisers, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or large enemies such as capital ships, Titans, starbases, Leviathans, etc. However, you run the risk of suffering heavy losses.",
-                            "If you choose long-range torpedo cruisers, they are siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive artillery firepower that carrier battleships lack to some extent. It should be noted that they are very weak when the enemy outranges you or has equal weapon range."
+                        type: "columns",
+                        columns: [
+                            [{ type: "paragraph", text: "If you choose short-range stealth torpedo cruisers, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or large enemies such as capital ships, Titans, starbases, Leviathans, etc. However, you run the risk of suffering heavy losses." }],
+                            [{ type: "paragraph", text: "If you choose long-range torpedo cruisers, they are siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive artillery firepower that carrier battleships lack to some extent. It should be noted that they are very weak when the enemy outranges you or has equal weapon range." }]
                         ]
                     },
 
@@ -476,9 +485,10 @@ export const knowledgeBase = [
                     { type: "heading", text: "戦艦", level: 2 },
                     { type: "paragraph", text: "タイタン1～3隻（任意）を用意し、残りは砲撃型戦艦と空母型戦艦を半々にします。" },
                     {
-                        type: "list", items: [
-                            "タイタンを編成する場合は、オーラによる支援を担当させます。複数のタイタンを編成する場合、それぞれ異なる攻撃オーラを装備させるべきです。",
-                            "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能し、大型艦に対しても十分に戦えます。さらに、Xスロット兵器によって大型目標への砲撃も行えます。"
+                        type: "columns",
+                        columns: [
+                            [{ type: "paragraph", text: "タイタンを編成する場合は、オーラによる支援を担当させます。複数のタイタンを編成する場合、それぞれ異なる攻撃オーラを装備させるべきです。" }],
+                            [{ type: "paragraph", text: "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能し、大型艦に対しても十分に戦えます。さらに、Xスロット兵器によって大型目標への砲撃も行えます。" }]
                         ]
                     },
 
@@ -486,8 +496,13 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "魚雷巡洋艦のみ。" },
                     {
                         type: "list", items: [
-                            "短射程・ステルス型の魚雷巡洋艦を選ぶ場合、大型目標を打ち砕く破城槌として機能します。主力艦、タイタン、恒星基地、リヴァイアサンなど、停止している敵や大型目標に対して非常に壊滅的なダメージを与えられます。ただし、大きな損失を被るリスクがあります。",
-                            "長射程魚雷巡洋艦を選ぶ場合、長距離から安全にチョークポイントやその他の防衛施設を破壊する攻城砲として機能します。空母型戦艦がある程度欠いている砲撃力を補う、強力な長距離火力を提供します。ただし、敵の兵器射程がこちらを上回っている、あるいは同等の場合には非常に脆弱です。"
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "paragraph", text: "短射程・ステルス型の魚雷巡洋艦を選ぶ場合、大型目標を打ち砕く破城槌として機能します。主力艦、タイタン、恒星基地、リヴァイアサンなど、停止している敵や大型目標に対して非常に壊滅的なダメージを与えられます。ただし、大きな損失を被るリスクがあります。" }],
+                            [{ type: "paragraph", text: "長射程魚雷巡洋艦を選ぶ場合、長距離から安全にチョークポイントやその他の防衛施設を破壊する攻城砲として機能します。空母型戦艦がある程度欠いている砲撃力を補う、強力な長距離火力を提供します。ただし、敵の兵器射程がこちらを上回っている、あるいは同等の場合には非常に脆弱です。" }]
                         ]
                     },
 
@@ -519,54 +534,54 @@ export const knowledgeBase = [
         icon: "✦",
         blocks: [
             { type: "heading", text: "Macero" },
-            { type: "image", src: "Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
-            { type: "image", src: "Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
+            { type: "image", src: "img/bionaves/Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
+            { type: "image", src: "img/bionaves/Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
             { type: "divider" },
 
             { type: "heading", text: "Tejedor" },
-            { type: "image", src: "Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
-            { type: "image", src: "Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
-            { type: "image", src: "Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
+            { type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
+            { type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
+            { type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
             { type: "divider" },
 
             { type: "heading", text: "Heraldo" },
-            { type: "image", src: "Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
-            { type: "image", src: "Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
+            { type: "image", src: "img/bionaves/Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
+            { type: "image", src: "img/bionaves/Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
             { type: "divider" },
 
             { type: "heading", text: "Aguijón" },
-            { type: "image", src: "Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
+            { type: "image", src: "img/bionaves/Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
             { type: "divider" },
 
             { type: "heading", text: "Titanes" },
-            { type: "image", src: "Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
+            { type: "image", src: "img/bionaves/Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
             { type: "divider" },
 
             { type: "heading", text: "Gigante" },
-            { type: "image", src: "Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
+            { type: "image", src: "img/bionaves/Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
             { type: "divider" },
 
             { type: "heading", text: "Coloso" },
-            { type: "image", src: "Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
+            { type: "image", src: "img/bionaves/Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
             { type: "divider" },
 
             { type: "heading", text: "Plataforma de defensa" },
-            { type: "image", src: "Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
-            { type: "image", src: "Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
+            { type: "image", src: "img/bionaves/Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
+            { type: "image", src: "img/bionaves/Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
             { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
-            { type: "image", src: "Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
+            { type: "image", src: "img/bionaves/Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
             { type: "divider" },
 
             { type: "heading", text: "Cañón de iones" },
-            { type: "image", src: "Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            { type: "image", src: "img/bionaves/Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
             { type: "divider" },
 
             { type: "heading", text: "Ciudadela de espacio profundo" },
-            { type: "image", src: "Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
-            { type: "image", src: "Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
+            { type: "image", src: "img/bionaves/Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
+            { type: "image", src: "img/bionaves/Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
             { type: "divider" },
-            { type: "image", src: "Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
-            { type: "image", src: "Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
+            { type: "image", src: "img/bionaves/Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
+            { type: "image", src: "img/bionaves/Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
         ],
         i18n: {
             en: {},
@@ -950,37 +965,37 @@ export const knowledgeBase = [
         icon: "✦",
         blocks: [
             { type: "heading", text: "Entidades cristalinas" },
-            { type: "image", src: "Cohorte de cristal de zafiro.png", alt: "Cohorte de cristal de zafiro", caption: "Cohorte de cristal de zafiro." },
-            { type: "image", src: "Soberano de cristal de zafiro.png", alt: "Soberano de cristal de zafiro", caption: "Soberano de cristal de zafiro." },
-            { type: "image", src: "Centinela de cristal de zafiro.png", alt: "Centinela de cristal de zafiro", caption: "Centinela de cristal de zafiro." },
+            { type: "image", src: "img/fauna/Cohorte de cristal de zafiro.png", alt: "Cohorte de cristal de zafiro", caption: "Cohorte de cristal de zafiro." },
+            { type: "image", src: "img/fauna/Soberano de cristal de zafiro.png", alt: "Soberano de cristal de zafiro", caption: "Soberano de cristal de zafiro." },
+            { type: "image", src: "img/fauna/Centinela de cristal de zafiro.png", alt: "Centinela de cristal de zafiro", caption: "Centinela de cristal de zafiro." },
             { type: "divider" },
 
             { type: "heading", text: "Amebas espaciales" },
-            { type: "image", src: "Ameba espacial.png", alt: "Ameba espacial", caption: "Ameba espacial." },
-            { type: "image", src: "Ameba espacial madre.png", alt: "Ameba espacial madre", caption: "Ameba espacial madre." },
+            { type: "image", src: "img/fauna/Ameba espacial.png", alt: "Ameba espacial", caption: "Ameba espacial." },
+            { type: "image", src: "img/fauna/Ameba espacial madre.png", alt: "Ameba espacial madre", caption: "Ameba espacial madre." },
             { type: "divider" },
 
             { type: "heading", text: "Tiyanki" },
-            { type: "image", src: "Cria de ballena espacial.png", alt: "Cría de ballena espacial", caption: "Cría de ballena espacial." },
-            { type: "image", src: "Ballenato espacial.png", alt: "Ballenato espacial", caption: "Ballenato espacial." },
+            { type: "image", src: "img/fauna/Cria de ballena espacial.png", alt: "Cría de ballena espacial", caption: "Cría de ballena espacial." },
+            { type: "image", src: "img/fauna/Ballenato espacial.png", alt: "Ballenato espacial", caption: "Ballenato espacial." },
             { type: "divider" },
-            { type: "image", src: "Ballena hembra espacial.png", alt: "Ballena hembra espacial", caption: "Ballena hembra espacial." },
-            { type: "image", src: "Ballena macho espacial.png", alt: "Ballena macho espacial", caption: "Ballena macho espacial." },
+            { type: "image", src: "img/fauna/Ballena hembra espacial.png", alt: "Ballena hembra espacial", caption: "Ballena hembra espacial." },
+            { type: "image", src: "img/fauna/Ballena macho espacial.png", alt: "Ballena macho espacial", caption: "Ballena macho espacial." },
             { type: "divider" },
-            { type: "image", src: "Buey ballena espacial.png", alt: "Buey ballena espacial", caption: "Buey ballena espacial." },
+            { type: "image", src: "img/fauna/Buey ballena espacial.png", alt: "Buey ballena espacial", caption: "Buey ballena espacial." },
             { type: "divider" },
 
             { type: "heading", text: "Gusanos del vacío" },
-            { type: "image", src: "Ninfa de gusano del vacio.png", alt: "Ninfa de gusano del vacío", caption: "Ninfa de gusano del vacío." },
-            { type: "image", src: "Cria de gusano del vacio.png", alt: "Cría de gusano del vacío", caption: "Cría de gusano del vacío." },
-            { type: "image", src: "Gusano del vacio adulto.png", alt: "Gusano del vacío adulto", caption: "Gusano del vacío adulto." },
-            { type: "image", src: "Troika de gusanos del vacio.png", alt: "Troika de gusanos del vacío", caption: "Troika de gusanos del vacío." },
+            { type: "image", src: "img/fauna/Ninfa de gusano del vacio.png", alt: "Ninfa de gusano del vacío", caption: "Ninfa de gusano del vacío." },
+            { type: "image", src: "img/fauna/Cria de gusano del vacio.png", alt: "Cría de gusano del vacío", caption: "Cría de gusano del vacío." },
+            { type: "image", src: "img/fauna/Gusano del vacio adulto.png", alt: "Gusano del vacío adulto", caption: "Gusano del vacío adulto." },
+            { type: "image", src: "img/fauna/Troika de gusanos del vacio.png", alt: "Troika de gusanos del vacío", caption: "Troika de gusanos del vacío." },
             { type: "divider" },
 
             { type: "heading", text: "Cutuloides" },
-            { type: "image", src: "Cria cutuloide.png", alt: "Cría cutuloide", caption: "Cría cutuloide." },
-            { type: "image", src: "Cutuloide adolescente.png", alt: "Cutuloide adolescente", caption: "Cutuloide adolescente." },
-            { type: "image", src: "Cutuloides.png", alt: "Cutuloides", caption: "Cutuloides." },
+            { type: "image", src: "img/fauna/Cria cutuloide.png", alt: "Cría cutuloide", caption: "Cría cutuloide." },
+            { type: "image", src: "img/fauna/Cutuloide adolescente.png", alt: "Cutuloide adolescente", caption: "Cutuloide adolescente." },
+            { type: "image", src: "img/fauna/Cutuloides.png", alt: "Cutuloides", caption: "Cutuloides." },
             { type: "divider" },
 
             { type: "heading", text: "Diseños de flotas" },
@@ -1182,70 +1197,70 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {   // Flotas especiales
-        slug: "flotas-especiales",
-        title: "Flotas especiales",
+    {   // Flotas de Ambición y Especiales
+        slug: "flotas-ambicion-especiales",
+        title: "Flotas de Ambición y Especiales",
         icon: "✦",
         blocks: [
             { type: "heading", text: "Amenazantes" },
 
             { type: "heading", text: "Enjambre de corbetas amenazantes" },
-            { type: "image", src: ".png", alt: "Enjambre de corbetas amenazantes", caption: "" },
-            { type: "image", src: ".png", alt: "Enjambre de corbetas amenazantes", caption: "" },
+            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de corbetas amenazantes", caption: "" },
+            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de corbetas amenazantes", caption: "" },
             { type: "paragraph", text: "Las corbetas amenazantes no tienen costes añadidos según el tipo de componente, el mantenimiento es mucho menor que el de una corbeta normal, el coste de construcción siempre es fijo en minerales, se construyen más rápido, tienen bonus al daño de armas de la nave, las estadísticas base son superiores a las de una corbeta normal y tienen un espacio de componente auxiliar extra. Todo esto hace que sean extremadamente superiores a las corbetas normales, dejándolas en un segundo plano." },
             { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los lanzadores de nubes de nanomisiles antiguos son una versión mejorada de los disruptores, a cambio de necesitar un espacio S por fuerza." },
 
             { type: "heading", text: "Comedor de estrellas" },
-            { type: "image", src: ".png", alt: "Comedor de estrellas", caption: "" },
-            { type: "image", src: ".png", alt: "Comedor de estrellas", caption: "" },
+            { type: "image", src: "img/ambicion/.png", alt: "Comedor de estrellas", caption: "" },
+            { type: "image", src: "img/ambicion/.png", alt: "Comedor de estrellas", caption: "" },
             { type: "paragraph", text: "Estas naves tienen mayor poder destructivo que un gigante, a cambio de no tener armas X ni aura, siendo de hecho inferiores para enfrentar otros objetivos de gran tamaño ni sirven como buffers. Además, no tienen un coste fijo en minerales, lo que las hace inferiores en el armamento que nos podamos permitir ponerles." },
 
             { type: "heading", text: "Destructores amenazantes" },
-            { type: "image", src: ".png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." },
+            { type: "image", src: "img/ambicion/.png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." },
 
             { type: "heading", text: "Cruceros amenazantes" },
-            { type: "image", src: ".png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." },
+            { type: "image", src: "img/ambicion/.png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." },
             { type: "divider" },
 
             { type: "heading", text: "Imperio caído máquina" },
 
             { type: "heading", text: "Escoltas misteriosas" },
-            { type: "image", src: ".png", alt: "Escolta artillera", caption: "Escolta artillera." },
-            { type: "image", src: ".png", alt: "Escolta torpedera de corto alcance con sigilo", caption: "Escolta torpedera de corto alcance con sigilo." },
-            { type: "image", src: ".png", alt: "Escolta torpedera de largo alcance", caption: "Escolta torpedera de largo alcance." },
+            { type: "image", src: "img/ambicion/.png", alt: "Escolta artillera", caption: "Escolta artillera." },
+            { type: "image", src: "img/ambicion/.png", alt: "Escolta torpedera de corto alcance con sigilo", caption: "Escolta torpedera de corto alcance con sigilo." },
+            { type: "image", src: "img/ambicion/.png", alt: "Escolta torpedera de largo alcance", caption: "Escolta torpedera de largo alcance." },
             { type: "divider" },
 
             { type: "heading", text: "Crucero de batalla" },
-            { type: "image", src: ".png", alt: "Cruceros de batalla artilleros a larga distancia", caption: "Cruceros de batalla artilleros a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
-            { type: "image", src: ".png", alt: "Cruceros de batalla torpederos a corta distancia", caption: "Cruceros de batalla torpederos a corta distancia. Este diseño es poco recomendado, ya que las armas X, que no sean el emisor de arcos, no podrán ser utilizadas mientras usas las armas G y viceversa." },
-            { type: "image", src: ".png", alt: "Cruceros de batalla torpederos a larga distancia", caption: "Cruceros de batalla torpederos a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla artilleros a larga distancia", caption: "Cruceros de batalla artilleros a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla torpederos a corta distancia", caption: "Cruceros de batalla torpederos a corta distancia. Este diseño es poco recomendado, ya que las armas X, que no sean el emisor de arcos, no podrán ser utilizadas mientras usas las armas G y viceversa." },
+            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla torpederos a larga distancia", caption: "Cruceros de batalla torpederos a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
             { type: "divider" },
 
             { type: "heading", text: "Titán paradójico" },
-            { type: "image", src: ".png", alt: "Titán paradójico", caption: "" },
+            { type: "image", src: "img/ambicion/.png", alt: "Titán paradójico", caption: "" },
             { type: "paragraph", text: "Como cualquier titán normal, su principal uso es de buffer/debuffer. Aunque esta versión es mucho más poderosa que un titán normal y será capaz de eliminar con una salva de sus dos armas T a cualquier otra nave." },
             { type: "divider" },
 
             { type: "heading", text: "Imperio caído biológico" },
-            { type: "image", src: ".png", alt: "Macero cifrador de corto alcance", caption: "Macero cifrador de corto alcance." },
-            { type: "image", src: ".png", alt: "Tejedores de dilema de apoyo de largo alcance", caption: "Tejedores de dilema de apoyo de largo alcance." },
+            { type: "image", src: "img/ambicion/.png", alt: "Macero cifrador de corto alcance", caption: "Macero cifrador de corto alcance." },
+            { type: "image", src: "img/ambicion/.png", alt: "Tejedores de dilema de apoyo de largo alcance", caption: "Tejedores de dilema de apoyo de largo alcance." },
             { type: "divider" },
-            { type: "image", src: ".png", alt: "Heraldos de laberinto con torpedos de largo alcance", caption: "Heraldos de laberinto con torpedos de largo alcance." },
-            { type: "image", src: ".png", alt: "Aguijón críptico como titanes artilleros", caption: "Aguijón críptico como titanes artilleros." },
+            { type: "image", src: "img/ambicion/.png", alt: "Heraldos de laberinto con torpedos de largo alcance", caption: "Heraldos de laberinto con torpedos de largo alcance." },
+            { type: "image", src: "img/ambicion/.png", alt: "Aguijón críptico como titanes artilleros", caption: "Aguijón críptico como titanes artilleros." },
             { type: "divider" },
 
             { type: "heading", text: "Naves nanorrobot" },
 
             { type: "heading", text: "Enjambrador de nanorrobots" },
-            { type: "image", src: ".png", alt: "Enjambre de naves de ataque", caption: "Enjambre de naves de ataque." },
-            { type: "image", src: ".png", alt: "Enjambre de torpedos de corta distancia con sigilo", caption: "Enjambre de torpedos de corta distancia con sigilo." },
+            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de naves de ataque", caption: "Enjambre de naves de ataque." },
+            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de torpedos de corta distancia con sigilo", caption: "Enjambre de torpedos de corta distancia con sigilo." },
             { type: "divider" },
-            { type: "image", src: ".png", alt: "Enjambre de torpedos de larga distancia", caption: "Enjambre de torpedos de larga distancia." },
+            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de torpedos de larga distancia", caption: "Enjambre de torpedos de larga distancia." },
 
             { type: "heading", text: "Interdictor nanorrobot" },
-            { type: "image", src: ".png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
-            { type: "image", src: ".png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
-            { type: "image", src: ".png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
+            { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
+            { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
+            { type: "image", src: "img/ambicion/.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
         ],
         i18n: {
             en: {},
