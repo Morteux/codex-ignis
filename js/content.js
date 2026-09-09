@@ -69,9 +69,9 @@
  */
 
 export const knowledgeBase = [
-    {
-        slug: "diseño-naves-maquina",
-        title: "Diseño de naves máquina",
+    {   // Diseño de naves mecánicas
+        slug: "diseño-naves-mecnicas",
+        title: "Diseño de naves mecánicas",
         icon: "✦",
         blocks: [
             { type: "heading", text: "Corbeta" },
@@ -278,47 +278,47 @@ export const knowledgeBase = [
             }
         }
     },
-    {
-        slug: "diseño-flotas-maquina",
-        title: "Diseño de flotas máquina",
+    {   // Diseño de flotas mecánicas
+        slug: "diseño-flotas-mecnicas",
+        title: "Diseño de flotas mecánicas",
         icon: "✦",
         blocks: [
             { type: "heading", text: "Inicio de juego" },
 
-            { type: "note", text: "Solo corbetas" },
+            { type: "heading", text: "Solo corbetas", level: 2 },
             { type: "paragraph", text: "Lo más básico para el año 2200." },
             { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente. Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
             { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
             { type: "paragraph", text: "Recomendado usar láser de dron minero si lo tienes disponible hasta contar con plasma y/o cañones automáticos." },
 
-            { type: "note", text: "Solo destructores" },
+            { type: "heading", text: "Solo destructores", level: 2 },
             { type: "paragraph", text: "Con un diseño especializado, puede superar una flota de corbetas híbrida con armas de energía y cinéticas. El problema es que escalan bastante mal en las siguientes etapas del juego." },
             { type: "paragraph", text: "No obstante, ahora las corbetas también escalan bastante mal, así que en partidas de larga duración, no es mala idea hacer algunos destructores para tener ventaja sobre las corbetas del early game." },
 
-            { type: "note", text: "Apoyo de fragatas" },
+            { type: "heading", text: "Apoyo de fragatas", level: 2 },
             { type: "paragraph", text: "Con el nuevo ordenador de combate de asedio, combinar fragatas con corbetas y/o destructores en el early game es muy buena idea para destruir puntos de choque y estaciones defensivas con mucha potencia de flota. Puesto que son objetivos muy duros para las corbetas y los destructores, pero con unas fragatas torpederas, puedes darle fácilmente la vuelta al combate." },
             { type: "divider" },
 
             { type: "heading", text: "Mitad de juego" },
 
-            { type: "note", text: "Solo corbetas" },
+            { type: "heading", text: "Solo corbetas", level: 2 },
             { type: "paragraph", text: "En caso de una flota solo de corbetas híbridas puede funcionar, pero las pérdidas tras cada combate son aseguradas, lo que socavará tu economía aún en desarrollo. Poco recomendable en guerras de desgaste. Llegados a este punto, deja de construir corbetas y centrate en fragatas y cruceros." },
 
-            { type: "note", text: "Solo cruceros" },
+            { type: "heading", text: "Solo cruceros", level: 2 },
             { type: "paragraph", text: "Primera versión de una flota de hangares. Dado que aún no tenemos muchas opciones para nuestras armas, puedes acompañar los hangares con solo misiles y defensa de punto. Si tuvieras los torpedos de largo alcance sería la mejor opción." },
 
-            { type: "note", text: "Solo fragatas" },
+            { type: "heading", text: "Solo fragatas", level: 2 },
             { type: "paragraph", text: "Las fragatas que podamos hacer en el early game, pueden ayudarnos en esta fase a destruir mayores puntos defensivos del enemigo. Si contamos con un componente de sigilo, es altamente recomendable utilizarlo." },
             { type: "divider" },
 
             { type: "heading", text: "Juego tardío" },
-            { type: "note", text: "Solo acorazados portahangares" },
+            { type: "heading", text: "Solo acorazados portahangares", level: 2 },
             { type: "paragraph", text: "Acorazados portahangares. Haciendo uso de la potencia de fuego de largo alcance de las armas X, junto con la versatilidad de los hangares, además de tener espacio para defensa de punto y armas M y S, tenemos el diseño definitivo que lo hará, al menos, decentemente bien contra todo lo que podamos echarnos encima. Si bien, habrá ocasiones donde una flota especializada puede ser superior. Para la mayoría de amenazas como las crisis de mitad de juego, imperios caídos y despertados e incluso algunas crisis de fin de juego, lo hará más que suficientemente bien. Para el arma X puedes elegir entre la lanza de energía y lanzador de arco, en ningún caso utilices el gigacañón." },
             { type: "divider" },
 
             { type: "heading", text: "Final de juego" },
 
-            { type: "note", text: "Acorazados" },
+            { type: "heading", text: "Acorazados", level: 2 },
             { type: "paragraph", text: "De 1 a 3 titanes (opcional), el resto mitad de acorazados artilleros y mitad de acorazados portahangares." },
             {
                 type: "list", items: [
@@ -327,7 +327,7 @@ export const knowledgeBase = [
                 ]
             },
 
-            { type: "note", text: "Cruceros" },
+            { type: "heading", text: "Cruceros", level: 2 },
             { type: "paragraph", text: "Solo cruceros torpederos." },
             {
                 type: "list", items: [
@@ -336,8 +336,301 @@ export const knowledgeBase = [
                 ]
             },
 
-            { type: "note", text: "Titanes" },
+            { type: "heading", text: "Titanes", level: 2 },
             { type: "paragraph", text: "En caso de no querer repartir los titanes en distintas flotas, puedes hacer una flota únicamente con todos tus titanes. Agrupando distintas auras ofensivas y defensivas, te aseguras tenerlas todas activas aunque pierdas algunos titanes, ya que siempre tendrás más de un titán con cada tipo de arma. Esta flota es más vulnerable en solitario, así que combiene acompañarla de una flota de acorazados portahangares normal." },
+            { type: "divider" },
+
+            { type: "heading", text: "Defensas" },
+
+            { type: "heading", text: "Combinación de plataformas de defensa con cañones de iones.", level: 2 },
+            { type: "paragraph", text: "Puedes combinar plataformas y cañones de formas distintas según la necesidad, aunque una vez construyas las defensas de una base estelar, difícilmente podrás cambiarla hasta que sean destruidas." },
+            {
+                type: "list", items: [
+                    "**Un cañón de iones con muchas plataformas de defensa:** efectiva contra flotas de imperios de IA. Se utiliza un único cañón de iones por dos motivos: el principal, es poder tener rango suficiente para atacar a naves en cualquier parte del sistema, de forma que ninguna pueda cruzar por el borde sin que la base estelar la ataque por estar fuera de rango; el segundo, tener algo de daño extra contra naves de gran tamaño como titanes, acorazados y bionaves ancianas. Por otro lado, las plataformas de defensas, ya sean de hangares o torpedos de largo alcance, serán la fuente principal de daño para cualquier tipo de naves, especialmente las de pequeño y mediano tamaño. Puede funcionar como única defensa en el sistema, dañando seriamente la flota enemiga o incluso repeliendo el ataque. No obstante, sufrirá muchisimas bajas y es recomendable usar una flota completa que reciba principalmente el daño.",
+                    "**Todos los cañones de iones posibles y rellenar los espacios sobrantes con plataformas de defensa:** efectiva contra flotas de imperios caídos/despertados y crisis de mitad y fin de juego. Los cañones de iones serán capaces de casi barrer al completo las naves grandes en las primeras dos salvas, mientras que estarán desprotegidas contra naves pequeñas. Por esto, recomiendo rellenar los huevos con plataformas de defensa con hangares, que proporcionan algo de defensa extra contra misiles y torpedos. No obstante, este tipo de defensas suelen usarse como apoyo a una flota completa y nunca como defensa única. Aunque gracias al daño colateral de las armas T, ahora es viable utilizar solo cañones de iones, ya que podrán acabar con flotas enteras de naves pequeñas si consiguen acertar dos o tres disparos de un arma T."
+                ]
+            },
+
+            { type: "heading", text: "Posicionamiento de la ciudadela de espacio profundo.", level: 2 },
+            { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
+            { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
+        ],
+        i18n: {
+            en: {
+                title: "About titans and their auras",
+                blocks: [
+                    { type: "heading", text: "Early Game" },
+
+                    { type: "heading", text: "Corvettes only", level: 2 },
+                    { type: "paragraph", text: "The most basic setup for the year 2200." },
+                    { type: "paragraph", text: "Enemies will be random, and you will not be able to know much about them since you will not be able to spy on them effectively. You will only be able to determine how to counter their fleet once the first battle takes place (by checking the combat log and enemy components), which in the early game is usually also the last one, so the most viable approach is to prepare for everything." },
+                    { type: "paragraph", text: "If you have trouble with amoebas or mining drones, use energy weapons. If you have trouble with energy entities, use kinetic weapons. Simply complete the first contact protocol and check their armor and shields." },
+                    { type: "paragraph", text: "It is recommended to use the Mining Drone Laser if available until you have access to plasma and/or autocannons." },
+
+                    { type: "heading", text: "Destroyers only", level: 2 },
+                    { type: "paragraph", text: "With a specialized design, they can outperform a hybrid corvette fleet using both energy and kinetic weapons. The problem is that they scale rather poorly in the later stages of the game." },
+                    { type: "paragraph", text: "However, corvettes also scale rather poorly now, so in long games, building some destroyers is not a bad idea to gain an advantage over early-game corvettes." },
+
+                    { type: "heading", text: "Frigate support", level: 2 },
+                    { type: "paragraph", text: "With the new siege combat computer, combining frigates with corvettes and/or destroyers in the early game is a very good idea for destroying chokepoints and defensive stations with a lot of fleet power. Since these are very difficult targets for corvettes and destroyers, torpedo frigates can easily turn the battle around." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Mid Game" },
+
+                    { type: "heading", text: "Corvettes only", level: 2 },
+                    { type: "paragraph", text: "A fleet made entirely of hybrid corvettes can work, but losses after every battle are virtually guaranteed, which will undermine your still-developing economy. Not recommended for wars of attrition. At this point, stop building corvettes and focus on frigates and cruisers." },
+
+                    { type: "heading", text: "Cruisers only", level: 2 },
+                    { type: "paragraph", text: "The first version of a carrier fleet. Since we still do not have many weapon options, you can equip the hangars with only missiles and point defense. If you have access to long-range torpedoes, that would be the best option." },
+
+                    { type: "heading", text: "Frigates only", level: 2 },
+                    { type: "paragraph", text: "The frigates we can build in the early game can help us destroy larger defensive positions during this phase. If we have access to a stealth component, it is highly recommended to use it." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Late Game" },
+                    { type: "heading", text: "Carrier Battleships only", level: 2 },
+                    { type: "paragraph", text: "Carrier battleships. By combining the long-range firepower of X-slot weapons with the versatility of hangars, while also having room for point defense and M- and S-slot weapons, we have the ultimate design that will perform at least decently well against virtually anything we can encounter. There will be situations where a specialized fleet may outperform it, but against most threats such as mid-game crises, fallen and awakened empires, and even some end-game crises, it will perform more than adequately. For the X-slot weapon, you can choose between the Energy Lance and Arc Emitter. Under no circumstances should you use the Giga Cannon." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "End Game" },
+
+                    { type: "heading", text: "Battleships", level: 2 },
+                    { type: "paragraph", text: "1 to 3 Titans (optional), with the rest split evenly between artillery battleships and carrier battleships." },
+                    {
+                        type: "list", items: [
+                            "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each one should carry a different offensive aura.",
+                            "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. In addition, they have an X-slot weapon that serves as artillery against large targets."
+                        ]
+                    },
+
+                    { type: "heading", text: "Cruisers", level: 2 },
+                    { type: "paragraph", text: "Torpedo cruisers only." },
+                    {
+                        type: "list", items: [
+                            "If you choose short-range stealth torpedo cruisers, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or large enemies such as capital ships, Titans, starbases, Leviathans, etc. However, you run the risk of suffering heavy losses.",
+                            "If you choose long-range torpedo cruisers, they are siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive artillery firepower that carrier battleships lack to some extent. It should be noted that they are very weak when the enemy outranges you or has equal weapon range."
+                        ]
+                    },
+
+                    { type: "heading", text: "Titans", level: 2 },
+                    { type: "paragraph", text: "If you do not want to distribute your Titans among different fleets, you can create a fleet consisting entirely of all your Titans. By grouping different offensive and defensive auras, you ensure that all of them remain active even if you lose some Titans, since you will always have more than one Titan with each type of weapon. This fleet is more vulnerable on its own, so it is advisable to accompany it with a normal carrier battleship fleet." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Defenses" },
+
+                    { type: "heading", text: "Combining defense platforms with Ion Cannons.", level: 2 },
+                    { type: "paragraph", text: "You can combine platforms and cannons in different ways depending on your needs, although once you build the defenses of a starbase, you will hardly be able to change them until they are destroyed." },
+                    {
+                        type: "list", items: [
+                            "**One Ion Cannon with many defense platforms:** effective against AI empire fleets. A single Ion Cannon is used for two reasons: the main one is to have enough range to attack ships anywhere in the system, so that no ship can pass through the edge without being attacked by the starbase for being out of range; the second is to have some additional damage against large ships such as Titans, battleships, and Bubbles. On the other hand, defense platforms, whether using hangars or long-range torpedoes, will be the main source of damage against any type of ship, especially small and medium-sized ones. It can work as the only defense in the system, seriously damaging the enemy fleet or even repelling the attack. However, it will suffer extremely heavy losses, so it is recommended to use a full fleet to absorb most of the damage.",
+                            "**As many Ion Cannons as possible, filling the remaining slots with defense platforms:** effective against fallen/awakened empire fleets and mid- and end-game crises. Ion Cannons will be capable of almost completely wiping out large ships in the first two volleys, while leaving you vulnerable to small ships. For this reason, I recommend filling the remaining slots with hangar defense platforms, which provide some additional protection against missiles and torpedoes. However, this type of defense is usually used to support a full fleet and never as the sole defense. Thanks to the collateral damage of T-slot weapons, it is now viable to use only Ion Cannons, as they can eliminate entire fleets of small ships if they manage to land two or three shots from a T-slot weapon."
+                        ]
+                    },
+
+                    { type: "heading", text: "Deep Space Citadel positioning.", level: 2 },
+                    { type: "paragraph", text: "For the Deep Space Citadel, positioning is key. Since the only design we have for a level-three Citadel is long-range, we want to position our Citadels on the edges of systems, away from hyperlane jumps where hostile fleets may enter. Therefore, we need to position the Citadel far enough away that it is not close to every hyperlane entrance or the central starbase, while still keeping its hangars and X-slot weapon within firing range." },
+                    { type: "paragraph", text: "A second option is to position our Citadel directly at the edge of the hyperlane jump. While this will waste the X-slot weapon and L-slot weapons in most cases, we can instead build short-range defense platforms directly on the Citadel with hybrid energy and kinetic weapons, or simply short-range torpedoes, allowing them to start attacking as soon as the enemy fleet jumps into the system." },
+                ]
+            },
+            jp: {
+                title: "タイタンとそのオーラについて",
+                icon: "✦",
+                blocks: [
+                    { type: "heading", text: "序盤" },
+
+                    { type: "heading", text: "コルベットのみ", level: 2 },
+                    { type: "paragraph", text: "2200年時点で最も基本的な構成です。" },
+                    { type: "paragraph", text: "敵はランダムであり、効果的に諜報することもできないため、敵艦隊について事前に知ることはほとんどできません。敵艦隊への対策を判断できるのは、最初の戦闘が発生した後（戦闘ログや敵艦の装備を確認することで）だけです。序盤ではこの最初の戦闘がそのまま最後の戦闘になることも多いため、現実的にはあらゆる可能性に備えておくのが最善です。" },
+                    { type: "paragraph", text: "アメーバや採掘ドローンに苦戦する場合は、エネルギー兵器を使用します。エネルギー生命体に苦戦する場合は、実体弾兵器を使用します。単純に初接触プロトコルを完了し、敵の装甲とシールドを確認してください。" },
+                    { type: "paragraph", text: "利用可能であれば、プラズマ兵器やオートキャノンを手に入れるまでは、採掘ドローンレーザーの使用を推奨します。" },
+
+                    { type: "heading", text: "駆逐艦のみ", level: 2 },
+                    { type: "paragraph", text: "特化型の設計であれば、エネルギー兵器と実体弾兵器を組み合わせたハイブリッドなコルベット艦隊を上回ることができます。問題は、ゲーム後半になると性能の伸びがかなり悪いことです。" },
+                    { type: "paragraph", text: "ただし、現在はコルベットも性能の伸びがかなり悪いため、長期戦になるゲームでは、序盤のコルベットに対して優位を取るために駆逐艦をいくらか建造しておくのも悪くありません。" },
+
+                    { type: "heading", text: "フリゲートによる支援", level: 2 },
+                    { type: "paragraph", text: "新しい攻城戦用戦闘コンピュータを利用すれば、序盤にフリゲートをコルベットや駆逐艦と組み合わせるのは非常に有効です。特に、艦隊戦力が高いチョークポイントや防衛ステーションの撃破に役立ちます。これらはコルベットや駆逐艦にとって非常に厄介な標的ですが、魚雷フリゲートを投入することで戦況を簡単にひっくり返すことができます。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "中盤" },
+
+                    { type: "heading", text: "コルベットのみ", level: 2 },
+                    { type: "paragraph", text: "ハイブリッド型コルベットだけの艦隊でも機能させることはできますが、戦闘のたびに損失が発生することがほぼ確実であり、まだ発展途上の経済を圧迫します。消耗戦にはあまりおすすめできません。この段階になったらコルベットの建造をやめ、フリゲートと巡洋艦に集中しましょう。" },
+
+                    { type: "heading", text: "巡洋艦のみ", level: 2 },
+                    { type: "paragraph", text: "空母艦隊の最初の形です。まだ兵器の選択肢が多くないため、格納庫にはミサイルとポイントディフェンスのみを搭載することができます。長射程魚雷を利用できるのであれば、それが最善の選択肢です。" },
+
+                    { type: "heading", text: "フリゲートのみ", level: 2 },
+                    { type: "paragraph", text: "序盤に建造できるフリゲートは、この段階で敵のより大型の防衛拠点を破壊するのに役立ちます。ステルス用コンポーネントを利用できるのであれば、使用することを強く推奨します。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "終盤" },
+                    { type: "heading", text: "空母型戦艦のみ", level: 2 },
+                    { type: "paragraph", text: "空母型戦艦です。Xスロット兵器による長距離火力と格納庫の汎用性を組み合わせ、さらにポイントディフェンスとM・Sスロット兵器を搭載できることで、遭遇するほぼあらゆる相手に対して少なくとも十分に戦える究極の設計となります。特化型艦隊のほうが優れる場面もありますが、中盤危機、没落・覚醒帝国、さらには一部の終盤危機といったほとんどの脅威に対しては十分以上の性能を発揮します。Xスロット兵器にはエネルギーランスかアーク放射器を選択できます。ギガキャノンは絶対に使用しないでください。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ゲーム終盤" },
+
+                    { type: "heading", text: "戦艦", level: 2 },
+                    { type: "paragraph", text: "タイタン1～3隻（任意）を用意し、残りは砲撃型戦艦と空母型戦艦を半々にします。" },
+                    {
+                        type: "list", items: [
+                            "タイタンを編成する場合は、オーラによる支援を担当させます。複数のタイタンを編成する場合、それぞれ異なる攻撃オーラを装備させるべきです。",
+                            "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能し、大型艦に対しても十分に戦えます。さらに、Xスロット兵器によって大型目標への砲撃も行えます。"
+                        ]
+                    },
+
+                    { type: "heading", text: "巡洋艦", level: 2 },
+                    { type: "paragraph", text: "魚雷巡洋艦のみ。" },
+                    {
+                        type: "list", items: [
+                            "短射程・ステルス型の魚雷巡洋艦を選ぶ場合、大型目標を打ち砕く破城槌として機能します。主力艦、タイタン、恒星基地、リヴァイアサンなど、停止している敵や大型目標に対して非常に壊滅的なダメージを与えられます。ただし、大きな損失を被るリスクがあります。",
+                            "長射程魚雷巡洋艦を選ぶ場合、長距離から安全にチョークポイントやその他の防衛施設を破壊する攻城砲として機能します。空母型戦艦がある程度欠いている砲撃力を補う、強力な長距離火力を提供します。ただし、敵の兵器射程がこちらを上回っている、あるいは同等の場合には非常に脆弱です。"
+                        ]
+                    },
+
+                    { type: "heading", text: "タイタン", level: 2 },
+                    { type: "paragraph", text: "タイタンを複数の艦隊に分散させたくない場合は、所有するすべてのタイタンだけで構成された艦隊を作ることもできます。異なる攻撃オーラと防御オーラをまとめておくことで、一部のタイタンを失ってもすべてのオーラを維持できます。これは各タイプのオーラを持つタイタンが常に複数存在するためです。この艦隊は単独ではより脆弱なので、通常の空母型戦艦艦隊を随伴させることをおすすめします。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "防衛" },
+
+                    { type: "heading", text: "防衛プラットフォームとイオンキャノンの組み合わせ。", level: 2 },
+                    { type: "paragraph", text: "必要に応じてプラットフォームとイオンキャノンをさまざまな方法で組み合わせることができます。ただし、恒星基地の防衛設備を一度建造すると、それらが破壊されるまで変更するのは困難です。" },
+                    {
+                        type: "list", items: [
+                            "**イオンキャノン1基＋大量の防衛プラットフォーム：** AI帝国の艦隊に対して有効です。イオンキャノンを1基だけ使用する理由は2つあります。主な理由は、システム内のどこにいる艦船でも攻撃できるだけの射程を確保することです。これにより、恒星基地の射程外を通ってシステムの端を抜ける艦船が存在しなくなります。2つ目は、タイタン、戦艦、バブルなどの大型艦に対する追加ダメージを確保することです。一方、防衛プラットフォームは、格納庫型であれ長射程魚雷型であれ、あらゆる種類の艦船、特に小型・中型艦に対する主なダメージ源となります。システム内でこれだけを唯一の防衛として使用することも可能で、敵艦隊に深刻な損害を与えたり、攻撃を撃退したりできます。ただし、多大な損失を被るため、主にダメージを受ける役割として艦隊を丸ごと投入することを推奨します。",
+                            "**可能な限り多くのイオンキャノン＋残りのスロットを防衛プラットフォームで埋める：** 没落・覚醒帝国の艦隊や中盤・終盤の危機に対して有効です。イオンキャノンは最初の2斉射で大型艦の大半をほぼ一掃できますが、小型艦に対しては無防備になります。そのため、残りの枠は格納庫型防衛プラットフォームで埋めることをおすすめします。これにより、ミサイルや魚雷に対する追加の防御を得られます。ただし、このタイプの防衛は通常、完全な艦隊を支援するために使用するものであり、単独の防衛として使用することはありません。とはいえ、Tスロット兵器の範囲ダメージによって、イオンキャノンのみを使用することも現在では実用的です。Tスロット兵器の攻撃を2～3発命中させることができれば、小型艦だけで構成された艦隊を丸ごと撃破することも可能です。"
+                        ]
+                    },
+
+                    { type: "heading", text: "深宇宙要塞の配置。", level: 2 },
+                    { type: "paragraph", text: "深宇宙要塞では配置が重要です。レベル3の要塞で利用できる設計は長距離型のみなので、敵対艦隊が侵入してくる可能性のあるハイパーレーンのジャンプ地点から離れた、システムの端に要塞を配置したいところです。そのため、各ハイパーレーンの入口や中央の恒星基地の近くには置かず、一方で格納庫とXスロット兵器が攻撃可能な射程に入るよう、十分な距離を確保して配置する必要があります。" },
+                    { type: "paragraph", text: "2つ目の選択肢は、要塞をジャンプ地点のすぐそば、つまりハイパーレーンの出口に直接配置することです。ほとんどの場合、これではXスロット兵器やLスロット兵器を活かせませんが、要塞そのものに短射程の防衛プラットフォームを建造し、エネルギー兵器と実体弾兵器のハイブリッド構成、あるいは短射程魚雷を搭載することで、敵艦隊がシステムにジャンプした瞬間から攻撃を開始できます。" },
+                ]
+            }
+        }
+    },
+    {   // Diseño de naves biológicas
+        slug: "diseño-naves-biologicas",
+        title: "Diseño de naves biológicas",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Macero" },
+            { type: "image", src: "Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
+            { type: "image", src: "Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
+            { type: "divider" },
+
+            { type: "heading", text: "Tejedor" },
+            { type: "image", src: "Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
+            { type: "image", src: "Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
+            { type: "image", src: "Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
+            { type: "divider" },
+
+            { type: "heading", text: "Heraldo" },
+            { type: "image", src: "Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
+            { type: "image", src: "Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
+            { type: "divider" },
+
+            { type: "heading", text: "Aguijón" },
+            { type: "image", src: "Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
+            { type: "divider" },
+
+            { type: "heading", text: "Titanes" },
+            { type: "image", src: "Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
+            { type: "divider" },
+
+            { type: "heading", text: "Gigante" },
+            { type: "image", src: "Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
+            { type: "divider" },
+
+            { type: "heading", text: "Coloso" },
+            { type: "image", src: "Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
+            { type: "divider" },
+
+            { type: "heading", text: "Plataforma de defensa" },
+            { type: "image", src: "Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
+            { type: "image", src: "Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
+            { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
+            { type: "image", src: "Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
+            { type: "divider" },
+
+            { type: "heading", text: "Cañón de iones" },
+            { type: "image", src: "Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            { type: "divider" },
+
+            { type: "heading", text: "Ciudadela de espacio profundo" },
+            { type: "image", src: "Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
+            { type: "image", src: "Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
+            { type: "divider" },
+            { type: "image", src: "Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
+            { type: "image", src: "Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {   // Diseño de flotas biológicas
+        slug: "diseño-flotas-biologicas",
+        title: "Diseño de flotas biológicas",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Inicio de juego" },
+
+            { type: "note", text: "Solo maceros" },
+            { type: "paragraph", text: "Lo más básico para el año 2200." },
+            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
+            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
+            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
+            { type: "paragraph", text: "Recomendado usar láser de dron minero si lo tienes disponible hasta contar con plasma y/o cañones automáticos." },
+
+            { type: "note", text: "Sobre los tejedores" },
+            { type: "paragraph", text: "Mejor no usarlos tan pronto. Se vuelven de mayor valor cuando los combinas con heraldos y aguijones." },
+            { type: "divider" },
+
+            { type: "heading", text: "Mitad de juego" },
+
+            { type: "note", text: "Solo maceros" },
+            { type: "paragraph", text: "Mantenemos una flota de solo maceros, a ser posible ancianos, con armas híbridas. En este caso, los maceros al contar con las pinzas de armas G que escalan contra naves de mayor tamaño, tenemos una flota decente contra naves pequeñas por las armas equilibradas de tamaño S y contra naves medianas y grandes porque llevamos las pinzas." },
+            { type: "paragraph", text: "No obstante, debemos tener cuidado porque tendremos muy poca movilidad en comparación con las corbetas tradicionales. Estos maceros serán nuestra línea de combate principal, pero también una gran fuente de daño a corta distancia. El problema es que tiene poca velocidad sublumínica y poca evasión en comparación con las corbetas, por tanto sufrirán muchas bajas antes de alcanzar a naves más grandes en la retaguardia enemiga." },
+
+            { type: "note", text: "Heraldos y tejedores" },
+            { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de protones/neutrones desde ahora." },
+            { type: "paragraph", text: "Los heraldos ya se pueden beneficiar de los tejedores usando el arma de apoyo que aumenta la velocidad sublumínica y la evasión (Dardos de evasión) y el arma que protege y recupera blindaje (Lanzador de esporas adaptativas inteligente)." },
+            { type: "paragraph", text: "La proporción será de cada una de estas armas de apoyo por heraldo." },
+            { type: "divider" },
+
+            { type: "heading", text: "Juego tardío" },
+
+            { type: "note", text: "Heraldos y tejedores" },
+            { type: "paragraph", text: "La evolución lógica del diseño de flotas de Middle Game. Debemos asegurar que tenemos heraldos con hangares y lanzadores de protones listos. Equipándolos con postquemadores para reducir la mayor cantidad de daño entrante mientras huímos del enemigo y atacamos con nuestras naves de ataque y nuestros torpedos de largo alcance." },
+            { type: "paragraph", text: "La configuración mimetiza a las flotas de acorazados portahangares. En este caso, tendremos mucha mayor potencia de fuego contra naves grande al utilizar armas G, pero perdemos el alcance de las armas X. En cuanto a defensa contra naves pequeñas y medianas, si bien no tenemos espacios de armas S y M, tendremos muchos más hangares para cumplir dicho rol." },
+            { type: "paragraph", text: "Los tejedores seguirán cubriendo el rol de apoyo para reparar daños y mejorar nuestra potencia de ataque y supervivencia." },
+
+            { type: "note", text: "Solo maceros de sigilo de corto alcance" },
+            { type: "paragraph", text: "Con la llegada del daño colateral de las armas T, las flotas de carne de cañón ya no son recomendables. Por tanto, el mejor uso para los maceros es el de emboscadores sigilosos." },
+            { type: "divider" },
+
+            { type: "heading", text: "Final de juego" },
+
+            { type: "note", text: "Heraldos y titanes" },
+            { type: "paragraph", text: "Opcional añadir de 1 a 3 titanes. El resto todo heraldos con hangares y armas G de largo alcance." },
+            { type: "paragraph", text: "Especialmente recomendado en este caso dividir los titanes en una flota única propia, ya que los heraldos no se van a ver tan beneficiados por las auras aliadas de los titanes en su propia flota, ya que la principal fuente de daño de los heraldos son las naves de ataque." },
+
+            { type: "note", text: "Tejedores" },
+            {
+                type: "list", items: [
+                    "**Apoyo:** los tejedores se dedicarán a apoyar a las naves aliadas. Solo queremos usarlos con nuestros aguijones y heraldos y podemos tener conflictos al usarlos con maceros.",
+                    "**Supresor:** los tejedores aturden a las naves enemigas. Con el arma de supresión que aturde con un 90% de probabilidad, es suficiente siempre que estés en igualdad numérica de armas/cantidad de enemigos. Especialmente recomendada contra enemigos en altas dificultades, como crisis de mitad o fin de juego o imperios caídos/despertados. Importante destacar que no funcionan contra leviatanes."
+                ]
+            },
+
+            { type: "note", text: "Maceros con sigilo" },
+            { type: "paragraph", text: "Flota de emboscada con sigilo: debido a que cuentan con la mejor movilidad de las naves biológicas y las pinzas como armas G, podemos usarlas en sus versiones ancianas para tener más daño y resistencia en la corta distancia. Eficaces contra flotas de naves medianas y grandes, como, por ejemplo, las de imperio caído/despertado." },
+
+            { type: "note", text: "Problemas con los heraldos, maceros y tejedores en la misma batalla" },
+            { type: "paragraph", text: "Hay que tener en cuenta que los tejedores de apoyo seguirán a las naves aliadas para usar sus armas de apoyo. Es por esto que usar maceros con flotas de aguijones, heraldos y tejedores puede ser contraproducente para el rendimiento de los tejedores. Como puedes tener mayor cantidad de maceros que de heraldos por flota, al usar tejedores de apoyo, estos tendrán muchas más probabilidades de elegir a un macero como objetivo de apoyo en contraparte con los heraldos del campo de batalla. Eso hace que los tejedores de apoyo, que deberían mantenerse en la seguridad de la retaguardia de los heraldos, carguen de frente junto con los maceros para apoyarles y pueden sufrir una cantidad considerable de bajas en cada batalla, haciéndolos contraproducentes." },
             { type: "divider" },
 
             { type: "heading", text: "Defensas" },
@@ -356,162 +649,11 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
         ],
         i18n: {
-            en: {
-                title: "About titans and their auras",
-                blocks: [
-                    { type: "heading", text: "Early Game" },
-
-                    { type: "note", text: "Corvettes only" },
-                    { type: "paragraph", text: "The most basic setup for the year 2200." },
-                    { type: "paragraph", text: "Enemies will be random, and you will not be able to know much about them since you will not be able to spy on them effectively. You will only be able to determine how to counter their fleet once the first battle takes place (by checking the combat log and enemy components), which in the early game is usually also the last one, so the most viable approach is to prepare for everything." },
-                    { type: "paragraph", text: "If you have trouble with amoebas or mining drones, use energy weapons. If you have trouble with energy entities, use kinetic weapons. Simply complete the first contact protocol and check their armor and shields." },
-                    { type: "paragraph", text: "It is recommended to use the Mining Drone Laser if available until you have access to plasma and/or autocannons." },
-
-                    { type: "note", text: "Destroyers only" },
-                    { type: "paragraph", text: "With a specialized design, they can outperform a hybrid corvette fleet using both energy and kinetic weapons. The problem is that they scale rather poorly in the later stages of the game." },
-                    { type: "paragraph", text: "However, corvettes also scale rather poorly now, so in long games, building some destroyers is not a bad idea to gain an advantage over early-game corvettes." },
-
-                    { type: "note", text: "Frigate support" },
-                    { type: "paragraph", text: "With the new siege combat computer, combining frigates with corvettes and/or destroyers in the early game is a very good idea for destroying chokepoints and defensive stations with a lot of fleet power. Since these are very difficult targets for corvettes and destroyers, torpedo frigates can easily turn the battle around." },
-                    { type: "divider" },
-
-                    { type: "heading", text: "Mid Game" },
-
-                    { type: "note", text: "Corvettes only" },
-                    { type: "paragraph", text: "A fleet made entirely of hybrid corvettes can work, but losses after every battle are virtually guaranteed, which will undermine your still-developing economy. Not recommended for wars of attrition. At this point, stop building corvettes and focus on frigates and cruisers." },
-
-                    { type: "note", text: "Cruisers only" },
-                    { type: "paragraph", text: "The first version of a carrier fleet. Since we still do not have many weapon options, you can equip the hangars with only missiles and point defense. If you have access to long-range torpedoes, that would be the best option." },
-
-                    { type: "note", text: "Frigates only" },
-                    { type: "paragraph", text: "The frigates we can build in the early game can help us destroy larger defensive positions during this phase. If we have access to a stealth component, it is highly recommended to use it." },
-                    { type: "divider" },
-
-                    { type: "heading", text: "Late Game" },
-                    { type: "note", text: "Carrier Battleships only" },
-                    { type: "paragraph", text: "Carrier battleships. By combining the long-range firepower of X-slot weapons with the versatility of hangars, while also having room for point defense and M- and S-slot weapons, we have the ultimate design that will perform at least decently well against virtually anything we can encounter. There will be situations where a specialized fleet may outperform it, but against most threats such as mid-game crises, fallen and awakened empires, and even some end-game crises, it will perform more than adequately. For the X-slot weapon, you can choose between the Energy Lance and Arc Emitter. Under no circumstances should you use the Giga Cannon." },
-                    { type: "divider" },
-
-                    { type: "heading", text: "End Game" },
-
-                    { type: "note", text: "Battleships" },
-                    { type: "paragraph", text: "1 to 3 Titans (optional), with the rest split evenly between artillery battleships and carrier battleships." },
-                    {
-                        type: "list", items: [
-                            "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each one should carry a different offensive aura.",
-                            "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. In addition, they have an X-slot weapon that serves as artillery against large targets."
-                        ]
-                    },
-
-                    { type: "note", text: "Cruisers" },
-                    { type: "paragraph", text: "Torpedo cruisers only." },
-                    {
-                        type: "list", items: [
-                            "If you choose short-range stealth torpedo cruisers, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or large enemies such as capital ships, Titans, starbases, Leviathans, etc. However, you run the risk of suffering heavy losses.",
-                            "If you choose long-range torpedo cruisers, they are siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive artillery firepower that carrier battleships lack to some extent. It should be noted that they are very weak when the enemy outranges you or has equal weapon range."
-                        ]
-                    },
-
-                    { type: "note", text: "Titans" },
-                    { type: "paragraph", text: "If you do not want to distribute your Titans among different fleets, you can create a fleet consisting entirely of all your Titans. By grouping different offensive and defensive auras, you ensure that all of them remain active even if you lose some Titans, since you will always have more than one Titan with each type of weapon. This fleet is more vulnerable on its own, so it is advisable to accompany it with a normal carrier battleship fleet." },
-                    { type: "divider" },
-
-                    { type: "heading", text: "Defenses" },
-
-                    { type: "note", text: "Combining defense platforms with Ion Cannons." },
-                    { type: "paragraph", text: "You can combine platforms and cannons in different ways depending on your needs, although once you build the defenses of a starbase, you will hardly be able to change them until they are destroyed." },
-                    {
-                        type: "list", items: [
-                            "**One Ion Cannon with many defense platforms:** effective against AI empire fleets. A single Ion Cannon is used for two reasons: the main one is to have enough range to attack ships anywhere in the system, so that no ship can pass through the edge without being attacked by the starbase for being out of range; the second is to have some additional damage against large ships such as Titans, battleships, and Bubbles. On the other hand, defense platforms, whether using hangars or long-range torpedoes, will be the main source of damage against any type of ship, especially small and medium-sized ones. It can work as the only defense in the system, seriously damaging the enemy fleet or even repelling the attack. However, it will suffer extremely heavy losses, so it is recommended to use a full fleet to absorb most of the damage.",
-                            "**As many Ion Cannons as possible, filling the remaining slots with defense platforms:** effective against fallen/awakened empire fleets and mid- and end-game crises. Ion Cannons will be capable of almost completely wiping out large ships in the first two volleys, while leaving you vulnerable to small ships. For this reason, I recommend filling the remaining slots with hangar defense platforms, which provide some additional protection against missiles and torpedoes. However, this type of defense is usually used to support a full fleet and never as the sole defense. Thanks to the collateral damage of T-slot weapons, it is now viable to use only Ion Cannons, as they can eliminate entire fleets of small ships if they manage to land two or three shots from a T-slot weapon."
-                        ]
-                    },
-
-                    { type: "note", text: "Deep Space Citadel positioning." },
-                    { type: "paragraph", text: "For the Deep Space Citadel, positioning is key. Since the only design we have for a level-three Citadel is long-range, we want to position our Citadels on the edges of systems, away from hyperlane jumps where hostile fleets may enter. Therefore, we need to position the Citadel far enough away that it is not close to every hyperlane entrance or the central starbase, while still keeping its hangars and X-slot weapon within firing range." },
-                    { type: "paragraph", text: "A second option is to position our Citadel directly at the edge of the hyperlane jump. While this will waste the X-slot weapon and L-slot weapons in most cases, we can instead build short-range defense platforms directly on the Citadel with hybrid energy and kinetic weapons, or simply short-range torpedoes, allowing them to start attacking as soon as the enemy fleet jumps into the system." },
-                ]
-            },
-            jp: {
-                title: "タイタンとそのオーラについて",
-                icon: "✦",
-                blocks: [
-                    { type: "heading", text: "序盤" },
-
-                    { type: "note", text: "コルベットのみ" },
-                    { type: "paragraph", text: "2200年時点で最も基本的な構成です。" },
-                    { type: "paragraph", text: "敵はランダムであり、効果的に諜報することもできないため、敵艦隊について事前に知ることはほとんどできません。敵艦隊への対策を判断できるのは、最初の戦闘が発生した後（戦闘ログや敵艦の装備を確認することで）だけです。序盤ではこの最初の戦闘がそのまま最後の戦闘になることも多いため、現実的にはあらゆる可能性に備えておくのが最善です。" },
-                    { type: "paragraph", text: "アメーバや採掘ドローンに苦戦する場合は、エネルギー兵器を使用します。エネルギー生命体に苦戦する場合は、実体弾兵器を使用します。単純に初接触プロトコルを完了し、敵の装甲とシールドを確認してください。" },
-                    { type: "paragraph", text: "利用可能であれば、プラズマ兵器やオートキャノンを手に入れるまでは、採掘ドローンレーザーの使用を推奨します。" },
-
-                    { type: "note", text: "駆逐艦のみ" },
-                    { type: "paragraph", text: "特化型の設計であれば、エネルギー兵器と実体弾兵器を組み合わせたハイブリッドなコルベット艦隊を上回ることができます。問題は、ゲーム後半になると性能の伸びがかなり悪いことです。" },
-                    { type: "paragraph", text: "ただし、現在はコルベットも性能の伸びがかなり悪いため、長期戦になるゲームでは、序盤のコルベットに対して優位を取るために駆逐艦をいくらか建造しておくのも悪くありません。" },
-
-                    { type: "note", text: "フリゲートによる支援" },
-                    { type: "paragraph", text: "新しい攻城戦用戦闘コンピュータを利用すれば、序盤にフリゲートをコルベットや駆逐艦と組み合わせるのは非常に有効です。特に、艦隊戦力が高いチョークポイントや防衛ステーションの撃破に役立ちます。これらはコルベットや駆逐艦にとって非常に厄介な標的ですが、魚雷フリゲートを投入することで戦況を簡単にひっくり返すことができます。" },
-                    { type: "divider" },
-
-                    { type: "heading", text: "中盤" },
-
-                    { type: "note", text: "コルベットのみ" },
-                    { type: "paragraph", text: "ハイブリッド型コルベットだけの艦隊でも機能させることはできますが、戦闘のたびに損失が発生することがほぼ確実であり、まだ発展途上の経済を圧迫します。消耗戦にはあまりおすすめできません。この段階になったらコルベットの建造をやめ、フリゲートと巡洋艦に集中しましょう。" },
-
-                    { type: "note", text: "巡洋艦のみ" },
-                    { type: "paragraph", text: "空母艦隊の最初の形です。まだ兵器の選択肢が多くないため、格納庫にはミサイルとポイントディフェンスのみを搭載することができます。長射程魚雷を利用できるのであれば、それが最善の選択肢です。" },
-
-                    { type: "note", text: "フリゲートのみ" },
-                    { type: "paragraph", text: "序盤に建造できるフリゲートは、この段階で敵のより大型の防衛拠点を破壊するのに役立ちます。ステルス用コンポーネントを利用できるのであれば、使用することを強く推奨します。" },
-                    { type: "divider" },
-
-                    { type: "heading", text: "終盤" },
-                    { type: "note", text: "空母型戦艦のみ" },
-                    { type: "paragraph", text: "空母型戦艦です。Xスロット兵器による長距離火力と格納庫の汎用性を組み合わせ、さらにポイントディフェンスとM・Sスロット兵器を搭載できることで、遭遇するほぼあらゆる相手に対して少なくとも十分に戦える究極の設計となります。特化型艦隊のほうが優れる場面もありますが、中盤危機、没落・覚醒帝国、さらには一部の終盤危機といったほとんどの脅威に対しては十分以上の性能を発揮します。Xスロット兵器にはエネルギーランスかアーク放射器を選択できます。ギガキャノンは絶対に使用しないでください。" },
-                    { type: "divider" },
-
-                    { type: "heading", text: "ゲーム終盤" },
-
-                    { type: "note", text: "戦艦" },
-                    { type: "paragraph", text: "タイタン1～3隻（任意）を用意し、残りは砲撃型戦艦と空母型戦艦を半々にします。" },
-                    {
-                        type: "list", items: [
-                            "タイタンを編成する場合は、オーラによる支援を担当させます。複数のタイタンを編成する場合、それぞれ異なる攻撃オーラを装備させるべきです。",
-                            "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能し、大型艦に対しても十分に戦えます。さらに、Xスロット兵器によって大型目標への砲撃も行えます。"
-                        ]
-                    },
-
-                    { type: "note", text: "巡洋艦" },
-                    { type: "paragraph", text: "魚雷巡洋艦のみ。" },
-                    {
-                        type: "list", items: [
-                            "短射程・ステルス型の魚雷巡洋艦を選ぶ場合、大型目標を打ち砕く破城槌として機能します。主力艦、タイタン、恒星基地、リヴァイアサンなど、停止している敵や大型目標に対して非常に壊滅的なダメージを与えられます。ただし、大きな損失を被るリスクがあります。",
-                            "長射程魚雷巡洋艦を選ぶ場合、長距離から安全にチョークポイントやその他の防衛施設を破壊する攻城砲として機能します。空母型戦艦がある程度欠いている砲撃力を補う、強力な長距離火力を提供します。ただし、敵の兵器射程がこちらを上回っている、あるいは同等の場合には非常に脆弱です。"
-                        ]
-                    },
-
-                    { type: "note", text: "タイタン" },
-                    { type: "paragraph", text: "タイタンを複数の艦隊に分散させたくない場合は、所有するすべてのタイタンだけで構成された艦隊を作ることもできます。異なる攻撃オーラと防御オーラをまとめておくことで、一部のタイタンを失ってもすべてのオーラを維持できます。これは各タイプのオーラを持つタイタンが常に複数存在するためです。この艦隊は単独ではより脆弱なので、通常の空母型戦艦艦隊を随伴させることをおすすめします。" },
-                    { type: "divider" },
-
-                    { type: "heading", text: "防衛" },
-
-                    { type: "note", text: "防衛プラットフォームとイオンキャノンの組み合わせ。" },
-                    { type: "paragraph", text: "必要に応じてプラットフォームとイオンキャノンをさまざまな方法で組み合わせることができます。ただし、恒星基地の防衛設備を一度建造すると、それらが破壊されるまで変更するのは困難です。" },
-                    {
-                        type: "list", items: [
-                            "**イオンキャノン1基＋大量の防衛プラットフォーム：** AI帝国の艦隊に対して有効です。イオンキャノンを1基だけ使用する理由は2つあります。主な理由は、システム内のどこにいる艦船でも攻撃できるだけの射程を確保することです。これにより、恒星基地の射程外を通ってシステムの端を抜ける艦船が存在しなくなります。2つ目は、タイタン、戦艦、バブルなどの大型艦に対する追加ダメージを確保することです。一方、防衛プラットフォームは、格納庫型であれ長射程魚雷型であれ、あらゆる種類の艦船、特に小型・中型艦に対する主なダメージ源となります。システム内でこれだけを唯一の防衛として使用することも可能で、敵艦隊に深刻な損害を与えたり、攻撃を撃退したりできます。ただし、多大な損失を被るため、主にダメージを受ける役割として艦隊を丸ごと投入することを推奨します。",
-                            "**可能な限り多くのイオンキャノン＋残りのスロットを防衛プラットフォームで埋める：** 没落・覚醒帝国の艦隊や中盤・終盤の危機に対して有効です。イオンキャノンは最初の2斉射で大型艦の大半をほぼ一掃できますが、小型艦に対しては無防備になります。そのため、残りの枠は格納庫型防衛プラットフォームで埋めることをおすすめします。これにより、ミサイルや魚雷に対する追加の防御を得られます。ただし、このタイプの防衛は通常、完全な艦隊を支援するために使用するものであり、単独の防衛として使用することはありません。とはいえ、Tスロット兵器の範囲ダメージによって、イオンキャノンのみを使用することも現在では実用的です。Tスロット兵器の攻撃を2～3発命中させることができれば、小型艦だけで構成された艦隊を丸ごと撃破することも可能です。"
-                        ]
-                    },
-
-                    { type: "note", text: "深宇宙要塞の配置。" },
-                    { type: "paragraph", text: "深宇宙要塞では配置が重要です。レベル3の要塞で利用できる設計は長距離型のみなので、敵対艦隊が侵入してくる可能性のあるハイパーレーンのジャンプ地点から離れた、システムの端に要塞を配置したいところです。そのため、各ハイパーレーンの入口や中央の恒星基地の近くには置かず、一方で格納庫とXスロット兵器が攻撃可能な射程に入るよう、十分な距離を確保して配置する必要があります。" },
-                    { type: "paragraph", text: "2つ目の選択肢は、要塞をジャンプ地点のすぐそば、つまりハイパーレーンの出口に直接配置することです。ほとんどの場合、これではXスロット兵器やLスロット兵器を活かせませんが、要塞そのものに短射程の防衛プラットフォームを建造し、エネルギー兵器と実体弾兵器のハイブリッド構成、あるいは短射程魚雷を搭載することで、敵艦隊がシステムにジャンプした瞬間から攻撃を開始できます。" },
-                ]
-            }
+            en: {},
+            jp: {}
         }
     },
-    {
+    {   // Sobre los titanes y sus auras
         slug: "titanes-aura",
         title: "Sobre los titanes y sus auras",
         icon: "✦",
@@ -570,7 +712,7 @@ export const knowledgeBase = [
             }
         }
     },
-    {
+    {   // Preparando la simulación de combate
         slug: "simulacion-combate",
         title: "Preparando la simulación de combate",
         icon: "✦",
@@ -723,7 +865,7 @@ export const knowledgeBase = [
             }
         }
     },
-    {
+    {   // Enlaces útiles
         slug: "enlaces-utiles",
         title: "Enlaces útiles",
         icon: "✦",
@@ -800,149 +942,7 @@ export const knowledgeBase = [
             }
         }
     },
-    {
-        slug: "diseño-naves-biologicas",
-        title: "Diseño de naves biológicas",
-        icon: "✦",
-        blocks: [
-            { type: "heading", text: "Macero" },
-            { type: "image", src: "Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
-            { type: "image", src: "Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
-            { type: "divider" },
-
-            { type: "heading", text: "Tejedor" },
-            { type: "image", src: "Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
-            { type: "image", src: "Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
-            { type: "image", src: "Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
-            { type: "divider" },
-
-            { type: "heading", text: "Heraldo" },
-            { type: "image", src: "Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
-            { type: "image", src: "Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
-            { type: "divider" },
-
-            { type: "heading", text: "Aguijón" },
-            { type: "image", src: "Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
-            { type: "divider" },
-
-            { type: "heading", text: "Titanes" },
-            { type: "image", src: "Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
-            { type: "divider" },
-
-            { type: "heading", text: "Gigante" },
-            { type: "image", src: "Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
-            { type: "divider" },
-
-            { type: "heading", text: "Coloso" },
-            { type: "image", src: "Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
-            { type: "divider" },
-
-            { type: "heading", text: "Plataforma de defensa" },
-            { type: "image", src: "Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
-            { type: "image", src: "Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
-            { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
-            { type: "image", src: "Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
-            { type: "divider" },
-
-            { type: "heading", text: "Cañón de iones" },
-            { type: "image", src: "Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
-            { type: "divider" },
-
-            { type: "heading", text: "Ciudadela de espacio profundo" },
-            { type: "image", src: "Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
-            { type: "image", src: "Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
-            { type: "image", src: "Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
-        ],
-        i18n: {
-            en: {},
-            jp: {}
-        }
-    },
-    {
-        slug: "diseño-flotas-biologicas",
-        title: "Diseño de flotas biológicas",
-        icon: "✦",
-        blocks: [
-            { type: "heading", text: "Inicio de juego" },
-
-            { type: "note", text: "Solo maceros" },
-            { type: "paragraph", text: "Lo más básico para el año 2200." },
-            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
-            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
-            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
-            { type: "paragraph", text: "Recomendado usar láser de dron minero si lo tienes disponible hasta contar con plasma y/o cañones automáticos." },
-
-            { type: "note", text: "Sobre los tejedores" },
-            { type: "paragraph", text: "Mejor no usarlos tan pronto. Se vuelven de mayor valor cuando los combinas con heraldos y aguijones." },
-            { type: "divider" },
-
-            { type: "heading", text: "Mitad de juego" },
-
-            { type: "note", text: "Solo maceros" },
-            { type: "paragraph", text: "Mantenemos una flota de solo maceros, a ser posible ancianos, con armas híbridas. En este caso, los maceros al contar con las pinzas de armas G que escalan contra naves de mayor tamaño, tenemos una flota decente contra naves pequeñas por las armas equilibradas de tamaño S y contra naves medianas y grandes porque llevamos las pinzas." },
-            { type: "paragraph", text: "No obstante, debemos tener cuidado porque tendremos muy poca movilidad en comparación con las corbetas tradicionales. Estos maceros serán nuestra línea de combate principal, pero también una gran fuente de daño a corta distancia. El problema es que tiene poca velocidad sublumínica y poca evasión en comparación con las corbetas, por tanto sufrirán muchas bajas antes de alcanzar a naves más grandes en la retaguardia enemiga." },
-
-            { type: "note", text: "Heraldos y tejedores" },
-            { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de protones/neutrones desde ahora." },
-            { type: "paragraph", text: "Los heraldos ya se pueden beneficiar de los tejedores usando el arma de apoyo que aumenta la velocidad sublumínica y la evasión (Dardos de evasión) y el arma que protege y recupera blindaje (Lanzador de esporas adaptativas inteligente)." },
-            { type: "paragraph", text: "La proporción será de cada una de estas armas de apoyo por heraldo." },
-            { type: "divider" },
-
-            { type: "heading", text: "Juego tardío" },
-
-            { type: "note", text: "Heraldos y tejedores" },
-            { type: "paragraph", text: "La evolución lógica del diseño de flotas de Middle Game. Debemos asegurar que tenemos heraldos con hangares y lanzadores de protones listos. Equipándolos con postquemadores para reducir la mayor cantidad de daño entrante mientras huímos del enemigo y atacamos con nuestras naves de ataque y nuestros torpedos de largo alcance." },
-            { type: "paragraph", text: "La configuración mimetiza a las flotas de acorazados portahangares. En este caso, tendremos mucha mayor potencia de fuego contra naves grande al utilizar armas G, pero perdemos el alcance de las armas X. En cuanto a defensa contra naves pequeñas y medianas, si bien no tenemos espacios de armas S y M, tendremos muchos más hangares para cumplir dicho rol." },
-            { type: "paragraph", text: "Los tejedores seguirán cubriendo el rol de apoyo para reparar daños y mejorar nuestra potencia de ataque y supervivencia." },
-
-            { type: "note", text: "Solo maceros de sigilo de corto alcance" },
-            { type: "paragraph", text: "Con la llegada del daño colateral de las armas T, las flotas de carne de cañón ya no son recomendables. Por tanto, el mejor uso para los maceros es el de emboscadores sigilosos." },
-            { type: "divider" },
-
-            { type: "heading", text: "Final de juego" },
-
-            { type: "note", text: "Heraldos y titanes" },
-            { type: "paragraph", text: "Opcional añadir de 1 a 3 titanes. El resto todo heraldos con hangares y armas G de largo alcance." },
-            { type: "paragraph", text: "Especialmente recomendado en este caso dividir los titanes en una flota única propia, ya que los heraldos no se van a ver tan beneficiados por las auras aliadas de los titanes en su propia flota, ya que la principal fuente de daño de los heraldos son las naves de ataque." },
-
-            { type: "note", text: "Tejedores" },
-            {
-                type: "list", items: [
-                    "**Apoyo:** los tejedores se dedicarán a apoyar a las naves aliadas. Solo queremos usarlos con nuestros aguijones y heraldos y podemos tener conflictos al usarlos con maceros.",
-                    "**Supresor:** los tejedores aturden a las naves enemigas. Con el arma de supresión que aturde con un 90% de probabilidad, es suficiente siempre que estés en igualdad numérica de armas/cantidad de enemigos. Especialmente recomendada contra enemigos en altas dificultades, como crisis de mitad o fin de juego o imperios caídos/despertados. Importante destacar que no funcionan contra leviatanes."
-                ]
-            },
-
-            { type: "note", text: "Maceros con sigilo" },
-            { type: "paragraph", text: "Flota de emboscada con sigilo: debido a que cuentan con la mejor movilidad de las naves biológicas y las pinzas como armas G, podemos usarlas en sus versiones ancianas para tener más daño y resistencia en la corta distancia. Eficaces contra flotas de naves medianas y grandes, como, por ejemplo, las de imperio caído/despertado." },
-
-            { type: "note", text: "Problemas con los heraldos, maceros y tejedores en la misma batalla" },
-            { type: "paragraph", text: "Hay que tener en cuenta que los tejedores de apoyo seguirán a las naves aliadas para usar sus armas de apoyo. Es por esto que usar maceros con flotas de aguijones, heraldos y tejedores puede ser contraproducente para el rendimiento de los tejedores. Como puedes tener mayor cantidad de maceros que de heraldos por flota, al usar tejedores de apoyo, estos tendrán muchas más probabilidades de elegir a un macero como objetivo de apoyo en contraparte con los heraldos del campo de batalla. Eso hace que los tejedores de apoyo, que deberían mantenerse en la seguridad de la retaguardia de los heraldos, carguen de frente junto con los maceros para apoyarles y pueden sufrir una cantidad considerable de bajas en cada batalla, haciéndolos contraproducentes." },
-            { type: "divider" },
-
-            { type: "heading", text: "Defensas" },
-
-            { type: "note", text: "Combinación de plataformas de defensa con cañones de iones." },
-            { type: "paragraph", text: "Puedes combinar plataformas y cañones de formas distintas según la necesidad, aunque una vez construyas las defensas de una base estelar, difícilmente podrás cambiarla hasta que sean destruidas." },
-            {
-                type: "list", items: [
-                    "**Un cañón de iones con muchas plataformas de defensa:** efectiva contra flotas de imperios de IA. Se utiliza un único cañón de iones por dos motivos: el principal, es poder tener rango suficiente para atacar a naves en cualquier parte del sistema, de forma que ninguna pueda cruzar por el borde sin que la base estelar la ataque por estar fuera de rango; el segundo, tener algo de daño extra contra naves de gran tamaño como titanes, acorazados y bionaves ancianas. Por otro lado, las plataformas de defensas, ya sean de hangares o torpedos de largo alcance, serán la fuente principal de daño para cualquier tipo de naves, especialmente las de pequeño y mediano tamaño. Puede funcionar como única defensa en el sistema, dañando seriamente la flota enemiga o incluso repeliendo el ataque. No obstante, sufrirá muchisimas bajas y es recomendable usar una flota completa que reciba principalmente el daño.",
-                    "**Todos los cañones de iones posibles y rellenar los espacios sobrantes con plataformas de defensa:** efectiva contra flotas de imperios caídos/despertados y crisis de mitad y fin de juego. Los cañones de iones serán capaces de casi barrer al completo las naves grandes en las primeras dos salvas, mientras que estarán desprotegidas contra naves pequeñas. Por esto, recomiendo rellenar los huevos con plataformas de defensa con hangares, que proporcionan algo de defensa extra contra misiles y torpedos. No obstante, este tipo de defensas suelen usarse como apoyo a una flota completa y nunca como defensa única. Aunque gracias al daño colateral de las armas T, ahora es viable utilizar solo cañones de iones, ya que podrán acabar con flotas enteras de naves pequeñas si consiguen acertar dos o tres disparos de un arma T."
-                ]
-            },
-
-            { type: "note", text: "Posicionamiento de la ciudadela de espacio profundo." },
-            { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
-            { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
-        ],
-        i18n: {
-            en: {},
-            jp: {}
-        }
-    },
-    {
+    {   // Fauna espacial
         slug: "fauna-espacial",
         title: "Fauna espacial",
         icon: "✦",
@@ -982,7 +982,7 @@ export const knowledgeBase = [
             { type: "divider" },
 
             { type: "heading", text: "Diseños de flotas" },
-            { type: "note", text: "Guía de flotas estándar (no máquina ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
+            { type: "note", text: "Guía de flotas estándar (no mecánica ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
 
             { type: "heading", text: "Inicio de juego" },
             { type: "note", text: "Solo corbetas" },
@@ -1039,7 +1039,7 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {
+    {   // Flotas contra crisis
         slug: "flotas-contra-crisis",
         title: "Flotas contra las crisis",
         icon: "✦",
@@ -1180,7 +1180,7 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {
+    {   // Flotas especiales
         slug: "flotas-especiales",
         title: "Flotas especiales",
         icon: "✦",
@@ -1250,7 +1250,7 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {
+    {   // Lista de deseos
         slug: "lista-de-deseos-ignis",
         title: "Lista de deseos de Ignis",
         icon: "📝",
@@ -1287,7 +1287,7 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {
+    {   // MUGANI
         slug: "MUGANI",
         title: "MUGANI?",
         icon: "☣",
@@ -1341,7 +1341,7 @@ export const knowledgeBase = [
             }
         }
     },
-    {
+    {   // Singularidad de clase 30
         slug: "singularidad-clase-30",
         title: "Singularidad de clase 30",
         icon: "☣",
