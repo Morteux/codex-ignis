@@ -1796,6 +1796,158 @@ export const knowledgeBase = [
             }
         }
     },
+    {   // Fauna espacial
+        slug: "fauna-espacial",
+        title: "Diseño de naves de fauna espacial",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Entidades cristalinas" },
+            
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Cohorte de cristal de zafiro.png", alt: "Cohorte de cristal de zafiro", caption: "Cohorte de cristal de zafiro." }],
+                    [{ type: "image", src: "img/fauna/Soberano de cristal de zafiro.png", alt: "Soberano de cristal de zafiro", caption: "Soberano de cristal de zafiro." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Centinela de cristal de zafiro.png", alt: "Centinela de cristal de zafiro", caption: "Centinela de cristal de zafiro." }],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Amebas espaciales" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Ameba espacial.png", alt: "Ameba espacial", caption: "Ameba espacial." }],
+                    [{ type: "image", src: "img/fauna/Ameba espacial madre.png", alt: "Ameba espacial madre", caption: "Ameba espacial madre." }]
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Tiyanki" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Cria de ballena espacial.png", alt: "Cría de ballena espacial", caption: "Cría de ballena espacial." }],
+                    [{ type: "image", src: "img/fauna/Ballenato espacial.png", alt: "Ballenato espacial", caption: "Ballenato espacial." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Ballena hembra espacial.png", alt: "Ballena hembra espacial", caption: "Ballena hembra espacial." }],
+                    [{ type: "image", src: "img/fauna/Ballena macho espacial.png", alt: "Ballena macho espacial", caption: "Ballena macho espacial." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Buey ballena espacial.png", alt: "Buey ballena espacial", caption: "Buey ballena espacial." }],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Gusanos del vacío" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Ninfa de gusano del vacio.png", alt: "Ninfa de gusano del vacío", caption: "Ninfa de gusano del vacío." }],
+                    [{ type: "image", src: "img/fauna/Cria de gusano del vacio.png", alt: "Cría de gusano del vacío", caption: "Cría de gusano del vacío." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Gusano del vacio adulto.png", alt: "Gusano del vacío adulto", caption: "Gusano del vacío adulto." }],
+                    [{ type: "image", src: "img/fauna/Troika de gusanos del vacio.png", alt: "Troika de gusanos del vacío", caption: "Troika de gusanos del vacío." }]
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Cutuloides" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Cria cutuloide.png", alt: "Cría cutuloide", caption: "Cría cutuloide." }],
+                    [{ type: "image", src: "img/fauna/Cutuloide adolescente.png", alt: "Cutuloide adolescente", caption: "Cutuloide adolescente." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/fauna/Cutuloides.png", alt: "Cutuloides", caption: "Cutuloides." }],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Diseños de flotas" },
+            { type: "note", text: "Guía de flotas estándar (no mecánica ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
+
+            { type: "heading", text: "Inicio de juego" },
+            { type: "note", text: "Solo corbetas" },
+            { type: "paragraph", text: "Lo más básico para el año 2200." },
+            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
+            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
+            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
+            { type: "note", text: "Solo destructores" },
+            { type: "paragraph", text: "Muy caros en el early game y muy débiles contra corbetas, mejor no usarlos." },
+            { type: "divider" },
+
+            { type: "heading", text: "Mitad de juego" },
+            { type: "note", text: "Solo corbetas" },
+            { type: "paragraph", text: "En caso de una flota solo de corbetas, son útiles con disruptores, muy destructivos. En cambio, te aseguras pérdidas en cada combate." },
+            { type: "note", text: "Solo cruceros" },
+            { type: "paragraph", text: "Si has centrado tu investigación militar en misiles, es posible que tengas ya los misiles de remolino de primer nivel. Aunque son menos eficaces, ya puedes empezar a montar tu flota de cruceros artilleros de misiles." },
+            { type: "divider" },
+
+            { type: "heading", text: "Juego tardío" },
+            { type: "note", text: "Solo cruceros" },
+            { type: "paragraph", text: "Una opción rápida de investigar y muy eficaz contra flotas de IA. Solo cruceros artilleros de misiles son más que suficientes para hacer frente incluso a flotas superiores en potencia de flota. Solo necesitan dos armas, los misiles de remolino y los misiles merodeadores, así que es muy sencillo obtener el máximo daño muy pronto. Además, los cruceros con triple postquemador tienen una gran velocidad, ideal antes de tener portales o mientras construyes tu red de hiperrelés." },
+            { type: "paragraph", text: "Hay que destacar un punto negativo, y es que estos cruceros sufren mucho contra flotas de artillería que no son de misiles o contra flotas muy buffadas por la dificultad, como las de crisis de mitad de juego, los imperios caídos y despertados y la crisis de fin de juego. En el caso de las crisis de mitad de juego, lo más probable es que puedas superarlas con estas flotas aunque sufriendo algunas pérdidas. Sin embargo, contra imperios caídos/despertados y crisis de fin de juego, si no eres capaz de ganar en una sola batalla, sufrirás tantas pérdidas a pesar de ganar algunos combates iniciales, que perderás por desgaste, ya que no serás capaz de destruir las flotas enemigas al completo y simplemente huirán mientras que las tuyas sí sufrirán pérdidas batalla tras batalla." },
+            { type: "note", text: "Solo acorazados" },
+            { type: "paragraph", text: "Acorazados artilleros combinados con acorazados portahangares. Esta combinación es la definitiva, si bien es mucho más cara de construir y de investigar, pero merece la pena. Los artilleros son tu fuente principal de daño contra objetivos grandes y medianos, mientras que los portahangares son el escudo defensivo de los artilleros, además de la fuente principal de daño contra objetivos pequeños y medianos. Eficaces contra imperios caídos/despertados y crisis de mitad y fin de juego por igual. No obstante, es posible que a esta altura aún no cuentes con la artillería cinética o algún arma X necesaria para que esta combinación funcione adecuadamente." },
+            { type: "divider" },
+
+            { type: "heading", text: "Final de juego" },
+            { type: "note", text: "Acorazados" },
+            { type: "paragraph", text: "De 1 a 3 titanes, el resto mitad de acorazados artilleros y mitad de acorazados portahangares." },
+            {
+                type: "list", items: [
+                    "El titán sirve de buffer/debuffer. Si llevas más de uno, cada uno debe llevar un aura ofensiva distinta.",
+                    "Los acorazados artilleros son la principal fuente de daño.",
+                    "Los acorazados portahangares sirven de escudo defensivo contra naves más pequeñas como corbetas, destructores, naves de ataque y fragatas, para que no alcancen a los acorazados artilleros."
+                ]
+            },
+            { type: "note", text: "Cruceros" },
+            { type: "paragraph", text: "Solo cruceros artilleros de misiles." },
+            { type: "paragraph", text: "Meta contra flotas de imperios de la IA. Menos eficaz contra imperios caídos, despertados y crisis de mitad y final de juego." },
+            { type: "paragraph", text: "Gracias al ordenador de combate de artillería, estos cruceros tratarán de alejarse continuamente de los enemigos mientras lanzan una saturación de misiles imposible de detener por defensa de punto normal." },
+            { type: "paragraph", text: "Solo pueden ser superados por naves con mayor rango de ataque, por ejemplo, la flota mixta de acorazados, las naves de imperio caído o las de crisis." },
+            { type: "paragraph", text: "Su extrema velocidad con triple postquemador hace que sean más rápidas que cualquier otra nave del juego, excepto las corbetas." },
+            { type: "note", text: "Corbetas" },
+            { type: "paragraph", text: "El enjambre de corbetas con disruptores tiene dos usos principales en los que destaca por encima de todas las demás." },
+            {
+                type: "list", items: [
+                    "**Carne de cañón:** en grandes combates de flotas, los acorazados portahangares no son suficientes para proteger a los acorazados artilleros. Por tanto, se suman grandes cantidades de corbetas como muro desechable.",
+                    "**Flota defensiva pírrica:** en caso de necesidad, esta flota puede ganar en 1vs1 a cualquier otra flota del juego que no sea especializada contra ella (como cruceros de disruptores), aunque sufriendo en muchos casos una victoria pírrica, siendo suficiente para expulsar invasores. Además, al ser una flota de corbetas, tiene una mucho mayor velocidad para llegar a cualquier rincón de tu imperio."
+                ]
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "Arregla la fauna espacial... ¡PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Capitán Marla" }
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
     {   // Preparando la simulación de combate
         slug: "simulacion-combate",
         title: "Preparando la simulación de combate",
@@ -2022,106 +2174,6 @@ export const knowledgeBase = [
                     { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
                 ]
             }
-        }
-    },
-    {   // Fauna espacial
-        slug: "fauna-espacial",
-        title: "Fauna espacial",
-        icon: "✦",
-        blocks: [
-            { type: "heading", text: "Entidades cristalinas" },
-            { type: "image", src: "img/fauna/Cohorte de cristal de zafiro.png", alt: "Cohorte de cristal de zafiro", caption: "Cohorte de cristal de zafiro." },
-            { type: "image", src: "img/fauna/Soberano de cristal de zafiro.png", alt: "Soberano de cristal de zafiro", caption: "Soberano de cristal de zafiro." },
-            { type: "image", src: "img/fauna/Centinela de cristal de zafiro.png", alt: "Centinela de cristal de zafiro", caption: "Centinela de cristal de zafiro." },
-            { type: "divider" },
-
-            { type: "heading", text: "Amebas espaciales" },
-            { type: "image", src: "img/fauna/Ameba espacial.png", alt: "Ameba espacial", caption: "Ameba espacial." },
-            { type: "image", src: "img/fauna/Ameba espacial madre.png", alt: "Ameba espacial madre", caption: "Ameba espacial madre." },
-            { type: "divider" },
-
-            { type: "heading", text: "Tiyanki" },
-            { type: "image", src: "img/fauna/Cria de ballena espacial.png", alt: "Cría de ballena espacial", caption: "Cría de ballena espacial." },
-            { type: "image", src: "img/fauna/Ballenato espacial.png", alt: "Ballenato espacial", caption: "Ballenato espacial." },
-            { type: "divider" },
-            { type: "image", src: "img/fauna/Ballena hembra espacial.png", alt: "Ballena hembra espacial", caption: "Ballena hembra espacial." },
-            { type: "image", src: "img/fauna/Ballena macho espacial.png", alt: "Ballena macho espacial", caption: "Ballena macho espacial." },
-            { type: "divider" },
-            { type: "image", src: "img/fauna/Buey ballena espacial.png", alt: "Buey ballena espacial", caption: "Buey ballena espacial." },
-            { type: "divider" },
-
-            { type: "heading", text: "Gusanos del vacío" },
-            { type: "image", src: "img/fauna/Ninfa de gusano del vacio.png", alt: "Ninfa de gusano del vacío", caption: "Ninfa de gusano del vacío." },
-            { type: "image", src: "img/fauna/Cria de gusano del vacio.png", alt: "Cría de gusano del vacío", caption: "Cría de gusano del vacío." },
-            { type: "image", src: "img/fauna/Gusano del vacio adulto.png", alt: "Gusano del vacío adulto", caption: "Gusano del vacío adulto." },
-            { type: "image", src: "img/fauna/Troika de gusanos del vacio.png", alt: "Troika de gusanos del vacío", caption: "Troika de gusanos del vacío." },
-            { type: "divider" },
-
-            { type: "heading", text: "Cutuloides" },
-            { type: "image", src: "img/fauna/Cria cutuloide.png", alt: "Cría cutuloide", caption: "Cría cutuloide." },
-            { type: "image", src: "img/fauna/Cutuloide adolescente.png", alt: "Cutuloide adolescente", caption: "Cutuloide adolescente." },
-            { type: "image", src: "img/fauna/Cutuloides.png", alt: "Cutuloides", caption: "Cutuloides." },
-            { type: "divider" },
-
-            { type: "heading", text: "Diseños de flotas" },
-            { type: "note", text: "Guía de flotas estándar (no mecánica ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
-
-            { type: "heading", text: "Inicio de juego" },
-            { type: "note", text: "Solo corbetas" },
-            { type: "paragraph", text: "Lo más básico para el año 2200." },
-            { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
-            { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
-            { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
-            { type: "note", text: "Solo destructores" },
-            { type: "paragraph", text: "Muy caros en el early game y muy débiles contra corbetas, mejor no usarlos." },
-            { type: "divider" },
-
-            { type: "heading", text: "Mitad de juego" },
-            { type: "note", text: "Solo corbetas" },
-            { type: "paragraph", text: "En caso de una flota solo de corbetas, son útiles con disruptores, muy destructivos. En cambio, te aseguras pérdidas en cada combate." },
-            { type: "note", text: "Solo cruceros" },
-            { type: "paragraph", text: "Si has centrado tu investigación militar en misiles, es posible que tengas ya los misiles de remolino de primer nivel. Aunque son menos eficaces, ya puedes empezar a montar tu flota de cruceros artilleros de misiles." },
-            { type: "divider" },
-
-            { type: "heading", text: "Juego tardío" },
-            { type: "note", text: "Solo cruceros" },
-            { type: "paragraph", text: "Una opción rápida de investigar y muy eficaz contra flotas de IA. Solo cruceros artilleros de misiles son más que suficientes para hacer frente incluso a flotas superiores en potencia de flota. Solo necesitan dos armas, los misiles de remolino y los misiles merodeadores, así que es muy sencillo obtener el máximo daño muy pronto. Además, los cruceros con triple postquemador tienen una gran velocidad, ideal antes de tener portales o mientras construyes tu red de hiperrelés." },
-            { type: "paragraph", text: "Hay que destacar un punto negativo, y es que estos cruceros sufren mucho contra flotas de artillería que no son de misiles o contra flotas muy buffadas por la dificultad, como las de crisis de mitad de juego, los imperios caídos y despertados y la crisis de fin de juego. En el caso de las crisis de mitad de juego, lo más probable es que puedas superarlas con estas flotas aunque sufriendo algunas pérdidas. Sin embargo, contra imperios caídos/despertados y crisis de fin de juego, si no eres capaz de ganar en una sola batalla, sufrirás tantas pérdidas a pesar de ganar algunos combates iniciales, que perderás por desgaste, ya que no serás capaz de destruir las flotas enemigas al completo y simplemente huirán mientras que las tuyas sí sufrirán pérdidas batalla tras batalla." },
-            { type: "note", text: "Solo acorazados" },
-            { type: "paragraph", text: "Acorazados artilleros combinados con acorazados portahangares. Esta combinación es la definitiva, si bien es mucho más cara de construir y de investigar, pero merece la pena. Los artilleros son tu fuente principal de daño contra objetivos grandes y medianos, mientras que los portahangares son el escudo defensivo de los artilleros, además de la fuente principal de daño contra objetivos pequeños y medianos. Eficaces contra imperios caídos/despertados y crisis de mitad y fin de juego por igual. No obstante, es posible que a esta altura aún no cuentes con la artillería cinética o algún arma X necesaria para que esta combinación funcione adecuadamente." },
-            { type: "divider" },
-
-            { type: "heading", text: "Final de juego" },
-            { type: "note", text: "Acorazados" },
-            { type: "paragraph", text: "De 1 a 3 titanes, el resto mitad de acorazados artilleros y mitad de acorazados portahangares." },
-            {
-                type: "list", items: [
-                    "El titán sirve de buffer/debuffer. Si llevas más de uno, cada uno debe llevar un aura ofensiva distinta.",
-                    "Los acorazados artilleros son la principal fuente de daño.",
-                    "Los acorazados portahangares sirven de escudo defensivo contra naves más pequeñas como corbetas, destructores, naves de ataque y fragatas, para que no alcancen a los acorazados artilleros."
-                ]
-            },
-            { type: "note", text: "Cruceros" },
-            { type: "paragraph", text: "Solo cruceros artilleros de misiles." },
-            { type: "paragraph", text: "Meta contra flotas de imperios de la IA. Menos eficaz contra imperios caídos, despertados y crisis de mitad y final de juego." },
-            { type: "paragraph", text: "Gracias al ordenador de combate de artillería, estos cruceros tratarán de alejarse continuamente de los enemigos mientras lanzan una saturación de misiles imposible de detener por defensa de punto normal." },
-            { type: "paragraph", text: "Solo pueden ser superados por naves con mayor rango de ataque, por ejemplo, la flota mixta de acorazados, las naves de imperio caído o las de crisis." },
-            { type: "paragraph", text: "Su extrema velocidad con triple postquemador hace que sean más rápidas que cualquier otra nave del juego, excepto las corbetas." },
-            { type: "note", text: "Corbetas" },
-            { type: "paragraph", text: "El enjambre de corbetas con disruptores tiene dos usos principales en los que destaca por encima de todas las demás." },
-            {
-                type: "list", items: [
-                    "**Carne de cañón:** en grandes combates de flotas, los acorazados portahangares no son suficientes para proteger a los acorazados artilleros. Por tanto, se suman grandes cantidades de corbetas como muro desechable.",
-                    "**Flota defensiva pírrica:** en caso de necesidad, esta flota puede ganar en 1vs1 a cualquier otra flota del juego que no sea especializada contra ella (como cruceros de disruptores), aunque sufriendo en muchos casos una victoria pírrica, siendo suficiente para expulsar invasores. Además, al ser una flota de corbetas, tiene una mucho mayor velocidad para llegar a cualquier rincón de tu imperio."
-                ]
-            },
-
-            { type: "divider" },
-            { type: "quote", text: "Arregla la fauna espacial... ¡PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Capitán Marla" }
-        ],
-        i18n: {
-            en: {},
-            jp: {}
         }
     },
     {   // Flotas contra crisis
