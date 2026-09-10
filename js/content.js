@@ -209,7 +209,10 @@ export const knowledgeBase = [
                     [{ type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." }],
                     [{ type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." }]
                 ]
-            }
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "Dicen que la única diferencia entre la ciencia y la magia, es que la magia es ciencia que aún no comprendemos.", cite: "Director Científico Bjørn Gundersen de la Sociedad de Investigación Gundersen" }
         ],
         i18n: {
             en: {
@@ -430,6 +433,10 @@ export const knowledgeBase = [
             { type: "heading", text: "Posicionamiento de la ciudadela de espacio profundo.", level: 2 },
             { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
+        
+            { type: "divider" },
+            { type: "quote", text: "Hay batallas que se ganan antes de ser libradas. Hay guerras que se ganan antes de que el enemigo comprenda que han comenzado.", cite: "Apóstata Sin Nombre, sobre estrategias para derrotar a Cetana, La Reina Sintética" }
+
         ],
         i18n: {
             en: {
@@ -601,54 +608,128 @@ export const knowledgeBase = [
         icon: "✦",
         blocks: [
             { type: "heading", text: "Macero" },
-            { type: "image", src: "img/bionaves/Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." },
-            { type: "image", src: "img/bionaves/Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Macero corto alcance.png", alt: "Macero corto alcance", caption: "Macero corto alcance." }],
+                    [{ type: "image", src: "img/bionaves/Macero corto alcance con sigilo.png", alt: "Macero corto alcance con sigilo", caption: "Macero corto alcance con sigilo." }]
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Tejedor" },
-            { type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." },
-            { type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." },
-            { type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." }],
+                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Heraldo" },
-            { type: "image", src: "img/bionaves/Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." },
-            { type: "image", src: "img/bionaves/Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Heraldo con torpedos de largo alcance.png", alt: "Heraldo con torpedos de largo alcance", caption: "Heraldo con torpedos de largo alcance." }],
+                    [{ type: "image", src: "img/bionaves/Heraldo con defensa de punto.png", alt: "Heraldo con defensa de punto", caption: "Heraldo con defensa de punto." }]
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Aguijón" },
-            { type: "image", src: "img/bionaves/Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Aguijon artillero con armas X.png", alt: "Aguijón artillero con armas X", caption: "Aguijón artillero con armas X." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Titanes" },
-            { type: "image", src: "img/bionaves/Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Titan artillero biologico.png", alt: "Titán artillero con mezcla de cinética y energía", caption: "Titán artillero con mezcla de cinética y energía. Uno por cada tipo de aura ofensiva y defensiva." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Gigante" },
-            { type: "image", src: "img/bionaves/Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Gigante buffer artillero biologico.png", alt: "Gigante buffer artillero", caption: "Gigante buffer artillero." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Coloso" },
-            { type: "image", src: "img/bionaves/Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Coloso biologico.png", alt: "Coloso biológico", caption: "Coloso biológico." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Plataforma de defensa" },
-            { type: "image", src: "img/bionaves/Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." },
-            { type: "image", src: "img/bionaves/Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Plataforma biologica portahangar.png", alt: "Plataforma portahangar", caption: "Plataforma portahangar." }],
+                    [{ type: "image", src: "img/bionaves/Plataforma biologica artillera de largo alcance.png", alt: "Plataforma artillera de largo alcance", caption: "Plataforma artillera de largo alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." }],
+                    []
+                ]
+            },
             { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
-            { type: "image", src: "img/bionaves/Plataforma biologica artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
             { type: "divider" },
 
             { type: "heading", text: "Cañón de iones" },
-            { type: "image", src: "img/bionaves/Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Canon de iones biologico equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." }],
+                    []
+                ]
+            },
             { type: "divider" },
 
             { type: "heading", text: "Ciudadela de espacio profundo" },
-            { type: "image", src: "img/bionaves/Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
-            { type: "image", src: "img/bionaves/Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Ciudadela biologica I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." }],
+                    [{ type: "image", src: "img/bionaves/Ciudadela biologica II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/bionaves/Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." }],
+                    [{ type: "image", src: "img/bionaves/Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." }]
+                ]
+            },
+
             { type: "divider" },
-            { type: "image", src: "img/bionaves/Ciudadela biologica III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
-            { type: "image", src: "img/bionaves/Ciudadela biologica III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
+            { type: "quote", text: "Nosotros somos uno y uno que son muchos. Tú eres uno y pronto serás uno de nosotros.", cite: "Nosotros, la Horda" }
         ],
         i18n: {
             en: {},
@@ -662,24 +743,24 @@ export const knowledgeBase = [
         blocks: [
             { type: "heading", text: "Inicio de juego" },
 
-            { type: "note", text: "Solo maceros" },
+            { type: "heading", text: "Solo maceros", level: 2 },
             { type: "paragraph", text: "Lo más básico para el año 2200." },
             { type: "paragraph", text: "Los enemigos serán aleatorios y no podrás saber nada de ellos ya que no podrás espiarles efectivamente." },
             { type: "paragraph", text: "Solo podrás saber como contrarrestar su flota una vez que ocurra la primera batalla (viendo el log y los componentes enemigos), que en el early game suele ser también la última, así que lo más viable es prepararse contra todo." },
             { type: "paragraph", text: "Si tienes problemas de amebas o drones mineros, usa armas de energía. Si tienes problemas con entidades de energía, usa armas cinéticas. Simplemente, haz el protocolo de primer contacto y mira el blindaje y escudo." },
             { type: "paragraph", text: "Recomendado usar láser de dron minero si lo tienes disponible hasta contar con plasma y/o cañones automáticos." },
 
-            { type: "note", text: "Sobre los tejedores" },
+            { type: "heading", text: "Sobre los tejedores" },
             { type: "paragraph", text: "Mejor no usarlos tan pronto. Se vuelven de mayor valor cuando los combinas con heraldos y aguijones." },
             { type: "divider" },
 
             { type: "heading", text: "Mitad de juego" },
 
-            { type: "note", text: "Solo maceros" },
+            { type: "heading", text: "Solo maceros", level: 2 },
             { type: "paragraph", text: "Mantenemos una flota de solo maceros, a ser posible ancianos, con armas híbridas. En este caso, los maceros al contar con las pinzas de armas G que escalan contra naves de mayor tamaño, tenemos una flota decente contra naves pequeñas por las armas equilibradas de tamaño S y contra naves medianas y grandes porque llevamos las pinzas." },
             { type: "paragraph", text: "No obstante, debemos tener cuidado porque tendremos muy poca movilidad en comparación con las corbetas tradicionales. Estos maceros serán nuestra línea de combate principal, pero también una gran fuente de daño a corta distancia. El problema es que tiene poca velocidad sublumínica y poca evasión en comparación con las corbetas, por tanto sufrirán muchas bajas antes de alcanzar a naves más grandes en la retaguardia enemiga." },
 
-            { type: "note", text: "Heraldos y tejedores" },
+            { type: "heading", text: "Heraldos y tejedores", level: 2 },
             { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de protones/neutrones desde ahora." },
             { type: "paragraph", text: "Los heraldos ya se pueden beneficiar de los tejedores usando el arma de apoyo que aumenta la velocidad sublumínica y la evasión (Dardos de evasión) y el arma que protege y recupera blindaje (Lanzador de esporas adaptativas inteligente)." },
             { type: "paragraph", text: "La proporción será de cada una de estas armas de apoyo por heraldo." },
@@ -687,22 +768,22 @@ export const knowledgeBase = [
 
             { type: "heading", text: "Juego tardío" },
 
-            { type: "note", text: "Heraldos y tejedores" },
+            { type: "heading", text: "Heraldos y tejedores", level: 2 },
             { type: "paragraph", text: "La evolución lógica del diseño de flotas de Middle Game. Debemos asegurar que tenemos heraldos con hangares y lanzadores de protones listos. Equipándolos con postquemadores para reducir la mayor cantidad de daño entrante mientras huímos del enemigo y atacamos con nuestras naves de ataque y nuestros torpedos de largo alcance." },
             { type: "paragraph", text: "La configuración mimetiza a las flotas de acorazados portahangares. En este caso, tendremos mucha mayor potencia de fuego contra naves grande al utilizar armas G, pero perdemos el alcance de las armas X. En cuanto a defensa contra naves pequeñas y medianas, si bien no tenemos espacios de armas S y M, tendremos muchos más hangares para cumplir dicho rol." },
             { type: "paragraph", text: "Los tejedores seguirán cubriendo el rol de apoyo para reparar daños y mejorar nuestra potencia de ataque y supervivencia." },
 
-            { type: "note", text: "Solo maceros de sigilo de corto alcance" },
+            { type: "heading", text: "Solo maceros de sigilo de corto alcance", level: 2 },
             { type: "paragraph", text: "Con la llegada del daño colateral de las armas T, las flotas de carne de cañón ya no son recomendables. Por tanto, el mejor uso para los maceros es el de emboscadores sigilosos." },
             { type: "divider" },
 
             { type: "heading", text: "Final de juego" },
 
-            { type: "note", text: "Heraldos y titanes" },
+            { type: "heading", text: "Heraldos y titanes", level: 2 },
             { type: "paragraph", text: "Opcional añadir de 1 a 3 titanes. El resto todo heraldos con hangares y armas G de largo alcance." },
             { type: "paragraph", text: "Especialmente recomendado en este caso dividir los titanes en una flota única propia, ya que los heraldos no se van a ver tan beneficiados por las auras aliadas de los titanes en su propia flota, ya que la principal fuente de daño de los heraldos son las naves de ataque." },
 
-            { type: "note", text: "Tejedores" },
+            { type: "heading", text: "Tejedores", level: 2 },
             {
                 type: "list", items: [
                     "**Apoyo:** los tejedores se dedicarán a apoyar a las naves aliadas. Solo queremos usarlos con nuestros aguijones y heraldos y podemos tener conflictos al usarlos con maceros.",
@@ -710,16 +791,16 @@ export const knowledgeBase = [
                 ]
             },
 
-            { type: "note", text: "Maceros con sigilo" },
+            { type: "heading", text: "Maceros con sigilo", level: 2 },
             { type: "paragraph", text: "Flota de emboscada con sigilo: debido a que cuentan con la mejor movilidad de las naves biológicas y las pinzas como armas G, podemos usarlas en sus versiones ancianas para tener más daño y resistencia en la corta distancia. Eficaces contra flotas de naves medianas y grandes, como, por ejemplo, las de imperio caído/despertado." },
 
-            { type: "note", text: "Problemas con los heraldos, maceros y tejedores en la misma batalla" },
+            { type: "heading", text: "Problemas con los heraldos, maceros y tejedores en la misma batalla", level: 2 },
             { type: "paragraph", text: "Hay que tener en cuenta que los tejedores de apoyo seguirán a las naves aliadas para usar sus armas de apoyo. Es por esto que usar maceros con flotas de aguijones, heraldos y tejedores puede ser contraproducente para el rendimiento de los tejedores. Como puedes tener mayor cantidad de maceros que de heraldos por flota, al usar tejedores de apoyo, estos tendrán muchas más probabilidades de elegir a un macero como objetivo de apoyo en contraparte con los heraldos del campo de batalla. Eso hace que los tejedores de apoyo, que deberían mantenerse en la seguridad de la retaguardia de los heraldos, carguen de frente junto con los maceros para apoyarles y pueden sufrir una cantidad considerable de bajas en cada batalla, haciéndolos contraproducentes." },
             { type: "divider" },
 
             { type: "heading", text: "Defensas" },
 
-            { type: "note", text: "Combinación de plataformas de defensa con cañones de iones." },
+            { type: "heading", text: "Combinación de plataformas de defensa con cañones de iones.", level: 2 },
             { type: "paragraph", text: "Puedes combinar plataformas y cañones de formas distintas según la necesidad, aunque una vez construyas las defensas de una base estelar, difícilmente podrás cambiarla hasta que sean destruidas." },
             {
                 type: "list", items: [
@@ -728,9 +809,12 @@ export const knowledgeBase = [
                 ]
             },
 
-            { type: "note", text: "Posicionamiento de la ciudadela de espacio profundo." },
+            { type: "heading", text: "Posicionamiento de la ciudadela de espacio profundo.", level: 2 },
             { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
+
+            { type: "divider" },
+            { type: "quote", text: "Inofensivos a primera vista, estas criaturas tejeran los hilos que nos lleven a la victoria.", cite: "Talloroble sobre los Tejedores" }
         ],
         i18n: {
             en: {},
@@ -844,7 +928,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." },
 
             { type: "divider" },
-            { type: "quote", text: "El Omnissiah estaría orgulloso de tí...", cite: "Archimago Dominus Belisarius Cawl del Adeptus Mechanicus" }
+            { type: "quote", text: "Abraza los dones del Espíritu Máquina. El Omnissiah te guiará.", cite: "Archimago Dominus Belisarius Cawl del Adeptus Mechanicus" }
         ],
         i18n: {
             en: {
@@ -1117,6 +1201,9 @@ export const knowledgeBase = [
                     "**Flota defensiva pírrica:** en caso de necesidad, esta flota puede ganar en 1vs1 a cualquier otra flota del juego que no sea especializada contra ella (como cruceros de disruptores), aunque sufriendo en muchos casos una victoria pírrica, siendo suficiente para expulsar invasores. Además, al ser una flota de corbetas, tiene una mucho mayor velocidad para llegar a cualquier rincón de tu imperio."
                 ]
             },
+
+            { type: "divider" },
+            { type: "quote", text: "Arregla la fauna espacial... ¡PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Capitán Marla" }
         ],
         i18n: {
             en: {},
@@ -1257,7 +1344,10 @@ export const knowledgeBase = [
                     "**Contingency (Gran Almirante):** 100 / 40 / 6 — 400 / 160 / 24 — 800 / 320 / 48 — 1200 / 480 / 72 — 1600 / 640 / 96 — 2000 / 800 / 120 — 3.2M / 1.2M / 266K — 10M / 4M / 600K.",
                     "**Cetana (Gran Almirante):** 3.2M / 1.2M / 266K — 10M / 4M / 600K (solo hay valores en las dos últimas columnas)."
                 ]
-            }
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "La galaxia no avisa antes de cambiar. Cuando llegue la próxima crisis, no tendremos tiempo para prepararnos.", cite: "Oficial Oráculo, tras analizar 4.541.682 posibles futuros" }
         ],
         i18n: {
             en: {},
@@ -1328,6 +1418,9 @@ export const knowledgeBase = [
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
+        
+            { type: "divider" },
+            { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo" }
         ],
         i18n: {
             en: {},
@@ -1364,7 +1457,11 @@ export const knowledgeBase = [
                     "Poder ver, dentro de la partida, toda la configuración inicial que elegiste.",
                     "Que la IA juegue en torno al metajuego de combate a partir de ciertas dificultades, sin perder parte de su personalidad."
                 ]
-            }
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "Porque pedir es gratis", cite: "Morr, apóstol del Instrumento del Deseo" }
+
         ],
         i18n: {
             en: {},
