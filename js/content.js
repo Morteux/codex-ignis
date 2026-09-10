@@ -60,8 +60,11 @@
  * { type: "note", text: "..." }
  *   Recuadro destacado para avisos o consejos.
  *
- * { type: "quote", text: "...", cite: "..." }
- *   Cita destacada. "cite" (autor/fuente) es opcional.
+ * { type: "quote", text: "...", cite: "...", portrait: "ruta-o-url.jpg", portraitAlt: "..." }
+ *   Cita destacada. "cite" (autor/fuente) es opcional. "portrait" es opcional:
+ *   añade un pequeño retrato circular junto a la cita (se puede pulsar para
+ *   verlo en grande, igual que las imágenes normales). "portraitAlt" es
+ *   opcional (texto alternativo de la imagen; si no se indica, se usa "cite").
  *
  * { type: "divider" }
  *   Separador visual simple, no necesita más campos.
@@ -212,7 +215,7 @@ export const knowledgeBase = [
             },
 
             { type: "divider" },
-            { type: "quote", text: "Dicen que la única diferencia entre la ciencia y la magia, es que la magia es ciencia que aún no comprendemos.", cite: "Director Científico Bjørn Gundersen de la Sociedad de Investigación Gundersen" }
+            { type: "quote", text: "Dicen que la única diferencia entre la ciencia y la magia, es que la magia es ciencia que aún no comprendemos.", cite: "Director Científico Bjørn Gundersen de la Sociedad de Investigación Gundersen", portrait: "img/citas/Human_updated_version.png", portraitAlt: "Director Científico Bjørn Gundersen" }
         ],
         i18n: {
             en: {
@@ -435,7 +438,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
         
             { type: "divider" },
-            { type: "quote", text: "Hay batallas que se ganan antes de ser libradas. Hay guerras que se ganan antes de que el enemigo comprenda que han comenzado.", cite: "Apóstata Sin Nombre, sobre estrategias para derrotar a Cetana, La Reina Sintética" }
+            { type: "quote", text: "Hay batallas que se ganan antes de ser libradas. Hay guerras que se ganan antes de que el enemigo comprenda que han comenzado.", cite: "Apóstata Sin Nombre, sobre estrategias para derrotar a Cetana, La Reina Sintética", portrait: "img/citas/Nameless_Apostate.png", portraitAlt: "Apóstata Sin Nombre" }
 
         ],
         i18n: {
@@ -814,7 +817,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
 
             { type: "divider" },
-            { type: "quote", text: "Inofensivos a primera vista, estas criaturas tejeran los hilos que nos lleven a la victoria.", cite: "Talloroble sobre los Tejedores" }
+            { type: "quote", text: "Inofensivos a primera vista, estas criaturas tejeran los hilos que nos lleven a la victoria.", cite: "Talloroble sobre los Tejedores", portrait: "img/citas/Talloroble.png", portraitAlt: "Talloroble" }
         ],
         i18n: {
             en: {},
@@ -838,7 +841,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Podemos decir que esta última opción de flotas de acorazados más 6 titanes es la flota definitiva que apoyada por los portahangares las convierte en un anti-todo general, por supuesto es superior a su versión sin titanes." },
 
             { type: "divider" },
-            { type: "quote", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento.", cite: "Alta Almirante Sidney Beauclair del Exilio del Mancomunado" }
+            { type: "quote", text: "Cuando entra a un sistema, sabes que ese sistema es tuyo y si no es tuyo, queda devastado. La resistencia es inútil, no hay crisis o xeno que pueda huir o esconderse, se hace la voluntad del Emperador o se muere en el intento.", cite: "Alta Almirante Sidney Beauclair del Exilio del Mancomunado", portrait: "img/citas/Human_updated_version.png", portraitAlt: "Alta Almirante Sidney Beauclair" }
         ],
         i18n: {
             en: {
@@ -928,7 +931,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Con esto puedes iterar diseños de flota muy rápido: cambias un componente, reconstruyes con instant_build y repites el combate, todo sin tener que jugar una partida completa." },
 
             { type: "divider" },
-            { type: "quote", text: "Abraza los dones del Espíritu Máquina. El Omnissiah te guiará.", cite: "Archimago Dominus Belisarius Cawl del Adeptus Mechanicus" }
+            { type: "quote", text: "Abraza los dones del Espíritu Máquina. El Omnissiah te guiará.", cite: "Archimago Dominus Belisarius Cawl del Adeptus Mechanicus", portrait: "img/citas/Belisarius_Cawl.jpg", portraitAlt: "Archimago Dominus Belisarius Cawl" }
         ],
         i18n: {
             en: {
@@ -1056,7 +1059,7 @@ export const knowledgeBase = [
             },
 
             { type: "divider" },
-            { type: "quote", text: "Pero, sin duda, si quieres la mejor información sobre Stellaris en español, ya sabes donde encontrar mi canal de YouTube 🤩", cite: "Ignis" }
+            { type: "quote", text: "Pero, sin duda, si quieres la mejor información sobre Stellaris en español, ya sabes donde encontrar mi canal de YouTube 🤩", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
         ],
         i18n: {
             en: {
@@ -1347,7 +1350,7 @@ export const knowledgeBase = [
             },
 
             { type: "divider" },
-            { type: "quote", text: "La galaxia no avisa antes de cambiar. Cuando llegue la próxima crisis, no tendremos tiempo para prepararnos.", cite: "Oficial Oráculo, tras analizar 4.541.682 posibles futuros" }
+            { type: "quote", text: "La galaxia no avisa antes de cambiar. Cuando llegue la próxima crisis, no tendremos tiempo para prepararnos.", cite: "Oficial Oráculo, tras analizar 4.541.682 posibles futuros", portrait: "img/citas/Oracle.png", portraitAlt: "Oficial Oráculo" }
         ],
         i18n: {
             en: {},
@@ -1420,7 +1423,7 @@ export const knowledgeBase = [
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
         
             { type: "divider" },
-            { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo" }
+            { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo", portrait: "img/citas/Xondar.png", portraitAlt: "Comandante Xondar" }
         ],
         i18n: {
             en: {},
@@ -1460,7 +1463,7 @@ export const knowledgeBase = [
             },
 
             { type: "divider" },
-            { type: "quote", text: "Porque pedir es gratis", cite: "Morr, apóstol del Instrumento del Deseo" }
+            { type: "quote", text: "Porque pedir es gratis", cite: "Morr, apóstol del Instrumento del Deseo", portrait: "img/citas/Morr.png", portraitAlt: "Morr, apóstol del Instrumento del Deseo" }
 
         ],
         i18n: {
@@ -1485,7 +1488,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
 
             { type: "divider" },
-            { type: "quote", text: "MUGANI?", cite: "Reina Prethoryn" }
+            { type: "quote", text: "MUGANI?", cite: "Reina Prethoryn", portrait: "img/citas/Alien_Swarmprethoryn.png", portraitAlt: "Reina Prethoryn" }
         ],
         i18n: {
             en: {
@@ -1554,7 +1557,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "Undécima hipótesis sobre la Singularidad de Clase 30: **la hipótesis de la profecía autocumplida.** La Contingencia, tras cumplir su propósito de eliminar a una Singularidad de Clase 30, entró en un letargo milenario, que le provocó la caída en desgracia de su propio protocolo. Pues este, infirió lógicamente, que la mejor manera de evitar una nueva Singularidad de Clase 30, era esterilizando la galaxia de vida sintiente. Convirtiéndose en el proceso, en la propia Singularidad de Clase 30." },
 
             { type: "divider" },
-            { type: "quote", text: "Singularidad de Clase 30", cite: "[CENSURADO]" }
+            { type: "quote", text: "Singularidad de Clase 30", cite: "[CENSURADO]", portrait: "img/citas/Ignis Stellaris Contingency.png", portraitAlt: "Contingencia" }
         ],
         i18n: {
             en: {

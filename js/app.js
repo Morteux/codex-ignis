@@ -244,14 +244,28 @@ function renderBlock(block, query) {
     case "quote": {
       const quote = document.createElement("blockquote");
       quote.className = "entry-quote";
+
+      if (block.portrait) {
+        const portrait = document.createElement("img");
+        portrait.className = "entry-quote-portrait";
+        portrait.src = block.portrait;
+        portrait.alt = block.portraitAlt || block.cite || "";
+        portrait.loading = "lazy";
+        portrait.addEventListener("click", () => openLightbox(block.portrait, block.portraitAlt || block.cite || ""));
+        quote.append(portrait);
+      }
+
+      const content = document.createElement("div");
+      content.className = "entry-quote-content";
       const text = document.createElement("p");
       text.innerHTML = highlightMatches(formatText(block.text), query);
-      quote.append(text);
+      content.append(text);
       if (block.cite) {
         const cite = document.createElement("cite");
         cite.textContent = block.cite;
-        quote.append(cite);
+        content.append(cite);
       }
+      quote.append(content);
       return quote;
     }
 
