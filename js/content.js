@@ -223,138 +223,288 @@ export const knowledgeBase = [
                 icon: "✦",
                 blocks: [
                     { type: "heading", text: "Corvette" },
-                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "General-purpose Corvette", caption: "General-purpose Corvette." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Early- and mid-game Corvette against space fauna", caption: "Early- and mid-game Corvette against space fauna." },
-
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Corbeta generalista.png", alt: "General-purpose Corvette", caption: "General-purpose Corvette." }],
+                            [{ type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "Early and mid game Corvette against space fauna", caption: "Early and mid game Corvette against space fauna." }]
+                        ]
+                    },
                     { type: "heading", text: "Frigate" },
-                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Short-range torpedo Frigate", caption: "Short-range torpedo Frigate with cloaking." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Long-range torpedo Frigate", caption: "Long-range torpedo Frigate." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "Short-range Torpedo Frigate", caption: "Short-range Torpedo Frigate with Cloaking." }],
+                            [{ type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "Long-range Torpedo Frigate", caption: "Long-range Torpedo Frigate." }]
+                        ]
+                    },
 
                     { type: "heading", text: "Destroyer" },
-                    { type: "image", src: "img/naves/Destructor artillero.png", alt: "Artillery Destroyer", caption: "Artillery Destroyer." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Destructor artillero.png", alt: "Artillery Destroyer", caption: "Artillery Destroyer." }],
+                            [{ type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destroyer with Point Defense", caption: "Destroyer with Point Defense." }]
+                        ]
+                    },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "Destroyer with point defense", caption: "Destroyer with point defense." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Anti-Corvette Destroyer", caption: "Anti-Corvette Destroyer." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Anti-Corvette Destroyer", caption: "Anti-Corvette Destroyer." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Cruiser" },
-                    { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Torpedo Cruiser with short-range defenses", caption: "Torpedo Cruiser with short-range defenses." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "Torpedo Cruiser with short-range defenses", caption: "Torpedo Cruiser with short-range defenses." }],
+                            [{ type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Short-range Torpedo Cruiser with Cloaking", caption: "Short-range Torpedo Cruiser with Cloaking." }]
+                        ]
+                    },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "Short-range torpedo Cruiser with cloaking", caption: "Short-range torpedo Cruiser with cloaking." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Torpedo Cruiser with long-range missiles", caption: "Torpedo Cruiser with long-range missiles." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "Carrier Cruiser with short-range defenses", caption: "Carrier Cruiser with short-range defenses." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Torpedo Cruiser with long-range missiles", caption: "Torpedo Cruiser with long-range missiles." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Battleship" },
-                    { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Artillery Battleship", caption: "Artillery Battleship." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Carrier Battleship", caption: "Carrier Battleship." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Acorazado artillero.png", alt: "Artillery Battleship", caption: "Artillery Battleship." }],
+                            [{ type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Carrier Battleship", caption: "Carrier Battleship." }]
+                        ]
+                    },
 
                     { type: "heading", text: "Titan" },
-                    { type: "image", src: "img/naves/Titan artillero.png", alt: "Artillery Titan", caption: "Artillery Titan. One for each type of offensive and defensive aura." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Titan artillero.png", alt: "Artillery Titan", caption: "Artillery Titan. One for each type of offensive and defensive aura." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Juggernaut" },
-                    { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Artillery support Juggernaut", caption: "Artillery support Juggernaut." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Support Artillery Juggernaut", caption: "Support Artillery Juggernaut." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Colossus" },
-                    { type: "image", src: "img/naves/Coloso.png", alt: "Colossus", caption: "" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Coloso.png", alt: "Colossus", caption: "" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Starbase" },
-                    { type: "image", src: "img/naves/Base estelar artillada.png", alt: "Artillery Starbase", caption: "Artillery Starbase." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Carrier Starbase", caption: "Carrier Starbase." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Base estelar artillada.png", alt: "Artillery Starbase", caption: "Artillery Starbase." }],
+                            [{ type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Carrier Starbase", caption: "Carrier Starbase." }]
+                        ]
+                    },
 
                     { type: "heading", text: "Defense Platform" },
-                    { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Long-range carrier Defense Platform", caption: "Long-range carrier Defense Platform." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Short-range torpedo Defense Platform", caption: "Short-range torpedo Defense Platform." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Short-range artillery Defense Platform", caption: "Short-range artillery Defense Platform." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Long-range Carrier Defense Platform", caption: "Long-range Carrier Defense Platform." }],
+                            [{ type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Short-range Torpedo Defense Platform", caption: "Short-range Torpedo Defense Platform." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Short-range Artillery Defense Platform", caption: "Short-range Artillery Defense Platform." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Ion Cannon" },
-                    { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "Deep Space Citadel" },
-                    { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Long-range Citadel I", caption: "Long-range Citadel I." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Long-range Citadel I", caption: "Long-range Citadel I." }],
+                            [{ type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Long-range Citadel II", caption: "Long-range Citadel II." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Long-range Citadel III", caption: "Long-range Citadel III." }],
+                            [{ type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Short-range Citadel III", caption: "Short-range Citadel III." }]
+                        ]
+                    },
+
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Long-range Citadel II", caption: "Long-range Citadel II." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Long-range Citadel III", caption: "Long-range Citadel III." },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Short-range Citadel III", caption: "Short-range Citadel III." },
-                ]
+                    { type: "quote", text: "They say the only difference between science and magic is that magic is science we do not yet understand.", cite: "Director of Science Bjørn Gundersen of the Gundersen Research Society", portrait: "img/citas/Human_updated_version.png", portraitAlt: "Director of Science Bjørn Gundersen" }]
             },
             jp: {
                 title: "艦船設計",
                 icon: "✦",
                 blocks: [
                     { type: "heading", text: "コルベット" },
-                    { type: "image", src: "img/naves/Corbeta generalista.png", alt: "汎用コルベット", caption: "汎用コルベット。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "序盤・中盤の宇宙生物対策コルベット", caption: "序盤・中盤の宇宙生物対策コルベット。" },
-
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Corbeta generalista.png", alt: "汎用型コルベット", caption: "汎用型コルベット。" }],
+                            [{ type: "image", src: "img/naves/Corbeta contra fauna.png", alt: "宇宙生物対策用の序盤・中盤コルベット", caption: "宇宙生物対策用の序盤・中盤コルベット。" }]
+                        ]
+                    },
                     { type: "heading", text: "フリゲート" },
-                    { type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "近距離魚雷フリゲート", caption: "ステルス機能を備えた近距離魚雷フリゲート。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "長距離魚雷フリゲート", caption: "長距離魚雷フリゲート。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Fragata torpedera de corto alcance.png", alt: "短距離魚雷フリゲート", caption: "クローキング搭載の短距離魚雷フリゲート。" }],
+                            [{ type: "image", src: "img/naves/Fragata torpedera de largo alcance.png", alt: "長距離魚雷フリゲート", caption: "長距離魚雷フリゲート。" }]
+                        ]
+                    },
 
                     { type: "heading", text: "駆逐艦" },
-                    { type: "image", src: "img/naves/Destructor artillero.png", alt: "砲撃駆逐艦", caption: "砲撃駆逐艦。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Destructor artillero.png", alt: "砲撃型駆逐艦", caption: "砲撃型駆逐艦。" }],
+                            [{ type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "ポイント・ディフェンス搭載駆逐艦", caption: "ポイント・ディフェンス搭載駆逐艦。" }]
+                        ]
+                    },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Destructor con defensa de punto.png", alt: "ポイント防御搭載駆逐艦", caption: "ポイント防御搭載駆逐艦。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "対コルベット駆逐艦", caption: "対コルベット駆逐艦。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "対コルベット駆逐艦", caption: "対コルベット駆逐艦。" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "巡洋艦" },
-                    { type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "近距離防御搭載魚雷巡洋艦", caption: "近距離防御搭載魚雷巡洋艦。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Crucero torpedero con defensas de corto alcance.png", alt: "短距離防御型魚雷巡洋艦", caption: "短距離防御型魚雷巡洋艦。" }],
+                            [{ type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "クローキング搭載短距離魚雷巡洋艦", caption: "クローキング搭載短距離魚雷巡洋艦。" }]
+                        ]
+                    },
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero torpedero de corto alcance con sigilo.png", alt: "ステルス搭載近距離魚雷巡洋艦", caption: "ステルス搭載近距離魚雷巡洋艦。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "長距離ミサイル搭載魚雷巡洋艦", caption: "長距離ミサイル搭載魚雷巡洋艦。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Crucero portahangares con defensas de corto alcance.png", alt: "近距離防御搭載空母巡洋艦", caption: "近距離防御搭載空母巡洋艦。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "長距離ミサイル搭載魚雷巡洋艦", caption: "長距離ミサイル搭載魚雷巡洋艦。" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "戦艦" },
-                    { type: "image", src: "img/naves/Acorazado artillero.png", alt: "砲撃戦艦", caption: "砲撃戦艦。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "空母戦艦", caption: "空母戦艦。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Acorazado artillero.png", alt: "砲撃型戦艦", caption: "砲撃型戦艦。" }],
+                            [{ type: "image", src: "img/naves/Acorazado portahangares.png", alt: "空母型戦艦", caption: "空母型戦艦。" }]
+                        ]
+                    },
 
                     { type: "heading", text: "タイタン" },
-                    { type: "image", src: "img/naves/Titan artillero.png", alt: "砲撃タイタン", caption: "砲撃タイタン。攻撃用・防御用の各種オーラにつき1隻。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Titan artillero.png", alt: "砲撃型タイタン", caption: "砲撃型タイタン。攻撃・防御オーラの各タイプにつき1隻。" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "ジャガーノート" },
-                    { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "砲撃支援ジャガーノート", caption: "砲撃支援ジャガーノート。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "支援砲撃型ジャガーノート", caption: "支援砲撃型ジャガーノート。" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "コロッサス" },
-                    { type: "image", src: "img/naves/Coloso.png", alt: "コロッサス", caption: "" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Coloso.png", alt: "コロッサス", caption: "" }],
+                            []
+                        ]
+                    },
 
-                    { type: "heading", text: "スターべース" },
-                    { type: "image", src: "img/naves/Base estelar artillada.png", alt: "砲撃スターべース", caption: "砲撃スターべース。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "空母スターべース", caption: "空母スターべース。" },
+                    { type: "heading", text: "星系基地" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Base estelar artillada.png", alt: "砲撃型星系基地", caption: "砲撃型星系基地。" }],
+                            [{ type: "image", src: "img/naves/Base estelar portahangares.png", alt: "空母型星系基地", caption: "空母型星系基地。" }]
+                        ]
+                    },
 
                     { type: "heading", text: "防衛プラットフォーム" },
-                    { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "長距離空母型防衛プラットフォーム", caption: "長距離空母型防衛プラットフォーム。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "近距離魚雷防衛プラットフォーム", caption: "近距離魚雷防衛プラットフォーム。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "近距離砲撃防衛プラットフォーム", caption: "近距離砲撃防衛プラットフォーム。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "長距離空母型防衛プラットフォーム", caption: "長距離空母型防衛プラットフォーム。" }],
+                            [{ type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "短距離魚雷防衛プラットフォーム", caption: "短距離魚雷防衛プラットフォーム。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "短距離砲撃型防衛プラットフォーム", caption: "短距離砲撃型防衛プラットフォーム。" }],
+                            []
+                        ]
+                    },
 
-                    { type: "heading", text: "イオン砲" },
-                    { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "標準バランス型イオン砲", caption: "標準バランス型イオン砲。" },
+                    { type: "heading", text: "イオンキャノン" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "標準型バランス型イオンキャノン", caption: "標準型バランス型イオンキャノン。" }],
+                            []
+                        ]
+                    },
 
                     { type: "heading", text: "深宇宙要塞" },
-                    { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "長距離型シタデル I", caption: "長距離型シタデル I。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "長距離型要塞 I", caption: "長距離型要塞 I。" }],
+                            [{ type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "長距離型要塞 II", caption: "長距離型要塞 II。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "長距離型要塞 III", caption: "長距離型要塞 III。" }],
+                            [{ type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "短距離型要塞 III", caption: "短距離型要塞 III。" }]
+                        ]
+                    },
+
                     { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "長距離型シタデル II", caption: "長距離型シタデル II。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "長距離型シタデル III", caption: "長距離型シタデル III。" },
-                    { type: "divider" },
-                    { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "近距離型シタデル III", caption: "近距離型シタデル III。" },
-                ]
+                    { type: "quote", text: "科学と魔法の唯一の違いは、魔法とはまだ理解されていない科学だと言われている。", cite: "ガンダーセン研究協会 科学主任ビョルン・ガンダーセン", portrait: "img/citas/Human_updated_version.png", portraitAlt: "科学主任ビョルン・ガンダーセン" }]
             }
         }
     },
@@ -436,7 +586,7 @@ export const knowledgeBase = [
             { type: "heading", text: "Posicionamiento de la ciudadela de espacio profundo.", level: 2 },
             { type: "paragraph", text: "Para la ciudadela de espacio profundo el posicionamiento es clave. Ya que el único diseño que tenemos para la ciudadela de nivel tres es de largo alcance, queremos posicionar nuestras ciudadelas en los bordes de los sistemas lejos de los saltos de hipervías por donde puedan entrar las posibles flotas hostiles. Así pues, necesitaremos alejar la ciudadela lo suficiente para que no esté cerca de cada entrada de hipervía, ni de la base estelar central, pero que sus hangares y arma X estén a rango para disparar." },
             { type: "paragraph", text: "Una segunda opción, es posicionar nuestra ciudadela justo en el borde del salto. Si bien desperdiciaremos el arma X y las armas L en la gran mayoría de casos, podemos construir en la propia ciudadela plataformas de defensa de corto alcance con armas híbridas de energía y cinéticas o directamente con torpedos de corto alcance, para que puedan comenzar a atacar en cuanto la flota enemiga salte al sistema." },
-        
+
             { type: "divider" },
             { type: "quote", text: "Hay batallas que se ganan antes de ser libradas. Hay guerras que se ganan antes de que el enemigo comprenda que han comenzado.", cite: "Apóstata Sin Nombre, sobre estrategias para derrotar a Cetana, La Reina Sintética", portrait: "img/citas/Nameless_Apostate.png", portraitAlt: "Apóstata Sin Nombre" }
 
@@ -447,35 +597,35 @@ export const knowledgeBase = [
                 blocks: [
                     { type: "heading", text: "Early Game" },
 
-                    { type: "heading", text: "Corvettes only", level: 2 },
-                    { type: "paragraph", text: "The most basic setup for the year 2200." },
-                    { type: "paragraph", text: "Enemies will be random, and you will not be able to know much about them since you will not be able to spy on them effectively. You will only be able to determine how to counter their fleet once the first battle takes place (by checking the combat log and enemy components), which in the early game is usually also the last one, so the most viable approach is to prepare for everything." },
-                    { type: "paragraph", text: "If you have trouble with amoebas or mining drones, use energy weapons. If you have trouble with energy entities, use kinetic weapons. Simply complete the first contact protocol and check their armor and shields." },
-                    { type: "paragraph", text: "It is recommended to use the Mining Drone Laser if available until you have access to plasma and/or autocannons." },
+                    { type: "heading", text: "Corvettes Only", level: 2 },
+                    { type: "paragraph", text: "The most basic option for the year 2200." },
+                    { type: "paragraph", text: "Enemies will be random, and you won't be able to know much about them since you won't be able to effectively spy on them. You'll only be able to figure out how to counter their fleet once the first battle takes place (by checking the log and enemy components), which in the early game is usually also the last one, so the most viable approach is to prepare for everything." },
+                    { type: "paragraph", text: "If you're having trouble with amoebas or mining drones, use energy weapons. If you're having trouble with energy entities, use kinetic weapons. Simply complete the First Contact procedure and check their armor and shields." },
+                    { type: "paragraph", text: "Using a Mining Drone Laser is recommended if available, until you have access to plasma and/or autocannons." },
 
-                    { type: "heading", text: "Destroyers only", level: 2 },
-                    { type: "paragraph", text: "With a specialized design, they can outperform a hybrid corvette fleet using both energy and kinetic weapons. The problem is that they scale rather poorly in the later stages of the game." },
-                    { type: "paragraph", text: "However, corvettes also scale rather poorly now, so in long games, building some destroyers is not a bad idea to gain an advantage over early-game corvettes." },
+                    { type: "heading", text: "Destroyers Only", level: 2 },
+                    { type: "paragraph", text: "With a specialized design, they can overcome a hybrid corvette fleet using both energy and kinetic weapons. The problem is that they scale rather poorly in the later stages of the game." },
+                    { type: "paragraph", text: "However, corvettes also scale rather poorly now, so in long games, building a few destroyers is not a bad idea to gain an advantage over early-game corvettes." },
 
-                    { type: "heading", text: "Frigate support", level: 2 },
-                    { type: "paragraph", text: "With the new siege combat computer, combining frigates with corvettes and/or destroyers in the early game is a very good idea for destroying chokepoints and defensive stations with a lot of fleet power. Since these are very difficult targets for corvettes and destroyers, torpedo frigates can easily turn the battle around." },
+                    { type: "heading", text: "Frigate Support", level: 2 },
+                    { type: "paragraph", text: "With the new Siege combat computer, combining frigates with corvettes and/or destroyers in the early game is a very good idea for destroying chokepoints and defensive stations with high fleet power. Since these are very tough targets for corvettes and destroyers, torpedo frigates can easily turn the tide of the battle." },
                     { type: "divider" },
 
                     { type: "heading", text: "Mid Game" },
 
-                    { type: "heading", text: "Corvettes only", level: 2 },
-                    { type: "paragraph", text: "A fleet made entirely of hybrid corvettes can work, but losses after every battle are virtually guaranteed, which will undermine your still-developing economy. Not recommended for wars of attrition. At this point, stop building corvettes and focus on frigates and cruisers." },
+                    { type: "heading", text: "Corvettes Only", level: 2 },
+                    { type: "paragraph", text: "A fleet consisting only of hybrid corvettes can work, but losses after every battle are guaranteed, which will hurt your still-developing economy. Not recommended for wars of attrition. At this point, stop building corvettes and focus on frigates and cruisers." },
 
-                    { type: "heading", text: "Cruisers only", level: 2 },
-                    { type: "paragraph", text: "The first version of a carrier fleet. Since we still do not have many weapon options, you can equip the hangars with only missiles and point defense. If you have access to long-range torpedoes, that would be the best option." },
+                    { type: "heading", text: "Cruisers Only", level: 2 },
+                    { type: "paragraph", text: "First version of a carrier fleet. Since we still don't have many options for our weapons, you can pair the hangars with only missiles and point-defense weapons. If you have access to long-range torpedoes, that would be the best option." },
 
-                    { type: "heading", text: "Frigates only", level: 2 },
-                    { type: "paragraph", text: "The frigates we can build in the early game can help us destroy larger defensive positions during this phase. If we have access to a stealth component, it is highly recommended to use it." },
+                    { type: "heading", text: "Frigates Only", level: 2 },
+                    { type: "paragraph", text: "The frigates we can build in the early game can help us destroy larger enemy defensive positions at this stage. If you have access to a cloaking component, using it is highly recommended." },
                     { type: "divider" },
 
                     { type: "heading", text: "Late Game" },
-                    { type: "heading", text: "Carrier Battleships only", level: 2 },
-                    { type: "paragraph", text: "Carrier battleships. By combining the long-range firepower of X-slot weapons with the versatility of hangars, while also having room for point defense and M- and S-slot weapons, we have the ultimate design that will perform at least decently well against virtually anything we can encounter. There will be situations where a specialized fleet may outperform it, but against most threats such as mid-game crises, fallen and awakened empires, and even some end-game crises, it will perform more than adequately. For the X-slot weapon, you can choose between the Energy Lance and Arc Emitter. Under no circumstances should you use the Giga Cannon." },
+                    { type: "heading", text: "Carrier Battleships Only", level: 2 },
+                    { type: "paragraph", text: "Carrier battleships. Making use of the long-range firepower of X-slot weapons, together with the versatility of hangars, while also having room for point defense and M and S weapons, we have the ultimate design that will perform at least decently against anything we can throw at it. There will still be situations where a specialized fleet can perform better. Against most threats, such as mid-game crises, Fallen and Awakened Empires, and even some end-game crises, it will perform more than well enough. For the X-slot weapon, you can choose between the energy lance and arc emitter. Under no circumstances should you use the Giga Cannon." },
                     { type: "divider" },
 
                     { type: "heading", text: "End Game" },
@@ -485,8 +635,8 @@ export const knowledgeBase = [
                     {
                         type: "columns",
                         columns: [
-                            [{ type: "paragraph", text: "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each one should carry a different offensive aura." }],
-                            [{ type: "paragraph", text: "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. In addition, they have an X-slot weapon that serves as artillery against large targets." }]
+                            [{ type: "paragraph", text: "If you choose to bring a Titan, it serves as support through its auras. If you bring more than one, each should use a different offensive aura." }],
+                            [{ type: "paragraph", text: "Carrier battleships serve as a defensive shield against smaller ships such as corvettes, destroyers, strike craft, and frigates, while also performing well against larger ships. They also have an X-slot weapon that serves as artillery against large targets." }]
                         ]
                     },
 
@@ -495,112 +645,115 @@ export const knowledgeBase = [
                     {
                         type: "columns",
                         columns: [
-                            [{ type: "paragraph", text: "If you choose short-range stealth torpedo cruisers, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or large enemies such as capital ships, Titans, starbases, Leviathans, etc. However, you run the risk of suffering heavy losses." }],
-                            [{ type: "paragraph", text: "If you choose long-range torpedo cruisers, they are siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive artillery firepower that carrier battleships lack to some extent. It should be noted that they are very weak when the enemy outranges you or has equal weapon range." }]
+                            [{ type: "paragraph", text: "If you choose short-range torpedo cruisers with cloaking, they are the battering ram that brings down large targets, dealing absurdly devastating damage against stationary or massive enemies such as capital ships, Titans, Starbases, Leviathans, etc. You run the risk of suffering heavy losses." }],
+                            [{ type: "paragraph", text: "If you choose long-range torpedo cruisers, they are the siege artillery that destroys chokepoints and other defenses from the safety of long range. They provide the destructive firepower of artillery that carrier battleships have more limited access to. It should be noted that they are very weak when the enemy outranges you or has equal weapon range." }]
                         ]
                     },
 
                     { type: "heading", text: "Titans", level: 2 },
-                    { type: "paragraph", text: "If you do not want to distribute your Titans among different fleets, you can create a fleet consisting entirely of all your Titans. By grouping different offensive and defensive auras, you ensure that all of them remain active even if you lose some Titans, since you will always have more than one Titan with each type of weapon. This fleet is more vulnerable on its own, so it is advisable to accompany it with a normal carrier battleship fleet." },
+                    { type: "paragraph", text: "If you don't want to distribute your Titans among different fleets, you can create a fleet consisting entirely of your Titans. By grouping different offensive and defensive auras together, you can ensure that they remain active even if you lose some Titans, since you will always have more than one Titan with each type of weapon. This fleet is more vulnerable on its own, so it is advisable to support it with a standard carrier battleship fleet." },
                     { type: "divider" },
 
                     { type: "heading", text: "Defenses" },
 
-                    { type: "heading", text: "Combining defense platforms with Ion Cannons.", level: 2 },
-                    { type: "paragraph", text: "You can combine platforms and cannons in different ways depending on your needs, although once you build the defenses of a starbase, you will hardly be able to change them until they are destroyed." },
+                    { type: "heading", text: "Defense Platforms with Ion Cannons", level: 2 },
+                    { type: "paragraph", text: "You can combine platforms and ion cannons in different ways depending on your needs, although once you build a starbase's defenses, you will hardly be able to change them until they are destroyed." },
                     {
                         type: "list", items: [
-                            "**One Ion Cannon with many defense platforms:** effective against AI empire fleets. A single Ion Cannon is used for two reasons: the main one is to have enough range to attack ships anywhere in the system, so that no ship can pass through the edge without being attacked by the starbase for being out of range; the second is to have some additional damage against large ships such as Titans, battleships, and Bubbles. On the other hand, defense platforms, whether using hangars or long-range torpedoes, will be the main source of damage against any type of ship, especially small and medium-sized ones. It can work as the only defense in the system, seriously damaging the enemy fleet or even repelling the attack. However, it will suffer extremely heavy losses, so it is recommended to use a full fleet to absorb most of the damage.",
-                            "**As many Ion Cannons as possible, filling the remaining slots with defense platforms:** effective against fallen/awakened empire fleets and mid- and end-game crises. Ion Cannons will be capable of almost completely wiping out large ships in the first two volleys, while leaving you vulnerable to small ships. For this reason, I recommend filling the remaining slots with hangar defense platforms, which provide some additional protection against missiles and torpedoes. However, this type of defense is usually used to support a full fleet and never as the sole defense. Thanks to the collateral damage of T-slot weapons, it is now viable to use only Ion Cannons, as they can eliminate entire fleets of small ships if they manage to land two or three shots from a T-slot weapon."
+                            "**One Ion Cannon with many Defense Platforms:** effective against AI empire fleets. A single Ion Cannon is used for two reasons: the main one is to have enough range to attack ships anywhere in the system, so that none of them can slip past the edge without the starbase attacking them because they are out of range; the second is to have some extra damage against large ships such as Titans, Battleships, and Ancient Dreadnoughts. Meanwhile, the defense platforms, whether equipped with hangars or long-range torpedoes, will be the primary source of damage against all types of ships, especially small and medium-sized ones. It can work as the only defense in the system, seriously damaging the enemy fleet or even repelling the attack. However, it will suffer very heavy losses, so it is recommended to use a full fleet to absorb most of the damage.",
+                            "**As many Ion Cannons as possible, filling the remaining slots with Defense Platforms:** effective against Fallen/Awakened Empire fleets and mid-game and end-game crises. The Ion Cannons will be capable of almost completely wiping out large ships in the first two volleys, while leaving the defense vulnerable against small ships. For this reason, I recommend filling the gaps with hangar-equipped Defense Platforms, which provide some additional defense against missiles and torpedoes. However, this type of defense is usually used to support a full fleet and never as the sole defense. Thanks to the collateral damage from T-slot weapons, it is now viable to use only Ion Cannons, as they can wipe out entire fleets of small ships if they manage to land two or three hits from a T-slot weapon."
                         ]
                     },
 
-                    { type: "heading", text: "Deep Space Citadel positioning.", level: 2 },
-                    { type: "paragraph", text: "For the Deep Space Citadel, positioning is key. Since the only design we have for a level-three Citadel is long-range, we want to position our Citadels on the edges of systems, away from hyperlane jumps where hostile fleets may enter. Therefore, we need to position the Citadel far enough away that it is not close to every hyperlane entrance or the central starbase, while still keeping its hangars and X-slot weapon within firing range." },
-                    { type: "paragraph", text: "A second option is to position our Citadel directly at the edge of the hyperlane jump. While this will waste the X-slot weapon and L-slot weapons in most cases, we can instead build short-range defense platforms directly on the Citadel with hybrid energy and kinetic weapons, or simply short-range torpedoes, allowing them to start attacking as soon as the enemy fleet jumps into the system." },
+                    { type: "heading", text: "Deep Space Citadel Positioning", level: 2 },
+                    { type: "paragraph", text: "For a Deep Space Citadel, positioning is key. Since the only design we have for a level-three Citadel is long-range, we want to position our Citadels on the edges of systems, far from hyperlane entrances where hostile fleets may enter. We therefore need to place the Citadel far enough away that it is not close to each hyperlane entrance or the central starbase, while still keeping its hangars and X-slot weapon within firing range." },
+                    { type: "paragraph", text: "A second option is to place our Citadel right at the edge of the hyperlane entrance. Although we will waste the X-slot weapon and L weapons in most cases, we can build short-range Defense Platforms directly at the Citadel, equipped with hybrid energy and kinetic weapons or simply short-range torpedoes, allowing them to begin attacking as soon as the enemy fleet jumps into the system." },
+
+                    { type: "divider" },
+                    { type: "quote", text: "Some battles are won before they are fought. Some wars are won before the enemy understands they have begun.", cite: "Nameless Apostate, on strategies for defeating Cetana, the Synthetic Queen", portrait: "img/citas/Nameless_Apostate.png", portraitAlt: "Nameless Apostate" }
                 ]
             },
             jp: {
                 title: "タイタンとそのオーラについて",
                 icon: "✦",
                 blocks: [
-                    { type: "heading", text: "序盤" },
+                    { type: "heading", text: "ゲーム開始時" },
 
                     { type: "heading", text: "コルベットのみ", level: 2 },
-                    { type: "paragraph", text: "2200年時点で最も基本的な構成です。" },
-                    { type: "paragraph", text: "敵はランダムであり、効果的に諜報することもできないため、敵艦隊について事前に知ることはほとんどできません。敵艦隊への対策を判断できるのは、最初の戦闘が発生した後（戦闘ログや敵艦の装備を確認することで）だけです。序盤ではこの最初の戦闘がそのまま最後の戦闘になることも多いため、現実的にはあらゆる可能性に備えておくのが最善です。" },
-                    { type: "paragraph", text: "アメーバや採掘ドローンに苦戦する場合は、エネルギー兵器を使用します。エネルギー生命体に苦戦する場合は、実体弾兵器を使用します。単純に初接触プロトコルを完了し、敵の装甲とシールドを確認してください。" },
-                    { type: "paragraph", text: "利用可能であれば、プラズマ兵器やオートキャノンを手に入れるまでは、採掘ドローンレーザーの使用を推奨します。" },
+                    { type: "paragraph", text: "2200年における最も基本的な選択肢です。" },
+                    { type: "paragraph", text: "敵はランダムであり、効果的に諜報できないため、敵について事前に知ることはほとんどできません。敵艦隊への対策を判断できるのは、最初の戦闘が発生した後（戦闘ログと敵艦のコンポーネントを確認してから）だけです。しかも序盤では、その最初の戦闘が最後の戦闘になることも珍しくありません。そのため、可能な限りあらゆる状況に備えるのが現実的です。" },
+                    { type: "paragraph", text: "スペースアメーバや採掘ドローンに苦戦する場合は、エネルギー兵器を使用してください。エネルギー存在に苦戦する場合は、実弾兵器を使用してください。第一次接触プロトコルを完了させ、相手の装甲とシールドを確認するだけで十分です。" },
+                    { type: "paragraph", text: "利用可能であれば、プラズマおよび／またはオートキャノンを入手するまで、採掘ドローンレーザーを使用することを推奨します。" },
 
                     { type: "heading", text: "駆逐艦のみ", level: 2 },
-                    { type: "paragraph", text: "特化型の設計であれば、エネルギー兵器と実体弾兵器を組み合わせたハイブリッドなコルベット艦隊を上回ることができます。問題は、ゲーム後半になると性能の伸びがかなり悪いことです。" },
-                    { type: "paragraph", text: "ただし、現在はコルベットも性能の伸びがかなり悪いため、長期戦になるゲームでは、序盤のコルベットに対して優位を取るために駆逐艦をいくらか建造しておくのも悪くありません。" },
+                    { type: "paragraph", text: "特化した設計であれば、エネルギー兵器と実弾兵器を組み合わせたハイブリッド型コルベット艦隊を上回ることができます。問題は、ゲーム後半になるにつれてスケーリングがかなり悪くなることです。" },
+                    { type: "paragraph", text: "ただし、現在ではコルベットもスケーリングがかなり悪いため、長期戦になるゲームでは、序盤のコルベットに対して優位を取るために駆逐艦を数隻建造するのも悪くありません。" },
 
                     { type: "heading", text: "フリゲートによる支援", level: 2 },
-                    { type: "paragraph", text: "新しい攻城戦用戦闘コンピュータを利用すれば、序盤にフリゲートをコルベットや駆逐艦と組み合わせるのは非常に有効です。特に、艦隊戦力が高いチョークポイントや防衛ステーションの撃破に役立ちます。これらはコルベットや駆逐艦にとって非常に厄介な標的ですが、魚雷フリゲートを投入することで戦況を簡単にひっくり返すことができます。" },
+                    { type: "paragraph", text: "新しい攻城戦闘コンピュータを使用することで、序盤にフリゲートをコルベットや駆逐艦と組み合わせ、チョークポイントや艦隊戦力の高い防衛拠点を破壊するのは非常に有効です。これらはコルベットや駆逐艦にとって非常に厄介な目標ですが、魚雷フリゲートを投入すれば戦闘の流れを簡単に逆転させることができます。" },
                     { type: "divider" },
 
                     { type: "heading", text: "中盤" },
 
                     { type: "heading", text: "コルベットのみ", level: 2 },
-                    { type: "paragraph", text: "ハイブリッド型コルベットだけの艦隊でも機能させることはできますが、戦闘のたびに損失が発生することがほぼ確実であり、まだ発展途上の経済を圧迫します。消耗戦にはあまりおすすめできません。この段階になったらコルベットの建造をやめ、フリゲートと巡洋艦に集中しましょう。" },
+                    { type: "paragraph", text: "ハイブリッド型コルベットのみで構成した艦隊でも機能する場合はありますが、戦闘のたびに損害が発生することが確実であり、発展途上の経済に大きな負担をかけます。消耗戦にはあまりおすすめできません。この段階ではコルベットの建造をやめ、フリゲートと巡洋艦に集中しましょう。" },
 
                     { type: "heading", text: "巡洋艦のみ", level: 2 },
-                    { type: "paragraph", text: "空母艦隊の最初の形です。まだ兵器の選択肢が多くないため、格納庫にはミサイルとポイントディフェンスのみを搭載することができます。長射程魚雷を利用できるのであれば、それが最善の選択肢です。" },
+                    { type: "paragraph", text: "空母艦隊の初期型です。まだ兵器の選択肢が多くないため、ハンガーに加えてミサイルとポイント・ディフェンスのみを搭載することができます。長距離魚雷を利用できるのであれば、それが最良の選択肢です。" },
 
                     { type: "heading", text: "フリゲートのみ", level: 2 },
-                    { type: "paragraph", text: "序盤に建造できるフリゲートは、この段階で敵のより大型の防衛拠点を破壊するのに役立ちます。ステルス用コンポーネントを利用できるのであれば、使用することを強く推奨します。" },
+                    { type: "paragraph", text: "序盤に建造できるフリゲートは、この段階で敵のより大型の防衛拠点を破壊するのに役立ちます。クローキング・コンポーネントを利用できる場合は、使用を強く推奨します。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "後半" },
+                    { type: "heading", text: "空母型戦艦のみ", level: 2 },
+                    { type: "paragraph", text: "空母型戦艦です。Xスロット兵器による長距離火力に、ハンガーの汎用性を組み合わせ、さらにポイント・ディフェンスやM・Sスロット兵器まで搭載できるため、投入できるあらゆる脅威に対して少なくとも十分に戦える究極の設計になります。もちろん、状況によっては特化型艦隊のほうが優れています。それでも、中盤危機、没落した帝国や覚醒した帝国、さらには一部の終盤の危機など、ほとんどの脅威に対して十分以上の性能を発揮します。Xスロット兵器はエネルギーランスかアーク放射器を選択できます。ギガキャノンは絶対に使用しないでください。" },
                     { type: "divider" },
 
                     { type: "heading", text: "終盤" },
-                    { type: "heading", text: "空母型戦艦のみ", level: 2 },
-                    { type: "paragraph", text: "空母型戦艦です。Xスロット兵器による長距離火力と格納庫の汎用性を組み合わせ、さらにポイントディフェンスとM・Sスロット兵器を搭載できることで、遭遇するほぼあらゆる相手に対して少なくとも十分に戦える究極の設計となります。特化型艦隊のほうが優れる場面もありますが、中盤危機、没落・覚醒帝国、さらには一部の終盤危機といったほとんどの脅威に対しては十分以上の性能を発揮します。Xスロット兵器にはエネルギーランスかアーク放射器を選択できます。ギガキャノンは絶対に使用しないでください。" },
-                    { type: "divider" },
-
-                    { type: "heading", text: "ゲーム終盤" },
 
                     { type: "heading", text: "戦艦", level: 2 },
-                    { type: "paragraph", text: "タイタン1～3隻（任意）を用意し、残りは砲撃型戦艦と空母型戦艦を半々にします。" },
+                    { type: "paragraph", text: "タイタンを1～3隻（任意）用意し、残りは半分を砲撃型戦艦、もう半分を空母型戦艦にします。" },
                     {
                         type: "columns",
                         columns: [
-                            [{ type: "paragraph", text: "タイタンを編成する場合は、オーラによる支援を担当させます。複数のタイタンを編成する場合、それぞれ異なる攻撃オーラを装備させるべきです。" }],
-                            [{ type: "paragraph", text: "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能し、大型艦に対しても十分に戦えます。さらに、Xスロット兵器によって大型目標への砲撃も行えます。" }]
+                            [{ type: "paragraph", text: "タイタンを編成する場合は、オーラによる支援役として機能します。複数編成する場合は、それぞれ異なる攻撃オーラを持たせるべきです。" }],
+                            [{ type: "paragraph", text: "空母型戦艦は、コルベット、駆逐艦、艦載機、フリゲートなどの小型艦に対する防御の盾として機能すると同時に、大型艦に対しても高い性能を発揮します。また、Xスロット兵器によって大型目標に対する砲撃も可能です。" }]
                         ]
                     },
 
                     { type: "heading", text: "巡洋艦", level: 2 },
                     { type: "paragraph", text: "魚雷巡洋艦のみ。" },
                     {
-                        type: "list", items: [
-                        ]
-                    },
-                    {
                         type: "columns",
                         columns: [
-                            [{ type: "paragraph", text: "短射程・ステルス型の魚雷巡洋艦を選ぶ場合、大型目標を打ち砕く破城槌として機能します。主力艦、タイタン、恒星基地、リヴァイアサンなど、停止している敵や大型目標に対して非常に壊滅的なダメージを与えられます。ただし、大きな損失を被るリスクがあります。" }],
-                            [{ type: "paragraph", text: "長射程魚雷巡洋艦を選ぶ場合、長距離から安全にチョークポイントやその他の防衛施設を破壊する攻城砲として機能します。空母型戦艦がある程度欠いている砲撃力を補う、強力な長距離火力を提供します。ただし、敵の兵器射程がこちらを上回っている、あるいは同等の場合には非常に脆弱です。" }]
+                            [{ type: "paragraph", text: "短距離魚雷とクローキングを搭載した巡洋艦を選ぶ場合、それは大型目標を打ち倒す破城槌となります。静止している敵や、主力艦、タイタン、星系基地、リヴァイアサンなどの巨大な敵に対して、非常に強烈なダメージを与えられます。ただし、大きな損害を受けるリスクがあります。" }],
+                            [{ type: "paragraph", text: "長距離魚雷巡洋艦を選ぶ場合、それは安全な長距離からチョークポイントやその他の防衛拠点を破壊する攻城砲となります。空母型戦艦では限られている、砲撃艦隊としての破壊力を提供します。ただし、敵に射程で上回られるか、同等の射程を持たれると非常に脆弱になります。" }]
                         ]
                     },
 
                     { type: "heading", text: "タイタン", level: 2 },
-                    { type: "paragraph", text: "タイタンを複数の艦隊に分散させたくない場合は、所有するすべてのタイタンだけで構成された艦隊を作ることもできます。異なる攻撃オーラと防御オーラをまとめておくことで、一部のタイタンを失ってもすべてのオーラを維持できます。これは各タイプのオーラを持つタイタンが常に複数存在するためです。この艦隊は単独ではより脆弱なので、通常の空母型戦艦艦隊を随伴させることをおすすめします。" },
+                    { type: "paragraph", text: "タイタンを複数の艦隊に分散させたくない場合は、すべてのタイタンだけで構成された艦隊を作ることもできます。異なる攻撃オーラと防御オーラを集約することで、複数のタイタンが同じ種類の兵装を持つようにすれば、一部のタイタンを失ってもすべてのオーラを維持できます。この艦隊は単独ではより脆弱なので、通常の空母型戦艦艦隊を随伴させることを推奨します。" },
                     { type: "divider" },
 
                     { type: "heading", text: "防衛" },
 
-                    { type: "heading", text: "防衛プラットフォームとイオンキャノンの組み合わせ。", level: 2 },
-                    { type: "paragraph", text: "必要に応じてプラットフォームとイオンキャノンをさまざまな方法で組み合わせることができます。ただし、恒星基地の防衛設備を一度建造すると、それらが破壊されるまで変更するのは困難です。" },
+                    { type: "heading", text: "防衛プラットフォームとイオンキャノンの組み合わせ", level: 2 },
+                    { type: "paragraph", text: "必要に応じて防衛プラットフォームとイオンキャノンをさまざまな形で組み合わせることができます。ただし、星系基地の防衛設備を建造してしまうと、それらが破壊されるまで変更するのは困難です。" },
                     {
                         type: "list", items: [
-                            "**イオンキャノン1基＋大量の防衛プラットフォーム：** AI帝国の艦隊に対して有効です。イオンキャノンを1基だけ使用する理由は2つあります。主な理由は、システム内のどこにいる艦船でも攻撃できるだけの射程を確保することです。これにより、恒星基地の射程外を通ってシステムの端を抜ける艦船が存在しなくなります。2つ目は、タイタン、戦艦、バブルなどの大型艦に対する追加ダメージを確保することです。一方、防衛プラットフォームは、格納庫型であれ長射程魚雷型であれ、あらゆる種類の艦船、特に小型・中型艦に対する主なダメージ源となります。システム内でこれだけを唯一の防衛として使用することも可能で、敵艦隊に深刻な損害を与えたり、攻撃を撃退したりできます。ただし、多大な損失を被るため、主にダメージを受ける役割として艦隊を丸ごと投入することを推奨します。",
-                            "**可能な限り多くのイオンキャノン＋残りのスロットを防衛プラットフォームで埋める：** 没落・覚醒帝国の艦隊や中盤・終盤の危機に対して有効です。イオンキャノンは最初の2斉射で大型艦の大半をほぼ一掃できますが、小型艦に対しては無防備になります。そのため、残りの枠は格納庫型防衛プラットフォームで埋めることをおすすめします。これにより、ミサイルや魚雷に対する追加の防御を得られます。ただし、このタイプの防衛は通常、完全な艦隊を支援するために使用するものであり、単独の防衛として使用することはありません。とはいえ、Tスロット兵器の範囲ダメージによって、イオンキャノンのみを使用することも現在では実用的です。Tスロット兵器の攻撃を2～3発命中させることができれば、小型艦だけで構成された艦隊を丸ごと撃破することも可能です。"
+                            "**イオンキャノン1基＋大量の防衛プラットフォーム：** AI帝国の艦隊に対して有効です。イオンキャノンを1基だけ使用する理由は2つあります。主な理由は、星系内のどこにいる艦船にも攻撃できるだけの射程を確保し、射程外にいるという理由で星系基地が攻撃できない範囲を敵艦がすり抜けるのを防ぐことです。2つ目は、タイタン、戦艦、古代のドレッドノートなどの大型艦に対して追加のダメージを与えることです。一方、防衛プラットフォームは、ハンガー型でも長距離魚雷型でも、あらゆる艦船に対する主なダメージ源となり、特に小型・中型艦に対して有効です。システム内で唯一の防衛として機能させ、敵艦隊に深刻な損害を与えたり、攻撃を撃退したりすることも可能です。ただし、大量の損失を受けるため、主なダメージを受ける役として完全な艦隊を用意することを推奨します。",
+                            "**可能な限りイオンキャノンを配置し、残りのスロットを防衛プラットフォームで埋める：** 没落した帝国／覚醒した帝国の艦隊、および中盤・終盤の危機に対して有効です。イオンキャノンは最初の2斉射で大型艦をほぼ完全に一掃できる一方、小型艦に対しては防衛が手薄になります。そのため、残りの枠をハンガー搭載型の防衛プラットフォームで埋めることを推奨します。これにより、ミサイルや魚雷に対する防御力を追加できます。ただし、この種の防衛は通常、完全な艦隊を支援するために使用するものであり、単独の防衛として使用するべきではありません。Tスロット兵器の範囲ダメージのおかげで、イオンキャノンのみを使用する構成も現在では実用的です。Tスロット兵器が2～3発命中すれば、小型艦のみで構成された艦隊を丸ごと撃破できる可能性があります。"
                         ]
                     },
 
-                    { type: "heading", text: "深宇宙要塞の配置。", level: 2 },
-                    { type: "paragraph", text: "深宇宙要塞では配置が重要です。レベル3の要塞で利用できる設計は長距離型のみなので、敵対艦隊が侵入してくる可能性のあるハイパーレーンのジャンプ地点から離れた、システムの端に要塞を配置したいところです。そのため、各ハイパーレーンの入口や中央の恒星基地の近くには置かず、一方で格納庫とXスロット兵器が攻撃可能な射程に入るよう、十分な距離を確保して配置する必要があります。" },
-                    { type: "paragraph", text: "2つ目の選択肢は、要塞をジャンプ地点のすぐそば、つまりハイパーレーンの出口に直接配置することです。ほとんどの場合、これではXスロット兵器やLスロット兵器を活かせませんが、要塞そのものに短射程の防衛プラットフォームを建造し、エネルギー兵器と実体弾兵器のハイブリッド構成、あるいは短射程魚雷を搭載することで、敵艦隊がシステムにジャンプした瞬間から攻撃を開始できます。" },
+                    { type: "heading", text: "深宇宙要塞の配置", level: 2 },
+                    { type: "paragraph", text: "深宇宙要塞では配置が重要です。レベル3の要塞で使用できる設計が長距離型しかないため、敵対艦隊が侵入する可能性のあるハイパーレーンの入口から離れた、星系の端に要塞を配置したいところです。したがって、各ハイパーレーン入口や中央の星系基地から十分に離しつつ、ハンガーとXスロット兵器が射程内に収まる位置に要塞を配置する必要があります。" },
+                    { type: "paragraph", text: "もう1つの選択肢は、ハイパーレーンの入口そのもののすぐ近くに要塞を配置することです。この場合、ほとんどの状況でXスロット兵器とLスロット兵器を無駄にすることになりますが、要塞そのものに短距離型の防衛プラットフォームを建造し、エネルギー兵器と実弾兵器のハイブリッド、あるいは短距離魚雷を搭載できます。これにより、敵艦隊が星系へジャンプした直後から攻撃を開始できます。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "戦いの中には、戦われる前に勝敗が決まるものがある。敵が戦争の始まりを理解する前に、勝敗が決まる戦争もある。", cite: "名もなき背教者、セタナ――「合成の女王」撃破のための戦略について", portrait: "img/citas/Nameless_Apostate.png", portraitAlt: "名もなき背教者" }
+
                 ]
             }
         }
@@ -624,14 +777,14 @@ export const knowledgeBase = [
             {
                 type: "columns",
                 columns: [
-                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." }],
+                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de corto alcance.png", alt: "Tejedor de apoyo con evasión y daño de corto alcance", caption: "Tejedor de apoyo con evasión y daño de corto alcance." }],
                     [{ type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "Tejedor de apoyo con confusión de largo alcance", caption: "Tejedor de apoyo con confusión de largo alcance." }]
                 ]
             },
             {
                 type: "columns",
                 columns: [
-                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y daño de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." }],
+                    [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de largo alcance.png", alt: "Tejedor de apoyo con evasión y daño de largo alcance", caption: "Tejedor de apoyo con evasión y daño de largo alcance." }],
                     []
                 ]
             },
@@ -702,7 +855,7 @@ export const knowledgeBase = [
                     []
                 ]
             },
-            { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan los Maceros y sus armas G de tipo pinza especiales." },
+            { type: "note", text: "Las naves biológicas NO tienen armas G de corto alcance (Torpedos) ya que cuentan con los Maceros y sus armas G de tipo pinza especiales." },
             { type: "divider" },
 
             { type: "heading", text: "Cañón de iones" },
@@ -735,8 +888,262 @@ export const knowledgeBase = [
             { type: "quote", text: "Nosotros somos uno y uno que son muchos. Tú eres uno y pronto serás uno de nosotros.", cite: "Nosotros, la Horda" }
         ],
         i18n: {
-            en: {},
-            jp: {}
+            en: {
+                title: "Biological Ship Design",
+                blocks: [
+                    { type: "heading", text: "Mauler" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Macero corto alcance.png", alt: "Short-range Mauler", caption: "Short-range Mauler." }],
+                            [{ type: "image", src: "img/bionaves/Macero corto alcance con sigilo.png", alt: "Short-range Mauler with Cloaking", caption: "Short-range Mauler with Cloaking." }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Weaver" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de corto alcance.png", alt: "Support Weaver with evasion and short-range damage", caption: "Support Weaver with evasion and short-range damage." }],
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "Support Weaver with long-range disruption", caption: "Support Weaver with long-range disruption." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de largo alcance.png", alt: "Support Weaver with evasion and long-range damage", caption: "Support Weaver with evasion and long-range damage." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Harbinger" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Heraldo con torpedos de largo alcance.png", alt: "Harbinger with long-range torpedoes", caption: "Harbinger with long-range torpedoes." }],
+                            [{ type: "image", src: "img/bionaves/Heraldo con defensa de punto.png", alt: "Harbinger with Point Defense", caption: "Harbinger with Point Defense." }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Stinger" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Aguijon artillero con armas X.png", alt: "Artillery Stinger with X-slot weapons", caption: "Artillery Stinger with X-slot weapons." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Titans" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Titan artillero biologico.png", alt: "Artillery Titan with a mix of kinetic and energy weapons", caption: "Artillery Titan with a mix of kinetic and energy weapons. One for each type of offensive and defensive aura." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Juggernaut" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Gigante buffer artillero biologico.png", alt: "Artillery support Juggernaut", caption: "Artillery support Juggernaut." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Colossus" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Coloso biologico.png", alt: "Biological Colossus", caption: "Biological Colossus." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Defense Platform" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica portahangar.png", alt: "Carrier Defense Platform", caption: "Carrier Defense Platform." }],
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica artillera de largo alcance.png", alt: "Long-range Artillery Defense Platform", caption: "Long-range Artillery Defense Platform." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica artillada de corto alcance.png", alt: "Short-range Artillery Defense Platform", caption: "Short-range Artillery Defense Platform." }],
+                            []
+                        ]
+                    },
+                    { type: "note", text: "Biological ships do NOT have short-range G-slot weapons (Torpedoes), as they have Battering Rams and their special claw-type G-slot weapons." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Ion Cannon" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Canon de iones biologico equilibrado estandar.png", alt: "Standard balanced Ion Cannon", caption: "Standard balanced Ion Cannon." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Deep Space Citadel" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica I de largo alcance.png", alt: "Long-range Citadel I", caption: "Long-range Citadel I." }],
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica II de largo alcance.png", alt: "Long-range Citadel II", caption: "Long-range Citadel II." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica III de largo alcance.png", alt: "Long-range Citadel III", caption: "Long-range Citadel III." }],
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica III de corto alcance.png", alt: "Short-range Citadel III", caption: "Short-range Citadel III." }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "We are one and one who are many. You are one and soon you will be one of us.", cite: "We, the Horde" }
+                ]
+            },
+            jp: {
+                title: "生体艦船の設計",
+                blocks: [
+                    { type: "heading", text: "クラッシャー" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Macero corto alcance.png", alt: "短距離クラッシャー", caption: "短距離クラッシャー。" }],
+                            [{ type: "image", src: "img/bionaves/Macero corto alcance con sigilo.png", alt: "ステルス搭載短距離クラッシャー", caption: "ステルス搭載短距離クラッシャー。" }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ウィーバー" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de corto alcance.png", alt: "回避と短距離火力を備えた支援ウィーバー", caption: "回避と短距離火力を備えた支援ウィーバー。" }],
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con confusion de largo alcance.png", alt: "長距離の混乱を備えた支援ウィーバー", caption: "長距離の混乱を備えた支援ウィーバー。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Tejedor de apoyo con evasion y dano de largo alcance.png", alt: "回避と長距離火力を備えた支援ウィーバー", caption: "回避と長距離火力を備えた支援ウィーバー。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ヘラルド" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Heraldo con torpedos de largo alcance.png", alt: "長距離魚雷搭載ヘラルド", caption: "長距離魚雷搭載ヘラルド。" }],
+                            [{ type: "image", src: "img/bionaves/Heraldo con defensa de punto.png", alt: "ポイントディフェンス搭載ヘラルド", caption: "ポイントディフェンス搭載ヘラルド。" }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "スティンガー" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Aguijon artillero con armas X.png", alt: "X兵器搭載砲撃型スティンガー", caption: "X兵器搭載砲撃型スティンガー。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "タイタン" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Titan artillero biologico.png", alt: "運動エネルギー兵器とエネルギー兵器を組み合わせた砲撃型タイタン", caption: "運動エネルギー兵器とエネルギー兵器を組み合わせた砲撃型タイタン。攻撃・防御オーラはそれぞれ1隻ずつ配置。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ジャイアント" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Gigante buffer artillero biologico.png", alt: "砲撃型バッファー・ジャイアント", caption: "砲撃型バッファー・ジャイアント。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "コロッサス" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Coloso biologico.png", alt: "生体コロッサス", caption: "生体コロッサス。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "防衛プラットフォーム" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica portahangar.png", alt: "格納庫搭載型防衛プラットフォーム", caption: "格納庫搭載型防衛プラットフォーム。" }],
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica artillera de largo alcance.png", alt: "長距離砲撃型防衛プラットフォーム", caption: "長距離砲撃型防衛プラットフォーム。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Plataforma biologica artillada de corto alcance.png", alt: "短距離武装型防衛プラットフォーム", caption: "短距離武装型防衛プラットフォーム。" }],
+                            []
+                        ]
+                    },
+                    { type: "note", text: "生体艦船には短距離用のG兵器（魚雷）は搭載されていません。代わりにクラッシャーが存在し、特殊なクランプ型のG兵器を使用します。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "イオンキャノン" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Canon de iones biologico equilibrado estandar.png", alt: "標準型バランス・イオンキャノン", caption: "標準型バランス・イオンキャノン。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "深宇宙要塞" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica I de largo alcance.png", alt: "長距離型深宇宙要塞 I", caption: "長距離型深宇宙要塞 I。" }],
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica II de largo alcance.png", alt: "長距離型深宇宙要塞 II", caption: "長距離型深宇宙要塞 II。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica III de largo alcance.png", alt: "長距離型深宇宙要塞 III", caption: "長距離型深宇宙要塞 III。" }],
+                            [{ type: "image", src: "img/bionaves/Ciudadela biologica III de corto alcance.png", alt: "短距離型深宇宙要塞 III", caption: "短距離型深宇宙要塞 III。" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "我々は一つであり、多くである一つ。お前は一つであり、やがて我々の一つとなる。", cite: "我々、ホード" }
+                ]
+            }
         }
     },
     {   // Diseño de flotas biológicas
@@ -820,8 +1227,164 @@ export const knowledgeBase = [
             { type: "quote", text: "Inofensivos a primera vista, estas criaturas tejeran los hilos que nos lleven a la victoria.", cite: "Talloroble sobre los Tejedores", portrait: "img/citas/Talloroble.png", portraitAlt: "Talloroble" }
         ],
         i18n: {
-            en: {},
-            jp: {}
+            en: {
+                title: "Biological Fleet Design",
+                blocks: [
+                    { type: "heading", text: "Early Game" },
+
+                    { type: "heading", text: "Mauler Only", level: 2 },
+                    { type: "paragraph", text: "The most basic setup for the year 2200." },
+                    { type: "paragraph", text: "Enemy fleets will be random, and you will not be able to learn much about them since you will not be able to effectively spy on them." },
+                    { type: "paragraph", text: "You will only be able to determine how to counter their fleet once the first battle takes place (by checking the combat log and enemy components), which in the early game is often also the last battle. Therefore, the most viable approach is to prepare for everything." },
+                    { type: "paragraph", text: "If you are having trouble with amoebas or mining drones, use energy weapons. If you are having trouble with energy entities, use kinetic weapons. Simply complete the first contact procedure and check their armor and shields." },
+                    { type: "paragraph", text: "Using the Mining Drone Laser is recommended if available until you have access to plasma and/or autocannons." },
+
+                    { type: "heading", text: "About Weavers" },
+                    { type: "paragraph", text: "It is better not to use them this early. They become much more valuable when combined with Harbingers and Stingers." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Mid Game" },
+
+                    { type: "heading", text: "Mauler Only", level: 2 },
+                    { type: "paragraph", text: "We maintain a fleet consisting exclusively of Mauler, preferably Elder ones, with hybrid weapons. Since Mauler have their special claw-type G weapon slots that scale against larger ships, we have a decent fleet against small ships thanks to their balanced S-size weapons, while also being effective against medium and large ships thanks to the claws." },
+                    { type: "paragraph", text: "However, we must be careful because they have very poor mobility compared to traditional corvettes. These Mauler will be our main combat line, but they are also a major source of close-range damage. The problem is that they have low sublight speed and low evasion compared to corvettes, so they will suffer heavy casualties before reaching larger ships in the enemy rear line." },
+
+                    { type: "heading", text: "Harbingers and Weavers", level: 2 },
+                    { type: "paragraph", text: "If you have obtained the long-range G weapons, you can start making fleets consisting only of Harbingers with hangars and Proton/Neutron Launchers." },
+                    { type: "paragraph", text: "Harbingers can already benefit from Weavers by using the support weapon that increases sublight speed and evasion (Evasion Darts), as well as the weapon that protects and regenerates armor (Intelligent Adaptive Spore Launcher)." },
+                    { type: "paragraph", text: "The ratio should be one of each of these support weapons per Harbinger." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Late Game" },
+
+                    { type: "heading", text: "Harbingers and Weavers", level: 2 },
+                    { type: "paragraph", text: "The logical evolution of the Mid Game fleet design. We must ensure that we have Harbingers with hangars and Proton Launchers ready. Equip them with afterburners to reduce as much incoming damage as possible while retreating from the enemy and attacking with our strike craft and long-range torpedoes." },
+                    { type: "paragraph", text: "This configuration mimics carrier battleship fleets. In this case, we will have significantly greater firepower against large ships by using G weapons, but we lose the range of X weapons. As for defense against small and medium ships, while we do not have S and M weapon slots, we will have many more hangars to fulfill that role." },
+                    { type: "paragraph", text: "The Weavers will continue to fulfill their support role by repairing damage and improving our offensive power and survivability." },
+
+                    { type: "heading", text: "Short-Range Stealth Mauler Only", level: 2 },
+                    { type: "paragraph", text: "With the introduction of collateral damage from T weapons, cannon fodder fleets are no longer recommended. Therefore, the best use for Mauler is as stealth ambushers." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "End Game" },
+
+                    { type: "heading", text: "Harbingers and Titans", level: 2 },
+                    { type: "paragraph", text: "Optionally add 1 to 3 Titans. The rest should be Harbingers with hangars and long-range G weapons." },
+                    { type: "paragraph", text: "It is especially recommended in this case to split the Titans into a separate fleet of their own, since the Harbingers will not benefit as much from allied Titan auras within the same fleet, as the main source of Harbinger damage is strike craft." },
+
+                    { type: "heading", text: "Weavers", level: 2 },
+                    {
+                        type: "list", items: [
+                            "**Support:** Weavers will focus on supporting allied ships. We only want to use them with our Stingers and Harbingers, and using them with Mauler can create conflicts.",
+                            "**Suppressor:** Weavers stun enemy ships. With the suppression weapon that has a 90% chance to stun, this is sufficient as long as you are roughly even in terms of weapon count/enemy numbers. It is especially recommended against enemies on high difficulties, such as mid-game or end-game crises, or Fallen/Awakened Empires. It is important to note that they do not work against Leviathans."
+                        ]
+                    },
+
+                    { type: "heading", text: "Stealth Mauler", level: 2 },
+                    { type: "paragraph", text: "Stealth ambush fleet: since they have the best mobility among biological ships and their claws occupy G weapon slots, we can use Elder versions to gain more damage and durability at close range. They are effective against fleets of medium and large ships, such as those of Fallen or Awakened Empires." },
+
+                    { type: "heading", text: "Problems with Harbingers, Mauler, and Weavers in the Same Battle", level: 2 },
+                    { type: "paragraph", text: "Keep in mind that Support Weavers will follow allied ships to use their support weapons. This means that using Mauler together with fleets of Stingers, Harbingers, and Weavers can be detrimental to Weaver performance. Since you can have more Mauler than Harbingers in a fleet, when using Support Weavers they will have a much higher chance of selecting a Mauler as their support target instead of one of the Harbingers on the battlefield. This causes Support Weavers, which should remain safely behind the Harbingers, to charge forward alongside the Mauler to support them, potentially suffering significant casualties in every battle and making them counterproductive." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Defenses" },
+
+                    { type: "heading", text: "Combining Defense Platforms with Ion Cannons", level: 2 },
+                    { type: "paragraph", text: "You can combine platforms and Ion Cannons in different ways depending on your needs, although once you build a starbase's defenses, you will have little opportunity to change them until they are destroyed." },
+                    {
+                        type: "list", items: [
+                            "**One Ion Cannon with many Defense Platforms:** effective against fleets of AI empires. A single Ion Cannon is used for two reasons: the main one is to have enough range to attack ships anywhere in the system, ensuring that none can slip through the edge without being attacked by the starbase because they are out of range; the second is to provide additional damage against large ships such as Titans, Battleships, and Elder biological ships. The Defense Platforms, whether they use hangars or long-range torpedoes, will be the main source of damage against all types of ships, especially small and medium ones. This can function as the only defense in the system, seriously damaging the enemy fleet or even repelling the attack. However, it will suffer enormous casualties, so it is recommended to use a full fleet to absorb most of the damage.",
+                            "**As many Ion Cannons as possible, filling the remaining slots with Defense Platforms:** effective against Fallen/Awakened Empires and mid-game and end-game crises. The Ion Cannons will be capable of almost completely wiping out large ships within the first two volleys, while leaving the system vulnerable to small ships. For this reason, I recommend filling the remaining slots with hangar Defense Platforms, which provide some additional protection against missiles and torpedoes. However, this type of defense is generally used to support a full fleet and never as the sole defense. Thanks to the collateral damage from T weapons, however, it is now viable to use Ion Cannons alone, as they can destroy entire fleets of small ships if they manage to land two or three shots from a T weapon."
+                        ]
+                    },
+
+                    { type: "heading", text: "Deep Space Citadel Positioning", level: 2 },
+                    { type: "paragraph", text: "Positioning is crucial for the Deep Space Citadel. Since the only design we have for a Level III Citadel is long-range, we want to position our Citadels at the edges of systems, away from the hyperlane jumps through which potential hostile fleets may enter. Therefore, we need to place the Citadel far enough away that it is not close to each hyperlane entrance or the central starbase, while still keeping its hangars and X weapon within range." },
+                    { type: "paragraph", text: "A second option is to position our Citadel directly at the edge of the hyperlane jump. While this will waste the X weapon and L weapons in most cases, we can build short-range Defense Platforms directly at the Citadel, using hybrid energy and kinetic weapons or simply short-range torpedoes, allowing them to begin attacking as soon as the enemy fleet jumps into the system." },
+
+                    { type: "divider" },
+                    { type: "quote", text: "Harmless at first glance, these creatures will weave the threads that lead us to victory.", cite: "Talloroble on the Weavers", portrait: "img/citas/Talloroble.png", portraitAlt: "Talloroble" }
+                ]
+            },
+            jp: {
+                title: "生体艦隊の設計",
+                blocks: [
+                    { type: "heading", text: "序盤" },
+
+                    { type: "heading", text: "クラッシャーのみ", level: 2 },
+                    { type: "paragraph", text: "2200年における最も基本的な構成。" },
+                    { type: "paragraph", text: "敵艦隊はランダムであり、効果的な諜報を行えないため、敵について事前に知ることはほとんどできません。" },
+                    { type: "paragraph", text: "敵艦隊への対策を判断できるのは、最初の戦闘が発生してからです（戦闘ログと敵艦船のコンポーネントを確認することで判断できます）。序盤ではこの最初の戦闘が最後の戦闘になることも多いため、基本的にはあらゆる相手に備えるのが最も現実的です。" },
+                    { type: "paragraph", text: "アメーバや採掘ドローンに苦戦する場合は、エネルギー兵器を使用します。エネルギー生命体に苦戦する場合は、実体弾兵器を使用します。単純に初期接触の手続きを行い、敵の装甲とシールドを確認しましょう。" },
+                    { type: "paragraph", text: "使用可能であれば、プラズマやオートキャノンを入手するまで採掘ドローンレーザーを使用するのがおすすめです。" },
+
+                    { type: "heading", text: "ウィーバーについて" },
+                    { type: "paragraph", text: "これほど早い段階で使用するのはおすすめしません。ヘラルドやスティンガーと組み合わせることで、より大きな価値を発揮するようになります。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "中盤" },
+
+                    { type: "heading", text: "クラッシャーのみ", level: 2 },
+                    { type: "paragraph", text: "可能であればエルダーのクラッシャーのみで構成した、混成兵器艦隊を維持します。クラッシャーは大型艦に対してスケールする特殊なクランプ型G兵器を装備できるため、Sサイズのバランス型兵器によって小型艦に対しても十分に戦え、さらにクランプによって中型艦・大型艦にも対応できます。" },
+                    { type: "paragraph", text: "ただし、通常のコルベットと比べて機動力が非常に低いため、注意が必要です。これらのクラッシャーは主力の戦闘ラインとなるだけでなく、近距離での大きなダメージ源にもなります。しかし、コルベットと比べて低い亜光速速度と低い回避率のため、敵後衛の大型艦に接近するまでに大きな損害を受けることになります。" },
+
+                    { type: "heading", text: "ヘラルドとウィーバー", level: 2 },
+                    { type: "paragraph", text: "長距離G兵器を入手しているなら、この時点から格納庫とプロトン／ニュートロン・ランチャーを搭載したヘラルドのみの艦隊を編成できます。" },
+                    { type: "paragraph", text: "ヘラルドは、亜光速速度と回避率を上昇させる支援兵器（回避ダーツ）や、装甲を保護・再生する兵器（インテリジェント適応型胞子ランチャー）によって、ウィーバーの恩恵を受けられるようになります。" },
+                    { type: "paragraph", text: "これらの支援兵器は、それぞれヘラルド1隻につき1基という比率にします。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "終盤" },
+
+                    { type: "heading", text: "ヘラルドとウィーバー", level: 2 },
+                    { type: "paragraph", text: "中盤の艦隊設計を発展させた、論理的な最終形です。格納庫とプロトン・ランチャーを搭載したヘラルドを十分に用意します。これらにアフターバーナーを装備し、敵から離脱しながら可能な限り被ダメージを減らし、艦載機と長距離魚雷で攻撃します。" },
+                    { type: "paragraph", text: "この構成は空母型戦艦艦隊を模倣したものです。この場合、G兵器を使用することで大型艦に対する火力は大幅に向上しますが、X兵器の射程を失います。小型艦・中型艦への防御については、S・M兵器スロットを持たない代わりに、より多くの格納庫によってその役割を担います。" },
+                    { type: "paragraph", text: "ウィーバーは引き続き支援役として、損傷の修復と攻撃力・生存性の向上を担当します。" },
+
+                    { type: "heading", text: "短距離ステルスクラッシャーのみ", level: 2 },
+                    { type: "paragraph", text: "T兵器による巻き添えダメージが登場したことで、肉壁となる艦隊はもはやおすすめできません。そのため、クラッシャーの最適な使い道はステルスによる待ち伏せです。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ゲーム終盤" },
+
+                    { type: "heading", text: "ヘラルドとタイタン", level: 2 },
+                    { type: "paragraph", text: "タイタンを1～3隻追加するのも選択肢です。残りはすべて格納庫と長距離G兵器を搭載したヘラルドにします。" },
+                    { type: "paragraph", text: "この場合、タイタンは特に別の単独艦隊へ分離することをおすすめします。同じ艦隊に入れても、ヘラルドは味方タイタンのオーラからそれほど大きな恩恵を受けられないためです。ヘラルドの主なダメージ源は艦載機だからです。" },
+
+                    { type: "heading", text: "ウィーバー", level: 2 },
+                    {
+                        type: "list", items: [
+                            "**支援:** ウィーバーは味方艦の支援に専念します。基本的にはスティンガーとヘラルドと組み合わせて使用し、クラッシャーと同時に運用すると問題が発生する可能性があります。",
+                            "**制圧:** ウィーバーは敵艦をスタンさせます。90%の確率でスタンさせる制圧兵器があれば、兵器数／敵艦数がほぼ同等である限り十分です。中盤・終盤の危機や没落・覚醒帝国など、高難易度の敵に対して特におすすめです。ただし、リヴァイアサンには効果がありません。"
+                        ]
+                    },
+
+                    { type: "heading", text: "ステルス・クラッシャー", level: 2 },
+                    { type: "paragraph", text: "ステルスによる待ち伏せ艦隊です。生体艦船の中でも最高クラスの機動性を持ち、クランプをG兵器として使用できるため、エルダー型を採用することで近距離でのダメージと耐久力をさらに高められます。没落帝国／覚醒帝国の艦隊など、中型艦・大型艦で構成された艦隊に対して有効です。" },
+
+                    { type: "heading", text: "ヘラルド、クラッシャー、ウィーバーを同じ戦闘で使用する場合の問題", level: 2 },
+                    { type: "paragraph", text: "支援ウィーバーは支援兵器を使用するために味方艦を追従することに注意してください。そのため、スティンガー、ヘラルド、ウィーバーの艦隊にクラッシャーを混ぜると、ウィーバーの性能を低下させる可能性があります。艦隊内ではヘラルドよりも多くのクラッシャーを配備できるため、支援ウィーバーは戦場のヘラルドではなくクラッシャーを支援対象として選ぶ可能性が大幅に高くなります。その結果、本来ならヘラルドの後方で安全を維持すべき支援ウィーバーが、クラッシャーとともに前進して支援することになり、各戦闘で大きな損害を受ける可能性があります。結果として、かえって逆効果になります。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "防衛" },
+
+                    { type: "heading", text: "防衛プラットフォームとイオンキャノンの組み合わせ", level: 2 },
+                    { type: "paragraph", text: "必要に応じて、防衛プラットフォームとイオンキャノンはさまざまな形で組み合わせることができます。ただし、星系基地の防衛設備を建造した後は、それらが破壊されるまで変更するのは困難です。" },
+                    {
+                        type: "list", items: [
+                            "**イオンキャノン1基＋大量の防衛プラットフォーム:** AI帝国の艦隊に対して有効です。イオンキャノンを1基だけ使用する理由は2つあります。第一の理由は、星系内のどこにいる艦船でも攻撃できるだけの射程を確保することです。これにより、射程外にいることで星系基地の攻撃を受けず、星系の端を通り抜ける艦船が存在しなくなります。第二の理由は、タイタン、戦艦、エルダー生体艦船などの大型艦に対して追加ダメージを与えることです。一方、防衛プラットフォームは、格納庫型でも長距離魚雷型でも、あらゆる種類の艦船、特に小型艦・中型艦に対する主なダメージ源となります。これは星系内で唯一の防衛手段として機能し、敵艦隊に深刻な損害を与えたり、攻撃そのものを撃退したりすることも可能です。ただし、大量の損失を被るため、主にダメージを引き受ける完全編成の艦隊を併用することをおすすめします。",
+                            "**可能な限り多くのイオンキャノン＋残りのスロットを防衛プラットフォームで埋める:** 没落・覚醒帝国や中盤・終盤の危機に対して有効です。イオンキャノンは最初の2回の一斉射撃で大型艦をほぼ完全に掃討できる一方、小型艦に対しては無防備になります。そのため、残りのスロットには格納庫型防衛プラットフォームを入れることをおすすめします。これにより、ミサイルや魚雷に対する防御力も多少確保できます。ただし、このタイプの防衛は通常、完全編成の艦隊を支援するために使用するものであり、単独の防衛手段として使用するものではありません。ただし、T兵器による巻き添えダメージのおかげで、現在ではイオンキャノンのみを使用することも可能です。T兵器の射撃を2～3回命中させることができれば、小型艦のみで構成された艦隊を丸ごと撃破できる可能性があります。"
+                        ]
+                    },
+
+                    { type: "heading", text: "深宇宙要塞の配置", level: 2 },
+                    { type: "paragraph", text: "深宇宙要塞では配置が重要です。レベルIIIの要塞で使用できる設計は長距離型のみなので、敵対艦隊が侵入する可能性のあるハイパーレーンのジャンプ地点から離れた、星系の端に要塞を配置したいところです。したがって、各ハイパーレーンの入口や中央の星系基地から十分に離しつつ、格納庫とX兵器が攻撃可能な射程内に収まる位置へ要塞を配置する必要があります。" },
+                    { type: "paragraph", text: "もう一つの選択肢は、ハイパーレーンのジャンプ地点のすぐ近くに要塞を配置することです。この場合、ほとんどの状況でX兵器とL兵器を無駄にすることになりますが、要塞そのものに短距離型の防衛プラットフォームを建造し、エネルギー兵器と実体弾兵器の混成兵装、あるいは短距離魚雷を装備させることで、敵艦隊が星系へジャンプした瞬間から攻撃を開始できます。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "一見すると無害なこの生物たちは、我々を勝利へ導く糸を紡ぐだろう。", cite: "ウィーバーについて語るタロローブル", portrait: "img/citas/Talloroble.png", portraitAlt: "タロローブル" }
+                ]
+            }
         }
     },
     {   // Sobre los titanes y sus auras
@@ -845,40 +1408,39 @@ export const knowledgeBase = [
         ],
         i18n: {
             en: {
-                title: "About titans and their auras",
+                title: "About Titans and Their Auras",
                 blocks: [
-                    { type: "paragraph", text: "**They follow the same build as an artillery battleship**, except for their aura, which is explained in detail below." },
-                    { type: "paragraph", text: "For titans we have two options to combine them with the battleship fleet, but first we need to clarify how their auras work, since that's basically their whole reason to exist. There are two types of auras, offensive and defensive:" },
+                    { type: "paragraph", text: "**They follow the same template as an artillery battleship**, except for their aura, which is explained in detail below." },
+                    { type: "paragraph", text: "When it comes to Titans, we have two options for combining them with the battleship fleet, but first we need to clarify how their auras work, as this is essentially their whole purpose. We have two types of auras, offensive and defensive. With that in mind:" },
                     {
                         type: "list", items: [
-                            "**Defensive**: these auras ONLY affect the fleet the titan belongs to. For example, if you have a titan with a regeneration aura sitting in a system with 4 other fleets, only the titan's own fleet benefits from the regeneration; the other 4 fleets don't.",
-                            "**Offensive**: these auras affect ALL enemy fleets in the system the titan is in."
+                            "**Defensive**: these auras ONLY affect the fleet that contains the Titan. For example, if you have a Titan with a regeneration aura in a system with 4 other fleets, only the Titan's fleet benefits from the regeneration; the other 4 fleets do not.",
+                            "**Offensive**: these auras affect ALL enemy fleets in the system where the Titan is located."
                         ]
                     },
-                    { type: "paragraph", text: "With this in mind, there are two approaches depending on how many titans you can field. If titan capacity is low, spread one titan with an offensive aura across as many fleets as you can. This titan follows the same build as an XL artillery battleship but with the offensive aura as a bonus. If you have high capacity instead, concentrate them into fewer fleets, building fleets of 6 titans (each with a defensive and an offensive aura type), so you get flagship fleets with every aura, accompanied by titan-less fleets that still benefit from the 3 offensive auras. That way you protect the 6-titan fleet, since stacking every aura is an extremely powerful bonus." },
-                    { type: "paragraph", text: "This last option — battleship fleets plus 6 titans — is arguably the ultimate fleet, which combined with carriers turns it into a general anti-everything force; naturally it's superior to the version without titans." },
+                    { type: "paragraph", text: "With this in mind, we have two options depending on how many Titans we can support. If we have a low Titan capacity, I recommend distributing one Titan with an offensive aura among each fleet you can. This Titan follows the same setup as XL artillery battleships, but with the offensive aura as an additional benefit. On the other hand, if we have a high Titan capacity, I recommend concentrating them into a few fleets, with fleets containing 6 Titans (each with a different defensive and offensive aura), creating flagship fleets with all the auras, accompanied by fleets without Titans that benefit from the 3 offensive auras. This ensures the survival of the fleet with the 6 Titans, as combining all the auras provides a very powerful bonus." },
+                    { type: "paragraph", text: "We can say that this last option, with battleship fleets plus 6 Titans, is the ultimate fleet. Supported by carrier fleets, they become a general-purpose anti-everything force. Needless to say, they are superior to their non-Titan version." },
 
                     { type: "divider" },
-                    { type: "quote", text: "When it enters a system, you know that system is yours, and if it wasn't, it's left devastated. Resistance is futile — no crisis or xeno can flee or hide. The Emperor's will is done, or you die trying.", cite: "High Admiral Sidney Beauclair of the Commonwealth of Man" }
+                    { type: "quote", text: "When it enters a system, you know that system is yours, and if it is not yours, it will be left devastated. Resistance is futile; there is no crisis or xeno that can flee or hide. The Emperor's will shall be done, or you will die trying.", cite: "High Admiral Sidney Beauclair of the Commonwealth of Man", portrait: "img/citas/Human_updated_version.png", portraitAlt: "High Admiral Sidney Beauclair" }
                 ]
             },
             jp: {
                 title: "タイタンとそのオーラについて",
-                icon: "✦",
                 blocks: [
-                    { type: "paragraph", text: "\*\*砲撃戦艦と同じ設計思想に従います\*\*。ただし、タイタン固有のオーラについては以下で詳しく説明します。" },
-                    { type: "paragraph", text: "タイタンを戦艦艦隊と組み合わせる方法は2通りありますが、その前に、タイタンの存在意義ともいえるオーラの仕組みを理解する必要があります。オーラには攻撃型と防御型の2種類があります。" },
+                    { type: "paragraph", text: "**砲撃型戦艦と同じテンプレートを使用します**。ただし、タイタンにはオーラがあり、その詳細については以下で説明します。" },
+                    { type: "paragraph", text: "タイタンを戦艦艦隊と組み合わせる方法には2つの選択肢がありますが、その前に、タイタンの存在意義ともいえるオーラがどのように機能するのかを確認しておく必要があります。オーラには攻撃型と防御型の2種類があります。これを踏まえると、" },
                     {
                         type: "list", items: [
-                            "\*\*防御型\*\*：これらのオーラは、そのタイタンが所属している艦隊にのみ効果があります。たとえば、再生オーラを持つタイタンが、他の4つの艦隊と同じ星系にいる場合、再生効果を受けるのはタイタンが所属する艦隊だけで、他の4艦隊には効果がありません。",
-                            "\*\*攻撃型\*\*：これらのオーラは、タイタンが存在する星系内の\*\*すべての敵艦隊\*\*に効果があります。"
+                            "**防御型**: これらのオーラは、そのタイタンが所属している艦隊にのみ影響します。例えば、再生オーラを持つタイタンが、他に4つの艦隊が存在する星系にいる場合、再生の恩恵を受けるのはタイタンが所属する艦隊だけで、他の4艦隊は恩恵を受けません。",
+                            "**攻撃型**: これらのオーラは、タイタンがいる星系内の**すべての敵艦隊**に影響します。"
                         ]
                     },
-                    { type: "paragraph", text: "これを踏まえると、保有できるタイタンの数によって2つの選択肢があります。タイタン容量が少ない場合は、可能な限り各艦隊に攻撃型オーラを持つタイタンを1隻ずつ配備することをおすすめします。このタイタンはXL兵器を搭載した砲撃戦艦と同じ構成を採用し、追加要素として攻撃型オーラを持たせます。一方、タイタン容量が多い場合は、少数の艦隊に集中させることをおすすめします。各タイタンに異なる防御型・攻撃型オーラを持たせ、1艦隊あたり6隻のタイタンを配置します。こうすることで、すべてのオーラを備えた旗艦艦隊を作り、それとは別にタイタンを持たない艦隊を用意して、3種類の攻撃型オーラの恩恵を受けさせることができます。6隻のタイタンを持つ艦隊の生存性も確保できます。すべてのオーラを組み合わせることによるボーナスは非常に強力だからです。" },
-                    { type: "paragraph", text: "この最後の構成、すなわち戦艦艦隊に6隻のタイタンを加えた編成は、空母艦と組み合わせることで、ほぼあらゆる敵に対応できる究極の艦隊と言えるでしょう。当然ながら、タイタンを含まない構成よりも強力です。" },
+                    { type: "paragraph", text: "これを踏まえると、保有できるタイタン数に応じて2つの選択肢があります。タイタン収容上限が少ない場合は、可能な限り各艦隊に攻撃型オーラを持つタイタンを1隻ずつ配備することをおすすめします。このタイタンはXL砲撃型戦艦と同じ構成にし、追加要素として攻撃型オーラを持たせます。一方、タイタン収容上限が多い場合は、少数の艦隊に集中させることをおすすめします。各艦隊に6隻のタイタンを配備し、それぞれ異なる防御型・攻撃型オーラを持たせます。こうすることで、すべてのオーラを備えた旗艦艦隊を編成し、それとは別にタイタンを含まない艦隊を配置して、3種類の攻撃型オーラの恩恵を受けさせることができます。6隻のタイタンを擁する艦隊では、すべてのオーラを組み合わせることで非常に強力なボーナスを得られるため、その生存性を確保できます。" },
+                    { type: "paragraph", text: "この最後の選択肢、つまり戦艦艦隊に6隻のタイタンを加える構成は、究極の艦隊編成と言えるでしょう。空母艦隊の支援を受けることで、あらゆる敵に対応できる万能戦力となります。言うまでもなく、タイタンなしの構成よりも強力です。" },
 
                     { type: "divider" },
-                    { type: "quote", text: "その艦隊が星系に入った瞬間、その星系が自分のものになると分かる。もし自分のものではなかったとしても、そこには荒廃だけが残る。抵抗は無意味だ。逃げることも隠れることもできる危機も異種族も存在しない。皇帝の御意志に従うか、その試みの中で死ぬかだ。", cite: "共同体亡命勢力所属 シドニー・ボークレール上級提督" }
+                    { type: "quote", text: "奴が星系に入った時点で、その星系がお前のものになることがわかる。もしお前のものではなかったとしても、そこには荒廃だけが残る。抵抗は無意味だ。逃げることも隠れることもできる危機も異星人も存在しない。皇帝の御心に従うか、その過程で死ぬかだ。", cite: "追放されたコモンウェルスのハイ・アドミラル、シドニー・ボークレール", portrait: "img/citas/Human_updated_version.png", portraitAlt: "ハイ・アドミラル・シドニー・ボークレール" }
                 ]
             }
         }
@@ -935,103 +1497,101 @@ export const knowledgeBase = [
         ],
         i18n: {
             en: {
-                title: "Preparing the combat simulation",
+                title: "Preparing the Combat Simulation",
                 blocks: [
-                    { type: "paragraph", text: "Complete guide to setting up an optimal game for testing ship and fleet designs." },
+                    { type: "paragraph", text: "A complete guide to preparing an optimal game for testing ship and fleet designs." },
                     { type: "note", text: "The setup is independent of DLCs." },
 
-                    { type: "heading", text: "1. Setting up the game" },
+                    { type: "heading", text: "1. Configure the Game" },
                     {
                         type: "list", items: [
                             "**REQUIRED:** Disable Ironman Mode.",
-                            "I recommend not including any AI-controlled empires (normal empires, fallen empires, marauders, nomads, etc.).",
-                            "The rest of the options are up to you.",
+                            "I recommend not including any AI-controlled empires (regular empires, Fallen Empires, Marauders, Nomads, etc.).",
+                            "The remaining options are up to you.",
                         ]
                     },
                     { type: "paragraph", text: "You can now start the game." },
 
-                    { type: "heading", text: "2. Useful console commands" },
+                    { type: "heading", text: "2. Useful Console Commands" },
                     { type: "paragraph", text: "By default, you can open the console by pressing the 'º' key (to the left of the 1 key on QWERTY keyboards)." },
-                    { type: "paragraph", text: "I recommend enabling the exploration, communications, and automatic intelligence options. Also enable the instant construction option to build and repair ships quickly." },
+                    { type: "paragraph", text: "I recommend enabling the explore, communications, and automatic intelligence options. Also, enable instant construction to quickly build and repair ships." },
 
                     { type: "paragraph", text: "Run the following commands in order in the console." },
                     {
                         type: "list", items: [
                             "**research_all_technologies 1 0**: unlocks all technologies so you can build any ship design without waiting.",
-                            "**max_resources**: fills all resources to their maximum, which is useful for building large fleets without waiting.",
+                            "**max_resources**: fills all resources to the maximum, useful for building large fleets without waiting.",
                             "**unlock_edicts**: unlocks all combat edicts.",
-                            "**create_navy <Percentage>**: creates a combat fleet with the percentage of fleet power you specify. This will be the fleet used to simulate an AI empire using the automated ship designs you start the game with.",
+                            "**create_navy <Percentage>**: creates a combat fleet with the percentage of strength you specify. This is the fleet used to simulate an AI empire using the automated ship designs available at the start of the game.",
                         ]
                     },
-                    { type: "note", text: "The exact command names may vary between game versions. If a command does not work, type **help** in the console to see the updated list for your version." },
-                    { type: "paragraph", text: "To test combat against crises, you can force them to appear with the following commands:" },
+                    { type: "note", text: "The exact command names may vary between game versions. If one does not work, type **help** in the console to see the updated command list for your version." },
+                    { type: "paragraph", text: "To run combat tests against crises, you can force their appearance with the following commands:" },
                     {
                         type: "list", items: [
                             "**event crisis.199**: Activates the Prethoryn Scourge crisis.",
                             "**event crisis.1000**: Activates the Unbidden crisis.",
-                            "**event crisis.1100**: Activates the Aberrant crisis. They do not require the Unbidden.",
-                            "**event crisis.1200**: Activates the Vehement crisis. They require the Unbidden.",
+                            "**event crisis.1100**: Activates the Aberrant crisis. Does not require the Unbidden.",
+                            "**event crisis.1200**: Activates the Vehement crisis. Requires the Unbidden.",
                             "**event crisis.2000**: Activates the Contingency crisis.",
                             "**event crisis.8005**: Activates the Synthetic Queen crisis."
                         ]
                     },
-
-                    { type: "heading", text: "3. Combat simulations" },
-                    { type: "paragraph", text: "After creating your two test fleets, place both fleets in the same system and use the **attackallfleets** command. This makes all your fleets attack every fleet in the current system, including your own fleets. This is useful for testing battles between your fleet designs without relying on a second AI empire or player." },
-                    { type: "paragraph", text: "This allows you to iterate through fleet designs very quickly: change a component, rebuild using instant_build, and repeat the battle, all without having to play through an entire game." },
+                    { type: "heading", text: "3. Combat Simulations" },
+                    { type: "paragraph", text: "After creating your two test fleets, place both fleets in the same system and use the **attackallfleets** command. This makes all your fleets attack every fleet in the current system, including your own fleets. It is useful for testing battles between your own fleet designs without relying on a second AI empire or player." },
+                    { type: "paragraph", text: "This allows you to iterate on fleet designs very quickly: change a component, rebuild using instant_build, and repeat the battle, all without having to play through an entire game." },
 
                     { type: "divider" },
-                    { type: "quote", text: "The Omnissiah would be proud of you...", cite: "Archmagos Dominus Belisarius Cawl of the Adeptus Mechanicus" }
+                    { type: "quote", text: "Embrace the gifts of the Machine Spirit. The Omnissiah will guide you.", cite: "Archmagos Dominus Belisarius Cawl of the Adeptus Mechanicus", portrait: "img/citas/Belisarius_Cawl.jpg", portraitAlt: "Archmagos Dominus Belisarius Cawl" }
                 ]
             },
             jp: {
                 title: "戦闘シミュレーションの準備",
-                icon: "✦",
                 blocks: [
-                    { type: "paragraph", text: "艦船や艦隊の設計をテストするための、最適なゲーム環境の準備方法をまとめた完全ガイドです。" },
-                    { type: "note", text: "この設定はDLCの有無に依存しません。" },
+                    { type: "paragraph", text: "艦船や艦隊の設計をテストするための、最適なゲーム環境を準備する完全ガイドです。" },
+                    { type: "note", text: "この設定はDLCの有無に関係なく使用できます。" },
 
-                    { type: "heading", text: "1. ゲームの設定" },
+                    { type: "heading", text: "1. ゲームを設定する" },
                     {
                         type: "list", items: [
-                            "\*\*必須：\*\* アイアンマンモードを無効にします。",
-                            "AIによって操作される帝国（通常の帝国、没落帝国、マローダー、遊牧艦隊など）は一切入れないことをおすすめします。",
-                            "その他の設定は自由に決めて構いません。",
+                            "**必須:** アイアンマンモードを無効にします。",
+                            "AIが操作する帝国（通常の帝国、没落帝国、マローダー、ノマドなど）は、できるだけ含めないことをおすすめします。",
+                            "その他の設定はお好みで構いません。",
                         ]
                     },
                     { type: "paragraph", text: "これでゲームを開始できます。" },
 
                     { type: "heading", text: "2. 便利なコンソールコマンド" },
-                    { type: "paragraph", text: "デフォルトでは、「º」キー（QWERTYキーボードでは1キーの左側）を押すことでコンソールを開けます。" },
-                    { type: "paragraph", text: "探索、通信、諜報活動を自動化する設定を有効にすることをおすすめします。また、艦船を素早く建造・修理できるよう、即時建造も有効にしてください。" },
+                    { type: "paragraph", text: "デフォルトでは「º」キー（QWERTYキーボードでは1キーの左側）を押すことでコンソールを開けます。" },
+                    { type: "paragraph", text: "探索、通信、自動諜報のオプションを有効にすることをおすすめします。また、艦船の建造や修理を素早く行うため、即時建造も有効にしてください。" },
 
-                    { type: "paragraph", text: "以下のコマンドをコンソールに順番に入力してください。" },
+                    { type: "paragraph", text: "コンソールで以下のコマンドを順番に実行します。" },
                     {
                         type: "list", items: [
-                            "\*\*research\_all\_technologies 1 0\*\*: すべてのテクノロジーをアンロックし、待ち時間なしですべての艦船設計を建造できるようにします。",
-                            "\*\*max\_resources\*\*: すべての資源を最大まで補充します。大規模な艦隊を待ち時間なしで建造する際に便利です。",
-                            "\*\*unlock\_edicts\*\*: すべての戦闘用布告をアンロックします。",
-                            "\*\*create\_navy \<Percentage>\*\*: 指定した戦力割合の戦闘艦隊を作成します。これはAI帝国を再現するための艦隊として使用します。艦船設計はゲーム開始時に用意されている自動設計が使用されます。",
+                            "**research_all_technologies 1 0**: すべてのテクノロジーをアンロックし、待ち時間なしであらゆる艦船設計を建造できるようにします。",
+                            "**max_resources**: すべての資源を最大まで補充します。待ち時間なしで大規模艦隊を建造する際に便利です。",
+                            "**unlock_edicts**: すべての戦闘エディクトをアンロックします。",
+                            "**create_navy <Percentage>**: 指定した戦力割合の戦闘艦隊を作成します。この艦隊は、ゲーム開始時に使用可能な自動生成された艦船設計を使用するAI帝国をシミュレートするために使用します。",
                         ]
                     },
-                    { type: "note", text: "コマンドの正確な名称はゲームのバージョンによって異なる場合があります。動作しない場合は、コンソールで\*\*help\*\*と入力して、使用中のバージョンで利用可能なコマンド一覧を確認してください。" },
-                    { type: "paragraph", text: "危機との戦闘テストを行う場合は、以下のコマンドで危機を強制的に出現させることができます。" },
+                    { type: "note", text: "コマンドの正確な名前はゲームのバージョンによって異なる場合があります。動作しない場合は、コンソールに **help** と入力して、現在のバージョンで利用可能なコマンド一覧を確認してください。" },
+                    { type: "paragraph", text: "危機を相手に戦闘テストを行う場合は、以下のコマンドで強制的に出現させることができます。" },
                     {
                         type: "list", items: [
-                            "\*\*event crisis.199\*\*: プレスリン・スウォームの危機を発生させます。",
-                            "\*\*event crisis.1000\*\*: 異次元勢力「アンエクスペクテッド」の危機を発生させます。",
-                            "\*\*event crisis.1100\*\*: 異次元勢力「アバラント」の危機を発生させます。アンエクスペクテッドを必要としません。",
-                            "\*\*event crisis.1200\*\*: 異次元勢力「ヴェヘメント」の危機を発生させます。アンエクスペクテッドが必要です。",
-                            "\*\*event crisis.2000\*\*: コンティンジェンシーの危機を発生させます。",
-                            "\*\*event crisis.8005\*\*: シンセティック・クイーンの危機を発生させます。"
+                            "**event crisis.199**: プレスリン・スカージの危機を発生させます。",
+                            "**event crisis.1000**: アンビデンの危機を発生させます。",
+                            "**event crisis.1100**: アベラントの危機を発生させます。アンビデンは必要ありません。",
+                            "**event crisis.1200**: ヴィーヘメンスの危機を発生させます。アンビデンが必要です。",
+                            "**event crisis.2000**: コンティンジェンシーの危機を発生させます。",
+                            "**event crisis.8005**: シンセティック・クイーンの危機を発生させます。"
                         ]
                     },
                     { type: "heading", text: "3. 戦闘シミュレーション" },
-                    { type: "paragraph", text: "2つのテスト艦隊を作成したら、両方の艦隊を同じ星系に配置し、\*\*attackallfleets\*\*コマンドを実行します。このコマンドは、現在の星系に存在するすべての艦隊に対して、自分のすべての艦隊が攻撃を行うようにします。自分自身の艦隊も攻撃対象になるため、別のAI帝国やプレイヤーに頼ることなく、自分の艦隊設計同士を戦わせることができます。" },
-                    { type: "paragraph", text: "これにより、艦隊設計を非常に高速に反復できます。コンポーネントを1つ変更し、instant\_buildで再建造し、再び戦闘を行うだけです。完全なゲームを最初から最後までプレイする必要はありません。" },
+                    { type: "paragraph", text: "2つのテスト艦隊を作成したら、両方を同じ星系に配置し、**attackallfleets** コマンドを使用します。このコマンドにより、現在の星系にいるすべての艦隊が、あなた自身の艦隊を含むすべての艦隊を攻撃するようになります。2つ目のAI帝国やプレイヤーに頼ることなく、自分の艦隊設計同士の戦闘をテストするのに便利です。" },
+                    { type: "paragraph", text: "これにより、艦隊設計を非常に高速に調整できます。コンポーネントを1つ変更し、instant_buildで再建造して、もう一度戦闘を行います。これを繰り返せば、ゲームを最初から最後までプレイする必要はありません。" },
 
                     { type: "divider" },
-                    { type: "quote", text: "オムニサイアはお前を誇りに思うだろう……", cite: "アデプトゥス・メカニクス マギ・ドミヌス ベリサリウス・カウル" }
+                    { type: "quote", text: "機械の精霊の賜物を受け入れよ。オムニッサイアが汝を導くだろう。", cite: "アデプタス・メカニカスのアークマゴス・ドミヌス、ベリサリウス・カウル", portrait: "img/citas/Belisarius_Cawl.jpg", portraitAlt: "アークマゴス・ドミヌス・ベリサリウス・カウル" }
                 ]
             }
         }
@@ -1083,7 +1643,7 @@ export const knowledgeBase = [
                     },
 
                     { type: "divider" },
-                    { type: "quote", text: "But without a doubt, if you want the best information about Stellaris in Spanish, you already know where to find my YouTube channel 🤩", cite: "Ignis" }
+                    { type: "quote", text: "But without a doubt, if you want the best information about Stellaris in Spanish, you already know where to find my YouTube channel 🤩", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
                 ]
             },
             jp: {
@@ -1108,7 +1668,7 @@ export const knowledgeBase = [
                     },
 
                     { type: "divider" },
-                    { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis" }
+                    { type: "quote", text: "とはいえ、スペイン語でStellarisについて最高の情報が欲しいなら、私のYouTubeチャンネルがどこにあるかはもう知っていますよね 🤩", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
                 ]
             }
         }
@@ -1421,7 +1981,7 @@ export const knowledgeBase = [
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
             { type: "image", src: "img/ambicion/.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
-        
+
             { type: "divider" },
             { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo", portrait: "img/citas/Xondar.png", portraitAlt: "Comandante Xondar" }
         ],
