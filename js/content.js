@@ -1796,13 +1796,13 @@ export const knowledgeBase = [
             }
         }
     },
-    {   // Fauna espacial
-        slug: "fauna-espacial",
+    {   // Diseño de naves de fauna espacial
+        slug: "diseño-naves-fauna-espacial",
         title: "Diseño de naves de fauna espacial",
         icon: "✦",
         blocks: [
             { type: "heading", text: "Entidades cristalinas" },
-            
+
             {
                 type: "columns",
                 columns: [
@@ -1885,8 +1885,204 @@ export const knowledgeBase = [
                     []
                 ]
             },
-            { type: "divider" },
 
+            { type: "divider" },
+            { type: "quote", text: "Arregla la fauna espacial... ¡PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Capitán Marla" }
+        ],
+        i18n: {
+            en: {
+                title: "Space Fauna Ship Design",
+                blocks: [
+                    { type: "heading", text: "Crystalline Entities" },
+
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cohorte de cristal de zafiro.png", alt: "Sapphire Crystal Cohort", caption: "Sapphire Crystal Cohort." }],
+                            [{ type: "image", src: "img/fauna/Soberano de cristal de zafiro.png", alt: "Sapphire Crystal Sovereign", caption: "Sapphire Crystal Sovereign." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Centinela de cristal de zafiro.png", alt: "Sapphire Crystal Sentinel", caption: "Sapphire Crystal Sentinel." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Space Amoebas" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ameba espacial.png", alt: "Space Amoeba", caption: "Space Amoeba." }],
+                            [{ type: "image", src: "img/fauna/Ameba espacial madre.png", alt: "Mother Space Amoeba", caption: "Mother Space Amoeba." }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Tiyanki" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cria de ballena espacial.png", alt: "Space Whale Calf", caption: "Space Whale Calf." }],
+                            [{ type: "image", src: "img/fauna/Ballenato espacial.png", alt: "Juvenile Space Whale", caption: "Juvenile Space Whale." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ballena hembra espacial.png", alt: "Female Space Whale", caption: "Female Space Whale." }],
+                            [{ type: "image", src: "img/fauna/Ballena macho espacial.png", alt: "Male Space Whale", caption: "Male Space Whale." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Buey ballena espacial.png", alt: "Space Whale Ox", caption: "Space Whale Ox." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Voidworms" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ninfa de gusano del vacio.png", alt: "Voidworm Nymph", caption: "Voidworm Nymph." }],
+                            [{ type: "image", src: "img/fauna/Cria de gusano del vacio.png", alt: "Voidworm Juvenile", caption: "Voidworm Juvenile." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Gusano del vacio adulto.png", alt: "Adult Voidworm", caption: "Adult Voidworm." }],
+                            [{ type: "image", src: "img/fauna/Troika de gusanos del vacio.png", alt: "Voidworm Troika", caption: "Voidworm Troika." }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Tiyanki Matriarchs" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cria cutuloide.png", alt: "Cutuloid Hatchling", caption: "Cutuloid Hatchling." }],
+                            [{ type: "image", src: "img/fauna/Cutuloide adolescente.png", alt: "Adolescent Cutuloid", caption: "Adolescent Cutuloid." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cutuloides.png", alt: "Cutuloids", caption: "Cutuloids." }],
+                            []
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "Fix the space fauna... PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Captain Marla" }
+                ]
+
+            },
+            jp: {
+                title: "宇宙生物の艦船設計",
+                blocks: [
+                    { type: "heading", text: "結晶生命体" },
+
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cohorte de cristal de zafiro.png", alt: "サファイア・クリスタル・コホート", caption: "サファイア・クリスタル・コホート。" }],
+                            [{ type: "image", src: "img/fauna/Soberano de cristal de zafiro.png", alt: "サファイア・クリスタル・ソヴリン", caption: "サファイア・クリスタル・ソヴリン。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Centinela de cristal de zafiro.png", alt: "サファイア・クリスタル・センチネル", caption: "サファイア・クリスタル・センチネル。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "宇宙アメーバ" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ameba espacial.png", alt: "宇宙アメーバ", caption: "宇宙アメーバ。" }],
+                            [{ type: "image", src: "img/fauna/Ameba espacial madre.png", alt: "母宇宙アメーバ", caption: "母宇宙アメーバ。" }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ティヤンキ" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cria de ballena espacial.png", alt: "宇宙クジラの幼獣", caption: "宇宙クジラの幼獣。" }],
+                            [{ type: "image", src: "img/fauna/Ballenato espacial.png", alt: "若い宇宙クジラ", caption: "若い宇宙クジラ。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ballena hembra espacial.png", alt: "雌の宇宙クジラ", caption: "雌の宇宙クジラ。" }],
+                            [{ type: "image", src: "img/fauna/Ballena macho espacial.png", alt: "雄の宇宙クジラ", caption: "雄の宇宙クジラ。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Buey ballena espacial.png", alt: "宇宙クジラの雄牛", caption: "宇宙クジラの雄牛。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ヴォイドワーム" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Ninfa de gusano del vacio.png", alt: "ヴォイドワームの幼生", caption: "ヴォイドワームの幼生。" }],
+                            [{ type: "image", src: "img/fauna/Cria de gusano del vacio.png", alt: "若いヴォイドワーム", caption: "若いヴォイドワーム。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Gusano del vacio adulto.png", alt: "成体ヴォイドワーム", caption: "成体ヴォイドワーム。" }],
+                            [{ type: "image", src: "img/fauna/Troika de gusanos del vacio.png", alt: "ヴォイドワーム・トロイカ", caption: "ヴォイドワーム・トロイカ。" }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "カトゥロイド" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cria cutuloide.png", alt: "カトゥロイドの幼体", caption: "カトゥロイドの幼体。" }],
+                            [{ type: "image", src: "img/fauna/Cutuloide adolescente.png", alt: "若年カトゥロイド", caption: "若年カトゥロイド。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/fauna/Cutuloides.png", alt: "カトゥロイド", caption: "カトゥロイド。" }],
+                            []
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "宇宙生物を直せ……！　パーーーーーーーーーーーーーーーラドックス！！", cite: "マーラ船長" }
+                ]
+
+            }
+        }
+    },
+    {   // Diseño de flotas de fauna espacial
+        slug: "diseño-flotas-fauna-espacial",
+        title: "Diseño de flotas de fauna espacial",
+        icon: "✦",
+        blocks: [
             { type: "heading", text: "Diseños de flotas" },
             { type: "note", text: "Guía de flotas estándar (no mecánica ni biológica) para las primeras etapas de la partida, cuando la fauna espacial es la principal amenaza." },
 
@@ -1942,6 +2138,168 @@ export const knowledgeBase = [
 
             { type: "divider" },
             { type: "quote", text: "Arregla la fauna espacial... ¡PAAAAARAAAAAAAAAADOOOOOOOOOX!", cite: "Capitán Marla" }
+        ],
+        i18n: {
+            en: {},
+            jp: {}
+        }
+    },
+    {   // Flotas de Ambición y Especiales
+        slug: "flotas-ambicion-especiales",
+        title: "Flotas de Ambición y Especiales",
+        icon: "✦",
+        blocks: [
+            { type: "heading", text: "Némesis Galáctico" },
+
+            { type: "heading", text: "Enjambre de corbetas amenazantes", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Corbeta amenazante mecanica.png", alt: "Enjambre de corbetas amenazantes", caption: "Enjambre de corbetas amenazantes mecánicas." }],
+                    [{ type: "image", src: "img/ambicion/Corbeta amenazante biologica.png", alt: "Enjambre de corbetas amenazantes", caption: "Enjambre de corbetas amenazantes biológicas." }]
+                ]
+            },
+            { type: "paragraph", text: "Las corbetas amenazantes no tienen costes añadidos según el tipo de componente, el mantenimiento es mucho menor que el de una corbeta normal, el coste de construcción siempre es fijo en minerales, se construyen más rápido, tienen bonus al daño de armas de la nave, las estadísticas base son superiores a las de una corbeta normal y tienen un espacio de componente auxiliar extra. Todo esto hace que sean extremadamente superiores a las corbetas normales, dejándolas en un segundo plano." },
+            { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los lanzadores de nubes de nanomisiles antiguos son una versión mejorada de los disruptores, a cambio de necesitar un espacio S por fuerza." },
+
+            { type: "heading", text: "Devorador de estrellas", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Devorador de estrellas mecanico.png", alt: "Devorador de estrellas", caption: "Devorador de estrellas mecánica." }],
+                    [{ type: "image", src: "img/ambicion/Devorador de estrellas biologico.png", alt: "Devorador de estrellas", caption: "Devorador de estrellas biológica." }]
+                ]
+            },
+            { type: "paragraph", text: "Estas naves tienen mayor poder destructivo que un gigante, a cambio de no tener armas X ni aura, siendo de hecho inferiores para enfrentar otros objetivos de gran tamaño ni sirven como buffers. Además, no tienen un coste fijo en minerales, lo que las hace inferiores en el armamento que nos podamos permitir ponerles." },
+
+            { type: "heading", text: "Destructores amenazantes", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Destructores amenazantes artilleros.png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." }],
+                    []
+                ]
+            },
+
+            { type: "heading", text: "Cruceros amenazantes", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Cruceros amenazantes artilleros.png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." }],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Cosmogénesis máquina" },
+
+            { type: "heading", text: "Escoltas misteriosas", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Escolta artillera.png", alt: "Escolta artillera", caption: "Escolta artillera." }],
+                    [{ type: "image", src: "img/ambicion/Escolta torpedera de corto alcance con sigilo.png", alt: "Escolta torpedera de corto alcance con sigilo", caption: "Escolta torpedera de corto alcance con sigilo." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Escolta torpedera de largo alcance.png", alt: "Escolta torpedera de largo alcance", caption: "Escolta torpedera de largo alcance." }],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Crucero de batalla", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [
+                        { type: "image", src: "img/ambicion/Cruceros de batalla artilleros a larga distancia.png", alt: "Cruceros de batalla artilleros a larga distancia", caption: "Cruceros de batalla artilleros a larga distancia." },
+                        { type: "paragraph", text: "Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+                    ],
+                    [
+                        { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a corta distancia.png", alt: "Cruceros de batalla torpederos a corta distancia", caption: "Cruceros de batalla torpederos a corta distancia." },
+                        { type: "paragraph", text: "Este diseño es poco recomendado, ya que las armas X, que no sean el emisor de arcos, no podrán ser utilizadas mientras usas las armas G y viceversa." },
+                    ]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [
+                        { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a larga distancia.png", alt: "Cruceros de batalla torpederos a larga distancia", caption: "Cruceros de batalla torpederos a larga distancia. " },
+                        { type: "paragraph", text: "Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
+                    ],
+                    []
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Titán paradójico", level: 2 },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Titan paradojico.png", alt: "Titán paradójico", caption: "Titán paradójico" }],
+                    []
+                ]
+            },
+            { type: "paragraph", text: "Como cualquier titán normal, su principal uso es de buffer/debuffer. Aunque esta versión es mucho más poderosa que un titán normal y será capaz de eliminar con una salva de sus dos armas T a cualquier otra nave." },
+            { type: "divider" },
+
+            { type: "heading", text: "Cosmogénesis biológico" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Macero cifrador de corto alcance.png", alt: "Macero cifrador de corto alcance", caption: "Macero cifrador de corto alcance." }],
+                    [{ type: "image", src: "img/ambicion/Tejedores de dilema de apoyo de largo alcance.png", alt: "Tejedores de dilema de apoyo de largo alcance", caption: "Tejedores de dilema de apoyo de largo alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Heraldos de laberinto con torpedos de largo alcance.png", alt: "Heraldos de laberinto con torpedos de largo alcance", caption: "Heraldos de laberinto con torpedos de largo alcance." }],
+                    [{ type: "image", src: "img/ambicion/Aguijon criptico como titanes artilleros.png", alt: "Aguijón críptico como titanes artilleros", caption: "Aguijón críptico como titanes artilleros." }]
+                ]
+            },
+            { type: "divider" },
+
+            { type: "heading", text: "Naves nanorrobot" },
+
+            { type: "heading", text: "Enjambrador de nanorrobots" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Enjambrador de naves de ataque.png", alt: "Enjambrador de naves de ataque", caption: "Enjambrador de naves de ataque." }],
+                    [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de corta distancia con sigilo.png", alt: "Enjambrador de torpedos de corta distancia con sigilo", caption: "Enjambrador de torpedos de corta distancia con sigilo." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de larga distancia.png", alt: "Enjambrador de torpedos de larga distancia", caption: "Enjambrador de torpedos de larga distancia." }],
+                    []
+                ]
+            },
+            
+            { type: "heading", text: "Interdictor nanorrobot" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Interdictor torpedero de largo alcance.png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." }],
+                    [{ type: "image", src: "img/ambicion/Interdictor torpedero de corto alcance con sigilo.png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/ambicion/Interdictor portahangares.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." }],
+                    []
+                ]
+            },
+
+            { type: "divider" },
+            { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo", portrait: "img/citas/Xondar.png", portraitAlt: "Comandante Xondar" }
         ],
         i18n: {
             en: {},
@@ -2314,79 +2672,6 @@ export const knowledgeBase = [
 
             { type: "divider" },
             { type: "quote", text: "La galaxia no avisa antes de cambiar. Cuando llegue la próxima crisis, no tendremos tiempo para prepararnos.", cite: "Oficial Oráculo, tras analizar 4.541.682 posibles futuros", portrait: "img/citas/Oracle.png", portraitAlt: "Oficial Oráculo" }
-        ],
-        i18n: {
-            en: {},
-            jp: {}
-        }
-    },
-    {   // Flotas de Ambición y Especiales
-        slug: "flotas-ambicion-especiales",
-        title: "Flotas de Ambición y Especiales",
-        icon: "✦",
-        blocks: [
-            { type: "heading", text: "Amenazantes" },
-
-            { type: "heading", text: "Enjambre de corbetas amenazantes" },
-            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de corbetas amenazantes", caption: "" },
-            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de corbetas amenazantes", caption: "" },
-            { type: "paragraph", text: "Las corbetas amenazantes no tienen costes añadidos según el tipo de componente, el mantenimiento es mucho menor que el de una corbeta normal, el coste de construcción siempre es fijo en minerales, se construyen más rápido, tienen bonus al daño de armas de la nave, las estadísticas base son superiores a las de una corbeta normal y tienen un espacio de componente auxiliar extra. Todo esto hace que sean extremadamente superiores a las corbetas normales, dejándolas en un segundo plano." },
-            { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los lanzadores de nubes de nanomisiles antiguos son una versión mejorada de los disruptores, a cambio de necesitar un espacio S por fuerza." },
-
-            { type: "heading", text: "Comedor de estrellas" },
-            { type: "image", src: "img/ambicion/.png", alt: "Comedor de estrellas", caption: "" },
-            { type: "image", src: "img/ambicion/.png", alt: "Comedor de estrellas", caption: "" },
-            { type: "paragraph", text: "Estas naves tienen mayor poder destructivo que un gigante, a cambio de no tener armas X ni aura, siendo de hecho inferiores para enfrentar otros objetivos de gran tamaño ni sirven como buffers. Además, no tienen un coste fijo en minerales, lo que las hace inferiores en el armamento que nos podamos permitir ponerles." },
-
-            { type: "heading", text: "Destructores amenazantes" },
-            { type: "image", src: "img/ambicion/.png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." },
-
-            { type: "heading", text: "Cruceros amenazantes" },
-            { type: "image", src: "img/ambicion/.png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." },
-            { type: "divider" },
-
-            { type: "heading", text: "Imperio caído máquina" },
-
-            { type: "heading", text: "Escoltas misteriosas" },
-            { type: "image", src: "img/ambicion/.png", alt: "Escolta artillera", caption: "Escolta artillera." },
-            { type: "image", src: "img/ambicion/.png", alt: "Escolta torpedera de corto alcance con sigilo", caption: "Escolta torpedera de corto alcance con sigilo." },
-            { type: "image", src: "img/ambicion/.png", alt: "Escolta torpedera de largo alcance", caption: "Escolta torpedera de largo alcance." },
-            { type: "divider" },
-
-            { type: "heading", text: "Crucero de batalla" },
-            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla artilleros a larga distancia", caption: "Cruceros de batalla artilleros a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
-            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla torpederos a corta distancia", caption: "Cruceros de batalla torpederos a corta distancia. Este diseño es poco recomendado, ya que las armas X, que no sean el emisor de arcos, no podrán ser utilizadas mientras usas las armas G y viceversa." },
-            { type: "image", src: "img/ambicion/.png", alt: "Cruceros de batalla torpederos a larga distancia", caption: "Cruceros de batalla torpederos a larga distancia. Dado que todas las armas tienen largo alcance, es un diseño recomendado." },
-            { type: "divider" },
-
-            { type: "heading", text: "Titán paradójico" },
-            { type: "image", src: "img/ambicion/.png", alt: "Titán paradójico", caption: "" },
-            { type: "paragraph", text: "Como cualquier titán normal, su principal uso es de buffer/debuffer. Aunque esta versión es mucho más poderosa que un titán normal y será capaz de eliminar con una salva de sus dos armas T a cualquier otra nave." },
-            { type: "divider" },
-
-            { type: "heading", text: "Imperio caído biológico" },
-            { type: "image", src: "img/ambicion/.png", alt: "Macero cifrador de corto alcance", caption: "Macero cifrador de corto alcance." },
-            { type: "image", src: "img/ambicion/.png", alt: "Tejedores de dilema de apoyo de largo alcance", caption: "Tejedores de dilema de apoyo de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/ambicion/.png", alt: "Heraldos de laberinto con torpedos de largo alcance", caption: "Heraldos de laberinto con torpedos de largo alcance." },
-            { type: "image", src: "img/ambicion/.png", alt: "Aguijón críptico como titanes artilleros", caption: "Aguijón críptico como titanes artilleros." },
-            { type: "divider" },
-
-            { type: "heading", text: "Naves nanorrobot" },
-
-            { type: "heading", text: "Enjambrador de nanorrobots" },
-            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de naves de ataque", caption: "Enjambre de naves de ataque." },
-            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de torpedos de corta distancia con sigilo", caption: "Enjambre de torpedos de corta distancia con sigilo." },
-            { type: "divider" },
-            { type: "image", src: "img/ambicion/.png", alt: "Enjambre de torpedos de larga distancia", caption: "Enjambre de torpedos de larga distancia." },
-
-            { type: "heading", text: "Interdictor nanorrobot" },
-            { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de largo alcance", caption: "Interdictor torpedero de largo alcance." },
-            { type: "image", src: "img/ambicion/.png", alt: "Interdictor torpedero de corto alcance con sigilo", caption: "Interdictor torpedero de corto alcance con sigilo." },
-            { type: "image", src: "img/ambicion/.png", alt: "Interdictor portahangares", caption: "Interdictor portahangares." },
-
-            { type: "divider" },
-            { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo", portrait: "img/citas/Xondar.png", portraitAlt: "Comandante Xondar" }
         ],
         i18n: {
             en: {},
