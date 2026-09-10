@@ -2176,7 +2176,7 @@ export const knowledgeBase = [
             {
                 type: "columns",
                 columns: [
-                    [{ type: "image", src: "img/ambicion/Destructores amenazantes artilleros.png", alt: "Destructores amenazantes artilleros", caption: "Destructores amenazantes artilleros." }],
+                    [{ type: "image", src: "img/ambicion/Destructores amenazantes artilleros biologicos.png", alt: "Destructores amenazantes artilleros biológicos", caption: "Destructores amenazantes artilleros biológicos." }],
                     []
                 ]
             },
@@ -2185,7 +2185,7 @@ export const knowledgeBase = [
             {
                 type: "columns",
                 columns: [
-                    [{ type: "image", src: "img/ambicion/Cruceros amenazantes artilleros.png", alt: "Cruceros amenazantes artilleros", caption: "Cruceros amenazantes artilleros." }],
+                    [{ type: "image", src: "img/ambicion/Cruceros amenazantes artilleros biologicos.png", alt: "Cruceros amenazantes artilleros biológicos", caption: "Cruceros amenazantes artilleros biológicos." }],
                     []
                 ]
             },
