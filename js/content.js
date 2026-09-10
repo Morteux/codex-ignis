@@ -2144,9 +2144,9 @@ export const knowledgeBase = [
             jp: {}
         }
     },
-    {   // Flotas de Ambición y Especiales
-        slug: "flotas-ambicion-especiales",
-        title: "Flotas de Ambición y Especiales",
+    {   // Diseño de naves de Ambición y Especiales
+        slug: "diseño-naves-ambicion-especiales",
+        title: "Diseño de naves de Ambición y Especiales",
         icon: "✦",
         blocks: [
             { type: "heading", text: "Némesis Galáctico" },
@@ -2281,7 +2281,7 @@ export const knowledgeBase = [
                     []
                 ]
             },
-            
+
             { type: "heading", text: "Interdictor nanorrobot" },
             {
                 type: "columns",
@@ -2302,8 +2302,318 @@ export const knowledgeBase = [
             { type: "quote", text: "Ahora que han nerfeado a los enjambres de misiles, nadie me recluta y estoy intentando reinventarme...", cite: "Comandante Xondar, tras el endurecimiento de blindaje y escudo", portrait: "img/citas/Xondar.png", portraitAlt: "Comandante Xondar" }
         ],
         i18n: {
-            en: {},
-            jp: {}
+            en: {
+                title: "Ambition and Special Ship Designs",
+                blocks: [
+                    { type: "heading", text: "Galactic Nemesis" },
+
+                    { type: "heading", text: "Threatening Corvette Swarm", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Corbeta amenazante mecanica.png", alt: "Threatening Corvette Swarm", caption: "Mechanical Threatening Corvette Swarm." }],
+                            [{ type: "image", src: "img/ambicion/Corbeta amenazante biologica.png", alt: "Threatening Corvette Swarm", caption: "Biological Threatening Corvette Swarm." }]
+                        ]
+                    },
+                    { type: "paragraph", text: "Threatening corvettes have no additional costs based on the type of components installed. Their upkeep is much lower than that of a normal corvette, their construction cost is always fixed in minerals, they are built faster, they gain a bonus to ship weapon damage, their base stats are superior to those of a normal corvette, and they have an extra auxiliary component slot. All of this makes them vastly superior to normal corvettes, leaving the latter largely obsolete." },
+                    { type: "paragraph", text: "The key to these corvettes lies in their construction cost being fixed in minerals. This allows you, for example, to equip them with dark matter, Zro, or nanite components without any additional rare resource cost. The same applies to Archaeotech components. In particular, Ancient Nanomissile Cloud Launchers are an improved version of Disruptors, at the cost of requiring one S slot per weapon." },
+
+                    { type: "heading", text: "Star Eater", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Devorador de estrellas mecanico.png", alt: "Star Eater", caption: "Mechanical Star Eater." }],
+                            [{ type: "image", src: "img/ambicion/Devorador de estrellas biologico.png", alt: "Star Eater", caption: "Biological Star Eater." }]
+                        ]
+                    },
+                    { type: "paragraph", text: "These ships have greater destructive power than a Colossus, at the cost of lacking X-slot weapons and an aura. They are therefore actually inferior when engaging other large targets and cannot serve as buffers. In addition, they do not have a fixed mineral cost, which makes them less effective in terms of the weaponry we can afford to equip them with." },
+
+                    { type: "heading", text: "Threatening Destroyers", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Destructores amenazantes artilleros biologicos.png", alt: "Biological Threatening Artillery Destroyers", caption: "Biological Threatening Artillery Destroyers." }],
+                            []
+                        ]
+                    },
+
+                    { type: "heading", text: "Threatening Cruisers", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Cruceros amenazantes artilleros biologicos.png", alt: "Biological Threatening Artillery Cruisers", caption: "Biological Threatening Artillery Cruisers." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Machine Cosmogenesis" },
+
+                    { type: "heading", text: "Mysterious Escorts", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Escolta artillera.png", alt: "Artillery Escort", caption: "Artillery Escort." }],
+                            [{ type: "image", src: "img/ambicion/Escolta torpedera de corto alcance con sigilo.png", alt: "Short-Range Stealth Torpedo Escort", caption: "Short-Range Stealth Torpedo Escort." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Escolta torpedera de largo alcance.png", alt: "Long-Range Torpedo Escort", caption: "Long-Range Torpedo Escort." }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Battlecruiser", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla artilleros a larga distancia.png", alt: "Long-Range Artillery Battlecruisers", caption: "Long-Range Artillery Battlecruisers." },
+                                { type: "paragraph", text: "Since all weapons have long range, this is a recommended design." },
+                            ],
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a corta distancia.png", alt: "Short-Range Torpedo Battlecruisers", caption: "Short-Range Torpedo Battlecruisers." },
+                                { type: "paragraph", text: "This design is not recommended, since X-slot weapons other than the Arc Emitter cannot be used while using G-slot weapons, and vice versa." },
+                            ]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a larga distancia.png", alt: "Long-Range Torpedo Battlecruisers", caption: "Long-Range Torpedo Battlecruisers." },
+                                { type: "paragraph", text: "Since all weapons have long range, this is a recommended design." },
+                            ],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Paradoxical Titan", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Titan paradojico.png", alt: "Paradoxical Titan", caption: "Paradoxical Titan." }],
+                            []
+                        ]
+                    },
+                    { type: "paragraph", text: "As with any normal Titan, its primary role is to act as a buffer/debuffer. However, this version is far more powerful than a normal Titan and will be capable of destroying any other ship with a single salvo from its two T-slot weapons." },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Biological Cosmogenesis" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Macero cifrador de corto alcance.png", alt: "Short-Range Cipher Mace", caption: "Short-Range Cipher Mace." }],
+                            [{ type: "image", src: "img/ambicion/Tejedores de dilema de apoyo de largo alcance.png", alt: "Long-Range Dilemma Weaver Support Ships", caption: "Long-Range Dilemma Weaver Support Ships." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Heraldos de laberinto con torpedos de largo alcance.png", alt: "Labyrinth Heralds with Long-Range Torpedoes", caption: "Labyrinth Heralds with Long-Range Torpedoes." }],
+                            [{ type: "image", src: "img/ambicion/Aguijon criptico como titanes artilleros.png", alt: "Cryptic Stinger as Artillery Titans", caption: "Cryptic Stinger as Artillery Titans." }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "Nanite Ships" },
+
+                    { type: "heading", text: "Nanite Swarmer" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Enjambrador de naves de ataque.png", alt: "Attack Craft Swarmer", caption: "Attack Craft Swarmer." }],
+                            [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de corta distancia con sigilo.png", alt: "Short-Range Stealth Torpedo Swarmer", caption: "Short-Range Stealth Torpedo Swarmer." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de larga distancia.png", alt: "Long-Range Torpedo Swarmer", caption: "Long-Range Torpedo Swarmer." }],
+                            []
+                        ]
+                    },
+
+                    { type: "heading", text: "Nanite Interdictor" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Interdictor torpedero de largo alcance.png", alt: "Long-Range Torpedo Interdictor", caption: "Long-Range Torpedo Interdictor." }],
+                            [{ type: "image", src: "img/ambicion/Interdictor torpedero de corto alcance con sigilo.png", alt: "Short-Range Stealth Torpedo Interdictor", caption: "Short-Range Stealth Torpedo Interdictor." }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Interdictor portahangares.png", alt: "Hangar Interdictor", caption: "Hangar Interdictor." }],
+                            []
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "Now that they nerfed missile swarms, nobody recruits me anymore and I'm trying to reinvent myself...", cite: "Commander Xondar, after the armor and shield hardening", portrait: "img/citas/Xondar.png", portraitAlt: "Commander Xondar" }
+                ]
+            },
+            jp: {
+                title: "野望と特殊艦船の設計",
+                blocks: [
+                    { type: "heading", text: "銀河のネメシス" },
+
+                    { type: "heading", text: "脅威のコルベット・スウォーム", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Corbeta amenazante mecanica.png", alt: "脅威のコルベット・スウォーム", caption: "機械式の脅威のコルベット・スウォーム。" }],
+                            [{ type: "image", src: "img/ambicion/Corbeta amenazante biologica.png", alt: "脅威のコルベット・スウォーム", caption: "生体式の脅威のコルベット・スウォーム。" }]
+                        ]
+                    },
+                    { type: "paragraph", text: "脅威のコルベットは、搭載するコンポーネントの種類による追加コストがなく、維持費も通常のコルベットよりはるかに低い。建造コストは常に鉱物で固定され、建造時間も短く、艦船兵器ダメージへのボーナスを持つ。さらに、基礎性能は通常のコルベットを上回り、補助コンポーネント・スロットも1つ多い。これらすべてを合わせると通常のコルベットを圧倒的に上回る性能となり、通常型はほぼ出番を失う。" },
+                    { type: "paragraph", text: "これらのコルベットの最大の強みは、建造コストが鉱物で固定されていることにある。たとえばダークマター、ズロ、ナノマシン系コンポーネントを搭載しても、希少資源の追加コストは一切発生しない。考古学技術コンポーネントについても同様である。特に古代ナノミサイル雲発射機はディスラプターの強化版ともいえる兵器であり、その代わりに1門につきSスロットを1つ必要とする。" },
+
+                    { type: "heading", text: "星喰らい", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Devorador de estrellas mecanico.png", alt: "星喰らい", caption: "機械式の星喰らい。" }],
+                            [{ type: "image", src: "img/ambicion/Devorador de estrellas biologico.png", alt: "星喰らい", caption: "生体式の星喰らい。" }]
+                        ]
+                    },
+                    { type: "paragraph", text: "これらの艦船はコロッサスよりも高い破壊力を持つ一方、Xスロット兵器とオーラを持たない。そのため、他の大型目標との交戦では実際には劣り、バッファーとして運用することもできない。また、鉱物による固定コストも存在しないため、搭載できる兵装という点でも不利になる。" },
+
+                    { type: "heading", text: "脅威の駆逐艦", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Destructores amenazantes artilleros biologicos.png", alt: "生体式脅威の砲撃駆逐艦", caption: "生体式脅威の砲撃駆逐艦。" }],
+                            []
+                        ]
+                    },
+
+                    { type: "heading", text: "脅威の巡洋艦", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Cruceros amenazantes artilleros biologicos.png", alt: "生体式脅威の砲撃巡洋艦", caption: "生体式脅威の砲撃巡洋艦。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "機械のコスモジェネシス" },
+
+                    { type: "heading", text: "謎めいた護衛艦", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Escolta artillera.png", alt: "砲撃護衛艦", caption: "砲撃護衛艦。" }],
+                            [{ type: "image", src: "img/ambicion/Escolta torpedera de corto alcance con sigilo.png", alt: "短距離ステルス魚雷護衛艦", caption: "短距離ステルス魚雷護衛艦。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Escolta torpedera de largo alcance.png", alt: "長距離魚雷護衛艦", caption: "長距離魚雷護衛艦。" }],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "バトルクルーザー", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla artilleros a larga distancia.png", alt: "長距離砲撃バトルクルーザー", caption: "長距離砲撃バトルクルーザー。" },
+                                { type: "paragraph", text: "すべての兵器が長射程であるため、推奨される設計。" },
+                            ],
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a corta distancia.png", alt: "短距離魚雷バトルクルーザー", caption: "短距離魚雷バトルクルーザー。" },
+                                { type: "paragraph", text: "この設計はあまり推奨しない。アーク放射器以外のXスロット兵器はGスロット兵器を使用している間は使用できず、その逆も同様だからである。" },
+                            ]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [
+                                { type: "image", src: "img/ambicion/Cruceros de batalla torpederos a larga distancia.png", alt: "長距離魚雷バトルクルーザー", caption: "長距離魚雷バトルクルーザー。" },
+                                { type: "paragraph", text: "すべての兵器が長射程であるため、推奨される設計。" },
+                            ],
+                            []
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "逆説のタイタン", level: 2 },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Titan paradojico.png", alt: "逆説のタイタン", caption: "逆説のタイタン。" }],
+                            []
+                        ]
+                    },
+                    { type: "paragraph", text: "通常のタイタンと同様、主な役割はバッファー／デバッファーである。ただし、この艦は通常のタイタンよりもはるかに強力で、2基のTスロット兵器による一斉射撃だけで他のあらゆる艦船を撃破できる。" },
+                    { type: "divider" },
+
+                    { type: "heading", text: "生体式コスモジェネシス" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Macero cifrador de corto alcance.png", alt: "短距離暗号メイス", caption: "短距離暗号メイス。" }],
+                            [{ type: "image", src: "img/ambicion/Tejedores de dilema de apoyo de largo alcance.png", alt: "長距離ディレンマ・ウィーバー支援艦", caption: "長距離ディレンマ・ウィーバー支援艦。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Heraldos de laberinto con torpedos de largo alcance.png", alt: "長距離魚雷搭載ラビリンス・ヘラルド", caption: "長距離魚雷搭載ラビリンス・ヘラルド。" }],
+                            [{ type: "image", src: "img/ambicion/Aguijon criptico como titanes artilleros.png", alt: "砲撃タイタンとしてのクリプティック・スティンガー", caption: "砲撃タイタンとしてのクリプティック・スティンガー。" }]
+                        ]
+                    },
+                    { type: "divider" },
+
+                    { type: "heading", text: "ナノマシン艦" },
+
+                    { type: "heading", text: "ナノマシン・スウォーマー" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Enjambrador de naves de ataque.png", alt: "攻撃機スウォーマー", caption: "攻撃機スウォーマー。" }],
+                            [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de corta distancia con sigilo.png", alt: "短距離ステルス魚雷スウォーマー", caption: "短距離ステルス魚雷スウォーマー。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Enjambrador de torpedos de larga distancia.png", alt: "長距離魚雷スウォーマー", caption: "長距離魚雷スウォーマー。" }],
+                            []
+                        ]
+                    },
+
+                    { type: "heading", text: "ナノマシン・インターディクター" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Interdictor torpedero de largo alcance.png", alt: "長距離魚雷インターディクター", caption: "長距離魚雷インターディクター。" }],
+                            [{ type: "image", src: "img/ambicion/Interdictor torpedero de corto alcance con sigilo.png", alt: "短距離ステルス魚雷インターディクター", caption: "短距離ステルス魚雷インターディクター。" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/ambicion/Interdictor portahangares.png", alt: "格納庫インターディクター", caption: "格納庫インターディクター。" }],
+                            []
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "quote", text: "ミサイル・スウォームがナーフされてから、誰も私を採用してくれない。今は自分を再発明しようとしているところだ……", cite: "Xondar司令官、装甲とシールドの強化後", portrait: "img/citas/Xondar.png", portraitAlt: "Xondar司令官" }
+                ]
+            }
         }
     },
     {   // Preparando la simulación de combate
