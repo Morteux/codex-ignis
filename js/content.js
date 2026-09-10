@@ -100,7 +100,13 @@ export const knowledgeBase = [
                 ]
             },
             { type: "divider" },
-            { type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Destructor anti corbetas", caption: "Destructor anti corbetas." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Destructor anti corbetas.png", alt: "Destructor anti corbetas", caption: "Destructor anti corbetas." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Crucero" },
             {
@@ -111,45 +117,99 @@ export const knowledgeBase = [
                 ]
             },
             { type: "divider" },
-            { type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Crucero torpedero con misiles de largo alcance.png", alt: "Crucero torpedero con misiles de largo alcance", caption: "Crucero torpedero con misiles de largo alcance." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Acorazado" },
-            { type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Acorazado portahangares", caption: "Acorazado portahangares." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Acorazado artillero.png", alt: "Acorazado artillero", caption: "Acorazado artillero." }],
+                    [{ type: "image", src: "img/naves/Acorazado portahangares.png", alt: "Acorazado portahangares", caption: "Acorazado portahangares." }]
+                ]
+            },
 
             { type: "heading", text: "Titán" },
-            { type: "image", src: "img/naves/Titan artillero.png", alt: "Titán artillero", caption: "Titán artillero. Uno por cada tipo de aura ofensiva y defensiva." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Titan artillero.png", alt: "Titán artillero", caption: "Titán artillero. Uno por cada tipo de aura ofensiva y defensiva." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Gigante" },
-            { type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Gigante artillero de apoyo", caption: "Gigante artillero de apoyo." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Gigante artillero de apoyo.png", alt: "Gigante artillero de apoyo", caption: "Gigante artillero de apoyo." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Coloso" },
-            { type: "image", src: "img/naves/Coloso.png", alt: "Coloso", caption: "" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Coloso.png", alt: "Coloso", caption: "" }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Base estelar" },
-            { type: "image", src: "img/naves/Base estelar artillada.png", alt: "Base estelar artillada", caption: "Base estelar artillada." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Base estelar portahangares", caption: "Base estelar portahangares." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Base estelar artillada.png", alt: "Base estelar artillada", caption: "Base estelar artillada." }],
+                    [{ type: "image", src: "img/naves/Base estelar portahangares.png", alt: "Base estelar portahangares", caption: "Base estelar portahangares." }]
+                ]
+            },
 
             { type: "heading", text: "Plataforma de defensa" },
-            { type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Plataforma portahangar de largo alcance", caption: "Plataforma portahangar de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Plataforma torpedera de corto alcance", caption: "Plataforma torpedera de corto alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Plataforma portahangar de largo alcance.png", alt: "Plataforma portahangar de largo alcance", caption: "Plataforma portahangar de largo alcance." }],
+                    [{ type: "image", src: "img/naves/Plataforma torpedera de corto alcance.png", alt: "Plataforma torpedera de corto alcance", caption: "Plataforma torpedera de corto alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Plataforma artillada de corto alcance.png", alt: "Plataforma artillada de corto alcance", caption: "Plataforma artillada de corto alcance." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Cañón de iones" },
-            { type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Canon de iones equilibrado estandar.png", alt: "Cañón de iones equilibrado estándar", caption: "Cañón de iones equilibrado estándar." }],
+                    []
+                ]
+            },
 
             { type: "heading", text: "Ciudadela de espacio profundo" },
-            { type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." },
-            { type: "divider" },
-            { type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Ciudadela I de largo alcance.png", alt: "Ciudadela I de largo alcance", caption: "Ciudadela I de largo alcance." }],
+                    [{ type: "image", src: "img/naves/Ciudadela II de largo alcance.png", alt: "Ciudadela II de largo alcance", caption: "Ciudadela II de largo alcance." }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/naves/Ciudadela III de largo alcance.png", alt: "Ciudadela III de largo alcance", caption: "Ciudadela III de largo alcance." }],
+                    [{ type: "image", src: "img/naves/Ciudadela III de corto alcance.png", alt: "Ciudadela III de corto alcance", caption: "Ciudadela III de corto alcance." }]
+                ]
+            }
         ],
         i18n: {
             en: {
