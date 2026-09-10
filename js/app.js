@@ -50,11 +50,40 @@ function escapeRegExp(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// Mapa en minúsculas palabra → color, para poder buscar el color sin importar
-// las mayúsculas/minúsculas con las que se escribió la palabra en el artículo.
+/** Quita diacríticos sin tocar mayúsculas/minúsculas (para usar como clave de mapa/color). */
+function stripDiacritics(str) {
+  return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+// Mapa en minúsculas y sin tildes → color. Al quitar los acentos de la clave,
+// da igual que en highlight-config.js la palabra lleve tilde o no: "energia"
+// y "energía" acaban resolviendo al mismo color.
 const highlightWordsByLowerCase = new Map(
-  Object.entries(highlightWords).map(([word, color]) => [word.toLowerCase(), color])
+  Object.entries(highlightWords).map(([word, color]) => [stripDiacritics(word).toLowerCase(), color])
 );
+
+// Grupos de caracteres equivalentes con/sin tilde, usados para que el patrón
+// de búsqueda encuentre la palabra tanto si el artículo la escribe con tilde
+// como si no (independientemente de cómo esté escrita en highlight-config.js).
+const diacriticGroups = {
+  a: "aàáâãā",
+  e: "eèéêëē",
+  i: "iìíîïī",
+  o: "oòóôõöō",
+  u: "uùúûüū",
+  n: "nñ",
+  c: "cç"
+};
+
+/** Convierte una palabra en un patrón regex que acepta variantes con y sin tilde. */
+function toDiacriticInsensitivePattern(word) {
+  return [...word]
+    .map((ch) => {
+      const group = diacriticGroups[ch.toLowerCase()];
+      return group ? `[${group}]` : escapeRegExp(ch);
+    })
+    .join("");
+}
 
 // Un único patrón con todas las palabras de highlight-config.js, delimitado por
 // límites de palabra "manuales" (en vez de \b) para que funcione bien con
@@ -62,7 +91,7 @@ const highlightWordsByLowerCase = new Map(
 const highlightWordsPattern = highlightWordsByLowerCase.size
   ? new RegExp(
       `(?<![\\p{L}\\p{N}_])(${[...highlightWordsByLowerCase.keys()]
-        .map(escapeRegExp)
+        .map(toDiacriticInsensitivePattern)
         .join("|")})(?![\\p{L}\\p{N}_])`,
       "giu"
     )
@@ -72,7 +101,7 @@ const highlightWordsPattern = highlightWordsByLowerCase.size
 function applyWordHighlights(html) {
   if (!highlightWordsPattern) return html;
   return html.replace(highlightWordsPattern, (match) => {
-    const color = highlightWordsByLowerCase.get(match.toLowerCase());
+    const color = highlightWordsByLowerCase.get(stripDiacritics(match).toLowerCase());
     return `<span class="hl-word" style="color: ${color}">${match}</span>`;
   });
 }
