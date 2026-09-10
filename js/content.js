@@ -1387,6 +1387,357 @@ export const knowledgeBase = [
             }
         }
     },
+    {   // Sobre la mecánica de crecimiento en naves biológicas
+        slug: "mecanica-crecimiento-naves-biologicas",
+        title: "Sobre la mecánica de crecimiento en naves biológicas",
+        icon: "✦",
+        blocks: [
+            { type: "paragraph", text: "La mecánica de crecimiento de la naves biológicas nos permite obtener flotas completas a precios de risa, a cambio de esperar un poco de tiempo. Tiempo que podemos recortar a gusto utilizando potenciadores de la mecánica de crecimiento." },
+            { type: "paragraph", text: "Siempre queremos usar la función de crecimiento, pues el ahorro en el coste de recursos es innegable. Veamos el coste de Maceros y Heraldos a modo de ejemplo." },
+
+            { type: "divider" },
+            { type: "heading", text: "Comparación de costes entre distintas etapas de crecimiento", level: 1 },
+            { type: "paragraph", text: "Con los Maceros, vemos como un Joven Macero con y sin componente cuesta 500 de comida y 200 de aleaciones VS 200 de comida. No solo nos ahorramos la mitad de la comida, sino que sale gratuito en aleaciones. A cambio, no puede combatir durante estos primeros meses de crecimiento. Al final, un Joven Macero por 200 de comida se convertirá en un Anciano Macero de 900 de comida y 400 de aleaciones." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero completo.png", alt: "Joven Macero completo", caption: "Joven Macero completo" }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero vacio.png", alt: "Joven Macero vacío", caption: "Joven Macero vacío" }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/Maduro Macero completo.png", alt: "Maduro Macero completo", caption: "Maduro Macero completo" }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/Anciano Macero completo.png", alt: "Anciano Macero completo", caption: "Anciano Macero completo" }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "paragraph", text: "Con los Heraldos, tenemos una situación similar, pero aún más beneficiosa. Un Joven Heraldo por 900 de comida pasa a crecer en un Anciano Heraldo 6600 de comida y 2100 de aleaciones." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo completo.png", alt: "Joven Heraldo completo", caption: "Joven Heraldo completo" }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo vacio.png", alt: "Joven Heraldo vacío", caption: "Joven Heraldo vacío" }]
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/Maduro Heraldo completo.png", alt: "Maduro Heraldo completo", caption: "Maduro Heraldo completo" }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/Anciano Heraldo completo.png", alt: "Anciano Heraldo completo", caption: "Anciano Heraldo completo" }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "heading", text: "¿Cuánto debemos esperar para alcanzar la etapa de Anciano?", level: 1 },
+            { type: "paragraph", text: "Ahora bien, ¿merece la pena el tiempo de espera por este ahorro de recursos? La respuesta es: SÍ. Pero no solo merece la pena, sino que podemos acelerar el crecimiento de las naves para que sea aún más rápido obtener una flota de Heraldos Ancianos completa." },
+            { type: "paragraph", text: "Veamos un ejemplo de crecimiento con los Heraldos:" },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec joven heraldo.png", alt: "Crecimiento Joven Heraldo", caption: "Un Joven Heraldo tarda 29 meses en crecer a Maduro Heraldo por sí mismo." }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec maduro heraldo.png", alt: "Crecimiento Maduro Heraldo", caption: "Un Maduro Heraldo tarda 119 meses en crecer a Anciano Heraldo por sí mismo." }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "heading", text: "Con un base estelar", level: 2 },
+            { type: "paragraph", text: "Si incluimos una base estelar con el edificio Cámara de crecimiento y atracamos nuestras flotas, aumentaremos en +2 la velocidad de crecimiento mensual." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/camara de crecimiento.png", alt: "Cámara de Crecimiento", caption: "" }],
+                    []
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado joven heraldo.png", alt: "Crecimiento potenciado Joven Heraldo", caption: "Un Joven Heraldo tarda 14 meses en crecer a Maduro Heraldo con Cámara de crecimiento." }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado maduro heraldo.png", alt: "Crecimiento potenciado Maduro Heraldo", caption: "Un Maduro Heraldo tarda 39 meses en crecer a Anciano Heraldo con Cámara de crecimiento." }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "heading", text: "Con un Tejedor potenciador", level: 2 },
+            { type: "paragraph", text: "Si incluimos una tejedor en cada flota con el componente de Feromonas de desarrollo exóticas, aumentaremos en +2 la velocidad de crecimiento mensual. Sumado al +2 de la Cámara de crecimiento, obtenemos un total de +4." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/tejedores potencia crec.png", alt: "Tejedores potenciadores de crecimiento", caption: "" }],
+                    []
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 joven heraldo.png", alt: "Crecimiento potenciado 2 Joven Heraldo", caption: "Un Joven Heraldo tarda 9 meses en crecer a Maduro Heraldo con Cámara de crecimiento y Feromonas de desarrollo exóticas." }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 maduro heraldo.png", alt: "Crecimiento potenciado 2 Maduro Heraldo", caption: "Un Maduro Heraldo tarda 23 meses en crecer a Anciano Heraldo con Cámara de crecimiento y Feromonas de desarrollo exóticas." }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "heading", text: "Con un gigante con aura", level: 2 },
+            { type: "paragraph", text: "Por último, podemos incluso añadir un Gigante con su aura de Feromonas de desarrollo, sumaremos un +3, en lugar del +2 del Tejedor con componente de Feromonas de desarrollo exóticas." },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/aura gigante.png", alt: "Aura de Gigante de crecimiento", caption: "" }],
+                    []
+                ]
+            },
+            {
+                type: "columns",
+                columns: [
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 joven heraldo.png", alt: "Crecimiento potenciado 3 Joven Heraldo", caption: "Un Joven Heraldo tarda 8 meses en crecer a Maduro Heraldo con Cámara de crecimiento y Feromonas de desarrollo." }],
+                    [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 maduro heraldo.png", alt: "Crecimiento potenciado 3 Maduro Heraldo", caption: "Un Maduro Heraldo tarda 19 meses en crecer a Anciano Heraldo con Cámara de crecimiento y Feromonas de desarrollo." }]
+                ]
+            },
+
+            { type: "divider" },
+            { type: "heading", text: "Conclusión final", level: 1 },
+            { type: "paragraph", text: "Podemos obtener un Heraldo Anciano por el coste de un Heraldo Joven sin componentes (y, por tanto, sin coste de aleaciones), tan solo esperando 29 meses." },
+
+            { type: "divider" },
+            { type: "quote", text: "Agradecemos a Agus por patrocinar este espacio", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
+        ],
+        i18n: {
+            en: {
+
+                title: "About the Growth Mechanic for Biological Ships",
+                blocks: [
+                    { type: "paragraph", text: "The growth mechanic for biological ships allows us to obtain entire fleets at laughably low costs, in exchange for waiting a little while. This waiting time can be reduced as much as we want by using growth speed bonuses." },
+                    { type: "paragraph", text: "We always want to use the growth function, as the resource savings are undeniable. Let's take Maulers and Harbingers as an example to compare their costs." },
+
+                    { type: "divider" },
+                    { type: "heading", text: "Cost comparison between different growth stages", level: 1 },
+                    { type: "paragraph", text: "With Maulers, we can see that a complete Juvenile Mauler costs 500 Food and 200 Alloys, while a componentless Juvenile Mauler costs only 200 Food. Not only do we save half the Food, but we also get the ship for free in terms of Alloys. In exchange, it cannot engage in combat during these first few months of growth. Ultimately, a Juvenile Mauler costing 200 Food will grow into an Elder Mauler costing 900 Food and 400 Alloys." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero completo.png", alt: "Complete Juvenile Mauler", caption: "Complete Juvenile Mauler" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero vacio.png", alt: "Componentless Juvenile Mauler", caption: "Componentless Juvenile Mauler" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Maduro Macero completo.png", alt: "Complete Mature Mauler", caption: "Complete Mature Mauler" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Anciano Macero completo.png", alt: "Complete Elder Mauler", caption: "Complete Elder Mauler" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "paragraph", text: "With Harbingers, we have a similar situation, but it is even more beneficial. A Juvenile Harbinger costing 900 Food will eventually grow into an Elder Harbinger costing 6600 Food and 2100 Alloys." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo completo.png", alt: "Complete Juvenile Harbinger", caption: "Complete Juvenile Harbinger" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo vacio.png", alt: "Componentless Juvenile Harbinger", caption: "Componentless Juvenile Harbinger" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Maduro Heraldo completo.png", alt: "Complete Mature Harbinger", caption: "Complete Mature Harbinger" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Anciano Heraldo completo.png", alt: "Complete Elder Harbinger", caption: "Complete Elder Harbinger" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "How long do we have to wait to reach the Elder stage?", level: 1 },
+                    { type: "paragraph", text: "Now, is the waiting time worth the resource savings? The answer is: YES. Not only is it worth it, but we can also accelerate the growth of our ships to obtain a complete fleet of Elder Harbingers even faster." },
+                    { type: "paragraph", text: "Let's look at an example of Harbinger growth:" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec joven heraldo.png", alt: "Juvenile Harbinger Growth", caption: "A Juvenile Harbinger takes 29 months to grow into a Mature Harbinger on its own." }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec maduro heraldo.png", alt: "Mature Harbinger Growth", caption: "A Mature Harbinger takes 119 months to grow into an Elder Harbinger on its own." }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "With a Starbase", level: 2 },
+                    { type: "paragraph", text: "If we include a Starbase with the Growth Chamber building and dock our fleets there, we will increase monthly growth speed by +2." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/camara de crecimiento.png", alt: "Growth Chamber", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado joven heraldo.png", alt: "Enhanced Juvenile Harbinger Growth", caption: "A Juvenile Harbinger takes 14 months to grow into a Mature Harbinger with a Growth Chamber." }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado maduro heraldo.png", alt: "Enhanced Mature Harbinger Growth", caption: "A Mature Harbinger takes 39 months to grow into an Elder Harbinger with a Growth Chamber." }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "With a Weaver", level: 2 },
+                    { type: "paragraph", text: "If we include a Weaver in each fleet with the Exotic Development Pheromones component, we will increase monthly growth speed by +2. Combined with the +2 from the Growth Chamber, this gives us a total of +4." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/tejedores potencia crec.png", alt: "Weavers boosting growth", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 joven heraldo.png", alt: "Enhanced Juvenile Harbinger Growth 2", caption: "A Juvenile Harbinger takes 9 months to grow into a Mature Harbinger with a Growth Chamber and Exotic Development Pheromones." }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 maduro heraldo.png", alt: "Enhanced Mature Harbinger Growth 2", caption: "A Mature Harbinger takes 23 months to grow into an Elder Harbinger with a Growth Chamber and Exotic Development Pheromones." }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "With a Giant with an Aura", level: 2 },
+                    { type: "paragraph", text: "Finally, we can even add a Giant with its Development Pheromones aura, giving us +3 instead of the +2 provided by a Weaver with the Exotic Development Pheromones component." },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/aura gigante.png", alt: "Giant Growth Aura", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 joven heraldo.png", alt: "Enhanced Juvenile Harbinger Growth 3", caption: "A Juvenile Harbinger takes 8 months to grow into a Mature Harbinger with a Growth Chamber and Development Pheromones." }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 maduro heraldo.png", alt: "Enhanced Mature Harbinger Growth 3", caption: "A Mature Harbinger takes 19 months to grow into an Elder Harbinger with a Growth Chamber and Development Pheromones." }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "Final Conclusion", level: 1 },
+                    { type: "paragraph", text: "We can obtain an Elder Harbinger for the cost of a componentless Juvenile Harbinger (and therefore with no Alloy cost) simply by waiting 29 months." },
+
+                    { type: "divider" },
+                    { type: "quote", text: "We would like to thank Agus for sponsoring this space", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
+                ]
+            },
+            jp: {
+
+                title: "生体艦の成長システムについて",
+                blocks: [
+                    { type: "paragraph", text: "生体艦の成長システムを利用することで、少しの時間を待つだけで、非常に低いコストで艦隊を揃えることができます。この待ち時間は、成長速度を上昇させる効果を利用することで、さらに短縮できます。" },
+                    { type: "paragraph", text: "資源コストを大幅に節約できるため、基本的には常に成長機能を利用したいところです。ここでは、モーラーとハービンジャーを例に、そのコストを比較してみましょう。" },
+
+                    { type: "divider" },
+                    { type: "heading", text: "成長段階ごとのコスト比較", level: 1 },
+                    { type: "paragraph", text: "モーラーを見てみると、コンポーネントを搭載した幼生モーラーは食料500と合金200を必要とするのに対し、コンポーネントなしの幼生モーラーは食料200しか必要としません。食料を半分に節約できるだけでなく、合金については完全に無料で艦を手に入れられます。その代わり、成長初期の数か月間は戦闘に参加できません。最終的には、食料200で作成した幼生モーラーが、食料900と合金400を必要とする老成モーラーへと成長します。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero completo.png", alt: "コンポーネント搭載の幼生モーラー", caption: "コンポーネント搭載の幼生モーラー" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Macero vacio.png", alt: "コンポーネントなしの幼生モーラー", caption: "コンポーネントなしの幼生モーラー" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Maduro Macero completo.png", alt: "コンポーネント搭載の成熟モーラー", caption: "コンポーネント搭載の成熟モーラー" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Anciano Macero completo.png", alt: "コンポーネント搭載の老成モーラー", caption: "コンポーネント搭載の老成モーラー" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "paragraph", text: "ハービンジャーも同様の状況ですが、さらにお得です。食料900を必要とする幼生ハービンジャーは、最終的に食料6600と合金2100を必要とする老成ハービンジャーへと成長します。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo completo.png", alt: "コンポーネント搭載の幼生ハービンジャー", caption: "コンポーネント搭載の幼生ハービンジャー" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Joven Heraldo vacio.png", alt: "コンポーネントなしの幼生ハービンジャー", caption: "コンポーネントなしの幼生ハービンジャー" }]
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/Maduro Heraldo completo.png", alt: "コンポーネント搭載の成熟ハービンジャー", caption: "コンポーネント搭載の成熟ハービンジャー" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/Anciano Heraldo completo.png", alt: "コンポーネント搭載の老成ハービンジャー", caption: "コンポーネント搭載の老成ハービンジャー" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "老成段階に到達するまでどれくらい待つ必要があるのか？", level: 1 },
+                    { type: "paragraph", text: "では、この資源節約のために待つ価値はあるのでしょうか？答えは「YES」です。しかも、待つ価値があるだけではありません。艦船の成長速度を上昇させることで、老成ハービンジャーの艦隊をさらに早く揃えることができます。" },
+                    { type: "paragraph", text: "ハービンジャーの成長を例に見てみましょう。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec joven heraldo.png", alt: "幼生ハービンジャーの成長", caption: "幼生ハービンジャーは、自力で成熟ハービンジャーへ成長するまで29か月かかります。" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec maduro heraldo.png", alt: "成熟ハービンジャーの成長", caption: "成熟ハービンジャーは、自力で老成ハービンジャーへ成長するまで119か月かかります。" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "星系基地がある場合", level: 2 },
+                    { type: "paragraph", text: "成長室の建造物を設置した星系基地を用意し、そこに艦隊を停泊させることで、毎月の成長速度を+2上昇させることができます。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/camara de crecimiento.png", alt: "成長室", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado joven heraldo.png", alt: "強化された幼生ハービンジャーの成長", caption: "成長室がある場合、幼生ハービンジャーは成熟ハービンジャーへ成長するまで14か月かかります。" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado maduro heraldo.png", alt: "強化された成熟ハービンジャーの成長", caption: "成長室がある場合、成熟ハービンジャーは老成ハービンジャーへ成長するまで39か月かかります。" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "ウィーバーがいる場合", level: 2 },
+                    { type: "paragraph", text: "各艦隊に、異質な発育フェロモンのコンポーネントを搭載したウィーバーを1隻含めることで、毎月の成長速度を+2上昇させることができます。成長室による+2と合わせることで、合計+4となります。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/tejedores potencia crec.png", alt: "成長を強化するウィーバー", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 joven heraldo.png", alt: "さらに強化された幼生ハービンジャーの成長", caption: "成長室と異質な発育フェロモンがある場合、幼生ハービンジャーは成熟ハービンジャーへ成長するまで9か月かかります。" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 2 maduro heraldo.png", alt: "さらに強化された成熟ハービンジャーの成長", caption: "成長室と異質な発育フェロモンがある場合、成熟ハービンジャーは老成ハービンジャーへ成長するまで23か月かかります。" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "オーラを持つジャイアントがいる場合", level: 2 },
+                    { type: "paragraph", text: "最後に、発育フェロモンのオーラを持つジャイアントを追加することもできます。これにより、異質な発育フェロモンのコンポーネントを搭載したウィーバーによる+2の代わりに、+3を得ることができます。" },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/aura gigante.png", alt: "ジャイアントの成長オーラ", caption: "" }],
+                            []
+                        ]
+                    },
+                    {
+                        type: "columns",
+                        columns: [
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 joven heraldo.png", alt: "さらに強化された幼生ハービンジャーの成長3", caption: "成長室と発育フェロモンがある場合、幼生ハービンジャーは成熟ハービンジャーへ成長するまで8か月かかります。" }],
+                            [{ type: "image", src: "img/mecanica_crecimiento/crec potenciado 3 maduro heraldo.png", alt: "さらに強化された成熟ハービンジャーの成長3", caption: "成長室と発育フェロモンがある場合、成熟ハービンジャーは老成ハービンジャーへ成長するまで19か月かかります。" }]
+                        ]
+                    },
+
+                    { type: "divider" },
+                    { type: "heading", text: "最終結論", level: 1 },
+                    { type: "paragraph", text: "コンポーネントなしの幼生ハービンジャー（つまり合金コストなし）のコストだけで、わずか29か月待つことにより、老成ハービンジャーを手に入れることができます。" },
+
+                    { type: "divider" },
+                    { type: "quote", text: "このスペースを提供してくれたAgusに感謝します", cite: "Ignis", portrait: "img/citas/Ignis Stellaris sin fondo.png", portraitAlt: "Ignis" }
+                ]
+            }
+        }
+    },
     {   // Sobre los titanes y sus auras
         slug: "titanes-aura",
         title: "Sobre los titanes y sus auras",
