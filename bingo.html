@@ -4,35 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Bingo de orígenes de Stellaris." data-i18n-attr="content:bingoMetaDescription" />
-    <title data-i18n="bingoPageTitle">Bingo de orígenes · Codex Ignis</title>
+    <title data-i18n="bingoPageTitle">Bingo · Codex Ignis</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="img/Ignis Stellaris icon.png" />
   </head>
   <body>
-    <main class="legal-page bingo-page">
-      <header>
-        <div class="legal-topbar">
-          <div class="topbar-left">
-            <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
-            <nav class="primary-nav" aria-label="Proyectos del archivo">
-              <a href="bingo.html" aria-current="page">Bingo</a>
-              <a href="planet-sim.html">Planet Sim</a>
-            </nav>
-          </div>
-          <div class="lang-switch" role="group" aria-label="Selector de idioma">
-            <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
-            <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-            <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false">JP</button>
-          </div>
+    <main class="terminal-shell">
+      <header class="topbar" aria-label="Cabecera del archivo">
+        <div class="topbar-left">
+          <a class="brand" href="./" aria-label="Codex Ignis: inicio"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
+          <nav class="primary-nav" aria-label="Proyectos del archivo">
+            <a href="bingo.html" aria-current="page">Bingo</a>
+            <a href="planet-sim.html">Planet_Sim</a>
+          </nav>
         </div>
-        <p class="eyebrow" data-i18n="extraDocLabel">Extra</p>
-        <h1 data-i18n="bingoHeading">Bingo de orígenes</h1>
-        <p class="bingo-subtitle">Versión: Pegasus v4.4.4</p>
-        <p class="bingo-instructions" data-i18n="bingoInstructions">Haz clic en una casilla para marcarla como conseguida.</p>
-        <div class="bingo-actions">
-          <button type="button" id="bingo-download" class="bingo-download-btn" data-i18n="bingoDownloadButton">Descargar como imagen</button>
+        <div class="lang-switch" role="group" aria-label="Selector de idioma">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+          <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false">JP</button>
         </div>
       </header>
+
+      <section class="terminal-intro">
+        <h1 data-i18n="bingoHeading">Bingo</h1>
+        <div class="intro-row">
+          <p class="intro-copy" data-i18n="bingoInstructions">Haz clic en una casilla para marcarla como conseguida.</p>
+          <button type="button" id="bingo-download" class="bingo-download-btn" data-i18n="bingoDownloadButton">Descargar como imagen</button>
+        </div>
+      </section>
 
       <section class="bingo-grid" aria-label="Casillas del bingo de orígenes">
           <button type="button" class="bingo-card" aria-pressed="false">

@@ -88,10 +88,10 @@ async function buildBingoCanvas() {
     ctx.textBaseline = "top";
     ctx.fillStyle = text;
     ctx.font = "700 24px monospace";
-    ctx.fillText("BINGO DE ORÍGENES", outerPadding, outerPadding);
+    ctx.fillText("BINGO", outerPadding, outerPadding);
     ctx.fillStyle = muted;
     ctx.font = "12px monospace";
-    ctx.fillText("Versión: Pegasus v4.4.4 · Codex Ignis", outerPadding, outerPadding + 32);
+    ctx.fillText("Codex Ignis", outerPadding, outerPadding + 32);
 
     cards.forEach((card, index) => {
         const col = index % cols;

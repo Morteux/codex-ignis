@@ -84,20 +84,17 @@ const strings = {
         notFoundText: "La coordenada solicitada no existe en este codex.",
         notFoundBackLink: "Volver al inicio",
 
-        // Común a páginas "extra" (bingo.html, etc.)
-        extraDocLabel: "Extra",
-
         // bingo.html
-        bingoPageTitle: "Bingo de orígenes · Codex Ignis",
+        bingoPageTitle: "Bingo · Codex Ignis",
         bingoMetaDescription: "Bingo de orígenes de Stellaris.",
-        bingoHeading: "Bingo de orígenes",
+        bingoHeading: "Bingo",
         bingoInstructions: "Haz clic en una casilla para marcarla como conseguida.",
         bingoDownloadButton: "Descargar como imagen",
 
         // planet-sim.html
-        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimPageTitle: "Planet_Sim · Codex Ignis",
         planetSimMetaDescription: "Simulador de plantillas planetarias de Stellaris (próximamente).",
-        planetSimHeading: "Planet Sim",
+        planetSimHeading: "Simulador de Planetas",
         planetSimComingSoonText: "Este proyecto (el Simulador de Plantillas Planetarias de Stellaris) todavía no existe. Vuelve más adelante para probarlo."
     },
     en: {
@@ -173,20 +170,17 @@ const strings = {
         notFoundText: "The requested coordinate does not exist in this codex.",
         notFoundBackLink: "Back to home",
 
-        // Shared by "extra" pages (bingo.html, etc.)
-        extraDocLabel: "Extra",
-
         // bingo.html
-        bingoPageTitle: "Origins bingo · Codex Ignis",
+        bingoPageTitle: "Bingo · Codex Ignis",
         bingoMetaDescription: "Stellaris origins bingo.",
-        bingoHeading: "Origins bingo",
+        bingoHeading: "Bingo",
         bingoInstructions: "Click a tile to mark it as obtained.",
         bingoDownloadButton: "Download as image",
 
         // planet-sim.html
-        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimPageTitle: "Planet_Sim · Codex Ignis",
         planetSimMetaDescription: "Stellaris planet template simulator (coming soon).",
-        planetSimHeading: "Planet Sim",
+        planetSimHeading: "Planet Simulator",
         planetSimComingSoonText: "This project (the Stellaris Planet Template Simulator) does not exist yet. Check back later to try it out."
     },
     jp: {
@@ -262,20 +256,17 @@ const strings = {
         notFoundText: "指定された座標はこのコデックスに存在しません。",
         notFoundBackLink: "ホームに戻る",
 
-        // 「Extra」ページ共通（bingo.htmlなど）
-        extraDocLabel: "エクストラ",
-
         // bingo.html
-        bingoPageTitle: "起源ビンゴ · Codex Ignis",
+        bingoPageTitle: "Bingo · Codex Ignis",
         bingoMetaDescription: "Stellarisの起源ビンゴ。",
-        bingoHeading: "起源ビンゴ",
+        bingoHeading: "Bingo",
         bingoInstructions: "マス目をクリックすると、達成済みとしてマークされます。",
         bingoDownloadButton: "画像としてダウンロード",
 
         // planet-sim.html
-        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimPageTitle: "Planet_Sim · Codex Ignis",
         planetSimMetaDescription: "Stellarisの惑星テンプレートシミュレーター（近日公開）。",
-        planetSimHeading: "Planet Sim",
+        planetSimHeading: "惑星シミュレーター",
         planetSimComingSoonText: "このプロジェクト（Stellaris惑星テンプレートシミュレーター）はまだ存在しません。後日改めてお試しください。"
     },
 };
