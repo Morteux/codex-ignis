@@ -694,4 +694,80 @@ h1 {
         width: 2.6rem;
         height: 2.6rem;
     }
+
+    .bingo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    }
+}
+
+/* ── Bingo de orígenes (bingo.html) ──────────────────────────────────── */
+
+.bingo-page {
+    max-width: none;
+    width: min(1180px, calc(100% - 2rem));
+}
+
+.bingo-subtitle {
+    margin: .75rem 0 0;
+    color: var(--muted);
+    font: .78rem var(--mono);
+}
+
+.bingo-instructions {
+    margin: .35rem 0 0;
+    color: var(--muted);
+    font-size: .85rem;
+}
+
+.bingo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: .6rem;
+    padding: 2.2rem 0;
+}
+
+.bingo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .45rem;
+    padding: .5rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+}
+
+.bingo-card:hover {
+    border-color: var(--accent-dim);
+}
+
+.bingo-card img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    transition: filter .15s ease, opacity .15s ease;
+}
+
+.bingo-card-title {
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.35;
+}
+
+.bingo-card.is-marked {
+    border-color: var(--accent);
+    background: rgba(167, 245, 106, .08);
+}
+
+.bingo-card.is-marked img {
+    filter: grayscale(100%);
+    opacity: .55;
+}
+
+.bingo-card.is-marked .bingo-card-title {
+    color: var(--accent);
 }

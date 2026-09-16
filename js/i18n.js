@@ -82,7 +82,17 @@ const strings = {
         notFoundPageTitle: "Registro no encontrado · Codex Ignis",
         notFoundHeading: "Registro no encontrado.",
         notFoundText: "La coordenada solicitada no existe en este codex.",
-        notFoundBackLink: "Volver al inicio"
+        notFoundBackLink: "Volver al inicio",
+
+        // Común a páginas "extra" (bingo.html, etc.)
+        extraDocLabel: "Extra",
+
+        // bingo.html
+        bingoPageTitle: "Bingo de orígenes · Codex Ignis",
+        bingoMetaDescription: "Bingo de orígenes de Stellaris.",
+        bingoHeading: "Bingo de orígenes",
+        bingoInstructions: "Haz clic en una casilla para marcarla como conseguida.",
+        bingoLink: "Bingo de orígenes"
     },
     en: {
         skipLink: "Skip to the archive",
@@ -155,7 +165,17 @@ const strings = {
         notFoundPageTitle: "Record not found · Codex Ignis",
         notFoundHeading: "Record not found.",
         notFoundText: "The requested coordinate does not exist in this codex.",
-        notFoundBackLink: "Back to home"
+        notFoundBackLink: "Back to home",
+
+        // Shared by "extra" pages (bingo.html, etc.)
+        extraDocLabel: "Extra",
+
+        // bingo.html
+        bingoPageTitle: "Origins bingo · Codex Ignis",
+        bingoMetaDescription: "Stellaris origins bingo.",
+        bingoHeading: "Origins bingo",
+        bingoInstructions: "Click a tile to mark it as obtained.",
+        bingoLink: "Origins bingo"
     },
     jp: {
         skipLink: "アーカイブへスキップ",
@@ -228,7 +248,17 @@ const strings = {
         notFoundPageTitle: "記録が見つかりません · Codex Ignis",
         notFoundHeading: "記録が見つかりません。",
         notFoundText: "指定された座標はこのコデックスに存在しません。",
-        notFoundBackLink: "ホームに戻る"
+        notFoundBackLink: "ホームに戻る",
+
+        // 「Extra」ページ共通（bingo.htmlなど）
+        extraDocLabel: "エクストラ",
+
+        // bingo.html
+        bingoPageTitle: "起源ビンゴ · Codex Ignis",
+        bingoMetaDescription: "Stellarisの起源ビンゴ。",
+        bingoHeading: "起源ビンゴ",
+        bingoInstructions: "マス目をクリックすると、達成済みとしてマークされます。",
+        bingoLink: "起源ビンゴ"
     },
 };
 
