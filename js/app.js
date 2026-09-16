@@ -16,7 +16,6 @@ const introCopy = document.querySelector("#intro-copy");
 const indexHeading = document.querySelector("#index-heading");
 const searchLabel = document.querySelector("#search-label");
 const footerText = document.querySelector("#footer-text");
-const bingoLink = document.querySelector("#bingo-link");
 const privacyLink = document.querySelector("#privacy-link");
 const cookiesLink = document.querySelector("#cookies-link");
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -455,7 +454,6 @@ function applyStaticStrings() {
   if (searchLabel) searchLabel.textContent = t(currentLang, "searchLabel");
   if (searchInput) searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));
   if (footerText) footerText.textContent = t(currentLang, "footerText");
-  if (bingoLink) bingoLink.textContent = t(currentLang, "bingoLink");
   if (privacyLink) privacyLink.textContent = t(currentLang, "privacyLink");
   if (cookiesLink) cookiesLink.textContent = t(currentLang, "cookiesLink");
   langButtons.forEach((btn) => {

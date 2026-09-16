@@ -76,12 +76,19 @@ a {
     border-bottom: 1px solid var(--line);
 }
 
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+}
+
 .brand,
 .connection,
 .prompt,
 .panel-heading,
 .reader-meta,
-.footer {
+.footer,
+.primary-nav {
     font-family: var(--mono);
     letter-spacing: .06em;
 }
@@ -99,6 +106,28 @@ a {
 .brand-mark {
     color: var(--accent);
     font-size: 1.2rem;
+}
+
+.primary-nav {
+    display: flex;
+    gap: 1.1rem;
+}
+
+.primary-nav a {
+    color: var(--muted);
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.primary-nav a:hover {
+    color: var(--accent);
+}
+
+.primary-nav a[aria-current="page"] {
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
 }
 
 .topbar-status {
@@ -660,6 +689,11 @@ h1 {
         flex-wrap: wrap;
         gap: .5rem;
         row-gap: .5rem;
+    }
+
+    .topbar-left {
+        flex-wrap: wrap;
+        row-gap: .4rem;
     }
 
     .workspace {

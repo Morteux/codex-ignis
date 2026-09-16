@@ -93,7 +93,12 @@ const strings = {
         bingoHeading: "Bingo de orígenes",
         bingoInstructions: "Haz clic en una casilla para marcarla como conseguida.",
         bingoDownloadButton: "Descargar como imagen",
-        bingoLink: "Bingo de orígenes"
+
+        // planet-sim.html
+        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimMetaDescription: "Simulador de plantillas planetarias de Stellaris (próximamente).",
+        planetSimHeading: "Planet Sim",
+        planetSimComingSoonText: "Este proyecto (el Simulador de Plantillas Planetarias de Stellaris) todavía no existe. Vuelve más adelante para probarlo."
     },
     en: {
         skipLink: "Skip to the archive",
@@ -177,7 +182,12 @@ const strings = {
         bingoHeading: "Origins bingo",
         bingoInstructions: "Click a tile to mark it as obtained.",
         bingoDownloadButton: "Download as image",
-        bingoLink: "Origins bingo"
+
+        // planet-sim.html
+        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimMetaDescription: "Stellaris planet template simulator (coming soon).",
+        planetSimHeading: "Planet Sim",
+        planetSimComingSoonText: "This project (the Stellaris Planet Template Simulator) does not exist yet. Check back later to try it out."
     },
     jp: {
         skipLink: "アーカイブへスキップ",
@@ -261,7 +271,12 @@ const strings = {
         bingoHeading: "起源ビンゴ",
         bingoInstructions: "マス目をクリックすると、達成済みとしてマークされます。",
         bingoDownloadButton: "画像としてダウンロード",
-        bingoLink: "起源ビンゴ"
+
+        // planet-sim.html
+        planetSimPageTitle: "Planet Sim · Codex Ignis",
+        planetSimMetaDescription: "Stellarisの惑星テンプレートシミュレーター（近日公開）。",
+        planetSimHeading: "Planet Sim",
+        planetSimComingSoonText: "このプロジェクト（Stellaris惑星テンプレートシミュレーター）はまだ存在しません。後日改めてお試しください。"
     },
 };
 
