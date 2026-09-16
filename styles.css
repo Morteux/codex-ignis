@@ -719,6 +719,31 @@ h1 {
     font-size: .85rem;
 }
 
+.bingo-actions {
+    margin-top: 1.1rem;
+}
+
+.bingo-download-btn {
+    padding: .55rem 1rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .74rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.bingo-download-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.bingo-download-btn:disabled {
+    opacity: .6;
+    cursor: progress;
+}
+
 .bingo-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -749,7 +774,8 @@ h1 {
     aspect-ratio: 1 / 1;
     object-fit: cover;
     border: 1px solid var(--line-soft);
-    transition: filter .15s ease, opacity .15s ease;
+    filter: grayscale(100%);
+    transition: filter .15s ease;
 }
 
 .bingo-card-title {
@@ -764,8 +790,7 @@ h1 {
 }
 
 .bingo-card.is-marked img {
-    filter: grayscale(100%);
-    opacity: .55;
+    filter: none;
 }
 
 .bingo-card.is-marked .bingo-card-title {

@@ -92,6 +92,7 @@ const strings = {
         bingoMetaDescription: "Bingo de orígenes de Stellaris.",
         bingoHeading: "Bingo de orígenes",
         bingoInstructions: "Haz clic en una casilla para marcarla como conseguida.",
+        bingoDownloadButton: "Descargar como imagen",
         bingoLink: "Bingo de orígenes"
     },
     en: {
@@ -175,6 +176,7 @@ const strings = {
         bingoMetaDescription: "Stellaris origins bingo.",
         bingoHeading: "Origins bingo",
         bingoInstructions: "Click a tile to mark it as obtained.",
+        bingoDownloadButton: "Download as image",
         bingoLink: "Origins bingo"
     },
     jp: {
@@ -258,6 +260,7 @@ const strings = {
         bingoMetaDescription: "Stellarisの起源ビンゴ。",
         bingoHeading: "起源ビンゴ",
         bingoInstructions: "マス目をクリックすると、達成済みとしてマークされます。",
+        bingoDownloadButton: "画像としてダウンロード",
         bingoLink: "起源ビンゴ"
     },
 };
