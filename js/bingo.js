@@ -58,7 +58,14 @@ function applyTranslations() {
     });
 }
 
-/** Construye una casilla de bingo (botón con imagen + título) para una entrada de datos. */
+/**
+ * Construye una casilla de bingo (botón con imagen) para una entrada de
+ * datos. El nombre no se muestra como texto visible: solo aparece como
+ * tooltip nativo al pasar el ratón por encima (atributo "title"), y como
+ * "aria-label" para que siga siendo accesible con lector de pantalla. El
+ * texto sigue existiendo (oculto) dentro de ".bingo-card-title" porque
+ * buildBingoCanvas() lo usa para escribirlo en la imagen descargada.
+ */
 function buildCard(entry, index) {
     const card = document.createElement("button");
     card.type = "button";
@@ -68,6 +75,10 @@ function buildCard(entry, index) {
     card.classList.toggle("is-marked", isMarked);
     card.setAttribute("aria-pressed", String(isMarked));
 
+    const name = t(currentLang, entry.i18nKey);
+    card.title = name;
+    card.setAttribute("aria-label", name);
+
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${entry.img}`;
     img.alt = "";
@@ -75,7 +86,7 @@ function buildCard(entry, index) {
 
     const title = document.createElement("span");
     title.className = "bingo-card-title";
-    title.textContent = t(currentLang, entry.i18nKey);
+    title.textContent = name;
 
     card.append(img, title);
 
@@ -154,6 +165,12 @@ async function buildBingoCanvas() {
     const cellHeight = cellImage + cellPadding + titleLines * lineHeight + cellPadding;
     const headerHeight = 78;
     const outerPadding = 24;
+    // Factor de sobremuestreo: el canvas se dibuja internamente al doble de
+    // resolución (todas las coordenadas de abajo siguen en píxeles "lógicos"
+    // gracias a ctx.scale) y luego se exporta tal cual. El resultado es un
+    // PNG más nítido -texto, bordes e iconos ampliados sin verse pixelados-
+    // sin tener que tocar ningún otro número de este archivo.
+    const SCALE = 2;
 
     const background = readThemeColor("--background", "#07110c");
     const surface = readThemeColor("--surface", "#0c1911");
@@ -165,9 +182,12 @@ async function buildBingoCanvas() {
     await Promise.all(Array.from(cards).map((card) => waitForImage(card.querySelector("img"))));
 
     const canvas = document.createElement("canvas");
-    canvas.width = outerPadding * 2 + cols * cellWidth;
-    canvas.height = outerPadding * 2 + headerHeight + rows * cellHeight;
+    canvas.width = (outerPadding * 2 + cols * cellWidth) * SCALE;
+    canvas.height = (outerPadding * 2 + headerHeight + rows * cellHeight) * SCALE;
     const ctx = canvas.getContext("2d");
+    ctx.scale(SCALE, SCALE);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
 
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);

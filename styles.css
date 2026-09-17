@@ -844,7 +844,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: .45rem;
     padding: .5rem;
     border: 1px solid var(--line);
     color: var(--text);
@@ -867,10 +866,21 @@ h1 {
     transition: filter .15s ease;
 }
 
+/* El nombre no se muestra como texto: solo aparece en el tooltip nativo
+   (atributo "title" del botón, ver js/bingo.js) al pasar el ratón por
+   encima. Este span se mantiene oculto visualmente -en vez de eliminarse-
+   para que buildBingoCanvas() pueda seguir leyendo el texto y escribirlo
+   en la imagen descargada, y para que los lectores de pantalla lo anuncien. */
 .bingo-card-title {
-    color: var(--muted);
-    font-size: .68rem;
-    line-height: 1.35;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 .bingo-card.is-marked {
@@ -880,8 +890,4 @@ h1 {
 
 .bingo-card.is-marked img {
     filter: none;
-}
-
-.bingo-card.is-marked .bingo-card-title {
-    color: var(--accent);
 }

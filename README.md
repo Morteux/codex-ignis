@@ -12,11 +12,15 @@ Las futuras entradas se definen en `js/content.js`. La interfaz está preparada 
 
 ## Bingo (orígenes y principios)
 
-Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adicional del sitio, enlazado desde el pie de página del índice. Un desplegable permite elegir entre el bingo de **orígenes** y el de **principios**; los datos de cada uno viven en `js/bingo-data.js` (arrays `ORIGIN_BINGO` y `PRINCIPLE_BINGO`), separados del HTML. Las casillas usan las imágenes referenciadas ahí (por defecto en `img/bingo/`) y se marcan/desmarcan al pulsarlas (el marcado se conserva solo durante la visita, no entre recargas). Los nombres están traducidos a ES/EN/JP vía `js/i18n.js`. El botón de descarga genera una imagen PNG del bingo actualmente visible (orígenes o principios) con el estado de marcado.
+Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adicional del sitio, enlazado desde el pie de página del índice. Un desplegable permite elegir entre el bingo de **orígenes** y el de **principios**; los datos de cada uno viven en `js/bingo-data.js` (arrays `ORIGIN_BINGO` y `PRINCIPLE_BINGO`, este último con las 226 civics de `img/civics/`), separados del HTML. Cada casilla se ve en blanco y negro por defecto y pasa a color al pulsarla, marcándola como conseguida (el marcado se conserva solo durante la visita, no entre recargas). El nombre de cada casilla no se muestra como texto: aparece como tooltip nativo al pasar el ratón por encima, y está traducido a ES/EN/JP vía `js/i18n.js` (claves `originXxx` / `principleXxx`). El botón de descarga genera una imagen PNG en alta resolución del bingo actualmente visible (orígenes o principios) con el estado de marcado.
 
-**Pendiente:** `PRINCIPLE_BINGO` está vacío — hay que añadir una entrada por principio (imagen + clave i18n) siguiendo las instrucciones del propio archivo `js/bingo-data.js`, más sus traducciones en `js/i18n.js`.
+**Nota sobre las traducciones de `principleXxx`:** se generaron automáticamente a partir del nombre de archivo de cada civic (incluyendo las variantes corporativas/mente colmena/máquina). Si alguna no coincide exactamente con el texto oficial del juego, ajústala directamente en `js/i18n.js`; no hace falta tocar `js/bingo-data.js`.
 
-Si en el futuro las imágenes se sirven desde otro dominio o repositorio (por ejemplo, para no acercarse a límites de tamaño de despliegue como el de Vercel), basta con cambiar la constante `IMAGE_BASE` en `js/bingo-data.js`.
+## Imágenes de Stellaris y futura migración a un repo de assets
+
+Todas las rutas de imagen de Stellaris (naves, orígenes, principios, fauna, citas...) pasan por `js/asset-config.js`, tanto las del codex (`js/app.js`) como las del bingo (`js/bingo-data.js`, que reexporta `ASSET_BASE` como `IMAGE_BASE`). Mientras las imágenes vivan en `img/` de este mismo repositorio, `ASSET_BASE` se deja vacío. Cuando muevas las imágenes a un repositorio de solo assets (por ejemplo, servido con GitHub Pages o vía jsDelivr), cambia únicamente esa constante por la URL base del nuevo origen — no hay que tocar `content.js`, `bingo-data.js` ni el resto del sitio.
+
+Esto es independiente de dónde se despliegue el propio sitio (GitHub Pages o, más adelante, Vercel): incluye un `vercel.json` mínimo por si en algún momento se despliega ahí directamente.
 
 ## Google AdSense
 

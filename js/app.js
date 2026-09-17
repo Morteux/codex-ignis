@@ -2,6 +2,7 @@ import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { highlightWords } from "./highlight-config.js";
+import { resolveAssetUrl } from "./asset-config.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
@@ -128,7 +129,7 @@ function highlightMatches(html, rawQuery) {
 /** Abre la imagen en grande, centrada y a su resolución original (limitada al viewport). */
 function openLightbox(src, alt) {
   if (!lightbox || !lightboxImage || !src) return;
-  lightboxImage.src = src;
+  lightboxImage.src = resolveAssetUrl(src);
   lightboxImage.alt = alt || "";
   lightbox.hidden = false;
 }
@@ -205,7 +206,7 @@ function renderBlock(block, query) {
       const figure = document.createElement("figure");
       figure.className = "entry-image";
       const img = document.createElement("img");
-      img.src = block.src;
+      img.src = resolveAssetUrl(block.src);
       img.alt = block.alt || "";
       img.loading = "lazy";
       if (block.src) {
@@ -248,7 +249,7 @@ function renderBlock(block, query) {
       if (block.portrait) {
         const portrait = document.createElement("img");
         portrait.className = "entry-quote-portrait";
-        portrait.src = block.portrait;
+        portrait.src = resolveAssetUrl(block.portrait);
         portrait.alt = block.portraitAlt || block.cite || "";
         portrait.loading = "lazy";
         portrait.addEventListener("click", () => openLightbox(block.portrait, block.portraitAlt || block.cite || ""));
