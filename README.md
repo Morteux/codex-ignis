@@ -10,9 +10,13 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 
 Las futuras entradas se definen en `js/content.js`. La interfaz está preparada para indexarlas y buscarlas sin cambiar su estructura.
 
-## Bingo de orígenes
+## Bingo (orígenes y principios)
 
-Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adicional del sitio, enlazado desde el pie de página del índice. Las casillas usan las imágenes de `img/bingo/` y se marcan/desmarcan al pulsarlas (sin guardar el estado entre visitas). Los títulos de las casillas se mantienen en español, tal y como en la fuente original.
+Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adicional del sitio, enlazado desde el pie de página del índice. Un desplegable permite elegir entre el bingo de **orígenes** y el de **principios**; los datos de cada uno viven en `js/bingo-data.js` (arrays `ORIGIN_BINGO` y `PRINCIPLE_BINGO`), separados del HTML. Las casillas usan las imágenes referenciadas ahí (por defecto en `img/bingo/`) y se marcan/desmarcan al pulsarlas (el marcado se conserva solo durante la visita, no entre recargas). Los nombres están traducidos a ES/EN/JP vía `js/i18n.js`. El botón de descarga genera una imagen PNG del bingo actualmente visible (orígenes o principios) con el estado de marcado.
+
+**Pendiente:** `PRINCIPLE_BINGO` está vacío — hay que añadir una entrada por principio (imagen + clave i18n) siguiendo las instrucciones del propio archivo `js/bingo-data.js`, más sus traducciones en `js/i18n.js`.
+
+Si en el futuro las imágenes se sirven desde otro dominio o repositorio (por ejemplo, para no acercarse a límites de tamaño de despliegue como el de Vercel), basta con cambiar la constante `IMAGE_BASE` en `js/bingo-data.js`.
 
 ## Google AdSense
 

@@ -66,6 +66,9 @@ const strings = {
         privacyFutureAdsText: "La publicidad de Google AdSense está desactivada. Antes de activarla, esta política se actualizará para explicar el tratamiento de datos, las cookies y tecnologías que puedan utilizar Google y otros proveedores publicitarios. Cuando corresponda, se ofrecerá un mecanismo de consentimiento conforme a la normativa aplicable.",
         privacyExternalLinksHeading: "Enlaces externos",
         privacyExternalLinksText: "Esta web puede incluir enlaces a servicios externos en el futuro. Cada servicio aplica sus propias condiciones y políticas de privacidad.",
+        privacyThirdPartyContentHeading: "Contenido de terceros",
+        privacyThirdPartyContentText: "Este sitio utiliza contenido del videojuego Stellaris, publicado por Paradox Interactive, incluidos archivos propios del juego. Al tratarse de un aviso legal, se mantiene en su idioma e ortografía originales:",
+        privacyParadoxNotice: "Use is made of content from Stellaris, published by Paradox Interactive, including their game files. The copyright to such content is held by Paradox Interactive AB or its subsidiary Paradox Development Studio. The following notice applies to such material. Copyright © 2014 Paradox Interactive AB.",
         privacyContactHeading: "Contacto",
         privacyContactText: "Para consultas sobre esta política, utiliza el canal de contacto que se publique junto con el proyecto.",
 
@@ -90,6 +93,10 @@ const strings = {
         bingoHeading: "Bingo",
         bingoInstructions: "Haz clic en una casilla para marcarla como conseguida.",
         bingoDownloadButton: "Descargar como imagen",
+        bingoTypeLabel: "Tipo de bingo",
+        bingoTypeOrigins: "Orígenes",
+        bingoTypePrinciples: "Principios",
+        bingoTypeEmpty: "Todavía no hay principios cargados. Vuelve pronto.",
 
         // Nombres de los orígenes del bingo (bingo.html)
         originDefault: "Unificación próspera",
@@ -209,6 +216,9 @@ const strings = {
         privacyFutureAdsText: "Google AdSense advertising is currently disabled. Before it is enabled, this policy will be updated to explain the data handling, cookies, and technologies that Google and other advertising providers may use. Where applicable, a consent mechanism compliant with the relevant regulations will be provided.",
         privacyExternalLinksHeading: "External links",
         privacyExternalLinksText: "This website may include links to external services in the future. Each service applies its own terms and privacy policies.",
+        privacyThirdPartyContentHeading: "Third-party content",
+        privacyThirdPartyContentText: "This site uses content from the video game Stellaris, published by Paradox Interactive, including their game files. As a legal notice, it is kept in its original wording:",
+        privacyParadoxNotice: "Use is made of content from Stellaris, published by Paradox Interactive, including their game files. The copyright to such content is held by Paradox Interactive AB or its subsidiary Paradox Development Studio. The following notice applies to such material. Copyright © 2014 Paradox Interactive AB.",
         privacyContactHeading: "Contact",
         privacyContactText: "For questions about this policy, use the contact channel published alongside the project.",
 
@@ -233,6 +243,10 @@ const strings = {
         bingoHeading: "Bingo",
         bingoInstructions: "Click a tile to mark it as obtained.",
         bingoDownloadButton: "Download as image",
+        bingoTypeLabel: "Bingo type",
+        bingoTypeOrigins: "Origins",
+        bingoTypePrinciples: "Civics",
+        bingoTypeEmpty: "No civics loaded yet. Check back soon.",
 
         // Nombres de los orígenes del bingo (bingo.html)
         originDefault: "Prosperous Unification",
@@ -352,6 +366,9 @@ const strings = {
         privacyFutureAdsText: "Google AdSense広告は現在無効になっています。有効化する前に、Googleおよびその他の広告プロバイダーが使用する可能性のあるデータの取り扱い、Cookie、技術について本ポリシーを更新します。該当する場合は、適用される法令に準拠した同意取得の仕組みを導入します。",
         privacyExternalLinksHeading: "外部リンク",
         privacyExternalLinksText: "本サイトでは今後、外部サービスへのリンクを掲載する場合があります。各サービスにはそれぞれ独自の利用規約とプライバシーポリシーが適用されます。",
+        privacyThirdPartyContentHeading: "サードパーティ コンテンツについて",
+        privacyThirdPartyContentText: "本サイトでは、Paradox Interactiveが発売したビデオゲーム『Stellaris』のコンテンツ（ゲームファイルを含む）を使用しています。法的な通知文のため、原文のまま掲載します:",
+        privacyParadoxNotice: "Use is made of content from Stellaris, published by Paradox Interactive, including their game files. The copyright to such content is held by Paradox Interactive AB or its subsidiary Paradox Development Studio. The following notice applies to such material. Copyright © 2014 Paradox Interactive AB.",
         privacyContactHeading: "お問い合わせ",
         privacyContactText: "本ポリシーに関するご質問は、本プロジェクトとともに公開される連絡先までお問い合わせください。",
 
@@ -376,6 +393,10 @@ const strings = {
         bingoHeading: "ビンゴ",
         bingoInstructions: "マス目をクリックすると、達成済みとしてマークされます。",
         bingoDownloadButton: "画像としてダウンロード",
+        bingoTypeLabel: "ビンゴの種類",
+        bingoTypeOrigins: "起源",
+        bingoTypePrinciples: "国是",
+        bingoTypeEmpty: "国是はまだ登録されていません。またお越しください。",
 
         // Nombres de los orígenes del bingo (bingo.html)
         originDefault: "統一による繁栄",

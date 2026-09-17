@@ -1,25 +1,111 @@
 /**
- * Bingo de orígenes de Stellaris.
+ * Bingo de Stellaris (orígenes y principios).
  *
- * Cada casilla es un botón: por defecto se muestra en escala de grises: al
- * pulsarla se marca como conseguida y se ve a color (y se vuelve a pulsar
- * para desmarcarla). No se guarda el estado entre visitas: al recargar la
- * página, todas las casillas vuelven a estar sin marcar.
+ * La rejilla se genera en JS a partir de js/bingo-data.js según el tipo de
+ * bingo elegido en el desplegable. Cada casilla es un botón: por defecto se
+ * muestra en escala de grises; al pulsarla se marca como conseguida y se ve
+ * a color (y se vuelve a pulsar para desmarcarla). El estado marcado se
+ * mantiene al cambiar de idioma o al volver a un tipo de bingo ya visitado
+ * durante la misma visita, pero no se guarda entre recargas de página.
  *
  * El botón de descarga genera una imagen PNG con el estado actual del
- * bingo (qué casillas están marcadas en ese momento), en una rejilla fija
- * de 9 columnas independiente de cómo se vea en pantalla.
+ * bingo que esté visible en ese momento (orígenes o principios), en una
+ * rejilla fija de 9 columnas independiente de cómo se vea en pantalla.
+ *
+ * Esta página no usa js/legal.js: al construir la rejilla dinámicamente,
+ * este módulo se encarga también de aplicar las traducciones (mismo
+ * mecanismo de data-i18n / data-i18n-attr) para mantener todo sincronizado.
  */
 
-const cards = document.querySelectorAll(".bingo-card");
-const downloadButton = document.querySelector("#bingo-download");
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { IMAGE_BASE, ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
 
-cards.forEach((card) => {
-    card.addEventListener("click", () => {
-        const isMarked = card.classList.toggle("is-marked");
-        card.setAttribute("aria-pressed", String(isMarked));
+const BINGO_SETS = {
+    origins: { data: ORIGIN_BINGO, fileSlug: "origenes", titleKey: "bingoTypeOrigins" },
+    principles: { data: PRINCIPLE_BINGO, fileSlug: "principios", titleKey: "bingoTypePrinciples" }
+};
+
+const langButtons = document.querySelectorAll(".lang-btn");
+const typeSelect = document.querySelector("#bingo-type");
+const grid = document.querySelector("#bingo-grid");
+const emptyMessage = document.querySelector("#bingo-empty");
+const downloadButton = document.querySelector("#bingo-download");
+const metaDescription = document.querySelector('meta[name="description"]');
+
+let currentLang = detectInitialLang();
+let currentType = "origins";
+// Recuerda qué casillas están marcadas por tipo, mientras dure la visita.
+const markedState = new Map();
+
+function cardKey(type, index) {
+    return `${type}:${index}`;
+}
+
+function applyTranslations() {
+    document.documentElement.lang = currentLang;
+
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+        el.innerHTML = t(currentLang, el.dataset.i18n);
     });
-});
+
+    document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+        const [attr, key] = el.dataset.i18nAttr.split(":");
+        el.setAttribute(attr, t(currentLang, key));
+    });
+
+    langButtons.forEach((btn) => {
+        btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
+    });
+}
+
+/** Construye una casilla de bingo (botón con imagen + título) para una entrada de datos. */
+function buildCard(entry, index) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "bingo-card";
+
+    const isMarked = markedState.get(cardKey(currentType, index)) || false;
+    card.classList.toggle("is-marked", isMarked);
+    card.setAttribute("aria-pressed", String(isMarked));
+
+    const img = document.createElement("img");
+    img.src = `${IMAGE_BASE}${entry.img}`;
+    img.alt = "";
+    img.loading = "lazy";
+
+    const title = document.createElement("span");
+    title.className = "bingo-card-title";
+    title.textContent = t(currentLang, entry.i18nKey);
+
+    card.append(img, title);
+
+    card.addEventListener("click", () => {
+        const nowMarked = card.classList.toggle("is-marked");
+        card.setAttribute("aria-pressed", String(nowMarked));
+        markedState.set(cardKey(currentType, index), nowMarked);
+    });
+
+    return card;
+}
+
+/** Vuelve a pintar la rejilla completa para el tipo de bingo actualmente seleccionado. */
+function renderGrid() {
+    if (!grid) return;
+    const entries = BINGO_SETS[currentType].data;
+
+    grid.replaceChildren();
+
+    const hasEntries = entries.length > 0;
+    grid.hidden = !hasEntries;
+    if (emptyMessage) emptyMessage.hidden = hasEntries;
+    if (downloadButton) downloadButton.disabled = !hasEntries;
+
+    if (!hasEntries) return;
+
+    entries.forEach((entry, index) => {
+        grid.append(buildCard(entry, index));
+    });
+}
 
 /** Espera a que una imagen esté cargada, forzando la carga si era "lazy". */
 function waitForImage(img) {
@@ -55,8 +141,9 @@ function wrapText(ctx, text, maxWidth) {
     return lines;
 }
 
-/** Genera un <canvas> con todas las casillas, respetando cuáles están marcadas ahora mismo. */
+/** Genera un <canvas> con todas las casillas del tipo activo, respetando cuáles están marcadas ahora mismo. */
 async function buildBingoCanvas() {
+    const cards = grid.querySelectorAll(".bingo-card");
     const cols = 9;
     const rows = Math.ceil(cards.length / cols);
     const cellImage = 130;
@@ -86,7 +173,8 @@ async function buildBingoCanvas() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const titleByLang = { es: "BINGO", en: "BINGO", jp: "ビンゴ" };
-    const canvasTitle = titleByLang[document.documentElement.lang] || "BINGO";
+    const canvasTitle = titleByLang[currentLang] || "BINGO";
+    const canvasSubtitle = `Codex Ignis · ${t(currentLang, BINGO_SETS[currentType].titleKey)}`;
 
     ctx.textBaseline = "top";
     ctx.fillStyle = text;
@@ -94,7 +182,7 @@ async function buildBingoCanvas() {
     ctx.fillText(canvasTitle, outerPadding, outerPadding);
     ctx.fillStyle = muted;
     ctx.font = "12px monospace";
-    ctx.fillText("Codex Ignis", outerPadding, outerPadding + 32);
+    ctx.fillText(canvasSubtitle, outerPadding, outerPadding + 32);
 
     cards.forEach((card, index) => {
         const col = index % cols;
@@ -132,15 +220,41 @@ async function buildBingoCanvas() {
 
 if (downloadButton) {
     downloadButton.addEventListener("click", async () => {
+        if (!BINGO_SETS[currentType].data.length) return;
         downloadButton.disabled = true;
         try {
             const canvas = await buildBingoCanvas();
             const link = document.createElement("a");
-            link.download = "bingo-origenes-stellaris.png";
+            link.download = `bingo-${BINGO_SETS[currentType].fileSlug}-stellaris.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
         } finally {
-            downloadButton.disabled = false;
+            downloadButton.disabled = BINGO_SETS[currentType].data.length === 0;
         }
     });
 }
+
+if (typeSelect) {
+    typeSelect.addEventListener("change", () => {
+        currentType = typeSelect.value in BINGO_SETS ? typeSelect.value : "origins";
+        renderGrid();
+    });
+}
+
+langButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
+        storeLang(currentLang);
+        applyTranslations();
+        renderGrid();
+    });
+});
+
+if (metaDescription && !metaDescription.dataset.i18nAttr) {
+    // La meta description ya trae su propio data-i18n-attr en el HTML; este
+    // bloque queda como salvaguarda si algún día se elimina ese atributo.
+    metaDescription.setAttribute("content", t(currentLang, "bingoMetaDescription"));
+}
+
+applyTranslations();
+renderGrid();
