@@ -85,10 +85,13 @@ async function buildBingoCanvas() {
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    const titleByLang = { es: "BINGO", en: "BINGO", jp: "ビンゴ" };
+    const canvasTitle = titleByLang[document.documentElement.lang] || "BINGO";
+
     ctx.textBaseline = "top";
     ctx.fillStyle = text;
     ctx.font = "700 24px monospace";
-    ctx.fillText("BINGO", outerPadding, outerPadding);
+    ctx.fillText(canvasTitle, outerPadding, outerPadding);
     ctx.fillStyle = muted;
     ctx.font = "12px monospace";
     ctx.fillText("Codex Ignis", outerPadding, outerPadding + 32);
