@@ -1,34 +1,30 @@
 /**
- * Configuración central del origen de las imágenes de Stellaris (naves,
- * orígenes, principios/civics, fauna, citas, etc.) usadas en todo el sitio.
+ * Configuración central del origen de las imágenes de Stellaris usadas en
+ * el sitio. Hay DOS orígenes independientes:
  *
- * Ahora mismo todas las imágenes viven en la carpeta img/ de este mismo
- * repositorio, así que ASSET_BASE se deja vacío ("") y las rutas guardadas
- * en content.js y bingo-data.js (por ejemplo "img/naves/Corbeta.png") se
- * sirven tal cual, en local.
+ * 1. ASSET_BASE → para las imágenes de las entradas del codex (content.js,
+ *    vía js/app.js). Se deja vacío ("") porque en content.js decides tú,
+ *    entrada por entrada, si pegas una ruta local del propio proyecto
+ *    (ej. "img/naves/Corbeta.png") o una URL absoluta completa, ya sea de
+ *    la API de assets (ver STELLARIS_ASSETS_BASE) o de donde despliegues en
+ *    Vercel. resolveAssetUrl() deja intacta cualquier URL absoluta
+ *    (http/https) o data URI, así que ambos casos funcionan sin tocar nada
+ *    aquí; solo se usa ASSET_BASE para completar rutas relativas.
  *
- * ── Cuando muevas las imágenes a un repositorio de solo assets ────────────
- * (por ejemplo, publicado con GitHub Pages, o servido directamente desde
- * GitHub vía jsDelivr sin necesidad de activar Pages), solo tienes que
- * cambiar esta constante por la URL base de ese origen, terminada en "/".
- * Por ejemplo:
- *
- *   export const ASSET_BASE = "https://tu-usuario.github.io/stellaris-assets/";
- *   // o, sirviendo el repo directamente vía jsDelivr:
- *   export const ASSET_BASE = "https://cdn.jsdelivr.net/gh/tu-usuario/stellaris-assets@main/";
- *
- * No hace falta tocar nada más: ni content.js, ni bingo-data.js, ni el resto
- * del sitio. Todas las rutas de imagen relativas ("img/...") se resuelven a
- * través de esta constante mediante resolveAssetUrl(), tanto para las
- * imágenes de las entradas del codex (js/app.js) como para las del bingo
- * (js/bingo.js, a través de IMAGE_BASE en js/bingo-data.js, que reexporta
- * este mismo valor).
- *
- * Esto es independiente de dónde se despliegue el propio sitio (GitHub
- * Pages, Vercel, etc.): ASSET_BASE solo controla de dónde vienen las
- * imágenes, no dónde vive el código del sitio.
+ * 2. STELLARIS_ASSETS_BASE → para las imágenes que SIEMPRE se sirven desde
+ *    la API de assets (repo StellarisAssets en GitHub Pages): por ahora
+ *    bingo.html (js/bingo-data.js, vía IMAGE_BASE) y, en el futuro,
+ *    planet-sim.html. La estructura de esa API es siempre
+ *    "https://morteux.github.io/StellarisAssets/<carpeta>/<archivo>.png",
+ *    por ejemplo:
+ *    https://morteux.github.io/StellarisAssets/buildings/aesthetic_wonders_holomuseum.png
+ *    Las rutas guardadas en bingo-data.js son relativas a esta base (por
+ *    ejemplo "origins/GFX_origin_default.png" o "civics/Civic_x.png"), sin
+ *    el prefijo "img/" que sí se usa en las rutas locales del proyecto.
  */
 export const ASSET_BASE = "";
+
+export const STELLARIS_ASSETS_BASE = "https://morteux.github.io/StellarisAssets/";
 
 /**
  * Antepone ASSET_BASE a una ruta de imagen relativa. Si la ruta ya es una

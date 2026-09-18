@@ -60,11 +60,15 @@ function applyTranslations() {
 
 /**
  * Construye una casilla de bingo (botón con imagen) para una entrada de
- * datos. El nombre no se muestra como texto visible: solo aparece como
- * tooltip nativo al pasar el ratón por encima (atributo "title"), y como
- * "aria-label" para que siga siendo accesible con lector de pantalla. El
- * texto sigue existiendo (oculto) dentro de ".bingo-card-title" porque
- * buildBingoCanvas() lo usa para escribirlo en la imagen descargada.
+ * datos.
+ *
+ * En orígenes el nombre se muestra siempre como texto visible bajo la
+ * imagen (clase ".bingo-card-title--visible"). En principios el nombre NO
+ * se muestra como texto: solo aparece como tooltip nativo al pasar el
+ * ratón por encima (atributo "title"), y como "aria-label" para que siga
+ * siendo accesible con lector de pantalla. En ambos casos el texto sigue
+ * existiendo dentro de ".bingo-card-title" porque buildBingoCanvas() lo
+ * usa para escribirlo en la imagen descargada.
  */
 function buildCard(entry, index) {
     const card = document.createElement("button");
@@ -85,7 +89,7 @@ function buildCard(entry, index) {
     img.loading = "lazy";
 
     const title = document.createElement("span");
-    title.className = "bingo-card-title";
+    title.className = currentType === "origins" ? "bingo-card-title bingo-card-title--visible" : "bingo-card-title";
     title.textContent = name;
 
     card.append(img, title);
@@ -103,6 +107,11 @@ function buildCard(entry, index) {
 function renderGrid() {
     if (!grid) return;
     const entries = BINGO_SETS[currentType].data;
+
+    // Clase según el tipo activo: permite que las casillas de principios se
+    // vean mucho más pequeñas que las de orígenes (ver styles.css).
+    grid.classList.remove("bingo-grid--origins", "bingo-grid--principles");
+    grid.classList.add(`bingo-grid--${currentType}`);
 
     grid.replaceChildren();
 
