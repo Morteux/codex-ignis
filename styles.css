@@ -925,3 +925,240 @@ h1 {
 .bingo-card.is-marked img {
     filter: none;
 }
+
+/* ── Simulador de planetas de Stellaris (planet-sim.html) ──────────────── */
+
+.planet-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.6rem;
+    padding: 1.2rem 1.35rem;
+    margin-bottom: 1.6rem;
+    border: 1px solid var(--line);
+    background: rgba(8, 22, 14, .7);
+}
+
+.planet-slots-box {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.planet-slots-heading {
+    color: var(--muted);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.planet-slots-count {
+    color: var(--accent);
+    font: 700 1.1rem var(--mono);
+}
+
+.planet-spec-control {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    color: var(--muted);
+    font: .74rem var(--mono);
+}
+
+.planet-spec-control input {
+    width: 5rem;
+    padding: .4rem .55rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .9rem var(--mono);
+}
+
+.planet-spec-control input:focus-visible {
+    border-color: var(--accent-dim);
+}
+
+.planet-slots-note {
+    flex: 1 1 260px;
+    margin: 0;
+    color: var(--muted);
+    font-size: .76rem;
+    line-height: 1.55;
+}
+
+.planet-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
+    gap: 1.4rem;
+    align-items: start;
+}
+
+.planet-catalog-panel,
+.planet-selected-panel,
+.planet-summary-panel {
+    padding: 1.2rem 1.35rem;
+    border: 1px solid var(--line);
+    background: rgba(8, 22, 14, .7);
+}
+
+.planet-sidebar {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.planet-panel-heading {
+    padding-bottom: .9rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--text);
+    font-size: .85rem;
+}
+
+.planet-category-heading {
+    margin: 1.6rem 0 .8rem;
+}
+
+.planet-category-heading:first-child {
+    margin-top: 0;
+}
+
+.planet-building-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .8rem;
+}
+
+.planet-building-card {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    padding: .8rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.planet-building-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    align-self: flex-start;
+}
+
+.planet-building-body {
+    display: grid;
+    gap: .4rem;
+}
+
+.planet-building-title {
+    margin: 0;
+    color: var(--text);
+    font-size: .88rem;
+    line-height: 1.3;
+}
+
+.planet-building-limit {
+    margin: 0;
+    color: var(--muted);
+    font-size: .68rem;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.planet-building-extra {
+    margin: 0;
+    color: var(--accent);
+    font-size: .76rem;
+}
+
+.planet-jobs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+}
+
+.planet-jobs-empty {
+    margin: 0;
+    color: var(--muted);
+    font-size: .74rem;
+    font-style: italic;
+}
+
+.planet-job-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .2rem .5rem;
+    border: 1px solid var(--line-soft);
+    color: var(--text);
+    font-size: .72rem;
+}
+
+.planet-job-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.planet-add-btn,
+.planet-remove-btn {
+    padding: .5rem .8rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .7rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-add-btn:hover:not(:disabled),
+.planet-remove-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.planet-add-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.planet-selected-empty,
+.planet-summary-empty {
+    margin: 0;
+    color: var(--muted);
+    font-size: .78rem;
+}
+
+.planet-selected-item {
+    padding: .7rem 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.planet-selected-item:first-child {
+    padding-top: 0;
+}
+
+.planet-selected-item:last-child {
+    border-bottom: 0;
+}
+
+.planet-selected-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem;
+    margin-bottom: .5rem;
+    color: var(--text);
+    font-size: .82rem;
+}
+
+@media (max-width: 700px) {
+    .planet-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .planet-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

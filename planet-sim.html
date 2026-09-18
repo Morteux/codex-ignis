@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Simulador de plantillas planetarias de Stellaris (próximamente)." data-i18n-attr="content:planetSimMetaDescription" />
+    <meta name="description" content="Simulador de plantillas planetarias de Stellaris: elige edificios y comprueba sus empleos." data-i18n-attr="content:planetSimMetaDescription" />
     <title data-i18n="planetSimPageTitle">Planet_Sim · Codex Ignis</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/x-icon" href="img/Ignis Stellaris icon.png" />
@@ -27,13 +27,45 @@
 
       <section class="terminal-intro">
         <h1 data-i18n="planetSimHeading">Simulador de Planetas</h1>
-        <p class="intro-copy" data-i18n="planetSimComingSoonText">Este proyecto (el Simulador de Plantillas Planetarias de Stellaris) todavía no existe. Vuelve más adelante para probarlo.</p>
+        <p class="intro-copy" data-i18n="planetSimIntroText">Primera versión: elige edificios para tu colonia y comprueba los empleos que aportan, respetando el límite real de ranuras de edificios del juego.</p>
+      </section>
+
+      <section class="planet-controls" aria-label="Controles de la colonia">
+        <div class="planet-slots-box">
+          <span class="planet-slots-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</span>
+          <span class="planet-slots-count" id="planet-slots-label">6 / 6 ranuras usadas</span>
+        </div>
+        <label class="planet-spec-control" for="planet-spec-input">
+          <span data-i18n="planetSimSpecInputLabel">Especializaciones de distrito con ranuras extra</span>
+          <input type="number" id="planet-spec-input" min="0" max="5" step="1" value="0" />
+        </label>
+        <p class="planet-slots-note" data-i18n="planetSimSlotsNote">Cada colonia empieza con 6 ranuras en su distrito principal. Cada especialización de distrito con ranuras (p. ej. minería, energía o agricultura especializadas) añade 3 más, hasta un máximo de 21 por colonia.</p>
+      </section>
+
+      <section class="planet-shell">
+        <div class="planet-catalog-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimCatalogHeading">Catálogo de edificios</h2>
+          <div id="planet-catalog"></div>
+        </div>
+
+        <aside class="planet-sidebar">
+          <div class="planet-selected-panel">
+            <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSelectedHeading">Edificios construidos</h2>
+            <p class="planet-selected-empty" id="planet-selected-empty" data-i18n="planetSimSelectedEmpty">Todavía no has construido ningún edificio.</p>
+            <div id="planet-selected-list"></div>
+          </div>
+
+          <div class="planet-summary-panel">
+            <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSummaryHeading">Resumen de empleos totales</h2>
+            <div id="planet-summary"></div>
+          </div>
+        </aside>
       </section>
 
       <footer class="footer">
         <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
       </footer>
     </main>
-    <script type="module" src="js/legal.js"></script>
+    <script type="module" src="js/planet-sim.js"></script>
   </body>
 </html>
