@@ -56,8 +56,15 @@ function totalSlots() {
   return calculateBuildingSlots(specializations);
 }
 
+/** Ranuras realmente activas: si se reduce el nº de especializaciones, el
+ * exceso de edificios construidos en ranuras ahora bloqueadas deja de
+ * contar (quedan como "cola inactiva"), sin borrarse del array. */
+function activeSlotCount() {
+  return Math.min(builtSlots.length, totalSlots());
+}
+
 function usedSlots() {
-  return builtSlots.length;
+  return activeSlotCount();
 }
 
 function buildingCount(id) {
@@ -65,9 +72,16 @@ function buildingCount(id) {
 }
 
 function canAdd(building) {
-  if (usedSlots() >= totalSlots()) return false;
+  if (activeSlotCount() >= totalSlots()) return false;
+  if (builtSlots.length >= BUILDING_SLOT_RULES.max) return false;
   if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return false;
   return true;
+}
+
+/** Añade un edificio justo después de la última ranura activa, empujando
+ * hacia atrás cualquier cola inactiva en lugar de ponerse detrás de ella. */
+function addBuilding(id) {
+  builtSlots.splice(activeSlotCount(), 0, id);
 }
 
 function isLimited(building) {
@@ -75,14 +89,15 @@ function isLimited(building) {
 }
 
 /**
- * Recalcula, a partir de las ranuras ocupadas, todo lo que puede derivarse:
+ * Recalcula, a partir de las ranuras ACTIVAS (excluye la cola inactiva que
+ * haya quedado tras reducir especializaciones), todo lo que puede derivarse:
  * empleos totales, producción/consumo de recursos por esos empleos,
  * mantenimiento de los propios edificios, vivienda, comodidades y efectos
  * sin recurso asociado (Agente, Educador, Soldado).
  */
 function computeTotals() {
   const counts = new Map();
-  builtSlots.forEach((id) => counts.set(id, (counts.get(id) || 0) + 1));
+  builtSlots.slice(0, activeSlotCount()).forEach((id) => counts.set(id, (counts.get(id) || 0) + 1));
 
   const jobsTotals = {};
   const resourceTotals = {};
@@ -98,8 +113,11 @@ function computeTotals() {
     const building = buildingsById.get(id);
 
     Object.entries(building.jobs || {}).forEach(([jobId, rawAmount]) => {
+      // jobsTotals se guarda en crudo (×100, tal cual la wiki) para mostrarlo
+      // sin dividir. Para la producción de recursos, en cambio, cada 100
+      // (jobCount) es un empleo real, así que ahí sí se divide.
+      jobsTotals[jobId] = (jobsTotals[jobId] || 0) + rawAmount * count;
       const jobCount = divideEffect(rawAmount) * count;
-      jobsTotals[jobId] = (jobsTotals[jobId] || 0) + jobCount;
 
       Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
         addResource(resourceTotals, resourceId, perJob * jobCount);
@@ -218,13 +236,12 @@ function renderJobsMini(jobs) {
   const wrapper = document.createElement("span");
   wrapper.className = "planet-catalog-jobs";
   entries.forEach(([jobId, raw]) => {
-    const amount = divideEffect(raw);
     const pill = document.createElement("span");
     pill.className = "planet-catalog-job-pill";
-    pill.title = `+${formatAmount(amount)} ${jobName(jobId)}`;
+    pill.title = `+${formatAmount(raw)} ${jobName(jobId)}`;
     pill.append(jobIcon(jobId));
     const label = document.createElement("span");
-    label.textContent = formatAmount(amount);
+    label.textContent = formatAmount(raw);
     pill.append(label);
     wrapper.append(pill);
   });
@@ -253,10 +270,29 @@ function renderSlotsGrid() {
       cursor += 1;
 
       if (group.locked) {
-        const slot = document.createElement("span");
-        slot.className = "planet-slot is-locked";
-        slot.title = t(currentLang, "planetSimSlotLocked");
-        groupEl.append(slot);
+        const inactiveId = builtSlots[slotIndex];
+        if (inactiveId) {
+          const building = buildingsById.get(inactiveId);
+          const slot = document.createElement("button");
+          slot.type = "button";
+          slot.className = "planet-slot is-locked is-inactive";
+          slot.title = `${buildingDisplayName(building)} — ${t(currentLang, "planetSimSlotInactive")}`;
+          const img = document.createElement("img");
+          img.src = `${IMAGE_BASE}${building.img}`;
+          img.alt = buildingDisplayName(building);
+          img.loading = "lazy";
+          slot.append(img);
+          slot.addEventListener("click", () => {
+            builtSlots.splice(slotIndex, 1);
+            refresh();
+          });
+          groupEl.append(slot);
+        } else {
+          const slot = document.createElement("span");
+          slot.className = "planet-slot is-locked";
+          slot.title = t(currentLang, "planetSimSlotLocked");
+          groupEl.append(slot);
+        }
         continue;
       }
 
@@ -360,7 +396,7 @@ function renderCatalogItem(building, slotsFull) {
 
   item.addEventListener("click", () => {
     if (!canAdd(building)) return;
-    builtSlots.push(building.id);
+    addBuilding(building.id);
     refresh();
   });
 
