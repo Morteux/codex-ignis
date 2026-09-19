@@ -1,14 +1,19 @@
 /**
- * Simulador de Planetas (v1.1).
+ * Simulador de Planetas (v1.2).
  *
- * Cubre: elegir edificios para una colonia respetando el límite real de
- * ranuras de edificios, ver los empleos que aporta cada uno, y ver la
- * producción y el mantenimiento totales de recursos que resultan de esos
- * empleos y edificios. Ver js/planet-data.js para el origen de cada número.
+ * Cambios de esta versión (a petición de Morteux, para acercarse más a la
+ * pantalla real de "Distritos y Edificios" del juego):
+ *  - Las ranuras de edificios se ven como una rejilla real: los grupos de 3
+ *    ranuras de cada especialización de distrito aparecen bloqueados
+ *    (rayados) hasta que subes el contador de especializaciones; al
+ *    construir un edificio, ocupa la siguiente ranura libre en orden.
+ *  - El catálogo de edificios ahora vive en la barra lateral derecha, en
+ *    filas compactas; cada fila ES el botón de construir (ya no hay un
+ *    botón "Construir" aparte).
+ *  - Los edificios con límite de colonia se distinguen por color (borde
+ *    azulado) en vez de con un texto aparte.
  *
- * Esta página no usa js/legal.js: al construir la interfaz dinámicamente,
- * este módulo también aplica las traducciones (mismo mecanismo data-i18n /
- * data-i18n-attr que el resto del sitio) para mantenerlo todo sincronizado.
+ * Ver js/planet-data.js para el origen de todos los números.
  */
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
@@ -29,12 +34,10 @@ import {
 const langButtons = document.querySelectorAll(".lang-btn");
 const specInput = document.querySelector("#planet-spec-input");
 const slotsLabel = document.querySelector("#planet-slots-label");
-const slotsBar = document.querySelector("#planet-slots-bar");
+const slotsGridEl = document.querySelector("#planet-slots-grid");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
 const catalogEl = document.querySelector("#planet-catalog");
-const selectedEl = document.querySelector("#planet-selected-list");
-const selectedEmptyEl = document.querySelector("#planet-selected-empty");
 const summaryEl = document.querySelector("#planet-summary");
 const productionEl = document.querySelector("#planet-production");
 const upkeepEl = document.querySelector("#planet-upkeep");
@@ -43,8 +46,9 @@ const metaDescription = document.querySelector('meta[name="description"]');
 
 let currentLang = detectInitialLang();
 let specializations = 0;
-// buildingId -> número de copias construidas
-const built = new Map();
+// Cada elemento es el id de un edificio: una ranura ocupada, en el orden en
+// que se construyó. La posición en el array ES la posición en la rejilla.
+let builtSlots = [];
 
 const buildingsById = new Map(BUILDINGS.map((b) => [b.id, b]));
 
@@ -53,13 +57,11 @@ function totalSlots() {
 }
 
 function usedSlots() {
-  let sum = 0;
-  built.forEach((count) => { sum += count; });
-  return sum;
+  return builtSlots.length;
 }
 
 function buildingCount(id) {
-  return built.get(id) || 0;
+  return builtSlots.filter((slotId) => slotId === id).length;
 }
 
 function canAdd(building) {
@@ -68,13 +70,20 @@ function canAdd(building) {
   return true;
 }
 
+function isLimited(building) {
+  return building.colonyLimit !== "none";
+}
+
 /**
- * Recalcula, a partir de los edificios construidos, todo lo que puede
- * derivarse de ellos: empleos totales, producción/consumo de recursos por
- * esos empleos, mantenimiento de los propios edificios, vivienda,
- * comodidades y efectos sin recurso asociado (Agente, Educador, Soldado).
+ * Recalcula, a partir de las ranuras ocupadas, todo lo que puede derivarse:
+ * empleos totales, producción/consumo de recursos por esos empleos,
+ * mantenimiento de los propios edificios, vivienda, comodidades y efectos
+ * sin recurso asociado (Agente, Educador, Soldado).
  */
 function computeTotals() {
+  const counts = new Map();
+  builtSlots.forEach((id) => counts.set(id, (counts.get(id) || 0) + 1));
+
   const jobsTotals = {};
   const resourceTotals = {};
   const upkeepTotals = {};
@@ -85,8 +94,7 @@ function computeTotals() {
     bucket[resourceId] = (bucket[resourceId] || 0) + amount;
   };
 
-  built.forEach((count, id) => {
-    if (count <= 0) return;
+  counts.forEach((count, id) => {
     const building = buildingsById.get(id);
 
     Object.entries(building.jobs || {}).forEach(([jobId, rawAmount]) => {
@@ -173,6 +181,11 @@ function formatAmount(amount, forceSign) {
   return rounded < 0 ? `−${text}` : text;
 }
 
+function buildingDisplayName(building) {
+  return t(currentLang, building.i18nKey);
+}
+
+/** Lista de empleos completa (icono + nombre + cantidad), usada en los paneles de resumen/producción. */
 function renderJobsList(jobs) {
   const entries = Object.entries(jobs).filter(([, amount]) => amount > 0);
   const wrapper = document.createElement("div");
@@ -199,8 +212,81 @@ function renderJobsList(jobs) {
   return wrapper;
 }
 
-function buildingDisplayName(building) {
-  return t(currentLang, building.i18nKey);
+/** Mini lista de empleos (solo icono + número, con el nombre como tooltip) para las filas compactas del catálogo. */
+function renderJobsMini(jobs) {
+  const entries = Object.entries(jobs).filter(([, raw]) => raw > 0);
+  const wrapper = document.createElement("span");
+  wrapper.className = "planet-catalog-jobs";
+  entries.forEach(([jobId, raw]) => {
+    const amount = divideEffect(raw);
+    const pill = document.createElement("span");
+    pill.className = "planet-catalog-job-pill";
+    pill.title = `+${formatAmount(amount)} ${jobName(jobId)}`;
+    pill.append(jobIcon(jobId));
+    const label = document.createElement("span");
+    label.textContent = formatAmount(amount);
+    pill.append(label);
+    wrapper.append(pill);
+  });
+  return wrapper;
+}
+
+/** Rejilla visual de ranuras: base (siempre disponible) + un grupo de 3 por cada especialización posible. */
+function renderSlotsGrid() {
+  if (!slotsGridEl) return;
+  slotsGridEl.replaceChildren();
+
+  const used = usedSlots();
+  let cursor = 0;
+
+  const groups = [{ size: BUILDING_SLOT_RULES.base, locked: false }];
+  for (let g = 1; g <= BUILDING_SLOT_RULES.maxSpecializations; g += 1) {
+    groups.push({ size: BUILDING_SLOT_RULES.perSpecialization, locked: g > specializations });
+  }
+
+  groups.forEach((group) => {
+    const groupEl = document.createElement("div");
+    groupEl.className = `planet-slot-group${group.locked ? " is-locked-group" : ""}`;
+
+    for (let i = 0; i < group.size; i += 1) {
+      const slotIndex = cursor;
+      cursor += 1;
+
+      if (group.locked) {
+        const slot = document.createElement("span");
+        slot.className = "planet-slot is-locked";
+        slot.title = t(currentLang, "planetSimSlotLocked");
+        groupEl.append(slot);
+        continue;
+      }
+
+      if (slotIndex < used) {
+        const buildingId = builtSlots[slotIndex];
+        const building = buildingsById.get(buildingId);
+        const slot = document.createElement("button");
+        slot.type = "button";
+        slot.className = `planet-slot is-filled ${isLimited(building) ? "is-limited" : "is-standard"}`;
+        slot.title = `${buildingDisplayName(building)} — ${t(currentLang, "planetSimClickToDemolish")}`;
+        const img = document.createElement("img");
+        img.src = `${IMAGE_BASE}${building.img}`;
+        img.alt = buildingDisplayName(building);
+        img.loading = "lazy";
+        slot.append(img);
+        slot.addEventListener("click", () => {
+          builtSlots.splice(slotIndex, 1);
+          refresh();
+        });
+        groupEl.append(slot);
+      } else {
+        const slot = document.createElement("span");
+        slot.className = "planet-slot is-empty";
+        slot.title = t(currentLang, "planetSimSlotEmpty");
+        groupEl.append(slot);
+      }
+    }
+
+    slotsGridEl.append(groupEl);
+  });
 }
 
 function renderCatalog() {
@@ -218,125 +304,67 @@ function renderCatalog() {
     heading.textContent = t(currentLang, CATEGORY_I18N_KEYS[category]);
     catalogEl.append(heading);
 
-    const row = document.createElement("div");
-    row.className = "planet-building-row";
+    const list = document.createElement("div");
+    list.className = "planet-catalog-list";
 
     items.forEach((building) => {
-      row.append(renderBuildingCard(building, full));
+      list.append(renderCatalogItem(building, full));
     });
 
-    catalogEl.append(row);
+    catalogEl.append(list);
   });
 }
 
-function renderBuildingCard(building, slotsFull) {
-  const card = document.createElement("article");
-  card.className = "planet-building-card";
-
+function renderCatalogItem(building, slotsFull) {
   const count = buildingCount(building.id);
-  if (count > 0) card.classList.add("is-built");
+  const atLimit = building.colonyLimit !== "none" && count >= building.colonyLimit;
+  const disabled = slotsFull || atLimit;
+
+  const item = document.createElement("button");
+  item.type = "button";
+  item.className = `planet-catalog-item ${isLimited(building) ? "is-limited" : "is-standard"}`;
+  item.disabled = disabled;
+
+  const reason = atLimit ? t(currentLang, "planetSimLimitReached") : (slotsFull ? t(currentLang, "planetSimSlotsFull") : t(currentLang, "planetSimClickToBuild"));
+  item.title = `${buildingDisplayName(building)} — ${reason}`;
 
   const img = document.createElement("img");
-  img.className = "planet-building-icon";
+  img.className = "planet-catalog-icon";
   img.src = `${IMAGE_BASE}${building.img}`;
   img.alt = "";
   img.loading = "lazy";
-  card.append(img);
+  item.append(img);
 
-  const body = document.createElement("div");
-  body.className = "planet-building-body";
-
-  const title = document.createElement("h4");
-  title.className = "planet-building-title";
-  title.textContent = buildingDisplayName(building);
-  if (count > 1) {
+  const name = document.createElement("span");
+  name.className = "planet-catalog-name";
+  name.textContent = buildingDisplayName(building);
+  if (count > 0) {
     const badge = document.createElement("span");
-    badge.className = "planet-building-count";
+    badge.className = "planet-catalog-count";
     badge.textContent = `×${count}`;
-    title.append(" ", badge);
+    name.append(" ", badge);
   }
-  body.append(title);
+  item.append(name);
 
-  const limitNote = document.createElement("p");
-  limitNote.className = "planet-building-limit";
-  limitNote.textContent = building.colonyLimit === "none"
-    ? t(currentLang, "planetSimLimitNone")
-    : t(currentLang, "planetSimLimitOnePerColony");
-  body.append(limitNote);
-
-  body.append(renderJobsList(
-    Object.fromEntries(Object.entries(building.jobs || {}).map(([jobId, raw]) => [jobId, divideEffect(raw)]))
-  ));
-
-  if (building.housing || building.amenities) {
-    const extra = document.createElement("p");
-    extra.className = "planet-building-extra";
+  if (Object.keys(building.jobs || {}).length) {
+    item.append(renderJobsMini(building.jobs));
+  } else if (building.housing || building.amenities) {
+    const extra = document.createElement("span");
+    extra.className = "planet-catalog-extra";
     const parts = [];
     if (building.housing) parts.push(t(currentLang, "planetSimHousingLabel")(formatAmount(divideEffect(building.housing))));
     if (building.amenities) parts.push(t(currentLang, "planetSimAmenitiesLabel")(formatAmount(divideEffect(building.amenities))));
     extra.textContent = parts.join(" · ");
-    body.append(extra);
+    item.append(extra);
   }
 
-  card.append(body);
-
-  const atLimit = building.colonyLimit !== "none" && count >= building.colonyLimit;
-  const disabled = slotsFull || atLimit;
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "planet-add-btn";
-  button.textContent = t(currentLang, "planetSimAddButton");
-  button.disabled = disabled;
-  button.title = atLimit ? t(currentLang, "planetSimLimitReached") : (slotsFull ? t(currentLang, "planetSimSlotsFull") : "");
-  button.addEventListener("click", () => {
+  item.addEventListener("click", () => {
     if (!canAdd(building)) return;
-    built.set(building.id, buildingCount(building.id) + 1);
+    builtSlots.push(building.id);
     refresh();
   });
-  card.append(button);
 
-  return card;
-}
-
-function renderSelected() {
-  if (!selectedEl) return;
-  selectedEl.replaceChildren();
-
-  const ids = [...built.keys()].filter((id) => built.get(id) > 0);
-
-  if (selectedEmptyEl) selectedEmptyEl.hidden = ids.length > 0;
-
-  ids.forEach((id) => {
-    const building = buildingsById.get(id);
-    const count = buildingCount(id);
-    const item = document.createElement("div");
-    item.className = "planet-selected-item";
-
-    const header = document.createElement("div");
-    header.className = "planet-selected-header";
-    const name = document.createElement("span");
-    name.textContent = `${buildingDisplayName(building)}${count > 1 ? ` ×${count}` : ""}`;
-    header.append(name);
-
-    const removeButton = document.createElement("button");
-    removeButton.type = "button";
-    removeButton.className = "planet-remove-btn";
-    removeButton.textContent = t(currentLang, "planetSimRemoveButton");
-    removeButton.addEventListener("click", () => {
-      const next = buildingCount(id) - 1;
-      if (next <= 0) built.delete(id);
-      else built.set(id, next);
-      refresh();
-    });
-    header.append(removeButton);
-
-    item.append(header);
-    item.append(renderJobsList(
-      Object.fromEntries(Object.entries(building.jobs || {}).map(([jobId, amount]) => [jobId, divideEffect(amount) * count]))
-    ));
-    selectedEl.append(item);
-  });
+  return item;
 }
 
 function renderSummary(totals) {
@@ -349,6 +377,7 @@ function renderSummary(totals) {
     empty.className = "planet-summary-empty";
     empty.textContent = t(currentLang, "planetSimSummaryEmpty");
     summaryEl.append(empty);
+    if (nonResourceEl) nonResourceEl.replaceChildren();
     return;
   }
 
@@ -432,14 +461,7 @@ function renderSlots() {
     slotsLabel.textContent = t(currentLang, "planetSimSlotsLabel")(used, total);
   }
 
-  if (slotsBar) {
-    slotsBar.replaceChildren();
-    for (let i = 0; i < total; i += 1) {
-      const seg = document.createElement("span");
-      seg.className = `planet-slot-segment${i < used ? " is-filled" : ""}`;
-      slotsBar.append(seg);
-    }
-  }
+  renderSlotsGrid();
 }
 
 function renderStats(totals) {
@@ -452,7 +474,6 @@ function refresh() {
   renderSlots();
   renderStats(totals);
   renderCatalog();
-  renderSelected();
   renderSummary(totals);
   renderProduction(totals);
   renderUpkeep(totals);

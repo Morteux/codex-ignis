@@ -31,10 +31,9 @@
       </section>
 
       <section class="planet-header-panel" aria-label="Estado de la colonia">
-        <div class="planet-header-stat planet-header-stat--slots">
-          <span class="planet-slots-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</span>
-          <span class="planet-slots-count" id="planet-slots-label">6 / 6 ranuras usadas</span>
-          <div class="planet-slots-bar" id="planet-slots-bar" aria-hidden="true"></div>
+        <div class="planet-header-stat">
+          <span class="planet-header-stat-label" data-i18n="planetSimSlotsHeading">Ranuras de edificios</span>
+          <span class="planet-header-stat-value" id="planet-slots-label">6 / 6 ranuras usadas</span>
         </div>
         <div class="planet-header-stat">
           <span class="planet-header-stat-label" data-i18n="planetSimStatHousingShort">Vivienda</span>
@@ -52,22 +51,16 @@
       <p class="planet-slots-note" data-i18n="planetSimSlotsNote">Cada colonia empieza con 6 ranuras en su distrito principal. Cada especialización de distrito con ranuras (p. ej. minería, energía o agricultura especializadas) añade 3 más, hasta un máximo de 21 por colonia.</p>
 
       <section class="planet-shell">
-        <div class="planet-catalog-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimCatalogHeading">Catálogo de edificios</h2>
-          <div id="planet-catalog"></div>
-        </div>
+        <div class="planet-main-panel">
+          <div class="planet-slots-panel">
+            <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</h2>
+            <div id="planet-slots-grid" class="planet-slots-grid"></div>
+          </div>
 
-        <aside class="planet-sidebar">
           <div class="planet-production-panel">
             <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimProductionHeading">Producción total de recursos</h2>
             <div id="planet-production"></div>
             <div id="planet-upkeep"></div>
-          </div>
-
-          <div class="planet-selected-panel">
-            <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSelectedHeading">Edificios construidos</h2>
-            <p class="planet-selected-empty" id="planet-selected-empty" data-i18n="planetSimSelectedEmpty">Todavía no has construido ningún edificio.</p>
-            <div id="planet-selected-list"></div>
           </div>
 
           <div class="planet-summary-panel">
@@ -75,6 +68,11 @@
             <div id="planet-summary"></div>
             <div id="planet-nonresource"></div>
           </div>
+        </div>
+
+        <aside class="planet-catalog-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimCatalogHeading">Catálogo de edificios</h2>
+          <div id="planet-catalog"></div>
         </aside>
       </section>
 
