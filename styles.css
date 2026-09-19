@@ -928,26 +928,46 @@ h1 {
 
 /* ── Simulador de planetas de Stellaris (planet-sim.html) ──────────────── */
 
-.planet-controls {
+.planet-header-panel {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 1rem 1.6rem;
-    padding: 1.2rem 1.35rem;
-    margin-bottom: 1.6rem;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: .6rem;
     border: 1px solid var(--line);
     background: rgba(8, 22, 14, .7);
+    overflow: hidden;
 }
 
-.planet-slots-box {
+.planet-header-stat {
     display: flex;
     flex-direction: column;
-    gap: .25rem;
+    justify-content: center;
+    gap: .3rem;
+    padding: 1rem 1.3rem;
+    border-right: 1px solid var(--line-soft);
+}
+
+.planet-header-stat--slots {
+    flex: 1 1 260px;
+    justify-content: flex-start;
+}
+
+.planet-header-stat-label {
+    color: var(--muted);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.planet-header-stat-value {
+    color: var(--accent);
+    font: 700 1.3rem var(--mono);
 }
 
 .planet-slots-heading {
     color: var(--muted);
-    font: 700 .68rem var(--mono);
+    font: 700 .66rem var(--mono);
     letter-spacing: .06em;
     text-transform: uppercase;
 }
@@ -957,17 +977,38 @@ h1 {
     font: 700 1.1rem var(--mono);
 }
 
+.planet-slots-bar {
+    display: flex;
+    gap: .2rem;
+    margin-top: .3rem;
+}
+
+.planet-slot-segment {
+    flex: 1 1 auto;
+    height: .5rem;
+    max-width: 1.4rem;
+    background: var(--line-soft);
+    border: 1px solid var(--line);
+}
+
+.planet-slot-segment.is-filled {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
 .planet-spec-control {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: .35rem;
+    padding: 1rem 1.3rem;
     color: var(--muted);
-    font: .74rem var(--mono);
+    font: .72rem var(--mono);
 }
 
 .planet-spec-control input {
     width: 5rem;
-    padding: .4rem .55rem;
+    padding: .35rem .55rem;
     border: 1px solid var(--line);
     color: var(--text);
     background: var(--surface);
@@ -979,8 +1020,7 @@ h1 {
 }
 
 .planet-slots-note {
-    flex: 1 1 260px;
-    margin: 0;
+    margin: 0 0 1.6rem;
     color: var(--muted);
     font-size: .76rem;
     line-height: 1.55;
@@ -988,14 +1028,15 @@ h1 {
 
 .planet-shell {
     display: grid;
-    grid-template-columns: minmax(0, 1.7fr) minmax(260px, 1fr);
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
     gap: 1.4rem;
     align-items: start;
 }
 
 .planet-catalog-panel,
 .planet-selected-panel,
-.planet-summary-panel {
+.planet-summary-panel,
+.planet-production-panel {
     padding: 1.2rem 1.35rem;
     border: 1px solid var(--line);
     background: rgba(8, 22, 14, .7);
@@ -1022,9 +1063,9 @@ h1 {
     margin-top: 0;
 }
 
-.planet-building-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+.planet-building-row {
+    display: flex;
+    flex-wrap: wrap;
     gap: .8rem;
 }
 
@@ -1032,9 +1073,16 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: .6rem;
+    width: 100%;
+    max-width: 15.5rem;
     padding: .8rem;
     border: 1px solid var(--line);
     background: var(--surface);
+}
+
+.planet-building-card.is-built {
+    border-color: var(--accent-dim);
+    background: rgba(167, 245, 106, .05);
 }
 
 .planet-building-icon {
@@ -1055,6 +1103,11 @@ h1 {
     color: var(--text);
     font-size: .88rem;
     line-height: 1.3;
+}
+
+.planet-building-count {
+    color: var(--accent);
+    font-weight: 700;
 }
 
 .planet-building-limit {
@@ -1152,13 +1205,75 @@ h1 {
     font-size: .82rem;
 }
 
+.planet-resource-row {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .35rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    font: .78rem var(--mono);
+}
+
+.planet-resource-row:last-child {
+    border-bottom: 0;
+}
+
+.planet-resource-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.planet-resource-name {
+    flex: 1;
+    color: var(--muted);
+}
+
+.planet-resource-value {
+    font-weight: 700;
+}
+
+.planet-resource-row.is-positive .planet-resource-value {
+    color: var(--accent);
+}
+
+.planet-resource-row.is-negative .planet-resource-value {
+    color: #ff8a7a;
+}
+
+#planet-upkeep {
+    margin-top: .9rem;
+}
+
+.planet-nonresource-heading {
+    margin: 1rem 0 .5rem;
+    color: var(--muted);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.planet-nonresource-line {
+    margin: 0 0 .35rem;
+    color: var(--text);
+    font-size: .76rem;
+}
+
 @media (max-width: 700px) {
     .planet-shell {
         grid-template-columns: 1fr;
     }
 
-    .planet-controls {
+    .planet-header-panel {
         flex-direction: column;
-        align-items: flex-start;
+    }
+
+    .planet-header-stat,
+    .planet-spec-control {
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+    }
+
+    .planet-building-card {
+        max-width: none;
     }
 }

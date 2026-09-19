@@ -1,35 +1,43 @@
 /**
  * Datos del Simulador de Planetas (planet-sim.html).
  *
- * Primera versión: solo cubre edificios y los empleos que aportan, respetando
- * el límite real de ranuras de edificios de una colonia. Los números de
- * empleos, mantenimiento y coste están sacados de la wiki oficial de
- * Stellaris (páginas Buildings, Resource buildings, Industry buildings,
- * Research buildings, Unity buildings; versión 4.4), no son inventados.
+ * Fuentes: wiki oficial de Stellaris (Buildings, Resource/Industry/Research/
+ * Unity buildings, Jobs, Districts; versión 4.4). No hay números inventados;
+ * donde la wiki no da un valor exacto y se usa el valor base estable y bien
+ * documentado de la comunidad, se anota junto al dato.
  *
- * Nota sobre las ranuras de edificios: en la versión actual del juego, cada
- * colonia empieza con 6 ranuras en su distrito principal, y cada
- * especialización de distrito con ranuras (minería, energía o agricultura
- * especializadas, investigación, etc.) añade 3 ranuras más, hasta un máximo
- * de 21 por colonia. El sistema completo de especializaciones de distrito
- * (con sus propios sets de edificios) es mucho más complejo y se dejará para
- * una futura versión; de momento, el simulador solo pide cuántas
- * especializaciones con ranuras tiene la colonia y calcula el total con esa
- * fórmula real (6 + 3 × especializaciones, tope 21).
+ * ── Sobre la escala ×100 ───────────────────────────────────────────────
+ * Los efectos de los edificios (empleos que otorgan, vivienda, comodidades)
+ * están guardados aquí TAL CUAL aparecen en la wiki: como enteros ×100
+ * (p. ej. "+200 Metalúrgicos" se guarda como 200, no como 2). Esto es a
+ * propósito, para poder copiar y pegar los números directamente de la wiki
+ * al añadir edificios nuevos sin tener que hacer la división mentalmente.
+ * La división por 100 se hace en un único sitio (EFFECT_SCALE / divideEffect)
+ * y se aplica siempre en el momento de calcular o mostrar, nunca al guardar
+ * los datos.
+ * El mantenimiento (upkeep) y el coste de construcción NO usan esta escala:
+ * en la wiki ya aparecen como números normales (p. ej. "-2 energía" es -2,
+ * no -200), así que se guardan tal cual.
  *
  * ── Origen de las imágenes ─────────────────────────────────────────────
  * Igual que en el bingo (ver js/bingo-data.js), las imágenes se sirven desde
- * la API de assets de Stellaris (https://morteux.github.io/StellarisAssets/),
- * nunca en local. Los nombres de archivo usados aquí son los mismos que la
- * wiki oficial usa para cada edificio/empleo. Cuando se enlacen las imágenes
- * definitivamente, solo hay que revisar que esas rutas existan en la API; no
- * hace falta tocar nada más de este archivo.
+ * la API de assets de Stellaris (https://morteux.github.io/StellarisAssets/).
+ * Las rutas de aquí se han verificado contra el árbol de esa API: las
+ * carpetas "buildings/" y "jobs/" usan nombres en minúsculas
+ * (p. ej. "building_precinct_house.png", "job_technician.png"), mientras que
+ * "resources/" usa mayúscula inicial (p. ej. "Energy.png", "Alloys.png").
  */
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
 
 export const IMAGE_BASE = STELLARIS_ASSETS_BASE;
 
-/** Reglas reales de ranuras de edificios de una colonia (ver nota arriba). */
+/** Los efectos de edificio (empleos, vivienda, comodidades) se guardan ×100; se dividen aquí, en un único sitio. */
+export const EFFECT_SCALE = 100;
+export function divideEffect(rawAmount) {
+  return rawAmount / EFFECT_SCALE;
+}
+
+/** Reglas reales de ranuras de edificios de una colonia. */
 export const BUILDING_SLOT_RULES = {
   base: 6,
   perSpecialization: 3,
@@ -42,7 +50,22 @@ export function calculateBuildingSlots(specializations) {
   return Math.min(BUILDING_SLOT_RULES.max, BUILDING_SLOT_RULES.base + clamped * BUILDING_SLOT_RULES.perSpecialization);
 }
 
-/** Diccionario de empleos: id -> { i18nKey, img }. */
+/** Diccionario de recursos: id -> { i18nKey, img (dentro de resources/) }. */
+export const RESOURCES = {
+  energy: { i18nKey: "resourceEnergy", img: "resources/Energy.png" },
+  minerals: { i18nKey: "resourceMinerals", img: "resources/Minerals.png" },
+  food: { i18nKey: "resourceFood", img: "resources/Food.png" },
+  alloys: { i18nKey: "resourceAlloys", img: "resources/Alloys.png" },
+  consumer_goods: { i18nKey: "resourceConsumerGoods", img: "resources/Consumer_goods.png" },
+  unity: { i18nKey: "resourceUnity", img: "resources/Unity.png" },
+  physics: { i18nKey: "resourcePhysics", img: "resources/Physics_research.png" },
+  society: { i18nKey: "resourceSociety", img: "resources/Society_research.png" },
+  engineering: { i18nKey: "resourceEngineering", img: "resources/Engineering_research.png" },
+  amenities: { i18nKey: "resourceAmenities", img: "resources/Amenities.png" },
+  trade: { i18nKey: "resourceTrade", img: "resources/Trade.png" }
+};
+
+/** Diccionario de empleos: id -> { i18nKey, img (dentro de jobs/) }. */
 export const JOBS = {
   technician: { i18nKey: "jobTechnician", img: "jobs/job_technician.png" },
   miner: { i18nKey: "jobMiner", img: "jobs/job_miner.png" },
@@ -62,18 +85,66 @@ export const JOBS = {
 };
 
 /**
+ * Salida de recursos BASE de cada empleo (un pop trabajándolo), en números
+ * normales (sin escala ×100, porque la wiki los da ya así en la página
+ * "Jobs"). Fuente y confianza de cada uno:
+ *  - technician (+6 energía) y miner (+4 minerales): confirmados
+ *    directamente en la wiki (tabla "Basic resource jobs").
+ *  - farmer (+4 comida): mismo patrón que miner, ambos son el "recurso
+ *    básico" del early game; valor estable desde hace muchas versiones.
+ *  - metallurgist (+2 aleaciones, -1 mineral) y artisan (+2 bienes de
+ *    consumo, -1 mineral): valores base estables de estos dos empleos
+ *    (los edificios de nivel 2/3 SÍ están confirmados exactamente en la
+ *    wiki, ver jobs de metallurgist/artisan en BUILDINGS más abajo).
+ *  - physicist/engineer/biologist (+4 investigación de su tipo),
+ *    entertainer (+4 comodidades), trader (+2 comercio), priest y
+ *    bureaucrat (+2 cohesión): valores base estables y ampliamente
+ *    documentados por la comunidad.
+ *  - enforcer, educator y soldier no producen un recurso de los que se
+ *    trackean aquí (reducen delincuencia, mejoran estabilidad o generan
+ *    ejércitos de defensa respectivamente), así que no suman a los
+ *    totales de recursos; ver "effectNote".
+ * Si algún número no encaja con lo que ves en partida, es la primera
+ * tabla a revisar y ajustar.
+ */
+export const JOB_OUTPUTS = {
+  technician: { energy: 6 },
+  miner: { minerals: 4 },
+  farmer: { food: 4 },
+  metallurgist: { alloys: 2, minerals: -1 },
+  artisan: { consumer_goods: 2, minerals: -1 },
+  physicist: { physics: 4 },
+  engineer: { engineering: 4 },
+  biologist: { society: 4 },
+  entertainer: { amenities: 4 },
+  trader: { trade: 2 },
+  priest: { unity: 2 },
+  bureaucrat: { unity: 2 },
+  enforcer: {},
+  educator: {},
+  soldier: {}
+};
+
+/** Efecto no numérico de los empleos que no producen un recurso trackeado. */
+export const JOB_EFFECT_NOTES = {
+  enforcer: "jobEffectEnforcer",
+  educator: "jobEffectEducator",
+  soldier: "jobEffectSoldier"
+};
+
+/**
  * Catálogo de edificios.
  *
- * - jobs: { jobId: cantidad } que aporta UNA copia del edificio (cantidades
- *   reales de la wiki; los laboratorios de investigación genéricos dan
- *   cantidades con decimales porque son más débiles que los laboratorios
- *   especializados de física/sociedad/ingeniería, que se añadirán más
- *   adelante).
- * - housing / amenities: vivienda y comodidades que aporta una copia.
- * - colonyLimit: "none" (sin límite, se puede repetir) o 1 (máximo una copia
- *   por colonia, normalmente porque forma parte de una cadena de mejora).
- * - upkeep / cost: texto informativo tal cual aparece en la wiki (no se
- *   simula la economía de recursos todavía, solo se muestra como referencia).
+ * - jobs: { jobId: cantidad ×100 } tal cual la wiki (ver nota de escala
+ *   arriba). Una copia del edificio aporta esa cantidad / 100 de cada
+ *   empleo.
+ * - upkeep: { resourceId: cantidad } mantenimiento POR COPIA, en números
+ *   normales (negativo = consumo). Viene directo de la wiki.
+ * - housing / amenities: ×100 igual que los empleos.
+ * - colonyLimit: "none" (sin límite) o 1 (máximo una copia, normalmente
+ *   por pertenecer a una cadena de mejora).
+ * - cost: texto informativo de coste de construcción (no se simula el
+ *   almacén de recursos todavía, solo se muestra como referencia).
  */
 export const BUILDINGS = [
   // ── Recursos básicos (sin límite por colonia) ──────────────────────
@@ -82,9 +153,9 @@ export const BUILDINGS = [
     img: "buildings/building_generator_generic.png",
     i18nKey: "buildingVoltaicYard",
     category: "resource",
-    jobs: { technician: 2 },
+    jobs: { technician: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -92,9 +163,9 @@ export const BUILDINGS = [
     img: "buildings/building_mine_generic.png",
     i18nKey: "buildingQuarryDepot",
     category: "resource",
-    jobs: { miner: 2 },
+    jobs: { miner: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado)"
   },
   {
@@ -102,9 +173,9 @@ export const BUILDINGS = [
     img: "buildings/building_hydroponics_farm.png",
     i18nKey: "buildingHydroponicsFarm",
     category: "resource",
-    jobs: { farmer: 2 },
+    jobs: { farmer: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
 
@@ -115,9 +186,9 @@ export const BUILDINGS = [
     i18nKey: "buildingAlloyFoundries",
     category: "foundry",
     tier: 1,
-    jobs: { metallurgist: 2 },
+    jobs: { metallurgist: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -127,9 +198,11 @@ export const BUILDINGS = [
     category: "foundry",
     tier: 2,
     upgradesFrom: "alloy_foundries",
-    jobs: { metallurgist: 4 },
+    jobs: { metallurgist: 400 },
+    // Confirmado en la wiki (Jobs#Metallurgist): esta mejora añade +1 Aleación / -2 Minerales por Metalúrgico.
+    jobBonus: { alloys: 1, minerals: -2 },
     colonyLimit: "none",
-    upkeep: "−5 energía, −2 minerales",
+    upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)"
   },
   {
@@ -139,9 +212,11 @@ export const BUILDINGS = [
     category: "foundry",
     tier: 3,
     upgradesFrom: "alloy_mega_forges",
-    jobs: { metallurgist: 6 },
+    jobs: { metallurgist: 600 },
+    // Confirmado en la wiki (Jobs#Metallurgist): +2 Aleaciones / -4 Minerales por Metalúrgico.
+    jobBonus: { alloys: 2, minerals: -4 },
     colonyLimit: "none",
-    upkeep: "−8 energía, −4 minerales",
+    upkeep: { energy: -8, minerals: -4 },
     cost: "480 minerales (800 si está asentado, 200 aleaciones)"
   },
 
@@ -152,9 +227,9 @@ export const BUILDINGS = [
     i18nKey: "buildingCivilianIndustries",
     category: "factory",
     tier: 1,
-    jobs: { artisan: 2 },
+    jobs: { artisan: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -164,9 +239,11 @@ export const BUILDINGS = [
     category: "factory",
     tier: 2,
     upgradesFrom: "civilian_industries",
-    jobs: { artisan: 4 },
+    jobs: { artisan: 400 },
+    // Confirmado en la wiki (Jobs#Artisan): +1 Bien de consumo / -1 Mineral por Artesano.
+    jobBonus: { consumer_goods: 1, minerals: -1 },
     colonyLimit: "none",
-    upkeep: "−5 energía, −2 minerales",
+    upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)"
   },
   {
@@ -176,9 +253,11 @@ export const BUILDINGS = [
     category: "factory",
     tier: 3,
     upgradesFrom: "civilian_fabricators",
-    jobs: { artisan: 6 },
+    jobs: { artisan: 600 },
+    // Confirmado en la wiki (Jobs#Artisan): +2 Bienes de consumo / -2 Minerales por Artesano.
+    jobBonus: { consumer_goods: 2, minerals: -2 },
     colonyLimit: "none",
-    upkeep: "−8 energía, −4 minerales",
+    upkeep: { energy: -8, minerals: -4 },
     cost: "600 minerales (800 si está asentado, 200 aleaciones)"
   },
 
@@ -189,9 +268,9 @@ export const BUILDINGS = [
     i18nKey: "buildingResearchLabs",
     category: "research",
     tier: 1,
-    jobs: { physicist: 0.6, engineer: 0.6, biologist: 0.6 },
+    jobs: { physicist: 60, engineer: 60, biologist: 60 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -201,9 +280,9 @@ export const BUILDINGS = [
     category: "research",
     tier: 2,
     upgradesFrom: "research_labs",
-    jobs: { physicist: 1.2, engineer: 1.2, biologist: 1.2 },
+    jobs: { physicist: 120, engineer: 120, biologist: 120 },
     colonyLimit: "none",
-    upkeep: "−5 energía, −1 mineral",
+    upkeep: { energy: -5, minerals: -1 },
     cost: "480 minerales (600 si está asentado, 50 aleaciones)"
   },
   {
@@ -213,9 +292,9 @@ export const BUILDINGS = [
     category: "research",
     tier: 3,
     upgradesFrom: "research_complexes",
-    jobs: { physicist: 1.8, engineer: 1.8, biologist: 1.8 },
+    jobs: { physicist: 180, engineer: 180, biologist: 180 },
     colonyLimit: "none",
-    upkeep: "−8 energía, −2 minerales",
+    upkeep: { energy: -8, minerals: -2 },
     cost: "600 minerales (800 si está asentado, 100 aleaciones)"
   },
 
@@ -226,9 +305,9 @@ export const BUILDINGS = [
     i18nKey: "buildingPrecinctHouses",
     category: "civic",
     tier: 1,
-    jobs: { enforcer: 2 },
+    jobs: { enforcer: 200 },
     colonyLimit: 1,
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -238,9 +317,9 @@ export const BUILDINGS = [
     category: "civic",
     tier: 2,
     upgradesFrom: "precinct_houses",
-    jobs: { enforcer: 5 },
+    jobs: { enforcer: 500 },
     colonyLimit: 1,
-    upkeep: "−2 energía, −1 mineral",
+    upkeep: { energy: -2, minerals: -1 },
     cost: "480 minerales (600 si está asentado, 50 aleaciones)"
   },
   {
@@ -249,9 +328,9 @@ export const BUILDINGS = [
     i18nKey: "buildingStateAcademy",
     category: "civic",
     tier: 1,
-    jobs: { educator: 2 },
+    jobs: { educator: 200 },
     colonyLimit: 1,
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -261,9 +340,9 @@ export const BUILDINGS = [
     category: "civic",
     tier: 2,
     upgradesFrom: "state_academy",
-    jobs: { educator: 5 },
+    jobs: { educator: 500 },
     colonyLimit: 1,
-    upkeep: "−2 energía, −1 mineral",
+    upkeep: { energy: -2, minerals: -1 },
     cost: "480 minerales (600 si está asentado, 50 aleaciones)"
   },
   {
@@ -271,9 +350,9 @@ export const BUILDINGS = [
     img: "buildings/building_bureaucratic_1.png",
     i18nKey: "buildingAdministrativeOffices",
     category: "civic",
-    jobs: { bureaucrat: 2 },
+    jobs: { bureaucrat: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
 
@@ -284,9 +363,9 @@ export const BUILDINGS = [
     i18nKey: "buildingStronghold",
     category: "military",
     tier: 1,
-    jobs: { soldier: 2 },
+    jobs: { soldier: 200 },
     colonyLimit: 1,
-    upkeep: "−1 mineral",
+    upkeep: { minerals: -1 },
     cost: "240 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -296,9 +375,9 @@ export const BUILDINGS = [
     category: "military",
     tier: 2,
     upgradesFrom: "stronghold",
-    jobs: { soldier: 4 },
+    jobs: { soldier: 400 },
     colonyLimit: 1,
-    upkeep: "−1 mineral, −1 aleación",
+    upkeep: { minerals: -1, alloys: -1 },
     cost: "360 minerales (600 si está asentado, 50 aleaciones)"
   },
 
@@ -308,9 +387,9 @@ export const BUILDINGS = [
     img: "buildings/building_commercial_zone.png",
     i18nKey: "buildingCommercialZones",
     category: "other",
-    jobs: { trader: 2 },
+    jobs: { trader: 200 },
     colonyLimit: 1,
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -318,13 +397,13 @@ export const BUILDINGS = [
     img: "buildings/building_holo_theatres.png",
     i18nKey: "buildingHoloTheatres",
     category: "other",
-    jobs: { entertainer: 2 },
+    jobs: { entertainer: 200 },
     colonyLimit: 1,
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
 
-  // ── Vivienda (sin empleos: vivienda y comodidades) ─────────────────
+  // ── Vivienda (sin empleos: vivienda y comodidades, ambos ×100) ─────
   {
     id: "luxury_residences",
     img: "buildings/building_luxury_residence.png",
@@ -332,10 +411,10 @@ export const BUILDINGS = [
     category: "housing",
     tier: 1,
     jobs: {},
-    housing: 15,
-    amenities: 15,
+    housing: 1500,
+    amenities: 1500,
     colonyLimit: 1,
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   },
   {
@@ -346,10 +425,10 @@ export const BUILDINGS = [
     tier: 2,
     upgradesFrom: "luxury_residences",
     jobs: {},
-    housing: 30,
-    amenities: 30,
+    housing: 3000,
+    amenities: 3000,
     colonyLimit: 1,
-    upkeep: "−3 energía, −1 aleación",
+    upkeep: { energy: -3, alloys: -1 },
     cost: "480 minerales (600 si está asentado, 50 aleaciones)"
   },
 
@@ -359,9 +438,9 @@ export const BUILDINGS = [
     img: "buildings/building_temple.png",
     i18nKey: "buildingTemple",
     category: "unity",
-    jobs: { priest: 2 },
+    jobs: { priest: 200 },
     colonyLimit: "none",
-    upkeep: "−2 energía",
+    upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)"
   }
 ];
