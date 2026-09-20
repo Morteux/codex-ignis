@@ -37,18 +37,140 @@ export function divideEffect(rawAmount) {
   return rawAmount / EFFECT_SCALE;
 }
 
-/** Reglas reales de ranuras de edificios de una colonia. */
+/**
+ * Reglas reales de ranuras de edificios de una colonia:
+ * - 6 ranuras base en el distrito principal (una de ellas la ocupa siempre
+ *   el edificio capital, ver CAPITAL_TIERS).
+ * - Cada distrito urbano añade 3 ranuras más (siempre, esté o no especializado).
+ * - Cada categoría de distrito de recursos básicos (generador/minería/
+ *   agricultura) que tenga una especialización con ranuras elegida añade
+ *   3 ranuras más (una vez por categoría, no por copia de distrito).
+ * - Tope real de 21 ranuras de edificios por colonia, venga de donde venga
+ *   el resto de ranuras.
+ */
 export const BUILDING_SLOT_RULES = {
   base: 6,
-  perSpecialization: 3,
-  max: 21,
-  maxSpecializations: 5 // (21 - 6) / 3
+  perExtraGroup: 3,
+  max: 21
 };
 
-export function calculateBuildingSlots(specializations) {
-  const clamped = Math.max(0, Math.min(BUILDING_SLOT_RULES.maxSpecializations, specializations | 0));
-  return Math.min(BUILDING_SLOT_RULES.max, BUILDING_SLOT_RULES.base + clamped * BUILDING_SLOT_RULES.perSpecialization);
+/** urbanDistricts: nº de distritos urbanos. specializedResourceCategories: nº de categorías (generador/minería/agricultura) con especialización elegida. */
+export function calculateBuildingSlots(urbanDistricts, specializedResourceCategories) {
+  const urban = Math.max(0, urbanDistricts | 0);
+  const specialized = Math.max(0, Math.min(3, specializedResourceCategories | 0));
+  const raw = BUILDING_SLOT_RULES.base + (urban + specialized) * BUILDING_SLOT_RULES.perExtraGroup;
+  return Math.min(BUILDING_SLOT_RULES.max, raw);
 }
+
+/**
+ * Edificio capital: SIEMPRE presente, ocupa la primera ranura del distrito
+ * principal, nunca se puede demoler ni desactivar — solo mejorar o degradar
+ * de nivel. Datos reales de la wiki (página "Capital building", set
+ * "estándar"/individualista). Simplificación de esta versión: no se
+ * modelan los empleos secundarios de cada nivel (Robotista, Noble,
+ * Animador, Trabajador médico/cultural), solo vivienda, comodidades,
+ * Político y Agente.
+ */
+export const CAPITAL_TIERS = [
+  {
+    id: "colony_shelter",
+    img: "buildings/building_colony_shelter.png",
+    i18nKey: "buildingColonyShelter",
+    housing: 300,
+    amenities: 300,
+    jobs: {}
+  },
+  {
+    id: "planetary_administration",
+    img: "buildings/building_capital.png",
+    i18nKey: "buildingPlanetaryAdministration",
+    housing: 1000,
+    amenities: 1000,
+    jobs: { politician: 200, enforcer: 100 }
+  },
+  {
+    id: "planetary_capital",
+    img: "buildings/building_major_capital.png",
+    i18nKey: "buildingPlanetaryCapital",
+    housing: 1500,
+    amenities: 1500,
+    jobs: { politician: 300, enforcer: 200 }
+  },
+  {
+    id: "system_capital_complex",
+    img: "buildings/building_system_capital.png",
+    i18nKey: "buildingSystemCapitalComplex",
+    housing: 2000,
+    amenities: 2000,
+    jobs: { politician: 400, enforcer: 300 }
+  },
+  {
+    id: "imperial_palace",
+    img: "buildings/building_palace.png",
+    i18nKey: "buildingImperialPalace",
+    housing: 3000,
+    amenities: 3000,
+    jobs: { politician: 600, enforcer: 500 }
+  }
+];
+
+/**
+ * Distritos. Cada categoría de recurso básico (generador/minería/
+ * agricultura) da un empleo base por copia del distrito (real, confirmado
+ * en la wiki: página Districts), y puede especializarse UNA vez por
+ * categoría (no por copia) en la opción más sencilla y mejor documentada de
+ * la wiki (página "District specialization"): añade 3 ranuras de edificio y
+ * un empleo extra por copia de distrito. El distrito urbano siempre da 3
+ * ranuras por copia y no se modela con empleos propios en esta versión
+ * (simplificación: se ignoran sus propias especializaciones, como Mixed
+ * Industry, que darían empleos de fábrica/fundición en vez de ranuras).
+ */
+export const DISTRICTS = {
+  urban: {
+    i18nKey: "districtUrban",
+    img: "districs/district_city.png",
+    slotsPerDistrict: 3,
+    jobs: {}
+  },
+  generator: {
+    i18nKey: "districtGenerator",
+    img: "districs/district_generator.png",
+    jobs: { technician: 200 },
+    specialization: {
+      i18nKey: "specializationEnergyGeneration",
+      techI18nKey: "specializationRequiresEnergy",
+      img: "districts_specialization/District_specialization_energy.png",
+      jobs: { technician: 100 },
+      slots: 3
+    }
+  },
+  mining: {
+    i18nKey: "districtMining",
+    img: "districs/district_mining.png",
+    jobs: { miner: 200 },
+    specialization: {
+      i18nKey: "specializationMineralExtraction",
+      techI18nKey: "specializationRequiresMinerals",
+      img: "districts_specialization/District_specialization_minerals.png",
+      jobs: { miner: 100 },
+      slots: 3
+    }
+  },
+  agriculture: {
+    i18nKey: "districtAgriculture",
+    img: "districs/district_farming.png",
+    jobs: { farmer: 200 },
+    specialization: {
+      i18nKey: "specializationAgriculturalFocus",
+      techI18nKey: "specializationRequiresFood",
+      img: "districts_specialization/District_specialization_food.png",
+      jobs: { farmer: 100 },
+      slots: 3
+    }
+  }
+};
+
+export const RESOURCE_DISTRICT_ORDER = ["generator", "mining", "agriculture"];
 
 /** Diccionario de recursos: id -> { i18nKey, img (dentro de resources/) }. */
 export const RESOURCES = {
@@ -58,6 +180,7 @@ export const RESOURCES = {
   alloys: { i18nKey: "resourceAlloys", img: "resources/Alloys.png" },
   consumer_goods: { i18nKey: "resourceConsumerGoods", img: "resources/Consumer_goods.png" },
   unity: { i18nKey: "resourceUnity", img: "resources/Unity.png" },
+
   physics: { i18nKey: "resourcePhysics", img: "resources/Physics_research.png" },
   society: { i18nKey: "resourceSociety", img: "resources/Society_research.png" },
   engineering: { i18nKey: "resourceEngineering", img: "resources/Engineering_research.png" },
@@ -81,7 +204,8 @@ export const JOBS = {
   engineer: { i18nKey: "jobEngineer", img: "jobs/job_engineer.png" },
   biologist: { i18nKey: "jobBiologist", img: "jobs/job_biologist.png" },
   priest: { i18nKey: "jobPriest", img: "jobs/job_priest.png" },
-  bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png" }
+  bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png" },
+  politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png" }
 };
 
 /**
@@ -120,6 +244,7 @@ export const JOB_OUTPUTS = {
   trader: { trade: 2 },
   priest: { unity: 2 },
   bureaucrat: { unity: 2 },
+  politician: { unity: 2 },
   enforcer: {},
   educator: {},
   soldier: {}

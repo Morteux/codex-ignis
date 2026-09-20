@@ -934,7 +934,7 @@ h1 {
     flex-wrap: wrap;
     align-items: stretch;
     gap: 0;
-    margin-bottom: .6rem;
+    margin-bottom: 1.4rem;
     border: 1px solid var(--line);
     background: rgba(8, 22, 14, .7);
     overflow: hidden;
@@ -961,41 +961,11 @@ h1 {
     font: 700 1.2rem var(--mono);
 }
 
-.planet-spec-control {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: .35rem;
-    padding: 1rem 1.3rem;
-    color: var(--muted);
-    font: .72rem var(--mono);
-}
-
-.planet-spec-control input {
-    width: 5rem;
-    padding: .35rem .55rem;
-    border: 1px solid var(--line);
-    color: var(--text);
-    background: var(--surface);
-    font: 700 .9rem var(--mono);
-}
-
-.planet-spec-control input:focus-visible {
-    border-color: var(--accent-dim);
-}
-
-.planet-slots-note {
-    margin: 0 0 1.6rem;
-    color: var(--muted);
-    font-size: .76rem;
-    line-height: 1.55;
-}
-
-/* Disposición general: panel principal (ranuras + producción + resumen) a la
-   izquierda, catálogo de edificios construibles a la derecha. */
+/* ── Disposición general: panel principal a la izquierda, catálogo (con
+   pestañas Edificios/Distritos) en la barra lateral derecha. ──────────── */
 .planet-shell {
     display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(240px, .9fr);
+    grid-template-columns: minmax(0, 1.7fr) minmax(260px, .9fr);
     gap: 1.4rem;
     align-items: start;
 }
@@ -1039,24 +1009,124 @@ h1 {
     margin-top: 0;
 }
 
-/* ── Rejilla visual de ranuras ───────────────────────────────────────── */
+/* ── Control del edificio capital ───────────────────────────────────── */
 
-.planet-slots-grid {
+.planet-capital-control {
     display: flex;
-    flex-wrap: wrap;
-    gap: .9rem;
+    align-items: center;
+    gap: .8rem;
+    padding: .7rem .8rem;
+    margin-bottom: 1.1rem;
+    border: 1px solid #7a6a2a;
+    background: rgba(233, 255, 116, .05);
 }
 
-.planet-slot-group {
+.planet-capital-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: cover;
+    border: 1px solid var(--focus);
+    flex-shrink: 0;
+}
+
+.planet-capital-info {
     display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.planet-capital-name {
+    color: var(--text);
+    font-size: .8rem;
+}
+
+.planet-capital-tier {
+    color: var(--focus);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .04em;
+}
+
+.planet-capital-buttons {
+    display: flex;
+    gap: .4rem;
+    flex-shrink: 0;
+}
+
+.planet-capital-btn {
+    padding: .4rem .6rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-capital-btn:hover:not(:disabled) {
+    border-color: var(--focus);
+    color: var(--focus);
+}
+
+.planet-capital-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* ── Rejilla visual: fila superior (base + urbanos), fila inferior
+   (distritos de recursos básicos), centrada respecto a la superior. ──── */
+
+.planet-slots-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+}
+
+.planet-top-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
+}
+
+.planet-base-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 2.5rem);
+    grid-auto-rows: 2.5rem;
     gap: .3rem;
     padding: .3rem;
     border: 1px solid var(--line-soft);
 }
 
-.planet-slot-group.is-locked-group {
-    border-style: dashed;
-    opacity: .7;
+.planet-urban-wrapper {
+    padding: .3rem;
+    border: 1px solid var(--line-soft);
+    cursor: pointer;
+}
+
+.planet-urban-wrapper:hover {
+    border-color: var(--accent-dim);
+}
+
+.planet-urban-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 2.5rem);
+    grid-auto-rows: 2.5rem;
+    gap: .3rem;
+}
+
+.planet-district-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7.9rem;
+    height: 2.5rem;
+    color: var(--muted);
+    font-size: .68rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
 }
 
 .planet-slot {
@@ -1080,23 +1150,6 @@ h1 {
     cursor: not-allowed;
 }
 
-.planet-slot.is-locked.is-inactive {
-    cursor: pointer;
-    padding: 2px;
-    background: var(--surface);
-}
-
-.planet-slot.is-locked.is-inactive img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%) brightness(.6);
-}
-
-.planet-slot.is-locked.is-inactive:hover img {
-    filter: grayscale(60%) brightness(.8);
-}
-
 .planet-slot.is-filled {
     cursor: pointer;
     padding: 2px;
@@ -1118,11 +1171,116 @@ h1 {
     box-shadow: inset 0 0 0 1px var(--slot-limited);
 }
 
-.planet-slot.is-filled:hover {
+.planet-slot.is-filled.is-capital {
+    border-color: var(--focus);
+    box-shadow: inset 0 0 0 1px var(--focus);
+    cursor: default;
+}
+
+.planet-slot.is-filled.is-inactive {
+    cursor: pointer;
+    border-style: dashed;
+}
+
+.planet-slot.is-filled.is-inactive img {
+    filter: grayscale(100%) brightness(.6);
+}
+
+.planet-slot.is-filled.is-inactive:hover img {
+    filter: grayscale(60%) brightness(.8);
+}
+
+.planet-slot.is-filled:hover img {
     filter: brightness(1.25);
 }
 
-/* ── Catálogo de edificios (barra lateral, filas compactas y clicables) ─ */
+/* ── Distritos de recursos básicos (fila inferior, centrada) ────────── */
+
+.planet-resource-districts-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.planet-resource-district-box {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 13.5rem;
+    padding: .7rem .8rem;
+    border: 1px solid var(--line-soft);
+    cursor: pointer;
+}
+
+.planet-resource-district-box:hover {
+    border-color: var(--accent-dim);
+}
+
+.planet-resource-district-header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--text);
+    font-size: .76rem;
+}
+
+.planet-district-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    flex-shrink: 0;
+}
+
+.planet-resource-district-status {
+    margin: 0;
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.4;
+}
+
+.planet-district-slot-row {
+    display: flex;
+    gap: .3rem;
+}
+
+.planet-district-slot-row .planet-slot {
+    width: 2.1rem;
+    height: 2.1rem;
+}
+
+/* ── Pestañas Edificios / Distritos ──────────────────────────────────── */
+
+.planet-tabs {
+    display: flex;
+    gap: .3rem;
+    margin-bottom: 1.1rem;
+}
+
+.planet-tab {
+    flex: 1;
+    padding: .55rem 0;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-tab:hover {
+    color: var(--text);
+}
+
+.planet-tab.is-active {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* ── Catálogo de edificios (filas compactas y clicables) ────────────── */
 
 .planet-catalog-list {
     display: grid;
@@ -1204,6 +1362,127 @@ h1 {
 .planet-catalog-job-pill img {
     width: .85rem;
     height: .85rem;
+}
+
+/* ── Catálogo de distritos ────────────────────────────────────────────── */
+
+.planet-view-all-btn {
+    display: block;
+    margin-bottom: .9rem;
+    padding: .4rem .6rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-view-all-btn:hover {
+    color: var(--text);
+    border-color: var(--accent-dim);
+}
+
+.planet-district-card {
+    display: grid;
+    gap: .5rem;
+    padding: .8rem;
+    margin-bottom: .9rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.planet-district-card-header {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--text);
+    font-size: .8rem;
+}
+
+.planet-district-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.5;
+}
+
+.planet-count-control {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.planet-count-btn {
+    width: 1.8rem;
+    height: 1.8rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .9rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-count-btn:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.planet-count-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.planet-count-value {
+    min-width: 1.4rem;
+    color: var(--accent);
+    font: 700 .85rem var(--mono);
+    text-align: center;
+}
+
+.planet-district-spec-row {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding-top: .5rem;
+    border-top: 1px solid var(--line-soft);
+}
+
+.planet-district-spec-info {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    flex: 1;
+    min-width: 0;
+    font-size: .72rem;
+}
+
+.planet-district-spec-status {
+    color: var(--muted);
+    font-size: .66rem;
+}
+
+.planet-add-btn {
+    padding: .4rem .7rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.planet-add-btn:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.planet-add-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
 }
 
 /* ── Listas de empleos/recursos (paneles de resumen y producción) ──────── */
@@ -1311,14 +1590,34 @@ h1 {
         flex-direction: column;
     }
 
-    .planet-header-stat,
-    .planet-spec-control {
+    .planet-header-stat {
         border-right: 0;
         border-bottom: 1px solid var(--line-soft);
+    }
+
+    .planet-top-row {
+        flex-direction: column;
+        gap: .8rem;
+    }
+
+    .planet-slot,
+    .planet-base-grid,
+    .planet-urban-grid {
+        --slot-size: 2.1rem;
     }
 
     .planet-slot {
         width: 2.1rem;
         height: 2.1rem;
+    }
+
+    .planet-base-grid,
+    .planet-urban-grid {
+        grid-template-columns: repeat(3, 2.1rem);
+        grid-auto-rows: 2.1rem;
+    }
+
+    .planet-resource-district-box {
+        width: 100%;
     }
 }

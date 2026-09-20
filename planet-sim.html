@@ -40,21 +40,29 @@
           <span class="planet-header-stat-value" id="planet-stat-housing">0</span>
         </div>
         <div class="planet-header-stat">
-          <span class="planet-header-stat-label" data-i18n="planetSimStatAmenitiesShort">Comodidades</span>
+          <span class="planet-header-stat-label" data-i18n="planetSimStatAmenitiesShort">Servicios</span>
           <span class="planet-header-stat-value" id="planet-stat-amenities">0</span>
         </div>
-        <label class="planet-spec-control" for="planet-spec-input">
-          <span data-i18n="planetSimSpecInputLabel">Especializaciones de distrito con ranuras extra</span>
-          <input type="number" id="planet-spec-input" min="0" max="5" step="1" value="0" />
-        </label>
       </section>
-      <p class="planet-slots-note" data-i18n="planetSimSlotsNote">Cada colonia empieza con 6 ranuras en su distrito principal. Cada especialización de distrito con ranuras (p. ej. minería, energía o agricultura especializadas) añade 3 más, hasta un máximo de 21 por colonia.</p>
 
       <section class="planet-shell">
         <div class="planet-main-panel">
           <div class="planet-slots-panel">
             <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</h2>
-            <div id="planet-slots-grid" class="planet-slots-grid"></div>
+
+            <div class="planet-capital-control">
+              <img id="planet-capital-icon" class="planet-capital-icon" src="" alt="" />
+              <div class="planet-capital-info">
+                <span class="planet-capital-name" id="planet-capital-name" data-i18n="planetSimCapitalHeading">Edificio capital</span>
+                <span class="planet-capital-tier" id="planet-capital-tier"></span>
+              </div>
+              <div class="planet-capital-buttons">
+                <button type="button" id="planet-capital-downgrade" class="planet-capital-btn" data-i18n="planetSimCapitalDowngrade">Degradar</button>
+                <button type="button" id="planet-capital-upgrade" class="planet-capital-btn" data-i18n="planetSimCapitalUpgrade">Mejorar</button>
+              </div>
+            </div>
+
+            <div id="planet-slots-visual" class="planet-slots-visual"></div>
           </div>
 
           <div class="planet-production-panel">
@@ -71,8 +79,12 @@
         </div>
 
         <aside class="planet-catalog-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimCatalogHeading">Catálogo de edificios</h2>
+          <div class="planet-tabs" role="tablist">
+            <button type="button" class="planet-tab is-active" id="planet-tab-buildings" data-i18n="planetSimTabBuildings">Edificios</button>
+            <button type="button" class="planet-tab" id="planet-tab-districts" data-i18n="planetSimTabDistricts">Distritos</button>
+          </div>
           <div id="planet-catalog"></div>
+          <div id="planet-districts-catalog" hidden></div>
         </aside>
       </section>
 
