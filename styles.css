@@ -929,6 +929,55 @@ h1 {
 
 /* ── Simulador de planetas de Stellaris (planet-sim.html) ──────────────── */
 
+/* Pestañas de nivel de planeta (Planeta/Gestión/Economía/Ejércitos/
+   Sucursales): todo lo construido hasta ahora vive bajo "Planeta"; el
+   resto son marcadores de posición a falta de contenido futuro. */
+.planet-main-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-bottom: 1.4rem;
+}
+
+.planet-main-tab {
+    padding: .6rem 1.1rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font: 700 .72rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-main-tab:hover:not(:disabled) {
+    color: var(--text);
+    border-color: var(--accent-dim);
+}
+
+.planet-main-tab.is-active {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.planet-main-tab:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.planet-placeholder-panel {
+    padding: 2.4rem 1.35rem;
+    border: 1px solid var(--line);
+    background: rgba(8, 22, 14, .7);
+    color: var(--muted);
+    font-size: .85rem;
+}
+
+.planet-placeholder-panel p {
+    margin: 0;
+}
+
 .planet-header-panel {
     display: flex;
     flex-wrap: wrap;
@@ -988,7 +1037,16 @@ h1 {
 .planet-catalog-panel {
     position: sticky;
     top: 1rem;
+    display: flex;
+    flex-direction: column;
     max-height: calc(100vh - 2rem);
+}
+
+/* Los botones Edificios/Distritos viven fuera de esta zona con scroll, para
+   no tener que desplazarse hasta arriba del todo para cambiar de pestaña. */
+.planet-catalog-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
 }
 
@@ -998,6 +1056,57 @@ h1 {
     border-bottom: 1px solid var(--line-soft);
     color: var(--text);
     font-size: .85rem;
+}
+
+/* Fila que combina un .planet-panel-heading con un control a su derecha
+   (p. ej. el botón de alternar vista en el panel de producción): el borde
+   inferior y el espaciado pasan de la cabecera a la fila que la envuelve. */
+.planet-panel-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem;
+    padding-bottom: .9rem;
+    margin-bottom: 1.1rem;
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.planet-panel-heading-row .planet-panel-heading-inline {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+
+.planet-view-toggle-btn {
+    flex-shrink: 0;
+    padding: .4rem .7rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.planet-view-toggle-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.planet-production-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+}
+
+.planet-production-subheading {
+    margin: 0 0 .5rem;
+    color: var(--muted);
+    font: 700 .66rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
 }
 
 .planet-category-heading {
@@ -1087,6 +1196,7 @@ h1 {
 
 .planet-top-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
     gap: 1.6rem;
 }
@@ -1100,35 +1210,6 @@ h1 {
     border: 1px solid var(--line-soft);
 }
 
-.planet-urban-wrapper {
-    padding: .3rem;
-    border: 1px solid var(--line-soft);
-    cursor: pointer;
-}
-
-.planet-urban-wrapper:hover {
-    border-color: var(--accent-dim);
-}
-
-.planet-urban-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 2.5rem);
-    grid-auto-rows: 2.5rem;
-    gap: .3rem;
-}
-
-.planet-district-placeholder {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 7.9rem;
-    height: 2.5rem;
-    color: var(--muted);
-    font-size: .68rem;
-    text-transform: uppercase;
-    letter-spacing: .04em;
-}
-
 .planet-slot {
     display: flex;
     align-items: center;
@@ -1136,23 +1217,29 @@ h1 {
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
-    border: 1px solid var(--line);
-    background: var(--surface);
+    border: 1px solid transparent;
+    background-color: var(--surface);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .planet-slot.is-empty {
-    background: repeating-linear-gradient(135deg, transparent 0 6px, rgba(167, 245, 106, .05) 6px 7px);
+    /* Espacio de edificio disponible, aún sin construir (img/ui/building_module_slot.png). */
+    background-image: url("img/ui/building_module_slot.png");
 }
 
 .planet-slot.is-locked {
-    border-style: dashed;
-    background: repeating-linear-gradient(45deg, var(--surface) 0 5px, var(--line-soft) 5px 10px);
+    /* Espacio bloqueado: hace falta desbloquearlo (especialización de distrito) antes de poder construir aquí (img/ui/building_module_locked_slot.png). */
+    background-image: url("img/ui/building_module_locked_slot.png");
     cursor: not-allowed;
 }
 
 .planet-slot.is-filled {
+    /* Fondo del espacio ya ocupado por un edificio (img/ui/building_module_used_slot.png), con el icono del edificio encima. */
     cursor: pointer;
     padding: 2px;
+    background-image: url("img/ui/building_module_used_slot.png");
 }
 
 .planet-slot.is-filled img {
@@ -1162,24 +1249,20 @@ h1 {
 }
 
 .planet-slot.is-filled.is-standard {
-    border-color: var(--accent);
     box-shadow: inset 0 0 0 1px var(--accent);
 }
 
 .planet-slot.is-filled.is-limited {
-    border-color: var(--slot-limited);
     box-shadow: inset 0 0 0 1px var(--slot-limited);
 }
 
 .planet-slot.is-filled.is-capital {
-    border-color: var(--focus);
     box-shadow: inset 0 0 0 1px var(--focus);
     cursor: default;
 }
 
 .planet-slot.is-filled.is-inactive {
     cursor: pointer;
-    border-style: dashed;
 }
 
 .planet-slot.is-filled.is-inactive img {
@@ -1254,6 +1337,7 @@ h1 {
 
 .planet-tabs {
     display: flex;
+    flex-shrink: 0;
     gap: .3rem;
     margin-bottom: 1.1rem;
 }
@@ -1463,6 +1547,20 @@ h1 {
     font-size: .66rem;
 }
 
+.planet-urban-spec-select {
+    padding: .35rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .03em;
+    cursor: pointer;
+}
+
+.planet-urban-spec-select:hover {
+    border-color: var(--accent-dim);
+}
+
 .planet-add-btn {
     padding: .4rem .7rem;
     border: 1px solid var(--line);
@@ -1556,10 +1654,6 @@ h1 {
     color: #ff8a7a;
 }
 
-#planet-upkeep {
-    margin-top: .9rem;
-}
-
 .planet-nonresource-heading {
     margin: 1rem 0 .5rem;
     color: var(--muted);
@@ -1601,8 +1695,7 @@ h1 {
     }
 
     .planet-slot,
-    .planet-base-grid,
-    .planet-urban-grid {
+    .planet-base-grid {
         --slot-size: 2.1rem;
     }
 
@@ -1611,13 +1704,16 @@ h1 {
         height: 2.1rem;
     }
 
-    .planet-base-grid,
-    .planet-urban-grid {
+    .planet-base-grid {
         grid-template-columns: repeat(3, 2.1rem);
         grid-auto-rows: 2.1rem;
     }
 
     .planet-resource-district-box {
         width: 100%;
+    }
+
+    .planet-production-split {
+        grid-template-columns: 1fr;
     }
 }

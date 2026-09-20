@@ -41,7 +41,11 @@ export function divideEffect(rawAmount) {
  * Reglas reales de ranuras de edificios de una colonia:
  * - 6 ranuras base en el distrito principal (una de ellas la ocupa siempre
  *   el edificio capital, ver CAPITAL_TIERS).
- * - Cada distrito urbano añade 3 ranuras más (siempre, esté o no especializado).
+ * - El distrito urbano tiene 2 especializaciones independientes (ver
+ *   DISTRICTS.urban.specializationOptions); cada una que se elija añade 3
+ *   ranuras más. Construir copias del distrito urbano NO añade ranuras: solo
+ *   escala los empleos de las especializaciones ya elegidas (ver
+ *   computeTotals en planet-sim.js).
  * - Cada categoría de distrito de recursos básicos (generador/minería/
  *   agricultura) que tenga una especialización con ranuras elegida añade
  *   3 ranuras más (una vez por categoría, no por copia de distrito).
@@ -54,9 +58,9 @@ export const BUILDING_SLOT_RULES = {
   max: 21
 };
 
-/** urbanDistricts: nº de distritos urbanos. specializedResourceCategories: nº de categorías (generador/minería/agricultura) con especialización elegida. */
-export function calculateBuildingSlots(urbanDistricts, specializedResourceCategories) {
-  const urban = Math.max(0, urbanDistricts | 0);
+/** specializedUrbanSlots: nº de las 2 especializaciones del distrito urbano ya elegidas (0-2). specializedResourceCategories: nº de categorías (generador/minería/agricultura) con especialización elegida. */
+export function calculateBuildingSlots(specializedUrbanSlots, specializedResourceCategories) {
+  const urban = Math.max(0, Math.min(2, specializedUrbanSlots | 0));
   const specialized = Math.max(0, Math.min(3, specializedResourceCategories | 0));
   const raw = BUILDING_SLOT_RULES.base + (urban + specialized) * BUILDING_SLOT_RULES.perExtraGroup;
   return Math.min(BUILDING_SLOT_RULES.max, raw);
@@ -126,11 +130,57 @@ export const CAPITAL_TIERS = [
  * Industry, que darían empleos de fábrica/fundición en vez de ranuras).
  */
 export const DISTRICTS = {
+  /**
+   * Distrito urbano: construir copias NO da ranuras de edificio ni empleos
+   * por sí solo. Tiene 2 especializaciones independientes
+   * (specializationSlots); cada una que se elija desbloquea 3 ranuras de
+   * edificio (slotsPerSpecialization) y aporta sus empleos multiplicados
+   * por el número de copias de distrito urbano construidas.
+   * specializationOptions: las 5 especializaciones de distrito urbano
+   * confirmadas en la wiki (página "District specialization") que no
+   * requieren un origen o mundo especial (Mixed/Heavy/Civilian Industry,
+   * Military Defenses, Commercial Nexus); se ha omitido la penalización de
+   * -200 vivienda por copia que indica la wiki, igual que ya se simplifica
+   * en las especializaciones de recursos de abajo.
+   */
   urban: {
     i18nKey: "districtUrban",
     img: "districs/district_city.png",
-    slotsPerDistrict: 3,
-    jobs: {}
+    jobs: {},
+    specializationSlots: 2,
+    slotsPerSpecialization: 3,
+    specializationOptions: [
+      {
+        id: "mixedIndustry",
+        i18nKey: "specializationMixedIndustry",
+        img: "districts_specialization/District_specialization_industrial.png",
+        jobs: { metallurgist: 50, artisan: 50 }
+      },
+      {
+        id: "heavyIndustry",
+        i18nKey: "specializationHeavyIndustry",
+        img: "districts_specialization/District_specialization_foundry.png",
+        jobs: { metallurgist: 100 }
+      },
+      {
+        id: "civilianIndustry",
+        i18nKey: "specializationCivilianIndustry",
+        img: "districts_specialization/District_specialization_factory.png",
+        jobs: { artisan: 100 }
+      },
+      {
+        id: "militaryDefenses",
+        i18nKey: "specializationMilitaryDefenses",
+        img: "districts_specialization/District_specialization_fortress.png",
+        jobs: { soldier: 100 }
+      },
+      {
+        id: "commercialNexus",
+        i18nKey: "specializationCommercialNexus",
+        img: "districts_specialization/District_specialization_trade.png",
+        jobs: { trader: 100 }
+      }
+    ]
   },
   generator: {
     i18nKey: "districtGenerator",

@@ -1,24 +1,40 @@
 /**
- * Simulador de Planetas (v1.3).
+ * Simulador de Planetas (v1.4).
  *
  * Novedades de esta versión, a petición de Morteux:
+ *  - Corregido el distrito urbano: construir copias YA NO da ranuras de
+ *    edificio. El distrito urbano tiene 2 ranuras de especialización fijas
+ *    (districtState.urban.slots); elegir una especialización en una de
+ *    ellas es lo que desbloquea sus 3 ranuras de edificio, y sus empleos se
+ *    multiplican por el número de copias de distrito construidas
+ *    (districtState.urban.count). Si una ranura no tiene especialización
+ *    elegida, no aporta ranuras ni empleos. Las 5 especializaciones
+ *    disponibles (Industria Mixta/Pesada/Civil, Defensas Militares, Nexo
+ *    Comercial) están en DISTRICTS.urban.specializationOptions.
+ *  - Panel de recursos con 3 vistas: por defecto se ve el neto (como
+ *    antes); un botón cambia a un desglose en dos columnas — producidos
+ *    (solo positivos) y consumidos (solo negativos) — calculadas en
+ *    computeTotals() como producedTotals/consumedTotals además del
+ *    resourceTotals neto de siempre. El antiguo panel separado de
+ *    "Mantenimiento" desaparece: su contenido queda dentro de "Consumidos".
+ *  - Las pestañas Edificios/Distritos de la barra lateral ahora están
+ *    fuera del contenedor con scroll (.planet-catalog-scroll), para no
+ *    tener que desplazarse hasta arriba para cambiar de pestaña.
+ *  - Nueva barra de pestañas de planeta (Planeta/Gestión/Economía/
+ *    Ejércitos/Sucursales) por encima de todo lo anterior; todo lo ya
+ *    existente vive bajo "Planeta", el resto son marcadores de posición
+ *    ("Ejércitos" deshabilitada) a falta de contenido futuro.
  *  - Edificio capital: siempre presente, ocupa la primera ranura del
  *    distrito principal, nunca se puede demoler ni desactivar — solo
  *    mejorar o degradar de nivel (5 niveles reales, ver planet-data.js).
- *  - Distritos de verdad en vez de un contador manual: 2 distritos urbanos
- *    (3 ranuras cada uno) a la derecha de las 6 ranuras base, y debajo, en
- *    una fila centrada, los 3 distritos de recursos básicos (generador,
- *    minería, agricultura), cada uno especializable para desbloquear 3
- *    ranuras más.
- *  - Pestañas en la barra lateral: "Edificios" (catálogo de siempre) y
- *    "Distritos" (añadir/quitar distritos y elegir su especialización).
- *    Pulsar sobre un grupo de distritos en la rejilla cambia a la pestaña
- *    de Distritos.
+ *  - Distritos de recursos básicos (generador, minería, agricultura): cada
+ *    uno especializable para desbloquear 3 ranuras más, sin cambios en
+ *    esta versión.
  *
  * Modelo de ranuras: cada ranura no-capital tiene una "clave" estable
- * (p. ej. "urban-2-1", "generator-spec-3") en vez de una simple posición en
- * un array. Así, si quitas un distrito urbano o le retiras la
- * especialización a una categoría, sus ranuras (y lo que hubiera
+ * (p. ej. "urban-spec-0-1", "generator-spec-3") en vez de una simple
+ * posición en un array. Así, si le retiras la especialización a una ranura
+ * urbana o a una categoría de recursos, sus ranuras (y lo que hubiera
  * construido en ellas) no se borran: simplemente dejan de contar para
  * empleos/recursos hasta que las recuperes, sin desplazar ni afectar a las
  * ranuras de ningún otro grupo.
@@ -54,8 +70,11 @@ const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
-const productionEl = document.querySelector("#planet-production");
-const upkeepEl = document.querySelector("#planet-upkeep");
+const resourceViewToggle = document.querySelector("#planet-resource-view-toggle");
+const productionNetEl = document.querySelector("#planet-production-net");
+const productionSplitEl = document.querySelector("#planet-production-split");
+const producedEl = document.querySelector("#planet-production-produced");
+const consumedEl = document.querySelector("#planet-production-consumed");
 const nonResourceEl = document.querySelector("#planet-nonresource");
 const capitalIconEl = document.querySelector("#planet-capital-icon");
 const capitalNameEl = document.querySelector("#planet-capital-name");
@@ -63,21 +82,40 @@ const capitalTierEl = document.querySelector("#planet-capital-tier");
 const capitalUpgradeBtn = document.querySelector("#planet-capital-upgrade");
 const capitalDowngradeBtn = document.querySelector("#planet-capital-downgrade");
 const metaDescription = document.querySelector('meta[name="description"]');
+const mainTabButtons = document.querySelectorAll(".planet-main-tab[data-main-tab]");
+const mainTabPanels = {
+  planet: document.querySelector("#planet-tab-panel-planet"),
+  management: document.querySelector("#planet-tab-panel-management"),
+  economy: document.querySelector("#planet-tab-panel-economy"),
+  branches: document.querySelector("#planet-tab-panel-branches")
+};
 
 let currentLang = detectInitialLang();
 let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
+let resourceViewMode = "net"; // "net" o "split" (producidos/consumidos por separado)
 
 let capitalTierIndex = 0;
 
-// Estado de distritos: urban es un número de copias; cada categoría de
-// recurso básico tiene su propio número de copias y si está especializada.
+/**
+ * Estado de distritos: el urbano guarda cuántas copias hay construidas
+ * (count, solo escala empleos) y, por separado, qué especialización tiene
+ * elegida cada una de sus 2 ranuras de especialización (slots: array de 2
+ * posiciones, cada una null o el id de una DISTRICTS.urban.specializationOptions).
+ * Elegir una especialización es lo único que desbloquea sus 3 ranuras de
+ * edificio; el número de copias del distrito NO desbloquea ranuras. Cada
+ * categoría de recurso básico sigue teniendo su propio número de copias y
+ * si está especializada (mecánica sin cambios).
+ */
 const districtState = {
-  urban: 2,
+  urban: { count: 2, slots: [null, null] },
   generator: { count: 0, specialized: false },
   mining: { count: 0, specialized: false },
   agriculture: { count: 0, specialized: false }
 };
+
+/** Mapa id -> definición de especialización de distrito urbano, para búsquedas rápidas. */
+const urbanSpecOptionsById = new Map(DISTRICTS.urban.specializationOptions.map((option) => [option.id, option]));
 
 // Ranuras no-capital construidas: clave de ranura estable -> id de edificio.
 // Ver cabecera del archivo para qué es una "clave de ranura".
@@ -89,8 +127,13 @@ function specializedCategoryCount() {
   return RESOURCE_DISTRICT_ORDER.filter((cat) => districtState[cat].specialized).length;
 }
 
+/** Cuántas de las 2 ranuras de especialización del distrito urbano tienen ya una especialización elegida. */
+function specializedUrbanSlotCount() {
+  return districtState.urban.slots.filter(Boolean).length;
+}
+
 function totalSlots() {
-  return calculateBuildingSlots(districtState.urban, specializedCategoryCount());
+  return calculateBuildingSlots(specializedUrbanSlotCount(), specializedCategoryCount());
 }
 
 /** Ranuras que no son la del capital: la ranura 0 de las 6 base siempre es suya. */
@@ -102,9 +145,10 @@ function buildableCapacity() {
 function unlockedKeys() {
   const keys = [];
   for (let i = 1; i <= 5; i += 1) keys.push(`base-${i}`);
-  for (let d = 1; d <= districtState.urban; d += 1) {
-    for (let i = 1; i <= 3; i += 1) keys.push(`urban-${d}-${i}`);
-  }
+  districtState.urban.slots.forEach((optionId, slotIndex) => {
+    if (!optionId) return;
+    for (let i = 1; i <= 3; i += 1) keys.push(`urban-spec-${slotIndex}-${i}`);
+  });
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     if (districtState[cat].specialized) {
       for (let i = 1; i <= 3; i += 1) keys.push(`${cat}-spec-${i}`);
@@ -153,16 +197,6 @@ function removeBuildingAt(key) {
   builtMap.delete(key);
 }
 
-/** Cuántas filas de distrito urbano hay que dibujar: las que existen ahora, más las que tengan datos huérfanos por haber reducido el número. */
-function urbanRowsToRender() {
-  let maxIndex = districtState.urban;
-  builtMap.forEach((_, key) => {
-    const match = /^urban-(\d+)-/.exec(key);
-    if (match) maxIndex = Math.max(maxIndex, Number(match[1]));
-  });
-  return maxIndex;
-}
-
 /**
  * Recalcula, a partir del capital, los distritos y las ranuras activas,
  * todo lo que puede derivarse: empleos totales, producción/consumo de
@@ -171,12 +205,22 @@ function urbanRowsToRender() {
 function computeTotals() {
   const jobsTotals = {};
   const resourceTotals = {};
-  const upkeepTotals = {};
+  const producedTotals = {};
+  const consumedTotals = {};
   let housing = 0;
   let amenities = 0;
 
-  const addResource = (bucket, resourceId, amount) => {
-    bucket[resourceId] = (bucket[resourceId] || 0) + amount;
+  // Suma un importe con signo al total neto de un recurso, y además lo
+  // reparte en "producido" (solo la parte positiva) o "consumido" (solo la
+  // parte negativa), para los paneles de desglose.
+  const addSignedResource = (resourceId, amount) => {
+    if (!amount) return;
+    resourceTotals[resourceId] = (resourceTotals[resourceId] || 0) + amount;
+    if (amount > 0) {
+      producedTotals[resourceId] = (producedTotals[resourceId] || 0) + amount;
+    } else {
+      consumedTotals[resourceId] = (consumedTotals[resourceId] || 0) + amount;
+    }
   };
 
   const addJobRaw = (jobId, rawAmount) => {
@@ -184,7 +228,7 @@ function computeTotals() {
     jobsTotals[jobId] = (jobsTotals[jobId] || 0) + rawAmount;
     const jobCount = divideEffect(rawAmount);
     Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
-      addResource(resourceTotals, resourceId, perJob * jobCount);
+      addSignedResource(resourceId, perJob * jobCount);
     });
   };
 
@@ -207,6 +251,18 @@ function computeTotals() {
     }
   });
 
+  // Distrito urbano: construirlo no aporta nada por sí mismo. Cada una de
+  // sus 2 ranuras de especialización que tenga una especialización elegida
+  // aporta sus empleos, multiplicados por el número de copias construidas.
+  if (districtState.urban.count > 0) {
+    districtState.urban.slots.forEach((optionId) => {
+      if (!optionId) return;
+      const option = urbanSpecOptionsById.get(optionId);
+      if (!option) return;
+      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw * districtState.urban.count));
+    });
+  }
+
   // Edificios normales, solo los que caen en una ranura actualmente activa.
   const unlocked = unlockedKeys();
   builtMap.forEach((id, key) => {
@@ -216,12 +272,11 @@ function computeTotals() {
     housing += divideEffect(building.housing || 0);
     amenities += divideEffect(building.amenities || 0);
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
-      addResource(upkeepTotals, resourceId, amount);
-      addResource(resourceTotals, resourceId, amount);
+      addSignedResource(resourceId, amount);
     });
   });
 
-  return { jobsTotals, resourceTotals, upkeepTotals, housing, amenities };
+  return { jobsTotals, resourceTotals, producedTotals, consumedTotals, housing, amenities };
 }
 
 function applyTranslations() {
@@ -427,31 +482,9 @@ function renderSlotsVisual() {
   }
   topRow.append(baseGrid);
 
-  const urbanWrapper = document.createElement("div");
-  urbanWrapper.className = "planet-urban-wrapper";
-  urbanWrapper.title = t(currentLang, "planetSimUrbanSlotsNote");
-  urbanWrapper.addEventListener("click", (event) => {
-    if (event.target.closest(".planet-slot.is-filled")) return;
-    openDistrictsTab("urban");
-  });
-
-  const urbanRows = urbanRowsToRender();
-  if (urbanRows === 0) {
-    const placeholder = document.createElement("div");
-    placeholder.className = "planet-district-placeholder";
-    placeholder.textContent = t(currentLang, "districtUrban");
-    urbanWrapper.append(placeholder);
-  } else {
-    const urbanGrid = document.createElement("div");
-    urbanGrid.className = "planet-urban-grid";
-    for (let d = 1; d <= urbanRows; d += 1) {
-      for (let i = 1; i <= 3; i += 1) {
-        urbanGrid.append(makeRegularSlotCell(`urban-${d}-${i}`, unlocked));
-      }
-    }
-    urbanWrapper.append(urbanGrid);
+  for (let slotIndex = 0; slotIndex < DISTRICTS.urban.specializationSlots; slotIndex += 1) {
+    topRow.append(renderUrbanSpecializationBox(slotIndex, unlocked));
   }
-  topRow.append(urbanWrapper);
 
   slotsVisualEl.append(topRow);
 
@@ -464,6 +497,46 @@ function renderSlotsVisual() {
   });
 
   slotsVisualEl.append(bottomRow);
+}
+
+/** Caja visual de una de las 2 ranuras de especialización del distrito urbano: icono/estado + sus 3 ranuras de edificio. */
+function renderUrbanSpecializationBox(slotIndex, unlocked) {
+  const def = DISTRICTS.urban;
+  const optionId = districtState.urban.slots[slotIndex];
+  const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+
+  const box = document.createElement("div");
+  box.className = "planet-resource-district-box";
+  box.addEventListener("click", (event) => {
+    if (event.target.closest(".planet-slot.is-filled")) return;
+    openDistrictsTab("urban");
+  });
+
+  const header = document.createElement("div");
+  header.className = "planet-resource-district-header";
+  const icon = document.createElement("img");
+  icon.className = "planet-district-icon";
+  icon.src = `${IMAGE_BASE}${option ? option.img : def.img}`;
+  icon.alt = "";
+  const title = document.createElement("span");
+  title.textContent = t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
+  header.append(icon, title);
+  box.append(header);
+
+  const statusLine = document.createElement("p");
+  statusLine.className = "planet-resource-district-status";
+  statusLine.textContent = option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized");
+  box.append(statusLine);
+
+  const row = document.createElement("div");
+  row.className = "planet-district-slot-row";
+  for (let i = 1; i <= 3; i += 1) {
+    const key = `urban-spec-${slotIndex}-${i}`;
+    row.append(makeRegularSlotCell(key, unlocked, t(currentLang, "planetSimUrbanSlotLockedTooltip")));
+  }
+  box.append(row);
+
+  return box;
 }
 
 function renderResourceDistrictBox(cat, unlocked) {
@@ -527,6 +600,28 @@ if (tabBuildingsBtn) tabBuildingsBtn.addEventListener("click", () => setActiveTa
 if (tabDistrictsBtn) tabDistrictsBtn.addEventListener("click", () => {
   districtFilter = null;
   setActiveTab("districts");
+});
+
+if (resourceViewToggle) {
+  resourceViewToggle.addEventListener("click", () => {
+    resourceViewMode = resourceViewMode === "net" ? "split" : "net";
+    refresh();
+  });
+}
+
+/* ── Pestañas principales del planeta (Planeta / Gestión / Economía / Ejércitos / Sucursales) ── */
+
+function setMainTab(tab) {
+  mainTabButtons.forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.mainTab === tab);
+  });
+  Object.entries(mainTabPanels).forEach(([key, panel]) => {
+    if (panel) panel.hidden = key !== tab;
+  });
+}
+
+mainTabButtons.forEach((btn) => {
+  btn.addEventListener("click", () => setMainTab(btn.dataset.mainTab));
 });
 
 function renderActiveTabContent() {
@@ -645,7 +740,7 @@ function renderUrbanDistrictCard() {
   icon.src = `${IMAGE_BASE}${def.img}`;
   icon.alt = "";
   const name = document.createElement("span");
-  name.textContent = t(currentLang, def.i18nKey);
+  name.textContent = `${t(currentLang, def.i18nKey)} ${t(currentLang, "planetSimDistrictCount")(districtState.urban.count)}`;
   header.append(icon, name);
   card.append(header);
 
@@ -655,12 +750,70 @@ function renderUrbanDistrictCard() {
   card.append(note);
 
   card.append(renderCountControl(
-    districtState.urban,
-    () => { districtState.urban = Math.max(0, districtState.urban - 1); refresh(); },
-    () => { districtState.urban = Math.min(6, districtState.urban + 1); refresh(); }
+    districtState.urban.count,
+    () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.min(20, districtState.urban.count + 1); refresh(); }
   ));
 
+  for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
+    card.append(renderUrbanSpecializationPicker(slotIndex));
+  }
+
   return card;
+}
+
+/** Selector de una de las 2 ranuras de especialización del distrito urbano, dentro de la ficha de la pestaña Distritos. */
+function renderUrbanSpecializationPicker(slotIndex) {
+  const def = DISTRICTS.urban;
+  const currentId = districtState.urban.slots[slotIndex];
+  const currentOption = currentId ? urbanSpecOptionsById.get(currentId) : null;
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "planet-district-spec-row";
+
+  const icon = document.createElement("img");
+  icon.className = "planet-district-icon";
+  icon.src = `${IMAGE_BASE}${currentOption ? currentOption.img : def.img}`;
+  icon.alt = "";
+  wrapper.append(icon);
+
+  const info = document.createElement("div");
+  info.className = "planet-district-spec-info";
+
+  const label = document.createElement("span");
+  label.textContent = t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
+  info.append(label);
+
+  const select = document.createElement("select");
+  select.className = "planet-urban-spec-select";
+
+  const noneOption = document.createElement("option");
+  noneOption.value = "";
+  noneOption.textContent = t(currentLang, "planetSimNotSpecialized");
+  if (!currentId) noneOption.selected = true;
+  select.append(noneOption);
+
+  def.specializationOptions.forEach((option) => {
+    const optionEl = document.createElement("option");
+    optionEl.value = option.id;
+    optionEl.textContent = t(currentLang, option.i18nKey);
+    if (option.id === currentId) optionEl.selected = true;
+    select.append(optionEl);
+  });
+
+  select.addEventListener("change", () => {
+    districtState.urban.slots[slotIndex] = select.value || null;
+    refresh();
+  });
+  info.append(select);
+
+  if (currentOption) {
+    info.append(renderJobsMini(currentOption.jobs));
+  }
+
+  wrapper.append(info);
+
+  return wrapper;
 }
 
 function renderResourceDistrictCard(cat) {
@@ -795,7 +948,7 @@ function renderSummary(totals) {
   }
 }
 
-function renderResourceRow(resourceId, amount) {
+function renderResourceRow(resourceId, amount, forceSign) {
   const row = document.createElement("div");
   row.className = `planet-resource-row ${amount < 0 ? "is-negative" : "is-positive"}`;
   row.append(resourceIcon(resourceId));
@@ -805,46 +958,47 @@ function renderResourceRow(resourceId, amount) {
   row.append(name);
   const value = document.createElement("span");
   value.className = "planet-resource-value";
-  value.textContent = formatAmount(amount, true);
+  value.textContent = formatAmount(amount, forceSign);
   row.append(value);
   return row;
 }
 
-function renderProduction(totals) {
-  if (!productionEl) return;
-  productionEl.replaceChildren();
+/** Rellena un contenedor con las filas de recurso de `entries` (objeto recurso -> importe), ordenadas por magnitud. */
+function renderResourceList(container, entries, forceSign, emptyKey) {
+  if (!container) return;
+  container.replaceChildren();
 
-  const entries = Object.entries(totals.resourceTotals).filter(([, amount]) => Math.abs(amount) > 0.001);
-  if (!entries.length) {
+  const rows = Object.entries(entries).filter(([, amount]) => Math.abs(amount) > 0.001);
+  if (!rows.length) {
     const empty = document.createElement("p");
     empty.className = "planet-summary-empty";
-    empty.textContent = t(currentLang, "planetSimProductionEmpty");
-    productionEl.append(empty);
+    empty.textContent = t(currentLang, emptyKey);
+    container.append(empty);
     return;
   }
 
-  entries
+  rows
     .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .forEach(([resourceId, amount]) => {
-      productionEl.append(renderResourceRow(resourceId, amount));
+      container.append(renderResourceRow(resourceId, amount, forceSign));
     });
 }
 
-function renderUpkeep(totals) {
-  if (!upkeepEl) return;
-  upkeepEl.replaceChildren();
+function renderProduction(totals) {
+  if (resourceViewToggle) {
+    resourceViewToggle.textContent = resourceViewMode === "net"
+      ? t(currentLang, "planetSimShowBreakdown")
+      : t(currentLang, "planetSimShowNet");
+  }
+  if (productionNetEl) productionNetEl.hidden = resourceViewMode !== "net";
+  if (productionSplitEl) productionSplitEl.hidden = resourceViewMode !== "split";
 
-  const entries = Object.entries(totals.upkeepTotals).filter(([, amount]) => amount < 0);
-  if (!entries.length) return;
-
-  const heading = document.createElement("p");
-  heading.className = "planet-nonresource-heading";
-  heading.textContent = t(currentLang, "planetSimUpkeepHeading");
-  upkeepEl.append(heading);
-
-  entries.forEach(([resourceId, amount]) => {
-    upkeepEl.append(renderResourceRow(resourceId, amount));
-  });
+  if (resourceViewMode === "net") {
+    renderResourceList(productionNetEl, totals.resourceTotals, true, "planetSimProductionEmpty");
+  } else {
+    renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
+    renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
+  }
 }
 
 function renderSlots() {
@@ -867,7 +1021,6 @@ function refresh() {
   renderActiveTabContent();
   renderSummary(totals);
   renderProduction(totals);
-  renderUpkeep(totals);
 }
 
 function setLanguage(lang) {
@@ -887,4 +1040,5 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
 
 applyTranslations();
 setActiveTab("buildings");
+setMainTab("planet");
 refresh();
