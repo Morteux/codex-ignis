@@ -75,25 +75,26 @@
             </div>
 
             <div class="planet-production-panel">
-              <div class="planet-panel-heading-row">
-                <h2 class="panel-heading planet-panel-heading planet-panel-heading-inline" data-i18n="planetSimProductionHeading">Producción total de recursos</h2>
-                <button type="button" id="planet-resource-view-toggle" class="planet-view-toggle-btn" data-i18n="planetSimShowBreakdown">Ver desglose</button>
-              </div>
-              <div id="planet-production-net"></div>
-              <div id="planet-production-split" class="planet-production-split" hidden>
-                <div class="planet-production-column">
+              <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimProductionHeading">Producción total de recursos</h2>
+              <div class="planet-production-columns">
+                <div class="planet-production-column is-produced">
                   <h3 class="planet-production-subheading" data-i18n="planetSimProducedHeading">Producidos</h3>
                   <div id="planet-production-produced"></div>
                 </div>
-                <div class="planet-production-column">
+                <div class="planet-production-column is-consumed">
                   <h3 class="planet-production-subheading" data-i18n="planetSimConsumedHeading">Consumidos</h3>
                   <div id="planet-production-consumed"></div>
+                </div>
+                <div class="planet-production-column is-net">
+                  <h3 class="planet-production-subheading" data-i18n="planetSimNetHeading">Netos</h3>
+                  <div id="planet-production-net"></div>
                 </div>
               </div>
             </div>
 
             <div class="planet-summary-panel">
               <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSummaryHeading">Resumen de empleos totales</h2>
+              <p class="planet-summary-population" id="planet-summary-population"></p>
               <div id="planet-summary"></div>
               <div id="planet-nonresource"></div>
             </div>

@@ -1058,47 +1058,27 @@ h1 {
     font-size: .85rem;
 }
 
-/* Fila que combina un .planet-panel-heading con un control a su derecha
-   (p. ej. el botón de alternar vista en el panel de producción): el borde
-   inferior y el espaciado pasan de la cabecera a la fila que la envuelve. */
-.planet-panel-heading-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: .6rem;
-    padding-bottom: .9rem;
-    margin-bottom: 1.1rem;
-    border-bottom: 1px solid var(--line-soft);
-}
-
-.planet-panel-heading-row .planet-panel-heading-inline {
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border-bottom: 0;
-}
-
-.planet-view-toggle-btn {
-    flex-shrink: 0;
-    padding: .4rem .7rem;
-    border: 1px solid var(--line);
-    color: var(--text);
-    background: var(--surface-raised);
-    font: 700 .66rem var(--mono);
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    cursor: pointer;
-}
-
-.planet-view-toggle-btn:hover {
-    border-color: var(--accent-dim);
-    color: var(--accent);
-}
-
-.planet-production-split {
+/* Panel de producción de recursos: 3 columnas siempre visibles — producidos
+   (verde), consumidos (rojo) y netos (fondo neutro, el de siempre). */
+.planet-production-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.planet-production-column {
+    padding: .8rem .9rem;
+    border: 1px solid var(--line-soft);
+}
+
+.planet-production-column.is-produced {
+    background: rgba(167, 245, 106, .08);
+    border-color: rgba(167, 245, 106, .3);
+}
+
+.planet-production-column.is-consumed {
+    background: rgba(255, 138, 122, .08);
+    border-color: rgba(255, 138, 122, .3);
 }
 
 .planet-production-subheading {
@@ -1585,27 +1565,89 @@ h1 {
 
 /* ── Listas de empleos/recursos (paneles de resumen y producción) ──────── */
 
-.planet-jobs-list {
+.planet-summary-population {
+    margin: 0 0 1rem;
+    padding-bottom: .9rem;
+    border-bottom: 1px solid var(--line-soft);
+    color: var(--accent);
+    font: 700 .8rem var(--mono);
+    letter-spacing: .03em;
+}
+
+/* Fila de un empleo en el resumen: icono+nombre+capacidad, slider de
+   población asignada, y los recursos que aporta esa población en ese
+   momento (columnas alineadas gracias a min-width fijos). */
+.planet-job-row {
     display: flex;
     flex-wrap: wrap;
-    gap: .35rem;
+    align-items: center;
+    gap: .7rem;
+    padding: .55rem 0;
+    border-bottom: 1px solid var(--line-soft);
 }
 
-.planet-jobs-empty {
-    margin: 0;
-    color: var(--muted);
+.planet-job-row:last-child {
+    border-bottom: 0;
+}
+
+.planet-job-row-info {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    min-width: 9rem;
+    flex: 1 1 9rem;
+    color: var(--text);
     font-size: .74rem;
-    font-style: italic;
 }
 
-.planet-job-pill {
+.planet-job-slider {
+    flex: 2 1 10rem;
+    min-width: 6rem;
+    accent-color: var(--accent);
+}
+
+.planet-job-row-value {
+    flex: 0 0 auto;
+    min-width: 1.8rem;
+    color: var(--accent);
+    font: 700 .8rem var(--mono);
+    text-align: center;
+}
+
+.planet-job-row-output {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    flex: 1 1 10rem;
+    justify-content: flex-end;
+}
+
+.planet-job-output-pill {
     display: inline-flex;
     align-items: center;
-    gap: .35rem;
-    padding: .2rem .5rem;
+    gap: .25rem;
+    padding: .15rem .4rem;
     border: 1px solid var(--line-soft);
-    color: var(--text);
-    font-size: .72rem;
+    font: 700 .68rem var(--mono);
+}
+
+.planet-job-output-pill img {
+    width: 1rem;
+    height: 1rem;
+}
+
+.planet-job-output-pill.is-positive {
+    color: var(--accent);
+}
+
+.planet-job-output-pill.is-negative {
+    color: #ff8a7a;
+}
+
+.planet-job-output-note {
+    color: var(--muted);
+    font-size: .68rem;
+    font-style: italic;
 }
 
 .planet-job-icon {
@@ -1713,7 +1755,7 @@ h1 {
         width: 100%;
     }
 
-    .planet-production-split {
+    .planet-production-columns {
         grid-template-columns: 1fr;
     }
 }

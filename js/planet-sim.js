@@ -70,11 +70,10 @@ const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
-const resourceViewToggle = document.querySelector("#planet-resource-view-toggle");
-const productionNetEl = document.querySelector("#planet-production-net");
-const productionSplitEl = document.querySelector("#planet-production-split");
+const summaryPopulationEl = document.querySelector("#planet-summary-population");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
+const netEl = document.querySelector("#planet-production-net");
 const nonResourceEl = document.querySelector("#planet-nonresource");
 const capitalIconEl = document.querySelector("#planet-capital-icon");
 const capitalNameEl = document.querySelector("#planet-capital-name");
@@ -93,7 +92,6 @@ const mainTabPanels = {
 let currentLang = detectInitialLang();
 let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
-let resourceViewMode = "net"; // "net" o "split" (producidos/consumidos por separado)
 
 let capitalTierIndex = 0;
 
@@ -203,7 +201,7 @@ function removeBuildingAt(key) {
  * recursos, vivienda, comodidades/servicios y efectos sin recurso.
  */
 function computeTotals() {
-  const jobsTotals = {};
+  const jobCapacities = {}; // jobId -> población máxima (capacidad real, ya dividida por EFFECT_SCALE)
   const resourceTotals = {};
   const producedTotals = {};
   const consumedTotals = {};
@@ -223,20 +221,16 @@ function computeTotals() {
     }
   };
 
-  const addJobRaw = (jobId, rawAmount) => {
+  const addJobCapacity = (jobId, rawAmount) => {
     if (!rawAmount) return;
-    jobsTotals[jobId] = (jobsTotals[jobId] || 0) + rawAmount;
-    const jobCount = divideEffect(rawAmount);
-    Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
-      addSignedResource(resourceId, perJob * jobCount);
-    });
+    jobCapacities[jobId] = (jobCapacities[jobId] || 0) + divideEffect(rawAmount);
   };
 
   // Edificio capital (fijo, siempre presente).
   const capital = CAPITAL_TIERS[capitalTierIndex];
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
-  Object.entries(capital.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw));
+  Object.entries(capital.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
 
   // Distritos de recursos básicos: empleo base por copia, y bonus de
   // especialización por copia si la categoría está especializada.
@@ -244,9 +238,9 @@ function computeTotals() {
     const state = districtState[cat];
     const def = DISTRICTS[cat];
     if (state.count > 0) {
-      Object.entries(def.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw * state.count));
+      Object.entries(def.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
       if (state.specialized) {
-        Object.entries(def.specialization.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw * state.count));
+        Object.entries(def.specialization.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
       }
     }
   });
@@ -259,7 +253,7 @@ function computeTotals() {
       if (!optionId) return;
       const option = urbanSpecOptionsById.get(optionId);
       if (!option) return;
-      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw * districtState.urban.count));
+      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * districtState.urban.count));
     });
   }
 
@@ -268,7 +262,7 @@ function computeTotals() {
   builtMap.forEach((id, key) => {
     if (!unlocked.includes(key)) return;
     const building = buildingsById.get(id);
-    Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobRaw(jobId, raw));
+    Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
     housing += divideEffect(building.housing || 0);
     amenities += divideEffect(building.amenities || 0);
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
@@ -276,7 +270,58 @@ function computeTotals() {
     });
   });
 
-  return { jobsTotals, resourceTotals, producedTotals, consumedTotals, housing, amenities };
+  // La población asignada a cada empleo (slider) se ajusta a la nueva
+  // capacidad antes de calcular recursos: ver syncJobAssignments más abajo.
+  syncJobAssignments(jobCapacities);
+
+  // Los recursos se calculan a partir de la población REALMENTE asignada a
+  // cada empleo (jobAssignments), no de la capacidad total del empleo.
+  Object.entries(jobCapacities).forEach(([jobId, capacity]) => {
+    const assigned = jobAssignments[jobId] || 0;
+    Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
+      addSignedResource(resourceId, perJob * assigned);
+    });
+  });
+
+  return { jobCapacities, resourceTotals, producedTotals, consumedTotals, housing, amenities };
+}
+
+/**
+ * Población asignada a cada empleo (jobId -> nº de pops trabajándolo,
+ * controlada por el slider de ese empleo). Se guarda en unidades reales
+ * (ya divididas por EFFECT_SCALE), no en la escala ×100 de los datos.
+ */
+const jobAssignments = {};
+// Última capacidad conocida de cada empleo, para saber si el valor actual
+// "seguía" al máximo (sin tocar) o si el usuario lo cambió a mano.
+const jobCapacityMemo = {};
+
+/**
+ * Sincroniza jobAssignments contra la capacidad actual de cada empleo.
+ * Por defecto (empleo nuevo, o su valor coincidía con el máximo anterior)
+ * el slider salta al nuevo máximo al añadir/quitar edificios. Si el valor
+ * ya era distinto del máximo anterior, se respeta (solo se recorta hacia
+ * abajo si ahora supera la nueva capacidad, reducida por ejemplo al
+ * demoler un edificio).
+ */
+function syncJobAssignments(jobCapacities) {
+  Object.entries(jobCapacities).forEach(([jobId, capacity]) => {
+    const previousCapacity = jobCapacityMemo[jobId];
+    const current = jobAssignments[jobId];
+    if (current === undefined || (previousCapacity !== undefined && current === previousCapacity)) {
+      jobAssignments[jobId] = capacity;
+    } else if (current > capacity) {
+      jobAssignments[jobId] = capacity;
+    }
+    jobCapacityMemo[jobId] = capacity;
+  });
+
+  Object.keys(jobAssignments).forEach((jobId) => {
+    if (!(jobId in jobCapacities)) {
+      delete jobAssignments[jobId];
+      delete jobCapacityMemo[jobId];
+    }
+  });
 }
 
 function applyTranslations() {
@@ -335,30 +380,66 @@ function buildingDisplayName(building) {
   return t(currentLang, building.i18nKey);
 }
 
-function renderJobsList(jobs) {
-  const entries = Object.entries(jobs).filter(([, amount]) => amount > 0);
-  const wrapper = document.createElement("div");
-  wrapper.className = "planet-jobs-list";
+/** Fila de un empleo en el resumen: icono+nombre+capacidad a la izquierda, slider de población en el medio, recursos que aporta a la derecha. */
+function renderJobSliderRow(jobId, capacity) {
+  const assigned = jobAssignments[jobId] || 0;
 
-  if (!entries.length) {
-    const note = document.createElement("p");
-    note.className = "planet-jobs-empty";
-    note.textContent = t(currentLang, "planetSimNoJobs");
-    wrapper.append(note);
-    return wrapper;
-  }
+  const row = document.createElement("div");
+  row.className = "planet-job-row";
 
-  entries.forEach(([jobId, amount]) => {
-    const row = document.createElement("span");
-    row.className = "planet-job-pill";
-    row.append(jobIcon(jobId));
-    const label = document.createElement("span");
-    label.textContent = `+${formatAmount(amount)} ${jobName(jobId)}`;
-    row.append(label);
-    wrapper.append(row);
+  const info = document.createElement("div");
+  info.className = "planet-job-row-info";
+  info.append(jobIcon(jobId));
+  const label = document.createElement("span");
+  label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobMaxLabel")(formatAmount(capacity))}`;
+  info.append(label);
+  row.append(info);
+
+  const slider = document.createElement("input");
+  slider.type = "range";
+  slider.className = "planet-job-slider";
+  slider.min = "0";
+  slider.max = String(capacity);
+  slider.step = "10";
+  slider.value = String(assigned);
+  slider.setAttribute("aria-label", jobName(jobId));
+  // Se usa "change" (no "input") para no forzar un refresco completo del
+  // panel (que recrearía este mismo control) mientras el usuario arrastra
+  // el slider, ya que eso interrumpiría el propio arrastre.
+  slider.addEventListener("change", () => {
+    jobAssignments[jobId] = Number(slider.value);
+    refresh();
   });
+  row.append(slider);
 
-  return wrapper;
+  const valueLabel = document.createElement("span");
+  valueLabel.className = "planet-job-row-value";
+  valueLabel.textContent = formatAmount(assigned);
+  row.append(valueLabel);
+
+  const output = document.createElement("div");
+  output.className = "planet-job-row-output";
+  const outputs = Object.entries(JOB_OUTPUTS[jobId] || {});
+  if (outputs.length) {
+    outputs.forEach(([resourceId, perJob]) => {
+      const amount = perJob * assigned;
+      const pill = document.createElement("span");
+      pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
+      pill.append(resourceIcon(resourceId));
+      const amountLabel = document.createElement("span");
+      amountLabel.textContent = formatAmount(amount, true);
+      pill.append(amountLabel);
+      output.append(pill);
+    });
+  } else if (JOB_EFFECT_NOTES[jobId]) {
+    const note = document.createElement("span");
+    note.className = "planet-job-output-note";
+    note.textContent = t(currentLang, JOB_EFFECT_NOTES[jobId]);
+    output.append(note);
+  }
+  row.append(output);
+
+  return row;
 }
 
 function renderJobsMini(jobs) {
@@ -366,12 +447,13 @@ function renderJobsMini(jobs) {
   const wrapper = document.createElement("span");
   wrapper.className = "planet-catalog-jobs";
   entries.forEach(([jobId, raw]) => {
+    const amount = divideEffect(raw);
     const pill = document.createElement("span");
     pill.className = "planet-catalog-job-pill";
-    pill.title = `+${formatAmount(raw)} ${jobName(jobId)}`;
+    pill.title = `+${formatAmount(amount)} ${jobName(jobId)}`;
     pill.append(jobIcon(jobId));
     const label = document.createElement("span");
-    label.textContent = formatAmount(raw);
+    label.textContent = formatAmount(amount);
     pill.append(label);
     wrapper.append(pill);
   });
@@ -601,13 +683,6 @@ if (tabDistrictsBtn) tabDistrictsBtn.addEventListener("click", () => {
   districtFilter = null;
   setActiveTab("districts");
 });
-
-if (resourceViewToggle) {
-  resourceViewToggle.addEventListener("click", () => {
-    resourceViewMode = resourceViewMode === "net" ? "split" : "net";
-    refresh();
-  });
-}
 
 /* ── Pestañas principales del planeta (Planeta / Gestión / Economía / Ejércitos / Sucursales) ── */
 
@@ -918,8 +993,14 @@ function renderSummary(totals) {
   if (!summaryEl) return;
   summaryEl.replaceChildren();
 
-  const hasAny = Object.values(totals.jobsTotals).some((amount) => amount > 0);
-  if (!hasAny) {
+  const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
+
+  if (summaryPopulationEl) {
+    const totalPopulation = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
+    summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
+  }
+
+  if (!jobIds.length) {
     const empty = document.createElement("p");
     empty.className = "planet-summary-empty";
     empty.textContent = t(currentLang, "planetSimSummaryEmpty");
@@ -928,9 +1009,11 @@ function renderSummary(totals) {
     return;
   }
 
-  summaryEl.append(renderJobsList(totals.jobsTotals));
+  jobIds.forEach((jobId) => {
+    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId]));
+  });
 
-  const nonResourceEntries = Object.keys(JOB_EFFECT_NOTES).filter((jobId) => (totals.jobsTotals[jobId] || 0) > 0);
+  const nonResourceEntries = Object.keys(JOB_EFFECT_NOTES).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
   if (nonResourceEntries.length && nonResourceEl) {
     nonResourceEl.replaceChildren();
     const heading = document.createElement("p");
@@ -940,7 +1023,7 @@ function renderSummary(totals) {
     nonResourceEntries.forEach((jobId) => {
       const line = document.createElement("p");
       line.className = "planet-nonresource-line";
-      line.textContent = `${formatAmount(totals.jobsTotals[jobId])} ${jobName(jobId)} — ${t(currentLang, JOB_EFFECT_NOTES[jobId])}`;
+      line.textContent = `${formatAmount(jobAssignments[jobId])} ${jobName(jobId)} — ${t(currentLang, JOB_EFFECT_NOTES[jobId])}`;
       nonResourceEl.append(line);
     });
   } else if (nonResourceEl) {
@@ -985,20 +1068,9 @@ function renderResourceList(container, entries, forceSign, emptyKey) {
 }
 
 function renderProduction(totals) {
-  if (resourceViewToggle) {
-    resourceViewToggle.textContent = resourceViewMode === "net"
-      ? t(currentLang, "planetSimShowBreakdown")
-      : t(currentLang, "planetSimShowNet");
-  }
-  if (productionNetEl) productionNetEl.hidden = resourceViewMode !== "net";
-  if (productionSplitEl) productionSplitEl.hidden = resourceViewMode !== "split";
-
-  if (resourceViewMode === "net") {
-    renderResourceList(productionNetEl, totals.resourceTotals, true, "planetSimProductionEmpty");
-  } else {
-    renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
-    renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
-  }
+  renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
+  renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
+  renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty");
 }
 
 function renderSlots() {
