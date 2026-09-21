@@ -201,7 +201,14 @@ function removeBuildingAt(key) {
  * recursos, vivienda, comodidades/servicios y efectos sin recurso.
  */
 function computeTotals() {
-  const jobCapacities = {}; // jobId -> población máxima (capacidad real, ya dividida por EFFECT_SCALE)
+  // jobCapacities y jobAssignments viven en la MISMA escala ×100 que los
+  // datos de origen (planet-data.js): así el slider (que avanza de 10 en
+  // 10) tiene margen real para moverse — la mayoría de capacidades reales
+  // (2, 3 pops...) apenas dejarían mover un slider de paso 10. La única
+  // división por EFFECT_SCALE ocurre una vez, al final, al convertir la
+  // población asignada en la tasa de recursos por trabajo (JOB_OUTPUTS,
+  // que sí está en unidades reales por trabajo, confirmadas contra la wiki).
+  const jobCapacities = {}; // jobId -> capacidad máxima, en unidades ×100
   const resourceTotals = {};
   const producedTotals = {};
   const consumedTotals = {};
@@ -223,7 +230,7 @@ function computeTotals() {
 
   const addJobCapacity = (jobId, rawAmount) => {
     if (!rawAmount) return;
-    jobCapacities[jobId] = (jobCapacities[jobId] || 0) + divideEffect(rawAmount);
+    jobCapacities[jobId] = (jobCapacities[jobId] || 0) + rawAmount;
   };
 
   // Edificio capital (fijo, siempre presente).
@@ -275,9 +282,11 @@ function computeTotals() {
   syncJobAssignments(jobCapacities);
 
   // Los recursos se calculan a partir de la población REALMENTE asignada a
-  // cada empleo (jobAssignments), no de la capacidad total del empleo.
+  // cada empleo (jobAssignments, en unidades ×100 igual que jobCapacities),
+  // convertida a trabajos reales con divideEffect() justo aquí — la única
+  // división por 100 de todo el cálculo.
   Object.entries(jobCapacities).forEach(([jobId, capacity]) => {
-    const assigned = jobAssignments[jobId] || 0;
+    const assigned = divideEffect(jobAssignments[jobId] || 0);
     Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
     });
@@ -287,9 +296,12 @@ function computeTotals() {
 }
 
 /**
- * Población asignada a cada empleo (jobId -> nº de pops trabajándolo,
- * controlada por el slider de ese empleo). Se guarda en unidades reales
- * (ya divididas por EFFECT_SCALE), no en la escala ×100 de los datos.
+ * Población asignada a cada empleo (jobId -> pops trabajándolo, controlada
+ * por el slider de ese empleo). Se guarda en la MISMA escala ×100 que
+ * jobCapacities y que los datos de origen (planet-data.js) — no en
+ * unidades reales — para que el slider (paso de 10) tenga margen real de
+ * movimiento. Solo se convierte a unidades reales una vez, en
+ * computeTotals(), al calcular los recursos que produce esa población.
  */
 const jobAssignments = {};
 // Última capacidad conocida de cada empleo, para saber si el valor actual
@@ -380,7 +392,14 @@ function buildingDisplayName(building) {
   return t(currentLang, building.i18nKey);
 }
 
-/** Fila de un empleo en el resumen: icono+nombre+capacidad a la izquierda, slider de población en el medio, recursos que aporta a la derecha. */
+/**
+ * Fila de un empleo en el resumen: icono+nombre+capacidad a la izquierda,
+ * slider de población en el medio, recursos que aporta a la derecha.
+ * `capacity` y `jobAssignments[jobId]` están en la escala ×100 de los
+ * datos de origen (no en pops reales): así el slider de paso 10 tiene
+ * recorrido real. Los recursos de la derecha SÍ se muestran ya convertidos
+ * a unidades reales (única división, con divideEffect, al calcularlos).
+ */
 function renderJobSliderRow(jobId, capacity) {
   const assigned = jobAssignments[jobId] || 0;
 
@@ -422,7 +441,7 @@ function renderJobSliderRow(jobId, capacity) {
   const outputs = Object.entries(JOB_OUTPUTS[jobId] || {});
   if (outputs.length) {
     outputs.forEach(([resourceId, perJob]) => {
-      const amount = perJob * assigned;
+      const amount = perJob * divideEffect(assigned);
       const pill = document.createElement("span");
       pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
       pill.append(resourceIcon(resourceId));
@@ -447,13 +466,12 @@ function renderJobsMini(jobs) {
   const wrapper = document.createElement("span");
   wrapper.className = "planet-catalog-jobs";
   entries.forEach(([jobId, raw]) => {
-    const amount = divideEffect(raw);
     const pill = document.createElement("span");
     pill.className = "planet-catalog-job-pill";
-    pill.title = `+${formatAmount(amount)} ${jobName(jobId)}`;
+    pill.title = `+${formatAmount(raw)} ${jobName(jobId)}`;
     pill.append(jobIcon(jobId));
     const label = document.createElement("span");
-    label.textContent = formatAmount(amount);
+    label.textContent = formatAmount(raw);
     pill.append(label);
     wrapper.append(pill);
   });
