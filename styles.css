@@ -1322,6 +1322,20 @@ h1 {
     margin-bottom: 1.1rem;
 }
 
+/* Aviso de "este edificio no se puede construir en esta especialización":
+   se muestra al intentar construir en un hueco cuya especialización no lo
+   admite (ver slotAcceptsBuilding en planet-sim.js). */
+.planet-catalog-message {
+    flex-shrink: 0;
+    padding: .6rem .7rem;
+    margin: 0 0 1rem;
+    border: 1px solid rgba(255, 138, 122, .35);
+    background: rgba(255, 138, 122, .08);
+    color: #ff8a7a;
+    font-size: .74rem;
+    line-height: 1.5;
+}
+
 .planet-tab {
     flex: 1;
     padding: .55rem 0;

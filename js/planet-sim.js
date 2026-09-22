@@ -66,6 +66,7 @@ const slotsVisualEl = document.querySelector("#planet-slots-visual");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
 const catalogEl = document.querySelector("#planet-catalog");
+const catalogMessageEl = document.querySelector("#planet-catalog-message");
 const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
@@ -92,6 +93,7 @@ const mainTabPanels = {
 let currentLang = detectInitialLang();
 let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
+let catalogMessage = null; // aviso de "edificio no permitido en esta especialización", o null
 
 let capitalTierIndex = 0;
 
@@ -176,19 +178,66 @@ function isLimited(building) {
   return building.colonyLimit !== "none";
 }
 
-function canAddBuilding(building) {
+/** Building sets que solo se pueden construir en su distrito de recursos especializado a juego, nunca en las ranuras base (ver doc de BUILDINGS en planet-data.js). */
+const EXTRACTION_BUILDING_SETS = ["energy", "minerals", "food"];
+
+/**
+ * Qué building sets admite una ranura, y una etiqueta legible de su
+ * especialización (para el aviso cuando un edificio no encaja ahí).
+ * sets === null significa "ranura base": admite cualquier cosa salvo los
+ * building sets de extracción (energy/minerals/food), que exigen su propio
+ * distrito de recursos especializado.
+ */
+function slotSpecInfo(key) {
+  const urbanMatch = /^urban-spec-(\d+)-\d+$/.exec(key);
+  if (urbanMatch) {
+    const slotIndex = Number(urbanMatch[1]);
+    const optionId = districtState.urban.slots[slotIndex];
+    const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+    return {
+      sets: option ? option.permittedSets : [],
+      label: option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized")
+    };
+  }
+
+  const resourceMatch = /^(generator|mining|agriculture)-spec-\d+$/.exec(key);
+  if (resourceMatch) {
+    const def = DISTRICTS[resourceMatch[1]];
+    return {
+      sets: def.specialization.permittedSets || [],
+      label: t(currentLang, def.specialization.i18nKey)
+    };
+  }
+
+  // Ranura base (base-1..5 o capital): sin especialización que la restrinja.
+  return { sets: null, label: null };
+}
+
+/** ¿Puede este edificio construirse en esta ranura, según su especialización? */
+function slotAcceptsBuilding(key, building) {
+  const info = slotSpecInfo(key);
+  if (info.sets === null) {
+    return !building.sets.some((set) => EXTRACTION_BUILDING_SETS.includes(set));
+  }
+  return building.sets.some((set) => info.sets.includes(set));
+}
+
+/** Primera ranura libre y desbloqueada que admite este edificio, o undefined si ninguna lo admite. */
+function findCompatibleFreeSlot(building) {
   const unlocked = unlockedKeys();
-  const freeKey = unlocked.find((key) => !builtMap.has(key));
-  if (!freeKey) return false;
+  return unlocked.find((key) => !builtMap.has(key) && slotAcceptsBuilding(key, building));
+}
+
+function canAddBuilding(building) {
   if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return false;
-  return true;
+  return Boolean(findCompatibleFreeSlot(building));
 }
 
 function addBuilding(id) {
-  const unlocked = unlockedKeys();
-  const freeKey = unlocked.find((key) => !builtMap.has(key));
-  if (!freeKey) return;
-  builtMap.set(freeKey, id);
+  const building = buildingsById.get(id);
+  const key = findCompatibleFreeSlot(building);
+  if (!key) return;
+  builtMap.set(key, id);
 }
 
 function removeBuildingAt(key) {
@@ -693,6 +742,10 @@ function setActiveTab(tab) {
   if (tabDistrictsBtn) tabDistrictsBtn.classList.toggle("is-active", tab === "districts");
   if (catalogEl) catalogEl.hidden = tab !== "buildings";
   if (districtsCatalogEl) districtsCatalogEl.hidden = tab !== "districts";
+  if (tab !== "buildings") {
+    catalogMessage = null;
+    if (catalogMessageEl) catalogMessageEl.hidden = true;
+  }
   renderActiveTabContent();
 }
 
@@ -725,6 +778,11 @@ function renderActiveTabContent() {
 function renderCatalog() {
   if (!catalogEl) return;
   catalogEl.replaceChildren();
+
+  if (catalogMessageEl) {
+    catalogMessageEl.hidden = !catalogMessage;
+    catalogMessageEl.textContent = catalogMessage || "";
+  }
 
   const full = !unlockedKeys().some((key) => !builtMap.has(key));
 
@@ -792,9 +850,26 @@ function renderCatalogItem(building, slotsFull) {
   }
 
   item.addEventListener("click", () => {
-    if (!canAddBuilding(building)) return;
-    addBuilding(building.id);
-    refresh();
+    if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return;
+
+    const key = findCompatibleFreeSlot(building);
+    if (key) {
+      builtMap.set(key, building.id);
+      catalogMessage = null;
+      refresh();
+      return;
+    }
+
+    // Hay ranuras libres, pero ninguna admite este edificio: avisa con la
+    // especialización de la primera ranura libre encontrada.
+    const freeKey = unlockedKeys().find((k) => !builtMap.has(k));
+    if (freeKey) {
+      const info = slotSpecInfo(freeKey);
+      catalogMessage = info.sets === null
+        ? t(currentLang, "planetSimBuildingNotAllowedBase")(buildingDisplayName(building))
+        : t(currentLang, "planetSimBuildingNotAllowed")(buildingDisplayName(building), info.label);
+      renderCatalog();
+    }
   });
 
   return item;

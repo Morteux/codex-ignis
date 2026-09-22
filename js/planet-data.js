@@ -141,7 +141,11 @@ export const DISTRICTS = {
    * requieren un origen o mundo especial (Mixed/Heavy/Civilian Industry,
    * Military Defenses, Commercial Nexus); se ha omitido la penalización de
    * -200 vivienda por copia que indica la wiki, igual que ya se simplifica
-   * en las especializaciones de recursos de abajo.
+   * en las especializaciones de recursos de abajo. permittedSets: los
+   * "building sets" (página "Buildings" de la wiki, sección "Building
+   * sets", y confirmados building a building en las páginas "Industry
+   * buildings" y "Buildings") que esa especialización permite construir en
+   * sus 3 ranuras — ver BUILDINGS más abajo, campo "sets" de cada edificio.
    */
   urban: {
     i18nKey: "districtUrban",
@@ -154,31 +158,36 @@ export const DISTRICTS = {
         id: "mixedIndustry",
         i18nKey: "specializationMixedIndustry",
         img: "districts_specialization/District_specialization_industrial.png",
-        jobs: { metallurgist: 50, artisan: 50 }
+        jobs: { metallurgist: 50, artisan: 50 },
+        permittedSets: ["industrial"]
       },
       {
         id: "heavyIndustry",
         i18nKey: "specializationHeavyIndustry",
         img: "districts_specialization/District_specialization_foundry.png",
-        jobs: { metallurgist: 100 }
+        jobs: { metallurgist: 100 },
+        permittedSets: ["foundry"]
       },
       {
         id: "civilianIndustry",
         i18nKey: "specializationCivilianIndustry",
         img: "districts_specialization/District_specialization_factory.png",
-        jobs: { artisan: 100 }
+        jobs: { artisan: 100 },
+        permittedSets: ["factory"]
       },
       {
         id: "militaryDefenses",
         i18nKey: "specializationMilitaryDefenses",
         img: "districts_specialization/District_specialization_fortress.png",
-        jobs: { soldier: 100 }
+        jobs: { soldier: 100 },
+        permittedSets: ["fortress"]
       },
       {
         id: "commercialNexus",
         i18nKey: "specializationCommercialNexus",
         img: "districts_specialization/District_specialization_trade.png",
-        jobs: { trader: 100 }
+        jobs: { trader: 100 },
+        permittedSets: ["trade"]
       }
     ]
   },
@@ -191,7 +200,8 @@ export const DISTRICTS = {
       techI18nKey: "specializationRequiresEnergy",
       img: "districts_specialization/District_specialization_energy.png",
       jobs: { technician: 100 },
-      slots: 3
+      slots: 3,
+      permittedSets: ["energy"]
     }
   },
   mining: {
@@ -203,7 +213,8 @@ export const DISTRICTS = {
       techI18nKey: "specializationRequiresMinerals",
       img: "districts_specialization/District_specialization_minerals.png",
       jobs: { miner: 100 },
-      slots: 3
+      slots: 3,
+      permittedSets: ["minerals"]
     }
   },
   agriculture: {
@@ -215,7 +226,8 @@ export const DISTRICTS = {
       techI18nKey: "specializationRequiresFood",
       img: "districts_specialization/District_specialization_food.png",
       jobs: { farmer: 100 },
-      slots: 3
+      slots: 3,
+      permittedSets: ["food"]
     }
   }
 };
@@ -320,6 +332,27 @@ export const JOB_EFFECT_NOTES = {
  *   por pertenecer a una cadena de mejora).
  * - cost: texto informativo de coste de construcción (no se simula el
  *   almacén de recursos todavía, solo se muestra como referencia).
+ * - sets: los "building sets" de este edificio (columna "Building Sets" de
+ *   la wiki, páginas "Buildings", "Industry buildings" y "Resource
+ *   buildings"), confirmados edificio a edificio contra la wiki. Determina
+ *   en qué ranuras se puede construir (ver slotAcceptsBuilding en
+ *   planet-sim.js):
+ *     - "origin": edificio genérico, permitido en las 6 ranuras base y
+ *       nunca restringido por ninguna especialización (la wiki lista estos
+ *       edificios sin "Building Sets" propio, o solo con sets genéricos
+ *       como "Government"/"Urban"/"Entertainment"/"Resort" que aquí no se
+ *       modelan por separado).
+ *     - "energy"/"minerals"/"food": edificios de extracción (Voltaic Yard,
+ *       Quarry Depot, Hydroponics Farm); la wiki confirma que SOLO se
+ *       pueden construir en su distrito de recursos especializado a juego
+ *       (Generador/Minería/Agricultura), nunca en las ranuras base.
+ *     - "industrial"/"foundry"/"factory": aleaciones y bienes de consumo
+ *       (confirmado en "Industry buildings"); permitidos en las ranuras
+ *       base y en las especializaciones urbanas Mixed/Heavy/Civilian
+ *       Industry que comparten ese set.
+ *     - "fortress"/"trade": Stronghold/Fortress y Zonas Comerciales
+ *       (confirmado en "Buildings"); permitidos en las ranuras base y en
+ *       Military Defenses / Commercial Nexus respectivamente.
  */
 export const BUILDINGS = [
   // ── Recursos básicos (sin límite por colonia) ──────────────────────
@@ -331,7 +364,8 @@ export const BUILDINGS = [
     jobs: { technician: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["energy"]
   },
   {
     id: "quarry_depot",
@@ -341,7 +375,8 @@ export const BUILDINGS = [
     jobs: { miner: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado)"
+    cost: "360 minerales (400 si está asentado)",
+    sets: ["minerals"]
   },
   {
     id: "hydroponics_farm",
@@ -351,7 +386,8 @@ export const BUILDINGS = [
     jobs: { farmer: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["food"]
   },
 
   // ── Fundición: aleaciones (sin límite por colonia) ─────────────────
@@ -364,7 +400,8 @@ export const BUILDINGS = [
     jobs: { metallurgist: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["industrial", "foundry"]
   },
   {
     id: "alloy_mega_forges",
@@ -378,7 +415,8 @@ export const BUILDINGS = [
     jobBonus: { alloys: 1, minerals: -2 },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
-    cost: "480 minerales (600 si está asentado, 100 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 100 aleaciones)",
+    sets: ["industrial", "foundry"]
   },
   {
     id: "alloy_nano_plants",
@@ -392,7 +430,8 @@ export const BUILDINGS = [
     jobBonus: { alloys: 2, minerals: -4 },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
-    cost: "480 minerales (800 si está asentado, 200 aleaciones)"
+    cost: "480 minerales (800 si está asentado, 200 aleaciones)",
+    sets: ["industrial", "foundry"]
   },
 
   // ── Fábrica: bienes de consumo (sin límite por colonia) ────────────
@@ -405,7 +444,8 @@ export const BUILDINGS = [
     jobs: { artisan: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["industrial", "factory"]
   },
   {
     id: "civilian_fabricators",
@@ -419,7 +459,8 @@ export const BUILDINGS = [
     jobBonus: { consumer_goods: 1, minerals: -1 },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
-    cost: "480 minerales (600 si está asentado, 100 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 100 aleaciones)",
+    sets: ["industrial", "factory"]
   },
   {
     id: "civilian_repli_complexes",
@@ -433,7 +474,8 @@ export const BUILDINGS = [
     jobBonus: { consumer_goods: 2, minerals: -2 },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
-    cost: "600 minerales (800 si está asentado, 200 aleaciones)"
+    cost: "600 minerales (800 si está asentado, 200 aleaciones)",
+    sets: ["industrial", "factory"]
   },
 
   // ── Investigación genérica (sin límite por colonia) ────────────────
@@ -446,7 +488,8 @@ export const BUILDINGS = [
     jobs: { physicist: 60, engineer: 60, biologist: 60 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
   {
     id: "research_complexes",
@@ -458,7 +501,8 @@ export const BUILDINGS = [
     jobs: { physicist: 120, engineer: 120, biologist: 120 },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    sets: ["origin"]
   },
   {
     id: "advanced_research_complexes",
@@ -470,7 +514,8 @@ export const BUILDINGS = [
     jobs: { physicist: 180, engineer: 180, biologist: 180 },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -2 },
-    cost: "600 minerales (800 si está asentado, 100 aleaciones)"
+    cost: "600 minerales (800 si está asentado, 100 aleaciones)",
+    sets: ["origin"]
   },
 
   // ── Administración civil (una por línea de mejora) ─────────────────
@@ -483,7 +528,8 @@ export const BUILDINGS = [
     jobs: { enforcer: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
   {
     id: "hall_of_judgment",
@@ -495,7 +541,8 @@ export const BUILDINGS = [
     jobs: { enforcer: 500 },
     colonyLimit: 1,
     upkeep: { energy: -2, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    sets: ["origin"]
   },
   {
     id: "state_academy",
@@ -506,7 +553,8 @@ export const BUILDINGS = [
     jobs: { educator: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
   {
     id: "center_of_guidance",
@@ -518,7 +566,8 @@ export const BUILDINGS = [
     jobs: { educator: 500 },
     colonyLimit: 1,
     upkeep: { energy: -2, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    sets: ["origin"]
   },
   {
     id: "administrative_offices",
@@ -528,7 +577,8 @@ export const BUILDINGS = [
     jobs: { bureaucrat: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
 
   // ── Militares ───────────────────────────────────────────────────────
@@ -541,7 +591,8 @@ export const BUILDINGS = [
     jobs: { soldier: 200 },
     colonyLimit: 1,
     upkeep: { minerals: -1 },
-    cost: "240 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "240 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["fortress"]
   },
   {
     id: "fortress",
@@ -553,7 +604,8 @@ export const BUILDINGS = [
     jobs: { soldier: 400 },
     colonyLimit: 1,
     upkeep: { minerals: -1, alloys: -1 },
-    cost: "360 minerales (600 si está asentado, 50 aleaciones)"
+    cost: "360 minerales (600 si está asentado, 50 aleaciones)",
+    sets: ["fortress"]
   },
 
   // ── Otros ───────────────────────────────────────────────────────────
@@ -565,7 +617,8 @@ export const BUILDINGS = [
     jobs: { trader: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["trade"]
   },
   {
     id: "holo_theatres",
@@ -575,7 +628,8 @@ export const BUILDINGS = [
     jobs: { entertainer: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
 
   // ── Vivienda (sin empleos: vivienda y comodidades, ambos ×100) ─────
@@ -590,7 +644,8 @@ export const BUILDINGS = [
     amenities: 1500,
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   },
   {
     id: "paradise_domes",
@@ -604,10 +659,11 @@ export const BUILDINGS = [
     amenities: 3000,
     colonyLimit: 1,
     upkeep: { energy: -3, alloys: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)"
+    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    sets: ["origin"]
   },
 
-  // ── Cohesión (unity) ────────────────────────────────────────────────
+  // ── Unidad (unity) ─────────────────────────────────────────────────
   {
     id: "temple",
     img: "buildings/building_temple.png",
@@ -616,7 +672,8 @@ export const BUILDINGS = [
     jobs: { priest: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)"
+    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
   }
 ];
 
