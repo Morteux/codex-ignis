@@ -66,7 +66,6 @@ const slotsVisualEl = document.querySelector("#planet-slots-visual");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
 const catalogEl = document.querySelector("#planet-catalog");
-const catalogMessageEl = document.querySelector("#planet-catalog-message");
 const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
@@ -93,7 +92,6 @@ const mainTabPanels = {
 let currentLang = detectInitialLang();
 let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
-let catalogMessage = null; // aviso de "edificio no permitido en esta especialización", o null
 
 let capitalTierIndex = 0;
 
@@ -222,22 +220,24 @@ function slotAcceptsBuilding(key, building) {
   return building.sets.some((set) => info.sets.includes(set));
 }
 
-/** Primera ranura libre y desbloqueada que admite este edificio, o undefined si ninguna lo admite. */
-function findCompatibleFreeSlot(building) {
+/**
+ * Ranura actualmente seleccionada como destino de construcción (se resalta
+ * con borde amarillo en la rejilla, y el catálogo desactiva los edificios
+ * que no encajan en ella). Se recalcula en cada refresh() con
+ * resolveSelectedSlot(): si sigue siendo una ranura libre y desbloqueada se
+ * respeta tal cual (el usuario puede haberla elegido a mano pulsándola);
+ * si no, se recalcula automáticamente a la primera ranura libre disponible.
+ */
+let selectedSlotKey = null;
+
+/** Mantiene selectedSlotKey apuntando a una ranura libre y desbloqueada válida (o null si no queda ninguna). Se llama al principio de refresh(). */
+function resolveSelectedSlot() {
   const unlocked = unlockedKeys();
-  return unlocked.find((key) => !builtMap.has(key) && slotAcceptsBuilding(key, building));
-}
-
-function canAddBuilding(building) {
-  if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return false;
-  return Boolean(findCompatibleFreeSlot(building));
-}
-
-function addBuilding(id) {
-  const building = buildingsById.get(id);
-  const key = findCompatibleFreeSlot(building);
-  if (!key) return;
-  builtMap.set(key, id);
+  if (selectedSlotKey && unlocked.includes(selectedSlotKey) && !builtMap.has(selectedSlotKey)) {
+    return selectedSlotKey;
+  }
+  selectedSlotKey = unlocked.find((key) => !builtMap.has(key)) || null;
+  return selectedSlotKey;
 }
 
 function removeBuildingAt(key) {
@@ -588,9 +588,18 @@ function makeRegularSlotCell(key, unlocked, lockedTooltip) {
   }
 
   if (isUnlocked) {
-    const slot = document.createElement("span");
-    slot.className = "planet-slot is-empty";
-    slot.title = t(currentLang, "planetSimSlotEmpty");
+    const slot = document.createElement("button");
+    slot.type = "button";
+    const isTarget = key === selectedSlotKey;
+    slot.className = `planet-slot is-empty${isTarget ? " is-target" : ""}`;
+    slot.title = isTarget
+      ? t(currentLang, "planetSimSlotTarget")
+      : t(currentLang, "planetSimSlotEmpty");
+    slot.addEventListener("click", (event) => {
+      event.stopPropagation();
+      selectedSlotKey = key;
+      refresh();
+    });
     return slot;
   }
 
@@ -742,10 +751,6 @@ function setActiveTab(tab) {
   if (tabDistrictsBtn) tabDistrictsBtn.classList.toggle("is-active", tab === "districts");
   if (catalogEl) catalogEl.hidden = tab !== "buildings";
   if (districtsCatalogEl) districtsCatalogEl.hidden = tab !== "districts";
-  if (tab !== "buildings") {
-    catalogMessage = null;
-    if (catalogMessageEl) catalogMessageEl.hidden = true;
-  }
   renderActiveTabContent();
 }
 
@@ -779,12 +784,8 @@ function renderCatalog() {
   if (!catalogEl) return;
   catalogEl.replaceChildren();
 
-  if (catalogMessageEl) {
-    catalogMessageEl.hidden = !catalogMessage;
-    catalogMessageEl.textContent = catalogMessage || "";
-  }
-
-  const full = !unlockedKeys().some((key) => !builtMap.has(key));
+  const targetKey = resolveSelectedSlot();
+  const slotsFull = !targetKey;
 
   CATEGORY_ORDER.forEach((category) => {
     const items = BUILDINGS.filter((b) => b.category === category);
@@ -799,24 +800,38 @@ function renderCatalog() {
     list.className = "planet-catalog-list";
 
     items.forEach((building) => {
-      list.append(renderCatalogItem(building, full));
+      list.append(renderCatalogItem(building, slotsFull, targetKey));
     });
 
     catalogEl.append(list);
   });
 }
 
-function renderCatalogItem(building, slotsFull) {
+/** slotsFull: no queda ninguna ranura libre en toda la colonia. targetKey: la ranura libre actualmente seleccionada como destino (o null si slotsFull). */
+function renderCatalogItem(building, slotsFull, targetKey) {
   const count = buildingCount(building.id);
   const atLimit = building.colonyLimit !== "none" && count >= building.colonyLimit;
-  const disabled = slotsFull || atLimit;
+  const incompatible = !slotsFull && !slotAcceptsBuilding(targetKey, building);
+  const disabled = slotsFull || atLimit || incompatible;
 
   const item = document.createElement("button");
   item.type = "button";
   item.className = `planet-catalog-item ${isLimited(building) ? "is-limited" : "is-standard"}`;
   item.disabled = disabled;
 
-  const reason = atLimit ? t(currentLang, "planetSimLimitReached") : (slotsFull ? t(currentLang, "planetSimSlotsFull") : t(currentLang, "planetSimClickToBuild"));
+  let reason;
+  if (atLimit) {
+    reason = t(currentLang, "planetSimLimitReached");
+  } else if (slotsFull) {
+    reason = t(currentLang, "planetSimSlotsFull");
+  } else if (incompatible) {
+    const info = slotSpecInfo(targetKey);
+    reason = info.sets === null
+      ? t(currentLang, "planetSimBuildingNotAllowedBase")(buildingDisplayName(building))
+      : t(currentLang, "planetSimBuildingNotAllowed")(buildingDisplayName(building), info.label);
+  } else {
+    reason = t(currentLang, "planetSimClickToBuild");
+  }
   item.title = `${buildingDisplayName(building)} — ${reason}`;
 
   const img = document.createElement("img");
@@ -850,26 +865,9 @@ function renderCatalogItem(building, slotsFull) {
   }
 
   item.addEventListener("click", () => {
-    if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return;
-
-    const key = findCompatibleFreeSlot(building);
-    if (key) {
-      builtMap.set(key, building.id);
-      catalogMessage = null;
-      refresh();
-      return;
-    }
-
-    // Hay ranuras libres, pero ninguna admite este edificio: avisa con la
-    // especialización de la primera ranura libre encontrada.
-    const freeKey = unlockedKeys().find((k) => !builtMap.has(k));
-    if (freeKey) {
-      const info = slotSpecInfo(freeKey);
-      catalogMessage = info.sets === null
-        ? t(currentLang, "planetSimBuildingNotAllowedBase")(buildingDisplayName(building))
-        : t(currentLang, "planetSimBuildingNotAllowed")(buildingDisplayName(building), info.label);
-      renderCatalog();
-    }
+    if (disabled || !targetKey) return;
+    builtMap.set(targetKey, building.id);
+    refresh();
   });
 
   return item;
@@ -1180,6 +1178,7 @@ function renderStats(totals) {
 }
 
 function refresh() {
+  resolveSelectedSlot();
   const totals = computeTotals();
   renderSlots();
   renderStats(totals);
