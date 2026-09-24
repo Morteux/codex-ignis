@@ -1098,6 +1098,45 @@ h1 {
     margin-top: 0;
 }
 
+/* Cada categoría del catálogo de edificios es un desplegable (<details>):
+   viene abierto si hay algún edificio construible ahora mismo en la ranura
+   objetivo, y cerrado por defecto si ninguno lo está (el usuario puede
+   abrirlo a mano de todas formas pulsando la cabecera). */
+.planet-catalog-category {
+    margin-bottom: .3rem;
+}
+
+.planet-catalog-category > summary.planet-category-heading {
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.planet-catalog-category > summary.planet-category-heading::-webkit-details-marker {
+    display: none;
+}
+
+.planet-catalog-category > summary.planet-category-heading::before {
+    content: "▸";
+    display: inline-block;
+    width: 1em;
+    margin-right: .3rem;
+    color: var(--accent);
+    transition: transform .15s ease;
+}
+
+.planet-catalog-category[open] > summary.planet-category-heading::before {
+    transform: rotate(90deg);
+}
+
+.planet-catalog-category > summary.planet-category-heading:hover {
+    color: var(--accent);
+}
+
+.planet-catalog-category .planet-catalog-list {
+    margin-top: .6rem;
+}
+
 /* ── Control del edificio capital ───────────────────────────────────── */
 
 .planet-capital-control {
@@ -1188,6 +1227,30 @@ h1 {
     gap: .3rem;
     padding: .3rem;
     border: 1px solid var(--line-soft);
+}
+
+/* Grupo del distrito urbano en la vista general: cabecera compartida con
+   recuento y controles +/-, encima de las 2 cajas de especialización. */
+.planet-urban-group {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.planet-urban-summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .6rem;
+    padding: .5rem .7rem;
+    border: 1px solid var(--line-soft);
+}
+
+.planet-urban-boxes-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 .planet-slot {

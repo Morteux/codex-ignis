@@ -231,12 +231,26 @@ function slotAcceptsBuilding(key, building) {
 let selectedSlotKey = null;
 
 /** Mantiene selectedSlotKey apuntando a una ranura libre y desbloqueada válida (o null si no queda ninguna). Se llama al principio de refresh(). */
+/**
+ * Mantiene selectedSlotKey apuntando a una ranura libre y desbloqueada
+ * válida (o null si no queda ninguna). Se llama al principio de refresh().
+ * Cuando el objetivo actual deja de ser válido (se acaba de construir en
+ * él, o ha dejado de estar desbloqueado), avanza a la SIGUIENTE ranura
+ * libre por orden canónico a partir de esa posición — no reinicia al
+ * primer hueco de toda la colonia — y solo da la vuelta al principio si no
+ * queda ninguna ranura libre después de esa posición.
+ */
 function resolveSelectedSlot() {
   const unlocked = unlockedKeys();
   if (selectedSlotKey && unlocked.includes(selectedSlotKey) && !builtMap.has(selectedSlotKey)) {
     return selectedSlotKey;
   }
-  selectedSlotKey = unlocked.find((key) => !builtMap.has(key)) || null;
+
+  const previousIndex = selectedSlotKey ? unlocked.indexOf(selectedSlotKey) : -1;
+  const startIndex = previousIndex === -1 ? 0 : previousIndex + 1;
+  const next = unlocked.slice(startIndex).find((key) => !builtMap.has(key))
+    ?? unlocked.find((key) => !builtMap.has(key));
+  selectedSlotKey = next || null;
   return selectedSlotKey;
 }
 
@@ -640,9 +654,7 @@ function renderSlotsVisual() {
   }
   topRow.append(baseGrid);
 
-  for (let slotIndex = 0; slotIndex < DISTRICTS.urban.specializationSlots; slotIndex += 1) {
-    topRow.append(renderUrbanSpecializationBox(slotIndex, unlocked));
-  }
+  topRow.append(renderUrbanDistrictGroup(unlocked));
 
   slotsVisualEl.append(topRow);
 
@@ -655,6 +667,55 @@ function renderSlotsVisual() {
   });
 
   slotsVisualEl.append(bottomRow);
+}
+
+/**
+ * Grupo del distrito urbano en la vista general: cabecera compartida con
+ * el recuento de copias construidas y sus controles de +/- (misma copia
+ * construye/destruye que en la pestaña Distritos, pero visible aquí
+ * directamente, sin tener que cambiar de pestaña), seguida de las 2 cajas
+ * de especialización lado a lado.
+ */
+function renderUrbanDistrictGroup(unlocked) {
+  const def = DISTRICTS.urban;
+
+  const group = document.createElement("div");
+  group.className = "planet-urban-group";
+
+  const summary = document.createElement("div");
+  summary.className = "planet-urban-summary";
+  summary.addEventListener("click", (event) => {
+    if (event.target.closest(".planet-count-btn")) return;
+    openDistrictsTab("urban");
+  });
+
+  const header = document.createElement("div");
+  header.className = "planet-resource-district-header";
+  const icon = document.createElement("img");
+  icon.className = "planet-district-icon";
+  icon.src = `${IMAGE_BASE}${def.img}`;
+  icon.alt = "";
+  const title = document.createElement("span");
+  title.textContent = `${t(currentLang, def.i18nKey)} ${t(currentLang, "planetSimDistrictCount")(districtState.urban.count)}`;
+  header.append(icon, title);
+  summary.append(header);
+
+  summary.append(renderCountControl(
+    districtState.urban.count,
+    () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.min(20, districtState.urban.count + 1); refresh(); }
+  ));
+
+  group.append(summary);
+
+  const boxesRow = document.createElement("div");
+  boxesRow.className = "planet-urban-boxes-row";
+  for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
+    boxesRow.append(renderUrbanSpecializationBox(slotIndex, unlocked));
+  }
+  group.append(boxesRow);
+
+  return group;
 }
 
 /** Caja visual de una de las 2 ranuras de especialización del distrito urbano: icono/estado + sus 3 ranuras de edificio. */
@@ -677,14 +738,21 @@ function renderUrbanSpecializationBox(slotIndex, unlocked) {
   icon.src = `${IMAGE_BASE}${option ? option.img : def.img}`;
   icon.alt = "";
   const title = document.createElement("span");
-  title.textContent = t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
+  title.textContent = option
+    ? t(currentLang, option.i18nKey)
+    : t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
   header.append(icon, title);
   box.append(header);
 
-  const statusLine = document.createElement("p");
-  statusLine.className = "planet-resource-district-status";
-  statusLine.textContent = option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized");
-  box.append(statusLine);
+  // El nombre de la especialización ya se muestra en el título de arriba en
+  // cuanto hay una elegida; la línea de estado solo hace falta mientras no
+  // se ha elegido ninguna.
+  if (!option) {
+    const statusLine = document.createElement("p");
+    statusLine.className = "planet-resource-district-status";
+    statusLine.textContent = t(currentLang, "planetSimNotSpecialized");
+    box.append(statusLine);
+  }
 
   const row = document.createElement("div");
   row.className = "planet-district-slot-row";
@@ -704,7 +772,7 @@ function renderResourceDistrictBox(cat, unlocked) {
   const box = document.createElement("div");
   box.className = "planet-resource-district-box";
   box.addEventListener("click", (event) => {
-    if (event.target.closest(".planet-slot.is-filled")) return;
+    if (event.target.closest(".planet-slot.is-filled, .planet-count-btn")) return;
     openDistrictsTab(cat);
   });
 
@@ -718,6 +786,16 @@ function renderResourceDistrictBox(cat, unlocked) {
   title.textContent = `${t(currentLang, def.i18nKey)} ${t(currentLang, "planetSimDistrictCount")(state.count)}`;
   header.append(icon, title);
   box.append(header);
+
+  box.append(renderCountControl(
+    state.count,
+    () => {
+      state.count = Math.max(0, state.count - 1);
+      if (state.count === 0) state.specialized = false;
+      refresh();
+    },
+    () => { state.count = Math.min(20, state.count + 1); refresh(); }
+  ));
 
   const statusLine = document.createElement("p");
   statusLine.className = "planet-resource-district-status";
@@ -780,6 +858,13 @@ function renderActiveTabContent() {
   else renderDistrictsCatalog();
 }
 
+/** ¿Este edificio no se puede construir ahora mismo (límite de colonia, sin ranuras libres, o incompatible con la ranura objetivo)? Se usa tanto para desactivar el botón como para decidir si su categoría sale desplegada. */
+function isBuildingDisabled(building, slotsFull, targetKey) {
+  if (slotsFull) return true;
+  if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return true;
+  return !slotAcceptsBuilding(targetKey, building);
+}
+
 function renderCatalog() {
   if (!catalogEl) return;
   catalogEl.replaceChildren();
@@ -791,10 +876,19 @@ function renderCatalog() {
     const items = BUILDINGS.filter((b) => b.category === category);
     if (!items.length) return;
 
-    const heading = document.createElement("h3");
-    heading.className = "entry-heading-sub planet-category-heading";
-    heading.textContent = t(currentLang, CATEGORY_I18N_KEYS[category]);
-    catalogEl.append(heading);
+    // Desplegable por categoría: abierto si al menos un edificio se puede
+    // construir ahora mismo en la ranura objetivo; cerrado por defecto si
+    // ninguno se puede (el usuario siempre puede abrirlo a mano igualmente).
+    const hasBuildable = items.some((building) => !isBuildingDisabled(building, slotsFull, targetKey));
+
+    const details = document.createElement("details");
+    details.className = "planet-catalog-category";
+    details.open = hasBuildable;
+
+    const summary = document.createElement("summary");
+    summary.className = "entry-heading-sub planet-category-heading";
+    summary.textContent = t(currentLang, CATEGORY_I18N_KEYS[category]);
+    details.append(summary);
 
     const list = document.createElement("div");
     list.className = "planet-catalog-list";
@@ -803,7 +897,8 @@ function renderCatalog() {
       list.append(renderCatalogItem(building, slotsFull, targetKey));
     });
 
-    catalogEl.append(list);
+    details.append(list);
+    catalogEl.append(details);
   });
 }
 
@@ -811,8 +906,8 @@ function renderCatalog() {
 function renderCatalogItem(building, slotsFull, targetKey) {
   const count = buildingCount(building.id);
   const atLimit = building.colonyLimit !== "none" && count >= building.colonyLimit;
-  const incompatible = !slotsFull && !slotAcceptsBuilding(targetKey, building);
-  const disabled = slotsFull || atLimit || incompatible;
+  const incompatible = !slotsFull && !atLimit && !slotAcceptsBuilding(targetKey, building);
+  const disabled = isBuildingDisabled(building, slotsFull, targetKey);
 
   const item = document.createElement("button");
   item.type = "button";
@@ -947,7 +1042,9 @@ function renderUrbanSpecializationPicker(slotIndex) {
   info.className = "planet-district-spec-info";
 
   const label = document.createElement("span");
-  label.textContent = t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
+  label.textContent = currentOption
+    ? t(currentLang, currentOption.i18nKey)
+    : t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1);
   info.append(label);
 
   const select = document.createElement("select");
