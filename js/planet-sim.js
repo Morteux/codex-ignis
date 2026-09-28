@@ -1,43 +1,38 @@
 /**
- * Simulador de Planetas (v1.4).
+ * Simulador de Planetas (v1.5).
  *
- * Novedades de esta versión, a petición de Morteux:
- *  - Corregido el distrito urbano: construir copias YA NO da ranuras de
- *    edificio. El distrito urbano tiene 2 ranuras de especialización fijas
- *    (districtState.urban.slots); elegir una especialización en una de
- *    ellas es lo que desbloquea sus 3 ranuras de edificio, y sus empleos se
- *    multiplican por el número de copias de distrito construidas
- *    (districtState.urban.count). Si una ranura no tiene especialización
- *    elegida, no aporta ranuras ni empleos. Las 5 especializaciones
- *    disponibles (Industria Mixta/Pesada/Civil, Defensas Militares, Nexo
- *    Comercial) están en DISTRICTS.urban.specializationOptions.
- *  - Panel de recursos con 3 vistas: por defecto se ve el neto (como
- *    antes); un botón cambia a un desglose en dos columnas — producidos
- *    (solo positivos) y consumidos (solo negativos) — calculadas en
- *    computeTotals() como producedTotals/consumedTotals además del
- *    resourceTotals neto de siempre. El antiguo panel separado de
- *    "Mantenimiento" desaparece: su contenido queda dentro de "Consumidos".
- *  - Las pestañas Edificios/Distritos de la barra lateral ahora están
- *    fuera del contenedor con scroll (.planet-catalog-scroll), para no
- *    tener que desplazarse hasta arriba para cambiar de pestaña.
- *  - Nueva barra de pestañas de planeta (Planeta/Gestión/Economía/
- *    Ejércitos/Sucursales) por encima de todo lo anterior; todo lo ya
- *    existente vive bajo "Planeta", el resto son marcadores de posición
- *    ("Ejércitos" deshabilitada) a falta de contenido futuro.
- *  - Edificio capital: siempre presente, ocupa la primera ranura del
- *    distrito principal, nunca se puede demoler ni desactivar — solo
- *    mejorar o degradar de nivel (5 niveles reales, ver planet-data.js).
- *  - Distritos de recursos básicos (generador, minería, agricultura): cada
- *    uno especializable para desbloquear 3 ranuras más, sin cambios en
- *    esta versión.
+ * Resumen del modelo actual (a petición de Morteux, iteración a iteración):
+ *  - Ranuras: 6 base (una es el edificio capital) + 3 por cada
+ *    especialización de distrito elegida (2 ranuras de especialización
+ *    urbanas y 1 por cada categoría de recursos), con tope real de 21. Ver
+ *    unlockedKeys() y calculateBuildingSlots() en planet-data.js.
+ *  - Distritos: el urbano tiene 2 ranuras de especialización; generador,
+ *    minería y agricultura tienen 1 cada una, todas con varias opciones
+ *    (DISTRICTS[...].specializationOptions). Construir copias de distrito
+ *    solo escala los empleos de las especializaciones elegidas. El total de
+ *    copias de todos los tipos no puede superar planetSize (por defecto 20,
+ *    editable).
+ *  - Edificios: cada uno tiene "sets" y cada especialización "permittedSets"
+ *    (ver planet-data.js); slotAcceptsBuilding() decide dónde se puede
+ *    construir. Hay una ranura objetivo (selectedSlotKey, borde amarillo)
+ *    que avanza sola a la siguiente libre; el catálogo desactiva lo que no
+ *    encaja en ella y sus desplegables por categoría solo se recalculan al
+ *    cambiar el TIPO de ranura objetivo (getSlotTypeSignature), no al
+ *    moverse entre ranuras del mismo tipo.
+ *  - Empleos: cada empleo tiene un slider de población (escala ×100 de los
+ *    datos, paso 10) con botones ±100 (Mayús: ±1000). Los recursos se
+ *    calculan a partir de la población asignada, no de la capacidad; el
+ *    slider actualiza en vivo vía refreshEconomyOnly(), que nunca recrea
+ *    los propios sliders para no interrumpir el arrastre.
+ *  - Recursos: tres columnas siempre visibles (producidos, consumidos,
+ *    netos), calculadas en computeTotals().
+ *  - Pestañas de planeta (Planeta/Gestión/Economía/Ejércitos/Sucursales):
+ *    todo lo anterior vive bajo "Planeta"; el resto son marcadores.
  *
  * Modelo de ranuras: cada ranura no-capital tiene una "clave" estable
  * (p. ej. "urban-spec-0-1", "generator-spec-3") en vez de una simple
- * posición en un array. Así, si le retiras la especialización a una ranura
- * urbana o a una categoría de recursos, sus ranuras (y lo que hubiera
- * construido en ellas) no se borran: simplemente dejan de contar para
- * empleos/recursos hasta que las recuperes, sin desplazar ni afectar a las
- * ranuras de ningún otro grupo.
+ * posición en un array. Así, si le retiras la especialización a una ranura,
+ * sus edificios no se borran: dejan de contar hasta que la recuperes.
  *
  * Ver js/planet-data.js para el origen de todos los números.
  */
@@ -80,6 +75,8 @@ const capitalNameEl = document.querySelector("#planet-capital-name");
 const capitalTierEl = document.querySelector("#planet-capital-tier");
 const capitalUpgradeBtn = document.querySelector("#planet-capital-upgrade");
 const capitalDowngradeBtn = document.querySelector("#planet-capital-downgrade");
+const planetSizeInput = document.querySelector("#planet-size-input");
+const districtsUsedLabel = document.querySelector("#planet-districts-used-label");
 const metaDescription = document.querySelector('meta[name="description"]');
 const mainTabButtons = document.querySelectorAll(".planet-main-tab[data-main-tab]");
 const mainTabPanels = {
@@ -95,25 +92,37 @@ let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agri
 
 let capitalTierIndex = 0;
 
+/** Tamaño del planeta: por ahora, límite del total de copias de distrito (urbano + recursos) que se pueden construir en la colonia. Editable por el usuario. */
+let planetSize = 20;
+
 /**
  * Estado de distritos: el urbano guarda cuántas copias hay construidas
  * (count, solo escala empleos) y, por separado, qué especialización tiene
  * elegida cada una de sus 2 ranuras de especialización (slots: array de 2
  * posiciones, cada una null o el id de una DISTRICTS.urban.specializationOptions).
  * Elegir una especialización es lo único que desbloquea sus 3 ranuras de
- * edificio; el número de copias del distrito NO desbloquea ranuras. Cada
- * categoría de recurso básico sigue teniendo su propio número de copias y
- * si está especializada (mecánica sin cambios).
+ * edificio; el número de copias del distrito NO desbloquea ranuras.
+ *
+ * Cada categoría de recurso básico (generador/minería/agricultura) tiene
+ * una única ranura de especialización (no dos como el urbano), con varias
+ * opciones entre las que elegir (optionId: null o un id de
+ * DISTRICTS[cat].specializationOptions) — igual que el urbano, pero con
+ * un solo hueco de elección en vez de dos.
  */
 const districtState = {
   urban: { count: 2, slots: [null, null] },
-  generator: { count: 0, specialized: false },
-  mining: { count: 0, specialized: false },
-  agriculture: { count: 0, specialized: false }
+  generator: { count: 0, optionId: null },
+  mining: { count: 0, optionId: null },
+  agriculture: { count: 0, optionId: null }
 };
 
 /** Mapa id -> definición de especialización de distrito urbano, para búsquedas rápidas. */
 const urbanSpecOptionsById = new Map(DISTRICTS.urban.specializationOptions.map((option) => [option.id, option]));
+
+/** Igual que urbanSpecOptionsById, pero uno por cada categoría de distrito de recursos básicos. */
+const resourceSpecOptionsById = Object.fromEntries(
+  RESOURCE_DISTRICT_ORDER.map((cat) => [cat, new Map(DISTRICTS[cat].specializationOptions.map((option) => [option.id, option]))])
+);
 
 // Ranuras no-capital construidas: clave de ranura estable -> id de edificio.
 // Ver cabecera del archivo para qué es una "clave de ranura".
@@ -122,7 +131,7 @@ const builtMap = new Map();
 const buildingsById = new Map(BUILDINGS.map((b) => [b.id, b]));
 
 function specializedCategoryCount() {
-  return RESOURCE_DISTRICT_ORDER.filter((cat) => districtState[cat].specialized).length;
+  return RESOURCE_DISTRICT_ORDER.filter((cat) => districtState[cat].optionId).length;
 }
 
 /** Cuántas de las 2 ranuras de especialización del distrito urbano tienen ya una especialización elegida. */
@@ -132,6 +141,19 @@ function specializedUrbanSlotCount() {
 
 function totalSlots() {
   return calculateBuildingSlots(specializedUrbanSlotCount(), specializedCategoryCount());
+}
+
+/** Suma de copias de distrito construidas (urbano + las 3 categorías de recursos), para compararla con planetSize. */
+function totalDistrictCount() {
+  return districtState.urban.count
+    + districtState.generator.count
+    + districtState.mining.count
+    + districtState.agriculture.count;
+}
+
+/** ¿Cabe una copia más de distrito en el planeta, según su tamaño? */
+function canAddDistrict() {
+  return totalDistrictCount() < planetSize;
 }
 
 /** Ranuras que no son la del capital: la ranura 0 de las 6 base siempre es suya. */
@@ -148,7 +170,7 @@ function unlockedKeys() {
     for (let i = 1; i <= 3; i += 1) keys.push(`urban-spec-${slotIndex}-${i}`);
   });
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
-    if (districtState[cat].specialized) {
+    if (districtState[cat].optionId) {
       for (let i = 1; i <= 3; i += 1) keys.push(`${cat}-spec-${i}`);
     }
   });
@@ -200,10 +222,12 @@ function slotSpecInfo(key) {
 
   const resourceMatch = /^(generator|mining|agriculture)-spec-\d+$/.exec(key);
   if (resourceMatch) {
-    const def = DISTRICTS[resourceMatch[1]];
+    const cat = resourceMatch[1];
+    const state = districtState[cat];
+    const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
     return {
-      sets: def.specialization.permittedSets || [],
-      label: t(currentLang, def.specialization.i18nKey)
+      sets: option ? option.permittedSets : [],
+      label: option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized")
     };
   }
 
@@ -302,15 +326,16 @@ function computeTotals() {
   amenities += divideEffect(capital.amenities || 0);
   Object.entries(capital.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
 
-  // Distritos de recursos básicos: empleo base por copia, y bonus de
-  // especialización por copia si la categoría está especializada.
+  // Distritos de recursos básicos: empleo base por copia, y bonus de la
+  // especialización elegida (si hay una) por copia.
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const state = districtState[cat];
     const def = DISTRICTS[cat];
     if (state.count > 0) {
       Object.entries(def.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
-      if (state.specialized) {
-        Object.entries(def.specialization.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
+      const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
+      if (option) {
+        Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
       }
     }
   });
@@ -477,6 +502,12 @@ function renderJobSliderRow(jobId, capacity) {
   info.append(label);
   row.append(info);
 
+  const decreaseBtn = document.createElement("button");
+  decreaseBtn.type = "button";
+  decreaseBtn.className = "planet-job-step-btn";
+  decreaseBtn.textContent = "−";
+  decreaseBtn.title = t(currentLang, "planetSimJobStepTooltip");
+
   const slider = document.createElement("input");
   slider.type = "range";
   slider.className = "planet-job-slider";
@@ -485,44 +516,75 @@ function renderJobSliderRow(jobId, capacity) {
   slider.step = "10";
   slider.value = String(assigned);
   slider.setAttribute("aria-label", jobName(jobId));
-  // Se usa "change" (no "input") para no forzar un refresco completo del
-  // panel (que recrearía este mismo control) mientras el usuario arrastra
-  // el slider, ya que eso interrumpiría el propio arrastre.
-  slider.addEventListener("change", () => {
-    jobAssignments[jobId] = Number(slider.value);
-    refresh();
-  });
-  row.append(slider);
+
+  const increaseBtn = document.createElement("button");
+  increaseBtn.type = "button";
+  increaseBtn.className = "planet-job-step-btn";
+  increaseBtn.textContent = "+";
+  increaseBtn.title = t(currentLang, "planetSimJobStepTooltip");
 
   const valueLabel = document.createElement("span");
   valueLabel.className = "planet-job-row-value";
-  valueLabel.textContent = formatAmount(assigned);
-  row.append(valueLabel);
 
   const output = document.createElement("div");
   output.className = "planet-job-row-output";
-  const outputs = Object.entries(JOB_OUTPUTS[jobId] || {});
-  if (outputs.length) {
-    outputs.forEach(([resourceId, perJob]) => {
-      const amount = perJob * divideEffect(assigned);
-      const pill = document.createElement("span");
-      pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
-      pill.append(resourceIcon(resourceId));
-      const amountLabel = document.createElement("span");
-      amountLabel.textContent = formatAmount(amount, true);
-      pill.append(amountLabel);
-      output.append(pill);
-    });
-  } else if (JOB_EFFECT_NOTES[jobId]) {
-    const note = document.createElement("span");
-    note.className = "planet-job-output-note";
-    note.textContent = t(currentLang, JOB_EFFECT_NOTES[jobId]);
-    output.append(note);
+
+  /** Repinta solo el valor y los recursos de ESTA fila (sin tocar el slider ni recrearlo), a partir de la población recién asignada. */
+  function updateRowDisplay(newAssigned) {
+    valueLabel.textContent = formatAmount(newAssigned);
+    output.replaceChildren();
+    const outputs = Object.entries(JOB_OUTPUTS[jobId] || {});
+    if (outputs.length) {
+      outputs.forEach(([resourceId, perJob]) => {
+        const amount = perJob * divideEffect(newAssigned);
+        const pill = document.createElement("span");
+        pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
+        pill.append(resourceIcon(resourceId));
+        const amountLabel = document.createElement("span");
+        amountLabel.textContent = formatAmount(amount, true);
+        pill.append(amountLabel);
+        output.append(pill);
+      });
+    } else if (JOB_EFFECT_NOTES[jobId]) {
+      const note = document.createElement("span");
+      note.className = "planet-job-output-note";
+      note.textContent = t(currentLang, JOB_EFFECT_NOTES[jobId]);
+      output.append(note);
+    }
   }
-  row.append(output);
+  updateRowDisplay(assigned);
+
+  /** Aplica un nuevo valor de población asignada: guarda el estado, repinta esta fila en el sitio y refresca el resto de la economía sin recrear ningún slider (para no interrumpir el arrastre). */
+  function commitChange(newValue) {
+    const clamped = Math.max(0, Math.min(capacity, newValue));
+    jobAssignments[jobId] = clamped;
+    slider.value = String(clamped);
+    updateRowDisplay(clamped);
+    refreshEconomyOnly();
+  }
+
+  // "input" (no "change"): se quiere ver el resultado en vivo mientras se
+  // arrastra. Como commitChange() no recrea el propio slider (solo llama a
+  // refreshEconomyOnly(), que no toca #planet-summary), el arrastre no se
+  // interrumpe.
+  slider.addEventListener("input", () => {
+    commitChange(Number(slider.value));
+  });
+
+  decreaseBtn.addEventListener("click", (event) => {
+    const step = event.shiftKey ? 1000 : 100;
+    commitChange((jobAssignments[jobId] || 0) - step);
+  });
+  increaseBtn.addEventListener("click", (event) => {
+    const step = event.shiftKey ? 1000 : 100;
+    commitChange((jobAssignments[jobId] || 0) + step);
+  });
+
+  row.append(decreaseBtn, slider, increaseBtn, valueLabel, output);
 
   return row;
 }
+
 
 function renderJobsMini(jobs) {
   const entries = Object.entries(jobs).filter(([, raw]) => raw > 0);
@@ -570,6 +632,14 @@ if (capitalUpgradeBtn) {
 if (capitalDowngradeBtn) {
   capitalDowngradeBtn.addEventListener("click", () => {
     capitalTierIndex = Math.max(0, capitalTierIndex - 1);
+    refresh();
+  });
+}
+
+if (planetSizeInput) {
+  planetSizeInput.addEventListener("input", () => {
+    const parsed = Math.floor(Number(planetSizeInput.value));
+    planetSize = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     refresh();
   });
 }
@@ -703,7 +773,8 @@ function renderUrbanDistrictGroup(unlocked) {
   summary.append(renderCountControl(
     districtState.urban.count,
     () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
-    () => { districtState.urban.count = Math.min(20, districtState.urban.count + 1); refresh(); }
+    () => { districtState.urban.count += 1; refresh(); },
+    canAddDistrict()
   ));
 
   group.append(summary);
@@ -768,6 +839,7 @@ function renderUrbanSpecializationBox(slotIndex, unlocked) {
 function renderResourceDistrictBox(cat, unlocked) {
   const def = DISTRICTS[cat];
   const state = districtState[cat];
+  const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
 
   const box = document.createElement("div");
   box.className = "planet-resource-district-box";
@@ -780,7 +852,7 @@ function renderResourceDistrictBox(cat, unlocked) {
   header.className = "planet-resource-district-header";
   const icon = document.createElement("img");
   icon.className = "planet-district-icon";
-  icon.src = `${IMAGE_BASE}${def.img}`;
+  icon.src = `${IMAGE_BASE}${option ? option.img : def.img}`;
   icon.alt = "";
   const title = document.createElement("span");
   title.textContent = `${t(currentLang, def.i18nKey)} ${t(currentLang, "planetSimDistrictCount")(state.count)}`;
@@ -791,24 +863,25 @@ function renderResourceDistrictBox(cat, unlocked) {
     state.count,
     () => {
       state.count = Math.max(0, state.count - 1);
-      if (state.count === 0) state.specialized = false;
+      if (state.count === 0) state.optionId = null;
       refresh();
     },
-    () => { state.count = Math.min(20, state.count + 1); refresh(); }
+    () => { state.count += 1; refresh(); },
+    canAddDistrict()
   ));
 
   const statusLine = document.createElement("p");
   statusLine.className = "planet-resource-district-status";
-  statusLine.textContent = state.specialized
-    ? t(currentLang, "planetSimSpecializedAs")(t(currentLang, def.specialization.i18nKey))
-    : t(currentLang, def.specialization.techI18nKey);
+  statusLine.textContent = option
+    ? t(currentLang, option.i18nKey)
+    : t(currentLang, def.lockedTooltipKey);
   box.append(statusLine);
 
   const row = document.createElement("div");
   row.className = "planet-district-slot-row";
   for (let i = 1; i <= 3; i += 1) {
     const key = `${cat}-spec-${i}`;
-    const lockedTooltip = t(currentLang, def.specialization.techI18nKey);
+    const lockedTooltip = t(currentLang, def.lockedTooltipKey);
     row.append(makeRegularSlotCell(key, unlocked, lockedTooltip));
   }
   box.append(row);
@@ -865,25 +938,56 @@ function isBuildingDisabled(building, slotsFull, targetKey) {
   return !slotAcceptsBuilding(targetKey, building);
 }
 
+/** Identifica el "tipo" de una ranura (no la ranura exacta): todas las de base son iguales entre sí; las urbanas se distinguen por su especialización elegida; las de recursos por su categoría y especialización elegida. Sirve para no recalcular los desplegables del catálogo cuando el objetivo cambia dentro del mismo tipo (ver renderCatalog). */
+function getSlotTypeSignature(key) {
+  if (!key) return null;
+  const urbanMatch = /^urban-spec-(\d+)-\d+$/.exec(key);
+  if (urbanMatch) {
+    const slotIndex = Number(urbanMatch[1]);
+    return `urban:${districtState.urban.slots[slotIndex] || "none"}`;
+  }
+  const resourceMatch = /^(generator|mining|agriculture)-spec-\d+$/.exec(key);
+  if (resourceMatch) {
+    const cat = resourceMatch[1];
+    return `${cat}:${districtState[cat].optionId || "none"}`;
+  }
+  return "base";
+}
+
+// Último "tipo" de ranura para el que se calcularon los desplegables
+// abiertos/cerrados del catálogo, y su resultado (categoría -> abierto o
+// no). Mientras el objetivo se mueva dentro del mismo tipo de ranura, estos
+// valores se respetan tal cual (incluidos los cambios manuales del usuario
+// vía el evento "toggle"); solo se recalculan desde cero al cambiar de tipo.
+let catalogSlotSignature = null;
+const catalogCategoryOpenState = {};
+
 function renderCatalog() {
   if (!catalogEl) return;
   catalogEl.replaceChildren();
 
   const targetKey = resolveSelectedSlot();
   const slotsFull = !targetKey;
+  const signature = slotsFull ? null : getSlotTypeSignature(targetKey);
+
+  if (signature !== catalogSlotSignature) {
+    catalogSlotSignature = signature;
+    CATEGORY_ORDER.forEach((category) => {
+      const items = BUILDINGS.filter((b) => b.category === category);
+      catalogCategoryOpenState[category] = items.some((building) => !isBuildingDisabled(building, slotsFull, targetKey));
+    });
+  }
 
   CATEGORY_ORDER.forEach((category) => {
     const items = BUILDINGS.filter((b) => b.category === category);
     if (!items.length) return;
 
-    // Desplegable por categoría: abierto si al menos un edificio se puede
-    // construir ahora mismo en la ranura objetivo; cerrado por defecto si
-    // ninguno se puede (el usuario siempre puede abrirlo a mano igualmente).
-    const hasBuildable = items.some((building) => !isBuildingDisabled(building, slotsFull, targetKey));
-
     const details = document.createElement("details");
     details.className = "planet-catalog-category";
-    details.open = hasBuildable;
+    details.open = catalogCategoryOpenState[category] ?? true;
+    details.addEventListener("toggle", () => {
+      catalogCategoryOpenState[category] = details.open;
+    });
 
     const summary = document.createElement("summary");
     summary.className = "entry-heading-sub planet-category-heading";
@@ -1013,7 +1117,8 @@ function renderUrbanDistrictCard() {
   card.append(renderCountControl(
     districtState.urban.count,
     () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
-    () => { districtState.urban.count = Math.min(20, districtState.urban.count + 1); refresh(); }
+    () => { districtState.urban.count += 1; refresh(); },
+    canAddDistrict()
   ));
 
   for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
@@ -1082,6 +1187,7 @@ function renderUrbanSpecializationPicker(slotIndex) {
 function renderResourceDistrictCard(cat) {
   const def = DISTRICTS[cat];
   const state = districtState[cat];
+  const currentOption = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
   const card = document.createElement("div");
   card.className = "planet-district-card";
 
@@ -1089,7 +1195,7 @@ function renderResourceDistrictCard(cat) {
   header.className = "planet-district-card-header";
   const icon = document.createElement("img");
   icon.className = "planet-district-icon";
-  icon.src = `${IMAGE_BASE}${def.img}`;
+  icon.src = `${IMAGE_BASE}${currentOption ? currentOption.img : def.img}`;
   icon.alt = "";
   const name = document.createElement("span");
   name.textContent = t(currentLang, def.i18nKey);
@@ -1102,41 +1208,42 @@ function renderResourceDistrictCard(cat) {
     state.count,
     () => {
       state.count = Math.max(0, state.count - 1);
-      if (state.count === 0) state.specialized = false;
+      if (state.count === 0) state.optionId = null;
       refresh();
     },
-    () => { state.count = Math.min(20, state.count + 1); refresh(); }
+    () => { state.count += 1; refresh(); },
+    canAddDistrict()
   ));
 
   const specRow = document.createElement("div");
   specRow.className = "planet-district-spec-row";
 
-  const specIcon = document.createElement("img");
-  specIcon.className = "planet-district-icon";
-  specIcon.src = `${IMAGE_BASE}${def.specialization.img}`;
-  specIcon.alt = "";
-  specRow.append(specIcon);
+  const select = document.createElement("select");
+  select.className = "planet-urban-spec-select";
 
-  const specInfo = document.createElement("div");
-  specInfo.className = "planet-district-spec-info";
-  const specName = document.createElement("span");
-  specName.textContent = t(currentLang, def.specialization.i18nKey);
-  const specStatus = document.createElement("span");
-  specStatus.className = "planet-district-spec-status";
-  specStatus.textContent = state.specialized ? t(currentLang, "planetSimSpecializedAs")(t(currentLang, def.specialization.i18nKey)) : t(currentLang, "planetSimNotSpecialized");
-  specInfo.append(specName, specStatus);
-  specRow.append(specInfo);
+  const noneOption = document.createElement("option");
+  noneOption.value = "";
+  noneOption.textContent = t(currentLang, "planetSimNotSpecialized");
+  if (!state.optionId) noneOption.selected = true;
+  select.append(noneOption);
 
-  const specButton = document.createElement("button");
-  specButton.type = "button";
-  specButton.className = "planet-add-btn";
-  specButton.textContent = state.specialized ? t(currentLang, "planetSimUnspecializeButton") : t(currentLang, "planetSimSpecializeButton");
-  specButton.disabled = !state.specialized && state.count < 1;
-  specButton.addEventListener("click", () => {
-    state.specialized = !state.specialized;
+  def.specializationOptions.forEach((option) => {
+    const optionEl = document.createElement("option");
+    optionEl.value = option.id;
+    optionEl.textContent = t(currentLang, option.i18nKey);
+    if (option.id === state.optionId) optionEl.selected = true;
+    select.append(optionEl);
+  });
+
+  select.addEventListener("change", () => {
+    state.optionId = select.value || null;
     refresh();
   });
-  specRow.append(specButton);
+  specRow.append(select);
+
+  if (currentOption) {
+    specRow.append(renderJobsMini(currentOption.jobs));
+  }
 
   card.append(specRow);
 
@@ -1148,7 +1255,8 @@ function renderResourceDistrictCard(cat) {
   return card;
 }
 
-function renderCountControl(count, onDecrease, onIncrease) {
+/** canIncrease (por defecto true): si es false, el botón "+" sale desactivado con el motivo (límite de distritos del planeta alcanzado) en el tooltip. */
+function renderCountControl(count, onDecrease, onIncrease, canIncrease = true) {
   const wrapper = document.createElement("div");
   wrapper.className = "planet-count-control";
 
@@ -1168,7 +1276,8 @@ function renderCountControl(count, onDecrease, onIncrease) {
   increaseBtn.type = "button";
   increaseBtn.className = "planet-count-btn";
   increaseBtn.textContent = "+";
-  increaseBtn.title = t(currentLang, "planetSimDistrictAdd");
+  increaseBtn.disabled = !canIncrease;
+  increaseBtn.title = canIncrease ? t(currentLang, "planetSimDistrictAdd") : t(currentLang, "planetSimDistrictLimitReached");
   increaseBtn.addEventListener("click", onIncrease);
 
   wrapper.append(decreaseBtn, countLabel, increaseBtn);
@@ -1177,30 +1286,13 @@ function renderCountControl(count, onDecrease, onIncrease) {
 
 /* ── Paneles de resumen y producción ─────────────────────────────────── */
 
-function renderSummary(totals) {
-  if (!summaryEl) return;
-  summaryEl.replaceChildren();
+function updatePopulationCounter(jobIds) {
+  if (!summaryPopulationEl) return;
+  const totalPopulation = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
+  summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
+}
 
-  const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
-
-  if (summaryPopulationEl) {
-    const totalPopulation = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
-    summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
-  }
-
-  if (!jobIds.length) {
-    const empty = document.createElement("p");
-    empty.className = "planet-summary-empty";
-    empty.textContent = t(currentLang, "planetSimSummaryEmpty");
-    summaryEl.append(empty);
-    if (nonResourceEl) nonResourceEl.replaceChildren();
-    return;
-  }
-
-  jobIds.forEach((jobId) => {
-    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId]));
-  });
-
+function renderNonResourceEffects(jobIds) {
   const nonResourceEntries = Object.keys(JOB_EFFECT_NOTES).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
   if (nonResourceEntries.length && nonResourceEl) {
     nonResourceEl.replaceChildren();
@@ -1218,6 +1310,47 @@ function renderSummary(totals) {
     nonResourceEl.replaceChildren();
   }
 }
+
+function renderSummary(totals) {
+  if (!summaryEl) return;
+  summaryEl.replaceChildren();
+
+  const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
+  updatePopulationCounter(jobIds);
+
+  if (!jobIds.length) {
+    const empty = document.createElement("p");
+    empty.className = "planet-summary-empty";
+    empty.textContent = t(currentLang, "planetSimSummaryEmpty");
+    summaryEl.append(empty);
+    if (nonResourceEl) nonResourceEl.replaceChildren();
+    return;
+  }
+
+  jobIds.forEach((jobId) => {
+    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId]));
+  });
+
+  renderNonResourceEffects(jobIds);
+}
+
+/**
+ * Versión ligera de refresh() para cuando solo cambia la población asignada
+ * a un empleo (arrastre del slider, o botones ±100/±1000): recalcula la
+ * economía y repinta el panel de recursos, el contador de población y
+ * "otros efectos", pero NUNCA toca #planet-summary (las filas de empleo con
+ * sus sliders) ni la rejilla de ranuras ni el catálogo — nada de eso cambia
+ * por una reasignación de población, y recrearlo interrumpiría el arrastre
+ * del propio slider que disparó esta actualización.
+ */
+function refreshEconomyOnly() {
+  const totals = computeTotals();
+  renderProduction(totals);
+  const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
+  updatePopulationCounter(jobIds);
+  renderNonResourceEffects(jobIds);
+}
+
 
 function renderResourceRow(resourceId, amount, forceSign) {
   const row = document.createElement("div");
@@ -1272,6 +1405,7 @@ function renderSlots() {
 function renderStats(totals) {
   if (statHousing) statHousing.textContent = formatAmount(totals.housing, true);
   if (statAmenities) statAmenities.textContent = formatAmount(totals.amenities, true);
+  if (districtsUsedLabel) districtsUsedLabel.textContent = `${totalDistrictCount()} / ${planetSize}`;
 }
 
 function refresh() {

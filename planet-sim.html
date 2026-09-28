@@ -41,6 +41,16 @@
       <div id="planet-tab-panel-planet">
         <section class="planet-header-panel" aria-label="Estado de la colonia">
           <div class="planet-header-stat">
+            <span class="planet-header-stat-label" data-i18n="planetSimPlanetSizeLabel">Tamaño del planeta</span>
+            <span class="planet-header-stat-value">
+              <input type="number" id="planet-size-input" class="planet-size-input" min="1" max="50" step="1" value="20" />
+            </span>
+          </div>
+          <div class="planet-header-stat">
+            <span class="planet-header-stat-label" data-i18n="planetSimDistrictsUsedLabel">Distritos</span>
+            <span class="planet-header-stat-value" id="planet-districts-used-label">0 / 20</span>
+          </div>
+          <div class="planet-header-stat">
             <span class="planet-header-stat-label" data-i18n="planetSimSlotsHeading">Ranuras de edificios</span>
             <span class="planet-header-stat-value" id="planet-slots-label">6 / 6 ranuras usadas</span>
           </div>

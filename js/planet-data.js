@@ -191,44 +191,109 @@ export const DISTRICTS = {
       }
     ]
   },
+  /**
+   * Distritos de recursos básicos: a diferencia del distrito urbano, cada
+   * uno tiene UNA sola ranura de especialización (no dos), pero ahora con
+   * varias especializaciones distintas para elegir (specializationOptions),
+   * igual que el urbano. slotsPerSpecialization: cuántas ranuras de
+   * edificio desbloquea, sea cual sea la opción elegida. lockedTooltipKey:
+   * texto del hueco bloqueado mientras no se ha elegido ninguna.
+   *
+   * Especializaciones confirmadas en la wiki (página "District
+   * specialization", tablas "Generator/Mining/Agriculture
+   * specializations"). Se han omitido las que necesitan un empleo o
+   * recurso que este simulador no modela todavía (Mote Harvester, Crystal
+   * Miner, Gas Extractor, Grubsymbiont, Angler, Pearl Diver, Photosymbiont,
+   * Pollinosymbiont) o que "convierten" el empleo base del distrito en otro
+   * (mecánica de swap, p. ej. Volatile Motes Harvesting o Rare Crystal
+   * Extraction), ya que no encajan en el modelo actual de empleos
+   * puramente aditivos. También se omite el efecto extra de conversión de
+   * recursos de Gravitonic Mines (-1 Mineral／+0.5 Física por cada 100
+   * Mineros), igual que ya se simplifica la penalización de -200 vivienda
+   * en otras especializaciones: solo se modela el reparto de empleos.
+   */
   generator: {
     i18nKey: "districtGenerator",
     img: "districs/district_generator.png",
     jobs: { technician: 200 },
-    specialization: {
-      i18nKey: "specializationEnergyGeneration",
-      techI18nKey: "specializationRequiresEnergy",
-      img: "districts_specialization/District_specialization_energy.png",
-      jobs: { technician: 100 },
-      slots: 3,
-      permittedSets: ["energy"]
-    }
+    lockedTooltipKey: "specializationRequiresEnergy",
+    slotsPerSpecialization: 3,
+    specializationOptions: [
+      {
+        id: "energyGeneration",
+        i18nKey: "specializationEnergyGeneration",
+        img: "districts_specialization/District_specialization_energy.png",
+        jobs: { technician: 100 },
+        permittedSets: ["energy"]
+      },
+      {
+        id: "solarFarmingBays",
+        i18nKey: "specializationSolarFarmingBays",
+        img: "districts_specialization/District_specialization_food.png",
+        jobs: { farmer: 100 },
+        permittedSets: ["energy", "food"]
+      }
+    ]
   },
   mining: {
     i18nKey: "districtMining",
     img: "districs/district_mining.png",
     jobs: { miner: 200 },
-    specialization: {
-      i18nKey: "specializationMineralExtraction",
-      techI18nKey: "specializationRequiresMinerals",
-      img: "districts_specialization/District_specialization_minerals.png",
-      jobs: { miner: 100 },
-      slots: 3,
-      permittedSets: ["minerals"]
-    }
+    lockedTooltipKey: "specializationRequiresMinerals",
+    slotsPerSpecialization: 3,
+    specializationOptions: [
+      {
+        id: "mineralExtraction",
+        i18nKey: "specializationMineralExtraction",
+        img: "districts_specialization/District_specialization_minerals.png",
+        jobs: { miner: 100 },
+        permittedSets: ["minerals"]
+      },
+      {
+        id: "subterraneanUrbanization",
+        i18nKey: "specializationSubterraneanUrbanization",
+        img: "districts_specialization/District_specialization_minerals.png",
+        jobs: { miner: 50, trader: 50 },
+        permittedSets: ["minerals", "origin"]
+      },
+      {
+        id: "gravitonicMines",
+        i18nKey: "specializationGravitonicMines",
+        img: "districts_specialization/District_specialization_minerals.png",
+        jobs: { miner: 50, physicist: 50 },
+        permittedSets: ["minerals"]
+      }
+    ]
   },
   agriculture: {
     i18nKey: "districtAgriculture",
     img: "districs/district_farming.png",
     jobs: { farmer: 200 },
-    specialization: {
-      i18nKey: "specializationAgriculturalFocus",
-      techI18nKey: "specializationRequiresFood",
-      img: "districts_specialization/District_specialization_food.png",
-      jobs: { farmer: 100 },
-      slots: 3,
-      permittedSets: ["food"]
-    }
+    lockedTooltipKey: "specializationRequiresFood",
+    slotsPerSpecialization: 3,
+    specializationOptions: [
+      {
+        id: "agriculturalFocus",
+        i18nKey: "specializationAgriculturalFocus",
+        img: "districts_specialization/District_specialization_food.png",
+        jobs: { farmer: 100 },
+        permittedSets: ["food"]
+      },
+      {
+        id: "agrarianVillages",
+        i18nKey: "specializationAgrarianVillages",
+        img: "districts_specialization/District_specialization_food.png",
+        jobs: { farmer: 75, trader: 75 },
+        permittedSets: ["food", "origin"]
+      },
+      {
+        id: "coastalHamlets",
+        i18nKey: "specializationCoastalHamlets",
+        img: "districts_specialization/District_specialization_food.png",
+        jobs: { farmer: 50, artisan: 50, trader: 50 },
+        permittedSets: ["food", "origin"]
+      }
+    ]
   }
 };
 

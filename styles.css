@@ -1010,6 +1010,20 @@ h1 {
     font: 700 1.2rem var(--mono);
 }
 
+.planet-size-input {
+    width: 4rem;
+    padding: .1rem .3rem;
+    border: 1px solid var(--line);
+    color: var(--accent);
+    background: var(--surface);
+    font: 700 1.1rem var(--mono);
+}
+
+.planet-size-input:hover,
+.planet-size-input:focus {
+    border-color: var(--accent-dim);
+}
+
 /* ── Disposición general: panel principal a la izquierda, catálogo (con
    pestañas Edificios/Distritos) en la barra lateral derecha. ──────────── */
 .planet-shell {
@@ -1673,6 +1687,22 @@ h1 {
     flex: 2 1 10rem;
     min-width: 6rem;
     accent-color: var(--accent);
+}
+
+.planet-job-step-btn {
+    flex-shrink: 0;
+    width: 1.7rem;
+    height: 1.7rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .85rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-job-step-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
 }
 
 .planet-job-row-value {
