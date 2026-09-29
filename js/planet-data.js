@@ -385,6 +385,25 @@ export const JOB_EFFECT_NOTES = {
 };
 
 /**
+ * Icono (dentro de la API de assets de Stellaris, carpeta "modifiers/") que
+ * ilustra el efecto no numérico de cada empleo de JOB_EFFECT_NOTES: Agente →
+ * reducción de delincuencia, Educador → mejora de estabilidad, Soldado →
+ * ejércitos de defensa. Nombres de archivo verificados contra
+ * StellarisAssetsTree.txt.
+ */
+export const JOB_EFFECT_ICONS = {
+  enforcer: "modifiers/mod_planet_crime_add.png",
+  educator: "modifiers/mod_planet_stability_add.png",
+  soldier: "modifiers/mod_planet_defense_armies_add.png"
+};
+
+/** Iconos genéricos (carpeta "modifiers/") para decorar la barra de estadísticas de la colonia. */
+export const HEADER_ICONS = {
+  housing: "modifiers/mod_planet_housing_add.png",
+  amenities: "modifiers/mod_planet_amenities_add.png"
+};
+
+/**
  * Catálogo de edificios.
  *
  * - jobs: { jobId: cantidad ×100 } tal cual la wiki (ver nota de escala

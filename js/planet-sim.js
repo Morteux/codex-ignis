@@ -44,6 +44,8 @@ import {
   JOBS,
   JOB_OUTPUTS,
   JOB_EFFECT_NOTES,
+  JOB_EFFECT_ICONS,
+  HEADER_ICONS,
   RESOURCES,
   CATEGORY_ORDER,
   CATEGORY_I18N_KEYS,
@@ -60,6 +62,8 @@ const slotsLabel = document.querySelector("#planet-slots-label");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
+const statHousingIcon = document.querySelector("#planet-stat-housing-icon");
+const statAmenitiesIcon = document.querySelector("#planet-stat-amenities-icon");
 const catalogEl = document.querySelector("#planet-catalog");
 const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
@@ -85,6 +89,11 @@ const mainTabPanels = {
   economy: document.querySelector("#planet-tab-panel-economy"),
   branches: document.querySelector("#planet-tab-panel-branches")
 };
+
+// Iconos de cabecera (vivienda/servicios): estáticos, no dependen del
+// idioma ni del estado, así que se fijan una única vez al cargar.
+if (statHousingIcon) statHousingIcon.src = `${IMAGE_BASE}${HEADER_ICONS.housing}`;
+if (statAmenitiesIcon) statAmenitiesIcon.src = `${IMAGE_BASE}${HEADER_ICONS.amenities}`;
 
 let currentLang = detectInitialLang();
 let activeTab = "buildings";
@@ -774,7 +783,9 @@ function renderUrbanDistrictGroup(unlocked) {
     districtState.urban.count,
     () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
-    canAddDistrict()
+    canAddDistrict(),
+    () => { districtState.urban.count = 0; refresh(); },
+    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); }
   ));
 
   group.append(summary);
@@ -867,7 +878,9 @@ function renderResourceDistrictBox(cat, unlocked) {
       refresh();
     },
     () => { state.count += 1; refresh(); },
-    canAddDistrict()
+    canAddDistrict(),
+    () => { state.count = 0; state.optionId = null; refresh(); },
+    () => { while (canAddDistrict()) state.count += 1; refresh(); }
   ));
 
   const statusLine = document.createElement("p");
@@ -1118,7 +1131,9 @@ function renderUrbanDistrictCard() {
     districtState.urban.count,
     () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
-    canAddDistrict()
+    canAddDistrict(),
+    () => { districtState.urban.count = 0; refresh(); },
+    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); }
   ));
 
   for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
@@ -1212,7 +1227,9 @@ function renderResourceDistrictCard(cat) {
       refresh();
     },
     () => { state.count += 1; refresh(); },
-    canAddDistrict()
+    canAddDistrict(),
+    () => { state.count = 0; state.optionId = null; refresh(); },
+    () => { while (canAddDistrict()) state.count += 1; refresh(); }
   ));
 
   const specRow = document.createElement("div");
@@ -1255,8 +1272,15 @@ function renderResourceDistrictCard(cat) {
   return card;
 }
 
-/** canIncrease (por defecto true): si es false, el botón "+" sale desactivado con el motivo (límite de distritos del planeta alcanzado) en el tooltip. */
-function renderCountControl(count, onDecrease, onIncrease, canIncrease = true) {
+/**
+ * canIncrease (por defecto true): si es false, el botón "+" sale desactivado
+ * con el motivo (límite de distritos del planeta alcanzado) en el tooltip.
+ * onDecreaseAll/onIncreaseAll (opcionales): si se indican, Ctrl+clic (Cmd+clic
+ * en Mac) sobre "−"/"+" los usa en vez de onDecrease/onIncrease, para
+ * destruir todas las copias de ese distrito o construir las máximas
+ * posibles de una sola vez. Se refleja también en el tooltip del botón.
+ */
+function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, onDecreaseAll, onIncreaseAll) {
   const wrapper = document.createElement("div");
   wrapper.className = "planet-count-control";
 
@@ -1265,8 +1289,13 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true) {
   decreaseBtn.className = "planet-count-btn";
   decreaseBtn.textContent = "−";
   decreaseBtn.disabled = count <= 0;
-  decreaseBtn.title = t(currentLang, "planetSimDistrictRemove");
-  decreaseBtn.addEventListener("click", onDecrease);
+  decreaseBtn.title = onDecreaseAll
+    ? `${t(currentLang, "planetSimDistrictRemove")} (${t(currentLang, "planetSimCtrlClickRemoveAll")})`
+    : t(currentLang, "planetSimDistrictRemove");
+  decreaseBtn.addEventListener("click", (event) => {
+    if ((event.ctrlKey || event.metaKey) && onDecreaseAll) onDecreaseAll();
+    else onDecrease();
+  });
 
   const countLabel = document.createElement("span");
   countLabel.className = "planet-count-value";
@@ -1277,8 +1306,13 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true) {
   increaseBtn.className = "planet-count-btn";
   increaseBtn.textContent = "+";
   increaseBtn.disabled = !canIncrease;
-  increaseBtn.title = canIncrease ? t(currentLang, "planetSimDistrictAdd") : t(currentLang, "planetSimDistrictLimitReached");
-  increaseBtn.addEventListener("click", onIncrease);
+  increaseBtn.title = canIncrease
+    ? (onIncreaseAll ? `${t(currentLang, "planetSimDistrictAdd")} (${t(currentLang, "planetSimCtrlClickAddAll")})` : t(currentLang, "planetSimDistrictAdd"))
+    : t(currentLang, "planetSimDistrictLimitReached");
+  increaseBtn.addEventListener("click", (event) => {
+    if ((event.ctrlKey || event.metaKey) && onIncreaseAll) onIncreaseAll();
+    else onIncrease();
+  });
 
   wrapper.append(decreaseBtn, countLabel, increaseBtn);
   return wrapper;
@@ -1292,6 +1326,18 @@ function updatePopulationCounter(jobIds) {
   summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
 }
 
+/** Icono (carpeta "modifiers/") que ilustra el efecto no numérico de un empleo (delincuencia/estabilidad/ejércitos de defensa), si existe uno para él. */
+function jobEffectIcon(jobId) {
+  const src = JOB_EFFECT_ICONS[jobId];
+  if (!src) return null;
+  const img = document.createElement("img");
+  img.className = "planet-nonresource-icon";
+  img.src = `${IMAGE_BASE}${src}`;
+  img.alt = "";
+  img.loading = "lazy";
+  return img;
+}
+
 function renderNonResourceEffects(jobIds) {
   const nonResourceEntries = Object.keys(JOB_EFFECT_NOTES).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
   if (nonResourceEntries.length && nonResourceEl) {
@@ -1301,9 +1347,13 @@ function renderNonResourceEffects(jobIds) {
     heading.textContent = t(currentLang, "planetSimNonResourceHeading");
     nonResourceEl.append(heading);
     nonResourceEntries.forEach((jobId) => {
-      const line = document.createElement("p");
+      const line = document.createElement("div");
       line.className = "planet-nonresource-line";
-      line.textContent = `${formatAmount(jobAssignments[jobId])} ${jobName(jobId)} — ${t(currentLang, JOB_EFFECT_NOTES[jobId])}`;
+      const icon = jobEffectIcon(jobId);
+      if (icon) line.append(icon);
+      const text = document.createElement("span");
+      text.textContent = `${formatAmount(jobAssignments[jobId])} ${jobName(jobId)} — ${t(currentLang, JOB_EFFECT_NOTES[jobId])}`;
+      line.append(text);
       nonResourceEl.append(line);
     });
   } else if (nonResourceEl) {
