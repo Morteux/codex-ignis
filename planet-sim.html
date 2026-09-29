@@ -32,8 +32,8 @@
 
       <nav class="planet-main-tabs" role="tablist" aria-label="Secciones del planeta">
         <button type="button" class="planet-main-tab is-active" data-main-tab="planet" data-i18n="planetSimMainTabPlanet">Planeta</button>
-        <button type="button" class="planet-main-tab" data-main-tab="management" data-i18n="planetSimMainTabManagement">Gestión</button>
-        <button type="button" class="planet-main-tab" data-main-tab="economy" data-i18n="planetSimMainTabEconomy">Economía</button>
+        <button type="button" class="planet-main-tab" data-main-tab="empire" data-i18n="planetSimMainTabEmpire">Imperio</button>
+        <button type="button" class="planet-main-tab" data-main-tab="body" data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</button>
         <button type="button" class="planet-main-tab" disabled title="" data-i18n="planetSimMainTabArmies" data-i18n-attr="title:planetSimArmiesDisabledTooltip">Ejércitos</button>
         <button type="button" class="planet-main-tab" data-main-tab="branches" data-i18n="planetSimMainTabBranches">Sucursales</button>
       </nav>
@@ -51,10 +51,6 @@
             <span class="planet-header-stat-value" id="planet-districts-used-label">0 / 20</span>
           </div>
           <div class="planet-header-stat">
-            <span class="planet-header-stat-label" data-i18n="planetSimSlotsHeading">Ranuras de edificios</span>
-            <span class="planet-header-stat-value" id="planet-slots-label">6 / 6 ranuras usadas</span>
-          </div>
-          <div class="planet-header-stat">
             <span class="planet-header-stat-label"><img id="planet-stat-housing-icon" class="planet-header-stat-icon" src="" alt="" /><span data-i18n="planetSimStatHousingShort">Vivienda</span></span>
             <span class="planet-header-stat-value" id="planet-stat-housing">0</span>
           </div>
@@ -70,7 +66,6 @@
               <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</h2>
 
               <div class="planet-capital-control">
-                <img id="planet-capital-icon" class="planet-capital-icon" src="" alt="" />
                 <div class="planet-capital-info">
                   <span class="planet-capital-name" id="planet-capital-name" data-i18n="planetSimCapitalHeading">Edificio capital</span>
                   <span class="planet-capital-tier" id="planet-capital-tier"></span>
@@ -123,11 +118,11 @@
         </section>
       </div>
 
-      <section class="planet-placeholder-panel" id="planet-tab-panel-management" hidden>
+      <section class="planet-placeholder-panel" id="planet-tab-panel-empire" hidden>
         <p data-i18n="planetSimComingSoonGeneric">Esta sección todavía no está disponible.</p>
       </section>
 
-      <section class="planet-placeholder-panel" id="planet-tab-panel-economy" hidden>
+      <section class="planet-placeholder-panel" id="planet-tab-panel-body" hidden>
         <p data-i18n="planetSimComingSoonGeneric">Esta sección todavía no está disponible.</p>
       </section>
 

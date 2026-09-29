@@ -58,7 +58,6 @@ import {
 } from "./planet-data.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
-const slotsLabel = document.querySelector("#planet-slots-label");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
@@ -74,7 +73,6 @@ const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
 const netEl = document.querySelector("#planet-production-net");
 const nonResourceEl = document.querySelector("#planet-nonresource");
-const capitalIconEl = document.querySelector("#planet-capital-icon");
 const capitalNameEl = document.querySelector("#planet-capital-name");
 const capitalTierEl = document.querySelector("#planet-capital-tier");
 const capitalUpgradeBtn = document.querySelector("#planet-capital-upgrade");
@@ -85,8 +83,8 @@ const metaDescription = document.querySelector('meta[name="description"]');
 const mainTabButtons = document.querySelectorAll(".planet-main-tab[data-main-tab]");
 const mainTabPanels = {
   planet: document.querySelector("#planet-tab-panel-planet"),
-  management: document.querySelector("#planet-tab-panel-management"),
-  economy: document.querySelector("#planet-tab-panel-economy"),
+  empire: document.querySelector("#planet-tab-panel-empire"),
+  body: document.querySelector("#planet-tab-panel-body"),
   branches: document.querySelector("#planet-tab-panel-branches")
 };
 
@@ -118,6 +116,11 @@ let planetSize = 20;
  * DISTRICTS[cat].specializationOptions) — igual que el urbano, pero con
  * un solo hueco de elección en vez de dos.
  */
+// Mínimo de copias del distrito urbano: siempre tiene que haber al menos
+// una construida, ocupando su espacio dentro del número máximo de
+// distritos del planeta (planetSize).
+const URBAN_MIN_COUNT = 1;
+
 const districtState = {
   urban: { count: 2, slots: [null, null] },
   generator: { count: 0, optionId: null },
@@ -616,10 +619,6 @@ function renderJobsMini(jobs) {
 
 function renderCapital() {
   const capital = CAPITAL_TIERS[capitalTierIndex];
-  if (capitalIconEl) {
-    capitalIconEl.src = `${IMAGE_BASE}${capital.img}`;
-    capitalIconEl.alt = t(currentLang, capital.i18nKey);
-  }
   if (capitalNameEl) capitalNameEl.textContent = t(currentLang, capital.i18nKey);
   if (capitalTierEl) capitalTierEl.textContent = `${capitalTierIndex + 1} / ${CAPITAL_TIERS.length}`;
   if (capitalUpgradeBtn) {
@@ -781,11 +780,12 @@ function renderUrbanDistrictGroup(unlocked) {
 
   summary.append(renderCountControl(
     districtState.urban.count,
-    () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.max(URBAN_MIN_COUNT, districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
     canAddDistrict(),
-    () => { districtState.urban.count = 0; refresh(); },
-    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); }
+    () => { districtState.urban.count = URBAN_MIN_COUNT; refresh(); },
+    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
+    URBAN_MIN_COUNT
   ));
 
   group.append(summary);
@@ -1129,11 +1129,12 @@ function renderUrbanDistrictCard() {
 
   card.append(renderCountControl(
     districtState.urban.count,
-    () => { districtState.urban.count = Math.max(0, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.max(URBAN_MIN_COUNT, districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
     canAddDistrict(),
-    () => { districtState.urban.count = 0; refresh(); },
-    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); }
+    () => { districtState.urban.count = URBAN_MIN_COUNT; refresh(); },
+    () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
+    URBAN_MIN_COUNT
   ));
 
   for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
@@ -1279,8 +1280,11 @@ function renderResourceDistrictCard(cat) {
  * en Mac) sobre "−"/"+" los usa en vez de onDecrease/onIncrease, para
  * destruir todas las copias de ese distrito o construir las máximas
  * posibles de una sola vez. Se refleja también en el tooltip del botón.
+ * min (por defecto 0): valor mínimo de count; el botón "−" se desactiva al
+ * alcanzarlo. Se usa para el distrito urbano, que siempre debe tener al
+ * menos URBAN_MIN_COUNT copias construidas.
  */
-function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, onDecreaseAll, onIncreaseAll) {
+function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, onDecreaseAll, onIncreaseAll, min = 0) {
   const wrapper = document.createElement("div");
   wrapper.className = "planet-count-control";
 
@@ -1288,7 +1292,7 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, o
   decreaseBtn.type = "button";
   decreaseBtn.className = "planet-count-btn";
   decreaseBtn.textContent = "−";
-  decreaseBtn.disabled = count <= 0;
+  decreaseBtn.disabled = count <= min;
   decreaseBtn.title = onDecreaseAll
     ? `${t(currentLang, "planetSimDistrictRemove")} (${t(currentLang, "planetSimCtrlClickRemoveAll")})`
     : t(currentLang, "planetSimDistrictRemove");
@@ -1445,9 +1449,6 @@ function renderProduction(totals) {
 }
 
 function renderSlots() {
-  if (slotsLabel) {
-    slotsLabel.textContent = t(currentLang, "planetSimSlotsLabel")(activeBuildingCount() + 1, totalSlots());
-  }
   renderCapital();
   renderSlotsVisual();
 }
