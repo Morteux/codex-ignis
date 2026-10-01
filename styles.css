@@ -1869,3 +1869,155 @@ h1 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Pestaña Imperio (autoridades, forma de gobierno, principios) ─────── */
+
+#planet-tab-panel-empire {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.empire-points-label {
+    margin: 0 0 .9rem;
+    color: var(--accent);
+    font: 700 .8rem var(--mono);
+    letter-spacing: .03em;
+}
+
+.empire-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: .8rem;
+}
+
+.empire-axis-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-bottom: .5rem;
+}
+
+.empire-ethic-btn {
+    padding: .45rem .7rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .03em;
+    cursor: pointer;
+}
+
+.empire-ethic-btn:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+}
+
+.empire-ethic-btn.is-selected {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.empire-ethic-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.empire-gestalt-toggle {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .9rem;
+    padding-top: .9rem;
+    border-top: 1px solid var(--line-soft);
+    color: var(--muted);
+    font-size: .76rem;
+    cursor: pointer;
+}
+
+.empire-authority-card,
+.empire-civic-card {
+    text-align: left;
+    cursor: pointer;
+}
+
+#empire-authority-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: .6rem;
+}
+
+.empire-authority-card {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+    padding: .7rem .8rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+}
+
+.empire-authority-card:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+}
+
+.empire-authority-card.is-selected {
+    border-color: var(--accent);
+    background: rgba(167, 245, 106, .08);
+}
+
+.empire-authority-card:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.empire-authority-blurb {
+    color: var(--muted);
+    font-size: .74rem;
+    line-height: 1.5;
+}
+
+.empire-authority-lock {
+    color: var(--slot-limited);
+    font-size: .68rem;
+    font-style: normal;
+}
+
+.empire-civics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: .5rem;
+}
+
+.empire-civic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+    padding: .5rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font-size: .68rem;
+    text-align: center;
+}
+
+.empire-civic-card img {
+    width: 2.4rem;
+    height: 2.4rem;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+}
+
+.empire-civic-card:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+}
+
+.empire-civic-card.is-selected {
+    border-color: var(--accent);
+    background: rgba(167, 245, 106, .08);
+}
+
+.empire-civic-card:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
