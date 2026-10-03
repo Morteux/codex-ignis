@@ -2021,3 +2021,43 @@ h1 {
     opacity: .45;
     cursor: not-allowed;
 }
+
+/* ── Pestaña Cuerpo celeste (tipo de planeta) ──────────────────────────── */
+
+.celestial-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: .5rem;
+    margin: .8rem 0 1.4rem;
+}
+
+.celestial-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .35rem;
+    padding: .5rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font-size: .68rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.celestial-type-card img {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    border-radius: 50%;
+}
+
+.celestial-type-card:hover {
+    border-color: var(--accent-dim);
+}
+
+.celestial-type-card.is-selected {
+    border-color: var(--accent);
+    background: rgba(167, 245, 106, .08);
+}

@@ -172,11 +172,14 @@ export function authorityAvailable(authority, selectedEthicIds) {
 }
 
 /**
- * Principios de partida: la Wiki confirma "Each empire starts with up to
- * two civics" (un tercero requiere investigar Galactic Administration,
- * tecnología no modelada en este simulador).
+ * Principios: la Wiki confirma "Each empire starts with up to two civics",
+ * con un tercero disponible al investigar Galactic Administration. Este
+ * simulador asume toda la investigación desbloqueada (a petición de
+ * Morteux), así que se permiten 3 desde el principio; en partida real ese
+ * tercer hueco es especial porque solo se desbloquea al avanzar (no es un
+ * hueco inicial), algo que este simulador no distingue.
  */
-export const MAX_CIVICS = 2;
+export const MAX_CIVICS = 3;
 
 /**
  * Requisitos de principios (Civics), indexados por el mismo i18nKey que ya

@@ -141,8 +141,14 @@
         </div>
       </section>
 
-      <section class="planet-placeholder-panel" id="planet-tab-panel-body" hidden>
-        <p data-i18n="planetSimComingSoonGeneric">Esta sección todavía no está disponible.</p>
+      <section id="planet-tab-panel-body" hidden>
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="celestialHeading">Tipo de cuerpo celeste</h2>
+          <h3 class="entry-heading-subsub" data-i18n="celestialNaturalHeading">Natural</h3>
+          <div id="celestial-natural-list" class="celestial-type-grid"></div>
+          <h3 class="entry-heading-subsub" data-i18n="celestialArtificialHeading">Artificial</h3>
+          <div id="celestial-artificial-list" class="celestial-type-grid"></div>
+        </div>
       </section>
 
       <section class="planet-placeholder-panel" id="planet-tab-panel-branches" hidden>
@@ -155,5 +161,6 @@
     </main>
     <script type="module" src="js/planet-sim.js"></script>
     <script type="module" src="js/empire.js"></script>
+    <script type="module" src="js/celestial.js"></script>
   </body>
 </html>
