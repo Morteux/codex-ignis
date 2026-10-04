@@ -9,6 +9,7 @@
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { PLANET_TYPES, IMAGE_BASE } from "./celestial-data.js";
+import { updatePlanetState } from "./planet-state.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const naturalListEl = document.querySelector("#celestial-natural-list");
@@ -38,6 +39,7 @@ function renderGroup(container, category) {
 
     card.addEventListener("click", () => {
       selectedTypeId = selectedTypeId === type.id ? null : type.id;
+      updatePlanetState({ celestialTypeId: selectedTypeId });
       refresh();
     });
     container.append(card);

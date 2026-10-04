@@ -1872,7 +1872,11 @@ h1 {
 
 /* ── Pestaña Imperio (autoridades, forma de gobierno, principios) ─────── */
 
-#planet-tab-panel-empire {
+/* :not([hidden]) es imprescindible aquí: un selector por id gana en
+   especificidad al "[hidden] { display: none }" del navegador, así que un
+   simple "display: grid" en #planet-tab-panel-empire lo dejaría visible
+   SIEMPRE (en todas las pestañas) por mucho que JS le ponga hidden. */
+#planet-tab-panel-empire:not([hidden]) {
     display: grid;
     gap: 1.4rem;
 }
@@ -2060,4 +2064,51 @@ h1 {
 .celestial-type-card.is-selected {
     border-color: var(--accent);
     background: rgba(167, 245, 106, .08);
+}
+
+/* ── Panel fijo de resumen del planeta (visible en las 4 pestañas) ────── */
+
+.planet-summary-fixed {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.4rem;
+    padding: .8rem 1rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid var(--line);
+    background: rgba(8, 22, 14, .7);
+}
+
+.planet-summary-row {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.planet-summary-label {
+    color: var(--muted);
+    font: 700 .62rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+}
+
+.planet-summary-value {
+    color: var(--accent);
+    font: 700 .82rem var(--mono);
+}
+
+.planet-summary-name-input {
+    padding: .3rem .4rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .82rem var(--mono);
+    min-width: 10rem;
+}
+
+.planet-summary-name-input:focus {
+    border-color: var(--accent-dim);
+}
+
+.planet-summary-name-input::placeholder {
+    color: #5c7765;
 }

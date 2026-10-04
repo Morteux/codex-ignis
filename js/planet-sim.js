@@ -56,6 +56,7 @@ import {
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
+import { updatePlanetState } from "./planet-state.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
@@ -1325,9 +1326,11 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, o
 /* ── Paneles de resumen y producción ─────────────────────────────────── */
 
 function updatePopulationCounter(jobIds) {
-  if (!summaryPopulationEl) return;
   const totalPopulation = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
-  summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
+  if (summaryPopulationEl) {
+    summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
+  }
+  updatePlanetState({ populationText: formatAmount(totalPopulation) });
 }
 
 /** Icono (carpeta "modifiers/") que ilustra el efecto no numérico de un empleo (delincuencia/estabilidad/ejércitos de defensa), si existe uno para él. */
@@ -1467,6 +1470,7 @@ function refresh() {
   renderActiveTabContent();
   renderSummary(totals);
   renderProduction(totals);
+  updatePlanetState({ planetSize });
 }
 
 function setLanguage(lang) {
