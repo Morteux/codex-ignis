@@ -57,6 +57,7 @@ import {
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
 import { updatePlanetState } from "./planet-state.js";
+import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation } from "./designation-data.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
@@ -78,6 +79,7 @@ const capitalNameEl = document.querySelector("#planet-capital-name");
 const capitalTierEl = document.querySelector("#planet-capital-tier");
 const capitalUpgradeBtn = document.querySelector("#planet-capital-upgrade");
 const capitalDowngradeBtn = document.querySelector("#planet-capital-downgrade");
+const designationSelect = document.querySelector("#planet-designation-select");
 const planetSizeInput = document.querySelector("#planet-size-input");
 const districtsUsedLabel = document.querySelector("#planet-districts-used-label");
 const metaDescription = document.querySelector('meta[name="description"]');
@@ -99,6 +101,9 @@ let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
 
 let capitalTierIndex = 0;
+
+/** Designación planetaria elegida (id de DESIGNATIONS en designation-data.js, o "" si no hay ninguna). */
+let selectedDesignationId = "";
 
 /** Tamaño del planeta: por ahora, límite del total de copias de distrito (urbano + recursos) que se pueden construir en la colonia. Editable por el usuario. */
 let planetSize = 20;
@@ -385,13 +390,28 @@ function computeTotals() {
   // Los recursos se calculan a partir de la población REALMENTE asignada a
   // cada empleo (jobAssignments, en unidades ×100 igual que jobCapacities),
   // convertida a trabajos reales con divideEffect() justo aquí — la única
-  // división por 100 de todo el cálculo.
+  // división por 100 de todo el cálculo. Si hay una designación planetaria
+  // elegida, su eficacia laboral multiplica la salida de ESE empleo (ver
+  // js/designation-data.js).
+  const designation = getDesignation(selectedDesignationId);
   Object.entries(jobCapacities).forEach(([jobId, capacity]) => {
     const assigned = divideEffect(jobAssignments[jobId] || 0);
+    const efficiencyBonus = designation?.jobEfficiency?.[jobId] || 0;
     Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
-      addSignedResource(resourceId, perJob * assigned);
+      addSignedResource(resourceId, perJob * assigned * (1 + efficiencyBonus));
     });
   });
+
+  // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
+  if (designation) {
+    Object.entries(designation.flat).forEach(([key, amount]) => {
+      if (key === "housing") {
+        housing += amount;
+      } else {
+        addSignedResource(key, amount);
+      }
+    });
+  }
 
   return { jobCapacities, resourceTotals, producedTotals, consumedTotals, housing, amenities };
 }
@@ -437,8 +457,46 @@ function syncJobAssignments(jobCapacities) {
   });
 }
 
+/** Reconstruye las opciones del desplegable de designación (agrupadas por categoría), conservando la selección actual. */
+function renderDesignationSelect() {
+  if (!designationSelect) return;
+  const previousValue = selectedDesignationId;
+  designationSelect.replaceChildren();
+
+  const noneOption = document.createElement("option");
+  noneOption.value = "";
+  noneOption.textContent = t(currentLang, "designationNone");
+  designationSelect.append(noneOption);
+
+  DESIGNATION_CATEGORY_ORDER.forEach((category) => {
+    const items = DESIGNATIONS.filter((d) => d.category === category);
+    if (!items.length) return;
+    const group = document.createElement("optgroup");
+    group.label = t(currentLang, DESIGNATION_CATEGORY_I18N_KEYS[category]);
+    items.forEach((d) => {
+      const opt = document.createElement("option");
+      opt.value = d.id;
+      opt.textContent = t(currentLang, d.i18nKey);
+      group.append(opt);
+    });
+    designationSelect.append(group);
+  });
+
+  designationSelect.value = previousValue;
+}
+
+if (designationSelect) {
+  designationSelect.addEventListener("change", () => {
+    selectedDesignationId = designationSelect.value;
+    updatePlanetState({ designationId: selectedDesignationId || null });
+    refresh();
+  });
+}
+
 function applyTranslations() {
   document.documentElement.lang = currentLang;
+
+  renderDesignationSelect();
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     el.innerHTML = t(currentLang, el.dataset.i18n);

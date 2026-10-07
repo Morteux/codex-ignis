@@ -2071,24 +2071,29 @@ h1 {
 .planet-summary-fixed {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.4rem;
-    padding: .8rem 1rem;
+    align-items: center;
+    gap: 1rem;
+    padding: .7rem 1rem;
     margin-bottom: 1.2rem;
     border: 1px solid var(--line);
     background: rgba(8, 22, 14, .7);
 }
 
-.planet-summary-row {
+.planet-summary-item {
     display: flex;
-    flex-direction: column;
-    gap: .25rem;
+    align-items: center;
 }
 
-.planet-summary-label {
-    color: var(--muted);
-    font: 700 .62rem var(--mono);
-    letter-spacing: .05em;
-    text-transform: uppercase;
+.planet-summary-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    border-radius: 50%;
+}
+
+.planet-summary-icon[hidden] {
+    display: none;
 }
 
 .planet-summary-value {
@@ -2111,4 +2116,34 @@ h1 {
 
 .planet-summary-name-input::placeholder {
     color: #5c7765;
+}
+
+/* ── Selector de designación planetaria (pestaña Planeta) ──────────────── */
+
+.planet-designation-control {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .6rem;
+    margin-bottom: 1.1rem;
+}
+
+.planet-designation-label {
+    color: var(--muted);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .04em;
+}
+
+.planet-designation-select {
+    flex: 1 1 14rem;
+    padding: .4rem .6rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .74rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-designation-select:hover {
+    border-color: var(--accent-dim);
 }

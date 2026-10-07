@@ -31,24 +31,19 @@
       </section>
 
       <section class="planet-summary-fixed" aria-label="Resumen del planeta">
-        <div class="planet-summary-row">
-          <span class="planet-summary-label" data-i18n="planetSummaryTypeLabel">Tipo de cuerpo celeste</span>
-          <span class="planet-summary-value" id="planet-summary-type">—</span>
+        <div class="planet-summary-item">
+          <img id="planet-summary-type-icon" class="planet-summary-icon" src="" alt="" />
         </div>
-        <div class="planet-summary-row">
-          <span class="planet-summary-label" data-i18n="planetSummaryDesignationLabel">Designación planetaria</span>
-          <span class="planet-summary-value" id="planet-summary-designation">—</span>
+        <div class="planet-summary-item">
+          <img id="planet-summary-designation-icon" class="planet-summary-icon" src="" alt="" />
         </div>
-        <div class="planet-summary-row">
-          <label class="planet-summary-label" for="planet-summary-name" data-i18n="planetSummaryNameLabel">Nombre del planeta</label>
+        <div class="planet-summary-item">
           <input type="text" id="planet-summary-name" class="planet-summary-name-input" data-i18n-attr="placeholder:planetSummaryNamePlaceholder" placeholder="Nombre del planeta" />
         </div>
-        <div class="planet-summary-row">
-          <span class="planet-summary-label" data-i18n="planetSummarySizeLabel">Tamaño del planeta</span>
+        <div class="planet-summary-item">
           <span class="planet-summary-value" id="planet-summary-size">—</span>
         </div>
-        <div class="planet-summary-row">
-          <span class="planet-summary-label" data-i18n="planetSummaryPopulationLabel">Población trabajando</span>
+        <div class="planet-summary-item">
           <span class="planet-summary-value" id="planet-summary-population">—</span>
         </div>
       </section>
@@ -97,6 +92,11 @@
                   <button type="button" id="planet-capital-downgrade" class="planet-capital-btn" data-i18n="planetSimCapitalDowngrade">Degradar</button>
                   <button type="button" id="planet-capital-upgrade" class="planet-capital-btn" data-i18n="planetSimCapitalUpgrade">Mejorar</button>
                 </div>
+              </div>
+
+              <div class="planet-designation-control">
+                <label class="planet-designation-label" for="planet-designation-select" data-i18n="planetSimDesignationHeading">Designación planetaria</label>
+                <select id="planet-designation-select" class="planet-designation-select"></select>
               </div>
 
               <div id="planet-slots-visual" class="planet-slots-visual"></div>

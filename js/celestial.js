@@ -16,7 +16,13 @@ const naturalListEl = document.querySelector("#celestial-natural-list");
 const artificialListEl = document.querySelector("#celestial-artificial-list");
 
 let currentLang = detectInitialLang();
-let selectedTypeId = null;
+
+// Por defecto se elige un tipo NATURAL al azar (a petición de Morteux),
+// en vez de dejar el resumen del planeta vacío hasta que el usuario entre
+// en esta pestaña.
+const naturalTypes = PLANET_TYPES.filter((type) => type.category === "natural");
+let selectedTypeId = naturalTypes[Math.floor(Math.random() * naturalTypes.length)].id;
+updatePlanetState({ celestialTypeId: selectedTypeId });
 
 function renderGroup(container, category) {
   if (!container) return;
