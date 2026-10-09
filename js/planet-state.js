@@ -10,6 +10,8 @@
 const state = {
   celestialTypeId: null,
   designationId: null,
+  ethicIds: [],
+  authorityId: null,
   planetName: "",
   planetSize: null,
   populationText: null

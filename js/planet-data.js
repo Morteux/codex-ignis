@@ -312,7 +312,8 @@ export const RESOURCES = {
   society: { i18nKey: "resourceSociety", img: "resources/Society_research.png" },
   engineering: { i18nKey: "resourceEngineering", img: "resources/Engineering_research.png" },
   amenities: { i18nKey: "resourceAmenities", img: "resources/Amenities.png" },
-  trade: { i18nKey: "resourceTrade", img: "resources/Trade.png" }
+  trade: { i18nKey: "resourceTrade", img: "resources/Trade.png" },
+  influence: { i18nKey: "resourceInfluence", img: "resources/Influence.png" }
 };
 
 /** Diccionario de empleos: id -> { i18nKey, img (dentro de jobs/) }. */

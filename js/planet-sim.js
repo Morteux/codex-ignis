@@ -56,7 +56,9 @@ import {
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
-import { updatePlanetState } from "./planet-state.js";
+import { updatePlanetState, getPlanetState, onPlanetStateChange } from "./planet-state.js";
+import { collectAppliedEffects } from "./empire-data.js";
+import { allowedDesignationCategories } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation } from "./designation-data.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -413,6 +415,15 @@ function computeTotals() {
     });
   }
 
+  // Éticas y autoridad elegidas en la pestaña Imperio (ver empire-data.js):
+  // multiplicadores a la producción positiva de un recurso y bonos planos.
+  const { resourceMult, resourceFlat } = collectAppliedEffects(getPlanetState().ethicIds, getPlanetState().authorityId);
+  Object.entries(resourceMult).forEach(([resourceId, fraction]) => {
+    const produced = producedTotals[resourceId] || 0;
+    if (produced > 0) addSignedResource(resourceId, produced * fraction);
+  });
+  Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
+
   return { jobCapacities, resourceTotals, producedTotals, consumedTotals, housing, amenities };
 }
 
@@ -457,10 +468,15 @@ function syncJobAssignments(jobCapacities) {
   });
 }
 
-/** Reconstruye las opciones del desplegable de designación (agrupadas por categoría), conservando la selección actual. */
+/** Reconstruye las opciones del desplegable de designación (agrupadas por categoría y filtradas por el tipo de cuerpo celeste elegido), conservando la selección si sigue siendo válida. */
 function renderDesignationSelect() {
   if (!designationSelect) return;
-  const previousValue = selectedDesignationId;
+  const allowedCategories = allowedDesignationCategories(getPlanetState().celestialTypeId);
+  const current = getDesignation(selectedDesignationId);
+  if (current && !allowedCategories.includes(current.category)) {
+    selectedDesignationId = "";
+    updatePlanetState({ designationId: null });
+  }
   designationSelect.replaceChildren();
 
   const noneOption = document.createElement("option");
@@ -468,7 +484,7 @@ function renderDesignationSelect() {
   noneOption.textContent = t(currentLang, "designationNone");
   designationSelect.append(noneOption);
 
-  DESIGNATION_CATEGORY_ORDER.forEach((category) => {
+  DESIGNATION_CATEGORY_ORDER.filter((category) => allowedCategories.includes(category)).forEach((category) => {
     const items = DESIGNATIONS.filter((d) => d.category === category);
     if (!items.length) return;
     const group = document.createElement("optgroup");
@@ -482,7 +498,7 @@ function renderDesignationSelect() {
     designationSelect.append(group);
   });
 
-  designationSelect.value = previousValue;
+  designationSelect.value = selectedDesignationId;
 }
 
 if (designationSelect) {
@@ -1545,6 +1561,19 @@ langButtons.forEach((btn) => {
 if (metaDescription && !metaDescription.dataset.i18nAttr) {
   metaDescription.setAttribute("content", t(currentLang, "planetSimMetaDescription"));
 }
+
+// Reacciona a lo que otros módulos escriben en el estado compartido: tipo de
+// cuerpo celeste (filtra las designaciones) y éticas/autoridad (bonos).
+// Solo se recalcula si esos datos han cambiado de verdad, para no entrar en
+// bucle con las propias escrituras de este módulo (tamaño/población).
+let lastRelevantKey = "";
+onPlanetStateChange((state) => {
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}`;
+  if (key === lastRelevantKey) return;
+  lastRelevantKey = key;
+  renderDesignationSelect();
+  refresh();
+});
 
 applyTranslations();
 setActiveTab("buildings");

@@ -17,11 +17,11 @@ const artificialListEl = document.querySelector("#celestial-artificial-list");
 
 let currentLang = detectInitialLang();
 
-// Por defecto se elige un tipo NATURAL al azar (a petición de Morteux),
+// Por defecto se elige al azar uno de los 9 planetas normales (a petición de Morteux),
 // en vez de dejar el resumen del planeta vacío hasta que el usuario entre
 // en esta pestaña.
-const naturalTypes = PLANET_TYPES.filter((type) => type.category === "natural");
-let selectedTypeId = naturalTypes[Math.floor(Math.random() * naturalTypes.length)].id;
+const standardTypes = PLANET_TYPES.filter((type) => type.standard);
+let selectedTypeId = standardTypes[Math.floor(Math.random() * standardTypes.length)].id;
 updatePlanetState({ celestialTypeId: selectedTypeId });
 
 function renderGroup(container, category) {
