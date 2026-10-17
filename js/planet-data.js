@@ -338,65 +338,78 @@ export const JOBS = {
 
 /**
  * Salida de recursos BASE de cada empleo (un pop trabajándolo), en números
- * normales (sin escala ×100, porque la wiki los da ya así en la página
- * "Jobs"). Fuente y confianza de cada uno:
- *  - technician (+6 energía) y miner (+4 minerales): confirmados
- *    directamente en la wiki (tabla "Basic resource jobs").
- *  - farmer (+4 comida): mismo patrón que miner, ambos son el "recurso
- *    básico" del early game; valor estable desde hace muchas versiones.
- *  - metallurgist (+2 aleaciones, -1 mineral) y artisan (+2 bienes de
- *    consumo, -1 mineral): valores base estables de estos dos empleos
- *    (los edificios de nivel 2/3 SÍ están confirmados exactamente en la
- *    wiki, ver jobs de metallurgist/artisan en BUILDINGS más abajo).
- *  - physicist/engineer/biologist (+4 investigación de su tipo),
- *    entertainer (+4 comodidades), trader (+2 comercio), priest y
- *    bureaucrat (+2 cohesión): valores base estables y ampliamente
- *    documentados por la comunidad.
- *  - enforcer, educator y soldier no producen un recurso de los que se
- *    trackean aquí (reducen delincuencia, mejoran estabilidad o generan
- *    ejércitos de defensa respectivamente), así que no suman a los
- *    totales de recursos; ver "effectNote".
- * Si algún número no encaja con lo que ves en partida, es la primera
- * tabla a revisar y ajustar.
+ * normales, con el mantenimiento como valores negativos. Fuente: página
+ * "Jobs" de la wiki (v4.3), columnas "Output per 100 workforce" y "Upkeep
+ * per 100 workforce" (100 de plantilla = 1 empleo = 1 pop). Se usa siempre
+ * el valor base del imperio individualista estándar (mantenimiento en
+ * bienes de consumo); las variantes gestalt (mantenimiento en energía o
+ * minerales) y las de robots no se modelan.
+ *
+ * Los servicios (amenities) la wiki los da ×100 ("+1250" = 12.5); aquí ya
+ * están divididos entre 100, como el resto de valores de esta tabla.
+ *
+ * No incluidos a propósito (no los modela este simulador): intercambios de
+ * empleo (job swaps: Ejecutivo, Noble, Gerente...), efectos de
+ * estabilidad/delincuencia/etc. que no sean los de JOB_EFFECTS, y los
+ * bonos de civismos, tradiciones, gobernantes o decisiones de las tablas
+ * "base modifiers" de la wiki. Sí se modelan los de edificios (ver
+ * "jobModifiers" en BUILDINGS).
  */
 export const JOB_OUTPUTS = {
+  // Obreros
   technician: { energy: 6 },
   miner: { minerals: 4 },
-  farmer: { food: 4 },
-  metallurgist: { alloys: 2, minerals: -1 },
-  artisan: { consumer_goods: 2, minerals: -1 },
-  physicist: { physics: 4 },
-  engineer: { engineering: 4 },
-  biologist: { society: 4 },
-  entertainer: { amenities: 4 },
-  trader: { trade: 2 },
-  priest: { unity: 2 },
-  bureaucrat: { unity: 2 },
-  politician: { unity: 2 },
+  farmer: { food: 6 },
+  // Especialistas
+  metallurgist: { alloys: 3, minerals: -6 },
+  artisan: { consumer_goods: 6, minerals: -6 },
+  physicist: { physics: 3, consumer_goods: -1.5 },
+  engineer: { engineering: 3, consumer_goods: -1.5 },
+  biologist: { society: 3, consumer_goods: -1.5 },
+  entertainer: { amenities: 12.5, unity: 0.5, consumer_goods: -1 },
+  trader: { trade: 8, consumer_goods: -1 },
+  priest: { unity: 3, amenities: 2, consumer_goods: -2 },
+  bureaucrat: { unity: 3, consumer_goods: -2 },
   enforcer: {},
-  educator: {},
-  soldier: {}
-};
-
-/** Efecto no numérico de los empleos que no producen un recurso trackeado. */
-export const JOB_EFFECT_NOTES = {
-  enforcer: "jobEffectEnforcer",
-  educator: "jobEffectEducator",
-  soldier: "jobEffectSoldier"
+  educator: { unity: 2.5, consumer_goods: -1 },
+  soldier: { alloys: -1 },
+  // Élite
+  politician: { unity: 5, amenities: 3, consumer_goods: -3 }
 };
 
 /**
- * Icono (dentro de la API de assets de Stellaris, carpeta "modifiers/") que
- * ilustra el efecto no numérico de cada empleo de JOB_EFFECT_NOTES: Agente →
- * reducción de delincuencia, Educador → mejora de estabilidad, Soldado →
- * ejércitos de defensa. Nombres de archivo verificados contra
- * StellarisAssetsTree.txt.
+ * Efectos por empleo que no son un recurso de los que se acumulan en los
+ * totales (se muestran aparte, ya multiplicados por la población asignada).
+ * Valores por empleo, página "Jobs" de la wiki (v4.3):
+ *  - enforcer: +0.2 estabilidad, −25 delincuencia, +1 ejércitos de defensa.
+ *  - educator: −20 delincuencia, +0.5 ejércitos de defensa (el empleo de la
+ *    wiki es un intercambio del Agente; sus +10% atracción de ética no se
+ *    modelan).
+ *  - soldier: +4 capacidad naval, +0.15 estabilidad, +1 ejércitos de defensa.
  */
-export const JOB_EFFECT_ICONS = {
-  enforcer: "modifiers/mod_planet_crime_add.png",
-  educator: "modifiers/mod_planet_stability_add.png",
-  soldier: "modifiers/mod_planet_defense_armies_add.png"
+export const JOB_EFFECTS = {
+  enforcer: { stability: 0.2, crime: -25, defenseArmies: 1 },
+  educator: { crime: -20, defenseArmies: 0.5 },
+  soldier: { navalCapacity: 4, stability: 0.15, defenseArmies: 1 }
 };
+
+/** Estadística de JOB_EFFECTS -> { i18nKey, icono (carpeta "modifiers/" de la API de assets; nombres verificados contra StellarisAssetsTree.txt) }. */
+export const STAT_EFFECTS = {
+  stability: { i18nKey: "statStability", img: "modifiers/mod_planet_stability_add.png" },
+  crime: { i18nKey: "statCrime", img: "modifiers/mod_planet_crime_add.png" },
+  defenseArmies: { i18nKey: "statDefenseArmies", img: "modifiers/mod_planet_defense_armies_add.png" },
+  navalCapacity: { i18nKey: "statNavalCapacity", img: "modifiers/mod_navy_size_add.png" }
+};
+
+/**
+ * Bonos de edificio a empleos ("jobModifiers" en BUILDINGS): se suman a la
+ * salida base del empleo para TODOS los empleos de ese tipo del planeta, no
+ * solo los que da el propio edificio. Si es true, cada copia construida del
+ * edificio aporta su bono (se acumulan); si es false, el bono cuenta una
+ * sola vez por tipo de edificio aunque haya varias copias. Cambia solo este
+ * valor si en partida se comprueba que funciona al revés.
+ */
+export const JOB_BONUS_STACKS_PER_BUILDING = true;
 
 /** Iconos genéricos (carpeta "modifiers/") para decorar la barra de estadísticas de la colonia. */
 export const HEADER_ICONS = {
@@ -496,8 +509,8 @@ export const BUILDINGS = [
     tier: 2,
     upgradesFrom: "alloy_foundries",
     jobs: { metallurgist: 400 },
-    // Confirmado en la wiki (Jobs#Metallurgist): esta mejora añade +1 Aleación / -2 Minerales por Metalúrgico.
-    jobBonus: { alloys: 1, minerals: -2 },
+    // Wiki (Jobs, tabla "Metallurgist base modifiers"): esta mejora añade +1 Aleación / -2 Minerales por Metalúrgico. Se aplica a todos los Metalúrgicos del planeta.
+    jobModifiers: { metallurgist: { alloys: 1, minerals: -2 } },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)",
@@ -511,8 +524,8 @@ export const BUILDINGS = [
     tier: 3,
     upgradesFrom: "alloy_mega_forges",
     jobs: { metallurgist: 600 },
-    // Confirmado en la wiki (Jobs#Metallurgist): +2 Aleaciones / -4 Minerales por Metalúrgico.
-    jobBonus: { alloys: 2, minerals: -4 },
+    // Wiki (Jobs, tabla "Metallurgist base modifiers"): +2 Aleaciones / -4 Minerales por Metalúrgico. Se aplica a todos los Metalúrgicos del planeta.
+    jobModifiers: { metallurgist: { alloys: 2, minerals: -4 } },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
     cost: "480 minerales (800 si está asentado, 200 aleaciones)",
@@ -540,8 +553,8 @@ export const BUILDINGS = [
     tier: 2,
     upgradesFrom: "civilian_industries",
     jobs: { artisan: 400 },
-    // Confirmado en la wiki (Jobs#Artisan): +1 Bien de consumo / -1 Mineral por Artesano.
-    jobBonus: { consumer_goods: 1, minerals: -1 },
+    // Wiki (Jobs, tabla "Artisan base modifiers"): +1 Bien de consumo / -1 Mineral por Artesano. Se aplica a todos los Artesanos del planeta.
+    jobModifiers: { artisan: { consumer_goods: 1, minerals: -1 } },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)",
@@ -555,8 +568,8 @@ export const BUILDINGS = [
     tier: 3,
     upgradesFrom: "civilian_fabricators",
     jobs: { artisan: 600 },
-    // Confirmado en la wiki (Jobs#Artisan): +2 Bienes de consumo / -2 Minerales por Artesano.
-    jobBonus: { consumer_goods: 2, minerals: -2 },
+    // Wiki (Jobs, tabla "Artisan base modifiers"): +2 Bienes de consumo / -2 Minerales por Artesano. Se aplica a todos los Artesanos del planeta.
+    jobModifiers: { artisan: { consumer_goods: 2, minerals: -2 } },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
     cost: "600 minerales (800 si está asentado, 200 aleaciones)",

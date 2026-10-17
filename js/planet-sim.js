@@ -43,8 +43,9 @@ import {
   BUILDINGS,
   JOBS,
   JOB_OUTPUTS,
-  JOB_EFFECT_NOTES,
-  JOB_EFFECT_ICONS,
+  JOB_EFFECTS,
+  STAT_EFFECTS,
+  JOB_BONUS_STACKS_PER_BUILDING,
   HEADER_ICONS,
   RESOURCES,
   CATEGORY_ORDER,
@@ -373,11 +374,25 @@ function computeTotals() {
   }
 
   // Edificios normales, solo los que caen en una ranura actualmente activa.
+  // Además, cada edificio puede traer "jobModifiers": un bono por empleo que
+  // se aplica a TODOS los empleos de ese tipo del planeta (no solo a los que
+  // da el propio edificio). Ver JOB_BONUS_STACKS_PER_BUILDING en planet-data.js.
+  const jobBonuses = {}; // jobId -> { resourceId: cantidad por empleo }
+  const bonusSourcesSeen = new Set();
   const unlocked = unlockedKeys();
   builtMap.forEach((id, key) => {
     if (!unlocked.includes(key)) return;
     const building = buildingsById.get(id);
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
+    if (JOB_BONUS_STACKS_PER_BUILDING || !bonusSourcesSeen.has(id)) {
+      bonusSourcesSeen.add(id);
+      Object.entries(building.jobModifiers || {}).forEach(([jobId, modifiers]) => {
+        jobBonuses[jobId] = jobBonuses[jobId] || {};
+        Object.entries(modifiers).forEach(([resourceId, amount]) => {
+          jobBonuses[jobId][resourceId] = (jobBonuses[jobId][resourceId] || 0) + amount;
+        });
+      });
+    }
     housing += divideEffect(building.housing || 0);
     amenities += divideEffect(building.amenities || 0);
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
@@ -396,11 +411,26 @@ function computeTotals() {
   // elegida, su eficacia laboral multiplica la salida de ESE empleo (ver
   // js/designation-data.js).
   const designation = getDesignation(selectedDesignationId);
-  Object.entries(jobCapacities).forEach(([jobId, capacity]) => {
-    const assigned = divideEffect(jobAssignments[jobId] || 0);
+  // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
+  // de la designación multiplica solo la parte positiva (la wiki la define
+  // sobre la producción, no sobre el mantenimiento).
+  const jobUnitOutputs = {};
+  Object.keys(jobCapacities).forEach((jobId) => {
+    const unit = { ...(JOB_OUTPUTS[jobId] || {}) };
+    Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
+      unit[resourceId] = (unit[resourceId] || 0) + amount;
+    });
     const efficiencyBonus = designation?.jobEfficiency?.[jobId] || 0;
-    Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
-      addSignedResource(resourceId, perJob * assigned * (1 + efficiencyBonus));
+    if (efficiencyBonus) {
+      Object.keys(unit).forEach((resourceId) => {
+        if (unit[resourceId] > 0) unit[resourceId] *= 1 + efficiencyBonus;
+      });
+    }
+    jobUnitOutputs[jobId] = unit;
+
+    const assigned = divideEffect(jobAssignments[jobId] || 0);
+    Object.entries(unit).forEach(([resourceId, perJob]) => {
+      addSignedResource(resourceId, perJob * assigned);
     });
   });
 
@@ -424,7 +454,7 @@ function computeTotals() {
   });
   Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
 
-  return { jobCapacities, resourceTotals, producedTotals, consumedTotals, housing, amenities };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, housing, amenities };
 }
 
 /**
@@ -575,7 +605,7 @@ function buildingDisplayName(building) {
  * recorrido real. Los recursos de la derecha SÍ se muestran ya convertidos
  * a unidades reales (única división, con divideEffect, al calcularlos).
  */
-function renderJobSliderRow(jobId, capacity) {
+function renderJobSliderRow(jobId, capacity, unitOutputs) {
   const assigned = jobAssignments[jobId] || 0;
 
   const row = document.createElement("div");
@@ -620,24 +650,19 @@ function renderJobSliderRow(jobId, capacity) {
   function updateRowDisplay(newAssigned) {
     valueLabel.textContent = formatAmount(newAssigned);
     output.replaceChildren();
-    const outputs = Object.entries(JOB_OUTPUTS[jobId] || {});
-    if (outputs.length) {
-      outputs.forEach(([resourceId, perJob]) => {
-        const amount = perJob * divideEffect(newAssigned);
-        const pill = document.createElement("span");
-        pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
-        pill.append(resourceIcon(resourceId));
-        const amountLabel = document.createElement("span");
-        amountLabel.textContent = formatAmount(amount, true);
-        pill.append(amountLabel);
-        output.append(pill);
-      });
-    } else if (JOB_EFFECT_NOTES[jobId]) {
-      const note = document.createElement("span");
-      note.className = "planet-job-output-note";
-      note.textContent = t(currentLang, JOB_EFFECT_NOTES[jobId]);
-      output.append(note);
-    }
+    // unitOutputs ya incluye los bonos de edificios y la eficacia de la designación.
+    Object.entries(unitOutputs || JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
+      const amount = perJob * divideEffect(newAssigned);
+      if (Math.abs(amount) < 0.001) return;
+      const pill = document.createElement("span");
+      pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
+      pill.append(resourceIcon(resourceId));
+      const amountLabel = document.createElement("span");
+      amountLabel.textContent = formatAmount(amount, true);
+      pill.append(amountLabel);
+      output.append(pill);
+    });
+    effectPills(jobId, newAssigned, false).forEach((pill) => output.append(pill));
   }
   updateRowDisplay(assigned);
 
@@ -1407,20 +1432,30 @@ function updatePopulationCounter(jobIds) {
   updatePlanetState({ populationText: formatAmount(totalPopulation) });
 }
 
-/** Icono (carpeta "modifiers/") que ilustra el efecto no numérico de un empleo (delincuencia/estabilidad/ejércitos de defensa), si existe uno para él. */
-function jobEffectIcon(jobId) {
-  const src = JOB_EFFECT_ICONS[jobId];
-  if (!src) return null;
-  const img = document.createElement("img");
-  img.className = "planet-nonresource-icon";
-  img.src = `${IMAGE_BASE}${src}`;
-  img.alt = "";
-  img.loading = "lazy";
-  return img;
+/** Píldoras con los efectos de JOB_EFFECTS de un empleo (estabilidad, delincuencia...), multiplicados por la población asignada (escala ×100). withLabel: añade el nombre de la estadística. */
+function effectPills(jobId, assignedRaw, withLabel) {
+  return Object.entries(JOB_EFFECTS[jobId] || {}).map(([statId, perJob]) => {
+    const stat = STAT_EFFECTS[statId];
+    const amount = perJob * divideEffect(assignedRaw);
+    const pill = document.createElement("span");
+    // Para delincuencia, menos es mejor: se pinta en verde cuando baja.
+    const good = statId === "crime" ? amount < 0 : amount > 0;
+    pill.className = `planet-job-output-pill ${good ? "is-positive" : "is-negative"}`;
+    pill.title = t(currentLang, stat.i18nKey);
+    const icon = document.createElement("img");
+    icon.src = `${IMAGE_BASE}${stat.img}`;
+    icon.alt = "";
+    icon.loading = "lazy";
+    pill.append(icon);
+    const text = document.createElement("span");
+    text.textContent = `${withLabel ? `${t(currentLang, stat.i18nKey)} ` : ""}${formatAmount(amount, true)}`;
+    pill.append(text);
+    return pill;
+  });
 }
 
 function renderNonResourceEffects(jobIds) {
-  const nonResourceEntries = Object.keys(JOB_EFFECT_NOTES).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
+  const nonResourceEntries = Object.keys(JOB_EFFECTS).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
   if (nonResourceEntries.length && nonResourceEl) {
     nonResourceEl.replaceChildren();
     const heading = document.createElement("p");
@@ -1430,11 +1465,11 @@ function renderNonResourceEffects(jobIds) {
     nonResourceEntries.forEach((jobId) => {
       const line = document.createElement("div");
       line.className = "planet-nonresource-line";
-      const icon = jobEffectIcon(jobId);
-      if (icon) line.append(icon);
+      line.append(jobIcon(jobId));
       const text = document.createElement("span");
-      text.textContent = `${formatAmount(jobAssignments[jobId])} ${jobName(jobId)} — ${t(currentLang, JOB_EFFECT_NOTES[jobId])}`;
+      text.textContent = `${formatAmount(divideEffect(jobAssignments[jobId]))} ${jobName(jobId)} —`;
       line.append(text);
+      effectPills(jobId, jobAssignments[jobId], true).forEach((pill) => line.append(pill));
       nonResourceEl.append(line);
     });
   } else if (nonResourceEl) {
@@ -1459,7 +1494,7 @@ function renderSummary(totals) {
   }
 
   jobIds.forEach((jobId) => {
-    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId]));
+    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId], totals.jobUnitOutputs[jobId]));
   });
 
   renderNonResourceEffects(jobIds);
@@ -1532,7 +1567,8 @@ function renderSlots() {
 
 function renderStats(totals) {
   if (statHousing) statHousing.textContent = formatAmount(totals.housing, true);
-  if (statAmenities) statAmenities.textContent = formatAmount(totals.amenities, true);
+  // Servicios totales = los de edificios/capital + los que producen los empleos (p. ej. Animadores).
+  if (statAmenities) statAmenities.textContent = formatAmount(totals.amenities + (totals.resourceTotals.amenities || 0), true);
   if (districtsUsedLabel) districtsUsedLabel.textContent = `${totalDistrictCount()} / ${planetSize}`;
 }
 
