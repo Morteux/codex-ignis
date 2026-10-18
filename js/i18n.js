@@ -434,6 +434,9 @@ const strings = {
         empireBlockedBy: "Bloqueada por: ",
         empireEffectNotApplied: "Efecto informativo: este simulador aún no lo aplica a los cálculos.",
         resourceInfluence: "Influencia",
+        resourceVolatileMotes: "Motas volátiles",
+        resourceRareCrystals: "Cristales raros",
+        resourceExoticGases: "Gases exóticos",
         effect_monthlyUnity: "Unidad mensual",
         effect_edictCost: "Coste de edictos",
         effect_edictUpkeep: "Mantenimiento de edictos",
@@ -740,7 +743,19 @@ const strings = {
         buildingLuxuryResidences: "Residencias de Lujo",
         buildingParadiseDomes: "Cúpulas Paradisíacas",
         buildingAdministrativeOffices: "Oficinas Administrativas",
-        buildingTemple: "Templo"
+        buildingTemple: "Templo",
+        buildingEnergyGrid: "Red Energética",
+        buildingEnergyNexus: "Nexo Energético",
+        buildingMineralPurificationPlants: "Plantas de Purificación Mineral",
+        buildingMineralPurificationHubs: "Centros de Purificación Mineral",
+        buildingFoodProcessingFacilities: "Instalaciones de Procesamiento de Alimentos",
+        buildingFoodProcessingCenters: "Centros de Procesamiento de Alimentos",
+        buildingAlloyReclamationPlant: "Planta de Recuperación de Aleaciones",
+        buildingMetallurgicalResearchLab: "Laboratorio de Investigación Metalúrgica",
+        buildingRecirculationCenter: "Centro de Recirculación",
+        buildingDistributedDesignCenter: "Centro de Diseño Distribuido",
+        planetSimTotalLabel: "Total",
+        planetSimBuildingRequirementsLost: "Edificio inactivo: ya no cumples sus requisitos (ética, autoridad, principio, designación, tipo de planeta o nivel del capital). No cuenta para empleos ni recursos hasta que los recuperes."
 
     },
     en: {
@@ -1166,6 +1181,9 @@ const strings = {
         empireBlockedBy: "Blocked by: ",
         empireEffectNotApplied: "Informational effect: this simulator does not apply it to the calculations yet.",
         resourceInfluence: "Influence",
+        resourceVolatileMotes: "Volatile motes",
+        resourceRareCrystals: "Rare crystals",
+        resourceExoticGases: "Exotic gases",
         effect_monthlyUnity: "Monthly unity",
         effect_edictCost: "Edict cost",
         effect_edictUpkeep: "Edict upkeep",
@@ -1472,7 +1490,19 @@ const strings = {
         buildingLuxuryResidences: "Luxury Residences",
         buildingParadiseDomes: "Paradise Domes",
         buildingAdministrativeOffices: "Administrative Offices",
-        buildingTemple: "Temple"
+        buildingTemple: "Temple",
+        buildingEnergyGrid: "Energy Grid",
+        buildingEnergyNexus: "Energy Nexus",
+        buildingMineralPurificationPlants: "Mineral Purification Plants",
+        buildingMineralPurificationHubs: "Mineral Purification Hubs",
+        buildingFoodProcessingFacilities: "Food Processing Facilities",
+        buildingFoodProcessingCenters: "Food Processing Centers",
+        buildingAlloyReclamationPlant: "Alloy Reclamation Plant",
+        buildingMetallurgicalResearchLab: "Metallurgical Research Lab",
+        buildingRecirculationCenter: "Recirculation Center",
+        buildingDistributedDesignCenter: "Distributed Design Center",
+        planetSimTotalLabel: "Total",
+        planetSimBuildingRequirementsLost: "Inactive building: its requirements (ethic, authority, civic, designation, planet type or capital tier) are no longer met. It does not count towards jobs or resources until they are met again."
 
     },
     jp: {
@@ -1898,6 +1928,9 @@ const strings = {
         empireBlockedBy: "次により不可: ",
         empireEffectNotApplied: "参考情報: このシミュレーターではまだ計算に反映されません。",
         resourceInfluence: "影響力",
+        resourceVolatileMotes: "揮発性モート",
+        resourceRareCrystals: "希少クリスタル",
+        resourceExoticGases: "エキゾチックガス",
         effect_monthlyUnity: "月間結束",
         effect_edictCost: "エディクト費用",
         effect_edictUpkeep: "エディクト維持費",
@@ -2204,7 +2237,19 @@ const strings = {
         buildingLuxuryResidences: "高級住宅",
         buildingParadiseDomes: "パラダイスドーム",
         buildingAdministrativeOffices: "行政オフィス",
-        buildingTemple: "神殿"
+        buildingTemple: "神殿",
+        buildingEnergyGrid: "エネルギーグリッド",
+        buildingEnergyNexus: "エネルギーネクサス",
+        buildingMineralPurificationPlants: "鉱物精製プラント",
+        buildingMineralPurificationHubs: "鉱物精製ハブ",
+        buildingFoodProcessingFacilities: "食料加工施設",
+        buildingFoodProcessingCenters: "食料加工センター",
+        buildingAlloyReclamationPlant: "合金再生プラント",
+        buildingMetallurgicalResearchLab: "冶金研究所",
+        buildingRecirculationCenter: "再循環センター",
+        buildingDistributedDesignCenter: "分散設計センター",
+        planetSimTotalLabel: "合計",
+        planetSimBuildingRequirementsLost: "非稼働の建物：必要条件（エシック、権威、国是、指定、惑星タイプ、首都の階級）を満たさなくなりました。再び満たすまで雇用にも資源にもカウントされません。"
 
     },
 };

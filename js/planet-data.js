@@ -313,7 +313,12 @@ export const RESOURCES = {
   engineering: { i18nKey: "resourceEngineering", img: "resources/Engineering_research.png" },
   amenities: { i18nKey: "resourceAmenities", img: "resources/Amenities.png" },
   trade: { i18nKey: "resourceTrade", img: "resources/Trade.png" },
-  influence: { i18nKey: "resourceInfluence", img: "resources/Influence.png" }
+  influence: { i18nKey: "resourceInfluence", img: "resources/Influence.png" },
+
+  // Recursos estratégicos (solo aparecen como mantenimiento de algunos edificios).
+  volatile_motes: { i18nKey: "resourceVolatileMotes", img: "resources/Volatile_motes.png" },
+  rare_crystals: { i18nKey: "resourceRareCrystals", img: "resources/Rare_crystals.png" },
+  exotic_gases: { i18nKey: "resourceExoticGases", img: "resources/Exotic_gases.png" }
 };
 
 /** Diccionario de empleos: id -> { i18nKey, img (dentro de jobs/) }. */
@@ -352,8 +357,9 @@ export const JOBS = {
  * empleo (job swaps: Ejecutivo, Noble, Gerente...), efectos de
  * estabilidad/delincuencia/etc. que no sean los de JOB_EFFECTS, y los
  * bonos de civismos, tradiciones, gobernantes o decisiones de las tablas
- * "base modifiers" de la wiki. Sí se modelan los de edificios (ver
- * "jobModifiers" en BUILDINGS).
+ * "base modifiers" de la wiki. Los bonos de edificios salen solo de las
+ * páginas de edificios de la wiki (ver "jobModifiers", "jobEfficiency" y
+ * "jobUpkeepMult" en BUILDINGS).
  */
 export const JOB_OUTPUTS = {
   // Obreros
@@ -401,21 +407,24 @@ export const STAT_EFFECTS = {
   navalCapacity: { i18nKey: "statNavalCapacity", img: "modifiers/mod_navy_size_add.png" }
 };
 
-/**
- * Bonos de edificio a empleos ("jobModifiers" en BUILDINGS): se suman a la
- * salida base del empleo para TODOS los empleos de ese tipo del planeta, no
- * solo los que da el propio edificio. Si es true, cada copia construida del
- * edificio aporta su bono (se acumulan); si es false, el bono cuenta una
- * sola vez por tipo de edificio aunque haya varias copias. Cambia solo este
- * valor si en partida se comprueba que funciona al revés.
- */
-export const JOB_BONUS_STACKS_PER_BUILDING = true;
-
 /** Iconos genéricos (carpeta "modifiers/") para decorar la barra de estadísticas de la colonia. */
 export const HEADER_ICONS = {
   housing: "modifiers/mod_planet_housing_add.png",
   amenities: "modifiers/mod_planet_amenities_add.png"
 };
+
+/**
+ * Reglas de requisitos de los edificios (ver js/building-requirements.js).
+ */
+const NOT_GESTALT = { type: "notGestalt" };
+const USES_PRIEST_JOBS = { type: "usesPriestJobs", value: true };
+const NOT_USES_PRIEST_JOBS = { type: "usesPriestJobs", value: false };
+const USES_CONSUMER_GOODS = { type: "usesConsumerGoods" };
+const CAPITAL_TIER_2 = { type: "capitalTier", min: 1 };
+const civic = (...keys) => ({ type: "civic", keys });
+const notCivic = (...keys) => ({ type: "notCivic", keys });
+const notDesignation = (...ids) => ({ type: "notDesignation", ids });
+const notCelestial = (...ids) => ({ type: "notCelestial", ids });
 
 /**
  * Catálogo de edificios.
@@ -426,6 +435,17 @@ export const HEADER_ICONS = {
  * - upkeep: { resourceId: cantidad } mantenimiento POR COPIA, en números
  *   normales (negativo = consumo). Viene directo de la wiki.
  * - housing / amenities: ×100 igual que los empleos.
+ * - jobModifiers: { jobId: { resourceId: cantidad } } bono por empleo (en
+ *   números normales, no ×100) que se suma a la salida de TODOS los
+ *   empleos de ese tipo del planeta, no solo a los que da este edificio.
+ *   Solo se usa en edificios con límite de colonia 1, así que nunca se
+ *   acumula. Fuente: páginas de edificios de la wiki.
+ * - jobEfficiency: { jobId: fracción } eficacia laboral (+0.1 = +10%); como
+ *   toda eficacia, solo multiplica la producción, no el mantenimiento.
+ * - jobUpkeepMult: { jobId: fracción } cambio del mantenimiento de ese
+ *   empleo (-0.1 = -10% de mantenimiento).
+ * - requires: lista de reglas de requisito (ver js/building-requirements.js).
+ *   Si no se cumplen, el edificio se oculta del catálogo.
  * - colonyLimit: "none" (sin límite) o 1 (máximo una copia, normalmente
  *   por pertenecer a una cadena de mejora).
  * - cost: texto informativo de coste de construcción (no se simula el
@@ -478,6 +498,7 @@ export const BUILDINGS = [
   },
   {
     id: "hydroponics_farm",
+    requires: [notCelestial("machine")],
     img: "buildings/building_hydroponics_farm.png",
     i18nKey: "buildingHydroponicsFarm",
     category: "resource",
@@ -485,6 +506,94 @@ export const BUILDINGS = [
     colonyLimit: "none",
     upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["food"]
+  },
+
+  // ── Edificios que mejoran la producción de los empleos básicos (límite 1 por colonia; +0,5 / +1 por empleo, página Resource buildings) ──
+  {
+    id: "energy_grid",
+    img: "buildings/building_energy_grid.png",
+    i18nKey: "buildingEnergyGrid",
+    category: "resource",
+    tier: 1,
+    jobs: {},
+    jobModifiers: { technician: { energy: 0.5 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["energy"]
+  },
+  {
+    id: "energy_nexus",
+    requires: [CAPITAL_TIER_2],
+    img: "buildings/building_energy_nexus.png",
+    i18nKey: "buildingEnergyNexus",
+    category: "resource",
+    tier: 2,
+    upgradesFrom: "energy_grid",
+    jobs: {},
+    jobModifiers: { technician: { energy: 1 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["energy"]
+  },
+  {
+    id: "mineral_purification_plants",
+    requires: [notCelestial("ringworld")],
+    img: "buildings/building_mineral_purification_plant.png",
+    i18nKey: "buildingMineralPurificationPlants",
+    category: "resource",
+    tier: 1,
+    jobs: {},
+    jobModifiers: { miner: { minerals: 0.5 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["minerals"]
+  },
+  {
+    id: "mineral_purification_hubs",
+    requires: [notCelestial("ringworld"), CAPITAL_TIER_2],
+    img: "buildings/building_mineral_purification_hub.png",
+    i18nKey: "buildingMineralPurificationHubs",
+    category: "resource",
+    tier: 2,
+    upgradesFrom: "mineral_purification_plants",
+    jobs: {},
+    jobModifiers: { miner: { minerals: 1 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2, volatile_motes: -1 },
+    cost: "600 minerales, 50 motas volátiles",
+    sets: ["minerals"]
+  },
+  {
+    id: "food_processing_facilities",
+    requires: [notCelestial("machine")],
+    img: "buildings/building_food_processing_facility.png",
+    i18nKey: "buildingFoodProcessingFacilities",
+    category: "resource",
+    tier: 1,
+    jobs: {},
+    jobModifiers: { farmer: { food: 0.5 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["food"]
+  },
+  {
+    id: "food_processing_centers",
+    requires: [notCelestial("machine"), CAPITAL_TIER_2],
+    img: "buildings/building_food_processing_center.png",
+    i18nKey: "buildingFoodProcessingCenters",
+    category: "resource",
+    tier: 2,
+    upgradesFrom: "food_processing_facilities",
+    jobs: {},
+    jobModifiers: { farmer: { food: 1 } },
+    colonyLimit: 1,
+    upkeep: { energy: -2, exotic_gases: -1 },
+    cost: "600 minerales, 50 gases exóticos",
     sets: ["food"]
   },
 
@@ -509,8 +618,6 @@ export const BUILDINGS = [
     tier: 2,
     upgradesFrom: "alloy_foundries",
     jobs: { metallurgist: 400 },
-    // Wiki (Jobs, tabla "Metallurgist base modifiers"): esta mejora añade +1 Aleación / -2 Minerales por Metalúrgico. Se aplica a todos los Metalúrgicos del planeta.
-    jobModifiers: { metallurgist: { alloys: 1, minerals: -2 } },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)",
@@ -518,23 +625,49 @@ export const BUILDINGS = [
   },
   {
     id: "alloy_nano_plants",
+    requires: [notDesignation("penalColony")],
     img: "buildings/building_foundry_3.png",
     i18nKey: "buildingAlloyNanoPlants",
     category: "foundry",
     tier: 3,
     upgradesFrom: "alloy_mega_forges",
     jobs: { metallurgist: 600 },
-    // Wiki (Jobs, tabla "Metallurgist base modifiers"): +2 Aleaciones / -4 Minerales por Metalúrgico. Se aplica a todos los Metalúrgicos del planeta.
-    jobModifiers: { metallurgist: { alloys: 2, minerals: -4 } },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
     cost: "480 minerales (800 si está asentado, 200 aleaciones)",
     sets: ["industrial", "foundry"]
   },
 
+  // ── Eficiencia / mantenimiento de fundición (límite 1 por colonia, página Industry buildings) ──
+  {
+    id: "alloy_reclamation_plant",
+    img: "buildings/building_foundry_upkeep_1.png",
+    i18nKey: "buildingAlloyReclamationPlant",
+    category: "foundry",
+    jobs: {},
+    jobUpkeepMult: { metallurgist: -0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, volatile_motes: -2 },
+    cost: "600 minerales, 100 motas volátiles",
+    sets: ["industrial", "foundry"]
+  },
+  {
+    id: "metallurgical_research_lab",
+    img: "buildings/building_foundry_efficiency_1.png",
+    i18nKey: "buildingMetallurgicalResearchLab",
+    category: "foundry",
+    jobs: {},
+    jobEfficiency: { metallurgist: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, volatile_motes: -4 },
+    cost: "800 energía, 200 motas volátiles",
+    sets: ["industrial", "foundry"]
+  },
+
   // ── Fábrica: bienes de consumo (sin límite por colonia) ────────────
   {
     id: "civilian_industries",
+    requires: [USES_CONSUMER_GOODS],
     img: "buildings/building_factory_1.png",
     i18nKey: "buildingCivilianIndustries",
     category: "factory",
@@ -547,14 +680,13 @@ export const BUILDINGS = [
   },
   {
     id: "civilian_fabricators",
+    requires: [USES_CONSUMER_GOODS],
     img: "buildings/building_factory_2.png",
     i18nKey: "buildingCivilianFabricators",
     category: "factory",
     tier: 2,
     upgradesFrom: "civilian_industries",
     jobs: { artisan: 400 },
-    // Wiki (Jobs, tabla "Artisan base modifiers"): +1 Bien de consumo / -1 Mineral por Artesano. Se aplica a todos los Artesanos del planeta.
-    jobModifiers: { artisan: { consumer_goods: 1, minerals: -1 } },
     colonyLimit: "none",
     upkeep: { energy: -5, minerals: -2 },
     cost: "480 minerales (600 si está asentado, 100 aleaciones)",
@@ -562,23 +694,49 @@ export const BUILDINGS = [
   },
   {
     id: "civilian_repli_complexes",
+    requires: [USES_CONSUMER_GOODS],
     img: "buildings/building_factory_3.png",
     i18nKey: "buildingCivilianRepliComplexes",
     category: "factory",
     tier: 3,
     upgradesFrom: "civilian_fabricators",
     jobs: { artisan: 600 },
-    // Wiki (Jobs, tabla "Artisan base modifiers"): +2 Bienes de consumo / -2 Minerales por Artesano. Se aplica a todos los Artesanos del planeta.
-    jobModifiers: { artisan: { consumer_goods: 2, minerals: -2 } },
     colonyLimit: "none",
     upkeep: { energy: -8, minerals: -4 },
     cost: "600 minerales (800 si está asentado, 200 aleaciones)",
     sets: ["industrial", "factory"]
   },
 
+  // ── Eficiencia / mantenimiento de fábrica (límite 1 por colonia, página Industry buildings) ──
+  {
+    id: "recirculation_center",
+    img: "buildings/building_factory_upkeep_1.png",
+    i18nKey: "buildingRecirculationCenter",
+    category: "factory",
+    jobs: {},
+    jobUpkeepMult: { artisan: -0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, rare_crystals: -2 },
+    cost: "600 minerales, 100 cristales raros",
+    sets: ["industrial", "factory"]
+  },
+  {
+    id: "distributed_design_center",
+    img: "buildings/building_factory_efficiency_1.png",
+    i18nKey: "buildingDistributedDesignCenter",
+    category: "factory",
+    jobs: {},
+    jobEfficiency: { artisan: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, rare_crystals: -4 },
+    cost: "800 energía, 200 cristales raros",
+    sets: ["industrial", "factory"]
+  },
+
   // ── Investigación genérica (sin límite por colonia) ────────────────
   {
     id: "research_labs",
+    requires: [notDesignation("resortWorld", "thrallWorld")],
     img: "buildings/building_research_lab_1.png",
     i18nKey: "buildingResearchLabs",
     category: "research",
@@ -591,6 +749,7 @@ export const BUILDINGS = [
   },
   {
     id: "research_complexes",
+    requires: [notDesignation("resortWorld", "thrallWorld")],
     img: "buildings/building_research_lab_2.png",
     i18nKey: "buildingResearchComplexes",
     category: "research",
@@ -604,6 +763,7 @@ export const BUILDINGS = [
   },
   {
     id: "advanced_research_complexes",
+    requires: [notDesignation("resortWorld", "thrallWorld")],
     img: "buildings/building_research_lab_3.png",
     i18nKey: "buildingAdvancedResearchComplexes",
     category: "research",
@@ -619,6 +779,7 @@ export const BUILDINGS = [
   // ── Administración civil (una por línea de mejora) ─────────────────
   {
     id: "precinct_houses",
+    requires: [NOT_GESTALT, notCivic("principleCivilEducation"), notDesignation("thrallWorld")],
     img: "buildings/building_precinct_house.png",
     i18nKey: "buildingPrecinctHouses",
     category: "civic",
@@ -631,6 +792,7 @@ export const BUILDINGS = [
   },
   {
     id: "hall_of_judgment",
+    requires: [NOT_GESTALT, notCivic("principleCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
     img: "buildings/building_hall_judgment.png",
     i18nKey: "buildingHallOfJudgment",
     category: "civic",
@@ -644,6 +806,7 @@ export const BUILDINGS = [
   },
   {
     id: "state_academy",
+    requires: [civic("principleCivilEducation"), notDesignation("thrallWorld")],
     img: "buildings/building_precinct_house.png",
     i18nKey: "buildingStateAcademy",
     category: "civic",
@@ -656,6 +819,7 @@ export const BUILDINGS = [
   },
   {
     id: "center_of_guidance",
+    requires: [civic("principleCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
     img: "buildings/building_center_of_guidance.png",
     i18nKey: "buildingCenterOfGuidance",
     category: "civic",
@@ -669,6 +833,7 @@ export const BUILDINGS = [
   },
   {
     id: "administrative_offices",
+    requires: [NOT_GESTALT, NOT_USES_PRIEST_JOBS, notDesignation("penalColony", "resortWorld")],
     img: "buildings/building_bureaucratic_1.png",
     i18nKey: "buildingAdministrativeOffices",
     category: "civic",
@@ -682,6 +847,7 @@ export const BUILDINGS = [
   // ── Militares ───────────────────────────────────────────────────────
   {
     id: "stronghold",
+    requires: [notDesignation("resortWorld")],
     img: "buildings/building_stronghold.png",
     i18nKey: "buildingStronghold",
     category: "military",
@@ -694,6 +860,7 @@ export const BUILDINGS = [
   },
   {
     id: "fortress",
+    requires: [notDesignation("resortWorld"), CAPITAL_TIER_2],
     img: "buildings/building_fortress.png",
     i18nKey: "buildingFortress",
     category: "military",
@@ -709,6 +876,7 @@ export const BUILDINGS = [
   // ── Otros ───────────────────────────────────────────────────────────
   {
     id: "commercial_zones",
+    requires: [NOT_GESTALT, notDesignation("penalColony", "thrallWorld")],
     img: "buildings/building_commercial_zone.png",
     i18nKey: "buildingCommercialZones",
     category: "other",
@@ -720,6 +888,7 @@ export const BUILDINGS = [
   },
   {
     id: "holo_theatres",
+    requires: [NOT_GESTALT, notCivic("principleDystopianSociety"), notDesignation("penalColony", "thrallWorld")],
     img: "buildings/building_holo_theatres.png",
     i18nKey: "buildingHoloTheatres",
     category: "other",
@@ -733,6 +902,7 @@ export const BUILDINGS = [
   // ── Vivienda (sin empleos: vivienda y comodidades, ambos ×100) ─────
   {
     id: "luxury_residences",
+    requires: [NOT_GESTALT, notCivic("principleSharedBurdens"), notCelestial("habitat")],
     img: "buildings/building_luxury_residence.png",
     i18nKey: "buildingLuxuryResidences",
     category: "housing",
@@ -747,6 +917,7 @@ export const BUILDINGS = [
   },
   {
     id: "paradise_domes",
+    requires: [NOT_GESTALT, notCivic("principleSharedBurdens"), notCelestial("habitat"), CAPITAL_TIER_2],
     img: "buildings/building_paradise_dome.png",
     i18nKey: "buildingParadiseDomes",
     category: "housing",
@@ -764,6 +935,7 @@ export const BUILDINGS = [
   // ── Unidad (unity) ─────────────────────────────────────────────────
   {
     id: "temple",
+    requires: [USES_PRIEST_JOBS],
     img: "buildings/building_temple.png",
     i18nKey: "buildingTemple",
     category: "unity",

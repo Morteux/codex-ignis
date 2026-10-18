@@ -289,13 +289,14 @@ function renderCivicsList() {
 }
 
 let lastPublishedKey = null;
-/** Publica éticas y autoridad en el estado compartido (solo si cambian) para que planet-sim.js les aplique sus bonos. */
+/** Publica éticas, autoridad y principios en el estado compartido (solo si cambian) para que planet-sim.js les aplique sus bonos. */
 function publishSelection() {
   const ethicIds = currentEthicIds();
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}`;
+  const civicIds = [...selectedCivics];
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds });
 }
 
 function refresh() {

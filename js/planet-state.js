@@ -12,6 +12,7 @@ const state = {
   designationId: null,
   ethicIds: [],
   authorityId: null,
+  civicIds: [],
   planetName: "",
   planetSize: null,
   populationText: null

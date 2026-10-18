@@ -45,7 +45,6 @@ import {
   JOB_OUTPUTS,
   JOB_EFFECTS,
   STAT_EFFECTS,
-  JOB_BONUS_STACKS_PER_BUILDING,
   HEADER_ICONS,
   RESOURCES,
   CATEGORY_ORDER,
@@ -59,6 +58,7 @@ import {
 } from "./planet-data.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange } from "./planet-state.js";
 import { collectAppliedEffects } from "./empire-data.js";
+import { buildingRequirementsMet, requirementContextKey } from "./building-requirements.js";
 import { allowedDesignationCategories } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation } from "./designation-data.js";
 
@@ -198,8 +198,41 @@ function unlockedKeys() {
   return keys.slice(0, buildableCapacity());
 }
 
+/** Contexto con el que se evalúan los requisitos de los edificios (ver js/building-requirements.js). */
+function requirementContext() {
+  const state = getPlanetState();
+  return {
+    ethicIds: state.ethicIds || [],
+    authorityId: state.authorityId,
+    civicIds: state.civicIds || [],
+    designationId: selectedDesignationId,
+    celestialTypeId: state.celestialTypeId,
+    capitalTierIndex
+  };
+}
+
+/** ¿Cumple este edificio sus requisitos (ética, autoridad, principios, designación...) ahora mismo? */
+function isBuildingAvailable(building) {
+  return buildingRequirementsMet(building, requirementContext());
+}
+
 function isKeyUnlocked(key, unlocked) {
   return unlocked.includes(key);
+}
+
+/** Raíz de la cadena de mejora de un edificio (p. ej. Megaforjas -> Fundiciones). Los de una misma cadena comparten el límite de colonia: mejorar sustituye al anterior, no se suman. */
+function chainRootId(building) {
+  let current = building;
+  while (current.upgradesFrom && buildingsById.get(current.upgradesFrom)) current = buildingsById.get(current.upgradesFrom);
+  return current.id;
+}
+
+/** Cuántos edificios de la cadena de este edificio hay construidos. */
+function chainBuildingCount(building) {
+  const root = chainRootId(building);
+  let n = 0;
+  builtMap.forEach((id) => { if (chainRootId(buildingsById.get(id)) === root) n += 1; });
+  return n;
 }
 
 function buildingCount(id) {
@@ -345,6 +378,10 @@ function computeTotals() {
   const capital = CAPITAL_TIERS[capitalTierIndex];
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
+  // Desglose de servicios para el tooltip de la cabecera (ver renderStats).
+  const amenitySources = [];
+  if (capital.amenities) amenitySources.push({ kind: "capital", amount: divideEffect(capital.amenities) });
+  const amenityBuildings = new Map(); // id de edificio -> { count, amount }
   Object.entries(capital.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
 
   // Distritos de recursos básicos: empleo base por copia, y bonus de la
@@ -374,27 +411,41 @@ function computeTotals() {
   }
 
   // Edificios normales, solo los que caen en una ranura actualmente activa.
-  // Además, cada edificio puede traer "jobModifiers": un bono por empleo que
-  // se aplica a TODOS los empleos de ese tipo del planeta (no solo a los que
-  // da el propio edificio). Ver JOB_BONUS_STACKS_PER_BUILDING en planet-data.js.
+  // Además, cada edificio puede traer bonos por tipo de empleo que se aplican
+  // a TODOS los empleos de ese tipo del planeta (no solo a los que da el
+  // propio edificio): "jobModifiers" (recursos por empleo), "jobEfficiency" y
+  // "jobUpkeepMult". Solo los traen edificios con límite de colonia 1 (ver
+  // planet-data.js), así que no se acumulan.
   const jobBonuses = {}; // jobId -> { resourceId: cantidad por empleo }
-  const bonusSourcesSeen = new Set();
+  const jobEfficiencyBonus = {}; // jobId -> suma de eficacias de edificios
+  const jobUpkeepChange = {}; // jobId -> suma de cambios de mantenimiento
   const unlocked = unlockedKeys();
   builtMap.forEach((id, key) => {
     if (!unlocked.includes(key)) return;
     const building = buildingsById.get(id);
+    // Un edificio que ya no cumple sus requisitos (p. ej. al cambiar de ética) queda inactivo.
+    if (!isBuildingAvailable(building)) return;
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
-    if (JOB_BONUS_STACKS_PER_BUILDING || !bonusSourcesSeen.has(id)) {
-      bonusSourcesSeen.add(id);
-      Object.entries(building.jobModifiers || {}).forEach(([jobId, modifiers]) => {
-        jobBonuses[jobId] = jobBonuses[jobId] || {};
-        Object.entries(modifiers).forEach(([resourceId, amount]) => {
-          jobBonuses[jobId][resourceId] = (jobBonuses[jobId][resourceId] || 0) + amount;
-        });
+    Object.entries(building.jobModifiers || {}).forEach(([jobId, modifiers]) => {
+      jobBonuses[jobId] = jobBonuses[jobId] || {};
+      Object.entries(modifiers).forEach(([resourceId, amount]) => {
+        jobBonuses[jobId][resourceId] = (jobBonuses[jobId][resourceId] || 0) + amount;
       });
-    }
+    });
+    Object.entries(building.jobEfficiency || {}).forEach(([jobId, fraction]) => {
+      jobEfficiencyBonus[jobId] = (jobEfficiencyBonus[jobId] || 0) + fraction;
+    });
+    Object.entries(building.jobUpkeepMult || {}).forEach(([jobId, fraction]) => {
+      jobUpkeepChange[jobId] = (jobUpkeepChange[jobId] || 0) + fraction;
+    });
     housing += divideEffect(building.housing || 0);
     amenities += divideEffect(building.amenities || 0);
+    if (building.amenities) {
+      const entry = amenityBuildings.get(id) || { count: 0, amount: 0 };
+      entry.count += 1;
+      entry.amount += divideEffect(building.amenities);
+      amenityBuildings.set(id, entry);
+    }
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
       addSignedResource(resourceId, amount);
     });
@@ -420,18 +471,25 @@ function computeTotals() {
     Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
-    const efficiencyBonus = designation?.jobEfficiency?.[jobId] || 0;
-    if (efficiencyBonus) {
-      Object.keys(unit).forEach((resourceId) => {
-        if (unit[resourceId] > 0) unit[resourceId] *= 1 + efficiencyBonus;
-      });
-    }
+    // Eficacia laboral (designación + edificios): puede ser positiva o negativa
+    // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
+    // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
+    const efficiencyBonus = (designation?.jobEfficiency?.[jobId] || 0) + (jobEfficiencyBonus[jobId] || 0);
+    const upkeepChange = jobUpkeepChange[jobId] || 0;
+    Object.keys(unit).forEach((resourceId) => {
+      if (unit[resourceId] > 0) unit[resourceId] *= Math.max(0, 1 + efficiencyBonus);
+      else if (unit[resourceId] < 0) unit[resourceId] *= Math.max(0, 1 + upkeepChange);
+    });
     jobUnitOutputs[jobId] = unit;
 
-    const assigned = divideEffect(jobAssignments[jobId] || 0);
+    const assignedRaw = jobAssignments[jobId] || 0;
+    const assigned = divideEffect(assignedRaw);
     Object.entries(unit).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
     });
+    if (unit.amenities && assigned) {
+      amenitySources.push({ kind: "job", jobId, assignedRaw, amount: unit.amenities * assigned });
+    }
   });
 
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
@@ -441,6 +499,7 @@ function computeTotals() {
         housing += amount;
       } else {
         addSignedResource(key, amount);
+        if (key === "amenities" && amount) amenitySources.push({ kind: "designation", amount });
       }
     });
   }
@@ -454,7 +513,11 @@ function computeTotals() {
   });
   Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, housing, amenities };
+  // Servicios totales = capital + edificios + empleos (+ designación): es lo que muestra la cabecera.
+  amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
+  const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
+
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -762,11 +825,13 @@ function makeRegularSlotCell(key, unlocked, lockedTooltip) {
     const building = buildingsById.get(buildingId);
     const slot = document.createElement("button");
     slot.type = "button";
-    const stateClass = isUnlocked ? (isLimited(building) ? "is-limited" : "is-standard") : "is-inactive";
+    const requirementsMet = isBuildingAvailable(building);
+    const isActive = isUnlocked && requirementsMet;
+    const stateClass = isActive ? (isLimited(building) ? "is-limited" : "is-standard") : "is-inactive";
     slot.className = `planet-slot is-filled ${stateClass}`;
-    slot.title = isUnlocked
+    slot.title = isActive
       ? `${buildingDisplayName(building)} — ${t(currentLang, "planetSimClickToDemolish")}`
-      : `${buildingDisplayName(building)} — ${t(currentLang, "planetSimSlotInactive")}`;
+      : `${buildingDisplayName(building)} — ${t(currentLang, isUnlocked ? "planetSimBuildingRequirementsLost" : "planetSimSlotInactive")}`;
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${building.img}`;
     img.alt = buildingDisplayName(building);
@@ -1047,7 +1112,7 @@ function renderActiveTabContent() {
 /** ¿Este edificio no se puede construir ahora mismo (límite de colonia, sin ranuras libres, o incompatible con la ranura objetivo)? Se usa tanto para desactivar el botón como para decidir si su categoría sale desplegada. */
 function isBuildingDisabled(building, slotsFull, targetKey) {
   if (slotsFull) return true;
-  if (building.colonyLimit !== "none" && buildingCount(building.id) >= building.colonyLimit) return true;
+  if (building.colonyLimit !== "none" && chainBuildingCount(building) >= building.colonyLimit) return true;
   return !slotAcceptsBuilding(targetKey, building);
 }
 
@@ -1081,18 +1146,23 @@ function renderCatalog() {
 
   const targetKey = resolveSelectedSlot();
   const slotsFull = !targetKey;
-  const signature = slotsFull ? null : getSlotTypeSignature(targetKey);
+  // La firma incluye el contexto de requisitos: si cambian éticas, autoridad,
+  // principios, designación, tipo de planeta o capital, se recalcula qué
+  // categorías salen abiertas.
+  const slotSignature = slotsFull ? null : getSlotTypeSignature(targetKey);
+  const signature = `${slotSignature}#${requirementContextKey(requirementContext())}`;
 
   if (signature !== catalogSlotSignature) {
     catalogSlotSignature = signature;
     CATEGORY_ORDER.forEach((category) => {
-      const items = BUILDINGS.filter((b) => b.category === category);
+      const items = BUILDINGS.filter((b) => b.category === category && isBuildingAvailable(b));
       catalogCategoryOpenState[category] = items.some((building) => !isBuildingDisabled(building, slotsFull, targetKey));
     });
   }
 
   CATEGORY_ORDER.forEach((category) => {
-    const items = BUILDINGS.filter((b) => b.category === category);
+    // Los edificios cuyos requisitos no se cumplen no se muestran.
+    const items = BUILDINGS.filter((b) => b.category === category && isBuildingAvailable(b));
     if (!items.length) return;
 
     const details = document.createElement("details");
@@ -1122,7 +1192,7 @@ function renderCatalog() {
 /** slotsFull: no queda ninguna ranura libre en toda la colonia. targetKey: la ranura libre actualmente seleccionada como destino (o null si slotsFull). */
 function renderCatalogItem(building, slotsFull, targetKey) {
   const count = buildingCount(building.id);
-  const atLimit = building.colonyLimit !== "none" && count >= building.colonyLimit;
+  const atLimit = building.colonyLimit !== "none" && chainBuildingCount(building) >= building.colonyLimit;
   const incompatible = !slotsFull && !atLimit && !slotAcceptsBuilding(targetKey, building);
   const disabled = isBuildingDisabled(building, slotsFull, targetKey);
 
@@ -1512,6 +1582,7 @@ function renderSummary(totals) {
 function refreshEconomyOnly() {
   const totals = computeTotals();
   renderProduction(totals);
+  renderStats(totals);
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
   updatePopulationCounter(jobIds);
   renderNonResourceEffects(jobIds);
@@ -1567,8 +1638,22 @@ function renderSlots() {
 
 function renderStats(totals) {
   if (statHousing) statHousing.textContent = formatAmount(totals.housing, true);
-  // Servicios totales = los de edificios/capital + los que producen los empleos (p. ej. Animadores).
-  if (statAmenities) statAmenities.textContent = formatAmount(totals.amenities + (totals.resourceTotals.amenities || 0), true);
+  if (statAmenities) {
+    statAmenities.textContent = formatAmount(totals.amenitiesTotal, true);
+    // Tooltip con el desglose de toda la producción de servicios del planeta.
+    const lines = totals.amenitySources.map((source) => {
+      let label;
+      if (source.kind === "capital") label = t(currentLang, "planetSimCapitalHeading");
+      else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
+      else if (source.kind === "job") label = `${formatAmount(source.assignedRaw)} ${jobName(source.jobId)}`;
+      else label = t(currentLang, "planetSimDesignationHeading");
+      return `${label} ${formatAmount(source.amount, true)}`;
+    });
+    lines.push(`${t(currentLang, "planetSimTotalLabel")}: ${formatAmount(totals.amenitiesTotal, true)}`);
+    const tooltipTarget = statAmenities.closest(".planet-header-stat") || statAmenities;
+    tooltipTarget.title = lines.join("\n");
+    tooltipTarget.style.cursor = "help";
+  }
   if (districtsUsedLabel) districtsUsedLabel.textContent = `${totalDistrictCount()} / ${planetSize}`;
 }
 
@@ -1599,12 +1684,13 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
 }
 
 // Reacciona a lo que otros módulos escriben en el estado compartido: tipo de
-// cuerpo celeste (filtra las designaciones) y éticas/autoridad (bonos).
+// cuerpo celeste (filtra las designaciones), éticas/autoridad (bonos) y
+// principios (requisitos de edificios).
 // Solo se recalcula si esos datos han cambiado de verdad, para no entrar en
 // bucle con las propias escrituras de este módulo (tamaño/población).
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
-  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}`;
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}`;
   if (key === lastRelevantKey) return;
   lastRelevantKey = key;
   renderDesignationSelect();
