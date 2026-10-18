@@ -44,6 +44,8 @@ import {
   JOBS,
   JOB_OUTPUTS,
   JOB_EFFECTS,
+  JOB_STRATA,
+  STRATUM_I18N_KEYS,
   STAT_EFFECTS,
   HEADER_ICONS,
   RESOURCES,
@@ -1563,8 +1565,24 @@ function renderSummary(totals) {
     return;
   }
 
-  jobIds.forEach((jobId) => {
-    summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId], totals.jobUnitOutputs[jobId]));
+  // Los empleos se agrupan por estrato (ver JOB_STRATA en planet-data.js).
+  JOB_STRATA.forEach((stratum) => {
+    const heading = document.createElement("h3");
+    heading.className = "planet-stratum-heading";
+    heading.textContent = t(currentLang, STRATUM_I18N_KEYS[stratum]);
+    summaryEl.append(heading);
+
+    const stratumJobIds = Object.keys(JOBS).filter((jobId) => JOBS[jobId].stratum === stratum && jobIds.includes(jobId));
+    if (!stratumJobIds.length) {
+      const empty = document.createElement("p");
+      empty.className = "planet-stratum-empty";
+      empty.textContent = t(currentLang, "stratumEmpty");
+      summaryEl.append(empty);
+      return;
+    }
+    stratumJobIds.forEach((jobId) => {
+      summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId], totals.jobUnitOutputs[jobId]));
+    });
   });
 
   renderNonResourceEffects(jobIds);

@@ -321,24 +321,51 @@ export const RESOURCES = {
   exotic_gases: { i18nKey: "resourceExoticGases", img: "resources/Exotic_gases.png" }
 };
 
-/** Diccionario de empleos: id -> { i18nKey, img (dentro de jobs/) }. */
+/**
+ * Estratos de empleo, de mayor a menor rango (página "Jobs" de la wiki, v4.3):
+ * gobernante (stratum "Elite" de la wiki: Político), especialista, obrero y
+ * "especial", para los empleos que no pertenecen a ninguno de los tres
+ * (civiles, subversivos como criminales, esclavos...). El panel de empleos
+ * los agrupa en este orden.
+ */
+export const JOB_STRATA = ["ruler", "specialist", "worker", "special"];
+export const STRATUM_I18N_KEYS = {
+  ruler: "stratumRuler",
+  specialist: "stratumSpecialist",
+  worker: "stratumWorker",
+  special: "stratumSpecial"
+};
+
+/**
+ * Diccionario de empleos: id -> { i18nKey, img (dentro de jobs/), stratum }.
+ * Los de stratum "special" salen de las secciones "Special jobs", "Subversive
+ * jobs" y "Slave jobs" de la wiki; ningún edificio, distrito ni designación
+ * de este simulador los genera todavía (dependen de población sin empleo,
+ * delincuencia, esclavitud o edificios no modelados), así que de momento no
+ * aparecen en el panel hasta que alguna fuente les dé capacidad.
+ */
 export const JOBS = {
-  technician: { i18nKey: "jobTechnician", img: "jobs/job_technician.png" },
-  miner: { i18nKey: "jobMiner", img: "jobs/job_miner.png" },
-  farmer: { i18nKey: "jobFarmer", img: "jobs/job_farmer.png" },
-  metallurgist: { i18nKey: "jobMetallurgist", img: "jobs/job_foundry.png" },
-  artisan: { i18nKey: "jobArtisan", img: "jobs/job_artisan.png" },
-  enforcer: { i18nKey: "jobEnforcer", img: "jobs/job_enforcer.png" },
-  educator: { i18nKey: "jobEducator", img: "jobs/job_educator.png" },
-  soldier: { i18nKey: "jobSoldier", img: "jobs/job_soldier.png" },
-  trader: { i18nKey: "jobTrader", img: "jobs/job_trader.png" },
-  entertainer: { i18nKey: "jobEntertainer", img: "jobs/job_entertainer.png" },
-  physicist: { i18nKey: "jobPhysicist", img: "jobs/job_physicist.png" },
-  engineer: { i18nKey: "jobEngineer", img: "jobs/job_engineer.png" },
-  biologist: { i18nKey: "jobBiologist", img: "jobs/job_biologist.png" },
-  priest: { i18nKey: "jobPriest", img: "jobs/job_priest.png" },
-  bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png" },
-  politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png" }
+  technician: { i18nKey: "jobTechnician", img: "jobs/job_technician.png", stratum: "worker" },
+  miner: { i18nKey: "jobMiner", img: "jobs/job_miner.png", stratum: "worker" },
+  farmer: { i18nKey: "jobFarmer", img: "jobs/job_farmer.png", stratum: "worker" },
+  metallurgist: { i18nKey: "jobMetallurgist", img: "jobs/job_foundry.png", stratum: "specialist" },
+  artisan: { i18nKey: "jobArtisan", img: "jobs/job_artisan.png", stratum: "specialist" },
+  enforcer: { i18nKey: "jobEnforcer", img: "jobs/job_enforcer.png", stratum: "specialist" },
+  educator: { i18nKey: "jobEducator", img: "jobs/job_educator.png", stratum: "specialist" },
+  soldier: { i18nKey: "jobSoldier", img: "jobs/job_soldier.png", stratum: "specialist" },
+  trader: { i18nKey: "jobTrader", img: "jobs/job_trader.png", stratum: "specialist" },
+  entertainer: { i18nKey: "jobEntertainer", img: "jobs/job_entertainer.png", stratum: "specialist" },
+  physicist: { i18nKey: "jobPhysicist", img: "jobs/job_physicist.png", stratum: "specialist" },
+  engineer: { i18nKey: "jobEngineer", img: "jobs/job_engineer.png", stratum: "specialist" },
+  biologist: { i18nKey: "jobBiologist", img: "jobs/job_biologist.png", stratum: "specialist" },
+  priest: { i18nKey: "jobPriest", img: "jobs/job_priest.png", stratum: "specialist" },
+  bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png", stratum: "specialist" },
+  politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png", stratum: "ruler" },
+  // Especiales
+  civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
+  criminal: { i18nKey: "jobCriminal", img: "jobs/job_criminal.png", stratum: "special" },
+  test_subject: { i18nKey: "jobTestSubject", img: "jobs/job_test_subject.png", stratum: "special" },
+  servant: { i18nKey: "jobServant", img: "jobs/job_servant.png", stratum: "special" }
 };
 
 /**
@@ -380,7 +407,12 @@ export const JOB_OUTPUTS = {
   educator: { unity: 2.5, consumer_goods: -1 },
   soldier: { alloys: -1 },
   // Élite
-  politician: { unity: 5, amenities: 3, consumer_goods: -3 }
+  politician: { unity: 5, amenities: 3, consumer_goods: -3 },
+  // Especiales (wiki: Special jobs, Subversive jobs y Slave jobs)
+  civilian: { amenities: 0.5, trade: 1 },
+  criminal: {},
+  test_subject: { physics: 0.5, society: 1, engineering: 0.5, amenities: 3, consumer_goods: -1 },
+  servant: { amenities: 4 }
 };
 
 /**

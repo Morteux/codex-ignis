@@ -755,7 +755,16 @@ const strings = {
         buildingRecirculationCenter: "Centro de Recirculación",
         buildingDistributedDesignCenter: "Centro de Diseño Distribuido",
         planetSimTotalLabel: "Total",
-        planetSimBuildingRequirementsLost: "Edificio inactivo: ya no cumples sus requisitos (ética, autoridad, principio, designación, tipo de planeta o nivel del capital). No cuenta para empleos ni recursos hasta que los recuperes."
+        planetSimBuildingRequirementsLost: "Edificio inactivo: ya no cumples sus requisitos (ética, autoridad, principio, designación, tipo de planeta o nivel del capital). No cuenta para empleos ni recursos hasta que los recuperes.",
+        stratumRuler: "Gobernantes",
+        stratumSpecialist: "Especialistas",
+        stratumWorker: "Obreros",
+        stratumSpecial: "Especiales",
+        stratumEmpty: "Sin empleos en este estrato.",
+        jobCivilian: "Civil",
+        jobCriminal: "Criminal",
+        jobTestSubject: "Sujeto de pruebas",
+        jobServant: "Sirviente"
 
     },
     en: {
@@ -1502,7 +1511,16 @@ const strings = {
         buildingRecirculationCenter: "Recirculation Center",
         buildingDistributedDesignCenter: "Distributed Design Center",
         planetSimTotalLabel: "Total",
-        planetSimBuildingRequirementsLost: "Inactive building: its requirements (ethic, authority, civic, designation, planet type or capital tier) are no longer met. It does not count towards jobs or resources until they are met again."
+        planetSimBuildingRequirementsLost: "Inactive building: its requirements (ethic, authority, civic, designation, planet type or capital tier) are no longer met. It does not count towards jobs or resources until they are met again.",
+        stratumRuler: "Rulers",
+        stratumSpecialist: "Specialists",
+        stratumWorker: "Workers",
+        stratumSpecial: "Special",
+        stratumEmpty: "No jobs in this stratum.",
+        jobCivilian: "Civilian",
+        jobCriminal: "Criminal",
+        jobTestSubject: "Test Subject",
+        jobServant: "Servant"
 
     },
     jp: {
@@ -2249,7 +2267,16 @@ const strings = {
         buildingRecirculationCenter: "再循環センター",
         buildingDistributedDesignCenter: "分散設計センター",
         planetSimTotalLabel: "合計",
-        planetSimBuildingRequirementsLost: "非稼働の建物：必要条件（エシック、権威、国是、指定、惑星タイプ、首都の階級）を満たさなくなりました。再び満たすまで雇用にも資源にもカウントされません。"
+        planetSimBuildingRequirementsLost: "非稼働の建物：必要条件（エシック、権威、国是、指定、惑星タイプ、首都の階級）を満たさなくなりました。再び満たすまで雇用にも資源にもカウントされません。",
+        stratumRuler: "支配者",
+        stratumSpecialist: "専門職",
+        stratumWorker: "労働者",
+        stratumSpecial: "特殊",
+        stratumEmpty: "このストラタムに雇用はありません。",
+        jobCivilian: "民間人",
+        jobCriminal: "犯罪者",
+        jobTestSubject: "被験者",
+        jobServant: "召使い"
 
     },
 };

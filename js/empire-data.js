@@ -225,7 +225,6 @@ export const CIVIC_REQUIREMENTS = {
   principleMachineWarbots: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
   principleMachineZeroWasteProtocols: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
   principleMediaConglomerate: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleMemorialist: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
   principleNationalisticZeal: [{ exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
   principleNaturalNeuralNetwork: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
   principleNavalContractors: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
