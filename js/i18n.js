@@ -764,7 +764,24 @@ const strings = {
         jobCivilian: "Civil",
         jobCriminal: "Criminal",
         jobTestSubject: "Sujeto de pruebas",
-        jobServant: "Sirviente"
+        jobServant: "Sirviente",
+        buildingHolotemple: "Holotemplo",
+        buildingSacredNexus: "Nexo Sagrado",
+        buildingAdministrativePark: "Parque Administrativo",
+        buildingAdministrativeComplex: "Complejo Administrativo",
+        buildingSacrificialTemple: "Templo Sacrificial",
+        buildingGrimHolotemple: "Holotemplo Sombrío",
+        buildingTempleOfGrandSacrifice: "Templo del Gran Sacrificio",
+        buildingExperimentationChambers: "Cámaras de Experimentación",
+        buildingExperimentationComplex: "Complejo de Experimentación",
+        buildingExperimentationNexus: "Nexo de Experimentación",
+        buildingHiveWarren: "Madriguera de la Colmena",
+        buildingExpandedWarren: "Madriguera Ampliada",
+        buildingDroneStorage: "Almacén de Drones",
+        buildingUpgradedDroneStorage: "Almacén de Drones Mejorado",
+        jobDeathPriest: "Sacerdote de la muerte",
+        jobMortalInitiate: "Iniciado mortal",
+        jobExperimentEngineer: "Ingeniero experimental"
 
     },
     en: {
@@ -1520,7 +1537,24 @@ const strings = {
         jobCivilian: "Civilian",
         jobCriminal: "Criminal",
         jobTestSubject: "Test Subject",
-        jobServant: "Servant"
+        jobServant: "Servant",
+        buildingHolotemple: "Holotemple",
+        buildingSacredNexus: "Sacred Nexus",
+        buildingAdministrativePark: "Administrative Park",
+        buildingAdministrativeComplex: "Administrative Complex",
+        buildingSacrificialTemple: "Sacrificial Temple",
+        buildingGrimHolotemple: "Grim Holotemple",
+        buildingTempleOfGrandSacrifice: "Temple of Grand Sacrifice",
+        buildingExperimentationChambers: "Experimentation Chambers",
+        buildingExperimentationComplex: "Experimentation Complex",
+        buildingExperimentationNexus: "Experimentation Nexus",
+        buildingHiveWarren: "Hive Warren",
+        buildingExpandedWarren: "Expanded Warren",
+        buildingDroneStorage: "Drone Storage",
+        buildingUpgradedDroneStorage: "Upgraded Drone Storage",
+        jobDeathPriest: "Death Priest",
+        jobMortalInitiate: "Mortal Initiate",
+        jobExperimentEngineer: "Experiment Engineer"
 
     },
     jp: {
@@ -2276,7 +2310,24 @@ const strings = {
         jobCivilian: "民間人",
         jobCriminal: "犯罪者",
         jobTestSubject: "被験者",
-        jobServant: "召使い"
+        jobServant: "召使い",
+        buildingHolotemple: "ホロテンプル",
+        buildingSacredNexus: "聖なるネクサス",
+        buildingAdministrativePark: "行政パーク",
+        buildingAdministrativeComplex: "行政コンプレックス",
+        buildingSacrificialTemple: "生贄の神殿",
+        buildingGrimHolotemple: "不吉なホロテンプル",
+        buildingTempleOfGrandSacrifice: "大いなる生贄の神殿",
+        buildingExperimentationChambers: "実験室",
+        buildingExperimentationComplex: "実験コンプレックス",
+        buildingExperimentationNexus: "実験ネクサス",
+        buildingHiveWarren: "ハイブ・ウォーレン",
+        buildingExpandedWarren: "拡張ウォーレン",
+        buildingDroneStorage: "ドローン格納庫",
+        buildingUpgradedDroneStorage: "改良型ドローン格納庫",
+        jobDeathPriest: "死の司祭",
+        jobMortalInitiate: "死すべき入門者",
+        jobExperimentEngineer: "実験エンジニア"
 
     },
 };

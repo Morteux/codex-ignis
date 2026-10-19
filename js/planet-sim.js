@@ -233,7 +233,11 @@ function chainRootId(building) {
 function chainBuildingCount(building) {
   const root = chainRootId(building);
   let n = 0;
-  builtMap.forEach((id) => { if (chainRootId(buildingsById.get(id)) === root) n += 1; });
+  builtMap.forEach((id) => {
+    const other = buildingsById.get(id);
+    // Solo cuentan los eslabones con límite de colonia: los "sin límite" (p. ej. Templo, Oficinas) no bloquean su mejora.
+    if (other.colonyLimit !== "none" && chainRootId(other) === root) n += 1;
+  });
   return n;
 }
 

@@ -361,6 +361,10 @@ export const JOBS = {
   priest: { i18nKey: "jobPriest", img: "jobs/job_priest.png", stratum: "specialist" },
   bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png", stratum: "specialist" },
   politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png", stratum: "ruler" },
+  // Especialistas ligados a edificios de ética/principio
+  death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
+  mortal_initiate: { i18nKey: "jobMortalInitiate", img: "jobs/job_mortal_initiate.png", stratum: "specialist" },
+  experiment_engineer: { i18nKey: "jobExperimentEngineer", img: "jobs/job_experiment_engineer.png", stratum: "specialist" },
   // Especiales
   civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
   criminal: { i18nKey: "jobCriminal", img: "jobs/job_criminal.png", stratum: "special" },
@@ -406,6 +410,11 @@ export const JOB_OUTPUTS = {
   enforcer: {},
   educator: { unity: 2.5, consumer_goods: -1 },
   soldier: { alloys: -1 },
+  // Culto a la Muerte (principio) y Cámaras de experimentación (ética materialista)
+  death_priest: { unity: 2, amenities: 4, society: 0.5, consumer_goods: -2 },
+  mortal_initiate: { unity: 1, society: 0.5, amenities: 2 },
+  // La wiki da "+2 Research" sin decir de qué tipo: la producción se deja sin modelar (solo el mantenimiento).
+  experiment_engineer: { consumer_goods: -2 },
   // Élite
   politician: { unity: 5, amenities: 3, consumer_goods: -3 },
   // Especiales (wiki: Special jobs, Subversive jobs y Slave jobs)
@@ -457,6 +466,8 @@ const civic = (...keys) => ({ type: "civic", keys });
 const notCivic = (...keys) => ({ type: "notCivic", keys });
 const notDesignation = (...ids) => ({ type: "notDesignation", ids });
 const notCelestial = (...ids) => ({ type: "notCelestial", ids });
+const ethic = (...ids) => ({ type: "ethic", ids });
+const authority = (...ids) => ({ type: "authority", ids });
 
 /**
  * Catálogo de edificios.
@@ -928,6 +939,224 @@ export const BUILDINGS = [
     colonyLimit: 1,
     upkeep: { energy: -2 },
     cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    sets: ["origin"]
+  },
+
+  // ══ Edificios vinculados a éticas, autoridades y principios (requisitos de la columna Requirements de la wiki) ══
+
+  // ── Cadena del Templo (ética espiritualista; límite 1 por cadena) ──
+  {
+    id: "holotemple",
+    img: "buildings/building_holotemple.png",
+    i18nKey: "buildingHolotemple",
+    category: "unity",
+    requires: [USES_PRIEST_JOBS],
+    tier: 2,
+    upgradesFrom: "temple",
+    jobs: {},
+    jobUpkeepMult: { priest: -0.2 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+  {
+    id: "sacred_nexus",
+    img: "buildings/building_sacred_nexus.png",
+    i18nKey: "buildingSacredNexus",
+    category: "unity",
+    requires: [USES_PRIEST_JOBS],
+    tier: 3,
+    upgradesFrom: "holotemple",
+    jobs: {},
+    jobEfficiency: { priest: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, rare_crystals: -2 },
+    cost: "800 minerales, 100 cristales raros",
+    sets: ["origin"]
+  },
+
+  // ── Cadena de Oficinas Administrativas (no con empleos de sacerdote) ──
+  {
+    id: "administrative_park",
+    img: "buildings/building_bureaucratic_2.png",
+    i18nKey: "buildingAdministrativePark",
+    category: "civic",
+    requires: [NOT_GESTALT, NOT_USES_PRIEST_JOBS, notDesignation("penalColony", "resortWorld")],
+    tier: 2,
+    upgradesFrom: "administrative_offices",
+    jobs: {},
+    jobUpkeepMult: { bureaucrat: -0.2 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+  {
+    id: "administrative_complex",
+    img: "buildings/building_bureaucratic_3.png",
+    i18nKey: "buildingAdministrativeComplex",
+    category: "civic",
+    requires: [NOT_GESTALT, NOT_USES_PRIEST_JOBS, notDesignation("penalColony", "resortWorld")],
+    tier: 3,
+    upgradesFrom: "administrative_park",
+    jobs: {},
+    jobEfficiency: { bureaucrat: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, rare_crystals: -2 },
+    cost: "800 minerales, 100 cristales raros",
+    sets: ["origin"]
+  },
+
+  // ── Culto a la Muerte (principio Culto a la Muerte o su versión corporativa) ──
+  {
+    id: "sacrificial_temple",
+    img: "buildings/building_sacrificial_temple_1.png",
+    i18nKey: "buildingSacrificialTemple",
+    category: "unity",
+    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    tier: 1,
+    jobs: { death_priest: 100, mortal_initiate: 100 },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "grim_holotemple",
+    img: "buildings/building_sacrificial_temple_2.png",
+    i18nKey: "buildingGrimHolotemple",
+    category: "unity",
+    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    tier: 2,
+    upgradesFrom: "sacrificial_temple",
+    jobs: { mortal_initiate: 200 },
+    jobEfficiency: { death_priest: 0.05 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, exotic_gases: -1 },
+    cost: "600 minerales, 50 gases exóticos",
+    sets: ["origin"]
+  },
+  {
+    id: "temple_of_grand_sacrifice",
+    img: "buildings/building_sacrificial_temple_3.png",
+    i18nKey: "buildingTempleOfGrandSacrifice",
+    category: "unity",
+    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    tier: 3,
+    upgradesFrom: "grim_holotemple",
+    jobs: { mortal_initiate: 400 },
+    jobEfficiency: { mortal_initiate: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, exotic_gases: -2 },
+    cost: "800 minerales, 100 gases exóticos",
+    sets: ["origin"]
+  },
+
+  // ── Cámaras de experimentación (ética materialista) ──
+  {
+    id: "experimentation_chambers",
+    img: "buildings/building_experimentation_chambers_1.png",
+    i18nKey: "buildingExperimentationChambers",
+    category: "research",
+    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    tier: 1,
+    jobs: { experiment_engineer: 200, test_subject: 200 },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "experimentation_complex",
+    img: "buildings/building_experimentation_chambers_2.png",
+    i18nKey: "buildingExperimentationComplex",
+    category: "research",
+    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    tier: 2,
+    upgradesFrom: "experimentation_chambers",
+    jobs: { experiment_engineer: 200, test_subject: 400 },
+    colonyLimit: 1,
+    upkeep: { energy: -2, rare_crystals: -2 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+  {
+    id: "experimentation_nexus",
+    img: "buildings/building_experimentation_chambers_3.png",
+    i18nKey: "buildingExperimentationNexus",
+    category: "research",
+    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    tier: 3,
+    upgradesFrom: "experimentation_complex",
+    jobs: { experiment_engineer: 200, test_subject: 600 },
+    colonyLimit: 1,
+    upkeep: { energy: -2, rare_crystals: -2, volatile_motes: -1 },
+    cost: "800 minerales, 100 cristales raros",
+    sets: ["origin"]
+  },
+
+  // ── Vivienda de gestalt (Mente Colmena / Inteligencia de Máquina) ──
+  {
+    id: "hive_warren",
+    img: "buildings/building_hive_warren.png",
+    i18nKey: "buildingHiveWarren",
+    category: "housing",
+    requires: [authority("hiveMind")],
+    tier: 1,
+    jobs: {},
+    housing: 1500,
+    amenities: 1500,
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "expanded_warren",
+    img: "buildings/building_expanded_warren.png",
+    i18nKey: "buildingExpandedWarren",
+    category: "housing",
+    requires: [authority("hiveMind")],
+    tier: 2,
+    upgradesFrom: "hive_warren",
+    jobs: {},
+    housing: 3000,
+    amenities: 3000,
+    colonyLimit: 1,
+    upkeep: { energy: -3, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+  {
+    id: "drone_storage",
+    img: "buildings/building_drone_storage.png",
+    i18nKey: "buildingDroneStorage",
+    category: "housing",
+    requires: [authority("machineIntelligence")],
+    tier: 1,
+    jobs: {},
+    housing: 1500,
+    amenities: 1500,
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "upgraded_drone_storage",
+    img: "buildings/building_drone_megastorage.png",
+    i18nKey: "buildingUpgradedDroneStorage",
+    category: "housing",
+    requires: [authority("machineIntelligence"), CAPITAL_TIER_2],
+    tier: 2,
+    upgradesFrom: "drone_storage",
+    jobs: {},
+    housing: 3000,
+    amenities: 3000,
+    colonyLimit: 1,
+    upkeep: { energy: -3, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
     sets: ["origin"]
   },
 

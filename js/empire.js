@@ -105,7 +105,7 @@ function selectAuthority(authorityId) {
 function pruneUnavailableCivics() {
   const ethics = currentEthicIds();
   [...selectedCivics].forEach((key) => {
-    if (!civicAvailable(key, ethics, selectedAuthorityId)) selectedCivics.delete(key);
+    if (!civicAvailable(key, ethics, selectedAuthorityId, [...selectedCivics])) selectedCivics.delete(key);
   });
 }
 
@@ -263,7 +263,8 @@ function renderCivicsList() {
   if (!selectedAuthorityId) return note("empireChooseAuthorityFirst");
 
   const ethics = currentEthicIds();
-  const available = PRINCIPLE_BINGO.filter((entry) => civicAvailable(entry.i18nKey, ethics, selectedAuthorityId));
+  const chosen = [...selectedCivics];
+  const available = PRINCIPLE_BINGO.filter((entry) => civicAvailable(entry.i18nKey, ethics, selectedAuthorityId, chosen));
   if (!available.length) return note("empireCivicsEmpty");
 
   const atLimit = selectedCivics.size >= MAX_CIVICS;

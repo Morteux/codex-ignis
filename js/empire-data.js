@@ -26,9 +26,11 @@
  *   aportada no incluye una página de Éticas dedicada, así que esta
  *   pantalla solo sirve para ELEGIR qué desbloqueas (autoridad y
  *   principios disponibles), no para calcular los efectos de cada ética.
- * - Un principio que no aparece en este archivo (CIVIC_REQUIREMENTS) no
+ * - Un principio que no aparece en js/civic-rules.js (CIVIC_REQUIREMENTS) no
  *   tiene requisito conocido y se considera siempre disponible.
  */
+
+import { CIVIC_REQUIREMENTS } from "./civic-rules.js";
 
 /** Presupuesto total de puntos para elegir autoridades (éticas). */
 export const ETHICS_MAX_POINTS = 3;
@@ -170,86 +172,8 @@ export function blockingEthics(authority, selectedEthicIds) {
  */
 export const MAX_CIVICS = 3;
 
-/**
- * Requisitos de principios (Civics), indexados por el mismo i18nKey que ya
- * usa el catálogo de principios del bingo (js/bingo-data.js /
- * js/i18n.js). Cada principio es una lista de grupos que se exigen TODOS
- * a la vez (Y lógico entre grupos); dentro de un grupo basta con UNA de
- * las éticas o UNA de las autoridades listadas (O lógico). "exclude:true"
- * invierte el grupo: el principio exige NO tener ninguna de esas éticas o
- * autoridades. Un principio que no aparece aquí no tiene requisito
- * conocido (siempre disponible).
- */
-export const CIVIC_REQUIREMENTS = {
-  principleAgrarianIdyll: [{ exclude: false, ethics: ["pacifist", "fanaticPacifist"], authorities: [] }],
-  principleAristocraticElite: [{ exclude: false, ethics: [], authorities: ["oligarchic", "imperial"] }, { exclude: true, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }],
-  principleAscensionists: [{ exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleBeaconOfLiberty: [{ exclude: false, ethics: [], authorities: ["democratic"] }, { exclude: false, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }, { exclude: true, ethics: ["xenophobe", "fanaticXenophobe"], authorities: [] }],
-  principleBrandLoyalty: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleCitizenService: [{ exclude: false, ethics: [], authorities: ["democratic", "oligarchic"] }, { exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }, { exclude: true, ethics: ["fanaticXenophile"], authorities: [] }],
-  principleCorporateDeathCult: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleCorporateDominion: [{ exclude: false, ethics: [], authorities: ["oligarchic"] }, { exclude: true, ethics: ["xenophobe", "fanaticXenophobe"], authorities: [] }],
-  principleCorporateHedonism: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleCorveeSystem: [{ exclude: true, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }],
-  principleCrusaderSpirit: [{ exclude: false, ethics: ["authoritarian", "fanaticAuthoritarian", "spiritualist", "fanaticSpiritualist", "militarist", "fanaticMilitarist"], authorities: [] }, { exclude: false, ethics: ["authoritarian", "fanaticAuthoritarian"], authorities: [] }, { exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }, { exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }, { exclude: true, ethics: ["pacifist", "fanaticPacifist"], authorities: [] }],
-  principleDeathCult: [{ exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleDimensionalWorship: [{ exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleDividedAttention: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleEmpath: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleEntropyDrinkers: [{ exclude: true, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }],
-  principleExaltedPriesthood: [{ exclude: false, ethics: [], authorities: ["oligarchic", "dictatorial"] }, { exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleFranchising: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleFreeHaven: [{ exclude: false, ethics: ["xenophile", "fanaticXenophile"], authorities: [] }],
-  principleFreeTraders: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleGospelOfTheMasses: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleHiredGuns: [{ exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
-  principleHiveAscetic: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleHiveCordycepticDrones: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleHiveOneMind: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleHivePooledKnowledge: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleImperialCult: [{ exclude: false, ethics: [], authorities: ["imperial"] }, { exclude: false, ethics: ["authoritarian", "fanaticAuthoritarian"], authorities: [] }, { exclude: false, ethics: ["spiritualist", "fanaticSpiritualist"], authorities: [] }],
-  principleIndenturedAssets: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleIndividualMachinePredictiveAnalysis: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleIndividualMachineReplication: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleIndividualMachineWarbots: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineBuiltToLast: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineDelegatedFunctions: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineDiplomaticProtocols: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineIntrospective: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineMaintenanceProtocols: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineOtaUpdates: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineRockbreakers: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineSovereignCircuits: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineStalwartNetwork: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineUnitaryCohesion: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineWarbots: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMachineZeroWasteProtocols: [{ exclude: false, ethics: [], authorities: ["machineIntelligence"] }],
-  principleMediaConglomerate: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleNationalisticZeal: [{ exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
-  principleNaturalNeuralNetwork: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleNavalContractors: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
-  principleParliamentarySystem: [{ exclude: false, ethics: [], authorities: ["democratic"] }],
-  principlePermanentEmployment: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: true, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }],
-  principlePoliceState: [{ exclude: true, ethics: ["fanaticEgalitarian"], authorities: [] }],
-  principlePompousPurists: [{ exclude: false, ethics: ["xenophobe", "fanaticXenophobe"], authorities: [] }],
-  principlePrivateMilitaryCompanies: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: false, ethics: ["militarist", "fanaticMilitarist"], authorities: [] }],
-  principlePrivateProspectors: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principlePrivatizedExploration: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principlePublicRelationsSpecialists: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleRelentlessIndustrialists: [{ exclude: false, ethics: ["materialist", "fanaticMaterialist"], authorities: [] }],
-  principleRuthlessCompetition: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleSelectiveKinship: [{ exclude: true, ethics: ["xenophile", "fanaticXenophile"], authorities: [] }, { exclude: true, ethics: ["fanaticEgalitarian"], authorities: [] }],
-  principleShadowCouncil: [{ exclude: false, ethics: [], authorities: ["democratic", "oligarchic", "dictatorial"] }],
-  principleSharedBurdens: [{ exclude: false, ethics: ["fanaticEgalitarian"], authorities: [] }, { exclude: true, ethics: ["xenophobe", "fanaticXenophobe"], authorities: [] }],
-  principleSlaverGuilds: [{ exclude: false, ethics: ["authoritarian", "fanaticAuthoritarian"], authorities: [] }],
-  principleStrengthOfLegions: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleSubspaceEphapse: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleSubsumedWill: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleTechnocracy: [{ exclude: false, ethics: ["materialist", "fanaticMaterialist"], authorities: [] }],
-  principleTradingPosts: [{ exclude: false, ethics: [], authorities: ["corporate"] }],
-  principleVoidHive: [{ exclude: false, ethics: [], authorities: ["hiveMind"] }],
-  principleWorkerCoop: [{ exclude: false, ethics: [], authorities: ["corporate"] }, { exclude: false, ethics: ["egalitarian", "fanaticEgalitarian"], authorities: [] }, { exclude: true, ethics: ["xenophobe", "fanaticXenophobe"], authorities: [] }]
-};
+/** Requisitos y exclusiones de cada principio: ver js/civic-rules.js (generado desde la Wiki). */
+export { CIVIC_REQUIREMENTS };
 
 /**
  * Autoridades que exige un principio cuando CIVIC_REQUIREMENTS no lista
@@ -279,18 +203,36 @@ function defaultCivicAuthorities(i18nKey) {
   return NON_GESTALT_AUTHORITIES;
 }
 
-/** ¿Está disponible el principio `i18nKey` con las éticas y la autoridad actuales? (authorityId puede ser null si aún no se ha elegido). */
-export function civicAvailable(i18nKey, selectedEthicIds, authorityId) {
+function civicGroupMatches(group, selectedEthicIds, authorityId, otherCivicIds) {
+  return group.ethics.some((id) => ethicsSatisfy(selectedEthicIds, id))
+    || (authorityId != null && group.authorities.includes(authorityId))
+    || (group.civics || []).some((key) => otherCivicIds.includes(key))
+    || (group.nonGestalt === true && !ethicsSatisfy(selectedEthicIds, GESTALT_CONSCIOUSNESS.id));
+}
+
+/** ¿Excluye el principio `a` al principio `b` según la Wiki? (en cualquiera de los dos sentidos: las incompatibilidades se tratan como simétricas) */
+export function civicsConflict(a, b) {
+  const excludes = (x, y) => (CIVIC_REQUIREMENTS[x] || []).some((group) => group.exclude && (group.civics || []).includes(y));
+  return excludes(a, b) || excludes(b, a);
+}
+
+/**
+ * ¿Está disponible el principio `i18nKey` con las éticas, la autoridad y los
+ * demás principios ya elegidos? (authorityId puede ser null si aún no se ha
+ * elegido; selectedCivicIds puede incluir al propio principio, se ignora.)
+ */
+export function civicAvailable(i18nKey, selectedEthicIds, authorityId, selectedCivicIds = []) {
+  const others = selectedCivicIds.filter((key) => key !== i18nKey);
+  if (others.some((key) => civicsConflict(i18nKey, key))) return false;
   const groups = CIVIC_REQUIREMENTS[i18nKey] || [];
   // Si la tabla no exige ninguna autoridad concreta, se aplica la que le
   // corresponde por tipo de principio (ver defaultCivicAuthorities).
-  const hasExplicitAuthority = groups.some((group) => !group.exclude && group.authorities.length);
+  const hasExplicitAuthority = groups.some((group) => !group.exclude && (group.authorities.length || group.nonGestalt));
   const requirementGroups = hasExplicitAuthority
     ? groups
-    : [...groups, { exclude: false, ethics: [], authorities: defaultCivicAuthorities(i18nKey) }];
+    : [...groups, { exclude: false, ethics: [], authorities: defaultCivicAuthorities(i18nKey), civics: [] }];
   return requirementGroups.every((group) => {
-    const anyMatch = group.ethics.some((id) => ethicsSatisfy(selectedEthicIds, id))
-      || (authorityId != null && group.authorities.includes(authorityId));
+    const anyMatch = civicGroupMatches(group, selectedEthicIds, authorityId, others);
     return group.exclude ? !anyMatch : anyMatch;
   });
 }

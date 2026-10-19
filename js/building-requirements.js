@@ -12,6 +12,11 @@
  *   { type: "usesConsumerGoods" }            "Empire uses Consumer Goods": no gestalt
  *                                            (la wiki dice que los empleos gestalt
  *                                            usan energía en vez de bienes de consumo)
+ *   { type: "ethic", ids: [...] }            alguna de esas éticas elegida (la fanática cumple
+ *                                            también el requisito de su versión base)
+ *   { type: "notEthic", ids: [...] }         ninguna de esas éticas elegida
+ *   { type: "authority", ids: [...] }        la autoridad elegida es alguna de esas
+ *   { type: "notAuthority", ids: [...] }     la autoridad elegida no es ninguna de esas
  *   { type: "civic", keys: [...] }           alguno de esos principios elegido
  *   { type: "notCivic", keys: [...] }        ninguno de esos principios elegido
  *   { type: "notDesignation", ids: [...] }   designación planetaria no es ninguna de esas
@@ -43,6 +48,10 @@ function ruleMet(rule, ctx) {
     case "notGestalt": return !isGestalt(ctx);
     case "usesPriestJobs": return usesPriestJobs(ctx) === (rule.value !== false);
     case "usesConsumerGoods": return !isGestalt(ctx);
+    case "ethic": return rule.ids.some((id) => ethicsSatisfy(ctx.ethicIds || [], id));
+    case "notEthic": return !rule.ids.some((id) => ethicsSatisfy(ctx.ethicIds || [], id));
+    case "authority": return rule.ids.includes(ctx.authorityId);
+    case "notAuthority": return !rule.ids.includes(ctx.authorityId);
     case "civic": return rule.keys.some((key) => (ctx.civicIds || []).includes(key));
     case "notCivic": return !rule.keys.some((key) => (ctx.civicIds || []).includes(key));
     case "notDesignation": return !rule.ids.includes(ctx.designationId);
