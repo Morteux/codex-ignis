@@ -40,7 +40,7 @@ export function divideEffect(rawAmount) {
 /**
  * Reglas reales de ranuras de edificios de una colonia:
  * - 6 ranuras base en el distrito principal (una de ellas la ocupa siempre
- *   el edificio capital, ver CAPITAL_TIERS).
+ *   el edificio capital, ver CAPITAL_SETS).
  * - El distrito urbano tiene 2 especializaciones independientes (ver
  *   DISTRICTS.urban.specializationOptions); cada una que se elija añade 3
  *   ranuras más. Construir copias del distrito urbano NO añade ranuras: solo
@@ -67,56 +67,46 @@ export function calculateBuildingSlots(specializedUrbanSlots, specializedResourc
 }
 
 /**
- * Edificio capital: SIEMPRE presente, ocupa la primera ranura del distrito
- * principal, nunca se puede demoler ni desactivar — solo mejorar o degradar
- * de nivel. Datos reales de la wiki (página "Capital building", set
- * "estándar"/individualista). Simplificación de esta versión: no se
- * modelan los empleos secundarios de cada nivel (Robotista, Noble,
- * Animador, Trabajador médico/cultural), solo vivienda, comodidades,
- * Político y Agente.
+ * Edificios capital por tipo de autoridad. SIEMPRE hay uno, ocupa la primera
+ * ranura del distrito principal, nunca se puede demoler ni desactivar: solo
+ * mejorar o degradar de nivel. Datos de la página "Capital building" de la
+ * wiki. `tier` es el nivel en números (I-V) que usan los requisitos de otros
+ * edificios (ver CAPITAL_TIER_2 y similares): la Mente Colmena salta del II
+ * al IV y al V. `upkeep` es el mantenimiento de energía del propio edificio.
+ *
+ * Simplificaciones: no se modelan los empleos secundarios (Robotista, Noble,
+ * Animador...), los ejércitos de defensa ni los empleos extra de la Máquina
+ * que dependen de tener 1000 o 4000 pops (Replicadores adicionales).
  */
-export const CAPITAL_TIERS = [
-  {
-    id: "colony_shelter",
-    img: "buildings/building_colony_shelter.png",
-    i18nKey: "buildingColonyShelter",
-    housing: 300,
-    amenities: 300,
-    jobs: {}
-  },
-  {
-    id: "planetary_administration",
-    img: "buildings/building_capital.png",
-    i18nKey: "buildingPlanetaryAdministration",
-    housing: 1000,
-    amenities: 1000,
-    jobs: { politician: 200, enforcer: 100 }
-  },
-  {
-    id: "planetary_capital",
-    img: "buildings/building_major_capital.png",
-    i18nKey: "buildingPlanetaryCapital",
-    housing: 1500,
-    amenities: 1500,
-    jobs: { politician: 300, enforcer: 200 }
-  },
-  {
-    id: "system_capital_complex",
-    img: "buildings/building_system_capital.png",
-    i18nKey: "buildingSystemCapitalComplex",
-    housing: 2000,
-    amenities: 2000,
-    jobs: { politician: 400, enforcer: 300 }
-  },
-  {
-    id: "imperial_palace",
-    img: "buildings/building_palace.png",
-    i18nKey: "buildingImperialPalace",
-    housing: 3000,
-    amenities: 3000,
-    jobs: { politician: 600, enforcer: 500 }
-  }
-];
+export const CAPITAL_SETS = {
+  standard: [
+  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: {} },
+  { id: "planetary_administration", img: "buildings/building_capital.png", i18nKey: "buildingPlanetaryAdministration", tier: 2, housing: 1000, amenities: 1000, jobs: { politician: 200, enforcer: 100 }, upkeep: { energy: -5 } },
+  { id: "planetary_capital", img: "buildings/building_major_capital.png", i18nKey: "buildingPlanetaryCapital", tier: 3, housing: 1500, amenities: 1500, jobs: { politician: 300, enforcer: 200 }, upkeep: { energy: -8 } },
+  { id: "system_capital_complex", img: "buildings/building_system_capital.png", i18nKey: "buildingSystemCapitalComplex", tier: 4, housing: 2000, amenities: 2000, jobs: { politician: 400, enforcer: 300 }, upkeep: { energy: -10 } },
+  { id: "imperial_palace", img: "buildings/building_palace.png", i18nKey: "buildingImperialPalace", tier: 5, housing: 3000, amenities: 3000, jobs: { politician: 600, enforcer: 500 }, upkeep: { energy: -10 } }
+  ],
+  hive: [
+  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: {} },
+  { id: "hive_core", img: "buildings/building_hive_capital.png", i18nKey: "buildingHiveCore", tier: 2, housing: 1000, amenities: 800, jobs: { logistic_drone: 200, synapse_drone: 200, hunter_seeker_drone: 100 }, upkeep: { energy: -2 } },
+  { id: "hive_nexus", img: "buildings/building_hive_major_capital.png", i18nKey: "buildingHiveNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { logistic_drone: 500, synapse_drone: 300, hunter_seeker_drone: 200 }, upkeep: { energy: -5 } },
+  { id: "hive_imperial_complex", img: "buildings/building_imperial_hive_capital.png", i18nKey: "buildingHiveImperialComplex", tier: 5, housing: 3000, amenities: 3000, jobs: { logistic_drone: 700, synapse_drone: 500, hunter_seeker_drone: 400 }, upkeep: { energy: -10 } }
+  ],
+  machine: [
+  { id: "deployment_post", img: "buildings/building_deployment_post.png", i18nKey: "buildingDeploymentPost", tier: 1, housing: 300, amenities: 500, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 200 }, upkeep: { energy: -1 } },
+  { id: "administrative_array", img: "buildings/building_machine_capital.png", i18nKey: "buildingAdministrativeArray", tier: 2, housing: 1000, amenities: 1000, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 300, coordinator: 200 }, upkeep: { energy: -3 } },
+  { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, upkeep: { energy: -5 } },
+  { id: "primary_nexus", img: "buildings/building_machine_system_capital.png", i18nKey: "buildingPrimaryNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { replicator: 200, hunter_seeker_drone: 300, logistic_drone: 500, coordinator: 400 }, upkeep: { energy: -10 } },
+  { id: "machine_imperial_center", img: "buildings/building_imperial_machine_capital.png", i18nKey: "buildingMachineImperialCenter", tier: 5, housing: 3000, amenities: 3000, jobs: { replicator: 400, hunter_seeker_drone: 500, logistic_drone: 600, coordinator: 500 }, upkeep: { energy: -10 } }
+  ]
+};
+
+/** Conjunto de capitales que corresponde a la autoridad elegida (Mente Colmena, Inteligencia de Máquina o el estándar para el resto). */
+export function capitalSetForAuthority(authorityId) {
+  if (authorityId === "hiveMind") return CAPITAL_SETS.hive;
+  if (authorityId === "machineIntelligence") return CAPITAL_SETS.machine;
+  return CAPITAL_SETS.standard;
+}
 
 /**
  * Distritos. Cada categoría de recurso básico (generador/minería/
@@ -365,6 +355,12 @@ export const JOBS = {
   death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
   mortal_initiate: { i18nKey: "jobMortalInitiate", img: "jobs/job_mortal_initiate.png", stratum: "specialist" },
   experiment_engineer: { i18nKey: "jobExperimentEngineer", img: "jobs/job_experiment_engineer.png", stratum: "specialist" },
+  // Gestalt (drones). Los de "complex drone" equivalen al estrato de especialista.
+  synapse_drone: { i18nKey: "jobSynapseDrone", img: "jobs/job_synapse_drone.png", stratum: "specialist" },
+  coordinator: { i18nKey: "jobCoordinator", img: "jobs/job_coordinator.png", stratum: "specialist" },
+  logistic_drone: { i18nKey: "jobLogisticDrone", img: "jobs/job_trader.png", stratum: "specialist" },
+  hunter_seeker_drone: { i18nKey: "jobHunterSeekerDrone", img: "jobs/job_patrol_drone.png", stratum: "specialist" },
+  replicator: { i18nKey: "jobReplicator", img: "jobs/job_replicator.png", stratum: "specialist" },
   // Especiales
   civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
   criminal: { i18nKey: "jobCriminal", img: "jobs/job_criminal.png", stratum: "special" },
@@ -413,8 +409,15 @@ export const JOB_OUTPUTS = {
   // Culto a la Muerte (principio) y Cámaras de experimentación (ética materialista)
   death_priest: { unity: 2, amenities: 4, society: 0.5, consumer_goods: -2 },
   mortal_initiate: { unity: 1, society: 0.5, amenities: 2 },
-  // La wiki da "+2 Research" sin decir de qué tipo: la producción se deja sin modelar (solo el mantenimiento).
-  experiment_engineer: { consumer_goods: -2 },
+  // "+2 Research" de la wiki = 2 de cada tipo de investigación.
+  experiment_engineer: { physics: 2, society: 2, engineering: 2, consumer_goods: -2 },
+  // Gestalt (el mantenimiento depende de la especie: ver GESTALT_JOB_UPKEEP)
+  synapse_drone: { unity: 3 },
+  coordinator: { unity: 3 },
+  logistic_drone: { trade: 6, amenities: 5 },
+  hunter_seeker_drone: { unity: 0.5 },
+  // La wiki también da +1 de ensamblaje de población mecánica (no modelado).
+  replicator: { alloys: -1 },
   // Élite
   politician: { unity: 5, amenities: 3, consumer_goods: -3 },
   // Especiales (wiki: Special jobs, Subversive jobs y Slave jobs)
@@ -437,7 +440,48 @@ export const JOB_OUTPUTS = {
 export const JOB_EFFECTS = {
   enforcer: { stability: 0.2, crime: -25, defenseArmies: 1 },
   educator: { crime: -20, defenseArmies: 0.5 },
-  soldier: { navalCapacity: 4, stability: 0.15, defenseArmies: 1 }
+  soldier: { navalCapacity: 4, stability: 0.15, defenseArmies: 1 },
+  hunter_seeker_drone: { crime: -20, defenseArmies: 1 }
+};
+
+/**
+ * Tipos de especie (solo cambian el mantenimiento de los empleos de
+ * conciencia gestalt, ver GESTALT_JOB_UPKEEP) y el recurso que consume cada
+ * una: orgánica comida, litoide minerales, infernal aleaciones, máquina
+ * energía. Una Inteligencia de Máquina solo puede ser especie máquina y una
+ * Mente Colmena no puede serlo (ver allowedSpeciesTypes).
+ */
+export const SPECIES_TYPES = [
+  { id: "organic", i18nKey: "speciesOrganic", upkeepResource: "food" },
+  { id: "lithoid", i18nKey: "speciesLithoid", upkeepResource: "minerals" },
+  { id: "infernal", i18nKey: "speciesInfernal", upkeepResource: "alloys" },
+  { id: "machine", i18nKey: "speciesMachine", upkeepResource: "energy" }
+];
+
+/** Tipos de especie elegibles según la autoridad. */
+export function allowedSpeciesTypes(authorityId) {
+  if (authorityId === "machineIntelligence") return ["machine"];
+  if (authorityId === "hiveMind") return ["organic", "lithoid", "infernal"];
+  return SPECIES_TYPES.map((type) => type.id);
+}
+
+/**
+ * Mantenimiento por empleo en conciencia gestalt (página "Jobs" de la wiki),
+ * que sustituye al mantenimiento en bienes de consumo del imperio
+ * individualista. `machine` es la cantidad cuando la especie es máquina
+ * (energía) y `hive` la de las demás especies (comida, minerales o
+ * aleaciones según SPECIES_TYPES). La wiki da cifras para energía y
+ * minerales; para comida y aleaciones no hay cifra propia y se usa la de
+ * minerales (`hive`): es una suposición.
+ */
+export const GESTALT_JOB_UPKEEP = {
+  physicist: { machine: 3, hive: 4 },
+  engineer: { machine: 3, hive: 4 },
+  biologist: { machine: 3, hive: 4 },
+  experiment_engineer: { machine: 6, hive: 6 },
+  synapse_drone: { machine: 2, hive: 2 },
+  coordinator: { machine: 4, hive: 4 },
+  logistic_drone: { machine: 2, hive: 2 }
 };
 
 /** Estadística de JOB_EFFECTS -> { i18nKey, icono (carpeta "modifiers/" de la API de assets; nombres verificados contra StellarisAssetsTree.txt) }. */
@@ -461,7 +505,7 @@ const NOT_GESTALT = { type: "notGestalt" };
 const USES_PRIEST_JOBS = { type: "usesPriestJobs", value: true };
 const NOT_USES_PRIEST_JOBS = { type: "usesPriestJobs", value: false };
 const USES_CONSUMER_GOODS = { type: "usesConsumerGoods" };
-const CAPITAL_TIER_2 = { type: "capitalTier", min: 1 };
+const CAPITAL_TIER_2 = { type: "capitalTier", min: 2 };
 const civic = (...keys) => ({ type: "civic", keys });
 const notCivic = (...keys) => ({ type: "notCivic", keys });
 const notDesignation = (...ids) => ({ type: "notDesignation", ids });
@@ -1157,6 +1201,96 @@ export const BUILDINGS = [
     colonyLimit: 1,
     upkeep: { energy: -3, rare_crystals: -1 },
     cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+
+  // ── Cadena sináptica de la Mente Colmena (requiere los capitales Núcleo y Nexo de la colmena) ──
+  {
+    id: "synaptic_nodes",
+    img: "buildings/building_hive_node.png",
+    i18nKey: "buildingSynapticNodes",
+    category: "unity",
+    requires: [authority("hiveMind")],
+    tier: 1,
+    jobs: { synapse_drone: 200 },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "synaptic_clusters",
+    img: "buildings/building_hive_cluster.png",
+    i18nKey: "buildingSynapticClusters",
+    category: "unity",
+    requires: [authority("hiveMind"), { type: "capitalTier", min: 2 }],
+    tier: 2,
+    upgradesFrom: "synaptic_nodes",
+    jobs: {},
+    jobUpkeepMult: { synapse_drone: -0.2 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, exotic_gases: -1 },
+    cost: "600 minerales, 50 gases exóticos",
+    sets: ["origin"]
+  },
+  {
+    id: "confluence_of_thought",
+    img: "buildings/building_hive_confluence.png",
+    i18nKey: "buildingConfluenceOfThought",
+    category: "unity",
+    requires: [authority("hiveMind"), { type: "capitalTier", min: 4 }],
+    tier: 3,
+    upgradesFrom: "synaptic_clusters",
+    jobs: {},
+    jobEfficiency: { synapse_drone: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, exotic_gases: -2 },
+    cost: "800 minerales, 100 gases exóticos",
+    sets: ["origin"]
+  },
+
+  // ── Cadena de enlace de la Inteligencia de Máquina (requiere el capital Matriz Administrativa) ──
+  {
+    id: "uplink_node",
+    img: "buildings/building_citadel_uplink.png",
+    i18nKey: "buildingUplinkNode",
+    category: "unity",
+    requires: [authority("machineIntelligence")],
+    tier: 1,
+    jobs: { coordinator: 200 },
+    colonyLimit: 1,
+    upkeep: { energy: -2 },
+    cost: "400 minerales",
+    sets: ["origin"]
+  },
+  {
+    id: "network_junction",
+    img: "buildings/building_citadel_uplink.png",
+    i18nKey: "buildingNetworkJunction",
+    category: "unity",
+    requires: [authority("machineIntelligence"), { type: "capitalTier", min: 2 }],
+    tier: 2,
+    upgradesFrom: "uplink_node",
+    jobs: {},
+    jobUpkeepMult: { coordinator: -0.2 },
+    colonyLimit: 1,
+    upkeep: { energy: -5, rare_crystals: -1 },
+    cost: "600 minerales, 50 cristales raros",
+    sets: ["origin"]
+  },
+  {
+    id: "system_conflux",
+    img: "buildings/building_citadel_uplink.png",
+    i18nKey: "buildingSystemConflux",
+    category: "unity",
+    requires: [authority("machineIntelligence"), { type: "capitalTier", min: 2 }],
+    tier: 3,
+    upgradesFrom: "network_junction",
+    jobs: {},
+    jobEfficiency: { coordinator: 0.1 },
+    colonyLimit: 1,
+    upkeep: { energy: -8, rare_crystals: -2 },
+    cost: "800 minerales, 100 cristales raros",
     sets: ["origin"]
   },
 

@@ -20,6 +20,7 @@
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { PRINCIPLE_BINGO, IMAGE_BASE } from "./bingo-data.js";
 import { updatePlanetState } from "./planet-state.js";
+import { SPECIES_TYPES, allowedSpeciesTypes } from "./planet-data.js";
 import {
   ETHICS_MAX_POINTS,
   ETHIC_AXES,
@@ -42,6 +43,7 @@ const pointsLabelEl = document.querySelector("#empire-points-label");
 const wheelEl = document.querySelector("#empire-ethics-wheel");
 const ethicsEffectsEl = document.querySelector("#empire-ethics-effects");
 const authorityListEl = document.querySelector("#empire-authority-list");
+const speciesSelectEl = document.querySelector("#empire-species-select");
 const civicsLabelEl = document.querySelector("#empire-civics-label");
 const civicsListEl = document.querySelector("#empire-civics-list");
 
@@ -53,6 +55,7 @@ const axisOfOption = new Map(ETHIC_AXES.flatMap((axis) => axis.options.map((opti
 let gestaltActive = false;
 let selectedAuthorityId = null;
 const selectedCivics = new Set();
+let selectedSpeciesType = "organic";
 
 function currentEthicIds() {
   if (gestaltActive) return [GESTALT_CONSCIOUSNESS.id];
@@ -248,6 +251,32 @@ function renderAuthorityList() {
   });
 }
 
+/**
+ * Tipo de especie: solo cambia el mantenimiento de los empleos de conciencia
+ * gestalt. Una Inteligencia de Máquina solo puede ser especie máquina y una
+ * Mente Colmena no puede serlo (ver allowedSpeciesTypes en planet-data.js).
+ */
+function renderSpeciesSelect() {
+  if (!speciesSelectEl) return;
+  const allowed = allowedSpeciesTypes(selectedAuthorityId);
+  if (!allowed.includes(selectedSpeciesType)) selectedSpeciesType = allowed[0];
+  speciesSelectEl.replaceChildren();
+  SPECIES_TYPES.filter((type) => allowed.includes(type.id)).forEach((type) => {
+    const option = document.createElement("option");
+    option.value = type.id;
+    option.textContent = t(currentLang, type.i18nKey);
+    speciesSelectEl.append(option);
+  });
+  speciesSelectEl.value = selectedSpeciesType;
+}
+
+if (speciesSelectEl) {
+  speciesSelectEl.addEventListener("change", () => {
+    selectedSpeciesType = speciesSelectEl.value;
+    refresh();
+  });
+}
+
 function renderCivicsList() {
   if (civicsLabelEl) civicsLabelEl.textContent = t(currentLang, "empireCivicsSlotsLabel")(selectedCivics.size, MAX_CIVICS);
   if (!civicsListEl) return;
@@ -294,10 +323,10 @@ let lastPublishedKey = null;
 function publishSelection() {
   const ethicIds = currentEthicIds();
   const civicIds = [...selectedCivics];
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}`;
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType });
 }
 
 function refresh() {
@@ -305,6 +334,7 @@ function refresh() {
   renderWheel();
   renderEthicsEffects();
   renderAuthorityList();
+  renderSpeciesSelect();
   renderCivicsList();
   publishSelection();
 }

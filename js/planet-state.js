@@ -13,6 +13,7 @@ const state = {
   ethicIds: [],
   authorityId: null,
   civicIds: [],
+  speciesType: "organic",
   planetName: "",
   planetSize: null,
   populationText: null

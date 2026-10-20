@@ -21,7 +21,7 @@
  *   { type: "notCivic", keys: [...] }        ninguno de esos principios elegido
  *   { type: "notDesignation", ids: [...] }   designación planetaria no es ninguna de esas
  *   { type: "notCelestial", ids: [...] }     tipo de cuerpo celeste no es ninguno de esos
- *   { type: "capitalTier", min: n }          nivel del edificio capital (índice, 0 = Refugio Colonial)
+ *   { type: "capitalTier", min: n }          nivel del edificio capital en números (I = 1 ... V = 5)
  *
  * Simplificaciones deliberadas (documentadas, no inventadas):
  *  - Los requisitos de tecnología, población y tradiciones se ignoran: este
@@ -56,7 +56,7 @@ function ruleMet(rule, ctx) {
     case "notCivic": return !rule.keys.some((key) => (ctx.civicIds || []).includes(key));
     case "notDesignation": return !rule.ids.includes(ctx.designationId);
     case "notCelestial": return !rule.ids.includes(ctx.celestialTypeId);
-    case "capitalTier": return (ctx.capitalTierIndex || 0) >= rule.min;
+    case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
     default: return true;
   }
 }
@@ -74,6 +74,6 @@ export function requirementContextKey(ctx) {
     [...(ctx.civicIds || [])].sort().join(","),
     ctx.designationId,
     ctx.celestialTypeId,
-    ctx.capitalTierIndex
+    ctx.capitalTierNumber
   ].join("|");
 }

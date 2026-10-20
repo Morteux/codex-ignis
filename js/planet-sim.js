@@ -54,12 +54,16 @@ import {
   BUILDING_SLOT_RULES,
   calculateBuildingSlots,
   divideEffect,
-  CAPITAL_TIERS,
+  CAPITAL_SETS,
+  capitalSetForAuthority,
+  GESTALT_JOB_UPKEEP,
+  SPECIES_TYPES,
+  allowedSpeciesTypes,
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange } from "./planet-state.js";
-import { collectAppliedEffects } from "./empire-data.js";
+import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey } from "./building-requirements.js";
 import { allowedDesignationCategories } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation } from "./designation-data.js";
@@ -106,6 +110,29 @@ let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
 
 let capitalTierIndex = 0;
+let lastCapitalSet = CAPITAL_SETS.standard;
+
+/** Capitales disponibles según la autoridad (estándar, Mente Colmena o Inteligencia de Máquina). */
+function currentCapitalSet() {
+  return capitalSetForAuthority(getPlanetState().authorityId);
+}
+
+/** Al cambiar de autoridad cambia el conjunto de capitales: se conserva el nivel (I-V) o el más alto que no lo supere. */
+function syncCapitalToAuthority() {
+  const set = currentCapitalSet();
+  if (set === lastCapitalSet) return;
+  const tier = lastCapitalSet[Math.min(capitalTierIndex, lastCapitalSet.length - 1)].tier;
+  let index = 0;
+  set.forEach((entry, i) => { if (entry.tier <= tier) index = i; });
+  capitalTierIndex = index;
+  lastCapitalSet = set;
+}
+
+function currentCapital() {
+  const set = currentCapitalSet();
+  capitalTierIndex = Math.min(capitalTierIndex, set.length - 1);
+  return set[capitalTierIndex];
+}
 
 /** Designación planetaria elegida (id de DESIGNATIONS en designation-data.js, o "" si no hay ninguna). */
 let selectedDesignationId = "";
@@ -209,7 +236,7 @@ function requirementContext() {
     civicIds: state.civicIds || [],
     designationId: selectedDesignationId,
     celestialTypeId: state.celestialTypeId,
-    capitalTierIndex
+    capitalTierNumber: currentCapital().tier
   };
 }
 
@@ -381,7 +408,8 @@ function computeTotals() {
   };
 
   // Edificio capital (fijo, siempre presente).
-  const capital = CAPITAL_TIERS[capitalTierIndex];
+  const capital = currentCapital();
+  Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
   // Desglose de servicios para el tooltip de la cabecera (ver renderStats).
@@ -472,8 +500,21 @@ function computeTotals() {
   // de la designación multiplica solo la parte positiva (la wiki la define
   // sobre la producción, no sobre el mantenimiento).
   const jobUnitOutputs = {};
+  const empireState = getPlanetState();
+  const gestaltEmpire = ethicsSatisfy(empireState.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
+  const allowedSpecies = allowedSpeciesTypes(empireState.authorityId);
+  const speciesType = SPECIES_TYPES.find((type) => type.id === empireState.speciesType && allowedSpecies.includes(type.id))
+    || SPECIES_TYPES.find((type) => type.id === allowedSpecies[0]);
   Object.keys(jobCapacities).forEach((jobId) => {
     const unit = { ...(JOB_OUTPUTS[jobId] || {}) };
+    // Conciencia gestalt: el mantenimiento en bienes de consumo se sustituye por el
+    // del recurso que consume la especie elegida (ver GESTALT_JOB_UPKEEP).
+    const gestaltUpkeep = gestaltEmpire ? GESTALT_JOB_UPKEEP[jobId] : null;
+    if (gestaltUpkeep) {
+      delete unit.consumer_goods;
+      const isMachine = speciesType.id === "machine";
+      unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) - (isMachine ? gestaltUpkeep.machine : gestaltUpkeep.hive);
+    }
     Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
@@ -787,11 +828,12 @@ function renderJobsMini(jobs) {
 /* ── Edificio capital ────────────────────────────────────────────────── */
 
 function renderCapital() {
-  const capital = CAPITAL_TIERS[capitalTierIndex];
+  const capital = currentCapital();
+  const capitalSet = currentCapitalSet();
   if (capitalNameEl) capitalNameEl.textContent = t(currentLang, capital.i18nKey);
-  if (capitalTierEl) capitalTierEl.textContent = `${capitalTierIndex + 1} / ${CAPITAL_TIERS.length}`;
+  if (capitalTierEl) capitalTierEl.textContent = `${capital.tier} / 5`;
   if (capitalUpgradeBtn) {
-    capitalUpgradeBtn.disabled = capitalTierIndex >= CAPITAL_TIERS.length - 1;
+    capitalUpgradeBtn.disabled = capitalTierIndex >= capitalSet.length - 1;
     capitalUpgradeBtn.title = capitalUpgradeBtn.disabled ? t(currentLang, "planetSimCapitalMaxTier") : "";
   }
   if (capitalDowngradeBtn) {
@@ -802,7 +844,7 @@ function renderCapital() {
 
 if (capitalUpgradeBtn) {
   capitalUpgradeBtn.addEventListener("click", () => {
-    capitalTierIndex = Math.min(CAPITAL_TIERS.length - 1, capitalTierIndex + 1);
+    capitalTierIndex = Math.min(currentCapitalSet().length - 1, capitalTierIndex + 1);
     refresh();
   });
 }
@@ -873,7 +915,7 @@ function makeRegularSlotCell(key, unlocked, lockedTooltip) {
 }
 
 function renderCapitalCell() {
-  const capital = CAPITAL_TIERS[capitalTierIndex];
+  const capital = currentCapital();
   const cell = document.createElement("span");
   cell.className = "planet-slot is-filled is-capital";
   cell.title = `${buildingDisplayName(capital)} — ${t(currentLang, "planetSimCapitalCannotRemove")}`;
@@ -1680,6 +1722,7 @@ function renderStats(totals) {
 }
 
 function refresh() {
+  syncCapitalToAuthority();
   resolveSelectedSlot();
   const totals = computeTotals();
   renderSlots();
@@ -1712,7 +1755,7 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
 // bucle con las propias escrituras de este módulo (tamaño/población).
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
-  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}`;
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}`;
   if (key === lastRelevantKey) return;
   lastRelevantKey = key;
   renderDesignationSelect();
