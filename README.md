@@ -4,7 +4,7 @@ Una wiki personal estática de Stellaris con una interfaz de terminal navegable.
 
 ## Desarrollo y despliegue
 
-El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier servidor estático. El flujo de GitHub Actions publica la rama `main` en GitHub Pages.
+El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier servidor estático. No se usa GitHub Actions: el sitio se publica manualmente (`vercel.json` mínimo incluido por si se despliega en Vercel).
 
 ## Contenido
 
@@ -20,7 +20,7 @@ Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adi
 
 Todas las rutas de imagen de Stellaris (naves, orígenes, principios, fauna, citas...) pasan por `js/asset-config.js`, tanto las del codex (`js/app.js`) como las del bingo (`js/bingo-data.js`, que reexporta `ASSET_BASE` como `IMAGE_BASE`). Mientras las imágenes vivan en `img/` de este mismo repositorio, `ASSET_BASE` se deja vacío. Cuando muevas las imágenes a un repositorio de solo assets (por ejemplo, servido con GitHub Pages o vía jsDelivr), cambia únicamente esa constante por la URL base del nuevo origen — no hay que tocar `content.js`, `bingo-data.js` ni el resto del sitio.
 
-Esto es independiente de dónde se despliegue el propio sitio (GitHub Pages o, más adelante, Vercel): incluye un `vercel.json` mínimo por si en algún momento se despliega ahí directamente.
+Esto es independiente de dónde se despliegue el propio sitio (GitHub Pages manual o Vercel): incluye un `vercel.json` mínimo por si en algún momento se despliega ahí directamente.
 
 ## Google AdSense
 

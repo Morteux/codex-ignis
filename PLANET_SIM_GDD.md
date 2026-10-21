@@ -38,7 +38,8 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 - Imperio tab: ethics wheel (17 options, 3 points, gestalt exclusive), 7 authorities with exclusion rules, 226-civic catalog with requirement/exclusion rules (max 3), species type. Applied bonuses: unity %, trade %, influence flat; all other effects are shown as informational (dimmed).
 - Cuerpo celeste tab: 21 body types (9 "standard", random default); filters designations. 53 planetary designations (job-efficiency and flat bonuses only).
 - Fixed summary bar: body icon, designation icon, editable name, size, working population.
-- Tabs: Planeta, Imperio, Cuerpo celeste, Ejércitos (disabled — to be removed), Sucursales (placeholder).
+- Tabs: Planeta, Imperio, Cuerpo celeste, Sucursales (placeholder). (Armies tab removed in P3.1.)
+- Site nav also has a `TECH_TREE` button/page (`tech-tree.html`, empty placeholder, outside this GDD's scope).
 
 **Not implemented (vs. original GDD):** version registry/selector/provenance, planetary conditions (happiness, stability, crime, housing/amenity demand), stability effects, trade-conversion policy, per-resource breakdown, modifiers panel, external-income separation, scenario save/load, JSON import/export, comparison, monthly timeline, special planets' own districts.
 
@@ -63,7 +64,7 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 - Card actions (minimum): open/load, **duplicate, export (JSON), rename**, delete. Extra ideas are in §10.
 
 ### 4.3 Housekeeping
-- Remove the **Armies** tab button (HTML + i18n keys `planetSimMainTabArmies`, `planetSimArmiesDisabledTooltip`).
+- ~~Remove the **Armies** tab button (HTML + i18n keys `planetSimMainTabArmies`, `planetSimArmiesDisabledTooltip`).~~ Done (P3.1).
 - GitHub Actions is not used: owner deletes `.github/`; README must be updated.
 
 ## 5. Planetary conditions (from original GDD, still planned)
@@ -90,7 +91,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P0 | Foundation | done |
 | P1 | Core planet economy | done |
 | P2 | Empire context | done |
-| P3 | Housekeeping | pending |
+| P3 | Housekeeping | in progress |
 | P4 | Versioning & provenance | pending |
 | P5 | Empire profiles | pending |
 | P6 | Planets & Library | pending |
@@ -102,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 26/93 tasks (28%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 28/93 tasks (30%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -136,11 +137,11 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P2.8 Planetary designations (53)
 - [x] P2.9 Fixed planet summary bar
 
-### P3 — Housekeeping (0/4)
-- [ ] P3.1 Remove Armies tab button and its i18n keys
-- [ ] P3.2 Owner removes `.github/`; README updated (no GitHub Actions)
+### P3 — Housekeeping (2/4)
+- [x] P3.1 Remove Armies tab button and its i18n keys
+- [x] P3.2 README updated (no GitHub Actions). Owner deletes `.github/` himself.
 - [ ] P3.3 Staffing UI per decision b: "Jobs Created / Jobs Assumed Staffed", full-staffing notice, slider as optional override (default 100%), drop "population" wording
-- [ ] P3.4 Buildings that become invalid (specialization change, lost requirements) are **deactivated, not deleted**, and always drawn with the **yellow frame** (`blocker_frame_yellow`, expected in `img/ui/`; exact filename to confirm when implementing). The red frame is not used
+- [ ] P3.4 Buildings that become invalid (specialization change, lost requirements) are **deactivated, not deleted**, and always drawn with the **yellow frame** (`img/ui/blocker_frame_yellow.png`, confirmed by owner 2026-10-21). The red frame is not used
 
 ### P4 — Versioning & provenance (0/5)
 - [ ] P4.1 Version registry with the single entry `stellaris-pc-4.5.2`
@@ -230,7 +231,7 @@ Today these body types are only *selectable* and filter designations; they have 
 ## 9. Decisions log and open questions
 **Resolved (2026-10-21):** explicit save when editing a profile; unsaved changes trigger a confirmation dialog before switching empire or loading a planet; deleted empire → planet keeps raw snapshot and is flagged "no empire"; saved configurations are called **planets** (not templates), planet name = saved name, unique, same checks for rename and name edits; card actions include duplicate/export/rename; empire cards use icons only; invalid buildings are deactivated and always marked with the yellow frame (`img/ui/`); wiki files are assumed to be 4.5.2 and are re-uploaded for a final full verification as the last task.
 
-**Still open:** none. (Confirm the exact filename of the yellow frame image in `img/ui/` when implementing P3.4.)
+**Still open:** none. Yellow frame image path confirmed: `img/ui/blocker_frame_yellow.png`.
 
 ## 10. Future backlog (beyond the phases)
 - Origins as empire context (many are currently ignored in requirements).

@@ -26,8 +26,8 @@
  *    los propios sliders para no interrumpir el arrastre.
  *  - Recursos: tres columnas siempre visibles (producidos, consumidos,
  *    netos), calculadas en computeTotals().
- *  - Pestañas de planeta (Planeta/Gestión/Economía/Ejércitos/Sucursales):
- *    todo lo anterior vive bajo "Planeta"; el resto son marcadores.
+ *  - Pestañas de planeta (Planeta/Imperio/Cuerpo celeste/Sucursales):
+ *    todo lo anterior vive bajo "Planeta"; Sucursales es un marcador.
  *
  * Modelo de ranuras: cada ranura no-capital tiene una "clave" estable
  * (p. ej. "urban-spec-0-1", "generator-spec-3") en vez de una simple
@@ -1137,7 +1137,7 @@ if (tabDistrictsBtn) tabDistrictsBtn.addEventListener("click", () => {
   setActiveTab("districts");
 });
 
-/* ── Pestañas principales del planeta (Planeta / Gestión / Economía / Ejércitos / Sucursales) ── */
+/* ── Pestañas principales del planeta (Planeta / Imperio / Cuerpo celeste / Sucursales) ── */
 
 function setMainTab(tab) {
   mainTabButtons.forEach((btn) => {
