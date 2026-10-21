@@ -43,7 +43,7 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 
 **Not implemented (vs. original GDD):** version registry/selector/provenance, planetary conditions (happiness, stability, crime, housing/amenity demand), stability effects, trade-conversion policy, per-resource breakdown, modifiers panel, external-income separation, scenario save/load, JSON import/export, comparison, monthly timeline, special planets' own districts.
 
-**Known gaps in current data** (see Phase 7; value re-verification in Phase 13): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet); changing a slot's specialization to one that no longer permits an already-built building does not invalidate it (fix in P3.4).
+**Known gaps in current data** (see Phase 7; value re-verification in Phase 13): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet).
 
 ## 4. New features (owner requests)
 
@@ -103,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 28/93 tasks (30%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 29/93 tasks (31%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -137,11 +137,11 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P2.8 Planetary designations (53)
 - [x] P2.9 Fixed planet summary bar
 
-### P3 — Housekeeping (2/4)
+### P3 — Housekeeping (3/4)
 - [x] P3.1 Remove Armies tab button and its i18n keys
 - [x] P3.2 README updated (no GitHub Actions). Owner deletes `.github/` himself.
 - [ ] P3.3 Staffing UI per decision b: "Jobs Created / Jobs Assumed Staffed", full-staffing notice, slider as optional override (default 100%), drop "population" wording
-- [ ] P3.4 Buildings that become invalid (specialization change, lost requirements) are **deactivated, not deleted**, and always drawn with the **yellow frame** (`img/ui/blocker_frame_yellow.png`, confirmed by owner 2026-10-21). The red frame is not used
+- [x] P3.4 Buildings that become invalid (specialization change, lost requirements) are **deactivated, not deleted**, and always drawn with the **yellow frame** (`img/ui/blocker_frame_yellow.png`, confirmed by owner 2026-10-21). The red frame is not used Implemented: an inactive building (slot locked, requirements lost, or the slot's specialization no longer permits its building set) is never deleted; it does not count towards jobs/resources, shows the yellow frame and a tooltip with the reason, and can be demolished manually.
 
 ### P4 — Versioning & provenance (0/5)
 - [ ] P4.1 Version registry with the single entry `stellaris-pc-4.5.2`

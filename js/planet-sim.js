@@ -365,6 +365,22 @@ function resolveSelectedSlot() {
   return selectedSlotKey;
 }
 
+/**
+ * Un edificio construido solo cuenta (empleos, recursos, vivienda...) si
+ * cumple TRES condiciones a la vez: su ranura sigue desbloqueada, cumple sus
+ * requisitos (ética, autoridad, principio...) y la especialización de la
+ * ranura sigue permitiendo su building set. Si falla alguna, NO se borra:
+ * queda inactivo (marco amarillo) hasta que se recupere la condición o se
+ * demuela a mano. Devuelve null si está activo, o el motivo del bloqueo:
+ * "locked" | "requirements" | "notPermitted".
+ */
+function inactiveReason(key, building, unlocked) {
+  if (!unlocked.includes(key)) return "locked";
+  if (!isBuildingAvailable(building)) return "requirements";
+  if (!slotAcceptsBuilding(key, building)) return "notPermitted";
+  return null;
+}
+
 function removeBuildingAt(key) {
   builtMap.delete(key);
 }
@@ -457,8 +473,8 @@ function computeTotals() {
   builtMap.forEach((id, key) => {
     if (!unlocked.includes(key)) return;
     const building = buildingsById.get(id);
-    // Un edificio que ya no cumple sus requisitos (p. ej. al cambiar de ética) queda inactivo.
-    if (!isBuildingAvailable(building)) return;
+    // Un edificio inactivo (requisitos perdidos, o la especialización de su ranura ya no lo permite) no cuenta.
+    if (inactiveReason(key, building, unlocked)) return;
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
     Object.entries(building.jobModifiers || {}).forEach(([jobId, modifiers]) => {
       jobBonuses[jobId] = jobBonuses[jobId] || {};
@@ -873,13 +889,14 @@ function makeRegularSlotCell(key, unlocked, lockedTooltip) {
     const building = buildingsById.get(buildingId);
     const slot = document.createElement("button");
     slot.type = "button";
-    const requirementsMet = isBuildingAvailable(building);
-    const isActive = isUnlocked && requirementsMet;
+    const reason = inactiveReason(key, building, unlocked);
+    const isActive = reason === null;
     const stateClass = isActive ? (isLimited(building) ? "is-limited" : "is-standard") : "is-inactive";
     slot.className = `planet-slot is-filled ${stateClass}`;
+    const reasonKey = { locked: "planetSimSlotInactive", requirements: "planetSimBuildingRequirementsLost", notPermitted: "planetSimBuildingNotPermittedHere" }[reason];
     slot.title = isActive
       ? `${buildingDisplayName(building)} — ${t(currentLang, "planetSimClickToDemolish")}`
-      : `${buildingDisplayName(building)} — ${t(currentLang, isUnlocked ? "planetSimBuildingRequirementsLost" : "planetSimSlotInactive")}`;
+      : `${buildingDisplayName(building)} — ${t(currentLang, reasonKey)} (${t(currentLang, "planetSimClickToDemolish")})`;
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${building.img}`;
     img.alt = buildingDisplayName(building);

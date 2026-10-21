@@ -1327,7 +1327,17 @@ h1 {
 }
 
 .planet-slot.is-filled.is-inactive {
+    position: relative;
     cursor: pointer;
+}
+
+/* Marco amarillo de edificio inactivo (img/ui/blocker_frame_yellow.png): siempre se dibuja encima, sea cual sea el motivo (ranura sin desbloquear, requisitos perdidos o especialización que ya no lo permite). */
+.planet-slot.is-filled.is-inactive::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("img/ui/blocker_frame_yellow.png") center / 100% 100% no-repeat;
+    pointer-events: none;
 }
 
 .planet-slot.is-filled.is-inactive img {
