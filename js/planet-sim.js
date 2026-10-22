@@ -54,6 +54,7 @@ import {
   BUILDING_SLOT_RULES,
   calculateBuildingSlots,
   divideEffect,
+  EFFECT_SCALE,
   CAPITAL_SETS,
   capitalSetForAuthority,
   GESTALT_JOB_UPKEEP,
@@ -712,6 +713,11 @@ function resourceName(resourceId) {
   return t(currentLang, RESOURCES[resourceId].i18nKey);
 }
 
+/** La vivienda y los servicios (amenities) se muestran en escala ×100 como en la wiki; aquí solo los servicios son un "recurso" (la vivienda se multiplica en el sitio donde se muestra). Servicios:  ("+1250" = 12,5); el resto de recursos, en unidades normales. Internamente se calculan en unidades normales. */
+function displayAmount(resourceId, amount) {
+  return resourceId === "amenities" ? amount * EFFECT_SCALE : amount;
+}
+
 function formatAmount(amount, forceSign) {
   const rounded = Math.round(amount * 100) / 100;
   const text = rounded % 1 === 0 ? String(Math.abs(rounded)) : Math.abs(rounded).toFixed(2).replace(/0$/, "");
@@ -744,7 +750,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   info.className = "planet-job-row-info";
   info.append(jobIcon(jobId));
   const label = document.createElement("span");
-  label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobCreatedLabel")(formatAmount(divideEffect(capacity)))}`;
+  label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobCreatedLabel")(formatAmount(capacity))}`;
   info.append(label);
   row.append(info);
 
@@ -774,22 +780,14 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   valueLabel.className = "planet-job-row-value";
   valueLabel.title = t(currentLang, "planetSimJobStaffedLabel");
 
-  // Solo visible mientras la dotación se haya reducido por debajo del 100 %.
-  const resetBtn = document.createElement("button");
-  resetBtn.type = "button";
-  resetBtn.className = "planet-job-reset-btn";
-  resetBtn.textContent = "100%";
-  resetBtn.title = t(currentLang, "planetSimJobOverrideReset");
-
   const output = document.createElement("div");
   output.className = "planet-job-row-output";
 
   /** Repinta solo el valor y los recursos de ESTA fila (sin tocar el slider ni recrearlo), a partir de la dotación recién asignada. */
   function updateRowDisplay(newAssigned) {
-    valueLabel.textContent = formatAmount(divideEffect(newAssigned));
-    const overridden = newAssigned < capacity;
-    row.classList.toggle("is-override", overridden);
-    resetBtn.hidden = !overridden;
+    // Los empleos y la población que los ocupa se muestran en escala ×100, como en la wiki.
+    valueLabel.textContent = formatAmount(newAssigned);
+    row.classList.toggle("is-override", newAssigned < capacity);
     output.replaceChildren();
     // unitOutputs ya incluye los bonos de edificios y la eficacia de la designación.
     Object.entries(unitOutputs || JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
@@ -799,7 +797,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
       pill.className = `planet-job-output-pill ${amount < 0 ? "is-negative" : "is-positive"}`;
       pill.append(resourceIcon(resourceId));
       const amountLabel = document.createElement("span");
-      amountLabel.textContent = formatAmount(amount, true);
+      amountLabel.textContent = formatAmount(displayAmount(resourceId, amount), true);
       pill.append(amountLabel);
       output.append(pill);
     });
@@ -824,18 +822,16 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
     commitChange(Number(slider.value));
   });
 
-  decreaseBtn.addEventListener("click", (event) => {
-    const step = event.shiftKey ? 1000 : 100;
-    commitChange((jobAssignments[jobId] || 0) - step);
-  });
-  increaseBtn.addEventListener("click", (event) => {
-    const step = event.shiftKey ? 1000 : 100;
-    commitChange((jobAssignments[jobId] || 0) + step);
-  });
+  // Clic: ±10 · Ctrl/Cmd+clic: ±100 · Mayús+clic: sube al 100 % (+) o baja al 0 % (−).
+  function stepFor(event, direction) {
+    const current = jobAssignments[jobId] || 0;
+    if (event.shiftKey) return direction > 0 ? capacity : 0;
+    return current + direction * ((event.ctrlKey || event.metaKey) ? 100 : 10);
+  }
+  decreaseBtn.addEventListener("click", (event) => commitChange(stepFor(event, -1)));
+  increaseBtn.addEventListener("click", (event) => commitChange(stepFor(event, 1)));
 
-  resetBtn.addEventListener("click", () => commitChange(capacity));
-
-  row.append(decreaseBtn, slider, increaseBtn, valueLabel, resetBtn, output);
+  row.append(decreaseBtn, slider, increaseBtn, valueLabel, output);
 
   return row;
 }
@@ -1322,8 +1318,8 @@ function renderCatalogItem(building, slotsFull, targetKey) {
     const extra = document.createElement("span");
     extra.className = "planet-catalog-extra";
     const parts = [];
-    if (building.housing) parts.push(t(currentLang, "planetSimHousingLabel")(formatAmount(divideEffect(building.housing))));
-    if (building.amenities) parts.push(t(currentLang, "planetSimAmenitiesLabel")(formatAmount(divideEffect(building.amenities))));
+    if (building.housing) parts.push(t(currentLang, "planetSimHousingLabel")(formatAmount(building.housing)));
+    if (building.amenities) parts.push(t(currentLang, "planetSimAmenitiesLabel")(formatAmount(building.amenities)));
     extra.textContent = parts.join(" · ");
     item.append(extra);
   }
@@ -1576,12 +1572,12 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, o
 
 /* ── Paneles de resumen y producción ─────────────────────────────────── */
 
-/** Contador "empleos creados / empleos asumidos cubiertos" (ambos en escala ×100 internamente; se muestran en empleos reales). */
+/** Contador "empleos creados / empleos asumidos cubiertos" (escala ×100, como los datos de la wiki). */
 function updateJobsCounter(jobIds, jobCapacities) {
   const created = jobIds.reduce((sum, jobId) => sum + (jobCapacities[jobId] || 0), 0);
   const staffed = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
-  const createdText = formatAmount(divideEffect(created));
-  const staffedText = formatAmount(divideEffect(staffed));
+  const createdText = formatAmount(created);
+  const staffedText = formatAmount(staffed);
   if (summaryPopulationEl) {
     summaryPopulationEl.textContent = t(currentLang, "planetSimJobsCounter")(createdText, staffedText);
   }
@@ -1623,7 +1619,7 @@ function renderNonResourceEffects(jobIds) {
       line.className = "planet-nonresource-line";
       line.append(jobIcon(jobId));
       const text = document.createElement("span");
-      text.textContent = `${formatAmount(divideEffect(jobAssignments[jobId]))} ${jobName(jobId)} —`;
+      text.textContent = `${formatAmount(jobAssignments[jobId])} ${jobName(jobId)} —`;
       line.append(text);
       effectPills(jobId, jobAssignments[jobId], true).forEach((pill) => line.append(pill));
       nonResourceEl.append(line);
@@ -1701,7 +1697,7 @@ function renderResourceRow(resourceId, amount, forceSign) {
   row.append(name);
   const value = document.createElement("span");
   value.className = "planet-resource-value";
-  value.textContent = formatAmount(amount, forceSign);
+  value.textContent = formatAmount(displayAmount(resourceId, amount), forceSign);
   row.append(value);
   return row;
 }
@@ -1739,9 +1735,9 @@ function renderSlots() {
 }
 
 function renderStats(totals) {
-  if (statHousing) statHousing.textContent = formatAmount(totals.housing, true);
+  if (statHousing) statHousing.textContent = formatAmount(totals.housing * EFFECT_SCALE, true);
   if (statAmenities) {
-    statAmenities.textContent = formatAmount(totals.amenitiesTotal, true);
+    statAmenities.textContent = formatAmount(totals.amenitiesTotal * EFFECT_SCALE, true);
     // Tooltip con el desglose de toda la producción de servicios del planeta.
     const lines = totals.amenitySources.map((source) => {
       let label;
@@ -1749,9 +1745,9 @@ function renderStats(totals) {
       else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
       else if (source.kind === "job") label = `${formatAmount(source.assignedRaw)} ${jobName(source.jobId)}`;
       else label = t(currentLang, "planetSimDesignationHeading");
-      return `${label} ${formatAmount(source.amount, true)}`;
+      return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
     });
-    lines.push(`${t(currentLang, "planetSimTotalLabel")}: ${formatAmount(totals.amenitiesTotal, true)}`);
+    lines.push(`${t(currentLang, "planetSimTotalLabel")}: ${formatAmount(totals.amenitiesTotal * EFFECT_SCALE, true)}`);
     const tooltipTarget = statAmenities.closest(".planet-header-stat") || statAmenities;
     tooltipTarget.title = lines.join("\n");
     tooltipTarget.style.cursor = "help";
