@@ -79,7 +79,7 @@ const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
-const summaryPopulationEl = document.querySelector("#planet-summary-population");
+const summaryPopulationEl = document.querySelector("#planet-jobs-counter");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
 const netEl = document.querySelector("#planet-production-net");
@@ -724,8 +724,11 @@ function buildingDisplayName(building) {
 }
 
 /**
- * Fila de un empleo en el resumen: icono+nombre+capacidad a la izquierda,
- * slider de población en el medio, recursos que aporta a la derecha.
+ * Fila de un empleo en el resumen: icono+nombre+empleos creados a la
+ * izquierda, slider de dotación en el medio, empleos cubiertos y recursos
+ * que aporta a la derecha. Plantilla completa asumida (decisión del GDD):
+ * por defecto TODOS los empleos creados están cubiertos (100 %); el slider
+ * es solo un ajuste opcional (override) para reducir la dotación.
  * `capacity` y `jobAssignments[jobId]` están en la escala ×100 de los
  * datos de origen (no en pops reales): así el slider de paso 10 tiene
  * recorrido real. Los recursos de la derecha SÍ se muestran ya convertidos
@@ -741,7 +744,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   info.className = "planet-job-row-info";
   info.append(jobIcon(jobId));
   const label = document.createElement("span");
-  label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobMaxLabel")(formatAmount(capacity))}`;
+  label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobCreatedLabel")(formatAmount(divideEffect(capacity)))}`;
   info.append(label);
   row.append(info);
 
@@ -758,7 +761,8 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   slider.max = String(capacity);
   slider.step = "10";
   slider.value = String(assigned);
-  slider.setAttribute("aria-label", jobName(jobId));
+  slider.setAttribute("aria-label", `${jobName(jobId)} — ${t(currentLang, "planetSimJobStaffedLabel")}`);
+  slider.title = t(currentLang, "planetSimJobOverrideHint");
 
   const increaseBtn = document.createElement("button");
   increaseBtn.type = "button";
@@ -768,13 +772,24 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
 
   const valueLabel = document.createElement("span");
   valueLabel.className = "planet-job-row-value";
+  valueLabel.title = t(currentLang, "planetSimJobStaffedLabel");
+
+  // Solo visible mientras la dotación se haya reducido por debajo del 100 %.
+  const resetBtn = document.createElement("button");
+  resetBtn.type = "button";
+  resetBtn.className = "planet-job-reset-btn";
+  resetBtn.textContent = "100%";
+  resetBtn.title = t(currentLang, "planetSimJobOverrideReset");
 
   const output = document.createElement("div");
   output.className = "planet-job-row-output";
 
-  /** Repinta solo el valor y los recursos de ESTA fila (sin tocar el slider ni recrearlo), a partir de la población recién asignada. */
+  /** Repinta solo el valor y los recursos de ESTA fila (sin tocar el slider ni recrearlo), a partir de la dotación recién asignada. */
   function updateRowDisplay(newAssigned) {
-    valueLabel.textContent = formatAmount(newAssigned);
+    valueLabel.textContent = formatAmount(divideEffect(newAssigned));
+    const overridden = newAssigned < capacity;
+    row.classList.toggle("is-override", overridden);
+    resetBtn.hidden = !overridden;
     output.replaceChildren();
     // unitOutputs ya incluye los bonos de edificios y la eficacia de la designación.
     Object.entries(unitOutputs || JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, perJob]) => {
@@ -792,7 +807,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   }
   updateRowDisplay(assigned);
 
-  /** Aplica un nuevo valor de población asignada: guarda el estado, repinta esta fila en el sitio y refresca el resto de la economía sin recrear ningún slider (para no interrumpir el arrastre). */
+  /** Aplica un nuevo valor de dotación (empleos cubiertos): guarda el estado, repinta esta fila en el sitio y refresca el resto de la economía sin recrear ningún slider (para no interrumpir el arrastre). */
   function commitChange(newValue) {
     const clamped = Math.max(0, Math.min(capacity, newValue));
     jobAssignments[jobId] = clamped;
@@ -818,7 +833,9 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
     commitChange((jobAssignments[jobId] || 0) + step);
   });
 
-  row.append(decreaseBtn, slider, increaseBtn, valueLabel, output);
+  resetBtn.addEventListener("click", () => commitChange(capacity));
+
+  row.append(decreaseBtn, slider, increaseBtn, valueLabel, resetBtn, output);
 
   return row;
 }
@@ -1559,15 +1576,19 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, o
 
 /* ── Paneles de resumen y producción ─────────────────────────────────── */
 
-function updatePopulationCounter(jobIds) {
-  const totalPopulation = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
+/** Contador "empleos creados / empleos asumidos cubiertos" (ambos en escala ×100 internamente; se muestran en empleos reales). */
+function updateJobsCounter(jobIds, jobCapacities) {
+  const created = jobIds.reduce((sum, jobId) => sum + (jobCapacities[jobId] || 0), 0);
+  const staffed = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
+  const createdText = formatAmount(divideEffect(created));
+  const staffedText = formatAmount(divideEffect(staffed));
   if (summaryPopulationEl) {
-    summaryPopulationEl.textContent = t(currentLang, "planetSimPlanetPopulation")(formatAmount(totalPopulation));
+    summaryPopulationEl.textContent = t(currentLang, "planetSimJobsCounter")(createdText, staffedText);
   }
-  updatePlanetState({ populationText: formatAmount(totalPopulation) });
+  updatePlanetState({ populationText: staffedText });
 }
 
-/** Píldoras con los efectos de JOB_EFFECTS de un empleo (estabilidad, delincuencia...), multiplicados por la población asignada (escala ×100). withLabel: añade el nombre de la estadística. */
+/** Píldoras con los efectos de JOB_EFFECTS de un empleo (estabilidad, delincuencia...), multiplicados por los empleos cubiertos (escala ×100). withLabel: añade el nombre de la estadística. */
 function effectPills(jobId, assignedRaw, withLabel) {
   return Object.entries(JOB_EFFECTS[jobId] || {}).map(([statId, perJob]) => {
     const stat = STAT_EFFECTS[statId];
@@ -1617,7 +1638,7 @@ function renderSummary(totals) {
   summaryEl.replaceChildren();
 
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
-  updatePopulationCounter(jobIds);
+  updateJobsCounter(jobIds, totals.jobCapacities);
 
   if (!jobIds.length) {
     const empty = document.createElement("p");
@@ -1665,7 +1686,7 @@ function refreshEconomyOnly() {
   renderProduction(totals);
   renderStats(totals);
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
-  updatePopulationCounter(jobIds);
+  updateJobsCounter(jobIds, totals.jobCapacities);
   renderNonResourceEffects(jobIds);
 }
 
