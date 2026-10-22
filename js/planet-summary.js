@@ -19,6 +19,7 @@ import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet
 import { PLANET_TYPES, IMAGE_BASE as CELESTIAL_IMAGE_BASE } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
+import { DATA_VERSIONS, VERIFICATION_I18N_KEYS, getDataVersion, verificationSummary } from "./data-version.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const typeIconEl = document.querySelector("#planet-summary-type-icon");
@@ -26,11 +27,32 @@ const designationIconEl = document.querySelector("#planet-summary-designation-ic
 const nameInput = document.querySelector("#planet-summary-name");
 const sizeEl = document.querySelector("#planet-summary-size");
 const populationEl = document.querySelector("#planet-summary-population");
+const dataVersionSelect = document.querySelector("#planet-summary-data-version");
 
 let currentLang = detectInitialLang();
 
+/** Selector de versión de datos (P4.3): alimentado por el registro de data-version.js; hoy solo tiene una opción. */
+function renderDataVersion(state) {
+  if (!dataVersionSelect) return;
+  dataVersionSelect.replaceChildren();
+  DATA_VERSIONS.forEach((version) => {
+    const option = document.createElement("option");
+    option.value = version.id;
+    option.textContent = version.label;
+    dataVersionSelect.append(option);
+  });
+  dataVersionSelect.value = state.rulesetId;
+  dataVersionSelect.setAttribute("aria-label", t(currentLang, "dataVersionLabel"));
+  // Tooltip: nombre del selector + estado de verificación de los datos.
+  const summary = Object.entries(verificationSummary())
+    .map(([status, count]) => `${t(currentLang, VERIFICATION_I18N_KEYS[status])}: ${count}`)
+    .join(" · ");
+  dataVersionSelect.title = `${t(currentLang, "dataVersionLabel")}\n${t(currentLang, "dataVersionCollections")(summary)}`;
+}
+
 function render() {
   const state = getPlanetState();
+  renderDataVersion(state);
   const type = PLANET_TYPES.find((entry) => entry.id === state.celestialTypeId);
   const designation = getDesignation(state.designationId);
 
@@ -53,7 +75,7 @@ function render() {
   }
   if (populationEl) {
     populationEl.textContent = state.populationText != null ? state.populationText : "—";
-    populationEl.title = t(currentLang, "planetSummaryPopulationLabel");
+    populationEl.title = t(currentLang, "planetSummaryStaffedJobsLabel");
   }
 
   if (nameInput) {
@@ -64,6 +86,14 @@ function render() {
       nameInput.value = state.planetName || "";
     }
   }
+}
+
+if (dataVersionSelect) {
+  dataVersionSelect.addEventListener("change", () => {
+    // Un valor fuera del registro no se acepta: se vuelve a pintar con la versión vigente.
+    if (getDataVersion(dataVersionSelect.value)) updatePlanetState({ rulesetId: dataVersionSelect.value });
+    else render();
+  });
 }
 
 if (nameInput) {

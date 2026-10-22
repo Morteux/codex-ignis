@@ -47,6 +47,9 @@
         <div class="planet-summary-item">
           <span class="planet-summary-value" id="planet-summary-population">—</span>
         </div>
+        <div class="planet-summary-item planet-summary-item-end">
+          <select id="planet-summary-data-version" class="planet-data-version-select"></select>
+        </div>
       </section>
 
       <nav class="planet-main-tabs" role="tablist" aria-label="Secciones del planeta">
@@ -122,7 +125,8 @@
 
             <div class="planet-summary-panel">
               <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSummaryHeading">Resumen de empleos totales</h2>
-              <p class="planet-summary-population" id="planet-summary-population"></p>
+              <p class="entry-note planet-staffing-notice" data-i18n="planetSimStaffingNotice"></p>
+              <p class="planet-summary-population" id="planet-jobs-counter"></p>
               <div id="planet-summary"></div>
               <div id="planet-nonresource"></div>
             </div>

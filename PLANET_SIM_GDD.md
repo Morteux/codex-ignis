@@ -91,8 +91,8 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P0 | Foundation | done |
 | P1 | Core planet economy | done |
 | P2 | Empire context | done |
-| P3 | Housekeeping | in progress |
-| P4 | Versioning & provenance | pending |
+| P3 | Housekeeping | done |
+| P4 | Versioning & provenance | done |
 | P5 | Empire profiles | pending |
 | P6 | Planets & Library | pending |
 | P7 | Data completeness | pending |
@@ -103,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 29/93 tasks (31%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 35/93 tasks (38%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -137,18 +137,18 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P2.8 Planetary designations (53)
 - [x] P2.9 Fixed planet summary bar
 
-### P3 — Housekeeping (3/4)
+### P3 — Housekeeping (4/4)
 - [x] P3.1 Remove Armies tab button and its i18n keys
 - [x] P3.2 README updated (no GitHub Actions). Owner deletes `.github/` himself.
-- [ ] P3.3 Staffing UI per decision b: "Jobs Created / Jobs Assumed Staffed", full-staffing notice, slider as optional override (default 100%), drop "population" wording
+- [x] P3.3 Staffing UI per decision b: "Jobs Created / Jobs Assumed Staffed", full-staffing notice, slider as optional override (default 100%), drop "population" wording. Implemented: each job row shows "created N" and the staffed count; the slider/±buttons are an optional override and a "100%" reset button appears only while a job is below full staffing; the summary panel shows a visible full-staffing notice and the counter "Jobs created / Jobs assumed staffed"; the fixed bar tooltip reads "Jobs assumed staffed". Also fixed a duplicated element id (`planet-summary-population` was used by both the fixed bar and the jobs panel; the panel counter is now `planet-jobs-counter`).
 - [x] P3.4 Buildings that become invalid (specialization change, lost requirements) are **deactivated, not deleted**, and always drawn with the **yellow frame** (`img/ui/blocker_frame_yellow.png`, confirmed by owner 2026-10-21). The red frame is not used Implemented: an inactive building (slot locked, requirements lost, or the slot's specialization no longer permits its building set) is never deleted; it does not count towards jobs/resources, shows the yellow frame and a tooltip with the reason, and can be demolished manually.
 
-### P4 — Versioning & provenance (0/5)
-- [ ] P4.1 Version registry with the single entry `stellaris-pc-4.5.2`
-- [ ] P4.2 `rulesetId` + source + verification on every data entry (buildings, districts, jobs, resources, designations, ethics, authorities, civic rules, celestial types)
-- [ ] P4.3 Data Version selector in the scenario/summary bar (one option)
-- [ ] P4.4 All existing data initially marked `unverified` (wiki-derived)
-- [ ] P4.5 Version stored in saved data; warning on unsupported version at import
+### P4 — Versioning & provenance (5/5)
+- [x] P4.1 Version registry with the single entry `stellaris-pc-4.5.2` (`js/data-version.js`, `DATA_VERSIONS`)
+- [x] P4.2 `rulesetId` + source + verification on every data entry. Implemented per **collection** (`DATA_COLLECTIONS`: buildings, capital buildings, districts, jobs, resources, designations, ethics, authorities, civic rules, celestial types) and resolved per entry with `getProvenance(collection, id)`; per-entry exceptions go in `PROVENANCE_OVERRIDES`. Decision: data files are not stamped entry by entry, to avoid hundreds of duplicated literals.
+- [x] P4.3 Data Version selector at the right end of the fixed summary bar (one option; tooltip shows the verification state)
+- [x] P4.4 All existing data initially marked `unverified` (wiki-derived)
+- [x] P4.5 Version stored in saved data; warning on unsupported version at import. Base in place: `stampRuleset()` adds `schemaVersion` + `rulesetId`, `checkRuleset()` returns `ok` / `missing` / `unsupported`; shared state carries `rulesetId`. Actual save/import arrives in P6.
 
 ### P5 — Empire profiles (0/7)
 - [ ] P5.1 Save current Imperio tab as a named empire

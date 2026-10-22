@@ -2264,3 +2264,48 @@ h1 {
     color: var(--muted);
     font-size: .72rem;
 }
+
+/* ── Plantilla completa asumida (P3.3) ───────────────────────────────── */
+
+.planet-staffing-notice {
+    margin: 0 0 .9rem;
+    font-size: .74rem;
+}
+
+.planet-job-reset-btn {
+    flex-shrink: 0;
+    padding: .2rem .4rem;
+    border: 1px solid #7a6a2a;
+    color: var(--focus);
+    background: var(--surface-raised);
+    font: 700 .62rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-job-reset-btn:hover {
+    border-color: var(--focus);
+}
+
+.planet-job-row.is-override .planet-job-row-value {
+    color: #ffd84a;
+}
+
+/* ── Selector de versión de datos (P4.3), al extremo derecho de la barra de resumen ── */
+
+.planet-summary-item-end {
+    margin-left: auto;
+}
+
+.planet-data-version-select {
+    max-width: 18rem;
+    padding: .3rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font: 700 .66rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-data-version-select:hover {
+    border-color: var(--accent-dim);
+}

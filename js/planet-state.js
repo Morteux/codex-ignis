@@ -7,7 +7,10 @@
  * pasarse referencias entre scripts.
  */
 
+import { CURRENT_RULESET_ID } from "./data-version.js";
+
 const state = {
+  rulesetId: CURRENT_RULESET_ID,
   celestialTypeId: null,
   designationId: null,
   ethicIds: [],
