@@ -2295,3 +2295,10 @@ h1 {
 .planet-data-version-select:hover {
     border-color: var(--accent-dim);
 }
+
+/* Selector de designación planetaria dentro de .planet-header-panel (sin título). El flex-basis del selector genérico se anula: en una columna flex afectaría a la altura. */
+.planet-header-stat .planet-designation-select {
+    flex: 0 0 auto;
+    width: 16rem;
+    max-width: 100%;
+}

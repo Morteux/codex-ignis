@@ -43,7 +43,7 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 
 **Not implemented (vs. original GDD):** version registry/selector/provenance, planetary conditions (happiness, stability, crime, housing/amenity demand), stability effects, trade-conversion policy, per-resource breakdown, modifiers panel, external-income separation, scenario save/load, JSON import/export, comparison, monthly timeline, special planets' own districts.
 
-**Known gaps in current data** (see Phase 7; value re-verification in Phase 13): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet).
+**Known gaps in current data** (see Phase 7; value re-verification in Phase 13): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; designations are not filtered by ethic/authority/civic requirements (P7.9); 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet).
 
 ## 4. New features (owner requests)
 
@@ -103,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 35/93 tasks (38%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 35/94 tasks (37%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -171,7 +171,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [ ] P6.9 Deleted empire: planet keeps its raw empire snapshot and is flagged "no empire"
 - [ ] P6.10 Unique-name validation (save, rename, duplicate, import conflicts)
 
-### P7 — Data completeness (0/8)
+### P7 — Data completeness (0/9)
 Built from the wiki pages already supplied; value re-verification happens in P13. Nothing is invented.
 - [ ] P7.1 Districts: housing/jobs/upkeep and the −200 housing urban-specialization penalty
 - [ ] P7.2 Extra bonuses of Mega-Forges / Nano-Plants / Fabricators / Repli-Complexes (scope to clarify)
@@ -181,6 +181,7 @@ Built from the wiki pages already supplied; value re-verification happens in P13
 - [ ] P7.6 Add the 66 missing civics (+ icons)
 - [ ] P7.7 Apply more empire effects (worker/specialist efficiency via strata, etc.)
 - [ ] P7.8 Expand the building catalog from supplied wiki pages
+- [ ] P7.9 Designation requirements: today the designation list is filtered only by celestial body type (`allowedDesignationCategories`), so designations that need a specific ethic, authority, civic or species type (e.g. hive/machine-only, spiritualist-only) can be picked with an incompatible empire. Read the requirements from the Designation wiki page, store them as `requires` rules on each designation (reusing the `building-requirements.js` rule types where possible), hide or disable unavailable designations in the dropdown with the reason, and when an empire/ethic/authority change invalidates the selected designation, reset it to "no designation" and report it (same flow as the building removal on empire switch in P5.4)
 
 ### P8 — Transparency (0/7)
 - [ ] P8.1 Per-resource breakdown (base, jobs, modifiers, gross, job upkeep, infra upkeep, net)
