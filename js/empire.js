@@ -467,8 +467,8 @@ export async function resolveUnsavedEmpireChanges() {
 /**
  * Cambia de imperio guardado (null = dejar la configuración actual como
  * borrador sin guardar). Con cambios sin guardar pide confirmación; al
- * aplicar otro imperio, planet-sim.js elimina los edificios que ya no
- * cumplen sus requisitos (ver emitEmpireSwitched). Cambiar a "ninguno" no
+ * aplicar otro imperio, planet-sim.js avisa de los edificios que quedan
+ * inactivos por requisitos, sin borrarlos (ver emitEmpireSwitched). Cambiar a "ninguno" no
  * toca la configuración ni los edificios, así que no pide confirmación.
  */
 export async function requestSwitchEmpire(targetId) {

@@ -1788,11 +1788,11 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
 // Solo se recalcula si esos datos han cambiado de verdad, para no entrar en
 // bucle con las propias escrituras de este módulo (tamaño/población).
 /**
- * Cambio de imperio guardado (P5.4): se ELIMINAN (no solo se desactivan) los
- * edificios construidos que ya no cumplen sus requisitos con el nuevo imperio,
- * y se avisa de cuántos han sido. Editar la pestaña Imperio a mano no pasa por
- * aquí: en ese caso quedan inactivos (P3.4). Los requisitos de especialización
- * de ranura y de límite de ranuras no dependen del imperio y no se tocan.
+ * Cambio de imperio guardado (P5.4): NO se borra ningún edificio. Los que no
+ * cumplen los requisitos del nuevo imperio quedan inactivos (marco amarillo,
+ * igual que al editar la pestaña Imperio a mano, P3.4) y se reactivan solos
+ * si se vuelve a un imperio que los cumple; demolerlos es decisión del
+ * usuario. Solo se avisa de cuántos han quedado inactivos por requisitos.
  */
 const noticeEl = document.querySelector("#planet-sim-notice");
 let noticeTimer = null;
@@ -1805,15 +1805,12 @@ function showNotice(text) {
 }
 
 onEmpireSwitched(({ name }) => {
-  let removed = 0;
-  [...builtMap.entries()].forEach(([key, buildingId]) => {
-    if (!isBuildingAvailable(buildingsById.get(buildingId))) {
-      builtMap.delete(key);
-      removed += 1;
-    }
+  let inactive = 0;
+  builtMap.forEach((buildingId) => {
+    if (!isBuildingAvailable(buildingsById.get(buildingId))) inactive += 1;
   });
   refresh();
-  showNotice(t(currentLang, "planetSimEmpireSwitchNotice")(name, removed));
+  showNotice(t(currentLang, "planetSimEmpireSwitchNotice")(name, inactive));
 });
 
 let lastRelevantKey = "";

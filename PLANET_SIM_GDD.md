@@ -51,7 +51,7 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 - In the **Imperio tab**, the current configuration (ethics, authority, civics, species type) can be **saved under a user-given empire name**.
 - At the **right end of `.planet-summary-fixed`** a dropdown lists all saved empires; picking one applies it instantly.
 - Editing the Imperio tab with a profile selected does **not** auto-save: changes need an explicit **Save** (a "modified" indicator is shown).
-- On switching empire, **all built buildings that no longer meet their requirements are deleted** (not just deactivated), and every dependent value is recomputed (capital family, requirements, bonuses, civic limits). Show how many buildings were removed.
+- On switching empire, built buildings that no longer meet their requirements are **deactivated, not deleted** (owner decision 2026-10-23, replacing the earlier "delete" rule): same yellow frame as in P3.4, they reactivate when an empire that meets them is selected again, and demolishing is always a manual action. Every dependent value is recomputed (capital family, requirements, bonuses, civic limits). Show how many buildings ended up inactive.
 - A saved planet stores **which empire is selected**.
 - Persisted in localStorage; rename / overwrite / delete supported.
 
@@ -154,7 +154,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P5.1 Save current Imperio tab as a named empire ("Perfil de imperio" panel at the top of the Imperio tab; `js/empire-profiles.js`)
 - [x] P5.2 Empire dropdown at the right of `.planet-summary-fixed` (first option = no saved empire / unsaved draft; "●" marks unsaved changes)
 - [x] P5.3 Switching applies config and recomputes all dependants (`requestSwitchEmpire` → `applyConfig`; anything no longer valid, e.g. an incompatible civic, is dropped, never invented)
-- [x] P5.4 Switching deletes all buildings that fail requirements and reports the count (notice under the summary bar; only on empire switch — manual edits of the Imperio tab still only deactivate, P3.4)
+- [x] P5.4 Switching empire deactivates (never deletes) the buildings that fail the new empire's requirements and reports how many are inactive (notice under the summary bar). Originally specified as "delete"; changed on 2026-10-23 so that switching back and forth no longer destroys buildings, consistent with P3.4.
 - [x] P5.5 localStorage persistence (key `codex-ignis-empires`); rename / overwrite / delete
 - [x] P5.6 Planet state tracks the selected `empireId` (and `empireModified`) in `planet-state.js`
 - [x] P5.7 Explicit Save when editing a selected profile, with a "modified" indicator (no auto-save); switching empire with unsaved changes opens a confirmation dialog (Save / Don't save / Cancel) (`js/confirm-dialog.js`). `resolveUnsavedEmpireChanges()` is exported so loading a planet (P6) can reuse it.
@@ -181,7 +181,7 @@ Built from the wiki pages already supplied; value re-verification happens in P13
 - [ ] P7.6 Add the 66 missing civics (+ icons)
 - [ ] P7.7 Apply more empire effects (worker/specialist efficiency via strata, etc.)
 - [ ] P7.8 Expand the building catalog from supplied wiki pages
-- [ ] P7.9 Designation requirements: today the designation list is filtered only by celestial body type (`allowedDesignationCategories`), so designations that need a specific ethic, authority, civic or species type (e.g. hive/machine-only, spiritualist-only) can be picked with an incompatible empire. Read the requirements from the Designation wiki page, store them as `requires` rules on each designation (reusing the `building-requirements.js` rule types where possible), hide or disable unavailable designations in the dropdown with the reason, and when an empire/ethic/authority change invalidates the selected designation, reset it to "no designation" and report it (same flow as the building removal on empire switch in P5.4)
+- [ ] P7.9 Designation requirements: today the designation list is filtered only by celestial body type (`allowedDesignationCategories`), so designations that need a specific ethic, authority, civic or species type (e.g. hive/machine-only, spiritualist-only) can be picked with an incompatible empire. Read the requirements from the Designation wiki page, store them as `requires` rules on each designation (reusing the `building-requirements.js` rule types where possible), hide or disable unavailable designations in the dropdown with the reason, and when an empire/ethic/authority change invalidates the selected designation, reset it to "no designation" and report it (buildings stay, as in P5.4; only the designation is reset)
 
 ### P8 — Transparency (0/7)
 - [ ] P8.1 Per-resource breakdown (base, jobs, modifiers, gross, job upkeep, infra upkeep, net)
