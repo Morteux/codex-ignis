@@ -17,6 +17,8 @@ const state = {
   authorityId: null,
   civicIds: [],
   speciesType: "organic",
+  empireId: null,
+  empireModified: false,
   planetName: "",
   planetSize: null,
   populationText: null
@@ -38,4 +40,21 @@ export function updatePlanetState(patch) {
 /** Se llama a `fn` cada vez que el estado cambia (no en el momento de suscribirse). */
 export function onPlanetStateChange(fn) {
   listeners.add(fn);
+}
+
+/**
+ * Aviso de "se acaba de cambiar de imperio" (P5.4): lo emite js/empire.js
+ * cuando el usuario elige otro imperio guardado, DESPUÉS de haber publicado
+ * su configuración en el estado. js/planet-sim.js lo escucha para eliminar
+ * los edificios que ya no cumplen sus requisitos. Editar la pestaña Imperio
+ * a mano NO lo emite: en ese caso los edificios solo quedan inactivos (P3.4).
+ */
+const empireSwitchListeners = new Set();
+
+export function onEmpireSwitched(fn) {
+  empireSwitchListeners.add(fn);
+}
+
+export function emitEmpireSwitched(detail) {
+  empireSwitchListeners.forEach((fn) => fn(detail));
 }

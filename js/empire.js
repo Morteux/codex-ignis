@@ -14,12 +14,19 @@
  * (js/planet-state.js) para que planet-sim.js les aplique sus bonos a los
  * cálculos del planeta (ver collectAppliedEffects en empire-data.js).
  *
+ * Perfiles de imperio guardados (P5): la pestaña puede guardarse con nombre
+ * (js/empire-profiles.js) y cambiarse desde el desplegable de la barra de
+ * resumen. Editar con un imperio seleccionado NO guarda solo: hace falta
+ * pulsar Guardar (se indica con "cambios sin guardar").
+ *
  * Ver js/empire-data.js para el origen de los datos y las simplificaciones.
  */
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { PRINCIPLE_BINGO, IMAGE_BASE } from "./bingo-data.js";
-import { updatePlanetState } from "./planet-state.js";
+import { updatePlanetState, emitEmpireSwitched } from "./planet-state.js";
+import { listEmpires, getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
+import { confirmChoice } from "./confirm-dialog.js";
 import { SPECIES_TYPES, allowedSpeciesTypes } from "./planet-data.js";
 import {
   ETHICS_MAX_POINTS,
@@ -46,6 +53,13 @@ const authorityListEl = document.querySelector("#empire-authority-list");
 const speciesSelectEl = document.querySelector("#empire-species-select");
 const civicsLabelEl = document.querySelector("#empire-civics-label");
 const civicsListEl = document.querySelector("#empire-civics-list");
+const profileNameEl = document.querySelector("#empire-profile-name");
+const profileSaveNewBtn = document.querySelector("#empire-profile-save-new");
+const profileSaveBtn = document.querySelector("#empire-profile-save");
+const profileRenameBtn = document.querySelector("#empire-profile-rename");
+const profileDeleteBtn = document.querySelector("#empire-profile-delete");
+const profileStateEl = document.querySelector("#empire-profile-state");
+const profileMessageEl = document.querySelector("#empire-profile-message");
 
 let currentLang = detectInitialLang();
 
@@ -56,6 +70,7 @@ let gestaltActive = false;
 let selectedAuthorityId = null;
 const selectedCivics = new Set();
 let selectedSpeciesType = "organic";
+let selectedEmpireId = null; // imperio guardado seleccionado (null = borrador sin guardar)
 
 function currentEthicIds() {
   if (gestaltActive) return [GESTALT_CONSCIOUSNESS.id];
@@ -319,14 +334,15 @@ function renderCivicsList() {
 }
 
 let lastPublishedKey = null;
-/** Publica éticas, autoridad y principios en el estado compartido (solo si cambian) para que planet-sim.js les aplique sus bonos. */
+/** Publica éticas, autoridad, principios e imperio seleccionado en el estado compartido (solo si cambian) para que planet-sim.js y la barra de resumen los usen. */
 function publishSelection() {
   const ethicIds = currentEthicIds();
   const civicIds = [...selectedCivics];
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}`;
+  const modified = isModified();
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, empireId: selectedEmpireId, empireModified: modified });
 }
 
 function refresh() {
@@ -336,8 +352,181 @@ function refresh() {
   renderAuthorityList();
   renderSpeciesSelect();
   renderCivicsList();
+  renderProfilePanel();
   publishSelection();
 }
+
+/* ── Perfiles de imperio guardados (P5) ─────────────────────────────── */
+
+/** Configuración actual de la pestaña Imperio, con la misma forma que un perfil guardado. */
+function currentConfig() {
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType };
+}
+
+/** ¿Hay un imperio guardado seleccionado y la pestaña ya no coincide con lo guardado? (sin imperio seleccionado no hay "cambios sin guardar": es un borrador) */
+function isModified() {
+  if (!selectedEmpireId) return false;
+  const profile = getEmpire(selectedEmpireId);
+  return Boolean(profile) && !configsEqual(profile, currentConfig());
+}
+
+/** Vuelca un perfil guardado en la pestaña Imperio. Ignora (no inventa) lo que ya no sea válido, p. ej. un principio incompatible. */
+function applyConfig(config) {
+  axisSelection.forEach((_, axisId) => axisSelection.set(axisId, null));
+  gestaltActive = false;
+  const ethicIds = (config.ethicIds || []).filter((id) => ETHIC_OPTIONS[id]);
+  if (ethicIds.includes(GESTALT_CONSCIOUSNESS.id)) {
+    gestaltActive = true;
+  } else {
+    let used = 0;
+    ethicIds.forEach((id) => {
+      const axisId = axisOfOption.get(id);
+      if (!axisId || axisSelection.get(axisId)) return;
+      const cost = ETHIC_OPTIONS[id].cost;
+      if (used + cost > ETHICS_MAX_POINTS) return;
+      axisSelection.set(axisId, id);
+      used += cost;
+    });
+  }
+  const authority = AUTHORITIES.find((entry) => entry.id === config.authorityId);
+  selectedAuthorityId = authority && authorityAvailable(authority, currentEthicIds()) ? authority.id : null;
+  selectedCivics.clear();
+  (config.civicIds || []).forEach((key) => {
+    if (selectedCivics.size >= MAX_CIVICS) return;
+    if (civicAvailable(key, currentEthicIds(), selectedAuthorityId, [...selectedCivics, key])) selectedCivics.add(key);
+  });
+  pruneUnavailableCivics();
+  selectedSpeciesType = SPECIES_TYPES.some((type) => type.id === config.speciesType) ? config.speciesType : "organic";
+}
+
+let messageTimer = null;
+/** Mensaje breve de resultado de una acción de perfil (se borra solo a los 6 s). */
+function showProfileMessage(text) {
+  if (!profileMessageEl) return;
+  profileMessageEl.textContent = text;
+  clearTimeout(messageTimer);
+  if (text) messageTimer = setTimeout(() => { profileMessageEl.textContent = ""; }, 6000);
+}
+
+function reportResult(result, successKey) {
+  if (!result.ok) {
+    showProfileMessage(t(currentLang, { empty: "empireProfileErrorEmpty", duplicate: "empireProfileErrorDuplicate", notFound: "empireProfileErrorNotFound" }[result.error]));
+    return false;
+  }
+  const base = t(currentLang, successKey)(result.profile.name);
+  showProfileMessage(result.persisted ? base : `${base} ${t(currentLang, "empireProfileWarnNotPersisted")}`);
+  return true;
+}
+
+let lastSyncedEmpireId;
+function renderProfilePanel() {
+  const profile = selectedEmpireId ? getEmpire(selectedEmpireId) : null;
+  // El campo de nombre solo se rellena al cambiar de imperio seleccionado, para no pisar lo que el usuario esté escribiendo.
+  if (lastSyncedEmpireId !== selectedEmpireId) {
+    lastSyncedEmpireId = selectedEmpireId;
+    if (profileNameEl) profileNameEl.value = profile ? profile.name : "";
+  }
+  const modified = isModified();
+  if (profileStateEl) {
+    profileStateEl.textContent = !profile
+      ? t(currentLang, "empireProfileStateDraft")
+      : t(currentLang, modified ? "empireProfileStateModified" : "empireProfileStateSaved")(profile.name);
+    profileStateEl.classList.toggle("is-modified", modified);
+  }
+  if (profileSaveBtn) profileSaveBtn.disabled = !(profile && modified);
+  if (profileRenameBtn) profileRenameBtn.disabled = !profile;
+  if (profileDeleteBtn) profileDeleteBtn.disabled = !profile;
+}
+
+/**
+ * Si hay un imperio seleccionado con cambios sin guardar, pregunta qué hacer
+ * (Guardar / No guardar / Cancelar). Devuelve true si se puede continuar
+ * (guardado o descartado) y false si el usuario cancela. Reutilizable al
+ * cargar un planeta (P6).
+ */
+export async function resolveUnsavedEmpireChanges() {
+  if (!isModified()) return true;
+  const profile = getEmpire(selectedEmpireId);
+  const choice = await confirmChoice({
+    title: t(currentLang, "empireUnsavedTitle"),
+    message: t(currentLang, "empireUnsavedMessage")(profile.name),
+    buttons: [
+      { id: "save", label: t(currentLang, "empireUnsavedSave"), variant: "primary" },
+      { id: "discard", label: t(currentLang, "empireUnsavedDiscard") },
+      { id: "cancel", label: t(currentLang, "empireDialogCancel") }
+    ],
+    cancelId: "cancel"
+  });
+  if (choice === "save") {
+    updateEmpireConfig(selectedEmpireId, currentConfig());
+    return true;
+  }
+  return choice === "discard";
+}
+
+/**
+ * Cambia de imperio guardado (null = dejar la configuración actual como
+ * borrador sin guardar). Con cambios sin guardar pide confirmación; al
+ * aplicar otro imperio, planet-sim.js elimina los edificios que ya no
+ * cumplen sus requisitos (ver emitEmpireSwitched). Cambiar a "ninguno" no
+ * toca la configuración ni los edificios, así que no pide confirmación.
+ */
+export async function requestSwitchEmpire(targetId) {
+  const target = targetId ? getEmpire(targetId) : null;
+  if (targetId && !target) { refresh(); return; }
+  if ((target ? target.id : null) === selectedEmpireId) return;
+  if (target && !(await resolveUnsavedEmpireChanges())) { refresh(); return; }
+  selectedEmpireId = target ? target.id : null;
+  if (target) applyConfig(target);
+  refresh();
+  if (target) emitEmpireSwitched({ empireId: target.id, name: target.name });
+}
+
+if (profileSaveNewBtn) {
+  profileSaveNewBtn.addEventListener("click", () => {
+    const result = createEmpire(profileNameEl ? profileNameEl.value : "", currentConfig());
+    if (!reportResult(result, "empireProfileMsgCreated")) return;
+    selectedEmpireId = result.profile.id;
+    refresh();
+  });
+}
+
+if (profileSaveBtn) {
+  profileSaveBtn.addEventListener("click", () => {
+    if (!selectedEmpireId) return;
+    reportResult(updateEmpireConfig(selectedEmpireId, currentConfig()), "empireProfileMsgSaved");
+  });
+}
+
+if (profileRenameBtn) {
+  profileRenameBtn.addEventListener("click", () => {
+    if (!selectedEmpireId) return;
+    reportResult(renameEmpire(selectedEmpireId, profileNameEl ? profileNameEl.value : ""), "empireProfileMsgRenamed");
+  });
+}
+
+if (profileDeleteBtn) {
+  profileDeleteBtn.addEventListener("click", async () => {
+    const profile = selectedEmpireId ? getEmpire(selectedEmpireId) : null;
+    if (!profile) return;
+    const choice = await confirmChoice({
+      title: t(currentLang, "empireDeleteTitle"),
+      message: t(currentLang, "empireDeleteMessage")(profile.name),
+      buttons: [
+        { id: "delete", label: t(currentLang, "empireDeleteConfirm"), variant: "danger" },
+        { id: "cancel", label: t(currentLang, "empireDialogCancel") }
+      ],
+      cancelId: "cancel"
+    });
+    if (choice === "delete") reportResult(deleteEmpire(profile.id), "empireProfileMsgDeleted");
+  });
+}
+
+// Si el imperio seleccionado desaparece de la lista, la configuración actual se conserva como borrador.
+onEmpiresChange(() => {
+  if (selectedEmpireId && !getEmpire(selectedEmpireId)) selectedEmpireId = null;
+  refresh();
+});
 
 langButtons.forEach((btn) => {
   btn.addEventListener("click", () => {

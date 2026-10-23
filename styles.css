@@ -2302,3 +2302,139 @@ h1 {
     width: 16rem;
     max-width: 100%;
 }
+
+/* ── Perfiles de imperio (P5) ─────────────────────────────────────────── */
+
+.planet-empire-select {
+    max-width: 14rem;
+    padding: .3rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--accent);
+    background: var(--surface);
+    font: 700 .7rem var(--mono);
+    cursor: pointer;
+}
+
+.planet-empire-select:hover {
+    border-color: var(--accent-dim);
+}
+
+.planet-empire-select.is-modified {
+    border-color: #ffd84a;
+    color: #ffd84a;
+}
+
+.empire-profile-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .8rem;
+}
+
+.empire-profile-name-input {
+    flex: 1 1 12rem;
+    min-width: 10rem;
+    padding: .4rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .78rem var(--mono);
+}
+
+.empire-profile-name-input:focus {
+    border-color: var(--accent-dim);
+}
+
+.empire-profile-name-input::placeholder {
+    color: #5c7765;
+}
+
+.empire-profile-state {
+    margin: .8rem 0 0;
+    color: var(--muted);
+    font: 700 .74rem var(--mono);
+}
+
+.empire-profile-state.is-modified {
+    color: #ffd84a;
+}
+
+.empire-profile-message {
+    min-height: 1.1rem;
+    margin: .3rem 0 0;
+    color: var(--muted);
+    font-size: .72rem;
+}
+
+.planet-notice {
+    margin: 0 0 1.2rem;
+    font-size: .76rem;
+}
+
+/* ── Diálogo de confirmación (js/confirm-dialog.js) ───────────────────── */
+
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4vh 4vw;
+    background: rgba(4, 10, 6, .85);
+}
+
+.confirm-dialog {
+    width: min(28rem, 100%);
+    padding: 1.3rem 1.4rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: 0 2rem 5rem rgba(0, 0, 0, .5);
+}
+
+.confirm-dialog-title {
+    margin: 0 0 .7rem;
+    font-size: 1rem;
+}
+
+.confirm-dialog-message {
+    margin: 0 0 1.2rem;
+    color: var(--muted);
+    font-size: .82rem;
+    line-height: 1.6;
+}
+
+.confirm-dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+.confirm-btn {
+    padding: .5rem .9rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: 700 .7rem var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.confirm-btn:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.confirm-btn.is-primary {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.confirm-btn.is-danger {
+    color: #ff8a7a;
+    border-color: #ff8a7a;
+}

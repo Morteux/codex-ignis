@@ -63,7 +63,7 @@ import {
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
-import { updatePlanetState, getPlanetState, onPlanetStateChange } from "./planet-state.js";
+import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
 import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey } from "./building-requirements.js";
 import { allowedDesignationCategories } from "./celestial-data.js";
@@ -1787,6 +1787,35 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
 // principios (requisitos de edificios).
 // Solo se recalcula si esos datos han cambiado de verdad, para no entrar en
 // bucle con las propias escrituras de este módulo (tamaño/población).
+/**
+ * Cambio de imperio guardado (P5.4): se ELIMINAN (no solo se desactivan) los
+ * edificios construidos que ya no cumplen sus requisitos con el nuevo imperio,
+ * y se avisa de cuántos han sido. Editar la pestaña Imperio a mano no pasa por
+ * aquí: en ese caso quedan inactivos (P3.4). Los requisitos de especialización
+ * de ranura y de límite de ranuras no dependen del imperio y no se tocan.
+ */
+const noticeEl = document.querySelector("#planet-sim-notice");
+let noticeTimer = null;
+function showNotice(text) {
+  if (!noticeEl) return;
+  noticeEl.textContent = text;
+  noticeEl.hidden = false;
+  clearTimeout(noticeTimer);
+  noticeTimer = setTimeout(() => { noticeEl.hidden = true; }, 10000);
+}
+
+onEmpireSwitched(({ name }) => {
+  let removed = 0;
+  [...builtMap.entries()].forEach(([key, buildingId]) => {
+    if (!isBuildingAvailable(buildingsById.get(buildingId))) {
+      builtMap.delete(key);
+      removed += 1;
+    }
+  });
+  refresh();
+  showNotice(t(currentLang, "planetSimEmpireSwitchNotice")(name, removed));
+});
+
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
   const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}`;

@@ -48,6 +48,9 @@
           <span class="planet-summary-value" id="planet-summary-population">—</span>
         </div>
         <div class="planet-summary-item planet-summary-item-end">
+          <select id="planet-summary-empire" class="planet-empire-select"></select>
+        </div>
+        <div class="planet-summary-item">
           <select id="planet-summary-data-version" class="planet-data-version-select"></select>
         </div>
       </section>
@@ -58,6 +61,8 @@
         <button type="button" class="planet-main-tab" data-main-tab="body" data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</button>
         <button type="button" class="planet-main-tab" data-main-tab="branches" data-i18n="planetSimMainTabBranches">Sucursales</button>
       </nav>
+
+      <p class="entry-note planet-notice" id="planet-sim-notice" role="status" aria-live="polite" hidden></p>
 
       <div id="planet-tab-panel-planet">
         <section class="planet-header-panel" aria-label="Estado de la colonia">
@@ -146,6 +151,20 @@
       </div>
 
       <section id="planet-tab-panel-empire" hidden>
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="empireProfileHeading">Perfil de imperio</h2>
+          <p class="empire-note" data-i18n="empireProfileNote"></p>
+          <div class="empire-profile-controls">
+            <input type="text" id="empire-profile-name" class="empire-profile-name-input" maxlength="60" data-i18n-attr="placeholder:empireProfileNamePlaceholder" />
+            <button type="button" id="empire-profile-save-new" class="planet-capital-btn" data-i18n="empireProfileSaveNew">Guardar como nuevo</button>
+            <button type="button" id="empire-profile-save" class="planet-capital-btn" data-i18n="empireProfileSave" disabled>Guardar cambios</button>
+            <button type="button" id="empire-profile-rename" class="planet-capital-btn" data-i18n="empireProfileRename" disabled>Renombrar</button>
+            <button type="button" id="empire-profile-delete" class="planet-capital-btn" data-i18n="empireProfileDelete" disabled>Eliminar</button>
+          </div>
+          <p class="empire-profile-state" id="empire-profile-state"></p>
+          <p class="empire-profile-message" id="empire-profile-message" role="status" aria-live="polite"></p>
+        </div>
+
         <div class="planet-slots-panel">
           <h2 class="panel-heading planet-panel-heading" data-i18n="empireEthicsHeading">Éticas</h2>
           <p class="empire-points-label" id="empire-points-label"></p>

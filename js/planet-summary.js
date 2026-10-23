@@ -19,6 +19,8 @@ import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet
 import { PLANET_TYPES, IMAGE_BASE as CELESTIAL_IMAGE_BASE } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
+import { listEmpires, onEmpiresChange } from "./empire-profiles.js";
+import { requestSwitchEmpire } from "./empire.js";
 import { DATA_VERSIONS, VERIFICATION_I18N_KEYS, getDataVersion, verificationSummary } from "./data-version.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -27,6 +29,7 @@ const designationIconEl = document.querySelector("#planet-summary-designation-ic
 const nameInput = document.querySelector("#planet-summary-name");
 const sizeEl = document.querySelector("#planet-summary-size");
 const populationEl = document.querySelector("#planet-summary-population");
+const empireSelect = document.querySelector("#planet-summary-empire");
 const dataVersionSelect = document.querySelector("#planet-summary-data-version");
 
 let currentLang = detectInitialLang();
@@ -50,8 +53,36 @@ function renderDataVersion(state) {
   dataVersionSelect.title = `${t(currentLang, "dataVersionLabel")}\n${t(currentLang, "dataVersionCollections")(summary)}`;
 }
 
+/** Desplegable de imperios guardados (P5.2): "ninguno" = borrador sin guardar; el seleccionado lleva "●" si tiene cambios sin guardar. */
+let empireSignature = null;
+function renderEmpireSelect(state) {
+  if (!empireSelect) return;
+  const empires = listEmpires();
+  const signature = JSON.stringify([currentLang, state.empireId, state.empireModified, empires.map((empire) => [empire.id, empire.name])]);
+  if (signature !== empireSignature) {
+    empireSignature = signature;
+    empireSelect.replaceChildren();
+    const none = document.createElement("option");
+    none.value = "";
+    none.textContent = t(currentLang, "empireProfileNone");
+    empireSelect.append(none);
+    empires.forEach((empire) => {
+      const option = document.createElement("option");
+      option.value = empire.id;
+      option.textContent = state.empireModified && empire.id === state.empireId ? `● ${empire.name}` : empire.name;
+      empireSelect.append(option);
+    });
+    empireSelect.setAttribute("aria-label", t(currentLang, "empireProfileSelectLabel"));
+    empireSelect.title = t(currentLang, "empireProfileSelectLabel");
+  }
+  // Se vuelve a fijar siempre: si el usuario cancela un cambio, el desplegable recupera el imperio vigente.
+  empireSelect.value = state.empireId || "";
+  empireSelect.classList.toggle("is-modified", Boolean(state.empireModified));
+}
+
 function render() {
   const state = getPlanetState();
+  renderEmpireSelect(state);
   renderDataVersion(state);
   const type = PLANET_TYPES.find((entry) => entry.id === state.celestialTypeId);
   const designation = getDesignation(state.designationId);
@@ -102,6 +133,13 @@ if (nameInput) {
   });
 }
 
+if (empireSelect) {
+  empireSelect.addEventListener("change", () => {
+    requestSwitchEmpire(empireSelect.value || null).finally(render);
+  });
+}
+
+onEmpiresChange(render);
 onPlanetStateChange(render);
 
 langButtons.forEach((btn) => {

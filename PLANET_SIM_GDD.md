@@ -93,7 +93,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P2 | Empire context | done |
 | P3 | Housekeeping | done |
 | P4 | Versioning & provenance | done |
-| P5 | Empire profiles | pending |
+| P5 | Empire profiles | done |
 | P6 | Planets & Library | pending |
 | P7 | Data completeness | pending |
 | P8 | Transparency (breakdowns, modifiers) | pending |
@@ -103,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 35/94 tasks (37%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 42/94 tasks (45%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -150,14 +150,14 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P4.4 All existing data initially marked `unverified` (wiki-derived)
 - [x] P4.5 Version stored in saved data; warning on unsupported version at import. Base in place: `stampRuleset()` adds `schemaVersion` + `rulesetId`, `checkRuleset()` returns `ok` / `missing` / `unsupported`; shared state carries `rulesetId`. Actual save/import arrives in P6.
 
-### P5 — Empire profiles (0/7)
-- [ ] P5.1 Save current Imperio tab as a named empire
-- [ ] P5.2 Empire dropdown at the right of `.planet-summary-fixed`
-- [ ] P5.3 Switching applies config and recomputes all dependants
-- [ ] P5.4 Switching deletes all buildings that fail requirements and reports the count
-- [ ] P5.5 localStorage persistence; rename / overwrite / delete
-- [ ] P5.6 Planet state tracks the selected `empireId`
-- [ ] P5.7 Explicit Save when editing a selected profile, with a "modified" indicator (no auto-save); switching empire or loading a planet with unsaved changes opens a confirmation dialog (Save / Don't save / Cancel)
+### P5 — Empire profiles (7/7)
+- [x] P5.1 Save current Imperio tab as a named empire ("Perfil de imperio" panel at the top of the Imperio tab; `js/empire-profiles.js`)
+- [x] P5.2 Empire dropdown at the right of `.planet-summary-fixed` (first option = no saved empire / unsaved draft; "●" marks unsaved changes)
+- [x] P5.3 Switching applies config and recomputes all dependants (`requestSwitchEmpire` → `applyConfig`; anything no longer valid, e.g. an incompatible civic, is dropped, never invented)
+- [x] P5.4 Switching deletes all buildings that fail requirements and reports the count (notice under the summary bar; only on empire switch — manual edits of the Imperio tab still only deactivate, P3.4)
+- [x] P5.5 localStorage persistence (key `codex-ignis-empires`); rename / overwrite / delete
+- [x] P5.6 Planet state tracks the selected `empireId` (and `empireModified`) in `planet-state.js`
+- [x] P5.7 Explicit Save when editing a selected profile, with a "modified" indicator (no auto-save); switching empire with unsaved changes opens a confirmation dialog (Save / Don't save / Cancel) (`js/confirm-dialog.js`). `resolveUnsavedEmpireChanges()` is exported so loading a planet (P6) can reuse it.
 
 ### P6 — Planets & Library (0/10)
 - [ ] P6.1 Planet schema (§6), incl. empire snapshot
@@ -231,6 +231,8 @@ Today these body types are only *selectable* and filter designations; they have 
 
 ## 9. Decisions log and open questions
 **Resolved (2026-10-21):** explicit save when editing a profile; unsaved changes trigger a confirmation dialog before switching empire or loading a planet; deleted empire → planet keeps raw snapshot and is flagged "no empire"; saved configurations are called **planets** (not templates), planet name = saved name, unique, same checks for rename and name edits; card actions include duplicate/export/rename; empire cards use icons only; invalid buildings are deactivated and always marked with the yellow frame (`img/ui/`); wiki files are assumed to be 4.5.2 and are re-uploaded for a final full verification as the last task.
+
+**Decisions taken in P5 (small, not game rules):** empire names are trimmed, 1–60 characters and unique (case-insensitive) among saved empires; with no saved empire selected the tab is an "unsaved draft" and switching to a saved empire replaces it without asking; choosing "no saved empire" keeps the current setup as a draft and does not touch buildings; deleting the selected empire keeps its setup as a draft; saved empires with an unsupported or missing `rulesetId` are kept untouched in localStorage but not listed; the last selected empire is not restored on reload (planets will store it in P6).
 
 **Still open:** none. Yellow frame image path confirmed: `img/ui/blocker_frame_yellow.png`.
 
