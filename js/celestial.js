@@ -52,6 +52,13 @@ function renderGroup(container, category) {
   });
 }
 
+/** Fija el tipo de cuerpo celeste desde fuera (p. ej. al cargar un planeta de la biblioteca, P6). Un id desconocido o null deja el tipo sin elegir. */
+export function setCelestialType(typeId) {
+  selectedTypeId = PLANET_TYPES.some((type) => type.id === typeId) ? typeId : null;
+  updatePlanetState({ celestialTypeId: selectedTypeId });
+  refresh();
+}
+
 function refresh() {
   renderGroup(naturalListEl, "natural");
   renderGroup(artificialListEl, "artificial");

@@ -42,6 +42,9 @@
           <input type="text" id="planet-summary-name" class="planet-summary-name-input" data-i18n-attr="placeholder:planetSummaryNamePlaceholder" placeholder="Nombre del planeta" />
         </div>
         <div class="planet-summary-item">
+          <button type="button" id="planet-summary-save" class="planet-capital-btn" data-i18n="librarySaveShort" data-i18n-attr="title:librarySaveTooltip">Guardar</button>
+        </div>
+        <div class="planet-summary-item">
           <span class="planet-summary-value" id="planet-summary-size">—</span>
         </div>
         <div class="planet-summary-item">
@@ -56,6 +59,7 @@
       </section>
 
       <nav class="planet-main-tabs" role="tablist" aria-label="Secciones del planeta">
+        <button type="button" class="planet-main-tab" data-main-tab="library" data-i18n="planetSimMainTabLibrary">Biblioteca</button>
         <button type="button" class="planet-main-tab is-active" data-main-tab="planet" data-i18n="planetSimMainTabPlanet">Planeta</button>
         <button type="button" class="planet-main-tab" data-main-tab="empire" data-i18n="planetSimMainTabEmpire">Imperio</button>
         <button type="button" class="planet-main-tab" data-main-tab="body" data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</button>
@@ -63,6 +67,31 @@
       </nav>
 
       <p class="entry-note planet-notice" id="planet-sim-notice" role="status" aria-live="polite" hidden></p>
+
+      <section id="planet-tab-panel-library" hidden>
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryHeading">Biblioteca</h2>
+          <p class="empire-note" data-i18n="libraryNote"></p>
+          <p class="empire-profile-state" id="library-current"></p>
+          <div class="empire-profile-controls">
+            <button type="button" id="library-save" class="planet-capital-btn">Guardar planeta</button>
+            <button type="button" id="library-save-new" class="planet-capital-btn" data-i18n="librarySaveAsNew" disabled>Guardar como nuevo</button>
+            <button type="button" id="library-import" class="planet-capital-btn" data-i18n="libraryImport">Importar JSON</button>
+            <input type="file" id="library-import-file" accept=".json,application/json" hidden />
+          </div>
+          <p class="empire-profile-message" id="library-message" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryPlanetsHeading">Planetas guardados</h2>
+          <div id="library-planets" class="library-grid"></div>
+        </div>
+
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryEmpiresHeading">Imperios guardados</h2>
+          <div id="library-empires" class="library-grid"></div>
+        </div>
+      </section>
 
       <div id="planet-tab-panel-planet">
         <section class="planet-header-panel" aria-label="Estado de la colonia">
@@ -214,5 +243,6 @@
     <script type="module" src="js/empire.js"></script>
     <script type="module" src="js/celestial.js"></script>
     <script type="module" src="js/planet-summary.js"></script>
+    <script type="module" src="js/planet-library-ui.js"></script>
   </body>
 </html>

@@ -2438,3 +2438,128 @@ h1 {
     color: #ff8a7a;
     border-color: #ff8a7a;
 }
+
+/* ── Biblioteca de planetas e imperios (P6) ───────────────────────────── */
+
+/* :not([hidden]) imprescindible: ver nota de #planet-tab-panel-empire. */
+#planet-tab-panel-library:not([hidden]) {
+    display: grid;
+    gap: 1.4rem;
+}
+
+.library-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: .8rem;
+}
+
+.library-card {
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+    padding: .8rem .9rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+}
+
+.library-card.is-current {
+    border-color: var(--accent);
+    background: rgba(167, 245, 106, .06);
+}
+
+.library-card-head {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+}
+
+.library-card-title {
+    min-width: 0;
+    color: var(--text);
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+}
+
+.library-card-facts {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+}
+
+.library-fact {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+    color: var(--muted);
+    font-size: .72rem;
+}
+
+.library-icon-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+}
+
+.library-icon {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: contain;
+}
+
+.library-card-head .library-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+}
+
+.library-icon-round {
+    object-fit: cover;
+    border: 1px solid var(--line-soft);
+    border-radius: 50%;
+}
+
+.library-fact .library-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+
+.library-badge {
+    padding: .1rem .4rem;
+    border: 1px solid #ffd84a;
+    color: #ffd84a;
+    font: 700 .62rem var(--mono);
+    text-transform: uppercase;
+}
+
+.library-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    margin-top: auto;
+}
+
+.planet-capital-btn.is-primary {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.planet-capital-btn.is-danger {
+    color: #ff8a7a;
+    border-color: #ff8a7a;
+}
+
+.planet-summary-name-input.is-invalid {
+    border-color: #ff8a7a;
+}
+
+.confirm-dialog-input {
+    width: 100%;
+}
+
+.confirm-dialog-error {
+    min-height: 1.1rem;
+    margin: .4rem 0 1rem;
+    color: #ff8a7a;
+    font-size: .74rem;
+}

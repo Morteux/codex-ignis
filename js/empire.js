@@ -482,6 +482,29 @@ export async function requestSwitchEmpire(targetId) {
   if (target) emitEmpireSwitched({ empireId: target.id, name: target.name });
 }
 
+/**
+ * Aplica el imperio de un planeta que se está cargando de la biblioteca (P6).
+ * Si el imperio guardado sigue existiendo se usa su versión ACTUAL; si ya no
+ * existe (o el planeta se guardó con un borrador), se aplica la copia en bruto
+ * del planeta (`snapshot`) como borrador sin guardar. Con cambios sin guardar
+ * en el imperio actual pide confirmación (Guardar / No guardar / Cancelar).
+ * Devuelve false si el usuario cancela. No emite el aviso de cambio de imperio:
+ * quien carga el planeta informa de los edificios inactivos.
+ */
+export async function loadPlanetEmpire(empireId, snapshot) {
+  if (!(await resolveUnsavedEmpireChanges())) return false;
+  const target = empireId ? getEmpire(empireId) : null;
+  if (target) {
+    selectedEmpireId = target.id;
+    applyConfig(target);
+  } else {
+    selectedEmpireId = null;
+    if (snapshot) applyConfig(snapshot);
+  }
+  refresh();
+  return true;
+}
+
 if (profileSaveNewBtn) {
   profileSaveNewBtn.addEventListener("click", () => {
     const result = createEmpire(profileNameEl ? profileNameEl.value : "", currentConfig());

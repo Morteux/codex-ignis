@@ -19,6 +19,7 @@ const state = {
   speciesType: "organic",
   empireId: null,
   empireModified: false,
+  planetId: null, // id del planeta guardado que se está editando (null = borrador sin guardar), ver js/planet-library.js
   planetName: "",
   planetSize: null,
   populationText: null

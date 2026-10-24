@@ -95,6 +95,7 @@ const districtsUsedLabel = document.querySelector("#planet-districts-used-label"
 const metaDescription = document.querySelector('meta[name="description"]');
 const mainTabButtons = document.querySelectorAll(".planet-main-tab[data-main-tab]");
 const mainTabPanels = {
+  library: document.querySelector("#planet-tab-panel-library"),
   planet: document.querySelector("#planet-tab-panel-planet"),
   empire: document.querySelector("#planet-tab-panel-empire"),
   body: document.querySelector("#planet-tab-panel-body"),
@@ -1796,12 +1797,100 @@ if (metaDescription && !metaDescription.dataset.i18nAttr) {
  */
 const noticeEl = document.querySelector("#planet-sim-notice");
 let noticeTimer = null;
-function showNotice(text) {
+export function showNotice(text) {
   if (!noticeEl) return;
   noticeEl.textContent = text;
   noticeEl.hidden = false;
   clearTimeout(noticeTimer);
   noticeTimer = setTimeout(() => { noticeEl.hidden = true; }, 10000);
+}
+
+/**
+ * Captura de la configuración del planeta para guardarlo en la biblioteca (P6,
+ * ver js/planet-library.js para el formato). No incluye el nombre ni el imperio:
+ * de eso se ocupa js/planet-library-ui.js, que los toma del estado compartido.
+ */
+export function capturePlanetConfig() {
+  const totals = computeTotals();
+  const staffingOverrides = {};
+  Object.entries(totals.jobCapacities).forEach(([jobId, capacity]) => {
+    const staffed = jobAssignments[jobId];
+    if (capacity > 0 && staffed !== undefined && staffed < capacity) staffingOverrides[jobId] = staffed;
+  });
+  const built = {};
+  builtMap.forEach((buildingId, key) => { built[key] = buildingId; });
+  return {
+    celestialTypeId: getPlanetState().celestialTypeId,
+    designationId: selectedDesignationId || null,
+    planetSize,
+    capitalTier: currentCapital().tier,
+    districts: JSON.parse(JSON.stringify(districtState)),
+    built,
+    staffingOverrides
+  };
+}
+
+/**
+ * Aplica un planeta guardado al simulador, sustituyendo lo que hubiera. Antes hay
+ * que haber aplicado su imperio y su tipo de cuerpo celeste (la designación se
+ * valida contra ese tipo y los requisitos de edificios contra el imperio). Lo que
+ * ya no existe (especialización, edificio...) se ignora, nunca se inventa; los
+ * edificios que no cumplen requisitos o cuya ranura está bloqueada se conservan
+ * como inactivos (P3.4). Devuelve cuántos edificios han quedado inactivos.
+ *
+ * Simplificaciones: el tamaño se sube hasta el total de distritos si el archivo trae
+ * más distritos que tamaño; los empleos con dotación reducida se restauran solo si
+ * el empleo sigue existiendo (se recorta a su capacidad actual).
+ */
+export function applyPlanetConfig(config) {
+  selectedDesignationId = getDesignation(config.designationId) ? config.designationId : "";
+
+  // Distritos: solo ids de especialización que existen.
+  const urban = config.districts?.urban || {};
+  districtState.urban.count = Math.max(URBAN_MIN_COUNT, Number(urban.count) || URBAN_MIN_COUNT);
+  districtState.urban.slots = [0, 1].map((index) => (urbanSpecOptionsById.has(urban.slots?.[index]) ? urban.slots[index] : null));
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    const saved = config.districts?.[cat] || {};
+    const count = Math.max(0, Number(saved.count) || 0);
+    districtState[cat].count = count;
+    districtState[cat].optionId = count > 0 && resourceSpecOptionsById[cat].has(saved.optionId) ? saved.optionId : null;
+  });
+  planetSize = Math.max(Math.floor(Number(config.planetSize)) || 1, totalDistrictCount());
+  if (planetSizeInput) planetSizeInput.value = String(planetSize);
+
+  // Edificio capital: el nivel guardado, o el más alto que no lo supere si el conjunto de la autoridad no lo tiene.
+  const capitalSet = currentCapitalSet();
+  let tierIndex = 0;
+  capitalSet.forEach((entry, index) => { if (entry.tier <= (Number(config.capitalTier) || 1)) tierIndex = index; });
+  capitalTierIndex = tierIndex;
+  lastCapitalSet = capitalSet;
+
+  // Edificios y dotación: se parte de cero y se restauran las reducciones tras recalcular capacidades.
+  builtMap.clear();
+  Object.entries(config.built || {}).forEach(([key, buildingId]) => {
+    if (buildingsById.has(buildingId)) builtMap.set(key, buildingId);
+  });
+  Object.keys(jobAssignments).forEach((jobId) => { delete jobAssignments[jobId]; });
+  Object.keys(jobCapacityMemo).forEach((jobId) => { delete jobCapacityMemo[jobId]; });
+  selectedSlotKey = null;
+  catalogSlotSignature = null;
+
+  updatePlanetState({ designationId: selectedDesignationId || null });
+  renderDesignationSelect();
+  refresh();
+
+  Object.entries(config.staffingOverrides || {}).forEach(([jobId, staffed]) => {
+    const capacity = jobCapacityMemo[jobId];
+    if (capacity !== undefined) jobAssignments[jobId] = Math.max(0, Math.min(capacity, Number(staffed) || 0));
+  });
+  refresh();
+
+  const unlocked = unlockedKeys();
+  let inactive = 0;
+  builtMap.forEach((buildingId, key) => {
+    if (inactiveReason(key, buildingsById.get(buildingId), unlocked)) inactive += 1;
+  });
+  return inactive;
 }
 
 onEmpireSwitched(({ name }) => {

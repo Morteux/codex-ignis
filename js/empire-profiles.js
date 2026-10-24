@@ -136,6 +136,60 @@ export function deleteEmpire(id) {
   return { ok: true, profile: removed, persisted };
 }
 
+/** ¿Ya hay un imperio guardado con ese nombre (sin distinguir mayúsculas)? `ignoreId` excluye al propio imperio al renombrar. */
+export function isEmpireNameTaken(rawName, ignoreId) {
+  return validateName(rawName, ignoreId).error === "duplicate";
+}
+
+/**
+ * Nombre libre a partir de `base`: si está ocupado añade " 2", " 3"... (recortando la
+ * base para no pasar de `maxLength`). `isTaken(nombre)` decide qué está ocupado; se
+ * reutiliza para los planetas (js/planet-library.js).
+ */
+export function makeUniqueName(base, isTaken, maxLength = MAX_EMPIRE_NAME_LENGTH) {
+  const clean = String(base ?? "").trim().slice(0, maxLength);
+  if (!isTaken(clean)) return clean;
+  for (let n = 2; n < 1000; n += 1) {
+    const suffix = ` ${n}`;
+    const candidate = `${clean.slice(0, maxLength - suffix.length)}${suffix}`;
+    if (!isTaken(candidate)) return candidate;
+  }
+  return clean;
+}
+
+/** Duplica un imperio guardado con el nombre dado (debe ser único). Mismo resultado que createEmpire. */
+export function duplicateEmpire(id, rawName) {
+  const source = getEmpire(id);
+  if (!source) return { ok: false, error: "notFound" };
+  return createEmpire(rawName, source);
+}
+
+/** Objeto listo para exportar a JSON (P6.8): el perfil con su versión de datos y un `type` para distinguirlo de un planeta al importar. */
+export function exportEmpire(id) {
+  const profile = getEmpire(id);
+  if (!profile) return null;
+  return { type: "empire", ...profile };
+}
+
+/**
+ * Configuración de imperio saneada a partir de un objeto importado (que no es de fiar):
+ * solo se aceptan listas de textos y textos. Devuelve null si no tiene la forma esperada.
+ * Que cada id exista de verdad lo comprueba después la pestaña Imperio al aplicarlo.
+ */
+export function sanitizeEmpireConfig(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const strings = (value) => (Array.isArray(value) ? value.filter((entry) => typeof entry === "string") : null);
+  const ethicIds = strings(raw.ethicIds);
+  const civicIds = strings(raw.civicIds);
+  if (!ethicIds || !civicIds) return null;
+  return normalizeConfig({
+    ethicIds,
+    authorityId: typeof raw.authorityId === "string" ? raw.authorityId : null,
+    civicIds,
+    speciesType: typeof raw.speciesType === "string" ? raw.speciesType : "organic"
+  });
+}
+
 /** Se llama a `fn` cada vez que cambia la lista de imperios guardados. */
 export function onEmpiresChange(fn) {
   listeners.add(fn);

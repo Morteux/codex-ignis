@@ -94,7 +94,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P3 | Housekeeping | done |
 | P4 | Versioning & provenance | done |
 | P5 | Empire profiles | done |
-| P6 | Planets & Library | pending |
+| P6 | Planets & Library | done |
 | P7 | Data completeness | pending |
 | P8 | Transparency (breakdowns, modifiers) | pending |
 | P9 | Planetary conditions | pending |
@@ -103,7 +103,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P12 | Polish & QA | pending |
 | P13 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 42/94 tasks (45%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 52/94 tasks (55%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -159,17 +159,17 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P5.6 Planet state tracks the selected `empireId` (and `empireModified`) in `planet-state.js`
 - [x] P5.7 Explicit Save when editing a selected profile, with a "modified" indicator (no auto-save); switching empire with unsaved changes opens a confirmation dialog (Save / Don't save / Cancel) (`js/confirm-dialog.js`). `resolveUnsavedEmpireChanges()` is exported so loading a planet (P6) can reuse it.
 
-### P6 — Planets & Library (0/10)
-- [ ] P6.1 Planet schema (§6), incl. empire snapshot
-- [ ] P6.2 Save / load / delete planets (localStorage); name unique, same checks for rename and summary-bar edits
-- [ ] P6.3 Library button at far left of the tab list
-- [ ] P6.4 Planet cards (body image + name, empire, size, designation)
-- [ ] P6.5 Empire cards (name + ethic / authority / civic icons, no text labels)
-- [ ] P6.6 Planet card actions: open, duplicate, export, rename, delete
-- [ ] P6.7 Empire card actions: duplicate, export, rename, delete
-- [ ] P6.8 JSON export/import of planets and empires with version check
-- [ ] P6.9 Deleted empire: planet keeps its raw empire snapshot and is flagged "no empire"
-- [ ] P6.10 Unique-name validation (save, rename, duplicate, import conflicts)
+### P6 — Planets & Library (10/10)
+- [x] P6.1 Planet schema (§6), incl. empire snapshot Implemented: Implemented in `js/planet-library.js` (`sanitizePlanetData`; format documented in the file header): `celestialTypeId, designationId, planetSize, capitalTier, districts, built (slot key → building id), staffingOverrides (only reduced jobs, ×100 scale), empireId, empireSnapshot ({name, ethicIds, authorityId, civicIds, speciesType}), noEmpire`, stamped with `schemaVersion` + `rulesetId`. The planet name lives in the summary bar (`planetName`); the shared state now also tracks `planetId` (null = unsaved draft).
+- [x] P6.2 Save / load / delete planets (localStorage); name unique, same checks for rename and summary-bar edits Implemented: `createPlanet / updatePlanet / deletePlanet`, localStorage key `codex-ignis-planets`; planets of an unsupported/missing ruleset are kept untouched but not listed. **Save** button in the summary bar and in the Library; with a saved planet loaded it overwrites it (name re-checked), "Save as new" always creates one. Editing the summary-bar name never auto-saves; a name that clashes with another saved planet turns the field red and the exact error shows on save.
+- [x] P6.3 Library button at far left of the tab list Implemented: **Library** tab, first (far left) in the main tab list (`js/planet-library-ui.js`, panel `#planet-tab-panel-library`).
+- [x] P6.4 Planet cards (body image + name, empire, size, designation) Implemented: Compact cards: body icon + name, designation icon, empire (authority icon + name), size; the planet being edited is highlighted.
+- [x] P6.5 Empire cards (name + ethic / authority / civic icons, no text labels) Implemented: Cards show name + ethic / authority / civic icons only (names in tooltips).
+- [x] P6.6 Planet card actions: open, duplicate, export, rename, delete Implemented: Open (applies empire → body type → planet; reports how many buildings ended up inactive, none are deleted), duplicate ("name (copy)", made unique), export JSON, rename (dialog `promptText` in `confirm-dialog.js`, same checks as save), delete (confirmation).
+- [x] P6.7 Empire card actions: duplicate, export, rename, delete Implemented: Duplicate, export, rename, delete (`empire-profiles.js`: `duplicateEmpire`, `exportEmpire`, `makeUniqueName`). "Apply this empire" is still in the backlog.
+- [x] P6.8 JSON export/import of planets and empires with version check Implemented: Import button: accepts `{type: "planet" | "empire"}` files. Missing `rulesetId`, unsupported ruleset or a newer `schemaVersion` → rejected with a message, never reinterpreted; contents are sanitized field by field; new id always assigned. Export file names: `planeta-<slug>.json` / `imperio-<slug>.json`.
+- [x] P6.9 Deleted empire: planet keeps its raw empire snapshot and is flagged "no empire" Implemented: `noEmpire` is recomputed whenever the empire list changes (`empireId` set but not found). Loading such a planet applies the stored snapshot as an unsaved empire draft; the card shows a "no empire" badge. If the empire still exists, its CURRENT version is used on load (not the snapshot). Saving with unsaved empire edits asks first (Save / Don't save / Cancel); if discarded, the planet stores the edited config as snapshot with no `empireId`.
+- [x] P6.10 Unique-name validation (save, rename, duplicate, import conflicts) Implemented: Single check `checkPlanetName` (trim, 1–60 chars, unique case-insensitive) used by save, rename (card and summary bar), duplicate (auto name) and import (conflict dialog offering a free name like "X 2"). Empires use the same rule through `empire-profiles.js`.
 
 ### P7 — Data completeness (0/9)
 Built from the wiki pages already supplied; value re-verification happens in P13. Nothing is invented.
@@ -233,6 +233,8 @@ Today these body types are only *selectable* and filter designations; they have 
 **Resolved (2026-10-21):** explicit save when editing a profile; unsaved changes trigger a confirmation dialog before switching empire or loading a planet; deleted empire → planet keeps raw snapshot and is flagged "no empire"; saved configurations are called **planets** (not templates), planet name = saved name, unique, same checks for rename and name edits; card actions include duplicate/export/rename; empire cards use icons only; invalid buildings are deactivated and always marked with the yellow frame (`img/ui/`); wiki files are assumed to be 4.5.2 and are re-uploaded for a final full verification as the last task.
 
 **Decisions taken in P5 (small, not game rules):** empire names are trimmed, 1–60 characters and unique (case-insensitive) among saved empires; with no saved empire selected the tab is an "unsaved draft" and switching to a saved empire replaces it without asking; choosing "no saved empire" keeps the current setup as a draft and does not touch buildings; deleting the selected empire keeps its setup as a draft; saved empires with an unsupported or missing `rulesetId` are kept untouched in localStorage but not listed; the last selected empire is not restored on reload (planets will store it in P6).
+
+**Decisions taken in P6 (small, not game rules):** loading a planet replaces the one being edited without asking (only unsaved EMPIRE changes ask); an exported planet keeps its old `empireId` (it will show "no empire" if that empire does not exist in the importing browser, and works from the snapshot); the planet size is raised to the district total if a file has more districts than size.
 
 **Still open:** none. Yellow frame image path confirmed: `img/ui/blocker_frame_yellow.png`.
 
