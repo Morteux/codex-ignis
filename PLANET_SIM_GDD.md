@@ -1,7 +1,7 @@
 # GDD: Stellaris Planet Economy Sandbox (Codex Ignis — `planet-sim.html`)
 
 **Purpose of this document:** working context + phase tracker for the planet simulator. It merges the original GDD with the actual state of the code (project zip of 2026-10-20) and the owner's decisions of 2026-10-21.
-**Ruleset:** Stellaris PC 4.5.2 "Cygnus" (`stellaris-pc-4.5.2`). Owner decision: ALL data is tagged as 4.5.2. Existing data was transcribed from the wiki (pages for 4.3/4.4) and is flagged `unverified` until the final verification pass (Phase 13).
+**Ruleset:** Stellaris PC 4.5.2 "Cygnus" (`stellaris-pc-4.5.2`). Owner decision: ALL data is tagged as 4.5.2. Existing data was transcribed from the wiki (pages for 4.3/4.4) and is flagged `unverified` until the final verification pass (Phase 14).
 **Scope:** only the planet simulator. The wiki, bingo and legal pages of Codex Ignis are out of scope for this GDD.
 **Rule #1 (owner):** never invent rules, numbers or names. If wiki data is missing or ambiguous, ask. Document every simplification in code and here.
 
@@ -43,7 +43,7 @@ Browser sandbox to theorycraft the economy of **one planet**: pick districts, bu
 
 **Not implemented (vs. original GDD):** version registry/selector/provenance, planetary conditions (happiness, stability, crime, housing/amenity demand), stability effects, trade-conversion policy, per-resource breakdown, modifiers panel, external-income separation, scenario save/load, JSON import/export, comparison, monthly timeline, special planets' own districts.
 
-**Known gaps in current data** (see Phase 7; value re-verification in Phase 13): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; designations are not filtered by ethic/authority/civic requirements (P7.9); 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet).
+**Known gaps in current data** (see Phase 7; value re-verification in Phase 14): district housing/jobs/upkeep and the −200 housing penalty of urban specializations; extra bonuses of Mega-Forges/Nano-Plants/Fabricators/Repli-Complexes (scope unclear on wiki); building cost strings unused and some wrong; origin-gated buildings and Solar Farming Bays habitat-only rule; capital secondary jobs/defense armies; designations are not filtered by ethic/authority/civic requirements (P7.9); 66 civics missing from the catalog (12 standard, 12 hive, 18 machine, 24 corporate; no icons yet).
 
 ## 4. New features (owner requests)
 
@@ -95,15 +95,16 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P4 | Versioning & provenance | done |
 | P5 | Empire profiles | done |
 | P6 | Planets & Library | done |
-| P7 | Data completeness | pending |
+| P7 | Data completeness | in progress (6/9) |
 | P8 | Transparency (breakdowns, modifiers) | pending |
 | P9 | Planetary conditions | pending |
 | P10 | Special planets | pending |
 | P11 | Comparison & timeline | pending |
-| P12 | Polish & QA | pending |
-| P13 | Final 4.5.2 data verification (last task) | pending |
+| P12 | UI decoration (icons) | in progress |
+| P13 | Polish & QA | pending |
+| P14 | Final 4.5.2 data verification (last task) | pending |
 
-**Overall: 52/94 tasks (55%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 59/96 tasks (61%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -171,17 +172,17 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 - [x] P6.9 Deleted empire: planet keeps its raw empire snapshot and is flagged "no empire" Implemented: `noEmpire` is recomputed whenever the empire list changes (`empireId` set but not found). Loading such a planet applies the stored snapshot as an unsaved empire draft; the card shows a "no empire" badge. If the empire still exists, its CURRENT version is used on load (not the snapshot). Saving with unsaved empire edits asks first (Save / Don't save / Cancel); if discarded, the planet stores the edited config as snapshot with no `empireId`.
 - [x] P6.10 Unique-name validation (save, rename, duplicate, import conflicts) Implemented: Single check `checkPlanetName` (trim, 1–60 chars, unique case-insensitive) used by save, rename (card and summary bar), duplicate (auto name) and import (conflict dialog offering a free name like "X 2"). Empires use the same rule through `empire-profiles.js`.
 
-### P7 — Data completeness (0/9)
-Built from the wiki pages already supplied; value re-verification happens in P13. Nothing is invented.
-- [ ] P7.1 Districts: housing/jobs/upkeep and the −200 housing urban-specialization penalty
+### P7 — Data completeness (6/9)
+Built from the wiki pages already supplied; value re-verification happens in P14. Nothing is invented.
+- [x] P7.1 Districts: housing/jobs/upkeep and the −200 housing urban-specialization penalty Implemented: `DISTRICTS.*.housing/upkeep` (×100 housing, wiki 4.5 "Districts"). Primary (urban) district +1000 housing (hive +1200, +600 more on a Hive World; machine +1000), −2 energy upkeep; each chosen urban specialization −200 housing per copy; Agrarian Idyll −200. Resource districts +200 housing (+100 gestalt, +300 Agrarian Idyll), −1 energy upkeep. NOT applied (need a decision): the technology/tradition-conditional housing bonuses (Weather Control Systems, Anti-Gravity Engineering, Public Works Division, Optimized Nexus, Extended Hives). Resource-district specializations have no housing penalty on the 4.5 page (the −200 variants belong to Wilderness).
 - [ ] P7.2 Extra bonuses of Mega-Forges / Nano-Plants / Fabricators / Repli-Complexes (scope to clarify)
-- [ ] P7.3 Building costs: show verified costs or drop the strings
-- [ ] P7.4 Missing building rules (Solar Farming Bays habitat-only, origin-gated buildings…)
-- [ ] P7.5 Capital secondary jobs and defense armies
-- [ ] P7.6 Add the 66 missing civics (+ icons)
-- [ ] P7.7 Apply more empire effects (worker/specialist efficiency via strata, etc.)
-- [ ] P7.8 Expand the building catalog from supplied wiki pages
-- [ ] P7.9 Designation requirements: today the designation list is filtered only by celestial body type (`allowedDesignationCategories`), so designations that need a specific ethic, authority, civic or species type (e.g. hive/machine-only, spiritualist-only) can be picked with an incompatible empire. Read the requirements from the Designation wiki page, store them as `requires` rules on each designation (reusing the `building-requirements.js` rule types where possible), hide or disable unavailable designations in the dropdown with the reason, and when an empire/ethic/authority change invalidates the selected designation, reset it to "no designation" and report it (buildings stay, as in P5.4; only the designation is reset)
+- [x] P7.3 Building costs: show verified costs or drop the strings Implemented: `cost: { time, items: [{ resource, amount, when? }] }` read from the 4.5 Industry/Resource/Research/Unity/Buildings pages for the 36 buildings whose rows parse unambiguously (shown in the catalog tooltip); the other 18 (resource-output upgrades, Unity/synaptic/uplink chains, Temple chain) had their old cost string dropped. Cross-checking against the 4.5 pages also corrected the upkeep of Mega-Forges/Nano-Plants (volatile motes), Fabricators/Repli-Complexes (rare crystals), Research/Advanced Complexes (exotic gases), Hall of Judgment/Center of Guidance (volatile motes), Stronghold (−1 energy), Fortress (−1 energy, −1 volatile motes) and Paradise Domes (rare crystals).
+- [x] P7.4 Missing building rules (Solar Farming Bays habitat-only, origin-gated buildings…) Implemented for district specializations only (`requires` on the options, same rule types as buildings): Solar Farming Bays (Habitat only), Agrarian Villages (Agrarian Idyll, no Anglers), Coastal Hamlets (Agrarian Idyll + Anglers). Unavailable options show disabled with the reason; a chosen specialization that stops being valid is removed with a notice (its buildings turn inactive). Origin-gated items (Subterranean Urbanization) and feature-gated ones (Gravitonic Mines) stay unmodelled; building origin gates remain a gap (origins are in the backlog).
+- [x] P7.5 Capital secondary jobs and defense armies Implemented: `defenseArmies` on all capitals (standard 4/8/16/16, hive 4/8/16, machine 4/8/16/16; shown in the non-resource effects panel) and the Colonist job of the Colony Shelter (+5 amenities, +1 of the species resource; its stability/happiness/build-speed effects and the tradition/civic-conditional secondary jobs are not modelled).
+- [ ] P7.6 Add the 66 missing civics (+ icons). Blocked: the supplied wiki folder has no images and `StellarisAssets` has no icons for them; needs the icon files (or a decision on a placeholder) plus es/jp names
+- [x] P7.7 Apply more empire effects (worker/specialist efficiency via strata, etc.) Implemented: `{ type: "stratumEfficiency", stratum }` in `empire-data.js` (`collectAppliedEffects` now also returns `stratumEfficiency`). Authoritarian/Fanatic Authoritarian add +5%/+10% worker job efficiency and Egalitarian/Fanatic Egalitarian +5%/+10% specialist job efficiency (values confirmed on the 4.5 Ethics page) to the positive output of every job of that stratum, added to the designation/building efficiency (upkeep is not affected). Still informational: research speed, stability, edict costs, faction output, ship/claim effects and everything else the simulator has no stat for.
+- [ ] P7.8 Expand the building catalog from supplied wiki pages. Not started: the 4.5 Research/Unity/Resource tables keep jobs, effects and requirements in separate cells that do not parse reliably (e.g. no per-building numbers next to the Field Dynamics Center rows); needs a decision on which buildings to add first
+- [x] P7.9 Designation requirements: today the designation list is filtered only by celestial body type (`allowedDesignationCategories`), so designations that need a specific ethic, authority, civic or species type (e.g. hive/machine-only, spiritualist-only) can be picked with an incompatible empire. Read the requirements from the Designation wiki page, store them as `requires` rules on each designation (reusing the `building-requirements.js` rule types where possible), hide or disable unavailable designations in the dropdown with the reason, and when an empire/ethic/authority change invalidates the selected designation, reset it to "no designation" and report it (buildings stay, as in P5.4; only the designation is reset) Implemented: `requires` on designations (`js/designation-data.js`, rules from the 4.5 Designation page; new rule types `celestial` and `notSpecies`). The dropdown shows unavailable designations disabled with the reason; if an ethic/authority/civic/species/body change invalidates the chosen one it resets to "no designation" with a notice (buildings are kept). Origin-, planet-modifier- and tradition-gated designations remain ungated (documented in the file).
 
 ### P8 — Transparency (0/7)
 - [ ] P8.1 Per-resource breakdown (base, jobs, modifiers, gross, job upkeep, infra upkeep, net)
@@ -216,18 +217,23 @@ Today these body types are only *selectable* and filter designations; they have 
 - [ ] P11.3 Deficit and stockpile-exhaustion flags
 - [ ] P11.4 Optional sandbox override for illegal combinations
 
-### P12 — Polish & QA (0/5)
-- [ ] P12.1 Mobile layout review of all tabs
-- [ ] P12.2 i18n parity check for all new strings (es/en/jp)
-- [ ] P12.3 Automated UI smoke tests (tabs hidden/visible, save/load, empire switch)
-- [ ] P12.4 Accessibility pass
-- [ ] P12.5 Decide fate of the Sucursales (branch offices) tab
+### P12 — UI decoration (icons) (1/2)
+Purely decorative; placed before Polish & QA so any layout side effects can still be adjusted. Icons live in `img/ui/` (owner-supplied).
+- [x] P12.1 First pass: `Planet_Size` (summary bar, header stat, library cards), `Pop_job` (staffed jobs in the summary bar), `Housing` (header stat), `Tooltip_building` (slots heading, Buildings tab), `Tooltip_district` (Districts tab, header stat), `Tooltip_zone` (specialization status lines), `Job_clerk` (jobs summary heading), `Focus_development` (production heading), `Planet` / `Icon_council` / `Focus_core` / `Faction_support` / `Menu_icon_planets_and_sectors` (main tabs), `Menu_icon_leaders` / `Menu_icon_traditions` / `Colony_type_automated` (Imperio tab headings). `Faction_support` and `Colony_type_automated` were placed loosely (Sucursales tab, species-type heading); `Menu_icon_technology` is still unused. Markup: `.ui-icon` in `planet-sim.html` (the label text is wrapped in a `<span data-i18n>` so translations don't wipe the icon).
+- [ ] P12.2 Owner review of the web and final placement/adjustment of the icons (open: which icon goes where is the owner's call)
 
-### P13 — Final 4.5.2 data verification (0/4) — last task of the roadmap
-- [ ] P13.1 Owner re-uploads the updated wiki files once implementation is finished
-- [ ] P13.2 Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources) against them
-- [ ] P13.3 Update data and `verification` statuses (`unverified` → `wiki-verified`)
-- [ ] P13.4 Deliver the final updated data files
+### P13 — Polish & QA (0/5)
+- [ ] P13.1 Mobile layout review of all tabs
+- [ ] P13.2 i18n parity check for all new strings (es/en/jp)
+- [ ] P13.3 Automated UI smoke tests (tabs hidden/visible, save/load, empire switch)
+- [ ] P13.4 Accessibility pass
+- [ ] P13.5 Decide fate of the Sucursales (branch offices) tab
+
+### P14 — Final 4.5.2 data verification (0/4) — last task of the roadmap
+- [ ] P14.1 Owner re-uploads the updated wiki files once implementation is finished
+- [ ] P14.2 Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources) against them
+- [ ] P14.3 Update data and `verification` statuses (`unverified` → `wiki-verified`)
+- [ ] P14.4 Deliver the final updated data files
 
 ## 9. Decisions log and open questions
 **Resolved (2026-10-21):** explicit save when editing a profile; unsaved changes trigger a confirmation dialog before switching empire or loading a planet; deleted empire → planet keeps raw snapshot and is flagged "no empire"; saved configurations are called **planets** (not templates), planet name = saved name, unique, same checks for rename and name edits; card actions include duplicate/export/rename; empire cards use icons only; invalid buildings are deactivated and always marked with the yellow frame (`img/ui/`); wiki files are assumed to be 4.5.2 and are re-uploaded for a final full verification as the last task.

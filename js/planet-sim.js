@@ -64,10 +64,10 @@ import {
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
-import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
-import { buildingRequirementsMet, requirementContextKey } from "./building-requirements.js";
-import { allowedDesignationCategories } from "./celestial-data.js";
-import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation } from "./designation-data.js";
+import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES } from "./empire-data.js";
+import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
+import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
+import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
@@ -104,7 +104,7 @@ const mainTabPanels = {
 
 // Iconos de cabecera (vivienda/servicios): estáticos, no dependen del
 // idioma ni del estado, así que se fijan una única vez al cargar.
-if (statHousingIcon) statHousingIcon.src = `${IMAGE_BASE}${HEADER_ICONS.housing}`;
+if (statHousingIcon) statHousingIcon.src = "img/ui/Housing.png";
 if (statAmenitiesIcon) statAmenitiesIcon.src = `${IMAGE_BASE}${HEADER_ICONS.amenities}`;
 
 let currentLang = detectInitialLang();
@@ -238,6 +238,7 @@ function requirementContext() {
     civicIds: state.civicIds || [],
     designationId: selectedDesignationId,
     celestialTypeId: state.celestialTypeId,
+    speciesType: state.speciesType,
     capitalTierNumber: currentCapital().tier
   };
 }
@@ -436,6 +437,33 @@ function computeTotals() {
   const amenityBuildings = new Map(); // id de edificio -> { count, amount }
   Object.entries(capital.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
 
+  // Vivienda y mantenimiento de los distritos (P7.1). Contexto del imperio: gestalt,
+  // autoridad (el distrito primario cambia), Idilio Agrario y mundo colmena.
+  const districtCtx = getPlanetState();
+  const districtGestalt = ethicsSatisfy(districtCtx.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
+  const agrarianIdyll = (districtCtx.civicIds || []).includes("principleAgrarianIdyll");
+  const urbanDef = DISTRICTS.urban;
+  if (districtState.urban.count > 0) {
+    const count = districtState.urban.count;
+    let perDistrict = urbanDef.housingByAuthority[districtCtx.authorityId] ?? urbanDef.housing;
+    if (districtCtx.authorityId === "hiveMind" && districtCtx.celestialTypeId === "hive") perDistrict += urbanDef.hiveWorldHousing;
+    if (agrarianIdyll) perDistrict += urbanDef.agrarianIdyllHousing;
+    districtState.urban.slots.forEach((optionId) => {
+      const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+      if (option) perDistrict += option.housing || 0;
+    });
+    housing += divideEffect(perDistrict * count);
+    Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count));
+  }
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    const def = DISTRICTS[cat];
+    const count = districtState[cat].count;
+    if (count <= 0) return;
+    const perDistrict = def.housing + (districtGestalt ? def.gestaltHousing : 0) + (agrarianIdyll ? def.agrarianIdyllHousing : 0);
+    housing += divideEffect(perDistrict * count);
+    Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count));
+  });
+
   // Distritos de recursos básicos: empleo base por copia, y bonus de la
   // especialización elegida (si hay una) por copia.
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
@@ -519,6 +547,8 @@ function computeTotals() {
   // sobre la producción, no sobre el mantenimiento).
   const jobUnitOutputs = {};
   const empireState = getPlanetState();
+  // Eficacia laboral por estrato de las éticas/autoridad (P7.7): se calcula antes del bucle de empleos.
+  const empireStratumEfficiency = collectAppliedEffects(empireState.ethicIds, empireState.authorityId).stratumEfficiency;
   const gestaltEmpire = ethicsSatisfy(empireState.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   const allowedSpecies = allowedSpeciesTypes(empireState.authorityId);
   const speciesType = SPECIES_TYPES.find((type) => type.id === empireState.speciesType && allowedSpecies.includes(type.id))
@@ -533,13 +563,15 @@ function computeTotals() {
       const isMachine = speciesType.id === "machine";
       unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) - (isMachine ? gestaltUpkeep.machine : gestaltUpkeep.hive);
     }
+    // Colonista (Refugio Colonial, P7.5): +1 del recurso propio de la especie (orgánica comida, litoide minerales, infernal aleaciones, máquina energía).
+    if (jobId === "colonist") unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) + 1;
     Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
     // Eficacia laboral (designación + edificios): puede ser positiva o negativa
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
     // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
-    const efficiencyBonus = (designation?.jobEfficiency?.[jobId] || 0) + (jobEfficiencyBonus[jobId] || 0);
+    const efficiencyBonus = (designation?.jobEfficiency?.[jobId] || 0) + (jobEfficiencyBonus[jobId] || 0) + (empireStratumEfficiency[JOBS[jobId]?.stratum] || 0);
     const upkeepChange = jobUpkeepChange[jobId] || 0;
     Object.keys(unit).forEach((resourceId) => {
       if (unit[resourceId] > 0) unit[resourceId] *= Math.max(0, 1 + efficiencyBonus);
@@ -627,13 +659,42 @@ function syncJobAssignments(jobCapacities) {
 }
 
 /** Reconstruye las opciones del desplegable de designación (agrupadas por categoría y filtradas por el tipo de cuerpo celeste elegido), conservando la selección si sigue siendo válida. */
+/** Texto corto de una regla de requisito incumplida ("Requiere ética: Espiritualista"...), para el desplegable de designaciones. */
+function describeUnmetRule(rule) {
+  const names = (list) => list.join(", ");
+  switch (rule.type) {
+    case "notGestalt": return t(currentLang, "requirementNotGestalt");
+    case "usesConsumerGoods": return t(currentLang, "requirementConsumerGoods");
+    case "ethic": return t(currentLang, "requirementEthic") + names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
+    case "notEthic": return t(currentLang, "requirementNotEthic") + names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
+    case "authority": return t(currentLang, "requirementAuthority") + names(rule.ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)));
+    case "civic": return t(currentLang, "requirementCivic") + names(rule.keys.map((key) => t(currentLang, key)));
+    case "notCivic": return t(currentLang, "requirementNotCivic") + names(rule.keys.map((key) => t(currentLang, key)));
+    case "celestial": return t(currentLang, "requirementCelestial") + names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
+    case "notCelestial": return t(currentLang, "requirementNotCelestial") + names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
+    case "notSpecies": return t(currentLang, "requirementBiologicalSpecies");
+    default: return "";
+  }
+}
+
+/**
+ * Reconstruye las opciones del desplegable de designación (agrupadas por categoría y
+ * filtradas por el tipo de cuerpo celeste elegido). Las que no cumplen sus requisitos
+ * (ética, autoridad, principios, tipo de especie... ver designation-data.js) salen
+ * desactivadas con el motivo. Si la designación elegida deja de ser válida (por el
+ * cuerpo celeste o por el imperio) se restablece a "sin designación" y se avisa; los
+ * edificios se conservan (como en P5.4), solo se reinicia la designación.
+ */
 function renderDesignationSelect() {
   if (!designationSelect) return;
-  const allowedCategories = allowedDesignationCategories(getPlanetState().celestialTypeId);
+  const state = getPlanetState();
+  const allowedCategories = allowedDesignationCategories(state.celestialTypeId);
+  const ctx = requirementContext();
   const current = getDesignation(selectedDesignationId);
-  if (current && !allowedCategories.includes(current.category)) {
+  if (current && (!allowedCategories.includes(current.category) || !designationAvailable(current, ctx))) {
     selectedDesignationId = "";
     updatePlanetState({ designationId: null });
+    showNotice(t(currentLang, "planetSimDesignationResetNotice")(t(currentLang, current.i18nKey)));
   }
   designationSelect.replaceChildren();
 
@@ -650,7 +711,12 @@ function renderDesignationSelect() {
     items.forEach((d) => {
       const opt = document.createElement("option");
       opt.value = d.id;
-      opt.textContent = t(currentLang, d.i18nKey);
+      const unmet = designationUnmetRules(d, ctx).map(describeUnmetRule).filter(Boolean);
+      opt.textContent = unmet.length ? `${t(currentLang, d.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, d.i18nKey);
+      if (unmet.length) {
+        opt.disabled = true;
+        opt.title = unmet.join("\n");
+      }
       group.append(opt);
     });
     designationSelect.append(group);
@@ -696,6 +762,15 @@ function jobIcon(jobId) {
   return img;
 }
 
+/** Icono decorativo de "zona" (img/ui/Tooltip_zone.png) para las líneas de estado de especialización. */
+function zoneIcon() {
+  const img = document.createElement("img");
+  img.className = "ui-icon";
+  img.src = "img/ui/Tooltip_zone.png";
+  img.alt = "";
+  return img;
+}
+
 function resourceIcon(resourceId) {
   const resource = RESOURCES[resourceId];
   const img = document.createElement("img");
@@ -724,6 +799,18 @@ function formatAmount(amount, forceSign) {
   const text = rounded % 1 === 0 ? String(Math.abs(rounded)) : Math.abs(rounded).toFixed(2).replace(/0$/, "");
   if (forceSign) return `${rounded < 0 ? "−" : "+"}${text}`;
   return rounded < 0 ? `−${text}` : text;
+}
+
+/** Coste de construcción (wiki 4.5, P7.3) como texto para el tooltip del catálogo; "" si el edificio no tiene dato de coste. */
+function formatBuildingCost(building) {
+  const cost = building.cost;
+  if (!cost) return "";
+  const text = (items) => items.map((item) => `${formatAmount(item.amount)} ${resourceName(item.resource)}`).join(", ");
+  const now = cost.items.filter((item) => !item.when || item.when === "settled");
+  const nomadic = cost.items.filter((item) => item.when === "nomadic");
+  let line = `${t(currentLang, "planetSimCostLabel")}: ${text(now)} · ${t(currentLang, "planetSimCostDays")(cost.time)}`;
+  if (nomadic.length) line += ` (${t(currentLang, "planetSimCostNomadic")}: ${text(nomadic)})`;
+  return line;
 }
 
 function buildingDisplayName(building) {
@@ -1077,6 +1164,7 @@ function renderUrbanSpecializationBox(slotIndex, unlocked) {
     const statusLine = document.createElement("p");
     statusLine.className = "planet-resource-district-status";
     statusLine.textContent = t(currentLang, "planetSimNotSpecialized");
+    statusLine.prepend(zoneIcon());
     box.append(statusLine);
   }
 
@@ -1132,6 +1220,7 @@ function renderResourceDistrictBox(cat, unlocked) {
   statusLine.textContent = option
     ? t(currentLang, option.i18nKey)
     : t(currentLang, def.lockedTooltipKey);
+  statusLine.prepend(zoneIcon());
   box.append(statusLine);
 
   const row = document.createElement("div");
@@ -1293,7 +1382,8 @@ function renderCatalogItem(building, slotsFull, targetKey) {
   } else {
     reason = t(currentLang, "planetSimClickToBuild");
   }
-  item.title = `${buildingDisplayName(building)} — ${reason}`;
+  const costText = formatBuildingCost(building);
+  item.title = `${buildingDisplayName(building)} — ${reason}${costText ? `\n${costText}` : ""}`;
 
   const img = document.createElement("img");
   img.className = "planet-catalog-icon";
@@ -1494,10 +1584,16 @@ function renderResourceDistrictCard(cat) {
   if (!state.optionId) noneOption.selected = true;
   select.append(noneOption);
 
+  const specCtx = requirementContext();
   def.specializationOptions.forEach((option) => {
     const optionEl = document.createElement("option");
     optionEl.value = option.id;
-    optionEl.textContent = t(currentLang, option.i18nKey);
+    const unmet = unmetRequirements(option, specCtx).map(describeUnmetRule).filter(Boolean);
+    optionEl.textContent = unmet.length ? `${t(currentLang, option.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, option.i18nKey);
+    if (unmet.length) {
+      optionEl.disabled = true;
+      optionEl.title = unmet.join("\n");
+    }
     if (option.id === state.optionId) optionEl.selected = true;
     select.append(optionEl);
   });
@@ -1586,35 +1682,54 @@ function updateJobsCounter(jobIds, jobCapacities) {
 }
 
 /** Píldoras con los efectos de JOB_EFFECTS de un empleo (estabilidad, delincuencia...), multiplicados por los empleos cubiertos (escala ×100). withLabel: añade el nombre de la estadística. */
+/** Píldora de una estadística sin recurso (estabilidad, delincuencia, ejércitos de defensa...) con su signo y color. */
+function statPill(statId, amount, withLabel) {
+  const stat = STAT_EFFECTS[statId];
+  const pill = document.createElement("span");
+  // Para delincuencia, menos es mejor: se pinta en verde cuando baja.
+  const good = statId === "crime" ? amount < 0 : amount > 0;
+  pill.className = `planet-job-output-pill ${good ? "is-positive" : "is-negative"}`;
+  pill.title = t(currentLang, stat.i18nKey);
+  const icon = document.createElement("img");
+  icon.src = `${IMAGE_BASE}${stat.img}`;
+  icon.alt = "";
+  icon.loading = "lazy";
+  pill.append(icon);
+  const text = document.createElement("span");
+  text.textContent = `${withLabel ? `${t(currentLang, stat.i18nKey)} ` : ""}${formatAmount(amount, true)}`;
+  pill.append(text);
+  return pill;
+}
+
+/** Píldoras con los efectos de JOB_EFFECTS de un empleo, multiplicados por los empleos cubiertos (escala ×100). withLabel: añade el nombre de la estadística. */
 function effectPills(jobId, assignedRaw, withLabel) {
-  return Object.entries(JOB_EFFECTS[jobId] || {}).map(([statId, perJob]) => {
-    const stat = STAT_EFFECTS[statId];
-    const amount = perJob * divideEffect(assignedRaw);
-    const pill = document.createElement("span");
-    // Para delincuencia, menos es mejor: se pinta en verde cuando baja.
-    const good = statId === "crime" ? amount < 0 : amount > 0;
-    pill.className = `planet-job-output-pill ${good ? "is-positive" : "is-negative"}`;
-    pill.title = t(currentLang, stat.i18nKey);
-    const icon = document.createElement("img");
-    icon.src = `${IMAGE_BASE}${stat.img}`;
-    icon.alt = "";
-    icon.loading = "lazy";
-    pill.append(icon);
-    const text = document.createElement("span");
-    text.textContent = `${withLabel ? `${t(currentLang, stat.i18nKey)} ` : ""}${formatAmount(amount, true)}`;
-    pill.append(text);
-    return pill;
-  });
+  return Object.entries(JOB_EFFECTS[jobId] || {}).map(([statId, perJob]) => statPill(statId, perJob * divideEffect(assignedRaw), withLabel));
 }
 
 function renderNonResourceEffects(jobIds) {
   const nonResourceEntries = Object.keys(JOB_EFFECTS).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
-  if (nonResourceEntries.length && nonResourceEl) {
+  const capital = currentCapital();
+  const capitalArmies = capital.defenseArmies || 0;
+  if ((nonResourceEntries.length || capitalArmies) && nonResourceEl) {
     nonResourceEl.replaceChildren();
     const heading = document.createElement("p");
     heading.className = "planet-nonresource-heading";
     heading.textContent = t(currentLang, "planetSimNonResourceHeading");
     nonResourceEl.append(heading);
+    if (capitalArmies) {
+      // Ejércitos de defensa del edificio capital (P7.5): no dependen de la dotación de empleos.
+      const line = document.createElement("div");
+      line.className = "planet-nonresource-line";
+      const img = document.createElement("img");
+      img.className = "planet-nonresource-icon";
+      img.src = `${IMAGE_BASE}${capital.img}`;
+      img.alt = "";
+      line.append(img);
+      const text = document.createElement("span");
+      text.textContent = `${t(currentLang, capital.i18nKey)} —`;
+      line.append(text, statPill("defenseArmies", capitalArmies, true));
+      nonResourceEl.append(line);
+    }
     nonResourceEntries.forEach((jobId) => {
       const line = document.createElement("div");
       line.className = "planet-nonresource-line";
@@ -1642,7 +1757,7 @@ function renderSummary(totals) {
     empty.className = "planet-summary-empty";
     empty.textContent = t(currentLang, "planetSimSummaryEmpty");
     summaryEl.append(empty);
-    if (nonResourceEl) nonResourceEl.replaceChildren();
+    renderNonResourceEffects(jobIds);
     return;
   }
 
@@ -1756,7 +1871,22 @@ function renderStats(totals) {
   if (districtsUsedLabel) districtsUsedLabel.textContent = `${totalDistrictCount()} / ${planetSize}`;
 }
 
+/** Especializaciones de distrito de recursos elegidas que dejan de cumplir sus requisitos (P7.4): se quitan y se avisa. Los edificios de esas ranuras quedan inactivos, no se borran. */
+function pruneInvalidSpecializations() {
+  const ctx = requirementContext();
+  const reset = [];
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    const option = districtState[cat].optionId ? resourceSpecOptionsById[cat].get(districtState[cat].optionId) : null;
+    if (option && !buildingRequirementsMet(option, ctx)) {
+      districtState[cat].optionId = null;
+      reset.push(t(currentLang, option.i18nKey));
+    }
+  });
+  if (reset.length) showNotice(t(currentLang, "planetSimSpecializationResetNotice")(reset.join(", ")));
+}
+
 function refresh() {
+  pruneInvalidSpecializations();
   syncCapitalToAuthority();
   resolveSelectedSlot();
   const totals = computeTotals();

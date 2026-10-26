@@ -274,9 +274,11 @@ export const ETHIC_ICONS = {
  *  - { type: "resourceMult", resource } multiplica la producción POSITIVA
  *    de ese recurso (p. ej. "+10% Monthly unity").
  *  - { type: "resourceFlat", resource } suma una cantidad fija mensual.
- * Sin aplicar a propósito: "Worker/Specialist job efficiency" (falta saber
- * qué empleos son de obreros y cuáles de especialistas: la Wiki de
- * designaciones/éticas no lo dice), "Research speed" (es velocidad de
+ *  - { type: "stratumEfficiency", stratum } (P7.7) suma eficacia laboral a la
+ *    producción positiva de todos los empleos de ese estrato ("worker" o
+ *    "specialist", ver JOB_STRATA en planet-data.js; "Worker/Specialist job
+ *    efficiency" de la página Ethics de la Wiki 4.5).
+ * Sin aplicar a propósito: "Research speed" (es velocidad de
  * investigación de tecnologías, no producción de recursos), y todo lo que
  * depende de estadísticas que el simulador no rastrea (estabilidad, tamaño
  * de imperio, facciones, edictos, flota, enviados...). Se omiten los
@@ -287,6 +289,9 @@ const flat = (label, value, apply) => ({ label, value, unit: "flat", ...(apply ?
 const UNITY_MULT = { type: "resourceMult", resource: "unity" };
 const TRADE_MULT = { type: "resourceMult", resource: "trade" };
 const INFLUENCE_FLAT = { type: "resourceFlat", resource: "influence" };
+// P7.7: eficacia laboral por estrato de empleo (JOBS[...].stratum en planet-data.js).
+const WORKER_EFFICIENCY = { type: "stratumEfficiency", stratum: "worker" };
+const SPECIALIST_EFFICIENCY = { type: "stratumEfficiency", stratum: "specialist" };
 
 export const ETHIC_EFFECTS = {
   fanaticSpiritualist: [pct("monthlyUnity", 0.2, UNITY_MULT), pct("edictCost", -0.2), pct("edictUpkeep", -0.2)],
@@ -295,10 +300,10 @@ export const ETHIC_EFFECTS = {
   militarist: [pct("shipFireRate", 0.1), pct("claimInfluenceCost", -0.1)],
   fanaticXenophobe: [pct("popGrowthOrAssembly", 0.2), pct("starbaseInfluenceCost", -0.4), pct("refugeeAttraction", -0.3)],
   xenophobe: [pct("popGrowthOrAssembly", 0.1), pct("starbaseInfluenceCost", -0.2), pct("refugeeAttraction", -0.15)],
-  fanaticAuthoritarian: [flat("monthlyInfluence", 1, INFLUENCE_FLAT), pct("workerJobEfficiency", 0.1)],
-  authoritarian: [flat("monthlyInfluence", 0.5, INFLUENCE_FLAT), pct("workerJobEfficiency", 0.05)],
-  fanaticEgalitarian: [pct("factionResourceOutput", 0.3), pct("specialistJobEfficiency", 0.1)],
-  egalitarian: [pct("factionResourceOutput", 0.15), pct("specialistJobEfficiency", 0.05)],
+  fanaticAuthoritarian: [flat("monthlyInfluence", 1, INFLUENCE_FLAT), pct("workerJobEfficiency", 0.1, WORKER_EFFICIENCY)],
+  authoritarian: [flat("monthlyInfluence", 0.5, INFLUENCE_FLAT), pct("workerJobEfficiency", 0.05, WORKER_EFFICIENCY)],
+  fanaticEgalitarian: [pct("factionResourceOutput", 0.3), pct("specialistJobEfficiency", 0.1, SPECIALIST_EFFICIENCY)],
+  egalitarian: [pct("factionResourceOutput", 0.15), pct("specialistJobEfficiency", 0.05, SPECIALIST_EFFICIENCY)],
   fanaticXenophile: [pct("tradeFromJobs", 0.2, TRADE_MULT), flat("availableEnvoys", 2), pct("refugeeAttraction", 0.3), pct("observationInsights", 1)],
   xenophile: [pct("tradeFromJobs", 0.1, TRADE_MULT), flat("availableEnvoys", 1), pct("refugeeAttraction", 0.15), pct("observationInsights", 0.5)],
   fanaticPacifist: [pct("empireSizeFromPops", -0.2), flat("stability", 10)],
@@ -318,15 +323,18 @@ export const AUTHORITY_EFFECTS = {
   hiveMind: [pct("popGrowthSpeed", 0.25), pct("empireSizeEffect", -0.25)]
 };
 
-/** Efectos aplicables a los cálculos: devuelve { resourceMult: {recurso: fracción}, resourceFlat: {recurso: cantidad} } para las éticas y la autoridad dadas. */
+/** Efectos aplicables a los cálculos: devuelve { resourceMult: {recurso: fracción}, resourceFlat: {recurso: cantidad}, stratumEfficiency: {estrato: fracción} } para las éticas y la autoridad dadas. */
 export function collectAppliedEffects(selectedEthicIds, authorityId) {
   const resourceMult = {};
   const resourceFlat = {};
+  const stratumEfficiency = {};
   const effectLists = [...selectedEthicIds.map((id) => ETHIC_EFFECTS[id] || []), AUTHORITY_EFFECTS[authorityId] || []];
   effectLists.forEach((list) => list.forEach((effect) => {
     if (!effect.apply) return;
-    const bucket = effect.apply.type === "resourceMult" ? resourceMult : resourceFlat;
-    bucket[effect.apply.resource] = (bucket[effect.apply.resource] || 0) + effect.value;
+    const { type, resource, stratum } = effect.apply;
+    if (type === "resourceMult") resourceMult[resource] = (resourceMult[resource] || 0) + effect.value;
+    else if (type === "resourceFlat") resourceFlat[resource] = (resourceFlat[resource] || 0) + effect.value;
+    else if (type === "stratumEfficiency") stratumEfficiency[stratum] = (stratumEfficiency[stratum] || 0) + effect.value;
   }));
-  return { resourceMult, resourceFlat };
+  return { resourceMult, resourceFlat, stratumEfficiency };
 }
