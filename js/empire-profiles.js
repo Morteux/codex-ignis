@@ -63,11 +63,16 @@ function newId() {
 }
 
 /** Configuración canónica (ordenada) de un perfil o de la pestaña Imperio, para guardar y comparar. */
+/** Los principios se guardaban con claves "principleXxx"; ahora son "civicXxx". Convierte las antiguas para no romper imperios ya guardados. */
+export function migrateCivicKey(key) {
+  return typeof key === "string" ? key.replace(/^principle(?=[A-Z])/, "civic") : key;
+}
+
 export function normalizeConfig(config) {
   return {
     ethicIds: [...(config.ethicIds || [])].sort(),
     authorityId: config.authorityId || null,
-    civicIds: [...(config.civicIds || [])].sort(),
+    civicIds: [...(config.civicIds || [])].map(migrateCivicKey).sort(),
     speciesType: config.speciesType || "organic"
   };
 }

@@ -866,7 +866,7 @@ export const BUILDINGS = [
   // ── Administración civil (una por línea de mejora) ─────────────────
   {
     id: "precinct_houses",
-    requires: [NOT_GESTALT, notCivic("principleCivilEducation"), notDesignation("thrallWorld")],
+    requires: [NOT_GESTALT, notCivic("civicCivilEducation"), notDesignation("thrallWorld")],
     img: "buildings/building_precinct_house.png",
     i18nKey: "buildingPrecinctHouses",
     category: "civic",
@@ -879,7 +879,7 @@ export const BUILDINGS = [
   },
   {
     id: "hall_of_judgment",
-    requires: [NOT_GESTALT, notCivic("principleCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
+    requires: [NOT_GESTALT, notCivic("civicCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
     img: "buildings/building_hall_judgment.png",
     i18nKey: "buildingHallOfJudgment",
     category: "civic",
@@ -893,7 +893,7 @@ export const BUILDINGS = [
   },
   {
     id: "state_academy",
-    requires: [civic("principleCivilEducation"), notDesignation("thrallWorld")],
+    requires: [civic("civicCivilEducation"), notDesignation("thrallWorld")],
     img: "buildings/building_precinct_house.png",
     i18nKey: "buildingStateAcademy",
     category: "civic",
@@ -906,7 +906,7 @@ export const BUILDINGS = [
   },
   {
     id: "center_of_guidance",
-    requires: [civic("principleCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
+    requires: [civic("civicCivilEducation"), notDesignation("thrallWorld"), CAPITAL_TIER_2],
     img: "buildings/building_center_of_guidance.png",
     i18nKey: "buildingCenterOfGuidance",
     category: "civic",
@@ -975,7 +975,7 @@ export const BUILDINGS = [
   },
   {
     id: "holo_theatres",
-    requires: [NOT_GESTALT, notCivic("principleDystopianSociety"), notDesignation("penalColony", "thrallWorld")],
+    requires: [NOT_GESTALT, notCivic("civicDystopianSociety"), notDesignation("penalColony", "thrallWorld")],
     img: "buildings/building_holo_theatres.png",
     i18nKey: "buildingHoloTheatres",
     category: "other",
@@ -1058,7 +1058,7 @@ export const BUILDINGS = [
     img: "buildings/building_sacrificial_temple_1.png",
     i18nKey: "buildingSacrificialTemple",
     category: "unity",
-    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    requires: [civic("civicDeathCult", "civicCorporateDeathCult")],
     tier: 1,
     jobs: { death_priest: 100, mortal_initiate: 100 },
     colonyLimit: 1,
@@ -1071,7 +1071,7 @@ export const BUILDINGS = [
     img: "buildings/building_sacrificial_temple_2.png",
     i18nKey: "buildingGrimHolotemple",
     category: "unity",
-    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    requires: [civic("civicDeathCult", "civicCorporateDeathCult")],
     tier: 2,
     upgradesFrom: "sacrificial_temple",
     jobs: { mortal_initiate: 200 },
@@ -1086,7 +1086,7 @@ export const BUILDINGS = [
     img: "buildings/building_sacrificial_temple_3.png",
     i18nKey: "buildingTempleOfGrandSacrifice",
     category: "unity",
-    requires: [civic("principleDeathCult", "principleCorporateDeathCult")],
+    requires: [civic("civicDeathCult", "civicCorporateDeathCult")],
     tier: 3,
     upgradesFrom: "grim_holotemple",
     jobs: { mortal_initiate: 400 },
@@ -1297,7 +1297,7 @@ export const BUILDINGS = [
   // ── Vivienda (sin empleos: vivienda y comodidades, ambos ×100) ─────
   {
     id: "luxury_residences",
-    requires: [NOT_GESTALT, notCivic("principleSharedBurdens"), notCelestial("habitat")],
+    requires: [NOT_GESTALT, notCivic("civicSharedBurdens"), notCelestial("habitat")],
     img: "buildings/building_luxury_residence.png",
     i18nKey: "buildingLuxuryResidences",
     category: "housing",
@@ -1312,7 +1312,7 @@ export const BUILDINGS = [
   },
   {
     id: "paradise_domes",
-    requires: [NOT_GESTALT, notCivic("principleSharedBurdens"), notCelestial("habitat"), CAPITAL_TIER_2],
+    requires: [NOT_GESTALT, notCivic("civicSharedBurdens"), notCelestial("habitat"), CAPITAL_TIER_2],
     img: "buildings/building_paradise_dome.png",
     i18nKey: "buildingParadiseDomes",
     category: "housing",

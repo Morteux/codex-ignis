@@ -180,10 +180,10 @@ export { CIVIC_REQUIREMENTS };
  * ninguna (la mayoría de los de la tabla solo traen requisitos de ética).
  * Según las páginas de la Wiki "Civics", "Hive mind civics", "Machine
  * intelligence civics" y "Corporate civics":
- *  - Principios de Mente Colmena (clave principleHive…) solo con Mente Colmena.
- *  - Principios de Máquina (principleMachine… / principleIndividualMachine…)
+ *  - Principios de Mente Colmena (clave civicHive…) solo con Mente Colmena.
+ *  - Principios de Máquina (civicMachine… / civicIndividualMachine…)
  *    solo con Inteligencia de Máquina.
- *  - Principios corporativos (principleCorporate… o terminados en
+ *  - Principios corporativos (civicCorporate… o terminados en
  *    "Corporate") solo con Corporativa.
  *  - Principios exclusivos que no llevan prefijo en su clave: Enjambre
  *    Devorador (Mente Colmena) y Herencia Criminal (Corporativa).
@@ -191,15 +191,15 @@ export { CIVIC_REQUIREMENTS };
  */
 const NON_GESTALT_AUTHORITIES = ["democratic", "oligarchic", "dictatorial", "imperial", "corporate"];
 const AUTHORITY_ONLY_PLAIN_KEYS = {
-  principleDevouringSwarm: ["hiveMind"],
-  principleCriminalHeritage: ["corporate"]
+  civicDevouringSwarm: ["hiveMind"],
+  civicCriminalHeritage: ["corporate"]
 };
 
 function defaultCivicAuthorities(i18nKey) {
   if (AUTHORITY_ONLY_PLAIN_KEYS[i18nKey]) return AUTHORITY_ONLY_PLAIN_KEYS[i18nKey];
-  if (/^principleHive/.test(i18nKey)) return ["hiveMind"];
-  if (/^principle(Individual)?Machine/.test(i18nKey)) return ["machineIntelligence"];
-  if (/^principleCorporate/.test(i18nKey) || /Corporate$/.test(i18nKey)) return ["corporate"];
+  if (/^civicHive/.test(i18nKey)) return ["hiveMind"];
+  if (/^civic(Individual)?Machine/.test(i18nKey)) return ["machineIntelligence"];
+  if (/^civicCorporate/.test(i18nKey) || /Corporate$/.test(i18nKey)) return ["corporate"];
   return NON_GESTALT_AUTHORITIES;
 }
 

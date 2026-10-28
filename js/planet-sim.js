@@ -441,7 +441,7 @@ function computeTotals() {
   // autoridad (el distrito primario cambia), Idilio Agrario y mundo colmena.
   const districtCtx = getPlanetState();
   const districtGestalt = ethicsSatisfy(districtCtx.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
-  const agrarianIdyll = (districtCtx.civicIds || []).includes("principleAgrarianIdyll");
+  const agrarianIdyll = (districtCtx.civicIds || []).includes("civicAgrarianIdyll");
   const urbanDef = DISTRICTS.urban;
   if (districtState.urban.count > 0) {
     const count = districtState.urban.count;
