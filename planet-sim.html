@@ -45,10 +45,10 @@
           <button type="button" id="planet-summary-save" class="planet-capital-btn" data-i18n="librarySaveShort" data-i18n-attr="title:librarySaveTooltip">Guardar</button>
         </div>
         <div class="planet-summary-item">
-          <span class="planet-summary-value" id="planet-summary-size">—</span>
+          <img class="ui-icon" src="img/ui/Planet_Size.png" alt="" /><span class="planet-summary-value" id="planet-summary-size">—</span>
         </div>
         <div class="planet-summary-item">
-          <span class="planet-summary-value" id="planet-summary-population">—</span>
+          <img class="ui-icon" src="img/ui/Pop_job.png" alt="" /><span class="planet-summary-value" id="planet-summary-population">—</span>
         </div>
         <div class="planet-summary-item planet-summary-item-end">
           <select id="planet-summary-empire" class="planet-empire-select"></select>
@@ -59,18 +59,18 @@
       </section>
 
       <nav class="planet-main-tabs" role="tablist" aria-label="Secciones del planeta">
-        <button type="button" class="planet-main-tab" data-main-tab="library" data-i18n="planetSimMainTabLibrary">Biblioteca</button>
-        <button type="button" class="planet-main-tab is-active" data-main-tab="planet" data-i18n="planetSimMainTabPlanet">Planeta</button>
-        <button type="button" class="planet-main-tab" data-main-tab="empire" data-i18n="planetSimMainTabEmpire">Imperio</button>
-        <button type="button" class="planet-main-tab" data-main-tab="body" data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</button>
-        <button type="button" class="planet-main-tab" data-main-tab="branches" data-i18n="planetSimMainTabBranches">Sucursales</button>
+        <button type="button" class="planet-main-tab" data-main-tab="library"><img class="ui-icon" src="img/ui/Menu_icon_planets_and_sectors.png" alt="" /><span data-i18n="planetSimMainTabLibrary">Biblioteca</span></button>
+        <button type="button" class="planet-main-tab is-active" data-main-tab="planet"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="planetSimMainTabPlanet">Planeta</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="empire"><img class="ui-icon" src="img/ui/Icon_council.png" alt="" /><span data-i18n="planetSimMainTabEmpire">Imperio</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="body"><img class="ui-icon" src="img/ui/Focus_core.png" alt="" /><span data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="branches"><img class="ui-icon" src="img/ui/Faction_support.png" alt="" /><span data-i18n="planetSimMainTabBranches">Sucursales</span></button>
       </nav>
 
       <p class="entry-note planet-notice" id="planet-sim-notice" role="status" aria-live="polite" hidden></p>
 
       <section id="planet-tab-panel-library" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryHeading">Biblioteca</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_planets_and_sectors.png" alt="" /><span data-i18n="libraryHeading">Biblioteca</span></h2>
           <p class="empire-note" data-i18n="libraryNote"></p>
           <p class="empire-profile-state" id="library-current"></p>
           <div class="empire-profile-controls">
@@ -83,12 +83,12 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryPlanetsHeading">Planetas guardados</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="libraryPlanetsHeading">Planetas guardados</span></h2>
           <div id="library-planets" class="library-grid"></div>
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="libraryEmpiresHeading">Imperios guardados</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_leaders.png" alt="" /><span data-i18n="libraryEmpiresHeading">Imperios guardados</span></h2>
           <div id="library-empires" class="library-grid"></div>
         </div>
       </section>
@@ -96,13 +96,13 @@
       <div id="planet-tab-panel-planet">
         <section class="planet-header-panel" aria-label="Estado de la colonia">
           <div class="planet-header-stat">
-            <span class="planet-header-stat-label" data-i18n="planetSimPlanetSizeLabel">Tamaño del planeta</span>
+            <span class="planet-header-stat-label"><img class="planet-header-stat-icon" src="img/ui/Planet_Size.png" alt="" /><span data-i18n="planetSimPlanetSizeLabel">Tamaño del planeta</span></span>
             <span class="planet-header-stat-value">
               <input type="number" id="planet-size-input" class="planet-size-input" min="1" max="50" step="1" value="20" />
             </span>
           </div>
           <div class="planet-header-stat">
-            <span class="planet-header-stat-label" data-i18n="planetSimDistrictsUsedLabel">Distritos</span>
+            <span class="planet-header-stat-label"><img class="planet-header-stat-icon" src="img/ui/Tooltip_district.png" alt="" /><span data-i18n="planetSimDistrictsUsedLabel">Distritos</span></span>
             <span class="planet-header-stat-value" id="planet-districts-used-label">0 / 20</span>
           </div>
           <div class="planet-header-stat">
@@ -121,7 +121,7 @@
         <section class="planet-shell">
           <div class="planet-main-panel">
             <div class="planet-slots-panel">
-              <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSlotsHeading">Ranuras de edificios</h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Tooltip_building.png" alt="" /><span data-i18n="planetSimSlotsHeading">Ranuras de edificios</span></h2>
 
               <div class="planet-capital-control">
                 <div class="planet-capital-info">
@@ -140,7 +140,7 @@
             </div>
 
             <div class="planet-production-panel">
-              <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimProductionHeading">Producción total de recursos</h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Focus_development.png" alt="" /><span data-i18n="planetSimProductionHeading">Producción total de recursos</span></h2>
               <div class="planet-production-columns">
                 <div class="planet-production-column is-produced">
                   <h3 class="planet-production-subheading" data-i18n="planetSimProducedHeading">Producidos</h3>
@@ -158,7 +158,7 @@
             </div>
 
             <div class="planet-summary-panel">
-              <h2 class="panel-heading planet-panel-heading" data-i18n="planetSimSummaryHeading">Resumen de empleos totales</h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Job_clerk.png" alt="" /><span data-i18n="planetSimSummaryHeading">Resumen de empleos totales</span></h2>
               <p class="entry-note planet-staffing-notice" data-i18n="planetSimStaffingNotice"></p>
               <p class="planet-summary-population" id="planet-jobs-counter"></p>
               <div id="planet-summary"></div>
@@ -168,8 +168,8 @@
 
           <aside class="planet-catalog-panel">
             <div class="planet-tabs" role="tablist">
-              <button type="button" class="planet-tab is-active" id="planet-tab-buildings" data-i18n="planetSimTabBuildings">Edificios</button>
-              <button type="button" class="planet-tab" id="planet-tab-districts" data-i18n="planetSimTabDistricts">Distritos</button>
+              <button type="button" class="planet-tab is-active" id="planet-tab-buildings"><img class="ui-icon" src="img/ui/Tooltip_building.png" alt="" /><span data-i18n="planetSimTabBuildings">Edificios</span></button>
+              <button type="button" class="planet-tab" id="planet-tab-districts"><img class="ui-icon" src="img/ui/Tooltip_district.png" alt="" /><span data-i18n="planetSimTabDistricts">Distritos</span></button>
             </div>
             <div class="planet-catalog-scroll">
               <div id="planet-catalog"></div>
@@ -181,7 +181,7 @@
 
       <section id="planet-tab-panel-empire" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="empireProfileHeading">Perfil de imperio</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_leaders.png" alt="" /><span data-i18n="empireProfileHeading">Perfil de imperio</span></h2>
           <p class="empire-note" data-i18n="empireProfileNote"></p>
           <div class="empire-profile-controls">
             <input type="text" id="empire-profile-name" class="empire-profile-name-input" maxlength="60" data-i18n-attr="placeholder:empireProfileNamePlaceholder" />
@@ -195,7 +195,7 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="empireEthicsHeading">Éticas</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_traditions.png" alt="" /><span data-i18n="empireEthicsHeading">Éticas</span></h2>
           <p class="empire-points-label" id="empire-points-label"></p>
           <div class="empire-ethics-layout">
             <div id="empire-ethics-wheel" class="empire-ethics-wheel"></div>
@@ -204,18 +204,18 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="empireAuthorityHeading">Autoridades</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Icon_council.png" alt="" /><span data-i18n="empireAuthorityHeading">Autoridades</span></h2>
           <div id="empire-authority-list"></div>
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="empireSpeciesHeading">Tipo de especie</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Colony_type_automated.png" alt="" /><span data-i18n="empireSpeciesHeading">Tipo de especie</span></h2>
           <p class="empire-note" data-i18n="empireSpeciesNote"></p>
           <select id="empire-species-select" class="planet-designation-select"></select>
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="empireCivicsHeading">Principios</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_traditions.png" alt="" /><span data-i18n="empireCivicsHeading">Principios</span></h2>
           <p class="empire-points-label" id="empire-civics-label"></p>
           <div id="empire-civics-list" class="empire-civics-grid"></div>
         </div>
@@ -223,7 +223,7 @@
 
       <section id="planet-tab-panel-body" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading" data-i18n="celestialHeading">Tipo de cuerpo celeste</h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="celestialHeading">Tipo de cuerpo celeste</span></h2>
           <h3 class="entry-heading-subsub" data-i18n="celestialNaturalHeading">Natural</h3>
           <div id="celestial-natural-list" class="celestial-type-grid"></div>
           <h3 class="entry-heading-subsub" data-i18n="celestialArtificialHeading">Artificial</h3>

@@ -461,7 +461,12 @@ function renderPlanetCard(planet, state) {
   facts.append(empireFact);
 
   // Tamaño
-  facts.append(fact(textNode(String(planet.planetSize), t(currentLang, "planetSummarySizeLabel")), textNode(t(currentLang, "planetSummarySizeLabel"))));
+  const sizeIcon = document.createElement("img");
+  sizeIcon.className = "library-icon";
+  sizeIcon.src = "img/ui/Planet_Size.png";
+  sizeIcon.alt = "";
+  facts.append(fact(sizeIcon, textNode(String(planet.planetSize), t(currentLang, "planetSummarySizeLabel"))));
+  facts.lastChild.title = t(currentLang, "planetSummarySizeLabel");
   card.append(facts);
 
   const actions = document.createElement("div");
