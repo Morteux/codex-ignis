@@ -1,10 +1,10 @@
 # Principios pendientes de traducción (ES / JP)
 
-Estos principios tienen en `js/i18n.js` el nombre en inglés de la wiki 4.5.2, pero el nombre en español y japonés **antes era otro** (el principio se ha renombrado), así que ahora ES y JP muestran temporalmente el nombre en inglés. Rellena las dos últimas columnas y te regenero `i18n.js`.
+Tienen en `js/i18n.js` el nombre inglés de la wiki 4.5.2; su ES/JP anterior era de otro nombre, así que ahora muestran el inglés. Rellena las dos últimas columnas.
 
 Total: 95
 
-| Clave | Inglés (wiki) | ES anterior (obsoleto) | JP anterior (obsoleto) | ES nuevo | JP nuevo |
+| Clave | Inglés (wiki) | ES anterior | JP anterior | ES nuevo | JP nuevo |
 |---|---|---|---|---|---|
 | `civicFeudalRealm` | Feudal Society | Reino Feudal | 封建的な国家 | | |
 | `civicReanimatedArmies` | Reanimators | Ejércitos Reanimados | 蘇生軍団 | | |
@@ -101,19 +101,3 @@ Total: 95
 | `civicCorporateTankbound` | Corporate Thinktank | Ligados al Tanque (Corporativo) | コーポレート培養槽に縛られし者 | | |
 | `civicCorporateGalvanicSymbiosis` | Biometallic Cartel | Simbiosis Galvánica (Corporativo) | コーポレートガルバニック共生 | | |
 | `civicCorporateWorldForgers` | Planetary Architects | Forjadores de Mundos (Corporativo) | コーポレート世界の鍛冶師 | | |
-
-## Claves que agrupan varios principios con el mismo icono
-
-El catálogo tiene un solo icono (y una sola entrada) por clave, así que su nombre es la unión con « / »:
-
-- `civicWarriorCulture`: Warrior Culture / Great Khan's Vision
-- `civicToxicBaths`: Mutagenic Spas / Lubrication Tanks
-- `civicAnglers`: Anglers / Marine Machines
-- `civicGalacticSovereign`: Galactic Sovereign / Corporate Sovereign
-- `civicDevouringSwarm`: Devouring Swarm / Terravore / Devouring Wilderness
-- `civicHiveCordycepticDrones`: Cordyceptic Drones / Cordyceptic Symbionts
-- `civicHiveUpkeepTwister`: Autonomous Drones / Autonomous Symbionts
-- `civicMachineToxicBaths`: Hyper Lubrication Basin / Mutagenic Spas
-- `civicMachineServitor`: Rogue Servitor / Hospitality Servitor
-- `civicCorporateToxicBaths`: Mutagenic Luxury / Luxury Lubrication Pools
-- `civicCorporateAnglers`: Trawling Operations / Maritime Robotics

@@ -59,7 +59,7 @@
  * Unbridled Consumption) y de "no nómada". Las designaciones de capital y las
  * no disponibles para el jugador no están en este catálogo (ver arriba).
  * "Mundo santuario" y "Centro de unificación" hacen referencia al principio
- * Rogue Servitor, que aquí es principleMachineServitor.
+ * Rogue Servitor, que aquí es civicMachineServitor.
  */
 const NOT_GESTALT = { type: "notGestalt" };
 const USES_CONSUMER_GOODS = { type: "usesConsumerGoods" };
@@ -103,9 +103,9 @@ export const DESIGNATION_CATEGORY_I18N_KEYS = {
 };
 
 export const DESIGNATIONS = [
-  { id: "unificationCenter", i18nKey: "designationUnificationCenter", category: "unity", img: "jobs/job_bureaucrat.png", requires: [notEthic("spiritualist"), notCivic("principleMachineServitor")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
+  { id: "unificationCenter", i18nKey: "designationUnificationCenter", category: "unity", img: "jobs/job_bureaucrat.png", requires: [notEthic("spiritualist"), notCivic("civicMachineServitor")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
   { id: "ecclesiasticalCenter", i18nKey: "designationEcclesiasticalCenter", category: "unity", img: "jobs/job_priest.png", requires: [ethic("spiritualist")], jobEfficiency: { priest: 0.15 }, flat: {} },
-  { id: "sanctuaryWorld", i18nKey: "designationSanctuaryWorld", category: "unity", img: "resources/Amenities.png", requires: [civic("principleMachineServitor")], jobEfficiency: {}, flat: {} },
+  { id: "sanctuaryWorld", i18nKey: "designationSanctuaryWorld", category: "unity", img: "resources/Amenities.png", requires: [civic("civicMachineServitor")], jobEfficiency: {}, flat: {} },
   { id: "tranquilWorld", i18nKey: "designationTranquilWorld", category: "unity", img: "resources/Amenities.png", jobEfficiency: {}, flat: {} },
   { id: "urbanWorld", i18nKey: "designationUrbanWorld", category: "urban", img: "jobs/job_trader.png", requires: [NOT_GESTALT], jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "nestWorld", i18nKey: "designationNestWorld", category: "urban", img: "planets/Planet_hive.png", requires: [authority("hiveMind")], jobEfficiency: {}, flat: {} },

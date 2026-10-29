@@ -74,30 +74,33 @@ export function calculateBuildingSlots(specializedUrbanSlots, specializedResourc
  * edificios (ver CAPITAL_TIER_2 y similares): la Mente Colmena salta del II
  * al IV y al V. `upkeep` es el mantenimiento de energía del propio edificio.
  *
- * Simplificaciones: no se modelan los empleos secundarios (Robotista, Noble,
- * Animador...), los ejércitos de defensa ni los empleos extra de la Máquina
- * que dependen de tener 1000 o 4000 pops (Replicadores adicionales).
+ * P7.5: `defenseArmies` (ejércitos de defensa planetarios, wiki 4.5) y el empleo
+ * Colonista del Refugio Colonial (estándar, individualista). Simplificaciones: no
+ * se modelan los empleos secundarios condicionados a tradiciones, civismos o
+ * especies (Robotista, Noble, Animador, Trabajador médico, Trabajador cultural...),
+ * ni los empleos extra de la Máquina que dependen de tener 1000 o 4000 pops
+ * (Replicadores adicionales), ni los ejércitos de otros capitales no incluidos aquí.
  */
 export const CAPITAL_SETS = {
   standard: [
-  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: {} },
-  { id: "planetary_administration", img: "buildings/building_capital.png", i18nKey: "buildingPlanetaryAdministration", tier: 2, housing: 1000, amenities: 1000, jobs: { politician: 200, enforcer: 100 }, upkeep: { energy: -5 } },
-  { id: "planetary_capital", img: "buildings/building_major_capital.png", i18nKey: "buildingPlanetaryCapital", tier: 3, housing: 1500, amenities: 1500, jobs: { politician: 300, enforcer: 200 }, upkeep: { energy: -8 } },
-  { id: "system_capital_complex", img: "buildings/building_system_capital.png", i18nKey: "buildingSystemCapitalComplex", tier: 4, housing: 2000, amenities: 2000, jobs: { politician: 400, enforcer: 300 }, upkeep: { energy: -10 } },
-  { id: "imperial_palace", img: "buildings/building_palace.png", i18nKey: "buildingImperialPalace", tier: 5, housing: 3000, amenities: 3000, jobs: { politician: 600, enforcer: 500 }, upkeep: { energy: -10 } }
+  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: { colonist: 200 }, upkeep: {} },
+  { id: "planetary_administration", img: "buildings/building_capital.png", i18nKey: "buildingPlanetaryAdministration", tier: 2, housing: 1000, amenities: 1000, jobs: { politician: 200, enforcer: 100 }, defenseArmies: 4, upkeep: { energy: -5 } },
+  { id: "planetary_capital", img: "buildings/building_major_capital.png", i18nKey: "buildingPlanetaryCapital", tier: 3, housing: 1500, amenities: 1500, jobs: { politician: 300, enforcer: 200 }, defenseArmies: 8, upkeep: { energy: -8 } },
+  { id: "system_capital_complex", img: "buildings/building_system_capital.png", i18nKey: "buildingSystemCapitalComplex", tier: 4, housing: 2000, amenities: 2000, jobs: { politician: 400, enforcer: 300 }, defenseArmies: 16, upkeep: { energy: -10 } },
+  { id: "imperial_palace", img: "buildings/building_palace.png", i18nKey: "buildingImperialPalace", tier: 5, housing: 3000, amenities: 3000, jobs: { politician: 600, enforcer: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ],
   hive: [
   { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: {} },
-  { id: "hive_core", img: "buildings/building_hive_capital.png", i18nKey: "buildingHiveCore", tier: 2, housing: 1000, amenities: 800, jobs: { logistic_drone: 200, synapse_drone: 200, hunter_seeker_drone: 100 }, upkeep: { energy: -2 } },
-  { id: "hive_nexus", img: "buildings/building_hive_major_capital.png", i18nKey: "buildingHiveNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { logistic_drone: 500, synapse_drone: 300, hunter_seeker_drone: 200 }, upkeep: { energy: -5 } },
-  { id: "hive_imperial_complex", img: "buildings/building_imperial_hive_capital.png", i18nKey: "buildingHiveImperialComplex", tier: 5, housing: 3000, amenities: 3000, jobs: { logistic_drone: 700, synapse_drone: 500, hunter_seeker_drone: 400 }, upkeep: { energy: -10 } }
+  { id: "hive_core", img: "buildings/building_hive_capital.png", i18nKey: "buildingHiveCore", tier: 2, housing: 1000, amenities: 800, jobs: { logistic_drone: 200, synapse_drone: 200, hunter_seeker_drone: 100 }, defenseArmies: 4, upkeep: { energy: -2 } },
+  { id: "hive_nexus", img: "buildings/building_hive_major_capital.png", i18nKey: "buildingHiveNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { logistic_drone: 500, synapse_drone: 300, hunter_seeker_drone: 200 }, defenseArmies: 8, upkeep: { energy: -5 } },
+  { id: "hive_imperial_complex", img: "buildings/building_imperial_hive_capital.png", i18nKey: "buildingHiveImperialComplex", tier: 5, housing: 3000, amenities: 3000, jobs: { logistic_drone: 700, synapse_drone: 500, hunter_seeker_drone: 400 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ],
   machine: [
   { id: "deployment_post", img: "buildings/building_deployment_post.png", i18nKey: "buildingDeploymentPost", tier: 1, housing: 300, amenities: 500, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 200 }, upkeep: { energy: -1 } },
-  { id: "administrative_array", img: "buildings/building_machine_capital.png", i18nKey: "buildingAdministrativeArray", tier: 2, housing: 1000, amenities: 1000, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 300, coordinator: 200 }, upkeep: { energy: -3 } },
-  { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, upkeep: { energy: -5 } },
-  { id: "primary_nexus", img: "buildings/building_machine_system_capital.png", i18nKey: "buildingPrimaryNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { replicator: 200, hunter_seeker_drone: 300, logistic_drone: 500, coordinator: 400 }, upkeep: { energy: -10 } },
-  { id: "machine_imperial_center", img: "buildings/building_imperial_machine_capital.png", i18nKey: "buildingMachineImperialCenter", tier: 5, housing: 3000, amenities: 3000, jobs: { replicator: 400, hunter_seeker_drone: 500, logistic_drone: 600, coordinator: 500 }, upkeep: { energy: -10 } }
+  { id: "administrative_array", img: "buildings/building_machine_capital.png", i18nKey: "buildingAdministrativeArray", tier: 2, housing: 1000, amenities: 1000, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 300, coordinator: 200 }, defenseArmies: 4, upkeep: { energy: -3 } },
+  { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, defenseArmies: 8, upkeep: { energy: -5 } },
+  { id: "primary_nexus", img: "buildings/building_machine_system_capital.png", i18nKey: "buildingPrimaryNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { replicator: 200, hunter_seeker_drone: 300, logistic_drone: 500, coordinator: 400 }, defenseArmies: 16, upkeep: { energy: -10 } },
+  { id: "machine_imperial_center", img: "buildings/building_imperial_machine_capital.png", i18nKey: "buildingMachineImperialCenter", tier: 5, housing: 3000, amenities: 3000, jobs: { replicator: 400, hunter_seeker_drone: 500, logistic_drone: 600, coordinator: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ]
 };
 
@@ -141,6 +144,18 @@ export const DISTRICTS = {
     i18nKey: "districtUrban",
     img: "districs/district_city.png",
     jobs: {},
+    // Vivienda (×100) y mantenimiento por copia del distrito primario (P7.1, página
+    // "Districts" 4.5). Ciudad (individualista) +1000, Núcleo central (máquina) +1000 y
+    // Clúster de la colmena +1200 (+600 más en un mundo colmena). Mantenimiento −2 energía.
+    // Cada especialización elegida resta 200 de vivienda por copia (campo `housing` de
+    // cada opción). No se aplican los bonos de vivienda condicionados a tecnologías o
+    // tradiciones (Weather Control Systems, Anti-Gravity Engineering, Public Works
+    // Division, Optimized Nexus, Extended Hives). Con Idilio Agrario, −200 por copia.
+    housing: 1000,
+    housingByAuthority: { hiveMind: 1200, machineIntelligence: 1000 },
+    hiveWorldHousing: 600,
+    agrarianIdyllHousing: -200,
+    upkeep: { energy: -2 },
     specializationSlots: 2,
     slotsPerSpecialization: 3,
     specializationOptions: [
@@ -148,6 +163,7 @@ export const DISTRICTS = {
         id: "mixedIndustry",
         i18nKey: "specializationMixedIndustry",
         img: "districts_specialization/District_specialization_industrial.png",
+        housing: -200,
         jobs: { metallurgist: 50, artisan: 50 },
         permittedSets: ["industrial"]
       },
@@ -155,6 +171,7 @@ export const DISTRICTS = {
         id: "heavyIndustry",
         i18nKey: "specializationHeavyIndustry",
         img: "districts_specialization/District_specialization_foundry.png",
+        housing: -200,
         jobs: { metallurgist: 100 },
         permittedSets: ["foundry"]
       },
@@ -162,6 +179,7 @@ export const DISTRICTS = {
         id: "civilianIndustry",
         i18nKey: "specializationCivilianIndustry",
         img: "districts_specialization/District_specialization_factory.png",
+        housing: -200,
         jobs: { artisan: 100 },
         permittedSets: ["factory"]
       },
@@ -169,6 +187,7 @@ export const DISTRICTS = {
         id: "militaryDefenses",
         i18nKey: "specializationMilitaryDefenses",
         img: "districts_specialization/District_specialization_fortress.png",
+        housing: -200,
         jobs: { soldier: 100 },
         permittedSets: ["fortress"]
       },
@@ -176,6 +195,7 @@ export const DISTRICTS = {
         id: "commercialNexus",
         i18nKey: "specializationCommercialNexus",
         img: "districts_specialization/District_specialization_trade.png",
+        housing: -200,
         jobs: { trader: 100 },
         permittedSets: ["trade"]
       }
@@ -188,6 +208,13 @@ export const DISTRICTS = {
    * igual que el urbano. slotsPerSpecialization: cuántas ranuras de
    * edificio desbloquea, sea cual sea la opción elegida. lockedTooltipKey:
    * texto del hueco bloqueado mientras no se ha elegido ninguna.
+   *
+   * P7.4: `requires` (mismas reglas que los edificios, ver js/building-requirements.js)
+   * en las opciones cuyo requisito se puede modelar: Bahías de Cultivo Solar (solo
+   * hábitat), Aldeas Agrarias (Idilio Agrario, sin Pescadores) y Caseríos Costeros
+   * (Idilio Agrario + Pescadores; sustituyen a las Aldeas). NO se modelan los de
+   * origen (Urbanización Subterránea: Subterráneo) ni de característica planetaria
+   * (Minas Gravitónicas: Montañas en el cielo, ver P10.8): siguen siempre disponibles.
    *
    * Especializaciones confirmadas en la wiki (página "District
    * specialization", tablas "Generator/Mining/Agriculture
@@ -206,6 +233,11 @@ export const DISTRICTS = {
     i18nKey: "districtGenerator",
     img: "districs/district_generator.png",
     jobs: { technician: 200 },
+    // Vivienda (×100) y mantenimiento por copia (P7.1, página "Districts" 4.5); +100 con consciencia gestalt, +300 con Idilio Agrario.
+    housing: 200,
+    gestaltHousing: 100,
+    agrarianIdyllHousing: 300,
+    upkeep: { energy: -1 },
     lockedTooltipKey: "specializationRequiresEnergy",
     slotsPerSpecialization: 3,
     specializationOptions: [
@@ -220,6 +252,7 @@ export const DISTRICTS = {
         id: "solarFarmingBays",
         i18nKey: "specializationSolarFarmingBays",
         img: "districts_specialization/District_specialization_food.png",
+        requires: [{ type: "celestial", ids: ["habitat"] }],
         jobs: { farmer: 100 },
         permittedSets: ["energy", "food"]
       }
@@ -229,6 +262,11 @@ export const DISTRICTS = {
     i18nKey: "districtMining",
     img: "districs/district_mining.png",
     jobs: { miner: 200 },
+    // Vivienda (×100) y mantenimiento por copia (P7.1, página "Districts" 4.5); +100 con consciencia gestalt, +300 con Idilio Agrario.
+    housing: 200,
+    gestaltHousing: 100,
+    agrarianIdyllHousing: 300,
+    upkeep: { energy: -1 },
     lockedTooltipKey: "specializationRequiresMinerals",
     slotsPerSpecialization: 3,
     specializationOptions: [
@@ -259,6 +297,11 @@ export const DISTRICTS = {
     i18nKey: "districtAgriculture",
     img: "districs/district_farming.png",
     jobs: { farmer: 200 },
+    // Vivienda (×100) y mantenimiento por copia (P7.1, página "Districts" 4.5); +100 con consciencia gestalt, +300 con Idilio Agrario.
+    housing: 200,
+    gestaltHousing: 100,
+    agrarianIdyllHousing: 300,
+    upkeep: { energy: -1 },
     lockedTooltipKey: "specializationRequiresFood",
     slotsPerSpecialization: 3,
     specializationOptions: [
@@ -273,6 +316,7 @@ export const DISTRICTS = {
         id: "agrarianVillages",
         i18nKey: "specializationAgrarianVillages",
         img: "districts_specialization/District_specialization_food.png",
+        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, { type: "notCivic", keys: ["civicAnglers", "civicCorporateAnglers"] }],
         jobs: { farmer: 75, trader: 75 },
         permittedSets: ["food", "origin"]
       },
@@ -280,6 +324,7 @@ export const DISTRICTS = {
         id: "coastalHamlets",
         i18nKey: "specializationCoastalHamlets",
         img: "districts_specialization/District_specialization_food.png",
+        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, { type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }],
         jobs: { farmer: 50, artisan: 50, trader: 50 },
         permittedSets: ["food", "origin"]
       }
@@ -362,6 +407,7 @@ export const JOBS = {
   hunter_seeker_drone: { i18nKey: "jobHunterSeekerDrone", img: "jobs/job_patrol_drone.png", stratum: "specialist" },
   replicator: { i18nKey: "jobReplicator", img: "jobs/job_replicator.png", stratum: "specialist" },
   // Especiales
+  colonist: { i18nKey: "jobColonist", img: "jobs/job_colonist.png", stratum: "special" },
   civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
   criminal: { i18nKey: "jobCriminal", img: "jobs/job_criminal.png", stratum: "special" },
   test_subject: { i18nKey: "jobTestSubject", img: "jobs/job_test_subject.png", stratum: "special" },
@@ -421,6 +467,8 @@ export const JOB_OUTPUTS = {
   // Élite
   politician: { unity: 5, amenities: 3, consumer_goods: -3 },
   // Especiales (wiki: Special jobs, Subversive jobs y Slave jobs)
+  // Colonista: +5 servicios; el +1 de recurso depende de la especie (ver computeTotals). No se modelan su estabilidad, felicidad ni velocidad de construcción.
+  colonist: { amenities: 5 },
   civilian: { amenities: 0.5, trade: 1 },
   criminal: {},
   test_subject: { physics: 0.5, society: 1, engineering: 0.5, amenities: 3, consumer_goods: -1 },
@@ -535,8 +583,12 @@ const authority = (...ids) => ({ type: "authority", ids });
  *   Si no se cumplen, el edificio se oculta del catálogo.
  * - colonyLimit: "none" (sin límite) o 1 (máximo una copia, normalmente
  *   por pertenecer a una cadena de mejora).
- * - cost: texto informativo de coste de construcción (no se simula el
- *   almacén de recursos todavía, solo se muestra como referencia).
+ * - cost: coste de construcción de la wiki 4.5 (P7.3), solo informativo (no se
+ *   simula el almacén de recursos): { time (días), items: [{ resource, amount,
+ *   when?: "settled" | "nomadic" }] }. Un ítem sin `when` se paga siempre. Solo
+ *   están los edificios cuya fila de la wiki se pudo leer sin ambigüedad; el resto
+ *   (cadenas de Unidad, red sináptica/de enlace, red de recursos, mejoras de
+ *   extracción) no tiene `cost`. Los costes de los mundos anillo no se modelan.
  * - sets: los "building sets" de este edificio (columna "Building Sets" de
  *   la wiki, páginas "Buildings", "Industry buildings" y "Resource
  *   buildings"), confirmados edificio a edificio contra la wiki. Determina
@@ -569,7 +621,7 @@ export const BUILDINGS = [
     jobs: { technician: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "volatile_motes", amount: 40, when: "nomadic" }] },
     sets: ["energy"]
   },
   {
@@ -580,7 +632,7 @@ export const BUILDINGS = [
     jobs: { miner: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400 }] },
     sets: ["minerals"]
   },
   {
@@ -592,7 +644,7 @@ export const BUILDINGS = [
     jobs: { farmer: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "volatile_motes", amount: 40, when: "nomadic" }] },
     sets: ["food"]
   },
 
@@ -607,7 +659,6 @@ export const BUILDINGS = [
     jobModifiers: { technician: { energy: 0.5 } },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["energy"]
   },
   {
@@ -622,7 +673,6 @@ export const BUILDINGS = [
     jobModifiers: { technician: { energy: 1 } },
     colonyLimit: 1,
     upkeep: { energy: -2, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
     sets: ["energy"]
   },
   {
@@ -636,7 +686,6 @@ export const BUILDINGS = [
     jobModifiers: { miner: { minerals: 0.5 } },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["minerals"]
   },
   {
@@ -651,7 +700,6 @@ export const BUILDINGS = [
     jobModifiers: { miner: { minerals: 1 } },
     colonyLimit: 1,
     upkeep: { energy: -2, volatile_motes: -1 },
-    cost: "600 minerales, 50 motas volátiles",
     sets: ["minerals"]
   },
   {
@@ -665,7 +713,6 @@ export const BUILDINGS = [
     jobModifiers: { farmer: { food: 0.5 } },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["food"]
   },
   {
@@ -680,7 +727,6 @@ export const BUILDINGS = [
     jobModifiers: { farmer: { food: 1 } },
     colonyLimit: 1,
     upkeep: { energy: -2, exotic_gases: -1 },
-    cost: "600 minerales, 50 gases exóticos",
     sets: ["food"]
   },
 
@@ -694,7 +740,7 @@ export const BUILDINGS = [
     jobs: { metallurgist: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "volatile_motes", amount: 40, when: "nomadic" }] },
     sets: ["industrial", "foundry"]
   },
   {
@@ -706,8 +752,8 @@ export const BUILDINGS = [
     upgradesFrom: "alloy_foundries",
     jobs: { metallurgist: 400 },
     colonyLimit: "none",
-    upkeep: { energy: -5, minerals: -2 },
-    cost: "480 minerales (600 si está asentado, 100 aleaciones)",
+    upkeep: { energy: -5, volatile_motes: -2 },
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600, when: "settled" }, { resource: "volatile_motes", amount: 100, when: "settled" }, { resource: "volatile_motes", amount: 160, when: "nomadic" }] },
     sets: ["industrial", "foundry"]
   },
   {
@@ -720,8 +766,8 @@ export const BUILDINGS = [
     upgradesFrom: "alloy_mega_forges",
     jobs: { metallurgist: 600 },
     colonyLimit: "none",
-    upkeep: { energy: -8, minerals: -4 },
-    cost: "480 minerales (800 si está asentado, 200 aleaciones)",
+    upkeep: { energy: -8, volatile_motes: -4 },
+    cost: { time: 480, items: [{ resource: "minerals", amount: 800, when: "settled" }, { resource: "volatile_motes", amount: 200, when: "settled" }, { resource: "volatile_motes", amount: 280, when: "nomadic" }] },
     sets: ["industrial", "foundry"]
   },
 
@@ -735,7 +781,7 @@ export const BUILDINGS = [
     jobUpkeepMult: { metallurgist: -0.1 },
     colonyLimit: 1,
     upkeep: { energy: -5, volatile_motes: -2 },
-    cost: "600 minerales, 100 motas volátiles",
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600 }, { resource: "volatile_motes", amount: 100 }] },
     sets: ["industrial", "foundry"]
   },
   {
@@ -747,7 +793,7 @@ export const BUILDINGS = [
     jobEfficiency: { metallurgist: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, volatile_motes: -4 },
-    cost: "800 energía, 200 motas volátiles",
+    cost: { time: 600, items: [{ resource: "energy", amount: 800 }, { resource: "volatile_motes", amount: 200 }] },
     sets: ["industrial", "foundry"]
   },
 
@@ -762,7 +808,7 @@ export const BUILDINGS = [
     jobs: { artisan: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "rare_crystals", amount: 40, when: "nomadic" }] },
     sets: ["industrial", "factory"]
   },
   {
@@ -775,8 +821,8 @@ export const BUILDINGS = [
     upgradesFrom: "civilian_industries",
     jobs: { artisan: 400 },
     colonyLimit: "none",
-    upkeep: { energy: -5, minerals: -2 },
-    cost: "480 minerales (600 si está asentado, 100 aleaciones)",
+    upkeep: { energy: -5, rare_crystals: -2 },
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600, when: "settled" }, { resource: "rare_crystals", amount: 100, when: "settled" }, { resource: "rare_crystals", amount: 160, when: "nomadic" }] },
     sets: ["industrial", "factory"]
   },
   {
@@ -789,8 +835,8 @@ export const BUILDINGS = [
     upgradesFrom: "civilian_fabricators",
     jobs: { artisan: 600 },
     colonyLimit: "none",
-    upkeep: { energy: -8, minerals: -4 },
-    cost: "600 minerales (800 si está asentado, 200 aleaciones)",
+    upkeep: { energy: -8, rare_crystals: -4 },
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800, when: "settled" }, { resource: "rare_crystals", amount: 200, when: "settled" }, { resource: "rare_crystals", amount: 280, when: "nomadic" }] },
     sets: ["industrial", "factory"]
   },
 
@@ -804,7 +850,7 @@ export const BUILDINGS = [
     jobUpkeepMult: { artisan: -0.1 },
     colonyLimit: 1,
     upkeep: { energy: -5, rare_crystals: -2 },
-    cost: "600 minerales, 100 cristales raros",
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600 }, { resource: "rare_crystals", amount: 100 }] },
     sets: ["industrial", "factory"]
   },
   {
@@ -816,7 +862,7 @@ export const BUILDINGS = [
     jobEfficiency: { artisan: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, rare_crystals: -4 },
-    cost: "800 energía, 200 cristales raros",
+    cost: { time: 600, items: [{ resource: "energy", amount: 800 }, { resource: "rare_crystals", amount: 200 }] },
     sets: ["industrial", "factory"]
   },
 
@@ -831,7 +877,7 @@ export const BUILDINGS = [
     jobs: { physicist: 60, engineer: 60, biologist: 60 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "exotic_gases", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -844,8 +890,8 @@ export const BUILDINGS = [
     upgradesFrom: "research_labs",
     jobs: { physicist: 120, engineer: 120, biologist: 120 },
     colonyLimit: "none",
-    upkeep: { energy: -5, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    upkeep: { energy: -5, exotic_gases: -1 },
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600, when: "settled" }, { resource: "exotic_gases", amount: 50, when: "settled" }, { resource: "exotic_gases", amount: 110, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -858,8 +904,8 @@ export const BUILDINGS = [
     upgradesFrom: "research_complexes",
     jobs: { physicist: 180, engineer: 180, biologist: 180 },
     colonyLimit: "none",
-    upkeep: { energy: -8, minerals: -2 },
-    cost: "600 minerales (800 si está asentado, 100 aleaciones)",
+    upkeep: { energy: -8, exotic_gases: -2 },
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800, when: "settled" }, { resource: "exotic_gases", amount: 100, when: "settled" }, { resource: "exotic_gases", amount: 180, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -874,7 +920,7 @@ export const BUILDINGS = [
     jobs: { enforcer: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -887,8 +933,8 @@ export const BUILDINGS = [
     upgradesFrom: "precinct_houses",
     jobs: { enforcer: 500 },
     colonyLimit: 1,
-    upkeep: { energy: -2, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    upkeep: { energy: -2, volatile_motes: -1 },
+    cost: { time: 480, items: [{ resource: "volatile_motes", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "alloys", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -901,7 +947,7 @@ export const BUILDINGS = [
     jobs: { educator: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -914,8 +960,8 @@ export const BUILDINGS = [
     upgradesFrom: "state_academy",
     jobs: { educator: 500 },
     colonyLimit: 1,
-    upkeep: { energy: -2, minerals: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    upkeep: { energy: -2, volatile_motes: -1 },
+    cost: { time: 480, items: [{ resource: "volatile_motes", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "alloys", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -927,7 +973,7 @@ export const BUILDINGS = [
     jobs: { bureaucrat: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "rare_crystals", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -941,8 +987,8 @@ export const BUILDINGS = [
     tier: 1,
     jobs: { soldier: 200 },
     colonyLimit: 1,
-    upkeep: { minerals: -1 },
-    cost: "240 minerales (400 si está asentado / 40 si es nómada)",
+    upkeep: { energy: -1 },
+    cost: { time: 240, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "volatile_motes", amount: 40, when: "nomadic" }] },
     sets: ["fortress"]
   },
   {
@@ -955,8 +1001,8 @@ export const BUILDINGS = [
     upgradesFrom: "stronghold",
     jobs: { soldier: 400 },
     colonyLimit: 1,
-    upkeep: { minerals: -1, alloys: -1 },
-    cost: "360 minerales (600 si está asentado, 50 aleaciones)",
+    upkeep: { energy: -1, volatile_motes: -1 },
+    cost: { time: 360, items: [{ resource: "minerals", amount: 600, when: "settled" }, { resource: "volatile_motes", amount: 50, when: "settled" }, { resource: "volatile_motes", amount: 110, when: "nomadic" }] },
     sets: ["fortress"]
   },
 
@@ -970,7 +1016,7 @@ export const BUILDINGS = [
     jobs: { trader: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "rare_crystals", amount: 40, when: "nomadic" }] },
     sets: ["trade"]
   },
   {
@@ -982,7 +1028,7 @@ export const BUILDINGS = [
     jobs: { entertainer: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -1001,7 +1047,6 @@ export const BUILDINGS = [
     jobUpkeepMult: { priest: -0.2 },
     colonyLimit: 1,
     upkeep: { energy: -5, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
     sets: ["origin"]
   },
   {
@@ -1016,7 +1061,6 @@ export const BUILDINGS = [
     jobEfficiency: { priest: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, rare_crystals: -2 },
-    cost: "800 minerales, 100 cristales raros",
     sets: ["origin"]
   },
 
@@ -1033,7 +1077,7 @@ export const BUILDINGS = [
     jobUpkeepMult: { bureaucrat: -0.2 },
     colonyLimit: 1,
     upkeep: { energy: -5, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
+    cost: { time: 480, items: [{ resource: "minerals", amount: 600 }] },
     sets: ["origin"]
   },
   {
@@ -1048,7 +1092,7 @@ export const BUILDINGS = [
     jobEfficiency: { bureaucrat: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, rare_crystals: -2 },
-    cost: "800 minerales, 100 cristales raros",
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800 }] },
     sets: ["origin"]
   },
 
@@ -1063,7 +1107,6 @@ export const BUILDINGS = [
     jobs: { death_priest: 100, mortal_initiate: 100 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["origin"]
   },
   {
@@ -1078,7 +1121,6 @@ export const BUILDINGS = [
     jobEfficiency: { death_priest: 0.05 },
     colonyLimit: 1,
     upkeep: { energy: -5, exotic_gases: -1 },
-    cost: "600 minerales, 50 gases exóticos",
     sets: ["origin"]
   },
   {
@@ -1093,7 +1135,6 @@ export const BUILDINGS = [
     jobEfficiency: { mortal_initiate: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, exotic_gases: -2 },
-    cost: "800 minerales, 100 gases exóticos",
     sets: ["origin"]
   },
 
@@ -1108,7 +1149,7 @@ export const BUILDINGS = [
     jobs: { experiment_engineer: 200, test_subject: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "exotic_gases", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1122,7 +1163,7 @@ export const BUILDINGS = [
     jobs: { experiment_engineer: 200, test_subject: 400 },
     colonyLimit: 1,
     upkeep: { energy: -2, rare_crystals: -2 },
-    cost: "600 minerales, 50 cristales raros",
+    cost: { time: 480, items: [{ resource: "rare_crystals", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "exotic_gases", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1136,7 +1177,7 @@ export const BUILDINGS = [
     jobs: { experiment_engineer: 200, test_subject: 600 },
     colonyLimit: 1,
     upkeep: { energy: -2, rare_crystals: -2, volatile_motes: -1 },
-    cost: "800 minerales, 100 cristales raros",
+    cost: { time: 600, items: [{ resource: "rare_crystals", amount: 100 }, { resource: "minerals", amount: 800, when: "settled" }, { resource: "exotic_gases", amount: 80, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -1153,7 +1194,7 @@ export const BUILDINGS = [
     amenities: 1500,
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1169,7 +1210,7 @@ export const BUILDINGS = [
     amenities: 3000,
     colonyLimit: 1,
     upkeep: { energy: -3, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
+    cost: { time: 480, items: [{ resource: "rare_crystals", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "alloys", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1184,7 +1225,7 @@ export const BUILDINGS = [
     amenities: 1500,
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1200,7 +1241,7 @@ export const BUILDINGS = [
     amenities: 3000,
     colonyLimit: 1,
     upkeep: { energy: -3, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
+    cost: { time: 480, items: [{ resource: "rare_crystals", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "alloys", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -1215,7 +1256,6 @@ export const BUILDINGS = [
     jobs: { synapse_drone: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["origin"]
   },
   {
@@ -1230,7 +1270,6 @@ export const BUILDINGS = [
     jobUpkeepMult: { synapse_drone: -0.2 },
     colonyLimit: 1,
     upkeep: { energy: -5, exotic_gases: -1 },
-    cost: "600 minerales, 50 gases exóticos",
     sets: ["origin"]
   },
   {
@@ -1245,7 +1284,6 @@ export const BUILDINGS = [
     jobEfficiency: { synapse_drone: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, exotic_gases: -2 },
-    cost: "800 minerales, 100 gases exóticos",
     sets: ["origin"]
   },
 
@@ -1260,7 +1298,6 @@ export const BUILDINGS = [
     jobs: { coordinator: 200 },
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "400 minerales",
     sets: ["origin"]
   },
   {
@@ -1275,7 +1312,6 @@ export const BUILDINGS = [
     jobUpkeepMult: { coordinator: -0.2 },
     colonyLimit: 1,
     upkeep: { energy: -5, rare_crystals: -1 },
-    cost: "600 minerales, 50 cristales raros",
     sets: ["origin"]
   },
   {
@@ -1290,7 +1326,6 @@ export const BUILDINGS = [
     jobEfficiency: { coordinator: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, rare_crystals: -2 },
-    cost: "800 minerales, 100 cristales raros",
     sets: ["origin"]
   },
 
@@ -1307,7 +1342,7 @@ export const BUILDINGS = [
     amenities: 1500,
     colonyLimit: 1,
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "alloys", amount: 40, when: "nomadic" }] },
     sets: ["origin"]
   },
   {
@@ -1322,8 +1357,8 @@ export const BUILDINGS = [
     housing: 3000,
     amenities: 3000,
     colonyLimit: 1,
-    upkeep: { energy: -3, alloys: -1 },
-    cost: "480 minerales (600 si está asentado, 50 aleaciones)",
+    upkeep: { energy: -3, rare_crystals: -1 },
+    cost: { time: 480, items: [{ resource: "rare_crystals", amount: 50 }, { resource: "minerals", amount: 600, when: "settled" }, { resource: "alloys", amount: 60, when: "nomadic" }] },
     sets: ["origin"]
   },
 
@@ -1337,7 +1372,6 @@ export const BUILDINGS = [
     jobs: { priest: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: "360 minerales (400 si está asentado / 40 si es nómada)",
     sets: ["origin"]
   }
 ];
