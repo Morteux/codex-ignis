@@ -8,7 +8,8 @@
  */
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
-import { PLANET_TYPES, IMAGE_BASE } from "./celestial-data.js";
+import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
+import { PLANET_TYPES } from "./celestial-data.js";
 import { updatePlanetState } from "./planet-state.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");

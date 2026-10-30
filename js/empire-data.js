@@ -30,7 +30,7 @@
  *   tiene requisito conocido y se considera siempre disponible.
  */
 
-import { CIVIC_REQUIREMENTS } from "./civic-rules.js";
+import { CIVIC_REQUIREMENTS, CIVIC_AUTHORITIES } from "./civic-rules.js";
 
 /** Presupuesto total de puntos para elegir autoridades (éticas). */
 export const ETHICS_MAX_POINTS = 3;
@@ -175,33 +175,7 @@ export const MAX_CIVICS = 3;
 /** Requisitos y exclusiones de cada principio: ver js/civic-rules.js (generado desde la Wiki). */
 export { CIVIC_REQUIREMENTS };
 
-/**
- * Autoridades que exige un principio cuando CIVIC_REQUIREMENTS no lista
- * ninguna (la mayoría de los de la tabla solo traen requisitos de ética).
- * Según las páginas de la Wiki "Civics", "Hive mind civics", "Machine
- * intelligence civics" y "Corporate civics":
- *  - Principios de Mente Colmena (clave civicHive…) solo con Mente Colmena.
- *  - Principios de Máquina (civicMachine… / civicIndividualMachine…)
- *    solo con Inteligencia de Máquina.
- *  - Principios corporativos (civicCorporate… o terminados en
- *    "Corporate") solo con Corporativa.
- *  - Principios exclusivos que no llevan prefijo en su clave: Enjambre
- *    Devorador (Mente Colmena) y Herencia Criminal (Corporativa).
- *  - El resto son principios "normales": cualquier autoridad no gestalt.
- */
 const NON_GESTALT_AUTHORITIES = ["democratic", "oligarchic", "dictatorial", "imperial", "corporate"];
-const AUTHORITY_ONLY_PLAIN_KEYS = {
-  civicDevouringSwarm: ["hiveMind"],
-  civicCriminalHeritage: ["corporate"]
-};
-
-function defaultCivicAuthorities(i18nKey) {
-  if (AUTHORITY_ONLY_PLAIN_KEYS[i18nKey]) return AUTHORITY_ONLY_PLAIN_KEYS[i18nKey];
-  if (/^civicHive/.test(i18nKey)) return ["hiveMind"];
-  if (/^civic(Individual)?Machine/.test(i18nKey)) return ["machineIntelligence"];
-  if (/^civicCorporate/.test(i18nKey) || /Corporate$/.test(i18nKey)) return ["corporate"];
-  return NON_GESTALT_AUTHORITIES;
-}
 
 function civicGroupMatches(group, selectedEthicIds, authorityId, otherCivicIds) {
   return group.ethics.some((id) => ethicsSatisfy(selectedEthicIds, id))
@@ -226,11 +200,11 @@ export function civicAvailable(i18nKey, selectedEthicIds, authorityId, selectedC
   if (others.some((key) => civicsConflict(i18nKey, key))) return false;
   const groups = CIVIC_REQUIREMENTS[i18nKey] || [];
   // Si la tabla no exige ninguna autoridad concreta, se aplica la que le
-  // corresponde por tipo de principio (ver defaultCivicAuthorities).
+  // corresponde por tipo de principio (ver CIVIC_AUTHORITIES en civic-rules.js).
   const hasExplicitAuthority = groups.some((group) => !group.exclude && (group.authorities.length || group.nonGestalt));
   const requirementGroups = hasExplicitAuthority
     ? groups
-    : [...groups, { exclude: false, ethics: [], authorities: defaultCivicAuthorities(i18nKey), civics: [] }];
+    : [...groups, { exclude: false, ethics: [], authorities: (CIVIC_AUTHORITIES[i18nKey] || NON_GESTALT_AUTHORITIES), civics: [] }];
   return requirementGroups.every((group) => {
     const anyMatch = civicGroupMatches(group, selectedEthicIds, authorityId, others);
     return group.exclude ? !anyMatch : anyMatch;

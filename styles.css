@@ -1617,11 +1617,6 @@ h1 {
     font-size: .72rem;
 }
 
-.planet-district-spec-status {
-    color: var(--muted);
-    font-size: .66rem;
-}
-
 .planet-urban-spec-select {
     padding: .35rem .5rem;
     border: 1px solid var(--line);
@@ -1634,28 +1629,6 @@ h1 {
 
 .planet-urban-spec-select:hover {
     border-color: var(--accent-dim);
-}
-
-.planet-add-btn {
-    padding: .4rem .7rem;
-    border: 1px solid var(--line);
-    color: var(--text);
-    background: var(--surface-raised);
-    font: 700 .66rem var(--mono);
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-
-.planet-add-btn:hover:not(:disabled) {
-    border-color: var(--accent-dim);
-    color: var(--accent);
-}
-
-.planet-add-btn:disabled {
-    opacity: .4;
-    cursor: not-allowed;
 }
 
 /* ── Listas de empleos/recursos (paneles de resumen y producción) ──────── */
@@ -1753,12 +1726,6 @@ h1 {
 
 .planet-job-output-pill.is-negative {
     color: #ff8a7a;
-}
-
-.planet-job-output-note {
-    color: var(--muted);
-    font-size: .68rem;
-    font-style: italic;
 }
 
 .planet-job-icon {
@@ -1904,13 +1871,6 @@ h1 {
     font-size: .8rem;
 }
 
-.empire-axis-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem;
-    margin-bottom: .5rem;
-}
-
 .empire-ethic-btn {
     padding: .45rem .7rem;
     border: 1px solid var(--line);
@@ -1934,18 +1894,6 @@ h1 {
 .empire-ethic-btn:disabled {
     opacity: .4;
     cursor: not-allowed;
-}
-
-.empire-gestalt-toggle {
-    display: flex;
-    align-items: center;
-    gap: .5rem;
-    margin-top: .9rem;
-    padding-top: .9rem;
-    border-top: 1px solid var(--line-soft);
-    color: var(--muted);
-    font-size: .76rem;
-    cursor: pointer;
 }
 
 .empire-authority-card,
@@ -2126,22 +2074,6 @@ h1 {
 
 .planet-summary-name-input::placeholder {
     color: #5c7765;
-}
-
-/* ── Selector de designación planetaria (pestaña Planeta) ──────────────── */
-
-.planet-designation-control {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: .6rem;
-    margin-bottom: 1.1rem;
-}
-
-.planet-designation-label {
-    color: var(--muted);
-    font: 700 .68rem var(--mono);
-    letter-spacing: .04em;
 }
 
 .planet-designation-select {

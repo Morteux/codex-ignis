@@ -27,10 +27,6 @@
  * (p. ej. "building_precinct_house.png", "job_technician.png"), mientras que
  * "resources/" usa mayúscula inicial (p. ej. "Energy.png", "Alloys.png").
  */
-import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
-
-export const IMAGE_BASE = STELLARIS_ASSETS_BASE;
-
 /** Los efectos de edificio (empleos, vivienda, comodidades) se guardan ×100; se dividen aquí, en un único sitio. */
 export const EFFECT_SCALE = 100;
 export function divideEffect(rawAmount) {

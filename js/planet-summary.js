@@ -16,7 +16,7 @@
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet-state.js";
-import { PLANET_TYPES, IMAGE_BASE as CELESTIAL_IMAGE_BASE } from "./celestial-data.js";
+import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
 import { listEmpires, onEmpiresChange } from "./empire-profiles.js";
@@ -88,7 +88,7 @@ function render() {
   const designation = getDesignation(state.designationId);
 
   if (typeIconEl) {
-    typeIconEl.src = type ? `${CELESTIAL_IMAGE_BASE}${type.img}` : "";
+    typeIconEl.src = type ? `${STELLARIS_ASSETS_BASE}${type.img}` : "";
     typeIconEl.alt = type ? t(currentLang, type.i18nKey) : "";
     typeIconEl.title = type ? t(currentLang, type.i18nKey) : t(currentLang, "planetSummaryNotChosen");
   }

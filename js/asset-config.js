@@ -13,8 +13,7 @@
  *
  * 2. STELLARIS_ASSETS_BASE → para las imágenes que SIEMPRE se sirven desde
  *    la API de assets (repo StellarisAssets en GitHub Pages): por ahora
- *    bingo.html (js/bingo-data.js, vía IMAGE_BASE) y, en el futuro,
- *    planet-sim.html. La estructura de esa API es siempre
+ *    bingo.html y planet-sim.html. La estructura de esa API es siempre
  *    "https://morteux.github.io/StellarisAssets/<carpeta>/<archivo>.png",
  *    por ejemplo:
  *    https://morteux.github.io/StellarisAssets/buildings/aesthetic_wonders_holomuseum.png
@@ -22,7 +21,7 @@
  *    ejemplo "origins/GFX_origin_default.png" o "civics/Civic_x.png"), sin
  *    el prefijo "img/" que sí se usa en las rutas locales del proyecto.
  */
-export const ASSET_BASE = "";
+const ASSET_BASE = "";
 
 export const STELLARIS_ASSETS_BASE = "https://morteux.github.io/StellarisAssets/";
 

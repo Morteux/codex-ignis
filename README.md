@@ -1,27 +1,45 @@
 # Codex Ignis
 
-Una wiki personal estática de Stellaris con una interfaz de terminal navegable.
+Wiki personal estática de Stellaris con una interfaz de terminal navegable, más dos proyectos independientes: un bingo y un simulador de planetas.
 
 ## Desarrollo y despliegue
 
 El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier servidor estático. No se usa GitHub Actions: el sitio se publica manualmente (`vercel.json` mínimo incluido por si se despliega en Vercel).
 
-## Contenido
+## Estructura
 
-Las futuras entradas se definen en `js/content.js`. La interfaz está preparada para indexarlas y buscarlas sin cambiar su estructura.
+| Parte | Páginas / módulos |
+|---|---|
+| Wiki | `index.html`, `js/app.js`, `js/content.js` (artículos), `js/highlight-config.js` |
+| Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
+| Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, datos en `*-data.js` y `civic-rules.js` |
+| Árbol de tecnologías | `tech-tree.html` (marcador; plan en `tech_tree.md`) |
+| Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
+| Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |
+
+Documentación del proyecto: `PLANET_SIM_GDD.md` (fases y progreso del simulador), `tech_tree.md` (plan del árbol de tecnologías), `principios_del_juego.md` (nombres e iconos de los principios), `WIKI_URLS.md` (páginas de la wiki de Stellaris usadas como fuente) y `StellarisAssetsFileTree.txt` (árbol del repositorio de assets).
+
+## Contenido de la wiki
+
+Los artículos se definen en `js/content.js` por bloques (párrafo, subtítulo, lista, enlaces, imagen, columnas, nota, cita, separador); la cabecera del propio archivo explica el formato, las traducciones (`i18n`) y los easter eggs.
 
 ## Bingo (orígenes y principios)
 
-Mini proyecto independiente (`bingo.html`) migrado al codex como un endpoint adicional del sitio, enlazado desde el pie de página del índice. Un desplegable permite elegir entre el bingo de **orígenes** y el de **principios**; los datos de cada uno viven en `js/bingo-data.js` (arrays `ORIGIN_BINGO` y `PRINCIPLE_BINGO`, este último con las 226 civics de `img/civics/`), separados del HTML. Cada casilla se ve en blanco y negro por defecto y pasa a color al pulsarla, marcándola como conseguida (el marcado se conserva solo durante la visita, no entre recargas). El nombre de cada casilla no se muestra como texto: aparece como tooltip nativo al pasar el ratón por encima, y está traducido a ES/EN/JP vía `js/i18n.js` (claves `originXxx` / `civicXxx`). El botón de descarga genera una imagen PNG en alta resolución del bingo actualmente visible (orígenes o principios) con el estado de marcado.
+`bingo.html` permite elegir entre el bingo de **orígenes** y el de **principios**; los datos viven en `js/bingo-data.js` (`ORIGIN_BINGO` y `PRINCIPLE_BINGO`, este último con 226 entradas, una por icono de `civics/`). Cada casilla se ve en blanco y negro y pasa a color al pulsarla (el marcado dura solo la visita). El nombre sale como tooltip y está traducido vía `js/i18n.js`. El botón de descarga genera un PNG en alta resolución del bingo visible.
 
-**Nota sobre las claves `civicXxx`:** la clave sale del nombre de archivo del icono (`civics/Civic_xxx.png`), no del nombre del principio en la wiki 4.5.2, que cambia entre variantes (p. ej. `civicCorporateAscensionists` es «Gigacorp»). El inglés de `js/i18n.js` es el nombre de la wiki; la lista completa está en `principios_del_juego.md`. Los imperios guardados con las claves antiguas `principleXxx` se convierten solos al cargarlos.
+**Claves `civicXxx`:** la clave sale del nombre de archivo del icono (`civics/Civic_xxx.png`), no del nombre del principio en la wiki 4.5.2, que cambia entre variantes (p. ej. `civicCorporateAscensionists` es «Gigacorp»). El inglés de `js/i18n.js` es el nombre de la wiki; hay claves que agrupan varios principios que comparten icono y se muestran unidos con « / ». Los textos en español y japonés de los principios renombrados en la 4.5 muestran el nombre en inglés hasta que se incorporen las traducciones oficiales (fase P15 del GDD).
 
-## Imágenes de Stellaris y futura migración a un repo de assets
+## Imágenes de Stellaris
 
-Todas las rutas de imagen de Stellaris (naves, orígenes, principios, fauna, citas...) pasan por `js/asset-config.js`, tanto las del codex (`js/app.js`) como las del bingo (`js/bingo-data.js`, que reexporta `ASSET_BASE` como `IMAGE_BASE`). Mientras las imágenes vivan en `img/` de este mismo repositorio, `ASSET_BASE` se deja vacío. Cuando muevas las imágenes a un repositorio de solo assets (por ejemplo, servido con GitHub Pages o vía jsDelivr), cambia únicamente esa constante por la URL base del nuevo origen — no hay que tocar `content.js`, `bingo-data.js` ni el resto del sitio.
+Hay dos orígenes, ambos definidos en `js/asset-config.js`:
 
-Esto es independiente de dónde se despliegue el propio sitio (GitHub Pages manual o Vercel): incluye un `vercel.json` mínimo por si en algún momento se despliega ahí directamente.
+- **Imágenes de los artículos** (`content.js`): rutas locales de `img/` o URLs absolutas; `ASSET_BASE` queda vacío y solo completa rutas relativas.
+- **Imágenes de Stellaris del bingo y del simulador** (orígenes, principios, edificios, empleos, planetas...): siempre desde el repositorio de assets (`STELLARIS_ASSETS_BASE`, GitHub Pages). Si esa URL cambia, solo hay que editar esa constante.
 
 ## Google AdSense
 
-La integración está deliberadamente desactivada en `js/ads-config.js`. Solo se debe activar después de tener contenido suficiente, aprobación del sitio, un ID de editor `ca-pub-…`, unidades publicitarias y el consentimiento configurado cuando corresponda. Añade `ads.txt` en la raíz únicamente con el valor oficial de Google.
+La integración está desactivada en `js/ads-config.js`. Solo debe activarse con contenido suficiente, aprobación del sitio, un ID de editor `ca-pub-…`, unidades publicitarias y el consentimiento configurado cuando corresponda. Añade `ads.txt` en la raíz únicamente con el valor oficial de Google.
+
+## Créditos
+
+Contenido y marcas de Stellaris © Paradox Interactive (ver `privacy.html`). El futuro árbol de tecnologías se inspira en el *Stellaris Tech Tree* de BloodStainedCrow (https://bloodstainedcrow.github.io/stellaris-tech-tree/); ver `tech_tree.md`.

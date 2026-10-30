@@ -18,10 +18,6 @@
  * civilización: hábitat, ecumenópolis, anillo mundial, mundo máquina,
  * mundo nanorrobot, telar sináptico).
  */
-import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
-
-export const IMAGE_BASE = STELLARIS_ASSETS_BASE;
-
 export const PLANET_TYPES = [
   { id: "continental", standard: true, img: "planets/Planet_continental.png", i18nKey: "planetTypeContinental", category: "natural" },
   { id: "ocean", standard: true, img: "planets/Planet_ocean.png", i18nKey: "planetTypeOcean", category: "natural" },

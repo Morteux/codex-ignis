@@ -18,7 +18,8 @@
  */
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
-import { IMAGE_BASE, ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
+import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
+import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
 
 const BINGO_SETS = {
     origins: { data: ORIGIN_BINGO, fileSlug: "origenes", titleKey: "bingoTypeOrigins" },

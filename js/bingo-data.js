@@ -4,27 +4,14 @@
  * Cada casilla es un objeto:
  *   { img: "origins/GFX_origin_default.png", i18nKey: "originXxx" }
  * - "img" es la ruta a la imagen dentro de la API de assets de Stellaris
- *   (https://morteux.github.io/StellarisAssets/), relativa a IMAGE_BASE.
+ *   (https://morteux.github.io/StellarisAssets/), relativa a STELLARIS_ASSETS_BASE (js/asset-config.js).
  * - "i18nKey" es la clave de texto que se busca en los tres bloques de
  *   idioma (es/en/jp) dentro de js/i18n.js. Debe existir en los tres.
  *
- * ── Origen de las imágenes ─────────────────────────────────────────────
- * Las imágenes del bingo se sirven siempre desde la API de assets
- * (https://morteux.github.io/StellarisAssets/), nunca en local. Si esa URL
- * base cambia, edita únicamente STELLARIS_ASSETS_BASE en
- * js/asset-config.js: no hace falta tocar nada en este archivo.
+ * Las imágenes se sirven siempre desde la API de assets, nunca en local; si
+ * esa URL cambia, solo hay que editar STELLARIS_ASSETS_BASE en
+ * js/asset-config.js.
  */
-import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
-
-/**
- * IMAGE_BASE reexporta STELLARIS_ASSETS_BASE (definido en
- * js/asset-config.js): las imágenes del bingo se sirven siempre desde la
- * API de assets de Stellaris, nunca en local. Para cambiar de dónde se
- * sirven, edita STELLARIS_ASSETS_BASE en js/asset-config.js — no hace
- * falta tocar nada en este archivo.
- */
-export const IMAGE_BASE = STELLARIS_ASSETS_BASE;
-
 /** Bingo de orígenes. */
 export const ORIGIN_BINGO = [
   { img: "origins/GFX_origin_default.png", i18nKey: "originDefault" },
@@ -84,20 +71,15 @@ export const ORIGIN_BINGO = [
 ];
 
 /**
- * Bingo de principios (civics). Incluye las 226 imágenes de img/civics/
- * (normales, corporativas, de mente colmena, de máquina y de máquina
- * individual). Los nombres de "i18nKey" se generaron automáticamente a
- * partir del nombre de archivo de cada civic; sus textos (en los tres
- * idiomas) están en js/i18n.js junto al resto de claves "civicXxx" —
- * revisa y ajusta ahí cualquier traducción que no te convenza, no aquí.
+ * Bingo de principios (civics): 226 entradas, una por icono (carpeta civics/
+ * de la API de assets). La clave "civicXxx" sale del nombre de archivo del
+ * icono; el texto de cada clave está en js/i18n.js y la lista de nombres
+ * oficiales (wiki 4.5.2) en principios_del_juego.md. Hay claves que cubren
+ * varios principios que comparten icono; su nombre va unido con " / ".
  *
- * Para añadir un nuevo principio en el futuro (por ejemplo, tras un DLC
- * nuevo):
- *  1. Añade su imagen en img/civics/.
- *  2. Añade una línea aquí con el mismo formato, por ejemplo:
- *     { img: "civics/48px-Civic_xxx.png", i18nKey: "civicXxx" }.
- *  3. Añade la clave "civicXxx" con su texto en los tres bloques de
- *     idioma (es/en/jp) de js/i18n.js.
+ * Para añadir un principio: sube su icono a civics/, añade aquí una línea
+ * { img: "civics/Civic_xxx.png", i18nKey: "civicXxx" } y su texto en los tres
+ * bloques de idioma de js/i18n.js (y sus reglas en js/civic-rules.js).
  */
 export const PRINCIPLE_BINGO = [
   { img: "civics/Civic_agrarian_idyll.png", i18nKey: "civicAgrarianIdyll" },

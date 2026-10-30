@@ -39,7 +39,6 @@
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import {
-  IMAGE_BASE,
   BUILDINGS,
   JOBS,
   JOB_OUTPUTS,
@@ -51,7 +50,6 @@ import {
   RESOURCES,
   CATEGORY_ORDER,
   CATEGORY_I18N_KEYS,
-  BUILDING_SLOT_RULES,
   calculateBuildingSlots,
   divideEffect,
   EFFECT_SCALE,
@@ -63,6 +61,7 @@ import {
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
+import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
 import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
@@ -248,10 +247,6 @@ function isBuildingAvailable(building) {
   return buildingRequirementsMet(building, requirementContext());
 }
 
-function isKeyUnlocked(key, unlocked) {
-  return unlocked.includes(key);
-}
-
 /** Raíz de la cadena de mejora de un edificio (p. ej. Megaforjas -> Fundiciones). Los de una misma cadena comparten el límite de colonia: mejorar sustituye al anterior, no se suman. */
 function chainRootId(building) {
   let current = building;
@@ -274,13 +269,6 @@ function chainBuildingCount(building) {
 function buildingCount(id) {
   let n = 0;
   builtMap.forEach((buildingId) => { if (buildingId === id) n += 1; });
-  return n;
-}
-
-function activeBuildingCount() {
-  const unlocked = unlockedKeys();
-  let n = 0;
-  unlocked.forEach((key) => { if (builtMap.has(key)) n += 1; });
   return n;
 }
 

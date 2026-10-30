@@ -23,9 +23,10 @@
  */
 
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
-import { PRINCIPLE_BINGO, IMAGE_BASE } from "./bingo-data.js";
+import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
+import { PRINCIPLE_BINGO } from "./bingo-data.js";
 import { updatePlanetState, emitEmpireSwitched } from "./planet-state.js";
-import { listEmpires, getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual, migrateCivicKey } from "./empire-profiles.js";
+import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
 import { SPECIES_TYPES, allowedSpeciesTypes } from "./planet-data.js";
 import {
@@ -391,7 +392,7 @@ function applyConfig(config) {
   const authority = AUTHORITIES.find((entry) => entry.id === config.authorityId);
   selectedAuthorityId = authority && authorityAvailable(authority, currentEthicIds()) ? authority.id : null;
   selectedCivics.clear();
-  (config.civicIds || []).map(migrateCivicKey).forEach((key) => {
+  (config.civicIds || []).forEach((key) => {
     if (selectedCivics.size >= MAX_CIVICS) return;
     if (civicAvailable(key, currentEthicIds(), selectedAuthorityId, [...selectedCivics, key])) selectedCivics.add(key);
   });
