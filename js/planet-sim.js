@@ -485,6 +485,16 @@ function computeTotals() {
   // "jobUpkeepMult". Solo los traen edificios con límite de colonia 1 (ver
   // planet-data.js), así que no se acumulan.
   const jobBonuses = {}; // jobId -> { resourceId: cantidad por empleo }
+  const jobResourceMult = {}; // resourceId -> fracción extra sobre lo producido por empleos (P7.8)
+  const ruleCtx = requirementContext();
+  const addJobModifiers = (modifiersByJob) => {
+    Object.entries(modifiersByJob).forEach(([jobId, modifiers]) => {
+      jobBonuses[jobId] = jobBonuses[jobId] || {};
+      Object.entries(modifiers).forEach(([resourceId, amount]) => {
+        jobBonuses[jobId][resourceId] = (jobBonuses[jobId][resourceId] || 0) + amount;
+      });
+    });
+  };
   const jobEfficiencyBonus = {}; // jobId -> suma de eficacias de edificios
   const jobUpkeepChange = {}; // jobId -> suma de cambios de mantenimiento
   const unlocked = unlockedKeys();
@@ -494,12 +504,16 @@ function computeTotals() {
     // Un edificio inactivo (requisitos perdidos, o la especialización de su ranura ya no lo permite) no cuenta.
     if (inactiveReason(key, building, unlocked)) return;
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
-    Object.entries(building.jobModifiers || {}).forEach(([jobId, modifiers]) => {
-      jobBonuses[jobId] = jobBonuses[jobId] || {};
-      Object.entries(modifiers).forEach(([resourceId, amount]) => {
-        jobBonuses[jobId][resourceId] = (jobBonuses[jobId][resourceId] || 0) + amount;
-      });
+    addJobModifiers(building.jobModifiers || {});
+    // Bonos por empleo que dependen del imperio (civismo, autoridad, gestalt...): ver conditionalJobModifiers en planet-data.js.
+    (building.conditionalJobModifiers || []).forEach((entry) => {
+      if (buildingRequirementsMet({ requires: entry.when }, ruleCtx)) addJobModifiers(entry.jobModifiers);
     });
+    Object.entries(building.jobResourceMult || {}).forEach(([resourceId, fraction]) => {
+      jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + fraction;
+    });
+    // Producción plana del propio edificio (p. ej. Centro de reprocesado de residuos).
+    Object.entries(building.produces || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
     Object.entries(building.jobEfficiency || {}).forEach(([jobId, fraction]) => {
       jobEfficiencyBonus[jobId] = (jobEfficiencyBonus[jobId] || 0) + fraction;
     });
@@ -534,6 +548,7 @@ function computeTotals() {
   // de la designación multiplica solo la parte positiva (la wiki la define
   // sobre la producción, no sobre el mantenimiento).
   const jobUnitOutputs = {};
+  const jobProduced = {}; // resourceId -> producción positiva procedente de empleos (para jobResourceMult)
   const empireState = getPlanetState();
   // Eficacia laboral por estrato de las éticas/autoridad (P7.7): se calcula antes del bucle de empleos.
   const empireStratumEfficiency = collectAppliedEffects(empireState.ethicIds, empireState.authorityId).stratumEfficiency;
@@ -571,10 +586,17 @@ function computeTotals() {
     const assigned = divideEffect(assignedRaw);
     Object.entries(unit).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
+      if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
     });
     if (unit.amenities && assigned) {
       amenitySources.push({ kind: "job", jobId, assignedRaw, amount: unit.amenities * assigned });
     }
+  });
+
+  // "+X % de recurso de los empleos" de edificios (Refinería Antigua, Monumentos): solo sobre lo que producen los empleos.
+  Object.entries(jobResourceMult).forEach(([resourceId, fraction]) => {
+    const fromJobs = jobProduced[resourceId] || 0;
+    if (fromJobs > 0) addSignedResource(resourceId, fromJobs * fraction);
   });
 
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
