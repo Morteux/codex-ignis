@@ -1049,6 +1049,7 @@ h1 {
 }
 
 .planet-slots-panel,
+.planet-modifiers-panel,
 .planet-summary-panel,
 .planet-production-panel,
 .planet-catalog-panel {
@@ -2577,4 +2578,73 @@ h1 {
     border-top: 1px solid var(--line-soft);
     color: var(--text);
     font-weight: 700;
+}
+
+/* ── Panel de modificadores activos (P8.2) ────────────────────────────── */
+
+.planet-modifier-heading {
+    margin: 1.1rem 0 .15rem;
+    color: var(--accent);
+    font: 700 .68rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.planet-modifier-heading:first-of-type {
+    margin-top: .2rem;
+}
+
+.planet-modifier-stacking {
+    margin: 0 0 .4rem;
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.5;
+}
+
+.planet-modifier-row {
+    display: grid;
+    grid-template-columns: minmax(8rem, 1.4fr) minmax(4rem, .6fr) minmax(6rem, 1.4fr) auto;
+    gap: .6rem;
+    align-items: baseline;
+    padding: .3rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: .74rem;
+}
+
+.planet-modifier-source {
+    color: var(--text);
+}
+
+.planet-modifier-kind {
+    color: var(--muted);
+    font: .64rem var(--mono);
+    text-transform: uppercase;
+}
+
+.planet-modifier-target {
+    color: var(--muted);
+}
+
+.planet-modifier-value {
+    font: 700 .76rem var(--mono);
+    text-align: right;
+}
+
+.planet-modifier-value.is-positive {
+    color: var(--accent);
+}
+
+.planet-modifier-value.is-negative {
+    color: #ff8a7a;
+}
+
+@media (max-width: 700px) {
+    .planet-modifier-row {
+        grid-template-columns: 1fr auto;
+    }
+
+    .planet-modifier-kind,
+    .planet-modifier-target {
+        grid-column: 1;
+    }
 }

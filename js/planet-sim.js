@@ -63,7 +63,7 @@ import {
 } from "./planet-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
-import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES } from "./empire-data.js";
+import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
@@ -79,6 +79,7 @@ const districtsCatalogEl = document.querySelector("#planet-districts-catalog");
 const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
+const modifiersEl = document.querySelector("#planet-modifiers");
 const summaryPopulationEl = document.querySelector("#planet-jobs-counter");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
@@ -403,6 +404,16 @@ function computeTotals() {
   // `source` es una de BREAKDOWN_SOURCES; los empleos se anotan aparte (recordBreakdown) porque
   // sus tres partes (base, bonos de edificios, eficacia) comparten una sola llamada de totales.
   const breakdown = {};
+  // P8.2: lista de modificadores activos { source: {kind, id}, category, job?, resource?, stratum?, stat?, value, count }.
+  // Los iguales (mismo origen y mismo objetivo) se fusionan: suman el valor y cuentan copias.
+  const modifierMap = new Map();
+  const pushModifier = (source, category, target, value) => {
+    if (!value) return;
+    const key = [source.kind, source.id, category, target.job || "", target.resource || "", target.stratum || "", target.stat || ""].join("|");
+    const found = modifierMap.get(key);
+    if (found) { found.value += value; found.count += 1; }
+    else modifierMap.set(key, { source, category, ...target, value, count: 1 });
+  };
   const recordBreakdown = (resourceId, source, amount) => {
     if (!amount) return;
     breakdown[resourceId] = breakdown[resourceId] || {};
@@ -514,21 +525,31 @@ function computeTotals() {
     // Un edificio inactivo (requisitos perdidos, o la especialización de su ranura ya no lo permite) no cuenta.
     if (inactiveReason(key, building, unlocked)) return;
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
+    const buildingSource = { kind: "building", id: building.id };
+    const noteJobModifiers = (modifiersByJob) => Object.entries(modifiersByJob).forEach(([jobId, modifiers]) => {
+      Object.entries(modifiers).forEach(([resourceId, amount]) => pushModifier(buildingSource, "jobFlat", { job: jobId, resource: resourceId }, amount));
+    });
     addJobModifiers(building.jobModifiers || {});
+    noteJobModifiers(building.jobModifiers || {});
     // Bonos por empleo que dependen del imperio (civismo, autoridad, gestalt...): ver conditionalJobModifiers en planet-data.js.
     (building.conditionalJobModifiers || []).forEach((entry) => {
-      if (buildingRequirementsMet({ requires: entry.when }, ruleCtx)) addJobModifiers(entry.jobModifiers);
+      if (!buildingRequirementsMet({ requires: entry.when }, ruleCtx)) return;
+      addJobModifiers(entry.jobModifiers);
+      noteJobModifiers(entry.jobModifiers);
     });
     Object.entries(building.jobResourceMult || {}).forEach(([resourceId, fraction]) => {
       jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + fraction;
+      pushModifier(buildingSource, "jobResourceMult", { resource: resourceId }, fraction);
     });
     // Producción plana del propio edificio (p. ej. Centro de reprocesado de residuos).
     Object.entries(building.produces || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "buildingFlat"));
     Object.entries(building.jobEfficiency || {}).forEach(([jobId, fraction]) => {
       jobEfficiencyBonus[jobId] = (jobEfficiencyBonus[jobId] || 0) + fraction;
+      pushModifier(buildingSource, "jobEfficiency", { job: jobId }, fraction);
     });
     Object.entries(building.jobUpkeepMult || {}).forEach(([jobId, fraction]) => {
       jobUpkeepChange[jobId] = (jobUpkeepChange[jobId] || 0) + fraction;
+      pushModifier(buildingSource, "jobUpkeep", { job: jobId }, fraction);
     });
     housing += divideEffect(building.housing || 0);
     amenities += divideEffect(building.amenities || 0);
@@ -554,6 +575,23 @@ function computeTotals() {
   // elegida, su eficacia laboral multiplica la salida de ESE empleo (ver
   // js/designation-data.js).
   const designation = getDesignation(selectedDesignationId);
+  if (designation) {
+    const designationSource = { kind: "designation", id: designation.id };
+    Object.entries(designation.jobEfficiency || {}).forEach(([jobId, fraction]) => pushModifier(designationSource, "jobEfficiency", { job: jobId }, fraction));
+    Object.entries(designation.flat || {}).forEach(([key, amount]) => pushModifier(designationSource, "flat", { stat: key }, amount));
+  }
+  // Efectos de éticas y autoridad que sí se aplican a los cálculos (los demás son solo informativos, ver empire-data.js).
+  const empireModifierState = getPlanetState();
+  const noteEmpireEffects = (kind, id, effects) => (effects || []).forEach((effect) => {
+    if (!effect.apply) return;
+    const { type, resource, stratum } = effect.apply;
+    const source = { kind, id };
+    if (type === "resourceMult") pushModifier(source, "resourceMult", { resource }, effect.value);
+    else if (type === "resourceFlat") pushModifier(source, "resourceFlat", { resource }, effect.value);
+    else if (type === "stratumEfficiency") pushModifier(source, "stratumEfficiency", { stratum }, effect.value);
+  });
+  (empireModifierState.ethicIds || []).forEach((id) => noteEmpireEffects("ethic", id, ETHIC_EFFECTS[id]));
+  noteEmpireEffects("authority", empireModifierState.authorityId, AUTHORITY_EFFECTS[empireModifierState.authorityId]);
   // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
   // de la designación multiplica solo la parte positiva (la wiki la define
   // sobre la producción, no sobre el mantenimiento).
@@ -639,7 +677,7 @@ function computeTotals() {
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -1942,6 +1980,83 @@ function renderProduction(totals) {
   renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty", totals.breakdown);
 }
 
+/**
+ * Categorías de modificador del panel (P8.2), en orden de aparición. `stacking` es la clave i18n que explica
+ * cómo se combina con otros del mismo tipo en el cálculo actual (las reglas por versión de datos son P8.3);
+ * `unit`: "percent" o "flat" para formatear el valor.
+ */
+const MODIFIER_CATEGORIES = [
+  { id: "jobFlat", label: "modifierCatJobFlat", stacking: "modifierStackJobFlat", unit: "flat" },
+  { id: "jobEfficiency", label: "modifierCatJobEfficiency", stacking: "modifierStackJobEfficiency", unit: "percent" },
+  { id: "stratumEfficiency", label: "modifierCatStratumEfficiency", stacking: "modifierStackJobEfficiency", unit: "percent" },
+  { id: "jobUpkeep", label: "modifierCatJobUpkeep", stacking: "modifierStackJobUpkeep", unit: "percent" },
+  { id: "jobResourceMult", label: "modifierCatJobResourceMult", stacking: "modifierStackJobResourceMult", unit: "percent" },
+  { id: "resourceMult", label: "modifierCatResourceMult", stacking: "modifierStackResourceMult", unit: "percent" },
+  { id: "resourceFlat", label: "modifierCatResourceFlat", stacking: "modifierStackFlat", unit: "flat" },
+  { id: "flat", label: "modifierCatFlat", stacking: "modifierStackFlat", unit: "flat" }
+];
+
+function modifierSourceName(source) {
+  if (source.kind === "building") return buildingDisplayName(buildingsById.get(source.id));
+  if (source.kind === "designation") return t(currentLang, getDesignation(source.id).i18nKey);
+  if (source.kind === "ethic") return t(currentLang, ETHIC_OPTIONS[source.id].i18nKey);
+  if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
+  return source.id;
+}
+
+function modifierTargetName(modifier) {
+  const parts = [];
+  if (modifier.job) parts.push(jobName(modifier.job));
+  if (modifier.stratum) parts.push(t(currentLang, STRATUM_I18N_KEYS[modifier.stratum]));
+  if (modifier.resource) parts.push(resourceName(modifier.resource));
+  if (modifier.stat) parts.push(RESOURCES[modifier.stat] ? resourceName(modifier.stat) : (modifier.stat === "housing" ? t(currentLang, "planetSimStatHousingShort") : modifier.stat));
+  return parts.join(" · ");
+}
+
+/** Panel de modificadores activos (P8.2): origen, categoría afectada, valor y cómo se apila. */
+function renderModifiers(totals) {
+  if (!modifiersEl) return;
+  modifiersEl.replaceChildren();
+  const list = totals.modifiers || [];
+  if (!list.length) {
+    const empty = document.createElement("p");
+    empty.className = "planet-summary-empty";
+    empty.textContent = t(currentLang, "modifiersEmpty");
+    modifiersEl.append(empty);
+    return;
+  }
+  MODIFIER_CATEGORIES.forEach((category) => {
+    const items = list.filter((modifier) => modifier.category === category.id);
+    if (!items.length) return;
+    const heading = document.createElement("h3");
+    heading.className = "planet-modifier-heading";
+    heading.textContent = t(currentLang, category.label);
+    const note = document.createElement("p");
+    note.className = "planet-modifier-stacking";
+    note.textContent = t(currentLang, category.stacking);
+    modifiersEl.append(heading, note);
+    items.forEach((modifier) => {
+      const row = document.createElement("div");
+      row.className = "planet-modifier-row";
+      const source = document.createElement("span");
+      source.className = "planet-modifier-source";
+      source.textContent = modifierSourceName(modifier.source) + (modifier.count > 1 ? ` ×${modifier.count}` : "");
+      const kind = document.createElement("span");
+      kind.className = "planet-modifier-kind";
+      kind.textContent = t(currentLang, `modifierSourceKind_${modifier.source.kind}`);
+      const target = document.createElement("span");
+      target.className = "planet-modifier-target";
+      target.textContent = modifierTargetName(modifier);
+      const value = document.createElement("span");
+      value.className = `planet-modifier-value ${modifier.value < 0 ? "is-negative" : "is-positive"}`;
+      const shown = category.unit === "percent" ? modifier.value * 100 : modifier.value;
+      value.textContent = `${formatAmount(shown, true)}${category.unit === "percent" ? "%" : ""}`;
+      row.append(source, kind, target, value);
+      modifiersEl.append(row);
+    });
+  });
+}
+
 function renderSlots() {
   renderCapital();
   renderSlotsVisual();
@@ -1992,6 +2107,7 @@ function refresh() {
   renderActiveTabContent();
   renderSummary(totals);
   renderProduction(totals);
+  renderModifiers(totals);
   updatePlanetState({ planetSize });
 }
 
