@@ -2528,3 +2528,53 @@ h1 {
 .planet-header-stat-icon {
     object-fit: contain;
 }
+
+/* ── Desglose por recurso (P8.1) ──────────────────────────────────────── */
+
+.planet-resource-row.is-expandable {
+    cursor: pointer;
+}
+
+.planet-resource-row.is-expandable:hover .planet-resource-name {
+    color: var(--text);
+}
+
+.planet-resource-row.is-expandable::after {
+    content: "▸";
+    color: var(--accent);
+    font-size: .7rem;
+}
+
+.planet-resource-row.is-expandable[aria-expanded="true"]::after {
+    content: "▾";
+}
+
+.planet-resource-detail {
+    margin: 0 0 .5rem 1.6rem;
+    padding: .35rem .6rem;
+    border-left: 2px solid var(--line);
+    background: rgba(8, 22, 14, .5);
+    font: .7rem var(--mono);
+}
+
+.planet-resource-detail-line {
+    display: flex;
+    justify-content: space-between;
+    gap: .8rem;
+    padding: .15rem 0;
+    color: var(--accent);
+}
+
+.planet-resource-detail-line.is-negative {
+    color: #ff8a7a;
+}
+
+.planet-resource-detail-line.is-total {
+    color: var(--muted);
+}
+
+.planet-resource-detail-line.is-total:last-child {
+    border-top: 1px solid var(--line-soft);
+    color: var(--text);
+    font-weight: 700;
+}

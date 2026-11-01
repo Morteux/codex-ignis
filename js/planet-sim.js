@@ -399,8 +399,18 @@ function computeTotals() {
   // Suma un importe con signo al total neto de un recurso, y además lo
   // reparte en "producido" (solo la parte positiva) o "consumido" (solo la
   // parte negativa), para los paneles de desglose.
-  const addSignedResource = (resourceId, amount) => {
+  // P8.1: desglose por fuente de cada recurso (breakdown[recurso][fuente] = importe con signo).
+  // `source` es una de BREAKDOWN_SOURCES; los empleos se anotan aparte (recordBreakdown) porque
+  // sus tres partes (base, bonos de edificios, eficacia) comparten una sola llamada de totales.
+  const breakdown = {};
+  const recordBreakdown = (resourceId, source, amount) => {
     if (!amount) return;
+    breakdown[resourceId] = breakdown[resourceId] || {};
+    breakdown[resourceId][source] = (breakdown[resourceId][source] || 0) + amount;
+  };
+  const addSignedResource = (resourceId, amount, source) => {
+    if (!amount) return;
+    if (source) recordBreakdown(resourceId, source, amount);
     resourceTotals[resourceId] = (resourceTotals[resourceId] || 0) + amount;
     if (amount > 0) {
       producedTotals[resourceId] = (producedTotals[resourceId] || 0) + amount;
@@ -416,7 +426,7 @@ function computeTotals() {
 
   // Edificio capital (fijo, siempre presente).
   const capital = currentCapital();
-  Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
+  Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "capital"));
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
   // Desglose de servicios para el tooltip de la cabecera (ver renderStats).
@@ -441,7 +451,7 @@ function computeTotals() {
       if (option) perDistrict += option.housing || 0;
     });
     housing += divideEffect(perDistrict * count);
-    Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count));
+    Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
   }
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const def = DISTRICTS[cat];
@@ -449,7 +459,7 @@ function computeTotals() {
     if (count <= 0) return;
     const perDistrict = def.housing + (districtGestalt ? def.gestaltHousing : 0) + (agrarianIdyll ? def.agrarianIdyllHousing : 0);
     housing += divideEffect(perDistrict * count);
-    Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count));
+    Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
   });
 
   // Distritos de recursos básicos: empleo base por copia, y bonus de la
@@ -513,7 +523,7 @@ function computeTotals() {
       jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + fraction;
     });
     // Producción plana del propio edificio (p. ej. Centro de reprocesado de residuos).
-    Object.entries(building.produces || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
+    Object.entries(building.produces || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "buildingFlat"));
     Object.entries(building.jobEfficiency || {}).forEach(([jobId, fraction]) => {
       jobEfficiencyBonus[jobId] = (jobEfficiencyBonus[jobId] || 0) + fraction;
     });
@@ -529,7 +539,7 @@ function computeTotals() {
       amenityBuildings.set(id, entry);
     }
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
-      addSignedResource(resourceId, amount);
+      addSignedResource(resourceId, amount, "buildings");
     });
   });
 
@@ -568,9 +578,11 @@ function computeTotals() {
     }
     // Colonista (Refugio Colonial, P7.5): +1 del recurso propio de la especie (orgánica comida, litoide minerales, infernal aleaciones, máquina energía).
     if (jobId === "colonist") unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) + 1;
+    const baseUnit = { ...unit };
     Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
+    const bonusedUnit = { ...unit };
     // Eficacia laboral (designación + edificios): puede ser positiva o negativa
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
     // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
@@ -586,6 +598,9 @@ function computeTotals() {
     const assigned = divideEffect(assignedRaw);
     Object.entries(unit).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
+      recordBreakdown(resourceId, "jobsBase", (baseUnit[resourceId] || 0) * assigned);
+      recordBreakdown(resourceId, "jobsBonus", ((bonusedUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "jobsModifier", (perJob - (bonusedUnit[resourceId] || 0)) * assigned);
       if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
     });
     if (unit.amenities && assigned) {
@@ -596,7 +611,7 @@ function computeTotals() {
   // "+X % de recurso de los empleos" de edificios (Refinería Antigua, Monumentos): solo sobre lo que producen los empleos.
   Object.entries(jobResourceMult).forEach(([resourceId, fraction]) => {
     const fromJobs = jobProduced[resourceId] || 0;
-    if (fromJobs > 0) addSignedResource(resourceId, fromJobs * fraction);
+    if (fromJobs > 0) addSignedResource(resourceId, fromJobs * fraction, "jobBuildingMult");
   });
 
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
@@ -605,7 +620,7 @@ function computeTotals() {
       if (key === "housing") {
         housing += amount;
       } else {
-        addSignedResource(key, amount);
+        addSignedResource(key, amount, "designation");
         if (key === "amenities" && amount) amenitySources.push({ kind: "designation", amount });
       }
     });
@@ -616,15 +631,15 @@ function computeTotals() {
   const { resourceMult, resourceFlat } = collectAppliedEffects(getPlanetState().ethicIds, getPlanetState().authorityId);
   Object.entries(resourceMult).forEach(([resourceId, fraction]) => {
     const produced = producedTotals[resourceId] || 0;
-    if (produced > 0) addSignedResource(resourceId, produced * fraction);
+    if (produced > 0) addSignedResource(resourceId, produced * fraction, "empireMult");
   });
-  Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount));
+  Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "empireFlat"));
 
   // Servicios totales = capital + edificios + empleos (+ designación): es lo que muestra la cabecera.
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -1813,6 +1828,24 @@ function refreshEconomyOnly() {
 }
 
 
+/** Fuentes del desglose por recurso (P8.1), en el orden en que se muestran. `pos`/`neg` son las claves i18n según el signo del importe. */
+const BREAKDOWN_SOURCES = [
+  { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg" },
+  { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
+  { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
+  { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
+  { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
+  { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
+  { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
+  { id: "empireFlat", pos: "breakdownEmpireFlat", neg: "breakdownEmpireFlat" },
+  { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
+  { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts" },
+  { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" }
+];
+
+// Recursos de la columna "Netos" con el desglose desplegado (se conserva entre repintados).
+const expandedBreakdowns = new Set();
+
 function renderResourceRow(resourceId, amount, forceSign) {
   const row = document.createElement("div");
   row.className = `planet-resource-row ${amount < 0 ? "is-negative" : "is-positive"}`;
@@ -1828,8 +1861,36 @@ function renderResourceRow(resourceId, amount, forceSign) {
   return row;
 }
 
-/** Rellena un contenedor con las filas de recurso de `entries` (objeto recurso -> importe), ordenadas por magnitud. */
-function renderResourceList(container, entries, forceSign, emptyKey) {
+/** Bloque desplegable con las fuentes de un recurso: líneas con signo, bruto (suma de positivos), costes (suma de negativos) y neto. */
+function renderBreakdownDetail(resourceId, sources) {
+  const detail = document.createElement("div");
+  detail.className = "planet-resource-detail";
+  let gross = 0;
+  let costs = 0;
+  const addLine = (label, amount, extraClass) => {
+    const line = document.createElement("div");
+    line.className = `planet-resource-detail-line${extraClass ? ` ${extraClass}` : ""}${amount < 0 ? " is-negative" : ""}`;
+    const text = document.createElement("span");
+    text.textContent = label;
+    const number = document.createElement("span");
+    number.textContent = formatAmount(displayAmount(resourceId, amount), true);
+    line.append(text, number);
+    detail.append(line);
+  };
+  BREAKDOWN_SOURCES.forEach((source) => {
+    const amount = sources[source.id] || 0;
+    if (Math.abs(amount) < 0.001) return;
+    if (amount > 0) gross += amount; else costs += amount;
+    addLine(t(currentLang, amount > 0 ? source.pos : source.neg), amount);
+  });
+  addLine(t(currentLang, "breakdownGross"), gross, "is-total");
+  addLine(t(currentLang, "breakdownCosts"), costs, "is-total");
+  addLine(t(currentLang, "breakdownNet"), gross + costs, "is-total");
+  return detail;
+}
+
+/** Rellena un contenedor con las filas de recurso de `entries` (objeto recurso -> importe), ordenadas por magnitud. Con `breakdown`, cada fila se despliega al pulsarla (P8.1). */
+function renderResourceList(container, entries, forceSign, emptyKey, breakdown) {
   if (!container) return;
   container.replaceChildren();
 
@@ -1845,14 +1906,40 @@ function renderResourceList(container, entries, forceSign, emptyKey) {
   rows
     .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .forEach(([resourceId, amount]) => {
-      container.append(renderResourceRow(resourceId, amount, forceSign));
+      const row = renderResourceRow(resourceId, amount, forceSign);
+      const sources = breakdown && breakdown[resourceId];
+      if (!sources) {
+        container.append(row);
+        return;
+      }
+      const wrapper = document.createElement("div");
+      wrapper.className = "planet-resource-entry";
+      row.classList.add("is-expandable");
+      row.setAttribute("role", "button");
+      row.tabIndex = 0;
+      row.title = t(currentLang, "breakdownToggleTooltip");
+      const expanded = expandedBreakdowns.has(resourceId);
+      row.setAttribute("aria-expanded", String(expanded));
+      const toggle = () => {
+        if (expandedBreakdowns.has(resourceId)) expandedBreakdowns.delete(resourceId); else expandedBreakdowns.add(resourceId);
+        renderProduction(lastTotals);
+      };
+      row.addEventListener("click", toggle);
+      row.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") { event.preventDefault(); toggle(); }
+      });
+      wrapper.append(row);
+      if (expanded) wrapper.append(renderBreakdownDetail(resourceId, sources));
+      container.append(wrapper);
     });
 }
 
+let lastTotals = null;
 function renderProduction(totals) {
+  lastTotals = totals;
   renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
   renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
-  renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty");
+  renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty", totals.breakdown);
 }
 
 function renderSlots() {
