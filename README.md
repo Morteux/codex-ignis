@@ -12,7 +12,7 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 |---|---|
 | Wiki | `index.html`, `js/app.js`, `js/content.js` (artículos), `js/highlight-config.js` |
 | Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
-| Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, datos en `*-data.js` y `civic-rules.js` |
+| Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, datos en `*-data.js` y `civic-rules.js` |
 | Árbol de tecnologías | `tech-tree.html` (marcador; plan en `tech_tree.md`) |
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
 | Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |

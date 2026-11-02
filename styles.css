@@ -2648,3 +2648,11 @@ h1 {
         grid-column: 1;
     }
 }
+
+.planet-modifier-order {
+    margin: .2rem 0 .6rem;
+    padding-left: 1.3rem;
+    color: var(--muted);
+    font-size: .72rem;
+    line-height: 1.55;
+}

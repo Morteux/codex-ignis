@@ -129,6 +129,12 @@ export const DATA_COLLECTIONS = {
     sources: ["Civics", "Hive_mind_civics", "Machine_intelligence_civics", "Corporate_civics"].map((page) => WIKI + page),
     verification: VERIFICATION.UNVERIFIED
   },
+  stackingRules: {
+    file: "js/stacking-rules.js",
+    // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.
+    sources: [WIKI + "Jobs", WIKI + "Empire_modifiers"],
+    verification: VERIFICATION.UNVERIFIED
+  },
   celestialTypes: {
     file: "js/celestial-data.js",
     // No hay una página de la wiki dedicada a tipos de planeta entre las aportadas: la lista sale de los iconos de la carpeta planets/ de la API de assets.

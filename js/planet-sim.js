@@ -62,8 +62,9 @@ import {
   RESOURCE_DISTRICT_ORDER
 } from "./planet-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
+import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
-import { collectAppliedEffects, ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
+import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
@@ -516,8 +517,6 @@ function computeTotals() {
       });
     });
   };
-  const jobEfficiencyBonus = {}; // jobId -> suma de eficacias de edificios
-  const jobUpkeepChange = {}; // jobId -> suma de cambios de mantenimiento
   const unlocked = unlockedKeys();
   builtMap.forEach((id, key) => {
     if (!unlocked.includes(key)) return;
@@ -544,11 +543,9 @@ function computeTotals() {
     // Producción plana del propio edificio (p. ej. Centro de reprocesado de residuos).
     Object.entries(building.produces || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "buildingFlat"));
     Object.entries(building.jobEfficiency || {}).forEach(([jobId, fraction]) => {
-      jobEfficiencyBonus[jobId] = (jobEfficiencyBonus[jobId] || 0) + fraction;
       pushModifier(buildingSource, "jobEfficiency", { job: jobId }, fraction);
     });
     Object.entries(building.jobUpkeepMult || {}).forEach(([jobId, fraction]) => {
-      jobUpkeepChange[jobId] = (jobUpkeepChange[jobId] || 0) + fraction;
       pushModifier(buildingSource, "jobUpkeep", { job: jobId }, fraction);
     });
     housing += divideEffect(building.housing || 0);
@@ -598,8 +595,11 @@ function computeTotals() {
   const jobUnitOutputs = {};
   const jobProduced = {}; // resourceId -> producción positiva procedente de empleos (para jobResourceMult)
   const empireState = getPlanetState();
-  // Eficacia laboral por estrato de las éticas/autoridad (P7.7): se calcula antes del bucle de empleos.
-  const empireStratumEfficiency = collectAppliedEffects(empireState.ethicIds, empireState.authorityId).stratumEfficiency;
+  // Reglas de apilado de la versión de datos (P8.3) y valores de modificador por categoría, tomados de la lista de modificadores activos.
+  const stacking = getStackingRules(empireState.rulesetId);
+  const modifierValues = (category, target) => [...modifierMap.values()]
+    .filter((modifier) => modifier.category === category && Object.entries(target).every(([field, value]) => modifier[field] === value))
+    .map((modifier) => modifier.value);
   const gestaltEmpire = ethicsSatisfy(empireState.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   const allowedSpecies = allowedSpeciesTypes(empireState.authorityId);
   const speciesType = SPECIES_TYPES.find((type) => type.id === empireState.speciesType && allowedSpecies.includes(type.id))
@@ -624,11 +624,15 @@ function computeTotals() {
     // Eficacia laboral (designación + edificios): puede ser positiva o negativa
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
     // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
-    const efficiencyBonus = (designation?.jobEfficiency?.[jobId] || 0) + (jobEfficiencyBonus[jobId] || 0) + (empireStratumEfficiency[JOBS[jobId]?.stratum] || 0);
-    const upkeepChange = jobUpkeepChange[jobId] || 0;
+    // La eficacia de designación, edificios y estrato forma un solo montón (ver stacking-rules.js).
+    const efficiencyFactor = stackFactor(stacking.jobEfficiency, [
+      ...modifierValues("jobEfficiency", { job: jobId }),
+      ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum })
+    ]);
+    const upkeepFactor = stackFactor(stacking.jobUpkeep, modifierValues("jobUpkeep", { job: jobId }));
     Object.keys(unit).forEach((resourceId) => {
-      if (unit[resourceId] > 0) unit[resourceId] *= Math.max(0, 1 + efficiencyBonus);
-      else if (unit[resourceId] < 0) unit[resourceId] *= Math.max(0, 1 + upkeepChange);
+      if (unit[resourceId] > 0) unit[resourceId] *= efficiencyFactor;
+      else if (unit[resourceId] < 0) unit[resourceId] *= upkeepFactor;
     });
     jobUnitOutputs[jobId] = unit;
 
@@ -647,8 +651,9 @@ function computeTotals() {
   });
 
   // "+X % de recurso de los empleos" de edificios (Refinería Antigua, Monumentos): solo sobre lo que producen los empleos.
-  Object.entries(jobResourceMult).forEach(([resourceId, fraction]) => {
+  Object.keys(jobResourceMult).forEach((resourceId) => {
     const fromJobs = jobProduced[resourceId] || 0;
+    const fraction = combineFraction(stacking.jobResourceMult, modifierValues("jobResourceMult", { resource: resourceId }));
     if (fromJobs > 0) addSignedResource(resourceId, fromJobs * fraction, "jobBuildingMult");
   });
 
@@ -666,12 +671,15 @@ function computeTotals() {
 
   // Éticas y autoridad elegidas en la pestaña Imperio (ver empire-data.js):
   // multiplicadores a la producción positiva de un recurso y bonos planos.
-  const { resourceMult, resourceFlat } = collectAppliedEffects(getPlanetState().ethicIds, getPlanetState().authorityId);
-  Object.entries(resourceMult).forEach(([resourceId, fraction]) => {
+  const empireResources = (category) => [...new Set([...modifierMap.values()].filter((modifier) => modifier.category === category).map((modifier) => modifier.resource))];
+  empireResources("resourceMult").forEach((resourceId) => {
     const produced = producedTotals[resourceId] || 0;
+    const fraction = combineFraction(stacking.resourceMult, modifierValues("resourceMult", { resource: resourceId }));
     if (produced > 0) addSignedResource(resourceId, produced * fraction, "empireMult");
   });
-  Object.entries(resourceFlat).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "empireFlat"));
+  empireResources("resourceFlat").forEach((resourceId) => {
+    addSignedResource(resourceId, combineFraction(stacking.resourceFlat, modifierValues("resourceFlat", { resource: resourceId })), "empireFlat");
+  });
 
   // Servicios totales = capital + edificios + empleos (+ designación): es lo que muestra la cabecera.
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
@@ -1981,19 +1989,18 @@ function renderProduction(totals) {
 }
 
 /**
- * Categorías de modificador del panel (P8.2), en orden de aparición. `stacking` es la clave i18n que explica
- * cómo se combina con otros del mismo tipo en el cálculo actual (las reglas por versión de datos son P8.3);
- * `unit`: "percent" o "flat" para formatear el valor.
+ * Categorías de modificador del panel (P8.2), en orden de aparición. El texto de apilado sale de las reglas de la
+ * versión de datos (js/stacking-rules.js, P8.3); `unit`: "percent" o "flat" para formatear el valor.
  */
 const MODIFIER_CATEGORIES = [
-  { id: "jobFlat", label: "modifierCatJobFlat", stacking: "modifierStackJobFlat", unit: "flat" },
-  { id: "jobEfficiency", label: "modifierCatJobEfficiency", stacking: "modifierStackJobEfficiency", unit: "percent" },
-  { id: "stratumEfficiency", label: "modifierCatStratumEfficiency", stacking: "modifierStackJobEfficiency", unit: "percent" },
-  { id: "jobUpkeep", label: "modifierCatJobUpkeep", stacking: "modifierStackJobUpkeep", unit: "percent" },
-  { id: "jobResourceMult", label: "modifierCatJobResourceMult", stacking: "modifierStackJobResourceMult", unit: "percent" },
-  { id: "resourceMult", label: "modifierCatResourceMult", stacking: "modifierStackResourceMult", unit: "percent" },
-  { id: "resourceFlat", label: "modifierCatResourceFlat", stacking: "modifierStackFlat", unit: "flat" },
-  { id: "flat", label: "modifierCatFlat", stacking: "modifierStackFlat", unit: "flat" }
+  { id: "jobFlat", label: "modifierCatJobFlat", unit: "flat" },
+  { id: "jobEfficiency", label: "modifierCatJobEfficiency", unit: "percent" },
+  { id: "stratumEfficiency", label: "modifierCatStratumEfficiency", unit: "percent" },
+  { id: "jobUpkeep", label: "modifierCatJobUpkeep", unit: "percent" },
+  { id: "jobResourceMult", label: "modifierCatJobResourceMult", unit: "percent" },
+  { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
+  { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
+  { id: "flat", label: "modifierCatFlat", unit: "flat" }
 ];
 
 function modifierSourceName(source) {
@@ -2017,6 +2024,23 @@ function modifierTargetName(modifier) {
 function renderModifiers(totals) {
   if (!modifiersEl) return;
   modifiersEl.replaceChildren();
+  const rulesetId = getPlanetState().rulesetId;
+  const stackingRules = getStackingRules(rulesetId);
+  // Orden de cálculo y procedencia de las reglas de apilado.
+  const order = document.createElement("ol");
+  order.className = "planet-modifier-order";
+  getCalculationOrder(rulesetId).forEach((key) => {
+    const item = document.createElement("li");
+    item.textContent = t(currentLang, key);
+    order.append(item);
+  });
+  const orderHeading = document.createElement("h3");
+  orderHeading.className = "planet-modifier-heading";
+  orderHeading.textContent = t(currentLang, "modifierOrderHeading");
+  const provenance = document.createElement("p");
+  provenance.className = "planet-modifier-stacking";
+  provenance.textContent = t(currentLang, "modifierRulesUnverified");
+  modifiersEl.append(orderHeading, order, provenance);
   const list = totals.modifiers || [];
   if (!list.length) {
     const empty = document.createElement("p");
@@ -2033,7 +2057,8 @@ function renderModifiers(totals) {
     heading.textContent = t(currentLang, category.label);
     const note = document.createElement("p");
     note.className = "planet-modifier-stacking";
-    note.textContent = t(currentLang, category.stacking);
+    const categoryRule = stackingRules[category.id];
+    note.textContent = `${t(currentLang, categoryRule.stacking)} (${t(currentLang, categoryRule.combine === "multiply" ? "modifierCombineMultiply" : "modifierCombineAdd")})`;
     modifiersEl.append(heading, note);
     items.forEach((modifier) => {
       const row = document.createElement("div");
