@@ -42,7 +42,7 @@ export const STACKING_RULES = {
     jobUpkeep: rule("add", 0, "modifierStackJobUpkeep", "jobUpkeep"),
     jobResourceMult: rule("add", null, "modifierStackJobResourceMult", "jobProducedResource"),
     resourceMult: rule("add", null, "modifierStackResourceMult", "totalPositiveProduction"),
-    resourceFlat: rule("add", null, "modifierStackFlat", "monthlyTotal"),
+    resourceFlat: rule("add", null, "modifierStackExternal", "externalIncome"),
     flat: rule("add", null, "modifierStackFlat", "monthlyTotal")
   }
 };

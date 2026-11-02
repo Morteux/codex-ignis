@@ -2656,3 +2656,11 @@ h1 {
     font-size: .72rem;
     line-height: 1.55;
 }
+
+/* ── Ingresos externos al planeta (P8.4) ──────────────────────────────── */
+
+.planet-production-external:not([hidden]) {
+    margin-top: 1rem;
+    padding: .8rem .9rem;
+    border: 1px dashed var(--line);
+}

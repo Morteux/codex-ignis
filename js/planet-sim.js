@@ -81,6 +81,7 @@ const tabBuildingsBtn = document.querySelector("#planet-tab-buildings");
 const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
 const modifiersEl = document.querySelector("#planet-modifiers");
+const externalEl = document.querySelector("#planet-production-external");
 const summaryPopulationEl = document.querySelector("#planet-jobs-counter");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
@@ -677,15 +678,19 @@ function computeTotals() {
     const fraction = combineFraction(stacking.resourceMult, modifierValues("resourceMult", { resource: resourceId }));
     if (produced > 0) addSignedResource(resourceId, produced * fraction, "empireMult");
   });
+  // P8.4: los bonos planos mensuales de éticas/autoridad son ingresos del imperio, no producción de este planeta:
+  // se calculan aparte y NO entran en producidos/consumidos/netos del planeta.
+  const externalTotals = {};
   empireResources("resourceFlat").forEach((resourceId) => {
-    addSignedResource(resourceId, combineFraction(stacking.resourceFlat, modifierValues("resourceFlat", { resource: resourceId })), "empireFlat");
+    const amount = combineFraction(stacking.resourceFlat, modifierValues("resourceFlat", { resource: resourceId }));
+    if (amount) externalTotals[resourceId] = amount;
   });
 
   // Servicios totales = capital + edificios + empleos (+ designación): es lo que muestra la cabecera.
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -1883,7 +1888,6 @@ const BREAKDOWN_SOURCES = [
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
   { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
-  { id: "empireFlat", pos: "breakdownEmpireFlat", neg: "breakdownEmpireFlat" },
   { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
   { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts" },
   { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" }
@@ -1980,9 +1984,56 @@ function renderResourceList(container, entries, forceSign, emptyKey, breakdown) 
     });
 }
 
+/** Ingresos externos al planeta (P8.4): bonos planos del imperio (éticas/autoridad), con sus fuentes, y el total planeta + externos. */
+function renderExternalIncome(totals) {
+  if (!externalEl) return;
+  externalEl.replaceChildren();
+  const ids = Object.keys(totals.externalTotals || {});
+  externalEl.hidden = !ids.length;
+  if (!ids.length) return;
+  const heading = document.createElement("h3");
+  heading.className = "planet-production-subheading";
+  heading.textContent = t(currentLang, "planetSimExternalHeading");
+  const note = document.createElement("p");
+  note.className = "planet-modifier-stacking";
+  note.textContent = t(currentLang, "planetSimExternalNote");
+  externalEl.append(heading, note);
+  ids.forEach((resourceId) => {
+    const amount = totals.externalTotals[resourceId];
+    const entry = document.createElement("div");
+    entry.className = "planet-resource-entry";
+    entry.append(renderResourceRow(resourceId, amount, true));
+    const sources = (totals.modifiers || []).filter((modifier) => modifier.category === "resourceFlat" && modifier.resource === resourceId);
+    const detail = document.createElement("div");
+    detail.className = "planet-resource-detail";
+    sources.forEach((modifier) => {
+      const line = document.createElement("div");
+      line.className = "planet-resource-detail-line";
+      const label = document.createElement("span");
+      label.textContent = modifierSourceName(modifier.source);
+      const value = document.createElement("span");
+      value.textContent = formatAmount(displayAmount(resourceId, modifier.value), true);
+      line.append(label, value);
+      detail.append(line);
+    });
+    const planetNet = totals.resourceTotals[resourceId] || 0;
+    const total = document.createElement("div");
+    total.className = "planet-resource-detail-line is-total";
+    const totalLabel = document.createElement("span");
+    totalLabel.textContent = `${t(currentLang, "planetSimWithExternalLabel")} (${t(currentLang, "planetSimNetHeading")} ${formatAmount(displayAmount(resourceId, planetNet), true)})`;
+    const totalValue = document.createElement("span");
+    totalValue.textContent = formatAmount(displayAmount(resourceId, planetNet + amount), true);
+    total.append(totalLabel, totalValue);
+    detail.append(total);
+    entry.append(detail);
+    externalEl.append(entry);
+  });
+}
+
 let lastTotals = null;
 function renderProduction(totals) {
   lastTotals = totals;
+  renderExternalIncome(totals);
   renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
   renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
   renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty", totals.breakdown);
