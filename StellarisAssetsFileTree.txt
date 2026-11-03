@@ -770,6 +770,17 @@ StellarisAssets/
 │   ├── Civic_warrior_culture.png
 │   ├── Civic_worker_coop.png
 │   └── Civic_world_forgers.png
+├── diplomatic_stances/
+│   ├── Diplomatic_stance_belligerent.png
+│   ├── Diplomatic_stance_cooperative.png
+│   ├── Diplomatic_stance_devastators.png
+│   ├── Diplomatic_stance_expansionist.png
+│   ├── Diplomatic_stance_isolationist.png
+│   ├── Diplomatic_stance_mercantile.png
+│   ├── Diplomatic_stance_recompiling.png
+│   ├── Diplomatic_stance_rest.png
+│   ├── Diplomatic_stance_supremacy.png
+│   └── Diplomatic_stance_withdrawn.png
 ├── districs/
 │   ├── default.png
 │   ├── district_arcology_administrative.png
