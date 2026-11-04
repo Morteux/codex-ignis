@@ -129,6 +129,11 @@ export const DATA_COLLECTIONS = {
     sources: ["Civics", "Hive_mind_civics", "Machine_intelligence_civics", "Corporate_civics"].map((page) => WIKI + page),
     verification: VERIFICATION.UNVERIFIED
   },
+  policies: {
+    file: "js/policy-data.js",
+    sources: [WIKI + "Economic_policies", WIKI + "Diplomatic_policies"],
+    verification: VERIFICATION.UNVERIFIED
+  },
   stackingRules: {
     file: "js/stacking-rules.js",
     // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.

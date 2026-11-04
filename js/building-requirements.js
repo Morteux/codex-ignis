@@ -23,6 +23,7 @@
  *   { type: "notCelestial", ids: [...] }     tipo de cuerpo celeste no es ninguno de esos
  *   { type: "celestial", ids: [...] }       tipo de cuerpo celeste es alguno de esos (P7.9)
  *   { type: "notSpecies", ids: [...] }       el tipo de especie no es ninguno de esos (P7.9)
+ *   { type: "federation" } / { type: "notFederation" }   (P16) exige / está bloqueado por una federación; no se modelan, así que la primera nunca se cumple y la segunda siempre
  *   { type: "capitalTier", min: n }          nivel del edificio capital en números (I = 1 ... V = 5)
  *
  * Simplificaciones deliberadas (documentadas, no inventadas):
@@ -61,6 +62,8 @@ function ruleMet(rule, ctx) {
     case "celestial": return rule.ids.includes(ctx.celestialTypeId);
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
+    case "federation": return false; // las federaciones no se modelan: lo que exige una federación no está disponible (P16)
+    case "notFederation": return true; // sin federaciones, lo que se bloquea POR una federación siempre está disponible (P16)
     default: return true;
   }
 }
