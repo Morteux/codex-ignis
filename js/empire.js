@@ -25,7 +25,8 @@
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";
-import { updatePlanetState, emitEmpireSwitched } from "./planet-state.js";
+import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset } from "./planet-state.js";
+import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, isGestaltContext } from "./policy-data.js";
 import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
 import { SPECIES_TYPES, allowedSpeciesTypes } from "./planet-data.js";
@@ -72,6 +73,10 @@ let selectedAuthorityId = null;
 const selectedCivics = new Set();
 let selectedSpeciesType = "organic";
 let selectedEmpireId = null; // imperio guardado seleccionado (null = borrador sin guardar)
+// Políticas del imperio (P16): { grupo: idOpcion } solo con los grupos que aplican al tipo de imperio; siempre válidas
+// (syncPolicies las normaliza en cada refresh). lastGestalt detecta el paso de imperio normal a gestalt y viceversa.
+let selectedPolicies = {};
+let lastGestalt = false;
 
 function currentEthicIds() {
   if (gestaltActive) return [GESTALT_CONSCIOUSNESS.id];
@@ -85,6 +90,47 @@ function pointsUsed() {
     if (optionId) total += ETHIC_OPTIONS[optionId].cost;
   });
   return total;
+}
+
+function policyContext() {
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType };
+}
+
+/**
+ * Mantiene las políticas válidas (P16.3). Si el imperio pasa de normal a gestalt (o al revés) se descartan todas y
+ * vuelven los valores por defecto del nuevo tipo (Creación de riqueza / Política logística...), con aviso. Si no,
+ * lo que deje de cumplir sus requisitos (p. ej. Ayuda mutua sin Cooperativa de trabajadores) se sustituye por
+ * el valor por defecto de su grupo, también con aviso. Lo que falte simplemente se rellena sin avisar.
+ */
+function syncPolicies() {
+  const ctx = policyContext();
+  const gestalt = isGestaltContext(ctx);
+  if (gestalt !== lastGestalt) {
+    lastGestalt = gestalt;
+    const hadChoices = Object.keys(selectedPolicies).length > 0;
+    selectedPolicies = resolvePolicies({}, ctx).policyIds;
+    if (hadChoices) emitPoliciesReset({ typeChange: true, gestalt, policyIds: { ...selectedPolicies }, changes: [] });
+    return;
+  }
+  const { policyIds, changes } = resolvePolicies(selectedPolicies, ctx);
+  selectedPolicies = policyIds;
+  if (changes.length) emitPoliciesReset({ typeChange: false, gestalt, policyIds: { ...selectedPolicies }, changes });
+}
+
+/** Políticas elegidas ahora mismo (copia). */
+export function getSelectedPolicies() {
+  return { ...selectedPolicies };
+}
+
+/** Elige una opción de política desde la interfaz (P16.4). Devuelve false si el grupo no aplica o la opción no está disponible. */
+export function selectPolicy(groupId, optionId) {
+  const ctx = policyContext();
+  const group = applicablePolicyGroups(ctx).find((entry) => entry.id === groupId);
+  const option = getPolicyOption(groupId, optionId);
+  if (!group || !option || !policyAvailable(option, ctx)) return false;
+  selectedPolicies = { ...selectedPolicies, [groupId]: optionId };
+  refresh();
+  return true;
 }
 
 function selectEthic(optionId) {
@@ -340,13 +386,15 @@ function publishSelection() {
   const ethicIds = currentEthicIds();
   const civicIds = [...selectedCivics];
   const modified = isModified();
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}`;
+  const policyKey = Object.entries(selectedPolicies).sort().map(([group, option]) => `${group}:${option}`).join(",");
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, empireId: selectedEmpireId, empireModified: modified });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, empireId: selectedEmpireId, empireModified: modified });
 }
 
 function refresh() {
+  syncPolicies();
   if (pointsLabelEl) pointsLabelEl.textContent = t(currentLang, "empirePointsLabel")(pointsUsed(), ETHICS_MAX_POINTS);
   renderWheel();
   renderEthicsEffects();
@@ -398,6 +446,9 @@ function applyConfig(config) {
   });
   pruneUnavailableCivics();
   selectedSpeciesType = SPECIES_TYPES.some((type) => type.id === config.speciesType) ? config.speciesType : "organic";
+  // Las políticas guardadas en el perfil se aplican en P16.5; hasta entonces cada imperio carga las de por defecto, sin aviso.
+  selectedPolicies = {};
+  lastGestalt = isGestaltContext(policyContext());
 }
 
 let messageTimer = null;

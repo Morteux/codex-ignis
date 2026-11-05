@@ -16,6 +16,7 @@ const state = {
   ethicIds: [],
   authorityId: null,
   civicIds: [],
+  policyIds: {}, // políticas del imperio { grupo: idOpcion } (js/policy-data.js, P16); solo los grupos que aplican al tipo de imperio
   speciesType: "organic",
   empireId: null,
   empireModified: false,
@@ -58,4 +59,21 @@ export function onEmpireSwitched(fn) {
 
 export function emitEmpireSwitched(detail) {
   empireSwitchListeners.forEach((fn) => fn(detail));
+}
+
+/**
+ * Aviso de "las políticas del imperio se han cambiado solas" (P16.3): lo emite
+ * js/empire.js cuando el cambio de éticas/autoridad/principios hace que una
+ * política deje de ser válida (detail.changes: [{ group, from, to }]) o cuando el
+ * imperio pasa de normal a gestalt o al revés (detail.typeChange: true y
+ * detail.changes con lo que se ha restablecido). js/planet-sim.js lo muestra.
+ */
+const policyResetListeners = new Set();
+
+export function onPoliciesReset(fn) {
+  policyResetListeners.add(fn);
+}
+
+export function emitPoliciesReset(detail) {
+  policyResetListeners.forEach((fn) => fn(detail));
 }

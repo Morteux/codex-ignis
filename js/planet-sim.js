@@ -63,7 +63,8 @@ import {
 } from "./planet-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
-import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched } from "./planet-state.js";
+import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset } from "./planet-state.js";
+import { getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
@@ -2319,6 +2320,18 @@ onEmpireSwitched(({ name }) => {
   });
   refresh();
   showNotice(t(currentLang, "planetSimEmpireSwitchNotice")(name, inactive));
+});
+
+// Políticas que se restablecen solas (P16.3): cambio entre imperio normal y gestalt, o requisitos que dejan de cumplirse.
+onPoliciesReset(({ typeChange, gestalt, policyIds, changes }) => {
+  const optionName = (groupId, optionId) => t(currentLang, getPolicyOption(groupId, optionId).i18nKey);
+  if (typeChange) {
+    const trade = optionName("trade", policyIds.trade);
+    showNotice(t(currentLang, gestalt ? "planetSimPolicyTypeChangeGestalt" : "planetSimPolicyTypeChangeIndividualist")(trade));
+    return;
+  }
+  const parts = changes.map((change) => t(currentLang, "planetSimPolicyResetItem")(t(currentLang, getPolicyGroup(change.group).i18nKey), optionName(change.group, change.from), optionName(change.group, change.to)));
+  showNotice(t(currentLang, "planetSimPolicyResetNotice")(parts.join(" ")));
 });
 
 let lastRelevantKey = "";
