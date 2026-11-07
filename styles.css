@@ -2664,3 +2664,24 @@ h1 {
     padding: .8rem .9rem;
     border: 1px dashed var(--line);
 }
+
+/* ── Políticas del imperio (P16.4) ────────────────────────────────────── */
+
+.empire-policy-group {
+    margin-top: 1.2rem;
+}
+
+.empire-policy-group:first-child {
+    margin-top: 0;
+}
+
+.empire-policy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .6rem;
+    margin-top: .6rem;
+}
+
+.empire-policy-card .empire-authority-header {
+    flex-wrap: wrap;
+}

@@ -26,10 +26,10 @@ import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";
 import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset } from "./planet-state.js";
-import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, isGestaltContext } from "./policy-data.js";
+import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, policyUnmetRules, policyDefaults, isGestaltContext } from "./policy-data.js";
 import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
-import { SPECIES_TYPES, allowedSpeciesTypes } from "./planet-data.js";
+import { SPECIES_TYPES, allowedSpeciesTypes, RESOURCES, STRATUM_I18N_KEYS } from "./planet-data.js";
 import {
   ETHICS_MAX_POINTS,
   ETHIC_AXES,
@@ -55,6 +55,7 @@ const authorityListEl = document.querySelector("#empire-authority-list");
 const speciesSelectEl = document.querySelector("#empire-species-select");
 const civicsLabelEl = document.querySelector("#empire-civics-label");
 const civicsListEl = document.querySelector("#empire-civics-list");
+const policiesListEl = document.querySelector("#empire-policies-list");
 const profileNameEl = document.querySelector("#empire-profile-name");
 const profileSaveNewBtn = document.querySelector("#empire-profile-save-new");
 const profileSaveBtn = document.querySelector("#empire-profile-save");
@@ -339,6 +340,107 @@ if (speciesSelectEl) {
   });
 }
 
+/** Texto corto de una regla de requisito de política no cumplida (P16.4). */
+function describePolicyRule(rule) {
+  const names = (list) => list.join(", ");
+  const authorityNames = (ids) => ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey));
+  switch (rule.type) {
+    case "federation": return t(currentLang, "requirementFederation");
+    case "notGestalt": return t(currentLang, "requirementNotGestalt");
+    case "ethic": return t(currentLang, "requirementEthic") + names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
+    case "authority": return t(currentLang, "requirementAuthority") + names(authorityNames(rule.ids));
+    case "notAuthority": return t(currentLang, "requirementNotAuthority") + names(authorityNames(rule.ids));
+    case "civic": return t(currentLang, "requirementCivic") + names(rule.keys.map((key) => t(currentLang, key)));
+    case "notCivic": return t(currentLang, "requirementNotCivic") + names(rule.keys.map((key) => t(currentLang, key)));
+    case "anyOf": return t(currentLang, "requirementAnyOf") + rule.rules.map((inner) => {
+      if (inner.type === "authority") return names(authorityNames(inner.ids));
+      if (inner.type === "civic") return names(inner.keys.map((key) => t(currentLang, key)));
+      return describePolicyRule(inner);
+    }).join(" / ");
+    default: return "";
+  }
+}
+
+const percentText = (fraction) => `${Math.round(Math.abs(fraction) * 10000) / 100}%`;
+const signedPercentText = (fraction) => `${fraction < 0 ? "−" : "+"}${percentText(fraction)}`;
+const resourceLabel = (resourceId) => t(currentLang, RESOURCES[resourceId].i18nKey);
+
+/** Líneas de efecto de una opción de política (P16.4), tal como las da la wiki: tasas de cambio, % de empleos, % por estrato, % mensual. */
+function policyEffectLines(option) {
+  const effects = option.effects || {};
+  const lines = [];
+  if (effects.tradeConversion) {
+    lines.push(t(currentLang, "policyEffectTradeConversion") + Object.entries(effects.tradeConversion).map(([resourceId, rate]) => `${percentText(rate)} ${resourceLabel(resourceId)}`).join(" · "));
+  }
+  Object.entries(effects.jobResourceMult || {}).forEach(([resourceId, fraction]) => lines.push(t(currentLang, "policyEffectJobResource")(signedPercentText(fraction), resourceLabel(resourceId))));
+  Object.entries(effects.stratumOutput || {}).forEach(([stratum, fraction]) => lines.push(t(currentLang, "policyEffectStratum")(signedPercentText(fraction), t(currentLang, STRATUM_I18N_KEYS[stratum]))));
+  Object.entries(effects.resourceMult || {}).forEach(([resourceId, fraction]) => lines.push(t(currentLang, "policyEffectMonthly")(signedPercentText(fraction), resourceLabel(resourceId))));
+  if (!lines.length) lines.push(t(currentLang, "policyEffectNone"));
+  return lines;
+}
+
+/** Panel "Políticas" (P16.4): un grupo por política que aplica al tipo de imperio, una opción elegida por grupo. */
+function renderPoliciesList() {
+  if (!policiesListEl) return;
+  policiesListEl.replaceChildren();
+  const ctx = policyContext();
+  const gestalt = isGestaltContext(ctx);
+  const defaults = policyDefaults(ctx);
+  applicablePolicyGroups(ctx).forEach((group) => {
+    const section = document.createElement("div");
+    section.className = "empire-policy-group";
+    const title = document.createElement("h3");
+    title.className = "entry-heading-subsub";
+    title.textContent = t(currentLang, gestalt && group.gestaltI18nKey ? group.gestaltI18nKey : group.i18nKey);
+    const note = document.createElement("p");
+    note.className = "empire-note";
+    note.textContent = t(currentLang, `policyGroupNote_${group.id}`);
+    const grid = document.createElement("div");
+    grid.className = "empire-policy-grid";
+    group.options.forEach((option) => {
+      const available = policyAvailable(option, ctx);
+      const isSelected = selectedPolicies[group.id] === option.id;
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "empire-authority-card empire-policy-card";
+      card.classList.toggle("is-selected", isSelected);
+      card.disabled = !available;
+      card.setAttribute("aria-pressed", String(isSelected));
+      const header = document.createElement("div");
+      header.className = "empire-authority-header";
+      const name = document.createElement("strong");
+      name.textContent = t(currentLang, option.i18nKey);
+      header.append(name);
+      if (defaults[group.id] === option.id) {
+        const badge = document.createElement("span");
+        badge.className = "library-badge";
+        badge.textContent = t(currentLang, "policyDefaultBadge");
+        header.append(badge);
+      }
+      card.append(header);
+      const effects = document.createElement("ul");
+      effects.className = "empire-effect-list";
+      policyEffectLines(option).forEach((line) => {
+        const item = document.createElement("li");
+        item.className = "is-info";
+        item.textContent = line;
+        effects.append(item);
+      });
+      card.append(effects);
+      if (!available) {
+        const lock = document.createElement("em");
+        lock.className = "empire-authority-lock";
+        lock.textContent = policyUnmetRules(option, ctx).map(describePolicyRule).filter(Boolean).join("; ");
+        card.append(lock);
+      }
+      card.addEventListener("click", () => { if (available) selectPolicy(group.id, option.id); });
+      grid.append(card);
+    });
+    section.append(title, note, grid);
+    policiesListEl.append(section);
+  });
+}
+
 function renderCivicsList() {
   if (civicsLabelEl) civicsLabelEl.textContent = t(currentLang, "empireCivicsSlotsLabel")(selectedCivics.size, MAX_CIVICS);
   if (!civicsListEl) return;
@@ -401,6 +503,7 @@ function refresh() {
   renderAuthorityList();
   renderSpeciesSelect();
   renderCivicsList();
+  renderPoliciesList();
   renderProfilePanel();
   publishSelection();
 }
@@ -409,7 +512,7 @@ function refresh() {
 
 /** Configuración actual de la pestaña Imperio, con la misma forma que un perfil guardado. */
 function currentConfig() {
-  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType };
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies } };
 }
 
 /** ¿Hay un imperio guardado seleccionado y la pestaña ya no coincide con lo guardado? (sin imperio seleccionado no hay "cambios sin guardar": es un borrador) */
@@ -446,9 +549,10 @@ function applyConfig(config) {
   });
   pruneUnavailableCivics();
   selectedSpeciesType = SPECIES_TYPES.some((type) => type.id === config.speciesType) ? config.speciesType : "organic";
-  // Las políticas guardadas en el perfil se aplican en P16.5; hasta entonces cada imperio carga las de por defecto, sin aviso.
-  selectedPolicies = {};
-  lastGestalt = isGestaltContext(policyContext());
+  // Políticas del perfil (P16.4/P16.5): lo que falte (perfiles antiguos) o ya no sea válido se sustituye por el valor por defecto, sin aviso.
+  const appliedContext = policyContext();
+  selectedPolicies = resolvePolicies(config.policyIds, appliedContext).policyIds;
+  lastGestalt = isGestaltContext(appliedContext);
 }
 
 let messageTimer = null;

@@ -20,6 +20,7 @@
  */
 
 import { SCHEMA_VERSION, CURRENT_RULESET_ID, stampRuleset, checkRuleset } from "./data-version.js";
+import { resolvePolicies } from "./policy-data.js";
 
 const STORAGE_KEY = "codex-ignis-empires";
 export const MAX_EMPIRE_NAME_LENGTH = 60;
@@ -68,7 +69,9 @@ export function normalizeConfig(config) {
     ethicIds: [...(config.ethicIds || [])].sort(),
     authorityId: config.authorityId || null,
     civicIds: [...(config.civicIds || [])].sort(),
-    speciesType: config.speciesType || "organic"
+    speciesType: config.speciesType || "organic",
+    // Políticas (P16): lo que falte (perfiles guardados antes de P16) o no sea válido para ese imperio se sustituye por el valor por defecto, así dos configuraciones equivalentes se comparan como iguales.
+    policyIds: resolvePolicies(config.policyIds, config).policyIds
   };
 }
 
@@ -186,7 +189,11 @@ export function sanitizeEmpireConfig(raw) {
     ethicIds,
     authorityId: typeof raw.authorityId === "string" ? raw.authorityId : null,
     civicIds,
-    speciesType: typeof raw.speciesType === "string" ? raw.speciesType : "organic"
+    speciesType: typeof raw.speciesType === "string" ? raw.speciesType : "organic",
+    // Solo se aceptan textos { grupo: idOpcion }; lo desconocido lo sustituye por el valor por defecto normalizeConfig (nunca se inventa).
+    policyIds: raw.policyIds && typeof raw.policyIds === "object" && !Array.isArray(raw.policyIds)
+      ? Object.fromEntries(Object.entries(raw.policyIds).filter(([, value]) => typeof value === "string"))
+      : {}
   });
 }
 
