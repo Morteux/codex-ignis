@@ -29,6 +29,10 @@ Los artículos se definen en `js/content.js` por bloques (párrafo, subtítulo, 
 
 **Claves `civicXxx`:** la clave sale del nombre de archivo del icono (`civics/Civic_xxx.png`), no del nombre del principio en la wiki 4.5.2, que cambia entre variantes (p. ej. `civicCorporateAscensionists` es «Gigacorp»). El inglés de `js/i18n.js` es el nombre de la wiki; hay claves que agrupan varios principios que comparten icono y se muestran unidos con « / ». Los textos en español y japonés de los principios renombrados en la 4.5 muestran el nombre en inglés hasta que se incorporen las traducciones oficiales (fase P15 del GDD).
 
+## Perfiles de imperio y planetas guardados
+
+Se guardan en `localStorage` (`codex-ignis-empires`, `codex-ignis-planets`) y se pueden exportar/importar como JSON desde la pestaña Biblioteca del simulador. Desde la fase P16 cada imperio incluye `policyIds` (`{ grupo: idOpcion }`, ver `js/policy-data.js`): es un campo **opcional**, por eso `schemaVersion` sigue siendo 1. Un perfil, una copia de imperio dentro de un planeta o un archivo importado sin `policyIds`, o con opciones desconocidas o no disponibles, carga con las políticas por defecto de su tipo de imperio (Creación de riqueza o Política logística, ver GDD); nunca se inventan otras.
+
 ## Imágenes de Stellaris
 
 Hay dos orígenes, ambos definidos en `js/asset-config.js`:

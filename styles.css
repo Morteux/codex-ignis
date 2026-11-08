@@ -2685,3 +2685,10 @@ h1 {
 .empire-policy-card .empire-authority-header {
     flex-wrap: wrap;
 }
+
+.library-policies {
+    margin: 0;
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.5;
+}
