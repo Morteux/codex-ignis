@@ -590,6 +590,20 @@ function computeTotals() {
     else if (type === "stratumEfficiency") pushModifier(source, "stratumEfficiency", { stratum }, effect.value);
   });
   (empireModifierState.ethicIds || []).forEach((id) => noteEmpireEffects("ethic", id, ETHIC_EFFECTS[id]));
+  // Políticas del imperio (P16.6): política económica (% de lo que producen los empleos), política de producción (% por estrato) y postura (% mensual).
+  // La conversión de comercio de la política comercial es P16.7.
+  Object.entries(empireModifierState.policyIds || {}).forEach(([groupId, optionId]) => {
+    const option = getPolicyOption(groupId, optionId);
+    if (!option) return;
+    const source = { kind: "policy", id: `${groupId}:${optionId}` };
+    const policyEffects = option.effects || {};
+    Object.entries(policyEffects.jobResourceMult || {}).forEach(([resourceId, fraction]) => {
+      jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + fraction;
+      pushModifier(source, "jobResourceMult", { resource: resourceId }, fraction);
+    });
+    Object.entries(policyEffects.stratumOutput || {}).forEach(([stratum, fraction]) => pushModifier(source, "stratumOutput", { stratum }, fraction));
+    Object.entries(policyEffects.resourceMult || {}).forEach(([resourceId, fraction]) => pushModifier(source, "resourceMult", { resource: resourceId }, fraction));
+  });
   noteEmpireEffects("authority", empireModifierState.authorityId, AUTHORITY_EFFECTS[empireModifierState.authorityId]);
   // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
   // de la designación multiplica solo la parte positiva (la wiki la define
@@ -629,7 +643,8 @@ function computeTotals() {
     // La eficacia de designación, edificios y estrato forma un solo montón (ver stacking-rules.js).
     const efficiencyFactor = stackFactor(stacking.jobEfficiency, [
       ...modifierValues("jobEfficiency", { job: jobId }),
-      ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum })
+      ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum }),
+      ...modifierValues("stratumOutput", { stratum: JOBS[jobId]?.stratum })
     ]);
     const upkeepFactor = stackFactor(stacking.jobUpkeep, modifierValues("jobUpkeep", { job: jobId }));
     Object.keys(unit).forEach((resourceId) => {
@@ -655,8 +670,15 @@ function computeTotals() {
   // "+X % de recurso de los empleos" de edificios (Refinería Antigua, Monumentos): solo sobre lo que producen los empleos.
   Object.keys(jobResourceMult).forEach((resourceId) => {
     const fromJobs = jobProduced[resourceId] || 0;
-    const fraction = combineFraction(stacking.jobResourceMult, modifierValues("jobResourceMult", { resource: resourceId }));
-    if (fromJobs > 0) addSignedResource(resourceId, fromJobs * fraction, "jobBuildingMult");
+    const entries = [...modifierMap.values()].filter((modifier) => modifier.category === "jobResourceMult" && modifier.resource === resourceId);
+    const fraction = combineFraction(stacking.jobResourceMult, entries.map((modifier) => modifier.value));
+    if (fromJobs <= 0) return;
+    // En el desglose se separa la parte de las políticas de la de los edificios (con la regla de suma, la parte de cada uno es su propio valor).
+    const policyFraction = stacking.jobResourceMult.combine === "add"
+      ? entries.filter((modifier) => modifier.source.kind === "policy").reduce((sum, modifier) => sum + modifier.value, 0)
+      : 0;
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction), "jobBuildingMult");
+    if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
   });
 
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
@@ -1886,6 +1908,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
+  { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
   { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
@@ -2048,6 +2071,7 @@ const MODIFIER_CATEGORIES = [
   { id: "jobFlat", label: "modifierCatJobFlat", unit: "flat" },
   { id: "jobEfficiency", label: "modifierCatJobEfficiency", unit: "percent" },
   { id: "stratumEfficiency", label: "modifierCatStratumEfficiency", unit: "percent" },
+  { id: "stratumOutput", label: "modifierCatStratumOutput", unit: "percent" },
   { id: "jobUpkeep", label: "modifierCatJobUpkeep", unit: "percent" },
   { id: "jobResourceMult", label: "modifierCatJobResourceMult", unit: "percent" },
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
@@ -2059,6 +2083,10 @@ function modifierSourceName(source) {
   if (source.kind === "building") return buildingDisplayName(buildingsById.get(source.id));
   if (source.kind === "designation") return t(currentLang, getDesignation(source.id).i18nKey);
   if (source.kind === "ethic") return t(currentLang, ETHIC_OPTIONS[source.id].i18nKey);
+  if (source.kind === "policy") {
+    const [groupId, optionId] = source.id.split(":");
+    return t(currentLang, getPolicyOption(groupId, optionId).i18nKey);
+  }
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   return source.id;
 }
@@ -2336,7 +2364,7 @@ onPoliciesReset(({ typeChange, gestalt, policyIds, changes }) => {
 
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
-  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}`;
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}|${JSON.stringify(state.policyIds || {})}`;
   if (key === lastRelevantKey) return;
   lastRelevantKey = key;
   renderDesignationSelect();

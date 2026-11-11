@@ -39,6 +39,7 @@ export const STACKING_RULES = {
     jobFlat: rule("add", null, "modifierStackJobFlat", "jobUnitOutput"),
     jobEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
     stratumEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
+    stratumOutput: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
     jobUpkeep: rule("add", 0, "modifierStackJobUpkeep", "jobUpkeep"),
     jobResourceMult: rule("add", null, "modifierStackJobResourceMult", "jobProducedResource"),
     resourceMult: rule("add", null, "modifierStackResourceMult", "totalPositiveProduction"),

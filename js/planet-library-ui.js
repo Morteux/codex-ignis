@@ -26,6 +26,7 @@ import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { AUTHORITIES, ETHIC_ICONS, ETHIC_OPTIONS } from "./empire-data.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";
+import { resolvePolicies, getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
 import { SCHEMA_VERSION, checkRuleset } from "./data-version.js";
 import { confirmChoice, promptText } from "./confirm-dialog.js";
@@ -198,7 +199,8 @@ async function saveCurrentPlanet({ asNew = false } = {}) {
       ethicIds: state.ethicIds || [],
       authorityId: state.authorityId,
       civicIds: state.civicIds || [],
-      speciesType: state.speciesType
+      speciesType: state.speciesType,
+      policyIds: state.policyIds || {}
     }
   };
 
@@ -505,6 +507,15 @@ function renderEmpireCard(empire, state) {
     if (civic) icons.append(iconImg(civic.img, t(currentLang, key)));
   });
   card.append(icons);
+
+  // Políticas elegidas (P16.5): texto corto; los imperios guardados antes de P16 muestran las de por defecto.
+  const policyIds = resolvePolicies(empire.policyIds, empire).policyIds;
+  const policyNames = Object.entries(policyIds).map(([groupId, optionId]) => t(currentLang, getPolicyOption(groupId, optionId).i18nKey));
+  const policies = document.createElement("p");
+  policies.className = "library-policies";
+  policies.textContent = policyNames.join(" · ");
+  policies.title = Object.entries(policyIds).map(([groupId, optionId]) => `${t(currentLang, getPolicyGroup(groupId).i18nKey)}: ${t(currentLang, getPolicyOption(groupId, optionId).i18nKey)}`).join("\n");
+  card.append(policies);
 
   const actions = document.createElement("div");
   actions.className = "library-card-actions";
