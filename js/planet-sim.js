@@ -591,7 +591,8 @@ function computeTotals() {
   });
   (empireModifierState.ethicIds || []).forEach((id) => noteEmpireEffects("ethic", id, ETHIC_EFFECTS[id]));
   // Políticas del imperio (P16.6): política económica (% de lo que producen los empleos), política de producción (% por estrato) y postura (% mensual).
-  // La conversión de comercio de la política comercial es P16.7.
+  // La conversión de comercio de la política comercial (P16.7) se anota aquí como modificador y se aplica más abajo.
+  let tradePolicy = null; // { optionId, rates } de la política comercial elegida
   Object.entries(empireModifierState.policyIds || {}).forEach(([groupId, optionId]) => {
     const option = getPolicyOption(groupId, optionId);
     if (!option) return;
@@ -603,6 +604,10 @@ function computeTotals() {
     });
     Object.entries(policyEffects.stratumOutput || {}).forEach(([stratum, fraction]) => pushModifier(source, "stratumOutput", { stratum }, fraction));
     Object.entries(policyEffects.resourceMult || {}).forEach(([resourceId, fraction]) => pushModifier(source, "resourceMult", { resource: resourceId }, fraction));
+    if (policyEffects.tradeConversion) {
+      tradePolicy = { optionId, rates: policyEffects.tradeConversion };
+      Object.entries(policyEffects.tradeConversion).forEach(([resourceId, rate]) => pushModifier(source, "tradeConversion", { resource: resourceId }, rate));
+    }
   });
   noteEmpireEffects("authority", empireModifierState.authorityId, AUTHORITY_EFFECTS[empireModifierState.authorityId]);
   // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
@@ -681,6 +686,26 @@ function computeTotals() {
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
   });
 
+  // Conversión de comercio (P16.7 = P8.5): el comercio que producen los empleos (tras la eficacia y antes de los multiplicadores
+  // porcentuales del imperio) se reparte según las tasas de cambio de la política comercial. La parte no conservada sale de
+  // producidos/netos y cada recurso destino recibe su parte (que después recibe los multiplicadores como cualquier producción).
+  let tradeConversion = null;
+  const tradeFromJobs = jobProduced.trade || 0;
+  if (tradePolicy && tradeFromJobs > 0) {
+    const kept = tradePolicy.rates.trade ?? 0;
+    const lost = tradeFromJobs * (1 - kept);
+    if (Math.abs(lost) > 1e-9) {
+      producedTotals.trade = (producedTotals.trade || 0) - lost;
+      resourceTotals.trade = (resourceTotals.trade || 0) - lost;
+      recordBreakdown("trade", "tradeConversion", -lost);
+    }
+    Object.entries(tradePolicy.rates).forEach(([resourceId, rate]) => {
+      if (resourceId === "trade" || !rate) return;
+      addSignedResource(resourceId, tradeFromJobs * rate, "tradeConversion");
+    });
+    tradeConversion = { optionId: tradePolicy.optionId, rates: tradePolicy.rates, amount: tradeFromJobs };
+  }
+
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
   if (designation) {
     Object.entries(designation.flat).forEach(([key, amount]) => {
@@ -713,7 +738,7 @@ function computeTotals() {
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -1909,6 +1934,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
+  { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
   { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
@@ -1955,11 +1981,24 @@ function renderBreakdownDetail(resourceId, sources) {
     const amount = sources[source.id] || 0;
     if (Math.abs(amount) < 0.001) return;
     if (amount > 0) gross += amount; else costs += amount;
-    addLine(t(currentLang, amount > 0 ? source.pos : source.neg), amount);
+    let label = t(currentLang, amount > 0 ? source.pos : source.neg);
+    // Los recursos recibidos por la conversión de comercio indican la política que los produce.
+    if (source.id === "tradeConversion" && lastTotals && lastTotals.tradeConversion) {
+      label += ` (${t(currentLang, getPolicyOption("trade", lastTotals.tradeConversion.optionId).i18nKey)})`;
+    }
+    addLine(label, amount);
   });
   addLine(t(currentLang, "breakdownGross"), gross, "is-total");
   addLine(t(currentLang, "breakdownCosts"), costs, "is-total");
   addLine(t(currentLang, "breakdownNet"), gross + costs, "is-total");
+  // Comercio: tasas de cambio de la política comercial elegida.
+  if (resourceId === "trade" && lastTotals && lastTotals.tradeConversion) {
+    const note = document.createElement("div");
+    note.className = "planet-resource-detail-line is-total";
+    const rates = Object.entries(lastTotals.tradeConversion.rates).map(([id, rate]) => `${Math.round(rate * 10000) / 100}% ${resourceName(id)}`).join(" · ");
+    note.textContent = t(currentLang, "policyEffectTradeConversion") + rates;
+    detail.append(note);
+  }
   return detail;
 }
 
@@ -2074,6 +2113,7 @@ const MODIFIER_CATEGORIES = [
   { id: "stratumOutput", label: "modifierCatStratumOutput", unit: "percent" },
   { id: "jobUpkeep", label: "modifierCatJobUpkeep", unit: "percent" },
   { id: "jobResourceMult", label: "modifierCatJobResourceMult", unit: "percent" },
+  { id: "tradeConversion", label: "modifierCatTradeConversion", unit: "percent" },
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
   { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
   { id: "flat", label: "modifierCatFlat", unit: "flat" }
