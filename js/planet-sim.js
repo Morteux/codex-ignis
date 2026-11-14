@@ -83,6 +83,7 @@ const tabDistrictsBtn = document.querySelector("#planet-tab-districts");
 const summaryEl = document.querySelector("#planet-summary");
 const modifiersEl = document.querySelector("#planet-modifiers");
 const externalEl = document.querySelector("#planet-production-external");
+const checkEl = document.querySelector("#planet-production-check");
 const summaryPopulationEl = document.querySelector("#planet-jobs-counter");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
@@ -738,7 +739,30 @@ function computeTotals() {
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+  const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
+
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+}
+
+/**
+ * P8.7: comprobación interna de coherencia. Para cada recurso, producidos + consumidos y la suma de las líneas del
+ * desglose (bruto − costes) deben dar el neto de la columna "Netos". Devuelve la lista de recursos que no cuadran
+ * ({ resourceId, net, produced, consumed, breakdownSum }); vacía si todo cuadra.
+ */
+const CONSISTENCY_TOLERANCE = 0.001;
+function checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown) {
+  const ids = new Set([...Object.keys(resourceTotals), ...Object.keys(producedTotals), ...Object.keys(consumedTotals), ...Object.keys(breakdown)]);
+  const problems = [];
+  ids.forEach((resourceId) => {
+    const net = resourceTotals[resourceId] || 0;
+    const produced = producedTotals[resourceId] || 0;
+    const consumed = consumedTotals[resourceId] || 0;
+    const breakdownSum = Object.values(breakdown[resourceId] || {}).reduce((sum, amount) => sum + amount, 0);
+    if (Math.abs(produced + consumed - net) > CONSISTENCY_TOLERANCE || Math.abs(breakdownSum - net) > CONSISTENCY_TOLERANCE) {
+      problems.push({ resourceId, net, produced, consumed, breakdownSum });
+    }
+  });
+  return problems;
 }
 
 /**
@@ -2096,6 +2120,13 @@ function renderExternalIncome(totals) {
 let lastTotals = null;
 function renderProduction(totals) {
   lastTotals = totals;
+  if (checkEl) {
+    const problems = totals.inconsistencies || [];
+    checkEl.hidden = !problems.length;
+    checkEl.textContent = problems.length
+      ? t(currentLang, "productionCheckFailed")(problems.map((p) => `${resourceName(p.resourceId)} (${formatAmount(p.net, true)} / ${formatAmount(p.breakdownSum, true)})`).join(", "))
+      : "";
+  }
   renderExternalIncome(totals);
   renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
   renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");

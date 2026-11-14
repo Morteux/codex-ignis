@@ -126,6 +126,9 @@ async def main():
         emp = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-empires')).find(e=>e.name==='Bogus')")
         check("import: bogus ids replaced by gestalt defaults", emp and emp["policyIds"] == {"production": "balancedProduction", "trade": "logisticsPolicy", "stance": "expansionist"}, emp)
 
+        # 7. P8.7: gross - costs = net consistency check never fires
+        await tab("planet")
+        check("consistency check hidden", await pg.evaluate("()=>document.querySelector('#planet-production-check').hidden"))
         check("no page errors", not errors, errors)
         await browser.close()
 
