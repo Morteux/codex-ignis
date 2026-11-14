@@ -39,8 +39,10 @@
  *  4. No se aplican los requisitos de origen (nómada), de súbdito ni de
  *     "humillado" de las posturas.
  *
- * Estado de verificación: `unverified` (ver DATA_COLLECTIONS.policies en
- * js/data-version.js); se revisa en P14/P16.10.
+ * Estado de verificación: `wiki-verified` (P16.10: tasas de cambio y efectos
+ * revisados contra las páginas 4.5.2; ver DATA_COLLECTIONS.policies en
+ * js/data-version.js). Los requisitos no modelados (tradiciones, federaciones, origen)
+ * se repasan en P14.
  */
 
 import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";

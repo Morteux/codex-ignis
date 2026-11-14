@@ -14,6 +14,7 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 | Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
 | Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, datos en `*-data.js` y `civic-rules.js` |
 | Árbol de tecnologías | `tech-tree.html` (marcador; plan en `tech_tree.md`) |
+| Pruebas | `tests/policies-smoke.py` (navegador, ver más abajo) |
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
 | Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |
 
@@ -32,6 +33,14 @@ Los artículos se definen en `js/content.js` por bloques (párrafo, subtítulo, 
 ## Perfiles de imperio y planetas guardados
 
 Se guardan en `localStorage` (`codex-ignis-empires`, `codex-ignis-planets`) y se pueden exportar/importar como JSON desde la pestaña Biblioteca del simulador. Desde la fase P16 cada imperio incluye `policyIds` (`{ grupo: idOpcion }`, ver `js/policy-data.js`): es un campo **opcional**, por eso `schemaVersion` sigue siendo 1. Un perfil, una copia de imperio dentro de un planeta o un archivo importado sin `policyIds`, o con opciones desconocidas o no disponibles, carga con las políticas por defecto de su tipo de imperio (Creación de riqueza o Política logística, ver GDD); nunca se inventan otras.
+
+## Políticas del imperio y conversión de comercio
+
+La pestaña Imperio incluye las políticas con efecto económico (`js/policy-data.js`): política económica, comercial (logística en gestalt), de producción (solo gestalt) y postura diplomática. Se guardan con el imperio. La política comercial reparte el comercio que producen los empleos entre los recursos según sus tasas de cambio (por defecto Creación de riqueza, o Política logística en gestalt). Los datos están sin verificar hasta la fase P14 del GDD.
+
+## Pruebas
+
+`tests/policies-smoke.py` comprueba en un navegador real (Playwright, interfaz en inglés) los valores por defecto de las políticas, el cambio individualista/gestalt, las cifras de economía con cada política comercial, Ayuda mutua con y sin Cooperativa de trabajadores, el guardado de imperios y planetas (formato antiguo y nuevo) y la importación con ids inválidos. Ejecútalo desde la raíz del proyecto: `pip install playwright && playwright install chromium && python3 tests/policies-smoke.py`.
 
 ## Imágenes de Stellaris
 

@@ -132,7 +132,8 @@ export const DATA_COLLECTIONS = {
   policies: {
     file: "js/policy-data.js",
     sources: [WIKI + "Economic_policies", WIKI + "Diplomatic_policies"],
-    verification: VERIFICATION.UNVERIFIED
+    // P16.10: tasas de cambio y efectos revisados contra las páginas 4.5.2; los requisitos de tradición/federación/origen siguen sin modelarse (ver policy-data.js).
+    verification: VERIFICATION.WIKI_VERIFIED
   },
   stackingRules: {
     file: "js/stacking-rules.js",

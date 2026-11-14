@@ -104,9 +104,9 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P13 | Polish & QA | pending |
 | P14 | Final 4.5.2 data verification (last task) | pending |
 | P15 | Official localization (all Stellaris languages) | pending |
-| P16 | Empire policies and trade conversion | in progress (8/10) |
+| P16 | Empire policies and trade conversion | done |
 
-**Overall: 75/111 tasks (68%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 77/111 tasks (69%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -244,7 +244,7 @@ Owner will supply the game's own localisation files. Until then es/jp text that 
 - [ ] P15.3 Extend the language selector from es/en/jp to every official Stellaris language (simulator, bingo and wiki UI); keep the key-parity rule per language
 - [ ] P15.4 Review the 95 civics whose es/jp names are currently the English placeholder and the keys that group several civics under one icon
 
-### P16 — Empire policies and trade conversion (8/10)
+### P16 — Empire policies and trade conversion (10/10)
 **Owner request (2026-10-31, new wiki with the Policies pages uploaded):** find which policies affect the economy of the planet, list them as options the user can choose in the Empire tab, and save them in the empire profiles. The trade conversion policy must be selectable; **Wealth Creation is the default for normal empires and Logistics Policy (the gestalt name of Trade Policy) the default for Gestalt Consciousness**. Source pages: Economic / Societal / Military / Research / Diplomatic policies and the Policies overview (4.5.2, `Codex_Ignis_Wiki_1.zip`). Rule #1 applies: only what the pages say, no invented rates; everything is `unverified` until P14.
 
 **Audit result (what the pages say; basis for the tasks below):**
@@ -280,8 +280,11 @@ Owner will supply the game's own localisation files. Until then es/jp text that 
 - [x] P16.8 i18n es/en/jp for the policy names, descriptions, requirement reasons and notices (English names in es/jp until P15, as with the rest of the game names; the policy rules texts are written by hand and listed for review).
   *P16.8 notes:* a script check found es/en/jp with the same 985 keys and no key used by the code missing. The 19 option names stay in English in es/jp (P15). Hand-written es/jp texts to review with the owner: the 5 group titles (`policyGroup*`), the 4 group notes (`policyGroupNote_*`), the effect lines (`policyEffect*`), the requirement reasons (`requirementFederation`, `requirementNotAuthority`, `requirementAnyOf`), the reset notices (`planetSimPolicy*`), the empire-tab heading/note (`empirePolicies*`), the stacking texts and the new trade-conversion texts (P16.7).
 
-- [ ] P16.9 Tests and docs: browser tests for the four defaults (individualist → Wealth Creation, gestalt → Logistics Policy, switching ethics both ways, Mutual Aid with/without Worker Cooperative), save/load of a profile and of a planet (old and new format), export/import, the economy numbers with each trade policy against a hand calculation; README and this GDD updated; the P8.5/P16.7 numbers checked against the hand calculation.
-- [ ] P16.10 Verification pass: add the collection `policies` to the P14 checklist and review every exchange rate and effect against the uploaded Policies pages one more time before closing the phase.
+- [x] P16.9 Tests and docs: browser tests for the four defaults (individualist → Wealth Creation, gestalt → Logistics Policy, switching ethics both ways, Mutual Aid with/without Worker Cooperative), save/load of a profile and of a planet (old and new format), export/import, the economy numbers with each trade policy against a hand calculation; README and this GDD updated; the P8.5/P16.7 numbers checked against the hand calculation.
+  *P16.9 notes:* new `tests/policies-smoke.py` (Playwright, English UI, run from the project root), 23 checks, all passing: defaults (Wealth Creation / Mixed Economy), gestalt → Logistics Policy / Balanced Production and back, hand-calculated numbers with 2 Traders for Wealth Creation, Consumer Benefits, Marketplace of Ideas and Mutual Aid (egalitarian +5 % specialist efficiency included), Trade League and Mutual Aid disabled when their requirement is missing, Mutual Aid falling back with a notice when Worker Cooperative is removed, saving an empire (stores `policyIds`), an empire saved before P16 loading with defaults and not flagged modified, a planet snapshot keeping the policies, and import of a file with bogus policy ids. README documents the policies and the test. The test is Windows/Linux agnostic but needs Playwright installed locally.
+
+- [x] P16.10 Verification pass: add the collection `policies` to the P14 checklist and review every exchange rate and effect against the uploaded Policies pages one more time before closing the phase.
+  *P16.10 notes:* checked against the 4.5.2 pages in `Codex_Ignis_Wiki.zip`: all 19 options. Economic Policy (±25 % consumer goods / alloys), Production Policy (±20 % menial / complex), the 7 Trade Policy exchange rates (50/50, 100, 50/25, 50/12.5, 25/20/20/20/7.5, 50/15/15/7.5, 50/18.75) and the two stance effects (Isolationist +10 % monthly unity, Mercantile +10 % monthly trade, with the Corporate / Merchant Guilds / Corporate Dominion / not Gestalt / not Inward Perfection conditions) match the code; the other stances have no economic effect. The collection `policies` is now `wiki-verified`. Open for P14: the requirements column of the Trade Policy table is only partly readable in the HTML (icons), so the tradition, federation and Trade League / Holy Covenant L3 conditions stay as the documented simplifications; trade from pops, commercial pacts and branch offices remain unmodelled.
 
 ## 9. Decisions log and open questions
 **Resolved (2026-10-21):** explicit save when editing a profile; unsaved changes trigger a confirmation dialog before switching empire or loading a planet; deleted empire → planet keeps raw snapshot and is flagged "no empire"; saved configurations are called **planets** (not templates), planet name = saved name, unique, same checks for rename and name edits; card actions include duplicate/export/rename; empire cards use icons only; invalid buildings are deactivated and always marked with the yellow frame (`img/ui/`); wiki files are assumed to be 4.5.2 and are re-uploaded for a final full verification as the last task.
