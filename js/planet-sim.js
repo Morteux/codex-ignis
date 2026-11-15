@@ -84,6 +84,7 @@ const summaryEl = document.querySelector("#planet-summary");
 const modifiersEl = document.querySelector("#planet-modifiers");
 const externalEl = document.querySelector("#planet-production-external");
 const checkEl = document.querySelector("#planet-production-check");
+const conditionsEl = document.querySelector("#planet-conditions");
 const summaryPopulationEl = document.querySelector("#planet-jobs-counter");
 const producedEl = document.querySelector("#planet-production-produced");
 const consumedEl = document.querySelector("#planet-production-consumed");
@@ -739,9 +740,47 @@ function computeTotals() {
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
 
+  // P9.1: pops (1 por empleo cubierto), vivienda y servicios (wiki 4.5.2, Colony management). Todo en unidades reales;
+  // al mostrarse se multiplica por EFFECT_SCALE. Redondeos de la wiki: servicios de edificios al entero más cercano,
+  // servicios de empleos hacia abajo, uso de servicios al entero más cercano. Los modificadores de uso de servicios
+  // (especie, colonia, imperio) no se modelan: cada pop usa 1.
+  const pops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
+  const amenitiesFromBuildings = Math.round(amenities);
+  const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + 1e-9);
+  const amenitiesProvided = amenitiesFromBuildings + amenitiesFromJobs;
+  const amenitiesUsage = Math.round(pops);
+  // P9.2: felicidad (solo no gestalt). Base 50 + efecto de los servicios (wiki 4.5.2: bono máx. +20, penalización máx. −50;
+  // se interpreta el "%" de la wiki como puntos de felicidad, porque la felicidad va de 0 a 100). Sin pops no hay felicidad que medir.
+  const amenitiesAvailable = amenitiesProvided - (AMENITIES_LOST + amenitiesUsage);
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, mode: "none", raw: 0, effect: 0, value: HAPPINESS_BASE };
+  if (happiness.applicable && amenitiesUsage > 0) {
+    if (amenitiesAvailable > 0) {
+      happiness.mode = "bonus";
+      happiness.raw = (20 * amenitiesAvailable) / amenitiesUsage;
+      happiness.effect = Math.min(20, happiness.raw);
+    } else if (amenitiesAvailable < 0) {
+      happiness.mode = "penalty";
+      happiness.raw = ((200 / 3) * amenitiesAvailable) / amenitiesUsage;
+      happiness.effect = Math.max(-50, happiness.raw);
+    }
+    happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + happiness.effect));
+  }
+  const conditions = {
+    happiness,
+    pops,
+    housingProvided: housing,
+    housingMissing: Math.max(0, pops - housing),
+    amenitiesFromBuildings,
+    amenitiesFromJobs,
+    amenitiesProvided,
+    amenitiesLost: AMENITIES_LOST,
+    amenitiesUsage,
+    amenitiesAvailable
+  };
+
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -750,6 +789,9 @@ function computeTotals() {
  * ({ resourceId, net, produced, consumed, breakdownSum }); vacía si todo cuadra.
  */
 const CONSISTENCY_TOLERANCE = 0.001;
+/** Servicios que se pierden siempre en cada colonia por ineficiencias (wiki 4.5.2, Colony management). */
+const AMENITIES_LOST = 5;
+const HAPPINESS_BASE = 50;
 function checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown) {
   const ids = new Set([...Object.keys(resourceTotals), ...Object.keys(producedTotals), ...Object.keys(consumedTotals), ...Object.keys(breakdown)]);
   const problems = [];
@@ -1944,6 +1986,7 @@ function renderSummary(totals) {
 function refreshEconomyOnly() {
   const totals = computeTotals();
   renderProduction(totals);
+  renderConditions(totals);
   renderStats(totals);
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
   updateJobsCounter(jobIds, totals.jobCapacities);
@@ -2172,12 +2215,49 @@ function modifierTargetName(modifier) {
 }
 
 /** Panel de modificadores activos (P8.2): origen, categoría afectada, valor y cómo se apila. */
+/**
+ * P17.1: botones "i" que muestran/ocultan el panel de explicación de una sección. El estado abierto/cerrado se
+ * guarda por id y sobrevive a los repintados e idiomas. El botón es estático en el HTML (data-info-id) y el panel
+ * (.info-panel, id "<id>-info") lo crea el render de cada sección con createInfoPanel().
+ */
+const infoOpen = new Set();
+function syncInfoButton(btn, id) {
+  const open = infoOpen.has(id);
+  btn.setAttribute("aria-expanded", String(open));
+  btn.classList.toggle("is-open", open);
+  btn.title = t(currentLang, "infoToggleTooltip");
+  btn.setAttribute("aria-label", t(currentLang, "infoToggleTooltip"));
+}
+function createInfoPanel(id) {
+  const panel = document.createElement("div");
+  panel.className = "info-panel";
+  panel.id = `${id}-info`;
+  panel.hidden = !infoOpen.has(id);
+  return panel;
+}
+document.querySelectorAll(".info-btn").forEach((btn) => {
+  const id = btn.id.replace(/-info-btn$/, "");
+  syncInfoButton(btn, id);
+  btn.addEventListener("click", () => {
+    if (infoOpen.has(id)) infoOpen.delete(id); else infoOpen.add(id);
+    syncInfoButton(btn, id);
+    const panel = document.getElementById(`${id}-info`);
+    if (panel) panel.hidden = !infoOpen.has(id);
+  });
+});
+
 function renderModifiers(totals) {
   if (!modifiersEl) return;
   modifiersEl.replaceChildren();
+  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
   const rulesetId = getPlanetState().rulesetId;
   const stackingRules = getStackingRules(rulesetId);
-  // Orden de cálculo y procedencia de las reglas de apilado.
+  // Panel de explicación (oculto hasta pulsar "i"): nota general, orden de cálculo, reglas de apilado y procedencia.
+  const info = createInfoPanel("planet-modifiers");
+  const infoNote = document.createElement("p");
+  infoNote.className = "planet-modifier-stacking";
+  infoNote.textContent = t(currentLang, "modifiersNote");
+  info.append(infoNote);
   const order = document.createElement("ol");
   order.className = "planet-modifier-order";
   getCalculationOrder(rulesetId).forEach((key) => {
@@ -2191,7 +2271,19 @@ function renderModifiers(totals) {
   const provenance = document.createElement("p");
   provenance.className = "planet-modifier-stacking";
   provenance.textContent = t(currentLang, "modifierRulesUnverified");
-  modifiersEl.append(orderHeading, order, provenance);
+  const rulesHeading = document.createElement("h3");
+  rulesHeading.className = "planet-modifier-heading";
+  rulesHeading.textContent = t(currentLang, "modifierRulesHeading");
+  const rulesList = document.createElement("ul");
+  rulesList.className = "planet-modifier-order";
+  MODIFIER_CATEGORIES.forEach((category) => {
+    const categoryRule = stackingRules[category.id];
+    const item = document.createElement("li");
+    item.textContent = `${t(currentLang, category.label)}: ${t(currentLang, categoryRule.stacking)} (${t(currentLang, categoryRule.combine === "multiply" ? "modifierCombineMultiply" : "modifierCombineAdd")})`;
+    rulesList.append(item);
+  });
+  info.append(orderHeading, order, rulesHeading, rulesList, provenance);
+  modifiersEl.append(info);
   const list = totals.modifiers || [];
   if (!list.length) {
     const empty = document.createElement("p");
@@ -2206,11 +2298,7 @@ function renderModifiers(totals) {
     const heading = document.createElement("h3");
     heading.className = "planet-modifier-heading";
     heading.textContent = t(currentLang, category.label);
-    const note = document.createElement("p");
-    note.className = "planet-modifier-stacking";
-    const categoryRule = stackingRules[category.id];
-    note.textContent = `${t(currentLang, categoryRule.stacking)} (${t(currentLang, categoryRule.combine === "multiply" ? "modifierCombineMultiply" : "modifierCombineAdd")})`;
-    modifiersEl.append(heading, note);
+    modifiersEl.append(heading);
     items.forEach((modifier) => {
       const row = document.createElement("div");
       row.className = "planet-modifier-row";
@@ -2231,6 +2319,80 @@ function renderModifiers(totals) {
       modifiersEl.append(row);
     });
   });
+}
+
+/** Panel de condiciones del planeta (P9.1): pops, vivienda y servicios. Valores en escala ×100 como el resto de la interfaz. */
+function renderConditions(totals) {
+  if (!conditionsEl) return;
+  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  conditionsEl.replaceChildren();
+  const c = totals.conditions;
+  const info = createInfoPanel("planet-conditions");
+  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness"].forEach((key) => {
+    const line = document.createElement("p");
+    line.className = "planet-modifier-stacking";
+    line.textContent = t(currentLang, key);
+    info.append(line);
+  });
+  conditionsEl.append(info);
+  const rows = [
+    ["pops", "conditionsPops", c.pops, false],
+    ["housingProvided", "conditionsHousingProvided", c.housingProvided, false],
+    ["housingMissing", "conditionsHousingMissing", c.housingMissing, true],
+    ["amenitiesProvided", "conditionsAmenitiesProvided", c.amenitiesProvided, false],
+    ["amenitiesLost", "conditionsAmenitiesLost", -c.amenitiesLost, true],
+    ["amenitiesUsage", "conditionsAmenitiesUsage", -c.amenitiesUsage, true],
+    ["amenitiesAvailable", "conditionsAmenitiesAvailable", c.amenitiesAvailable, false]
+  ];
+  rows.forEach(([key, labelKey, value, badWhenPositive]) => {
+    const row = document.createElement("div");
+    const bad = value < 0 || (badWhenPositive && value > 0);
+    row.className = `planet-resource-row ${bad ? "is-negative" : "is-positive"}`;
+    row.dataset.condition = key;
+    const name = document.createElement("span");
+    name.className = "planet-resource-name";
+    name.textContent = t(currentLang, labelKey);
+    const val = document.createElement("span");
+    val.className = "planet-resource-value";
+    val.textContent = formatAmount(value * EFFECT_SCALE, key === "amenitiesAvailable");
+    row.append(name, val);
+    conditionsEl.append(row);
+  });
+
+  // Felicidad (P9.2): cálculo completo con los números actuales.
+  const h = c.happiness;
+  const note = document.createElement("p");
+  note.className = "planet-modifier-stacking";
+  if (!h.applicable) {
+    note.textContent = t(currentLang, "conditionsHappinessNA");
+    conditionsEl.append(note);
+    return;
+  }
+  const happinessRows = [
+    ["happinessBase", "conditionsHappinessBase", h.base, false],
+    ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
+    ["happiness", "conditionsHappiness", h.value, false]
+  ];
+  happinessRows.forEach(([key, labelKey, value, signed]) => {
+    const row = document.createElement("div");
+    row.className = `planet-resource-row ${value < 0 ? "is-negative" : "is-positive"}`;
+    row.dataset.condition = key;
+    const name = document.createElement("span");
+    name.className = "planet-resource-name";
+    name.textContent = t(currentLang, labelKey);
+    const val = document.createElement("span");
+    val.className = "planet-resource-value";
+    val.textContent = formatAmount(value, signed);
+    row.append(name, val);
+    conditionsEl.append(row);
+  });
+  const fmt = (n) => formatAmount(n, false);
+  note.textContent = h.mode === "bonus"
+    ? t(currentLang, "conditionsFormulaBonus")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(h.raw), formatAmount(h.effect, true))
+    : h.mode === "penalty"
+      ? t(currentLang, "conditionsFormulaPenalty")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(h.raw), formatAmount(h.effect, true))
+      : t(currentLang, "conditionsFormulaNone");
+  conditionsEl.append(note);
 }
 
 function renderSlots() {
@@ -2283,6 +2445,7 @@ function refresh() {
   renderActiveTabContent();
   renderSummary(totals);
   renderProduction(totals);
+  renderConditions(totals);
   renderModifiers(totals);
   updatePlanetState({ planetSize });
 }

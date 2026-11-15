@@ -126,6 +126,14 @@ async def main():
         emp = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-empires')).find(e=>e.name==='Bogus')")
         check("import: bogus ids replaced by gestalt defaults", emp and emp["policyIds"] == {"production": "balancedProduction", "trade": "logisticsPolicy", "stance": "expansionist"}, emp)
 
+        # 6b. P9.1: conditions panel (2 Traders staffed = 200 pops in x100 scale)
+        await pg.evaluate("()=>[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText))?.click()")
+        cond = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions [data-condition]')].map(r=>[r.dataset.condition,r.querySelector('.planet-resource-value').innerText.replace('\u2212','-').replace('+','')]))")
+        check("conditions: pops and lost amenities present", cond.get("amenitiesLost") == "-500" if isinstance(cond, dict) else False, cond)
+
+        hap = await pg.evaluate("()=>{const r=document.querySelector('#planet-conditions [data-condition=happiness] .planet-resource-value');return r&&r.innerText}")
+        check("happiness = 70 with plentiful amenities", hap == "70", hap)
+
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")
         check("consistency check hidden", await pg.evaluate("()=>document.querySelector('#planet-production-check').hidden"))
