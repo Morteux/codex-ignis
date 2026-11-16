@@ -134,6 +134,9 @@ async def main():
         hap = await pg.evaluate("()=>{const r=document.querySelector('#planet-conditions [data-condition=happiness] .planet-resource-value');return r&&r.innerText}")
         check("happiness = 70 with plentiful amenities", hap == "70", hap)
 
+        stab = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=stability] .planet-resource-value')?.innerText")
+        check("stability = 62 (50 + 12 approval, no housing penalty)", stab == "62", stab)
+
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")
         check("consistency check hidden", await pg.evaluate("()=>document.querySelector('#planet-production-check').hidden"))

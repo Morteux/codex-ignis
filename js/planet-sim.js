@@ -749,24 +749,43 @@ function computeTotals() {
   const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + 1e-9);
   const amenitiesProvided = amenitiesFromBuildings + amenitiesFromJobs;
   const amenitiesUsage = Math.round(pops);
-  // P9.2: felicidad (solo no gestalt). Base 50 + efecto de los servicios (wiki 4.5.2: bono máx. +20, penalización máx. −50;
-  // se interpreta el "%" de la wiki como puntos de felicidad, porque la felicidad va de 0 a 100). Sin pops no hay felicidad que medir.
+  // P9.2: efecto de los servicios (wiki 4.5.2: bono máx. +20, penalización máx. −50). Se interpreta el "%" de la wiki como
+  // puntos, porque felicidad y estabilidad van de 0 a 100. En un imperio normal actúa sobre la felicidad (P9.2) y en uno
+  // gestalt directamente sobre la estabilidad (P9.6). Sin pops no hay nada que medir.
   const amenitiesAvailable = amenitiesProvided - (AMENITIES_LOST + amenitiesUsage);
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, mode: "none", raw: 0, effect: 0, value: HAPPINESS_BASE };
-  if (happiness.applicable && amenitiesUsage > 0) {
+  const amenitiesEffect = { mode: "none", raw: 0, effect: 0 };
+  if (pops > 0 && amenitiesUsage > 0) {
     if (amenitiesAvailable > 0) {
-      happiness.mode = "bonus";
-      happiness.raw = (20 * amenitiesAvailable) / amenitiesUsage;
-      happiness.effect = Math.min(20, happiness.raw);
+      amenitiesEffect.mode = "bonus";
+      amenitiesEffect.raw = (20 * amenitiesAvailable) / amenitiesUsage;
+      amenitiesEffect.effect = Math.min(20, amenitiesEffect.raw);
     } else if (amenitiesAvailable < 0) {
-      happiness.mode = "penalty";
-      happiness.raw = ((200 / 3) * amenitiesAvailable) / amenitiesUsage;
-      happiness.effect = Math.max(-50, happiness.raw);
+      amenitiesEffect.mode = "penalty";
+      amenitiesEffect.raw = ((200 / 3) * amenitiesAvailable) / amenitiesUsage;
+      amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
     }
-    happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + happiness.effect));
+  }
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect));
+  // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
+  // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
+  // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, value: STABILITY_BASE };
+  if (stability.applicable) {
+    if (gestaltEmpire) {
+      stability.amenitiesEffect = amenitiesEffect.effect;
+    } else {
+      stability.approval = Math.floor(happiness.value);
+      const delta = stability.approval - 50;
+      stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
+    }
+    stability.housingPenalty = (40 * Math.max(0, pops - housing)) / pops;
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect - stability.housingPenalty));
   }
   const conditions = {
     happiness,
+    stability,
+    amenitiesEffect,
     pops,
     housingProvided: housing,
     housingMissing: Math.max(0, pops - housing),
@@ -792,6 +811,7 @@ const CONSISTENCY_TOLERANCE = 0.001;
 /** Servicios que se pierden siempre en cada colonia por ineficiencias (wiki 4.5.2, Colony management). */
 const AMENITIES_LOST = 5;
 const HAPPINESS_BASE = 50;
+const STABILITY_BASE = 50;
 function checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown) {
   const ids = new Set([...Object.keys(resourceTotals), ...Object.keys(producedTotals), ...Object.keys(consumedTotals), ...Object.keys(breakdown)]);
   const problems = [];
@@ -2328,7 +2348,7 @@ function renderConditions(totals) {
   conditionsEl.replaceChildren();
   const c = totals.conditions;
   const info = createInfoPanel("planet-conditions");
-  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness"].forEach((key) => {
+  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness", "conditionsInfoStability"].forEach((key) => {
     const line = document.createElement("p");
     line.className = "planet-modifier-stacking";
     line.textContent = t(currentLang, key);
@@ -2359,21 +2379,17 @@ function renderConditions(totals) {
     conditionsEl.append(row);
   });
 
-  // Felicidad (P9.2): cálculo completo con los números actuales.
+  // Felicidad (P9.2) y estabilidad (P9.3 / P9.6): cálculo completo con los números actuales.
   const h = c.happiness;
-  const note = document.createElement("p");
-  note.className = "planet-modifier-stacking";
-  if (!h.applicable) {
-    note.textContent = t(currentLang, "conditionsHappinessNA");
+  const st = c.stability;
+  const fmt = (n) => formatAmount(n, false);
+  const addNote = (text) => {
+    const note = document.createElement("p");
+    note.className = "planet-modifier-stacking";
+    note.textContent = text;
     conditionsEl.append(note);
-    return;
-  }
-  const happinessRows = [
-    ["happinessBase", "conditionsHappinessBase", h.base, false],
-    ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
-    ["happiness", "conditionsHappiness", h.value, false]
-  ];
-  happinessRows.forEach(([key, labelKey, value, signed]) => {
+  };
+  const addRows = (list) => list.forEach(([key, labelKey, value, signed]) => {
     const row = document.createElement("div");
     row.className = `planet-resource-row ${value < 0 ? "is-negative" : "is-positive"}`;
     row.dataset.condition = key;
@@ -2382,17 +2398,48 @@ function renderConditions(totals) {
     name.textContent = t(currentLang, labelKey);
     const val = document.createElement("span");
     val.className = "planet-resource-value";
-    val.textContent = formatAmount(value, signed);
+    val.textContent = formatAmount(value, signed && value !== 0);
     row.append(name, val);
     conditionsEl.append(row);
   });
-  const fmt = (n) => formatAmount(n, false);
-  note.textContent = h.mode === "bonus"
-    ? t(currentLang, "conditionsFormulaBonus")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(h.raw), formatAmount(h.effect, true))
-    : h.mode === "penalty"
-      ? t(currentLang, "conditionsFormulaPenalty")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(h.raw), formatAmount(h.effect, true))
+  const amenitiesFormula = () => c.amenitiesEffect.mode === "bonus"
+    ? t(currentLang, "conditionsFormulaBonus")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(c.amenitiesEffect.raw), formatAmount(c.amenitiesEffect.effect, true))
+    : c.amenitiesEffect.mode === "penalty"
+      ? t(currentLang, "conditionsFormulaPenalty")(fmt(c.amenitiesAvailable), fmt(c.amenitiesUsage), fmt(c.amenitiesEffect.raw), formatAmount(c.amenitiesEffect.effect, true))
       : t(currentLang, "conditionsFormulaNone");
-  conditionsEl.append(note);
+
+  if (h.applicable) {
+    addRows([
+      ["happinessBase", "conditionsHappinessBase", h.base, false],
+      ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
+      ["happiness", "conditionsHappiness", h.value, false]
+    ]);
+    addNote(amenitiesFormula());
+  } else if (st.gestalt) {
+    addNote(t(currentLang, "conditionsHappinessNA"));
+  }
+
+  if (!st.applicable) return;
+  if (st.gestalt) {
+    addRows([
+      ["stabilityBase", "conditionsStabilityBase", st.base, false],
+      ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
+      ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
+      ["stability", "conditionsStability", st.value, false]
+    ]);
+    addNote(amenitiesFormula());
+  } else {
+    addRows([
+      ["stabilityBase", "conditionsStabilityBase", st.base, false],
+      ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
+      ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
+      ["stability", "conditionsStability", st.value, false]
+    ]);
+    addNote(st.approval >= 50
+      ? t(currentLang, "conditionsFormulaApprovalHigh")(fmt(st.approval), formatAmount(st.approvalBonus, true))
+      : t(currentLang, "conditionsFormulaApprovalLow")(fmt(st.approval), formatAmount(st.approvalBonus, true)));
+  }
+  addNote(t(currentLang, "conditionsFormulaHousing")(fmt(Math.max(0, c.pops - c.housingProvided)), fmt(c.pops), formatAmount(-st.housingPenalty, st.housingPenalty !== 0)));
 }
 
 function renderSlots() {

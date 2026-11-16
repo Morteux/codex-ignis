@@ -97,7 +97,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P6 | Planets & Library | done |
 | P7 | Data completeness | done |
 | P8 | Transparency (breakdowns, modifiers) | in progress (6/7) |
-| P9 | Planetary conditions | in progress (2/7) |
+| P9 | Planetary conditions | in progress (4/7) |
 | P10 | Special planets | pending |
 | P11 | Comparison & timeline | pending |
 | P12 | UI decoration (icons) | in progress |
@@ -107,7 +107,7 @@ Legend: `[x]` done, `[ ]` pending. Phase order is a proposal and can be reordere
 | P16 | Empire policies and trade conversion | done |
 | P17 | Plain-language explanations ("i" panels) | in progress (1/6) |
 
-**Overall: 81/119 tasks (68%)** (tasks are not equal in size; use as a rough indicator.)
+**Overall: 83/119 tasks (70%)** (tasks are not equal in size; use as a rough indicator.)
 
 ### P0 — Foundation (6/6)
 - [x] P0.1 Static ES-module app, no build
@@ -196,14 +196,14 @@ Built from the wiki pages already supplied; value re-verification happens in P14
 - [ ] P8.6 Manual / Estimated / Derived labels
 - [x] P8.7 Check: gross − all costs = net for every resource Implemented: `computeTotals()` runs `checkTotalsConsistency()` and returns `inconsistencies`: for every resource, produced + consumed and the sum of all breakdown lines (gross − costs) must equal the Net column (tolerance 0.001). If anything fails, a warning (`#planet-production-check`, hidden normally) appears under the production columns naming the resources, flagged as a simulator bug. Covered by `policies-smoke.py` (check 7). P8.6 stays open and is absorbed by P9.7.
 
-### P9 — Planetary conditions (2/7)
+### P9 — Planetary conditions (4/7)
 **Owner decisions (2026-11-15):** (1) pops = jobs assumed staffed, one pop per job; everything is displayed in the wiki ×100 scale (100 displayed = 1 real pop = 1 real job), and calculated in real units, so housing and amenities usage of a pop (1 each, wiki *Colony management*) must be compared in the same unit. (2) Stability is **automatic**, always showing the complete calculation for the current result, step by step. (3) The stability effect on job output **is applied** (+0.6 % per point above 50, −1 % per point below, "Resources from Jobs"; wiki *Colony management*). (4) Gestalt is covered (P9.6). (5) Every complex formula gets a plain-language explanation behind an "i" button (phase P17). Sources: `Population.md` (Happiness, Approval, Housing, Amenities) and `Colony management.md` (Housing, Amenities, Stability), 4.5.2. Rule #1: only what those pages state; any other happiness/stability source (traits, edicts, civics, factions, planet modifiers, events...) is listed as "not modelled", never guessed.
 - [x] P9.1 Pops, housing and amenities balance Implemented: `computeTotals().conditions` (pops = staffed jobs, housing provided / missing, amenities provided = buildings rounded to nearest + jobs rounded down, lost 5, usage = rounded pops × 1, available) and a new "Planet conditions" panel (`#planet-conditions`, ×100 display, repainted by `refresh` and by the slider path) with an "i" explanation of pops, housing and amenities. Amenity-usage modifiers (species/colony/empire) are not modelled. Note for P9.4: stability will change job output, and job amenities depend on job output, so the amenities balance must be computed before applying the stability effect (stability then affects non-amenity resources only; to be confirmed against the wiki wording).
 - [x] P9.2 Happiness (automatic) Implemented in `computeTotals().conditions.happiness`: base 50 + amenities effect (bonus min(20, 20·avail/usage), penalty max(−50, 200/3·avail/usage)), clamped 0–100; the panel shows base, effect, result and the formula with the current numbers; gestalt shows a note instead (P9.6); no pops → not shown. Assumption: the wiki's "%" of the amenities effect is read as happiness points (the scale is 0–100). Every other happiness source is not modelled (P9.7 will allow a manual extra).
-- [ ] P9.3 Stability (automatic, non-gestalt): base 50 + approval term (+0.6 per point of approval above 50, −1 per point below; all pops share one stratum so approval = happiness) − housing penalty 40·missing/required; panel shows each term, the formula with the current numbers and the result; clamped 0–100
+- [x] P9.3 Stability (automatic, non-gestalt) Implemented in `conditions.stability`: base 50 + approval bonus (approval = floor(happiness); +0.6 per point above 50 rounded down, −1 per point below) − housing penalty 40·missing/pops, clamped 0–100; the panel shows every term plus the formulas with the current numbers. Not modelled: crime/deviancy effect on stability, edicts, factions, events (P9.7 manual extra).
 - [ ] P9.4 Stability effect on job output (+0.6 %/−1 % per point from 50) as a new modifier category in `stacking-rules.js` (positive output of jobs only; verify against "Resources from Jobs" wording), visible in the modifiers panel and breakdown (new breakdown source); calculation order updated
 - [ ] P9.5 Crime from low happiness (+0.02 per pop per point below 50, up to +2 per pop) shown next to the enforcer/educator crime effects; display-only, no invented penalty
-- [ ] P9.6 Gestalt: amenities act on stability directly (same % as the happiness formulas), no happiness; deviancy display; housing penalty as in P9.3
+- [x] P9.6 Gestalt Implemented together with P9.3: no happiness (note shown), stability = 50 + amenities effect (same bonus/penalty numbers as the happiness formulas) − housing penalty. Deviancy display goes with P9.5.
 - [ ] P9.7 (absorbs P8.6) Labels Manual / Estimated / Derived on every value of the conditions panel; optional manual extra happiness and stability modifiers (default 0, labelled Manual) so sources the simulator does not model can be entered by hand
 
 ### P17 — Plain-language explanations (1/6)
@@ -211,7 +211,7 @@ Owner request (2026-11-15): complex formulas and rules must be explained simply,
 - [x] P17.1 Component + Active modifiers panel Implemented: `.info-btn` / `.info-panel` (styles.css), `infoOpen`, `syncInfoButton`, `createInfoPanel` in `planet-sim.js`; the modifiers panel now shows only the modifier rows, and the general note, calculation order, per-category stacking rules (new list, replaces the line under each category) and the unverified-rules warning live in the hidden panel. Tested in the browser (starts hidden, opens, stays open after changing tab and language).
 - [ ] P17.2 Production panel (produced / consumed / net, breakdown sources, trade conversion, external income note)
 - [ ] P17.3 Jobs summary (staffing notice, ×100 scale, click controls, strata, non-resource effects)
-- [ ] P17.4 Conditions panel of P9 (each formula in plain words with a worked example using the current numbers) — done together with P9.1–P9.6. Started: the "i" panel exists with the pops/housing/amenities text (P9.1); happiness, stability, crime and gestalt texts come with P9.2–P9.6, worked examples at the end
+- [ ] P17.4 Conditions panel of P9 (each formula in plain words with a worked example using the current numbers) — done together with P9.1–P9.6. Started: the "i" panel exists with the pops/housing/amenities text (P9.1); happiness and stability texts and the live formulas are in (P9.2, P9.3, P9.6); crime text comes with P9.5, plain-language worked examples at the end
 - [ ] P17.5 Empire tab (ethic/authority effects "informational", policies and trade conversion, civic limits)
 - [ ] P17.6 QA: es/en/jp parity of the new keys, keyboard use (Enter/Space, aria-expanded) and a smoke test that every `.info-btn` has a panel
 
