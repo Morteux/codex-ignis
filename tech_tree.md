@@ -15,7 +15,7 @@ La idea y la forma de explorar el árbol se inspiran en el *Stellaris Tech Tree*
 
 - **No se reutiliza su código ni sus datos:** el árbol de Codex Ignis se escribe desde cero y se alimenta de la wiki. Solo se toma la inspiración (disposición por áreas y niveles, líneas de prerrequisitos, exploración al pulsar).
 - Los créditos se muestran de forma visible: sección «Créditos» en `tech-tree.html` (con enlaces a ambos proyectos), mención en `README.md` y en el pie de la propia página.
-- Los datos y nombres del juego pertenecen a Paradox Interactive; se mantiene el aviso legal ya incluido en `privacy.html`. Los datos proceden de la wiki de Stellaris (`WIKI_URLS.md`): **pendiente revisar sus condiciones de uso antes de publicar** y citarla como fuente.
+- Los datos y nombres del juego pertenecen a Paradox Interactive; se mantiene el aviso legal ya incluido en `privacy.html`. Los datos proceden de la wiki de Stellaris (`WIKI_URLS.md`): sus condiciones de uso permiten usarlos (confirmado por Morteux el 2026-11-19); se cita como fuente.
 
 ## 3. Principios (heredados del Planet Sim)
 

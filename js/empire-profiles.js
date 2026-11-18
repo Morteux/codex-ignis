@@ -6,7 +6,7 @@
  * pestaña Imperio es js/empire.js, y quien lo muestra en la barra de resumen
  * es js/planet-summary.js.
  *
- * Formato de cada perfil (ver PLANET_SIM_GDD.md §6): { schemaVersion,
+ * Formato de cada perfil (ver PLANET_SIM_GDD.md §8): { schemaVersion,
  * rulesetId, id, name, ethicIds, authorityId, civicIds, speciesType }.
  *
  * Decisiones (documentadas, no son reglas del juego):

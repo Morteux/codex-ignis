@@ -20,7 +20,7 @@
  *
  * Estados de verificación (VERIFICATION):
  *  - unverified: transcrito de la wiki (páginas de 4.3/4.4), pendiente de
- *    la revisión final contra 4.5.2 (fase P13). Estado inicial de TODO.
+ *    la revisión final contra 4.5.2 (fase P14). Estado inicial de TODO.
  *  - wiki-verified: revisado contra la wiki de 4.5.2.
  *  - game-data-verified: revisado contra los archivos del juego.
  *  - approximated: valor aproximado/estimado, no exacto.
@@ -81,7 +81,7 @@ const WIKI = "https://stellaris.paradoxwikis.com/";
 /**
  * Colecciones de datos y su procedencia. `file`: dónde viven los datos.
  * `sources`: de dónde se transcribieron (páginas de la wiki; todas
- * `unverified` hasta la fase P13).
+ * `unverified` hasta la fase P14).
  */
 export const DATA_COLLECTIONS = {
   buildings: {

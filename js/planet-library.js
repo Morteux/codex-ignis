@@ -6,7 +6,7 @@
  * captura/aplica el estado del simulador es js/planet-sim.js y quien muestra la
  * biblioteca es js/planet-library-ui.js.
  *
- * Formato de cada planeta (ver PLANET_SIM_GDD.md §6): { schemaVersion, rulesetId,
+ * Formato de cada planeta (ver PLANET_SIM_GDD.md §8): { schemaVersion, rulesetId,
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
  * built, staffingOverrides, empireId, empireSnapshot, noEmpire }.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|

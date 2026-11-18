@@ -1,0 +1,77 @@
+# Planet Simulator — pending tasks
+
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8, P16.1–P16.10, P9.1–P9.3, P9.6, P12.1, P17.1) are in git history.
+Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
+
+## P7 — Data
+- [ ] P7.10 Technology housing bonuses: apply the district housing bonuses gated by technologies (Weather Control Systems, Anti-Gravity Engineering, Optimized Nexus, Extended Hives…; exact list and values from the 4.5.2 Districts page). List each applied technology in the housing breakdown. Tradition-gated ones (e.g. Public Works Division) are not applied.
+
+## P9 — Planetary conditions
+- [ ] P9.4 Stability effect on job output (GDD §6): new modifier category in `stacking-rules.js`, own calculation step, modifiers panel and breakdown line. Not on planetary modifiers nor amenities.
+- [ ] P9.5 Crime from low happiness (+0.02 per pop per point below 50, up to +2 per pop), shown next to enforcer/educator crime; gestalt deviancy. Display only.
+- [ ] P9.7 Manual / Estimated / Derived labels on every conditions value; manual extra happiness and stability (default 0, Manual).
+
+## P16 — Policies and trade
+- [ ] P16.11 Trade League and Holy Covenant (L3) selectable, each card with a short note of the federation it requires. Consumer Benefits / Marketplace of Ideas blocking by Trade League stays as on the wiki. Update `policy-data.js` and the smoke test.
+- [ ] P16.12 Civilians: manual input (pops without jobs, default 0, no cap, ×100 display, labelled Manual). They count as pops (housing, amenities, happiness/stability) and their trade (wiki 4.5.2 civilian output) enters the trade conversion. Saved with the planet.
+
+## P17 — "i" explanation panels (pattern in GDD §6)
+- [ ] P17.2 Production panel (columns, breakdown sources, trade conversion, external income)
+- [ ] P17.3 Jobs summary (staffing, ×100 scale, click controls, strata, non-resource effects)
+- [ ] P17.4 Conditions panel: plain-language worked examples with the current numbers; crime text with P9.5
+- [ ] P17.5 Empire tab (informational effects, policies and trade conversion, civic limits)
+- [ ] P17.6 QA: key parity, keyboard (Enter/Space, aria-expanded), every `.info-btn` has a panel
+
+## P10 — Special planets
+Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
+- [ ] P10.1 Collect wiki data per body type (slots, districts, size, housing, jobs)
+- [ ] P10.2 Ecumenopolis and its districts
+- [ ] P10.3 Ring worlds and shattered ring worlds
+- [ ] P10.4 Habitats (districts and designations)
+- [ ] P10.5 Hive, machine, nanite worlds, synaptic lathe
+- [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
+- [ ] P10.7 Size and district-limit rules for artificial bodies
+- [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab)
+
+## P18 — Edicts (new tab before Sucursales)
+- [ ] P18.1 Audit the 4.5.2 Edicts page: edicts that change the planet economy (output, upkeep, housing, amenities, stability) and their requirements
+- [ ] P18.2 `js/edict-data.js` (catalog, effects, requires, provenance collection `edicts`)
+- [ ] P18.3 Edicts tab; saved with the empire profile (unsaved-change ● and Save dialog like policies)
+- [ ] P18.4 Engine: effects through the modifier list and stacking rules; modifiers panel and breakdown
+
+## P19 — Branch offices (Sucursales tab)
+Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
+- [ ] P19.1 Audit branch office buildings (4.5.2 wiki): effects on the host planet, requirements, slots
+- [ ] P19.2 Sucursales tab: pick branch office buildings
+- [ ] P19.3 Engine: effects on the planet economy; branch-office trade joins the trade conversion
+- [ ] P19.4 Saved with the planet (optional field)
+
+## P11 — Comparison & timeline
+- [ ] P11.1 Scenario A/B comparison with marginal-change highlighting
+- [ ] P11.2 Monthly stockpile timeline (1 / 12 / 60 / 120 months)
+- [ ] P11.3 Deficit and stockpile-exhaustion flags
+
+## P12 — UI icons
+- [ ] P12.2 Review the StellarisAssets repository and re-apply every available icon by its real in-game meaning (replaces the loose placements of the first pass, e.g. `Faction_support`, `Colony_type_automated`; `Menu_icon_technology` unused). No policy icons exist: policies stay text-only.
+- [ ] P12.3 Mark the empire-level tabs (Imperio, Edicts) as saved with the empire profile. Proposal: semi-transparent empire icon as tab background, shared accent line, tooltip "Saved with the empire profile".
+
+## P13 — Polish & QA
+- [ ] P13.1 Mobile layout review of all tabs
+- [ ] P13.2 i18n parity check for all new strings
+- [ ] P13.3 Automated UI smoke tests (tabs, save/load, empire switch)
+- [ ] P13.4 Accessibility pass
+- [ ] P13.6 Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
+- [ ] P13.7 Bug: restore the last selected empire on reload (if it still exists)
+
+## P15 — Official localization
+- [ ] P15.1 Receive the game localisation files (owner) and decide the extraction format
+- [ ] P15.2 Replace es/en/jp game names (civics, buildings, jobs, resources, designations, ethics, authorities, planet types, policies) with official strings keyed by game ids
+- [ ] P15.3 All official Stellaris languages for the planet simulator and the tech tree only (wiki and bingo stay es/en/jp); key parity per language
+- [ ] P15.4 Review the civics with English placeholder names and the keys that group several civics under one icon
+
+## P14 — Final 4.5.2 data verification (last)
+- [ ] P14.1 Owner re-uploads the updated wiki files
+- [ ] P14.2 Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources, policies, edicts, branch offices) against them
+- [ ] P14.3 Update `verification` statuses (`unverified` → `wiki-verified`)
+- [ ] P14.4 Review GDD §9 (assumptions and stacking rules)
+- [ ] P14.5 Deliver the final data files
