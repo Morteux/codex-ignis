@@ -8,7 +8,7 @@
  * *Jobs* (Clerk, Thermoforger, Thermotechnic Mentor, Neural Chip).
  *
  * The engine reads the rules of the body types wired in so far (P10.2:
- * Ecumenopolis, P10.3: Ring Worlds); P10.3–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
+ * Ecumenopolis, P10.3: Ring Worlds, P10.4: Habitats); P10.5–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
  * as written on the wiki (housing and jobs ×100, upkeep and costs as plain
  * numbers, percentages as whole numbers). Open questions are listed in
  * PLANET_SIM_GDD.md §4.1 and must be answered before the value is used.
@@ -133,7 +133,11 @@ export const BODY_TYPE_RULES = {
     fixedSize: 6,
     districtLayout: "habitat",
     primaryDistrict: "habitationDistrict",
+    // P10.4: the three secondary groups (generator/mining/agriculture keys) hold these districts, in this order.
+    // Reactor District takes the generator specializations, Astro-Mining Bay the mining ones (District specialization page).
     resourceDistricts: ["reactorDistrict", "astroMiningBay", "researchDistrict"],
+    // Owner decision 2026-11-19: manual cap per resource district (orbital deposits), saved with the planet.
+    resourceDistrictCaps: true,
     // Void Dwellers / Voidborne ×1.5 (origins and ascension perks are not modelled).
     specializationJobMultiplier: 1,
     capitalSet: "habitat",
@@ -228,18 +232,24 @@ export const SPECIAL_DISTRICTS = {
   // Habitat
   habitationDistrict: {
     role: "primary", bodies: ["habitat"], housing: 1000,
+    i18nKey: "districtHabitationDistrict", img: "districs/district_hab_housing.png",
+    // "+100 with Modular Superstructures" is a tradition (not applied).
     upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
   },
   reactorDistrict: {
-    role: "resource", category: "generator", bodies: ["habitat"], housing: 300, jobs: { technician: 100 },
+    role: "resource", category: "generator", bodies: ["habitat"], housing: 300,
+    i18nKey: "districtReactorDistrict", img: "districs/district_hab_energy.png", jobs: { technician: 100 },
     upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
   },
   astroMiningBay: {
-    role: "resource", category: "mining", bodies: ["habitat"], housing: 300, jobs: { miner: 100 },
+    role: "resource", category: "mining", bodies: ["habitat"], housing: 300,
+    i18nKey: "districtAstroMiningBay", img: "districs/district_hab_mining.png", jobs: { miner: 100 },
     upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
   },
   researchDistrict: {
-    role: "resource", category: "research", bodies: ["habitat"], housing: 300, jobs: { physicist: 30, biologist: 30, engineer: 30 },
+    // No specialization lists the Research District (District specialization page): it unlocks no building slots.
+    role: "resource", category: "research", bodies: ["habitat"], housing: 300,
+    i18nKey: "districtResearchDistrict", img: "districs/district_hab_science.png", jobs: { physicist: 30, biologist: 30, engineer: 30 },
     upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
   },
   // Volcanic World (resource districts)

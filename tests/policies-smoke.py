@@ -333,6 +333,30 @@ async def main():
         size = await pg.evaluate("()=>{const i=document.querySelector('#planet-size-input');return [i.value,i.disabled]}")
         check("back to a regular planet: the user's size is restored", size == ["20", False], size)
 
+        # 12. P10.4: Habitat (Habitation District primary, Reactor District / Astro-Mining Bay / Research District, fixed size 6, manual caps)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await body("Habitat")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("habitat district cards", names == ["Habitation District ×2 built", "Reactor District", "Astro-Mining Bay", "Research District"], names)
+        size = await pg.evaluate("()=>{const i=document.querySelector('#planet-size-input');return [i.value,i.disabled]}")
+        check("habitat: size fixed at 6", size == ["6", True], size)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[1].querySelectorAll('option')].map(o=>o.value)")
+        check("Reactor District: generator specializations incl. Solar Farming Bays", "energyGeneration" in opts and "solarFarmingBays" in opts, opts)
+        research = await pg.evaluate("()=>{const c=document.querySelectorAll('.planet-district-card')[3];return [c.querySelector('select')===null,c.innerText]}")
+        check("Research District: no specializations", research[0] and "no specializations" in research[1], research)
+        primary = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[0].querySelectorAll('option')].filter(o=>o.disabled).map(o=>o.value)")
+        check("habitat primary: research specializations disabled", "researchEnclave" in primary, primary)
+        await pg.evaluate("""()=>{const i=document.querySelectorAll('.planet-district-card')[2].querySelector('.planet-district-cap-input');i.value='1';i.dispatchEvent(new Event('change'))}""")
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[2];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
+        plus = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[2].querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').disabled")
+        check("Astro-Mining Bay capped at 1 (orbital deposits)", plus, plus)
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[3];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("housing: Habitation District 2 x 1000, Astro-Mining Bay +300", "Habitation District ×2 +2000" in housing and "Astro-Mining Bay ×1 +300" in housing, housing)
+        jobs = await pg.inner_text("#planet-summary")
+        check("Research District jobs: 30 of each researcher", "Physicist" in jobs and "Biologist" in jobs, jobs[:400])
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

@@ -174,9 +174,10 @@ const URBAN_MIN_COUNT = 1;
 
 const districtState = {
   urban: { count: 2, slots: [null, null] },
-  generator: { count: 0, optionId: null },
-  mining: { count: 0, optionId: null },
-  agriculture: { count: 0, optionId: null }
+  // cap (P10.4): manual limit of Habitat resource districts (orbital deposits); null = not set.
+  generator: { count: 0, optionId: null, cap: null },
+  mining: { count: 0, optionId: null, cap: null },
+  agriculture: { count: 0, optionId: null, cap: null }
 };
 
 /**
@@ -236,6 +237,22 @@ function primaryDistrictDef() {
 /** Definition of one secondary district set: a resource district (regular bodies) or a secondary urban district. */
 function secondaryDistrictDef(cat) {
   const rules = bodyRules();
+  // P10.4: Habitat resource districts (Reactor District, Astro-Mining Bay, Research District) with the specializations of their category.
+  if (rules?.districtLayout === "habitat") {
+    const special = SPECIAL_DISTRICTS[rules.resourceDistricts[RESOURCE_DISTRICT_ORDER.indexOf(cat)]];
+    const regular = DISTRICTS[special.category];
+    return {
+      habitatResource: true,
+      i18nKey: special.i18nKey,
+      img: special.img,
+      jobs: special.jobs || {},
+      housing: special.housing,
+      upkeep: special.upkeep,
+      lockedTooltipKey: regular ? regular.lockedTooltipKey : "planetSimNoSpecializationTooltip",
+      slotsPerSpecialization: regular ? regular.slotsPerSpecialization : 0,
+      specializationOptions: regular ? regular.specializationOptions : []
+    };
+  }
   if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return DISTRICTS[cat];
   const special = SPECIAL_DISTRICTS[rules.secondaryDistrict];
   // Secondary district specializations (wiki: "Effects per district" −200 Housing, like the urban ones).
@@ -318,6 +335,19 @@ function totalDistrictCount() {
 /** ¿Cabe una copia más de distrito en el planeta, según su tamaño? */
 function canAddDistrict() {
   return totalDistrictCount() < planetSize;
+}
+
+/** P10.4: manual cap of a resource district (Habitat orbital deposits); null = not set or not a capped body. */
+function districtCap(cat) {
+  if (!bodyRules()?.resourceDistrictCaps) return null;
+  const cap = districtState[cat].cap;
+  return Number.isInteger(cap) ? cap : null;
+}
+
+/** ¿Cabe una copia más de este distrito de recursos (tamaño del planeta y, en hábitats, límite manual por depósitos)? */
+function canAddResourceDistrict(cat) {
+  const cap = districtCap(cat);
+  return canAddDistrict() && (cap === null || districtState[cat].count < cap);
 }
 
 /** Ranuras que no son la del capital: la ranura 0 de las 6 base siempre es suya. */
@@ -1689,9 +1719,9 @@ function renderResourceDistrictBox(cat, unlocked) {
       refresh();
     },
     () => { state.count += 1; refresh(); },
-    canAddDistrict(),
+    canAddResourceDistrict(cat),
     () => { state.count = 0; state.optionId = null; refresh(); },
-    () => { while (canAddDistrict()) state.count += 1; refresh(); }
+    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); }
   ));
 
   const statusLine = document.createElement("p");
@@ -2055,10 +2085,21 @@ function renderResourceDistrictCard(cat) {
       refresh();
     },
     () => { state.count += 1; refresh(); },
-    canAddDistrict(),
+    canAddResourceDistrict(cat),
     () => { state.count = 0; state.optionId = null; refresh(); },
-    () => { while (canAddDistrict()) state.count += 1; refresh(); }
+    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); }
   ));
+
+  if (def.habitatResource) card.append(renderDistrictCapInput(cat));
+
+  // P10.4: the Habitat Research District has no specializations.
+  if (!def.specializationOptions.length) {
+    const none = document.createElement("p");
+    none.className = "planet-district-note";
+    none.textContent = t(currentLang, "planetSimNoSpecializationTooltip");
+    card.append(none);
+    return card;
+  }
 
   const specRow = document.createElement("div");
   specRow.className = "planet-district-spec-row";
@@ -2104,6 +2145,30 @@ function renderResourceDistrictCard(cat) {
   card.append(note);
 
   return card;
+}
+
+/** P10.4: manual cap input of a Habitat resource district (orbital deposits: 1 + half of the deposit size). Empty = not set. */
+function renderDistrictCapInput(cat) {
+  const wrapper = document.createElement("label");
+  wrapper.className = "planet-district-cap";
+  wrapper.title = t(currentLang, "planetSimHabitatCapTooltip");
+  const text = document.createElement("span");
+  text.textContent = t(currentLang, "planetSimHabitatCapLabel");
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = "0";
+  input.max = String(planetSize);
+  input.step = "1";
+  input.className = "planet-district-cap-input";
+  const cap = districtCap(cat);
+  input.value = cap === null ? "" : String(cap);
+  input.addEventListener("change", () => {
+    const parsed = Math.floor(Number(input.value));
+    districtState[cat].cap = input.value === "" || !Number.isFinite(parsed) ? null : Math.max(0, parsed);
+    refresh();
+  });
+  wrapper.append(text, input);
+  return wrapper;
 }
 
 /**
@@ -3101,6 +3166,8 @@ export function applyPlanetConfig(config) {
     const count = Math.max(0, Number(saved.count) || 0);
     districtState[cat].count = count;
     districtState[cat].optionId = count > 0 && secondaryOption(cat, saved.optionId) ? saved.optionId : null;
+    // P10.4: optional field (older planets have no cap → not set).
+    districtState[cat].cap = Number.isInteger(saved.cap) && saved.cap >= 0 ? saved.cap : null;
   });
   // P10.3: a megastructure keeps its fixed size (syncPlanetSize); the saved size is the user's size for other bodies.
   userPlanetSize = Math.max(Math.floor(Number(config.planetSize)) || 1, fixedPlanetSize() ? 1 : totalDistrictCount());

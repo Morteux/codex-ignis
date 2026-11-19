@@ -10,7 +10,8 @@
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
  * built, staffingOverrides, manualConditions, civilians, empireId, empireSnapshot, noEmpire }.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|
- *    agriculture: { count, optionId } } (mismo formato que districtState).
+ *    agriculture: { count, optionId, cap? } } (mismo formato que districtState; cap: límite
+ *    manual de los distritos de recursos de un hábitat, P10.4, opcional).
  *  - built: { claveDeRanura: idDeEdificio } de las ranuras no capital. Los
  *    edificios de ranuras bloqueadas o sin requisitos se conservan (inactivos).
  *  - staffingOverrides: { idEmpleo: empleosCubiertos (escala ×100) } SOLO de los
@@ -111,7 +112,9 @@ export function sanitizePlanetData(raw) {
   RESOURCE_DISTRICTS.forEach((cat) => {
     districts[cat] = {
       count: clampInt(raw.districts[cat]?.count, 0, MAX_PLANET_SIZE, 0),
-      optionId: textOrNull(raw.districts[cat]?.optionId)
+      optionId: textOrNull(raw.districts[cat]?.optionId),
+      // P10.4: optional manual cap of Habitat resource districts (null = not set).
+      cap: raw.districts[cat]?.cap == null ? null : clampInt(raw.districts[cat].cap, 0, MAX_PLANET_SIZE, 0)
     };
   });
 

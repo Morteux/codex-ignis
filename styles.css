@@ -1601,6 +1601,24 @@ h1 {
     text-align: center;
 }
 
+/* P10.4: manual cap of Habitat resource districts (orbital deposits) */
+.planet-district-cap {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: var(--muted);
+    font-size: .72rem;
+}
+
+.planet-district-cap-input {
+    width: 3.5rem;
+    padding: .2rem .35rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface-raised);
+    font: .8rem var(--mono);
+}
+
 .planet-district-spec-row {
     display: flex;
     align-items: center;
