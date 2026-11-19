@@ -2053,12 +2053,44 @@ function renderNonResourceEffects(jobIds, conditions) {
   }
 }
 
+/** P17.3: panel "i" del resumen de empleos (dotación, escala ×100, controles, estratos con su eficacia actual, efectos no recurso). */
+function renderJobsInfo(totals, jobIds) {
+  const slot = document.querySelector("#planet-jobs-info-slot");
+  if (!slot) return;
+  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  const info = createInfoPanel("planet-jobs");
+  const addLine = (text) => {
+    const line = document.createElement("p");
+    line.className = "planet-modifier-stacking";
+    line.textContent = text;
+    info.append(line);
+  };
+  const created = jobIds.reduce((sum, jobId) => sum + (totals.jobCapacities[jobId] || 0), 0);
+  const staffed = jobIds.reduce((sum, jobId) => sum + (jobAssignments[jobId] || 0), 0);
+  addLine(t(currentLang, "jobsInfoStaffing")(formatAmount(created), formatAmount(staffed)));
+  addLine(t(currentLang, "jobsInfoScale"));
+  addLine(t(currentLang, "jobsInfoControls"));
+  // Eficacia por estrato: modificadores stratumEfficiency + stratumOutput (Política de producción, tratada como eficacia).
+  const byStratum = {};
+  (totals.modifiers || []).forEach((modifier) => {
+    if ((modifier.category === "stratumEfficiency" || modifier.category === "stratumOutput") && modifier.stratum) {
+      byStratum[modifier.stratum] = (byStratum[modifier.stratum] || 0) + modifier.value;
+    }
+  });
+  const list = JOB_STRATA.filter((stratum) => Math.abs(byStratum[stratum] || 0) > 1e-9)
+    .map((stratum) => `${t(currentLang, STRATUM_I18N_KEYS[stratum])} ${formatAmount(byStratum[stratum] * 100, true)}%`).join(" · ");
+  addLine(t(currentLang, "jobsInfoStrata")(list || t(currentLang, "jobsInfoStrataNone")));
+  addLine(t(currentLang, "jobsInfoNonResource"));
+  slot.replaceChildren(info);
+}
+
 function renderSummary(totals) {
   if (!summaryEl) return;
   summaryEl.replaceChildren();
 
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
   updateJobsCounter(jobIds, totals.jobCapacities);
+  renderJobsInfo(totals, jobIds);
 
   if (!jobIds.length) {
     const empty = document.createElement("p");
@@ -2108,6 +2140,7 @@ function refreshEconomyOnly() {
   renderStats(totals);
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
   updateJobsCounter(jobIds, totals.jobCapacities);
+  renderJobsInfo(totals, jobIds);
   renderNonResourceEffects(jobIds, totals.conditions);
 }
 

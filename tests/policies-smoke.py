@@ -96,6 +96,12 @@ async def main():
         n = await net()
         # Egalitarian adds +5% specialist efficiency, so the 2 Traders give 16.8 trade before conversion.
         check("Mutual Aid: trade 4.2, energy 16.8*0.2 - 6", approx(n["Trade value"], 4.2 * S) and approx(n["Energy"], 16.8 * 0.2 * S + (energy0 - 8 * S)), n)
+        # P17.3: jobs "i" panel lists the current stratum efficiency (Egalitarian +5 % specialist)
+        await tab("planet")
+        await pg.evaluate("()=>document.querySelector('#planet-jobs-info-btn').click()")
+        jinfo = await pg.evaluate("()=>{const p=document.querySelector('#planet-jobs-info');return p.hidden?null:p.innerText}")
+        check("jobs info: full staffing and Specialists +5%", bool(jinfo) and "Full staffing" in jinfo and "Specialists +5%" in jinfo, jinfo)
+        await tab("empire")
         check("Mutual Aid minerals/food/unity", approx(n.get("Minerals"), 3.36 * S) and approx(n.get("Food"), (2 + 3.36) * S) and approx(n.get("Unity"), 1.26 * S), n)
         await pg.evaluate("()=>[...document.querySelectorAll('#empire-civics-list button')].find(b=>b.innerText.trim()==='Worker Cooperative').click()")
         check("Mutual Aid reverts to Wealth Creation", await selected_policy("Trade Policy") == "Wealth Creation")
