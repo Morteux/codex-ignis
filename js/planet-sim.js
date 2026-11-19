@@ -66,6 +66,7 @@ import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset } from "./planet-state.js";
 import { getPolicyGroup, getPolicyOption } from "./policy-data.js";
+import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
@@ -2057,7 +2058,7 @@ function renderNonResourceEffects(jobIds, conditions) {
 function renderJobsInfo(totals, jobIds) {
   const slot = document.querySelector("#planet-jobs-info-slot");
   if (!slot) return;
-  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  syncInfoButtons(currentLang);
   const info = createInfoPanel("planet-jobs");
   const addLine = (text) => {
     const line = document.createElement("p");
@@ -2317,7 +2318,7 @@ function renderExternalIncome(totals) {
 function renderProductionInfo(totals) {
   const slot = document.querySelector("#planet-production-info-slot");
   if (!slot) return;
-  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  syncInfoButtons(currentLang);
   const info = createInfoPanel("planet-production");
   const addLine = (text) => {
     const line = document.createElement("p");
@@ -2397,42 +2398,14 @@ function modifierTargetName(modifier) {
   return parts.join(" · ");
 }
 
-/** Panel de modificadores activos (P8.2): origen, categoría afectada, valor y cómo se apila. */
-/**
- * P17.1: botones "i" que muestran/ocultan el panel de explicación de una sección. El estado abierto/cerrado se
- * guarda por id y sobrevive a los repintados e idiomas. El botón es estático en el HTML (data-info-id) y el panel
- * (.info-panel, id "<id>-info") lo crea el render de cada sección con createInfoPanel().
- */
-const infoOpen = new Set();
-function syncInfoButton(btn, id) {
-  const open = infoOpen.has(id);
-  btn.setAttribute("aria-expanded", String(open));
-  btn.classList.toggle("is-open", open);
-  btn.title = t(currentLang, "infoToggleTooltip");
-  btn.setAttribute("aria-label", t(currentLang, "infoToggleTooltip"));
-}
-function createInfoPanel(id) {
-  const panel = document.createElement("div");
-  panel.className = "info-panel";
-  panel.id = `${id}-info`;
-  panel.hidden = !infoOpen.has(id);
-  return panel;
-}
-document.querySelectorAll(".info-btn").forEach((btn) => {
-  const id = btn.id.replace(/-info-btn$/, "");
-  syncInfoButton(btn, id);
-  btn.addEventListener("click", () => {
-    if (infoOpen.has(id)) infoOpen.delete(id); else infoOpen.add(id);
-    syncInfoButton(btn, id);
-    const panel = document.getElementById(`${id}-info`);
-    if (panel) panel.hidden = !infoOpen.has(id);
-  });
-});
+// P17.1: botones "i" y paneles de explicación (js/info-panels.js).
+initInfoButtons(() => currentLang);
 
+/** Panel de modificadores activos (P8.2): origen, categoría afectada, valor y cómo se apila. */
 function renderModifiers(totals) {
   if (!modifiersEl) return;
   modifiersEl.replaceChildren();
-  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  syncInfoButtons(currentLang);
   const rulesetId = getPlanetState().rulesetId;
   const stackingRules = getStackingRules(rulesetId);
   // Panel de explicación (oculto hasta pulsar "i"): nota general, orden de cálculo, reglas de apilado y procedencia.
@@ -2507,7 +2480,7 @@ function renderModifiers(totals) {
 /** Panel de condiciones del planeta (P9.1): pops, vivienda y servicios. Valores en escala ×100 como el resto de la interfaz. */
 function renderConditions(totals) {
   if (!conditionsEl) return;
-  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  syncInfoButtons(currentLang);
   conditionsEl.replaceChildren();
   const c = totals.conditions;
   const info = createInfoPanel("planet-conditions");

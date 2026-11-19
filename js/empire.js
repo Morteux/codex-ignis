@@ -29,6 +29,7 @@ import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset } from "./plan
 import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, policyUnmetRules, policyDefaults, isGestaltContext } from "./policy-data.js";
 import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
+import { createInfoPanel, syncInfoButtons, addInfoLine } from "./info-panels.js";
 import { SPECIES_TYPES, allowedSpeciesTypes, RESOURCES, STRATUM_I18N_KEYS } from "./planet-data.js";
 import {
   ETHICS_MAX_POINTS,
@@ -501,8 +502,43 @@ function publishSelection() {
   updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, empireId: selectedEmpireId, empireModified: modified });
 }
 
+/** P17.5: paneles "i" de la pestaña Imperio (efectos aplicados/informativos, límites de principios, políticas y conversión de comercio). */
+function renderEmpireInfo() {
+  syncInfoButtons(currentLang);
+  const fill = (id, build) => {
+    const slot = document.querySelector(`#${id}-info-slot`);
+    if (!slot) return;
+    const panel = createInfoPanel(id);
+    build(panel);
+    slot.replaceChildren(panel);
+  };
+  fill("empire-ethics", (panel) => {
+    addInfoLine(panel, t(currentLang, "empireInfoEthics"));
+    const applied = [];
+    currentEthicIds().forEach((id) => (ETHIC_EFFECTS[id] || []).filter((e) => e.apply)
+      .forEach((e) => applied.push(`${formatEffectValue(e)} ${t(currentLang, `effect_${e.label}`)} (${t(currentLang, ETHIC_OPTIONS[id].i18nKey)})`)));
+    const authority = AUTHORITIES.find((a) => a.id === selectedAuthorityId);
+    if (authority) (AUTHORITY_EFFECTS[authority.id] || []).filter((e) => e.apply)
+      .forEach((e) => applied.push(`${formatEffectValue(e)} ${t(currentLang, `effect_${e.label}`)} (${t(currentLang, authority.i18nKey)})`));
+    addInfoLine(panel, applied.length ? t(currentLang, "empireInfoNowApplied")(applied.join(" · ")) : t(currentLang, "empireInfoNowAppliedNone"), true);
+  });
+  fill("empire-civics", (panel) => addInfoLine(panel, t(currentLang, "empireInfoCivics")(selectedCivics.size, MAX_CIVICS)));
+  fill("empire-policies", (panel) => {
+    addInfoLine(panel, t(currentLang, "empireInfoPolicies"));
+    const optionId = selectedPolicies.trade;
+    const option = optionId && getPolicyOption("trade", optionId);
+    const rates = option && option.effects && option.effects.tradeConversion;
+    if (!rates) return;
+    const pct = (rate) => Math.round(rate * 10000) / 100;
+    const rest = Object.entries(rates).filter(([id, rate]) => id !== "trade" && rate)
+      .map(([id, rate]) => `${pct(rate)}% ${t(currentLang, RESOURCES[id].i18nKey)}`).join(" · ");
+    addInfoLine(panel, t(currentLang, "empireInfoNowTrade")(t(currentLang, option.i18nKey), pct(rates.trade ?? 0), rest), true);
+  });
+}
+
 function refresh() {
   syncPolicies();
+  renderEmpireInfo();
   if (pointsLabelEl) pointsLabelEl.textContent = t(currentLang, "empirePointsLabel")(pointsUsed(), ETHICS_MAX_POINTS);
   renderWheel();
   renderEthicsEffects();

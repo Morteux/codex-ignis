@@ -20,7 +20,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 
 ## 3. Architecture
 - Vanilla JS ES modules, no build. Shared state `js/planet-state.js` (body, designation, ethics, authority, civics, species type, policies, planet name/id, empire id/modified, `rulesetId`).
-- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`.
+- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `info-panels.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`.
 - Images from `STELLARIS_ASSETS_BASE` (`asset-config.js`); UI icons in `img/ui/`.
 - Conventions: building/job effects stored ×100 as on the wiki, `divideEffect()` once when computing; jobs, pops, housing and amenities are **displayed ×100** (100 = 1 pop) and calculated in real units. CSS: never set `display` on an element toggled with `hidden` without `:not([hidden])`.
 - Test: `tests/policies-smoke.py` (Playwright, English UI, run from the project root).
@@ -48,7 +48,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Trade conversion:** trade from jobs and civilians, after job efficiency and before empire %; trade kept = trade × rate, the rest becomes the policy's resources (breakdown lines per resource). Branch-office trade will join it. Monthly Trades excluded.
 - **External income:** empire flat bonuses (influence) are shown apart from planet net, with a "total with external income" line.
 - **Consistency:** produced + consumed = sum of breakdown lines = net (tolerance 0.001), otherwise a bug warning.
-- **Panels:** per-resource breakdown (click a Net row), active-modifiers panel (source, target, value, category), "i" explanation panels (`.info-btn` + `createInfoPanel`, open state kept across re-renders/language; texts use the current numbers where they apply, e.g. the trade conversion of the Production panel).
+- **Panels:** per-resource breakdown (click a Net row), active-modifiers panel (source, target, value, category), "i" explanation panels (`js/info-panels.js`: static `.info-btn` + `createInfoPanel`, also on the Imperio tab; open state kept across re-renders/language; texts use the current numbers where they apply, e.g. the trade conversion of the Production panel).
 
 ## 7. Planetary conditions
 - Pops = staffed jobs + manual Civilians (Conditions panel, ×100, default 0, no cap, labelled Manual; they consume housing and amenities). Civilian output (wiki 4.5.2 *Jobs* → Special jobs, per pop): Civilian +0.5 amenities, +1 trade; gestalt Maintenance Drone +4 amenities, +1 trade. Their trade gets the stability effect and enters the trade conversion; no stratum efficiency or job % bonuses. Hedonist/Tourist job swaps not modelled.
