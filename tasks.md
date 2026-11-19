@@ -21,6 +21,13 @@ Models another empire placing branch office buildings on this planet; any branch
 - [ ] P19.3 Engine: effects on the planet economy; branch-office trade joins the trade conversion
 - [ ] P19.4 Saved with the planet (optional field)
 
+## P20 — Pop upkeep and living standards
+Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task starts).
+- [ ] P20.1 Audit living standards: pop upkeep per standard and stratum/species type, effects (happiness, political power...), availability by ethics/authority/civics
+- [ ] P20.2 Living standard saved with the empire profile (optional field), selectable in the Imperio tab
+- [ ] P20.3 Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
+- [ ] P20.4 Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
+
 ## P11 — Comparison & timeline
 - [ ] P11.1 Scenario A/B comparison with marginal-change highlighting
 - [ ] P11.2 Monthly stockpile timeline (1 / 12 / 60 / 120 months)

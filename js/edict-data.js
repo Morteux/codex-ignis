@@ -14,8 +14,8 @@
  *    empire size and edict cost modifiers). Shown only: edict upkeep is paid by
  *    the empire, never by this planet.
  *  - requires: same rules as buildings (js/building-requirements.js). Rules of
- *    type "tradition" are always met (provisional, like tradition-gated policy
- *    options); technologies and "Communications with another empire" are not
+ *    type "tradition" are always met (like tradition-gated policy options;
+ *    owner decision 2026-11-19); technologies and "Communications with another empire" are not
  *    listed because every technology is assumed researched.
  *  - effects (applied by planet-sim.js through the modifier list):
  *      jobEfficiency { jobId: fraction }      job efficiency (step 3 pool)
