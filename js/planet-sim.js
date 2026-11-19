@@ -411,8 +411,18 @@ function buildableCapacity() {
   return totalSlots() - 1;
 }
 
+/** P10.5: building slots of a Synaptic Lathe besides the capital (it has six at most, one is the capital's). */
+const LATHE_MAX_BUILDING_SLOTS = 5;
+
+/** P10.5: each Synaptic Lathe district (Neural Gate, Ampliative Speculator) opens one building slot. */
+function latheBuildingSlots() {
+  return Math.min(LATHE_MAX_BUILDING_SLOTS, districtState.urban.count + districtState[RESOURCE_DISTRICT_ORDER[0]].count);
+}
+
 /** Claves de ranura, en orden canónico estable, dentro del límite actual (incluido el tope real de 21). */
 function unlockedKeys() {
+  // P10.5: the Synaptic Lathe only has the base slots, opened by its districts.
+  if (isLatheLayout()) return Array.from({ length: latheBuildingSlots() }, (_, i) => `base-${i + 1}`);
   const keys = [];
   for (let i = 1; i <= 5; i += 1) keys.push(`base-${i}`);
   districtState.urban.slots.forEach((optionId, slotIndex) => {
@@ -445,6 +455,8 @@ function requirementContext() {
 
 /** ¿Cumple este edificio sus requisitos (ética, autoridad, principios, designación...) ahora mismo? */
 function isBuildingAvailable(building) {
+  // P10.5: the Synaptic Lathe uses its own building set, which cannot be built anywhere else.
+  if ((building.sets || []).includes("lathe") !== isLatheLayout()) return false;
   return buildingRequirementsMet(building, requirementContext());
 }
 
@@ -518,7 +530,8 @@ function slotSpecInfo(key) {
 function slotAcceptsBuilding(key, building) {
   const info = slotSpecInfo(key);
   if (info.sets === null) {
-    return !building.sets.some((set) => EXTRACTION_BUILDING_SETS.includes(set));
+    if (isLatheLayout()) return building.sets.includes("lathe"); // P10.5
+    return !building.sets.some((set) => EXTRACTION_BUILDING_SETS.includes(set) || set === "lathe");
   }
   return building.sets.some((set) => info.sets.includes(set));
 }
@@ -635,9 +648,28 @@ function computeTotals() {
     jobCapacities[jobId] = (jobCapacities[jobId] || 0) + rawAmount;
   };
 
+  // P10.5: active buildings first, for the upkeep multipliers of the Synaptic Lathe buildings (Expanded Reactor: −15 %
+  // building upkeep, capital included, and −15 % district energy upkeep).
+  const unlocked = unlockedKeys();
+  const activeBuildings = [];
+  builtMap.forEach((id, key) => {
+    if (!unlocked.includes(key)) return;
+    const building = buildingsById.get(id);
+    if (building && !inactiveReason(key, building, unlocked)) activeBuildings.push([key, building]);
+  });
+  const upkeepStacking = getStackingRules(getPlanetState().rulesetId).upkeepMult;
+  const upkeepMultValues = { buildings: [], districtEnergy: [] };
+  activeBuildings.forEach(([, building]) => Object.entries(building.upkeepMult || {}).forEach(([target, fraction]) => {
+    upkeepMultValues[target].push(fraction);
+    pushModifier({ kind: "building", id: building.id }, "upkeepMult", { stat: target === "buildings" ? "buildingUpkeep" : "districtEnergyUpkeep" }, fraction);
+  }));
+  const buildingUpkeepFactor = stackFactor(upkeepStacking, upkeepMultValues.buildings);
+  const districtEnergyUpkeepFactor = stackFactor(upkeepStacking, upkeepMultValues.districtEnergy);
+  const districtUpkeep = (resourceId, amount) => (resourceId === "energy" && amount < 0 ? amount * districtEnergyUpkeepFactor : amount);
+
   // Edificio capital (fijo, siempre presente).
   const capital = currentCapital();
-  Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "capital"));
+  Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * buildingUpkeepFactor, "capital"));
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
   // P7.10: desglose de vivienda para el tooltip de la cabecera (capital, distritos, tecnologías, edificios, designación).
@@ -683,7 +715,7 @@ function computeTotals() {
     housing += divideEffect(perDistrict * count);
     housingSources.push({ kind: "district", district: "urban", count, amount: divideEffect(perDistrict * count) });
     addTechnologyHousing(urbanDef, count);
-    Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
+    Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, districtUpkeep(resourceId, amount) * count, "districts"));
   }
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const def = secondaryDistrictDef(cat);
@@ -698,7 +730,7 @@ function computeTotals() {
     housing += divideEffect(perDistrict * count);
     housingSources.push({ kind: "district", district: cat, count, amount: divideEffect(perDistrict * count) });
     addTechnologyHousing(def, count);
-    Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
+    Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, districtUpkeep(resourceId, amount) * count, "districts"));
   });
 
   // Distritos de recursos básicos: empleo base por copia, y bonus de la
@@ -745,14 +777,30 @@ function computeTotals() {
       });
     });
   };
-  const unlocked = unlockedKeys();
-  builtMap.forEach((id, key) => {
-    if (!unlocked.includes(key)) return;
-    const building = buildingsById.get(id);
-    // Un edificio inactivo (requisitos perdidos, o la especialización de su ranura ya no lo permite) no cuenta.
-    if (inactiveReason(key, building, unlocked)) return;
+  // P10.5: Synaptic Lathe buildings — stability points, "% resources from jobs" (applied after the job output) and
+  // resources per 100 Neural Chips.
+  let buildingStability = 0;
+  const buildingJobResourcePcts = []; // [{ pcts, source }]
+  const buildingChipPops = isLatheLayout() ? divideEffect(neuralChipsRaw) : 0;
+  // Un edificio inactivo (requisitos perdidos, o la especialización de su ranura ya no lo permite) no cuenta.
+  activeBuildings.forEach(([, building]) => {
+    const id = building.id;
     Object.entries(building.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
     const buildingSource = { kind: "building", id: building.id };
+    if (building.stability) {
+      buildingStability += building.stability;
+      pushModifier(buildingSource, "conditionFlat", { stat: "stability" }, building.stability);
+    }
+    if (building.jobResourcePct) buildingJobResourcePcts.push({ pcts: building.jobResourcePct, source: buildingSource });
+    Object.entries(building.perNeuralChips || {}).forEach(([key, per]) => {
+      if (!buildingChipPops) return;
+      if (key === "jobResourcePct") {
+        buildingJobResourcePcts.push({ pcts: { all: per * buildingChipPops }, source: buildingSource });
+        return;
+      }
+      const resourceIds = key === "research" ? ["physics", "society", "engineering"] : [key];
+      resourceIds.forEach((resourceId) => addSignedResource(resourceId, per * buildingChipPops, "buildingFlat"));
+    });
     const noteJobModifiers = (modifiersByJob) => Object.entries(modifiersByJob).forEach(([jobId, modifiers]) => {
       Object.entries(modifiers).forEach(([resourceId, amount]) => pushModifier(buildingSource, "jobFlat", { job: jobId, resource: resourceId }, amount));
     });
@@ -790,7 +838,7 @@ function computeTotals() {
       amenityBuildings.set(id, entry);
     }
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => {
-      addSignedResource(resourceId, amount, "buildings");
+      addSignedResource(resourceId, amount * buildingUpkeepFactor, "buildings");
     });
   });
 
@@ -979,6 +1027,7 @@ function computeTotals() {
   });
   addJobResourcePct(bodyType?.jobResourcePct, { kind: "celestial", id: empireState.celestialTypeId });
   if (designation) addJobResourcePct(designation.jobResourcePct, { kind: "designation", id: designation.id });
+  buildingJobResourcePcts.forEach(({ pcts, source }) => addJobResourcePct(pcts, source));
   Object.entries(JOB_RESOURCE_MULT).forEach(([jobId, perJob]) => {
     const staffed = divideEffect(jobAssignments[jobId] || 0);
     if (!staffed) return;
@@ -1072,7 +1121,7 @@ function computeTotals() {
   // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
   // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
   const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, capital: capital.stability || 0, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, capital: capital.stability || 0, buildings: buildingStability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -1082,7 +1131,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = housingUsage > 0 ? (40 * Math.max(0, housingUsage - conditionsHousing)) / housingUsage : 0;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.capital + stability.manual - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.capital + stability.buildings + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -1693,8 +1742,9 @@ function renderSlotsVisual() {
   const baseGrid = document.createElement("div");
   baseGrid.className = "planet-base-grid";
   baseGrid.append(renderCapitalCell());
+  const lockedTooltip = isLatheLayout() ? t(currentLang, "planetSimLatheSlotLocked") : undefined; // P10.5
   for (let i = 1; i <= 5; i += 1) {
-    baseGrid.append(makeRegularSlotCell(`base-${i}`, unlocked));
+    baseGrid.append(makeRegularSlotCell(`base-${i}`, unlocked, lockedTooltip));
   }
   topRow.append(baseGrid);
 
@@ -1993,6 +2043,14 @@ function renderCatalog() {
   });
 }
 
+/** P10.5: unmodelled effects (infoKeys) and requirements of a building, as extra tooltip lines. */
+function buildingNotesText(building) {
+  const lines = (building.infoKeys || []).map((key) => t(currentLang, key));
+  const unmodelled = unmodelledRequirements(building).map((rule) => t(currentLang, rule.i18nKey));
+  if (unmodelled.length) lines.push(t(currentLang, "requirementUnmodelled") + unmodelled.join("; "));
+  return lines.length ? `\n${lines.join("\n")}` : "";
+}
+
 /** slotsFull: no queda ninguna ranura libre en toda la colonia. targetKey: la ranura libre actualmente seleccionada como destino (o null si slotsFull). */
 function renderCatalogItem(building, slotsFull, targetKey) {
   const count = buildingCount(building.id);
@@ -2019,7 +2077,7 @@ function renderCatalogItem(building, slotsFull, targetKey) {
     reason = t(currentLang, "planetSimClickToBuild");
   }
   const costText = formatBuildingCost(building);
-  item.title = `${buildingDisplayName(building)} — ${reason}${costText ? `\n${costText}` : ""}`;
+  item.title = `${buildingDisplayName(building)} — ${reason}${costText ? `\n${costText}` : ""}${buildingNotesText(building)}`;
 
   const img = document.createElement("img");
   img.className = "planet-catalog-icon";
@@ -2754,6 +2812,7 @@ const MODIFIER_CATEGORIES = [
   { id: "stratumOutput", label: "modifierCatStratumOutput", unit: "percent" },
   { id: "jobUpkeep", label: "modifierCatJobUpkeep", unit: "percent" },
   { id: "jobResourceMult", label: "modifierCatJobResourceMult", unit: "percent" },
+  { id: "upkeepMult", label: "modifierCatUpkeepMult", unit: "percent" },
   { id: "stabilityEffect", label: "modifierCatStabilityEffect", unit: "percent" },
   { id: "tradeConversion", label: "modifierCatTradeConversion", unit: "percent" },
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
@@ -2785,7 +2844,7 @@ function modifierTargetName(modifier) {
   else if (modifier.job) parts.push(jobName(modifier.job));
   if (modifier.stratum) parts.push(t(currentLang, STRATUM_I18N_KEYS[modifier.stratum]));
   if (modifier.resource) parts.push(resourceName(modifier.resource));
-  const conditionStatKeys = { happiness: "conditionsHappiness", stability: "conditionsStability", crime: "conditionsCrime" };
+  const conditionStatKeys = { happiness: "conditionsHappiness", stability: "conditionsStability", crime: "conditionsCrime", buildingUpkeep: "modifierTargetBuildingUpkeep", districtEnergyUpkeep: "modifierTargetDistrictEnergyUpkeep" };
   if (modifier.stat) parts.push(RESOURCES[modifier.stat] ? resourceName(modifier.stat) : (modifier.stat === "housing" ? t(currentLang, "planetSimStatHousingShort") : conditionStatKeys[modifier.stat] ? t(currentLang, conditionStatKeys[modifier.stat]) : modifier.stat));
   return parts.join(" · ");
 }
@@ -2997,6 +3056,7 @@ function renderConditions(totals) {
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
       ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
+      ...(st.buildings ? [["stabilityBuildings", "conditionsStabilityBuildings", st.buildings, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -3010,6 +3070,7 @@ function renderConditions(totals) {
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
       ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
+      ...(st.buildings ? [["stabilityBuildings", "conditionsStabilityBuildings", st.buildings, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -3107,7 +3168,7 @@ const CONDITION_SOURCES = {
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
-  happinessEdicts: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", crimeEdicts: "derived"
+  happinessEdicts: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };

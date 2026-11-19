@@ -639,6 +639,33 @@ const notCelestial = (...ids) => ({ type: "notCelestial", ids });
 const ethic = (...ids) => ({ type: "ethic", ids });
 const authority = (...ids) => ({ type: "authority", ids });
 
+/** P10.5: technology requirement of a Synaptic Lathe building (technologies are not modelled: shown, never blocks). */
+const LATHE_TECH = (i18nKey) => ({ type: "unmodelled", i18nKey });
+
+/**
+ * P10.5: a Synaptic Lathe building. Extra fields only these use:
+ *  - stability: flat stability points (conditions panel).
+ *  - upkeepMult: { buildings, districtEnergy } fraction on the upkeep of every building (capital included) and on the
+ *    energy upkeep of the districts.
+ *  - jobResourcePct: { all | resourceId: % } "Resources from jobs" (like the designation's).
+ *  - perNeuralChips: per 100 Neural Chips (one chip job): resources ("research" = each of the three) or jobResourcePct.
+ *  - infoKeys: effects the simulator does not model (purge speed, computing research speed, naval capacity...), shown.
+ */
+function latheBuilding(id, img, i18nKey, strategic, extra) {
+  return {
+    id,
+    img: `buildings/${img}`,
+    i18nKey,
+    category: "lathe",
+    jobs: {},
+    colonyLimit: 2,
+    upkeep: id === "lathe_reactor" ? { [strategic]: -4 } : { energy: -5, [strategic]: -1 },
+    cost: { time: 480, items: [{ resource: "alloys", amount: 800 }, { resource: strategic, amount: 100 }, { resource: "advanced_logic", amount: 600 }] },
+    sets: ["lathe"],
+    ...extra
+  };
+}
+
 /**
  * Catálogo de edificios.
  *
@@ -2027,7 +2054,33 @@ export const BUILDINGS = [
     upkeep: {},
     cost: {"time": 600, "items": [{"resource": "minerals", "amount": 800}]},
     sets: ["origin"]
-  }
+  },
+
+  // ── P10.5: Synaptic Lathe buildings (wiki 4.5.2, Planet unique buildings) ──
+  // Only on the Synaptic Lathe ("lathe" set; it uses no other building), two per building. Upkeep −5 energy and −1 of
+  // the building's strategic resource (Expanded Reactor: no energy, −4). Effects "per 100 Neural Chips" are per copy.
+  latheBuilding("lathe_reactor", "building_lathe_reactor.png", "buildingLatheReactor", "exotic_gases", {
+    jobUpkeepMult: { all: -0.15 }, upkeepMult: { buildings: -0.15, districtEnergy: -0.15 }
+  }),
+  latheBuilding("lathe_stabilizer", "building_lathe_stabilisator.png", "buildingLatheStabilizer", "exotic_gases", { stability: 15 }),
+  latheBuilding("lathe_preserver", "building_lathe_preserver.png", "buildingLathePreserver", "exotic_gases", {
+    requires: [LATHE_TECH("reqTechSynapticPreserver")], infoKeys: ["latheInfoPreserver"]
+  }),
+  latheBuilding("lathe_sustainer", "building_lathe_life_support.png", "buildingLatheSustainer", "rare_crystals", {
+    requires: [LATHE_TECH("reqTechSynapticSustainer")], housing: 5000, amenities: 5000
+  }),
+  latheBuilding("lathe_resonator", "building_lathe_resonator.png", "buildingLatheResonator", "rare_crystals", {
+    requires: [LATHE_TECH("reqTechSynapticResonator")], jobUpkeepMult: { all: 1 }, perNeuralChips: { jobResourcePct: 1 }
+  }),
+  latheBuilding("lathe_validator", "building_lathe_validator.png", "buildingLatheValidator", "rare_crystals", {
+    requires: [LATHE_TECH("reqTechSynapticValidator")], stability: -10, infoKeys: ["latheInfoValidator"]
+  }),
+  latheBuilding("lathe_overclocker", "building_lathe_overclocker.png", "buildingLatheOverclocker", "volatile_motes", {
+    requires: [LATHE_TECH("reqTechSynapticOverclocker")], perNeuralChips: { research: 1, advanced_logic: 0.5 }, infoKeys: ["latheInfoOverclocker"]
+  }),
+  latheBuilding("lathe_cogitator", "building_lathe_cogitator.png", "buildingLatheCogitator", "volatile_motes", {
+    requires: [LATHE_TECH("reqTechSynapticCogitator")], jobResourcePct: { all: -35 }, amenities: -5000, infoKeys: ["latheInfoCogitator"]
+  })
 ];
 
 export const CATEGORY_ORDER = [
@@ -2040,7 +2093,8 @@ export const CATEGORY_ORDER = [
   "military",
   "other",
   "housing",
-  "unity"
+  "unity",
+  "lathe"
 ];
 
 export const CATEGORY_I18N_KEYS = {
@@ -2053,5 +2107,6 @@ export const CATEGORY_I18N_KEYS = {
   military: "planetSimCategoryMilitary",
   other: "planetSimCategoryOther",
   housing: "planetSimCategoryHousing",
-  unity: "planetSimCategoryUnity"
+  unity: "planetSimCategoryUnity",
+  lathe: "planetSimCategoryLathe"
 };
