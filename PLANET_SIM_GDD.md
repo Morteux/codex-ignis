@@ -28,7 +28,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 ## 4. Planet model
 - **Slots:** 6 base (slot 1 = capital) +3 per district specialization, cap 21. Stable slot keys.
 - **Capital:** tiers I–V for 3 families (standard, hive, machine); tier kept when the authority changes.
-- **Districts:** urban (2 specialization slots, min 1 copy), generator/mining/agriculture (1 slot each). Total copies ≤ planet size (editable, default 20). Housing: urban +1000 (hive +1200, +600 more on Hive World; machine +1000), −200 per chosen urban specialization, Agrarian Idyll −200; resource districts +200 (gestalt +100, Agrarian Idyll +300). Technology housing bonuses apply (listed in the housing breakdown); tradition ones do not.
+- **Districts:** urban (2 specialization slots, min 1 copy), generator/mining/agriculture (1 slot each). Total copies ≤ planet size (editable, default 20). Housing: urban +1000 (hive +1200, +600 more on Hive World; machine +1000), −200 per chosen urban specialization, Agrarian Idyll −200; resource districts +200 (gestalt +100, Agrarian Idyll +300). Technology housing bonuses apply per copy (listed in the housing tooltip of the header): Weather Control Systems +100 urban; Anti-Gravity Engineering +200 city, +100 nexus/hive cluster (not with Agrarian Idyll, which cannot research it); Agrarian Utopias +200 agriculture (Agrarian Idyll only). Tradition ones (Public Works Division) do not.
 - **District body types:** a district or building with no body-type requirement on the wiki is available on every body type.
 - **Inactive, never deleted:** a building whose slot is locked, whose requirements are lost or whose slot specialization no longer permits its set stays built but inactive (no jobs/resources), drawn with `img/ui/blocker_frame_yellow.png`, tooltip with the reason; demolishing is always manual. Applies to empire switches and planet loads (report how many became inactive).
 - **Invalid choices reset with a notice:** designation → "no designation"; district specialization removed (its buildings turn inactive); policy option → group default.
@@ -67,6 +67,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - Stacking rules are the simulator's own (all additive); parent/sub-category job inheritance not modelled.
 - P7.8 data assumptions: Chemical/Synthetic Crystal Plants cost-upkeep-time copied from Exotic Gas Refineries; untyped "Research" = +0.1 of each research type; Waste Reprocessing Center set `origin`, Baol Organic Plant `food`/`factory`; monuments with no upkeep outside Memorialist; settled (not nomadic) variants; Corporate monument icons provisional.
 - Production Policy treated as stratum efficiency.
+- P7.10: Agrarian Utopias uses the Districts page value (+200); *Society research* says +100. Optimized Nexus and Extended Hives are not on any technology page (they look like gestalt variants of Public Works Division) and are not applied.
 - Policy requirement columns partly unreadable on the wiki (tradition/federation conditions as documented).
 - Amenity-usage modifiers, crime/deviancy effect on stability, edicts (until P18), factions, events, traits, origins, leaders: not modelled.
 

@@ -144,13 +144,21 @@ export const DISTRICTS = {
     // "Districts" 4.5). Ciudad (individualista) +1000, Núcleo central (máquina) +1000 y
     // Clúster de la colmena +1200 (+600 más en un mundo colmena). Mantenimiento −2 energía.
     // Cada especialización elegida resta 200 de vivienda por copia (campo `housing` de
-    // cada opción). No se aplican los bonos de vivienda condicionados a tecnologías o
-    // tradiciones (Weather Control Systems, Anti-Gravity Engineering, Public Works
-    // Division, Optimized Nexus, Extended Hives). Con Idilio Agrario, −200 por copia.
+    // cada opción). Con Idilio Agrario, −200 por copia.
+    // P7.10: bonos de vivienda por tecnología (todas investigadas, GDD §2), valores por copia de la
+    // página "Districts" 4.5.2: Weather Control Systems +100 (ciudad, núcleo y clúster);
+    // Anti-Gravity Engineering +200 ciudad, +100 núcleo central y clúster de la colmena; no con
+    // Idilio Agrario (el principio impide investigarla). Public Works Division es una tradición y
+    // no se aplica; Optimized Nexus y Extended Hives no figuran en las páginas de tecnología
+    // (parecen sus variantes gestalt): tampoco se aplican hasta P14.
     housing: 1000,
     housingByAuthority: { hiveMind: 1200, machineIntelligence: 1000 },
     hiveWorldHousing: 600,
     agrarianIdyllHousing: -200,
+    technologyHousing: [
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 100 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 200, housingByAuthority: { hiveMind: 100, machineIntelligence: 100 }, excludedCivics: ["civicAgrarianIdyll"] }
+    ],
     upkeep: { energy: -2 },
     specializationSlots: 2,
     slotsPerSpecialization: 3,
@@ -297,6 +305,11 @@ export const DISTRICTS = {
     housing: 200,
     gestaltHousing: 100,
     agrarianIdyllHousing: 300,
+    // P7.10: Agrarian Utopias (tecnología solo con Idilio Agrario) +200 por copia según "Districts" 4.5.2
+    // (la página "Society research" dice +100: discrepancia a revisar en P14).
+    technologyHousing: [
+      { id: "agrarianUtopias", i18nKey: "techAgrarianUtopias", housing: 200, requiredCivics: ["civicAgrarianIdyll"] }
+    ],
     upkeep: { energy: -1 },
     lockedTooltipKey: "specializationRequiresFood",
     slotsPerSpecialization: 3,

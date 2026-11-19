@@ -445,6 +445,9 @@ function computeTotals() {
   Object.entries(capital.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount, "capital"));
   housing += divideEffect(capital.housing || 0);
   amenities += divideEffect(capital.amenities || 0);
+  // P7.10: desglose de vivienda para el tooltip de la cabecera (capital, distritos, tecnologías, edificios, designación).
+  const housingSources = [];
+  if (capital.housing) housingSources.push({ kind: "capital", amount: divideEffect(capital.housing) });
   // Desglose de servicios para el tooltip de la cabecera (ver renderStats).
   const amenitySources = [];
   if (capital.amenities) amenitySources.push({ kind: "capital", amount: divideEffect(capital.amenities) });
@@ -457,6 +460,21 @@ function computeTotals() {
   const districtGestalt = ethicsSatisfy(districtCtx.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   const agrarianIdyll = (districtCtx.civicIds || []).includes("civicAgrarianIdyll");
   const urbanDef = DISTRICTS.urban;
+  // P7.10: bonos de vivienda por tecnología de un distrito (todas las tecnologías investigadas; las de tradición no).
+  const addTechnologyHousing = (def, count) => {
+    (def.technologyHousing || []).forEach((tech) => {
+      const civics = districtCtx.civicIds || [];
+      if ((tech.excludedCivics || []).some((id) => civics.includes(id))) return;
+      if ((tech.requiredCivics || []).some((id) => !civics.includes(id))) return;
+      const perDistrict = tech.housingByAuthority?.[districtCtx.authorityId] ?? tech.housing;
+      if (!perDistrict) return;
+      const amount = divideEffect(perDistrict * count);
+      housing += amount;
+      const found = housingSources.find((source) => source.kind === "technology" && source.id === tech.id);
+      if (found) found.amount += amount;
+      else housingSources.push({ kind: "technology", id: tech.id, i18nKey: tech.i18nKey, amount });
+    });
+  };
   if (districtState.urban.count > 0) {
     const count = districtState.urban.count;
     let perDistrict = urbanDef.housingByAuthority[districtCtx.authorityId] ?? urbanDef.housing;
@@ -467,6 +485,8 @@ function computeTotals() {
       if (option) perDistrict += option.housing || 0;
     });
     housing += divideEffect(perDistrict * count);
+    housingSources.push({ kind: "district", district: "urban", count, amount: divideEffect(perDistrict * count) });
+    addTechnologyHousing(urbanDef, count);
     Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
   }
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
@@ -475,6 +495,8 @@ function computeTotals() {
     if (count <= 0) return;
     const perDistrict = def.housing + (districtGestalt ? def.gestaltHousing : 0) + (agrarianIdyll ? def.agrarianIdyllHousing : 0);
     housing += divideEffect(perDistrict * count);
+    housingSources.push({ kind: "district", district: cat, count, amount: divideEffect(perDistrict * count) });
+    addTechnologyHousing(def, count);
     Object.entries(def.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
   });
 
@@ -553,6 +575,11 @@ function computeTotals() {
       pushModifier(buildingSource, "jobUpkeep", { job: jobId }, fraction);
     });
     housing += divideEffect(building.housing || 0);
+    if (building.housing) {
+      const found = housingSources.find((source) => source.kind === "building" && source.id === id);
+      if (found) { found.count += 1; found.amount += divideEffect(building.housing); }
+      else housingSources.push({ kind: "building", id, count: 1, amount: divideEffect(building.housing) });
+    }
     amenities += divideEffect(building.amenities || 0);
     if (building.amenities) {
       const entry = amenityBuildings.get(id) || { count: 0, amount: 0 };
@@ -806,6 +833,7 @@ function computeTotals() {
     Object.entries(designation.flat).forEach(([key, amount]) => {
       if (key === "housing") {
         housing += amount;
+        if (amount) housingSources.push({ kind: "designation", amount });
       } else {
         addSignedResource(key, amount, "designation");
         if (key === "amenities" && amount) amenitySources.push({ kind: "designation", amount });
@@ -835,7 +863,7 @@ function computeTotals() {
 
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -2573,7 +2601,23 @@ function renderSlots() {
 }
 
 function renderStats(totals) {
-  if (statHousing) statHousing.textContent = formatAmount(totals.housing * EFFECT_SCALE, true);
+  if (statHousing) {
+    statHousing.textContent = formatAmount(totals.housing * EFFECT_SCALE, true);
+    // P7.10: tooltip con el desglose de vivienda; cada tecnología aplicada sale en su propia línea.
+    const lines = totals.housingSources.map((source) => {
+      let label;
+      if (source.kind === "capital") label = t(currentLang, "planetSimCapitalHeading");
+      else if (source.kind === "district") label = `${t(currentLang, DISTRICTS[source.district].i18nKey)} ×${source.count}`;
+      else if (source.kind === "technology") label = t(currentLang, "planetSimHousingTechnology")(t(currentLang, source.i18nKey));
+      else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
+      else label = t(currentLang, "planetSimDesignationHeading");
+      return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
+    });
+    lines.push(`${t(currentLang, "planetSimTotalLabel")}: ${formatAmount(totals.housing * EFFECT_SCALE, true)}`);
+    const tooltipTarget = statHousing.closest(".planet-header-stat") || statHousing;
+    tooltipTarget.title = lines.join("\n");
+    tooltipTarget.style.cursor = "help";
+  }
   if (statAmenities) {
     statAmenities.textContent = formatAmount(totals.amenitiesTotal * EFFECT_SCALE, true);
     // Tooltip con el desglose de toda la producción de servicios del planeta.
