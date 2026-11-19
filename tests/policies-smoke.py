@@ -394,6 +394,23 @@ async def main():
         rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
         check("regular planet: no housing usage row", "housingUsage" not in rows, rows)
 
+        # 14. P10.5: Synaptic Lathe (Neural Gate + Ampliative Speculator, no specializations, 2 + capital Max Districts, Processing Unit capitals)
+        await body("Synaptic Lathe")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("lathe district cards: Neural Gate and Ampliative Speculator only", len(names) == 2 and names[0].startswith("Neural Gate") and names[1] == "Ampliative Speculator", names)
+        selects = await pg.evaluate("()=>document.querySelectorAll('.planet-district-card select').length")
+        check("lathe districts: no specializations", selects == 0, selects)
+        cap = await pg.evaluate("()=>[document.querySelector('#planet-capital-name')?.innerText,document.querySelector('#planet-capital-tier')?.innerText]")
+        check("lathe capital: Processing Unit, tier II", cap == ["Processing Unit", "2 / 5"], cap)
+        size = await pg.evaluate("()=>{const i=document.querySelector('#planet-size-input');return [i.value,i.disabled]}")
+        check("lathe: 2 district slots with the Processing Unit", size == ["2", True], size)
+        await pg.click("#planet-capital-upgrade")
+        size = await pg.evaluate("()=>document.querySelector('#planet-size-input').value")
+        check("lathe: Parallelized capital +2 Max Districts", size == "4", size)
+        await body("Continental")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("back to a regular planet: four district groups", len(names) == 4, names)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

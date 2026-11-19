@@ -146,9 +146,13 @@ function habitatCapitalSet(authorityId, gestalt) {
   return habitatCapitalCache.get(key);
 }
 
-/** Capitales disponibles según la autoridad (estándar, Mente Colmena o Inteligencia de Máquina) o el cuerpo (hábitat, P10.4). */
+/** P10.5: Synaptic Lathe capitals (Processing Unit, tiers II–IV), the same for every empire. */
+const LATHE_CAPITAL_SET = SPECIAL_CAPITAL_SETS.synapticLathe.map((entry) => ({ ...entry, upkeep: { ...entry.upkeep } }));
+
+/** Capitales disponibles según la autoridad (estándar, Mente Colmena o Inteligencia de Máquina) o el cuerpo (hábitat, P10.4; Synaptic Lathe, P10.5). */
 function currentCapitalSet() {
   const state = getPlanetState();
+  if (bodyRules()?.capitalSet === "synapticLathe") return LATHE_CAPITAL_SET;
   if (bodyRules()?.capitalSet === "habitat") {
     return habitatCapitalSet(state.authorityId, ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id));
   }
@@ -220,9 +224,22 @@ function specializationJobMultiplier() {
   return bodyRules()?.specializationJobMultiplier || 1;
 }
 
-/** P10.3: district slots fixed by the body (Ring World 10, Shattered Ring World 25); null = editable planet size. */
+/** P10.3: district slots fixed by the body (Ring World 10, Shattered Ring World 25); null = editable planet size.
+ * P10.5: on a Synaptic Lathe the capital adds Max Districts (2 + 0 / 2 / 4). */
 function fixedPlanetSize() {
-  return bodyRules()?.fixedSize || null;
+  const rules = bodyRules();
+  if (!rules?.fixedSize) return null;
+  return rules.fixedSize + (rules.capitalSet === "synapticLathe" ? currentCapital().maxDistricts || 0 : 0);
+}
+
+/** P10.5: Synaptic Lathe layout (Neural Gate + Ampliative Speculator, no specializations). */
+function isLatheLayout() {
+  return bodyRules()?.districtLayout === "lathe";
+}
+
+/** Minimum copies of the primary district: 1 on every body (the last one cannot be demolished), 0 on a Synaptic Lathe. */
+function primaryMinCount() {
+  return isLatheLayout() ? 0 : URBAN_MIN_COUNT;
 }
 
 /** Housing removed by the specialization of a secondary district (×3 Ecumenopolis). */
@@ -241,8 +258,14 @@ function primaryDistrictDef() {
   const primaryId = rules?.primaryDistrictByAuthority
     ? rules.primaryDistrictByAuthority[getPlanetState().authorityId] || rules.primaryDistrictByAuthority.default
     : rules?.primaryDistrict;
-  const special = primaryId ? SPECIAL_DISTRICTS[primaryId] : null;
+  const special = SPECIAL_DISTRICTS[rules?.districtLayout === "lathe" ? rules.latheDistricts[0] : primaryId] || null;
   if (!special) return DISTRICTS.urban;
+  if (rules.districtLayout === "lathe") {
+    return {
+      i18nKey: special.i18nKey, img: special.img, jobs: {}, housing: special.housing, upkeep: special.upkeep,
+      specializationSlots: 0, slotsPerSpecialization: 0, specializationOptions: []
+    };
+  }
   return {
     i18nKey: special.i18nKey,
     img: special.img,
@@ -277,6 +300,12 @@ function secondaryDistrictDef(cat) {
       slotsPerSpecialization: regular ? regular.slotsPerSpecialization : 0,
       specializationOptions: regular ? regular.specializationOptions : []
     };
+  }
+  // P10.5: Synaptic Lathe — the generator group is the Ampliative Speculator, the mining and agriculture groups do not exist.
+  if (rules?.districtLayout === "lathe") {
+    const special = cat === RESOURCE_DISTRICT_ORDER[0] ? SPECIAL_DISTRICTS[rules.latheDistricts[1]] : null;
+    if (!special) return { unavailable: true, i18nKey: DISTRICTS[cat].i18nKey, img: DISTRICTS[cat].img, jobs: {}, housing: 0, upkeep: {}, slotsPerSpecialization: 0, specializationOptions: [] };
+    return { latheDistrict: true, i18nKey: special.i18nKey, img: special.img, jobs: {}, housing: special.housing, upkeep: special.upkeep, lockedTooltipKey: "planetSimNoSpecializationTooltip", slotsPerSpecialization: 0, specializationOptions: [] };
   }
   if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return DISTRICTS[cat];
   const special = SPECIAL_DISTRICTS[rules.secondaryDistrict];
@@ -372,6 +401,7 @@ function districtCap(cat) {
 
 /** ¿Cabe una copia más de este distrito de recursos (tamaño del planeta y, en hábitats, límite manual por depósitos)? */
 function canAddResourceDistrict(cat) {
+  if (secondaryDistrictDef(cat).unavailable) return false;
   const cap = districtCap(cat);
   return canAddDistrict() && (cap === null || districtState[cat].count < cap);
 }
@@ -1008,7 +1038,7 @@ function computeTotals() {
   // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
   // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
   const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, capital: capital.stability || 0, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -1018,7 +1048,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = housingUsage > 0 ? (40 * Math.max(0, housingUsage - conditionsHousing)) / housingUsage : 0;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.manual - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.capital + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -1624,6 +1654,7 @@ function renderSlotsVisual() {
   bottomRow.className = "planet-resource-districts-row";
 
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    if (secondaryDistrictDef(cat).unavailable) return; // P10.5: Synaptic Lathe
     bottomRow.append(renderResourceDistrictBox(cat, unlocked));
   });
 
@@ -1663,12 +1694,12 @@ function renderUrbanDistrictGroup(unlocked) {
 
   summary.append(renderCountControl(
     districtState.urban.count,
-    () => { districtState.urban.count = Math.max(URBAN_MIN_COUNT, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.max(primaryMinCount(), districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
     canAddDistrict(),
-    () => { districtState.urban.count = URBAN_MIN_COUNT; refresh(); },
+    () => { districtState.urban.count = primaryMinCount(); refresh(); },
     () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
-    URBAN_MIN_COUNT
+    primaryMinCount()
   ));
 
   group.append(summary);
@@ -1991,7 +2022,8 @@ function renderDistrictsCatalog() {
     districtsCatalogEl.append(viewAll);
   }
 
-  const categories = districtFilter ? [districtFilter] : ["urban", ...RESOURCE_DISTRICT_ORDER];
+  const categories = (districtFilter ? [districtFilter] : ["urban", ...RESOURCE_DISTRICT_ORDER])
+    .filter((cat) => cat === "urban" || !secondaryDistrictDef(cat).unavailable); // P10.5: Synaptic Lathe has two district types
   categories.forEach((cat) => {
     districtsCatalogEl.append(cat === "urban" ? renderUrbanDistrictCard() : renderResourceDistrictCard(cat));
   });
@@ -2015,19 +2047,19 @@ function renderUrbanDistrictCard() {
 
   const note = document.createElement("p");
   note.className = "planet-district-note";
-  note.textContent = t(currentLang, "planetSimUrbanSlotsNote");
+  note.textContent = t(currentLang, def.specializationSlots ? "planetSimUrbanSlotsNote" : "planetSimNoSpecializationTooltip");
   card.append(note);
   const primaryJobs = districtBaseJobs(def);
   if (Object.keys(primaryJobs).length) card.append(renderJobsMini(primaryJobs));
 
   card.append(renderCountControl(
     districtState.urban.count,
-    () => { districtState.urban.count = Math.max(URBAN_MIN_COUNT, districtState.urban.count - 1); refresh(); },
+    () => { districtState.urban.count = Math.max(primaryMinCount(), districtState.urban.count - 1); refresh(); },
     () => { districtState.urban.count += 1; refresh(); },
     canAddDistrict(),
-    () => { districtState.urban.count = URBAN_MIN_COUNT; refresh(); },
+    () => { districtState.urban.count = primaryMinCount(); refresh(); },
     () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
-    URBAN_MIN_COUNT
+    primaryMinCount()
   ));
 
   for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
@@ -2905,6 +2937,7 @@ function renderConditions(totals) {
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
+      ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -2917,6 +2950,7 @@ function renderConditions(totals) {
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
+      ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -3008,7 +3042,7 @@ const CONDITION_SOURCES = {
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
-  happinessEdicts: "derived", stabilityEdicts: "derived", crimeEdicts: "derived"
+  happinessEdicts: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", crimeEdicts: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
@@ -3089,6 +3123,10 @@ function pruneInvalidSpecializations() {
     }
   });
   if (reset.length) showNotice(t(currentLang, "planetSimSpecializationResetNotice")(reset.join(", ")));
+  // P10.5: district groups the body does not have (Synaptic Lathe mining / agriculture) are emptied.
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    if (secondaryDistrictDef(cat).unavailable && districtState[cat].count) districtState[cat].count = 0;
+  });
 }
 
 /** Size chosen by the user, kept while a megastructure with a fixed size is selected. */
@@ -3106,9 +3144,9 @@ function syncPlanetSize() {
 }
 
 function refresh() {
+  syncCapitalToAuthority(); // before the size: the Synaptic Lathe capital adds Max Districts (P10.5)
   syncPlanetSize();
   pruneInvalidSpecializations();
-  syncCapitalToAuthority();
   resolveSelectedSlot();
   const totals = computeTotals();
   renderSlots();
@@ -3202,7 +3240,7 @@ export function applyPlanetConfig(config) {
 
   // Distritos: solo ids de especialización que existen.
   const urban = config.districts?.urban || {};
-  districtState.urban.count = Math.max(URBAN_MIN_COUNT, Number(urban.count) || URBAN_MIN_COUNT);
+  districtState.urban.count = Math.max(primaryMinCount(), Number.isFinite(Number(urban.count)) && urban.count !== undefined ? Number(urban.count) : URBAN_MIN_COUNT);
   districtState.urban.slots = [0, 1].map((index) => (primaryOption(urban.slots?.[index]) ? urban.slots[index] : null));
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const saved = config.districts?.[cat] || {};

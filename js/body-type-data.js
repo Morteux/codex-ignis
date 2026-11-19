@@ -146,8 +146,11 @@ export const BODY_TYPE_RULES = {
   synapticLathe: {
     fixedSize: 2,
     districtLayout: "lathe",
+    // P10.5: the primary group (urban key) holds the Neural Gate and the first secondary group (generator key) the
+    // Ampliative Speculator; the mining and agriculture groups are not available. No specializations.
     latheDistricts: ["neuralGate", "ampliativeSpeculator"],
     // "Each Synaptic Lathe can build two districts for every capital building level" (Districts); capitals add Max Districts (Capital building).
+    // Reading (P10.5): district slots = fixedSize 2 + the capital's maxDistricts (Processing Unit 2, Parallelized 4, Vectorial 6).
     capitalSet: "synapticLathe",
     infoOnly: ["85% habitability", "Separate building set", "All pops are Neural Chips", "Pops are purged and cannot grow", "Cannot have branch offices"]
   }
@@ -278,10 +281,12 @@ export const SPECIAL_DISTRICTS = {
   // Synaptic Lathe
   neuralGate: {
     role: "lathe", bodies: ["synapticLathe"], housing: 1500, buildingSlots: 1,
+    i18nKey: "districtNeuralGate", img: "districs/district_cosmogenesis_world_science.png",
     perNeuralChips: { research: 0.75 }, upkeep: { energy: -50 }, cost: { alloys: 800, advanced_logic: 400 }, time: 250
   },
   ampliativeSpeculator: {
     role: "lathe", bodies: ["synapticLathe"], housing: 1500, buildingSlots: 1,
+    i18nKey: "districtAmpliativeSpeculator", img: "districs/district_cosmogenesis_world_logic.png",
     perNeuralChips: { advanced_logic: 0.02 }, upkeep: { energy: -50 }, cost: { alloys: 800, advanced_logic: 400 }, time: 250
   }
 };
@@ -318,9 +323,9 @@ export const SPECIAL_CAPITAL_SETS = {
     }
   ],
   synapticLathe: [
-    { id: "processing_unit", tier: 2, housing: 2000, amenities: 1500, stability: 10, upkeep: { energy: -8, alloys: -5 } },
-    { id: "processing_unit_parallelized", tier: 3, housing: 4000, amenities: 3000, stability: 10, maxDistricts: 2, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -10 }, cost: { alloys: 2000 }, time: 480 },
-    { id: "processing_unit_vectorial", tier: 4, housing: 10000, amenities: 5000, stability: 15, maxDistricts: 4, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -15 }, cost: { alloys: 2000 }, time: 600 }
+    { id: "processing_unit", i18nKey: "buildingProcessingUnit", img: "buildings/building_lathe_capital.png", tier: 2, housing: 2000, amenities: 1500, stability: 10, upkeep: { energy: -8, alloys: -5 } },
+    { id: "processing_unit_parallelized", i18nKey: "buildingProcessingUnitParallelized", img: "buildings/building_lathe_major_capital.png", tier: 3, housing: 4000, amenities: 3000, stability: 10, maxDistricts: 2, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -10 }, cost: { alloys: 2000 }, time: 480 },
+    { id: "processing_unit_vectorial", i18nKey: "buildingProcessingUnitVectorial", img: "buildings/building_lathe_super_capital.png", tier: 4, housing: 10000, amenities: 5000, stability: 15, maxDistricts: 4, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -15 }, cost: { alloys: 2000 }, time: 600 }
   ]
 };
 

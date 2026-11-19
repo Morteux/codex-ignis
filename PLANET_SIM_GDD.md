@@ -37,7 +37,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Jobs UI:** "Jobs created / Jobs assumed staffed"; click ±10, Ctrl/Cmd ±100, Shift = 100 %/0 %; no reset button; the notice under the summary explains only the click controls.
 
 ### 4.1 Body types audit (P10.1, wiki 4.5.2 *Celestial object*, *Districts*, *District specialization*, *Capital building*)
-Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads the bodies wired in so far (P10.2 Ecumenopolis, P10.3 Ring Worlds, P10.4 Habitats, P10.5 Hive / Machine / Nanite Worlds). Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
+Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads the bodies wired in so far (P10.2 Ecumenopolis, P10.3 Ring Worlds, P10.4 Habitats, P10.5 Hive / Machine / Nanite Worlds, Synaptic Lathe districts and capitals). Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
 
 | Body | Applied effects | Districts | Size / slots | Info only |
 |---|---|---|---|---|
@@ -63,6 +63,7 @@ New jobs needed: Clerk (+3 trade, +3 amenities, +1 % trade from jobs), Thermofor
 - Mineral Extraction is not available on Ring Worlds; Agricultural Focus not on Machine/Nanite Worlds (red crosses).
 - Habitat resource districts: manual cap per district (orbital deposits), saved with the planet (P10.4).
 - Synaptic Lathe (P10.5): the district cap is two districts per capital level (not the size 2). Neural Chip scaling needs the total chips (all pops).
+- Synaptic Lathe (P10.5, reading): district slots = 2 + the capital's Max Districts (Processing Unit 2, Parallelized 4, Vectorial 6); primary group = Neural Gate (minimum 0 copies), generator group = Ampliative Speculator, mining/agriculture groups emptied and hidden. Capitals II–IV for every empire; their stability (+10/+10/+15) is a conditions row. The Cosmogenesis requirement of tiers III–IV is not checked.
 - Nanite World (P10.5): the wiki gives no planet capacity or "resources from jobs": nothing applied (bonuses may come from the species or a tradition).
 
 **Open questions (owner) — block the task that uses them:**
