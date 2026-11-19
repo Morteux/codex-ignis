@@ -407,6 +407,8 @@ async def main():
         await pg.click("#planet-capital-upgrade")
         size = await pg.evaluate("()=>document.querySelector('#planet-size-input').value")
         check("lathe: Parallelized capital +2 Max Districts", size == "4", size)
+        cap = await pg.evaluate("()=>document.querySelector('#planet-capital-name').innerText")
+        check("Parallelized capital shows the Cosmogenesis requirement", "Processing Unit: Parallelized" in cap and "Cosmogenesis" in cap, cap)
         rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
         check("lathe: Neural Chips row instead of civilians", "neuralChips" in rows and "civilians" not in rows, rows)
         await pg.evaluate("""()=>{const i=document.querySelector('[data-condition=neuralChips] input');i.value='2000';i.dispatchEvent(new Event('change'))}""")

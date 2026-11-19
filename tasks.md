@@ -32,7 +32,7 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [ ] P11.3 Deficit and stockpile-exhaustion flags
 
 ## P12 — UI icons
-- [ ] P12.2 Review the StellarisAssets repository and re-apply every available icon by its real in-game meaning (replaces the loose placements of the first pass, e.g. `Faction_support`, `Colony_type_automated`; `Menu_icon_technology` unused). No policy icons exist: policies stay text-only.
+- [ ] P12.2 Review the StellarisAssets repository and re-apply every available icon by its real in-game meaning (replaces the loose placements of the first pass, e.g. `Faction_support`, `Colony_type_automated`; `Menu_icon_technology` unused). No policy icons exist: policies stay text-only. Advanced Logic has no resource icon yet (uses `modifiers/mod_advanced_logic_produces_add.png`): add a proper one.
 - [ ] P12.3 Mark the empire-level tabs (Imperio, Edicts) as saved with the empire profile. Proposal: semi-transparent empire icon as tab background, shared accent line, tooltip "Saved with the empire profile".
 
 ## P13 — Polish & QA

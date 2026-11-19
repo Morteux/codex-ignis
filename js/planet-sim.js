@@ -1557,11 +1557,26 @@ function renderJobsMini(jobs) {
 function renderCapital() {
   const capital = currentCapital();
   const capitalSet = currentCapitalSet();
-  if (capitalNameEl) capitalNameEl.textContent = t(currentLang, capital.i18nKey);
+  // P10.5: requirements the simulator does not check (Cosmogenesis ascension perk of the Lathe capitals III–IV) are shown, never block.
+  const requirementNote = (entry) => {
+    const rules = entry ? unmodelledRequirements(entry) : [];
+    return rules.length ? t(currentLang, "requirementUnmodelled") + rules.map((rule) => t(currentLang, rule.i18nKey)).join("; ") : "";
+  };
+  if (capitalNameEl) {
+    capitalNameEl.textContent = t(currentLang, capital.i18nKey);
+    const note = requirementNote(capital);
+    capitalNameEl.title = note;
+    if (note) {
+      const badge = document.createElement("span");
+      badge.className = "planet-capital-requirement";
+      badge.textContent = ` (${note})`;
+      capitalNameEl.append(badge);
+    }
+  }
   if (capitalTierEl) capitalTierEl.textContent = `${capital.tier} / 5`;
   if (capitalUpgradeBtn) {
     capitalUpgradeBtn.disabled = capitalTierIndex >= capitalSet.length - 1;
-    capitalUpgradeBtn.title = capitalUpgradeBtn.disabled ? t(currentLang, "planetSimCapitalMaxTier") : "";
+    capitalUpgradeBtn.title = capitalUpgradeBtn.disabled ? t(currentLang, "planetSimCapitalMaxTier") : requirementNote(capitalSet[capitalTierIndex + 1]);
   }
   if (capitalDowngradeBtn) {
     capitalDowngradeBtn.disabled = capitalTierIndex <= 0;

@@ -324,8 +324,8 @@ export const SPECIAL_CAPITAL_SETS = {
   ],
   synapticLathe: [
     { id: "processing_unit", i18nKey: "buildingProcessingUnit", img: "buildings/building_lathe_capital.png", tier: 2, housing: 2000, amenities: 1500, stability: 10, upkeep: { energy: -8, alloys: -5 } },
-    { id: "processing_unit_parallelized", i18nKey: "buildingProcessingUnitParallelized", img: "buildings/building_lathe_major_capital.png", tier: 3, housing: 4000, amenities: 3000, stability: 10, maxDistricts: 2, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -10 }, cost: { alloys: 2000 }, time: 480 },
-    { id: "processing_unit_vectorial", i18nKey: "buildingProcessingUnitVectorial", img: "buildings/building_lathe_super_capital.png", tier: 4, housing: 10000, amenities: 5000, stability: 15, maxDistricts: 4, requires: "Cosmogenesis ascension perk", upkeep: { energy: -8, alloys: -15 }, cost: { alloys: 2000 }, time: 600 }
+    { id: "processing_unit_parallelized", i18nKey: "buildingProcessingUnitParallelized", img: "buildings/building_lathe_major_capital.png", tier: 3, housing: 4000, amenities: 3000, stability: 10, maxDistricts: 2, requires: [{ type: "unmodelled", i18nKey: "reqCosmogenesisPerk" }], upkeep: { energy: -8, alloys: -10 }, cost: { alloys: 2000 }, time: 480 },
+    { id: "processing_unit_vectorial", i18nKey: "buildingProcessingUnitVectorial", img: "buildings/building_lathe_super_capital.png", tier: 4, housing: 10000, amenities: 5000, stability: 15, maxDistricts: 4, requires: [{ type: "unmodelled", i18nKey: "reqCosmogenesisPerk" }], upkeep: { energy: -8, alloys: -15 }, cost: { alloys: 2000 }, time: 600 }
   ]
 };
 
