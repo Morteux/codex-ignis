@@ -1,18 +1,17 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] P10.3 Ring worlds and shattered ring worlds
 - [ ] P10.4 Habitats (districts and designations)
 - [ ] P10.5 Hive, machine, nanite worlds, synaptic lathe
 - [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
 - [ ] P10.7 Size and district-limit rules for artificial bodies
 - [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab)
 - [ ] P10.9 Remaining urban specializations: Administrative Hub (not Spiritualist / Rogue Servitor; administrator job per authority), Spiritual Enclave (Spiritualist), primary-only Archives and Urban Expansion
-- [ ] P10.10 Re-read every requirement column of the existing districts/specializations/buildings from the HTML (red-cross = "not"); e.g. Agricultural Focus is not available with Anglers on a wet-climate world (Aquaculture replaces it)
+- [ ] P10.10 Re-read every requirement column of the existing districts/specializations/buildings (the regenerated markdown keeps `![No](24px-No.png)` = "not"); e.g. Agricultural Focus is not available with Anglers on a wet-climate world (Aquaculture replaces it)
 
 ## P19 — Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.

@@ -315,6 +315,24 @@ async def main():
         names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
         check("back to a regular planet: resource districts and the arcology specialization reset", names[1:] == ["Generator district", "Mining district", "Agriculture district"] and "Heavy Industry" in notice, (names, notice))
 
+        # 11. P10.3: Ring World (City Segment primary, fixed size 10, Unspecialized Segment sets, specialization jobs x5, housing loss x5)
+        await body("Ringworld")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("ring world district cards", names == ["City Segment ×2 built", "Unspecialized Segment 1", "Unspecialized Segment 2", "Unspecialized Segment 3"], names)
+        size = await pg.evaluate("()=>{const i=document.querySelector('#planet-size-input');return [i.value,i.disabled]}")
+        check("ring world: size fixed at 10, input disabled", size == ["10", True], size)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[1].querySelectorAll('option')].map(o=>o.value)")
+        check("segment specializations: urban + Energy Generation + Agricultural Focus, no Mineral Extraction", "energyGeneration" in opts and "agriculturalFocus" in opts and "mineralExtraction" not in opts and "heavyIndustry" in opts, opts)
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];const s=c.querySelector('select');s.value='agriculturalFocus';s.dispatchEvent(new Event('change'))}""")
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
+        mini = await pg.evaluate("()=>document.querySelectorAll('.planet-district-card')[1].querySelector('.planet-district-spec-row').innerText")
+        check("Agricultural Focus on a segment: +500 Farmers per copy (x5)", "500" in mini, mini)
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("housing: City Segment 2 x 2500, segment 2500 - 5 x 200", "City Segment ×2 +5000" in housing and "Unspecialized Segment 1 ×3 +4500" in housing and "Weather Control Systems +2500" in housing, housing)
+        await body("Continental")
+        size = await pg.evaluate("()=>{const i=document.querySelector('#planet-size-input');return [i.value,i.disabled]}")
+        check("back to a regular planet: the user's size is restored", size == ["20", False], size)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

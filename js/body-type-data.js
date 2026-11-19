@@ -8,7 +8,7 @@
  * *Jobs* (Clerk, Thermoforger, Thermotechnic Mentor, Neural Chip).
  *
  * The engine reads the rules of the body types wired in so far (P10.2:
- * Ecumenopolis); P10.3–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
+ * Ecumenopolis, P10.3: Ring Worlds); P10.3–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
  * as written on the wiki (housing and jobs ×100, upkeep and costs as plain
  * numbers, percentages as whole numbers). Open questions are listed in
  * PLANET_SIM_GDD.md §4.1 and must be answered before the value is used.
@@ -86,6 +86,7 @@ export const BODY_TYPE_RULES = {
     specializationJobMultiplier: 3,
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: ["energyGeneration", "mineralExtraction", "agriculturalFocus"],
+    // Wiki: the Hive Cluster is not available with the Wilderness origin (red cross); origins are not modelled.
     // "+600 Housing from districts" is already the hiveWorldHousing of the Hive Cluster (planet-data.js).
     infoOnly: ["Perfect habitability (Hive-Minded species only)", "+50% Automatic resettlement destination chance"]
   },
@@ -117,6 +118,7 @@ export const BODY_TYPE_RULES = {
     secondaryDistrict: "unspecializedSegment",
     specializationJobMultiplier: 5,
     secondaryHousingPenaltyMultiplier: 5,
+    // Mineral Extraction has a red cross for Ring World (not available).
     secondarySpecializations: ["energyGeneration", "agriculturalFocus"],
     infoOnly: ["Ideal habitability", "+50% Automatic resettlement destination chance"]
   },
@@ -178,23 +180,26 @@ export const SPECIAL_DISTRICTS = {
   // Ring World
   citySegment: {
     role: "primary", bodies: ["ringworld"], empire: "individualist", housing: 2500, agrarianIdyllHousing: -500,
+    i18nKey: "districtCitySegment", img: "districs/district_city.png",
     technologyHousing: [
-      { id: "weatherControlSystems", housing: 500 },
-      { id: "antiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
     ],
     jobs: { clerk: 300, enforcer: 200 },
     upkeep: { energy: -5 }, cost: { minerals: 1000 }, time: 360
   },
   hiveSegment: {
     role: "primary", bodies: ["ringworld"], empire: "hiveMind", housing: 3000,
-    technologyHousing: [{ id: "weatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", housing: 500 }],
+    i18nKey: "districtHiveSegment", img: "districs/district_hive.png",
+    technologyHousing: [{ id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500 }],
     jobs: { logistic_drone: 1500, synapse_drone: 200 },
     technologyJobs: [{ id: "antiGravityEngineering", jobs: { logistic_drone: 500 } }],
     upkeep: { energy: -5 }, cost: { minerals: 1000 }, time: 360
   },
   nexusSegment: {
     role: "primary", bodies: ["ringworld"], empire: "machineIntelligence", housing: 2500,
-    technologyHousing: [{ id: "weatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", housing: 500 }],
+    i18nKey: "districtNexusSegment", img: "districs/district_nexus.png",
+    technologyHousing: [{ id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500 }],
     // "+200 Tech-Drones": the gestalt name of the Technician job.
     jobs: { logistic_drone: 1000, technician: 200 },
     technologyJobs: [{ id: "antiGravityEngineering", jobs: { logistic_drone: 500 } }],
@@ -202,9 +207,10 @@ export const SPECIAL_DISTRICTS = {
   },
   unspecializedSegment: {
     role: "secondaryUrban", bodies: ["ringworld"], housing: 2500, agrarianIdyllHousing: -500,
+    i18nKey: "districtUnspecializedSegment", img: "districs/district_city.png",
     technologyHousing: [
-      { id: "weatherControlSystems", housing: 500 },
-      { id: "antiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
     ],
     upkeep: { energy: -5 }, cost: { minerals: 1000 }, time: 360
   },

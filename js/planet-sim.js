@@ -194,6 +194,11 @@ function specializationJobMultiplier() {
   return bodyRules()?.specializationJobMultiplier || 1;
 }
 
+/** P10.3: district slots fixed by the body (Ring World 10, Shattered Ring World 25); null = editable planet size. */
+function fixedPlanetSize() {
+  return bodyRules()?.fixedSize || null;
+}
+
 /** Housing removed by the specialization of a secondary district (×3 Ecumenopolis). */
 function secondaryHousingPenaltyMultiplier() {
   return bodyRules()?.secondaryHousingPenaltyMultiplier || 1;
@@ -205,12 +210,17 @@ function scaleJobs(jobs, factor) {
 
 /** Primary district definition: the regular urban district, or the body's own primary district (Residential Arcology). */
 function primaryDistrictDef() {
-  const special = bodyRules()?.primaryDistrict ? SPECIAL_DISTRICTS[bodyRules().primaryDistrict] : null;
+  const rules = bodyRules();
+  // P10.3: the Ring World primary district depends on the authority (City / Hive / Nexus Segment).
+  const primaryId = rules?.primaryDistrictByAuthority
+    ? rules.primaryDistrictByAuthority[getPlanetState().authorityId] || rules.primaryDistrictByAuthority.default
+    : rules?.primaryDistrict;
+  const special = primaryId ? SPECIAL_DISTRICTS[primaryId] : null;
   if (!special) return DISTRICTS.urban;
   return {
     i18nKey: special.i18nKey,
     img: special.img,
-    jobs: {},
+    jobs: special.jobs || {},
     jobsByEmpire: special.jobsByEmpire,
     technologyJobs: special.technologyJobs,
     housing: special.housing,
@@ -228,8 +238,10 @@ function secondaryDistrictDef(cat) {
   const rules = bodyRules();
   if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return DISTRICTS[cat];
   const special = SPECIAL_DISTRICTS[rules.secondaryDistrict];
+  // Secondary district specializations (wiki: "Effects per district" −200 Housing, like the urban ones).
   const resourceOptions = RESOURCE_DISTRICT_ORDER.flatMap((resourceCat) => DISTRICTS[resourceCat].specializationOptions)
-    .filter((option) => (rules.secondarySpecializations || []).includes(option.id));
+    .filter((option) => (rules.secondarySpecializations || []).includes(option.id))
+    .map((option) => ({ ...option, housing: -200 }));
   return {
     secondaryUrban: true,
     setIndex: RESOURCE_DISTRICT_ORDER.indexOf(cat) + 1,
@@ -1442,7 +1454,7 @@ if (capitalDowngradeBtn) {
 if (planetSizeInput) {
   planetSizeInput.addEventListener("input", () => {
     const parsed = Math.floor(Number(planetSizeInput.value));
-    planetSize = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+    userPlanetSize = Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
     refresh();
   });
 }
@@ -2971,7 +2983,22 @@ function pruneInvalidSpecializations() {
   if (reset.length) showNotice(t(currentLang, "planetSimSpecializationResetNotice")(reset.join(", ")));
 }
 
+/** Size chosen by the user, kept while a megastructure with a fixed size is selected. */
+let userPlanetSize = planetSize;
+
+/** P10.3: apply the fixed size of a megastructure (input disabled) or restore the user's size. */
+function syncPlanetSize() {
+  const fixed = fixedPlanetSize();
+  planetSize = fixed || userPlanetSize;
+  if (planetSizeInput) {
+    planetSizeInput.value = String(planetSize);
+    planetSizeInput.disabled = Boolean(fixed);
+    planetSizeInput.title = fixed ? t(currentLang, "planetSimFixedSizeTooltip") : "";
+  }
+}
+
 function refresh() {
+  syncPlanetSize();
   pruneInvalidSpecializations();
   syncCapitalToAuthority();
   resolveSelectedSlot();
@@ -3075,8 +3102,9 @@ export function applyPlanetConfig(config) {
     districtState[cat].count = count;
     districtState[cat].optionId = count > 0 && secondaryOption(cat, saved.optionId) ? saved.optionId : null;
   });
-  planetSize = Math.max(Math.floor(Number(config.planetSize)) || 1, totalDistrictCount());
-  if (planetSizeInput) planetSizeInput.value = String(planetSize);
+  // P10.3: a megastructure keeps its fixed size (syncPlanetSize); the saved size is the user's size for other bodies.
+  userPlanetSize = Math.max(Math.floor(Number(config.planetSize)) || 1, fixedPlanetSize() ? 1 : totalDistrictCount());
+  syncPlanetSize();
 
   // Edificio capital: el nivel guardado, o el más alto que no lo supere si el conjunto de la autoridad no lo tiene.
   const capitalSet = currentCapitalSet();
