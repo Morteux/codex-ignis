@@ -69,6 +69,9 @@ const authority = (...ids) => ({ type: "authority", ids });
 const civic = (...keys) => ({ type: "civic", keys });
 const notCivic = (...keys) => ({ type: "notCivic", keys });
 const celestial = (...ids) => ({ type: "celestial", ids });
+// P10.4: "Can build Reactor Districts / Astro-Mining Bays / Zero-G Research Districts": not met only when the manual
+// cap of that habitat district group (orbital deposits) is 0. "Zero-G Research District" is read as the Research District.
+const canBuildDistrict = (district) => ({ type: "districtBuildable", district });
 const notCelestial = (...ids) => ({ type: "notCelestial", ids });
 const notSpecies = (...ids) => ({ type: "notSpecies", ids });
 
@@ -146,9 +149,9 @@ export const DESIGNATIONS = [
   { id: "commercialRingWorld", i18nKey: "designationCommercialRingWorld", category: "ringWorld", img: "jobs/job_trader.png", requires: [NOT_GESTALT], jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "tradeStation", i18nKey: "designationTradeStation", category: "habitat", img: "jobs/job_trader.png", requires: [NOT_GESTALT], jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "hydroponicsStation", i18nKey: "designationHydroponicsStation", category: "habitat", img: "jobs/job_farmer.png", jobEfficiency: { farmer: 0.15 }, flat: {} },
-  { id: "generatorStation", i18nKey: "designationGeneratorStation", category: "habitat", img: "jobs/job_technician.png", jobEfficiency: { technician: 0.15 }, flat: {} },
-  { id: "miningStation", i18nKey: "designationMiningStation", category: "habitat", img: "jobs/job_miner.png", jobEfficiency: { miner: 0.15 }, flat: {} },
-  { id: "researchStation", i18nKey: "designationResearchStation", category: "habitat", img: "jobs/job_biologist.png", jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
+  { id: "generatorStation", i18nKey: "designationGeneratorStation", category: "habitat", img: "jobs/job_technician.png", requires: [canBuildDistrict("generator")], jobEfficiency: { technician: 0.15 }, flat: {} },
+  { id: "miningStation", i18nKey: "designationMiningStation", category: "habitat", img: "jobs/job_miner.png", requires: [canBuildDistrict("mining")], jobEfficiency: { miner: 0.15 }, flat: {} },
+  { id: "researchStation", i18nKey: "designationResearchStation", category: "habitat", img: "jobs/job_biologist.png", requires: [canBuildDistrict("agriculture")], jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "fortressStation", i18nKey: "designationFortressStation", category: "habitat", img: "jobs/job_soldier.png", jobEfficiency: { soldier: 0.15 }, flat: {} },
   { id: "foundryStation", i18nKey: "designationFoundryStation", category: "habitat", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
   { id: "factoryStation", i18nKey: "designationFactoryStation", category: "habitat", img: "jobs/job_artisan.png", requires: [USES_CONSUMER_GOODS], jobEfficiency: { artisan: 0.15 }, flat: {} },

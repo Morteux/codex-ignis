@@ -406,7 +406,9 @@ function requirementContext() {
     designationId: selectedDesignationId,
     celestialTypeId: state.celestialTypeId,
     speciesType: state.speciesType,
-    capitalTierNumber: currentCapital().tier
+    capitalTierNumber: currentCapital().tier,
+    // P10.4: manual caps of the habitat district groups (null = not set), for the "Can build ..." designation requirements.
+    districtCaps: Object.fromEntries(RESOURCE_DISTRICT_ORDER.map((cat) => [cat, districtCap(cat)]))
   };
 }
 
@@ -1207,6 +1209,7 @@ function describeUnmetRule(rule) {
     case "celestial": return t(currentLang, "requirementCelestial") + names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
     case "notCelestial": return t(currentLang, "requirementNotCelestial") + names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
     case "notSpecies": return t(currentLang, "requirementBiologicalSpecies");
+    case "districtBuildable": return t(currentLang, "requirementDistrictBuildable") + districtDisplayName(rule.district);
     default: return "";
   }
 }
@@ -2190,6 +2193,7 @@ function renderDistrictCapInput(cat) {
   input.addEventListener("change", () => {
     const parsed = Math.floor(Number(input.value));
     districtState[cat].cap = input.value === "" || !Number.isFinite(parsed) ? null : Math.max(0, parsed);
+    renderDesignationSelect(); // a cap of 0 can lock a habitat designation (Generator/Mining/Research Station)
     refresh();
   });
   wrapper.append(text, input);

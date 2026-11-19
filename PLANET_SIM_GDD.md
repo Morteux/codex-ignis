@@ -132,6 +132,7 @@ Percent happiness/stability/crime values are treated as points (as for amenities
 - Stacking rules are the simulator's own (all additive); parent/sub-category job inheritance not modelled.
 - P7.8 data assumptions: Chemical/Synthetic Crystal Plants cost-upkeep-time copied from Exotic Gas Refineries; untyped "Research" = +0.1 of each research type; Waste Reprocessing Center set `origin`, Baol Organic Plant `food`/`factory`; monuments with no upkeep outside Memorialist; settled (not nomadic) variants; Corporate monument icons provisional.
 - Production Policy treated as stratum efficiency.
+- P10.4: habitat designations "Can build Reactor Districts / Astro-Mining Bays / Zero-G Research Districts" are locked only when that district's manual cap is 0; "Zero-G Research District" is read as the Research District of the *Districts* page.
 - P7.10: Agrarian Utopias uses the Districts page value (+200); *Society research* says +100. Optimized Nexus and Extended Hives are not on any technology page (they look like gestalt variants of Public Works Division) and are not applied.
 - Policy requirement columns partly unreadable on the wiki (tradition/federation conditions as documented).
 - Amenity-usage modifiers, crime/deviancy effect on stability, factions, events, traits, origins, leaders: not modelled.

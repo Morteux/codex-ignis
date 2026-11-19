@@ -1,11 +1,10 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] P10.4 Habitats — districts and capitals done (see GDD §4); pending: habitat designations
 - [ ] P10.5 Hive, machine, nanite worlds, synaptic lathe
 - [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
 - [ ] P10.7 Size and district-limit rules for artificial bodies

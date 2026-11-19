@@ -357,6 +357,12 @@ async def main():
         check("habitat capital: Habitat Administration, tier II", cap == ["Habitat Administration", "2 / 5"], cap)
         jobs = await pg.inner_text("#planet-summary")
         check("Research District jobs: 30 of each researcher", "Physicist" in jobs and "Biologist" in jobs, jobs[:400])
+        des = await pg.evaluate("()=>[...document.querySelectorAll('#planet-designation-select option')].map(o=>[o.value,o.disabled])")
+        ids = [d[0] for d in des]
+        check("habitat designations only (stations, no unity designations)", "miningStation" in ids and "tradeStation" in ids and "unificationCenter" not in ids and "miningWorld" not in ids, ids)
+        await pg.evaluate("""()=>{const i=document.querySelectorAll('.planet-district-card')[3].querySelector('.planet-district-cap-input');i.value='0';i.dispatchEvent(new Event('change'))}""")
+        des = dict(await pg.evaluate("()=>[...document.querySelectorAll('#planet-designation-select option')].map(o=>[o.value,o.disabled])"))
+        check("Research District cap 0: Research Station locked, Mining Station available", des.get("researchStation") is True and des.get("miningStation") is False, des)
         await body("Continental")
         cap = await pg.evaluate("()=>document.querySelector('#planet-capital-name')?.innerText")
         check("back to a regular planet: tier II kept (Planetary Administration)", cap == "Planetary Administration", cap)

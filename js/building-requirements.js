@@ -62,6 +62,7 @@ function ruleMet(rule, ctx) {
     case "celestial": return rule.ids.includes(ctx.celestialTypeId);
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
+    case "districtBuildable": return (ctx.districtCaps || {})[rule.district] !== 0; // P10.4: habitat district cap (orbital deposits) not 0
     case "federation": return false; // las federaciones no se modelan: lo que exige una federación no está disponible (P16)
     case "tradition": return true; // las tradiciones no se modelan: los edictos que exigen una se tratan como desbloqueados (P18, decisión de Morteux 2026-11-19)
     case "notFederation": return true; // sin federaciones, lo que se bloquea POR una federación siempre está disponible (P16)
@@ -88,6 +89,7 @@ export function requirementContextKey(ctx) {
     ctx.designationId,
     ctx.celestialTypeId,
     ctx.speciesType,
-    ctx.capitalTierNumber
+    ctx.capitalTierNumber,
+    JSON.stringify(ctx.districtCaps || {})
   ].join("|");
 }
