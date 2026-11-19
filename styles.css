@@ -2751,6 +2751,14 @@ h1 {
     display: none;
 }
 
+/* P17.4: ejemplo con las cifras actuales bajo cada explicación */
+.info-panel .info-example {
+    margin-top: -.2rem;
+    padding-left: .6rem;
+    border-left: 2px solid var(--line);
+    color: var(--accent);
+}
+
 /* P16.11: nota de la federación que exige una política comercial */
 .empire-policy-federation-note {
   margin: 0.4rem 0 0;

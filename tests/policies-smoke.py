@@ -168,6 +168,11 @@ async def main():
         check("crime from low happiness = 0.6 per pop at 70 happiness", crime is not None and approx(float(crime.replace("+", "")), expected), (crime, pops))
         line = await pg.evaluate("()=>document.querySelector('#planet-nonresource [data-effect=crimeFromHappiness]')?.innerText")
         check("crime from low happiness shown with job effects", bool(line) and crime in line, line)
+        # P17.4: conditions "i" panel shows worked examples with the current numbers
+        await pg.evaluate("()=>document.querySelector('#planet-conditions-info-btn').click()")
+        cinfo = await pg.evaluate("()=>[...document.querySelectorAll('#planet-conditions-info .info-example')].map(p=>p.innerText)")
+        check("conditions info: worked examples (happiness 70, crime)", len(cinfo) >= 6 and any("= 70 happiness" in x for x in cinfo) and any(("total " + crime.replace("+", "")) in x for x in cinfo), cinfo)
+        await pg.evaluate("()=>document.querySelector('#planet-conditions-info-btn').click()")
         # P9.7: Manual / Estimated / Derived label on every conditions value; manual extra stability
         await tab("planet")
         unlabelled = await pg.evaluate("()=>[...document.querySelectorAll('#planet-conditions .planet-resource-row[data-condition]')].filter(r=>!r.querySelector('.planet-condition-source')).map(r=>r.dataset.condition)")

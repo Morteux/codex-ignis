@@ -2511,12 +2511,41 @@ function renderConditions(totals) {
   conditionsEl.replaceChildren();
   const c = totals.conditions;
   const info = createInfoPanel("planet-conditions");
-  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness", "conditionsInfoStability", "conditionsInfoSources"].forEach((key) => {
+  // P17.4: cada explicación va seguida de un ejemplo con las cifras actuales ("Now: ..."). Pops, vivienda y servicios en ×100.
+  const infoLine = (text, isExample) => {
     const line = document.createElement("p");
-    line.className = "planet-modifier-stacking";
-    line.textContent = t(currentLang, key);
+    line.className = `planet-modifier-stacking${isExample ? " info-example" : ""}`;
+    line.textContent = text;
     info.append(line);
-  });
+  };
+  const x100 = (n) => formatAmount(n * EFFECT_SCALE, false);
+  const signed = (n) => (n < 0 ? `− ${formatAmount(-n, false)}` : `+ ${formatAmount(n, false)}`);
+  infoLine(t(currentLang, "conditionsInfoPops"));
+  infoLine(t(currentLang, "conditionsInfoNowPops")(x100(c.pops - c.civilians), x100(c.civilians), x100(c.pops)), true);
+  infoLine(t(currentLang, "conditionsInfoHousing"));
+  infoLine(t(currentLang, "conditionsInfoNowHousing")(x100(c.housingProvided), x100(c.pops), x100(c.housingMissing)), true);
+  infoLine(t(currentLang, "conditionsInfoAmenities"));
+  infoLine(t(currentLang, "conditionsInfoNowAmenities")(x100(c.amenitiesProvided), x100(c.amenitiesLost), x100(c.amenitiesUsage), formatAmount(c.amenitiesAvailable * EFFECT_SCALE, true)), true);
+  const ih = c.happiness;
+  const ist = c.stability;
+  infoLine(t(currentLang, "conditionsInfoHappiness"));
+  if (ih.applicable) infoLine(t(currentLang, "conditionsInfoNowHappiness")(signed(ih.effect), signed(ih.manual), formatAmount(ih.value, false)), true);
+  infoLine(t(currentLang, "conditionsInfoStability"));
+  if (ist.applicable) {
+    const main = ist.gestalt ? ist.amenitiesEffect : ist.approvalBonus;
+    const mainLabel = t(currentLang, ist.gestalt ? "conditionsInfoNowStabilityAmenities" : "conditionsInfoNowStabilityApproval");
+    infoLine(t(currentLang, "conditionsInfoNowStability")(signed(main), mainLabel, signed(ist.manual), signed(-ist.housingPenalty), formatAmount(ist.value, false), formatAmount(c.stabilityEffect * 100, true)), true);
+  }
+  const icr = c.crime;
+  infoLine(t(currentLang, icr.gestalt ? "conditionsInfoDeviancy" : "conditionsInfoCrime"));
+  if (ist.applicable) {
+    infoLine(icr.gestalt
+      ? t(currentLang, "conditionsInfoNowDeviancy")(formatAmount(icr.fromJobs, true), formatAmount(icr.total, false))
+      : t(currentLang, "conditionsInfoNowCrime")(x100(c.pops), formatAmount(c.pops, false), formatAmount(ih.value, false), formatAmount(icr.fromHappiness, false), formatAmount(icr.fromJobs, true), formatAmount(icr.total, false)), true);
+  } else {
+    infoLine(t(currentLang, "conditionsInfoNoPops"), true);
+  }
+  infoLine(t(currentLang, "conditionsInfoSources"));
   conditionsEl.append(info);
   const rows = [
     ["civilians", "conditionsCivilians", c.civilians, false],

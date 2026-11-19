@@ -1,10 +1,9 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P17.1–P17.3) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P17.1–P17.4) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P17 — "i" explanation panels (pattern in GDD §6)
-- [ ] P17.4 Conditions panel: plain-language worked examples with the current numbers; crime text with P9.5
 - [ ] P17.5 Empire tab (informational effects, policies and trade conversion, civic limits)
 - [ ] P17.6 QA: key parity, keyboard (Enter/Space, aria-expanded), every `.info-btn` has a panel
 
