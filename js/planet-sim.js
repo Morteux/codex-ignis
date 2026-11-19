@@ -643,6 +643,35 @@ function computeTotals() {
     }
   });
   noteEmpireEffects("authority", empireModifierState.authorityId, AUTHORITY_EFFECTS[empireModifierState.authorityId]);
+  // P18.4: edictos activos del imperio (js/edict-data.js). Eficacia, mantenimiento y % mensual van a las categorías de siempre;
+  // los recursos por empleo y por civil se suman aparte (línea propia del desglose) y los puntos de felicidad, estabilidad y
+  // delincuencia entran en las condiciones (categoría conditionFlat).
+  const edictJobFlat = {}; // jobId -> { resourceId: cantidad por empleo }
+  const edictCivilianFlat = {}; // resourceId -> cantidad por civil
+  const edictConditions = { happiness: 0, stability: 0, crime: 0 };
+  (empireModifierState.edictIds || []).forEach((edictId) => {
+    const edict = getEdict(edictId);
+    if (!edict) return;
+    const source = { kind: "edict", id: edict.id };
+    const effects = edict.effects || {};
+    Object.entries(effects.jobEfficiency || {}).forEach(([jobId, fraction]) => pushModifier(source, "jobEfficiency", { job: jobId }, fraction));
+    Object.entries(effects.stratumEfficiency || {}).forEach(([stratum, fraction]) => pushModifier(source, "stratumEfficiency", { stratum }, fraction));
+    Object.entries(effects.jobUpkeep || {}).forEach(([jobId, fraction]) => pushModifier(source, "jobUpkeep", { job: jobId }, fraction));
+    Object.entries(effects.resourceMult || {}).forEach(([resourceId, fraction]) => pushModifier(source, "resourceMult", { resource: resourceId }, fraction));
+    Object.entries(effects.jobFlat || {}).forEach(([jobId, perJob]) => Object.entries(perJob).forEach(([resourceId, amount]) => {
+      edictJobFlat[jobId] = edictJobFlat[jobId] || {};
+      edictJobFlat[jobId][resourceId] = (edictJobFlat[jobId][resourceId] || 0) + amount;
+      pushModifier(source, "jobFlat", { job: jobId, resource: resourceId }, amount);
+    }));
+    Object.entries(effects.civilianFlat || {}).forEach(([resourceId, amount]) => {
+      edictCivilianFlat[resourceId] = (edictCivilianFlat[resourceId] || 0) + amount;
+      pushModifier(source, "jobFlat", { job: "civilian", resource: resourceId }, amount);
+    });
+    Object.entries(effects.conditions || {}).forEach(([stat, value]) => {
+      edictConditions[stat] += value;
+      pushModifier(source, "conditionFlat", { stat }, value);
+    });
+  });
   // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
   // de la designación multiplica solo la parte positiva (la wiki la define
   // sobre la producción, no sobre el mantenimiento).
@@ -674,6 +703,10 @@ function computeTotals() {
     Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
+    const buildingUnit = { ...unit };
+    Object.entries(edictJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
+      unit[resourceId] = (unit[resourceId] || 0) + amount;
+    });
     const bonusedUnit = { ...unit };
     // Eficacia laboral (designación + edificios): puede ser positiva o negativa
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
@@ -684,7 +717,7 @@ function computeTotals() {
       ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum }),
       ...modifierValues("stratumOutput", { stratum: JOBS[jobId]?.stratum })
     ]);
-    const upkeepFactor = stackFactor(stacking.jobUpkeep, modifierValues("jobUpkeep", { job: jobId }));
+    const upkeepFactor = stackFactor(stacking.jobUpkeep, [...modifierValues("jobUpkeep", { job: jobId }), ...modifierValues("jobUpkeep", { job: "all" })]);
     Object.keys(unit).forEach((resourceId) => {
       if (unit[resourceId] > 0) unit[resourceId] *= efficiencyFactor;
       else if (unit[resourceId] < 0) unit[resourceId] *= upkeepFactor;
@@ -696,7 +729,8 @@ function computeTotals() {
     Object.entries(unit).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
       recordBreakdown(resourceId, "jobsBase", (baseUnit[resourceId] || 0) * assigned);
-      recordBreakdown(resourceId, "jobsBonus", ((bonusedUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "jobsBonus", ((buildingUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "edictJobFlat", ((bonusedUnit[resourceId] || 0) - (buildingUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobsModifier", (perJob - (bonusedUnit[resourceId] || 0)) * assigned);
       if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
     });
@@ -729,6 +763,12 @@ function computeTotals() {
       const amount = perPop * civilianPops;
       addSignedResource(resourceId, amount, "civilians");
       jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
+    });
+    // P18.4: edictos con recursos por civil (Refuerzo sináptico / Mantenimiento industrial: +1 comercio por dron de mantenimiento).
+    Object.entries(edictCivilianFlat).forEach(([resourceId, perPop]) => {
+      const amount = perPop * civilianPops;
+      addSignedResource(resourceId, amount, "edictJobFlat");
+      if (amount > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
     });
     if (civilianDef.output.amenities) amenitySources.push({ kind: "civilians", i18nKey: civilianDef.i18nKey, assignedRaw: civiliansRaw, amount: civilianDef.output.amenities * civilianPops });
   }
@@ -764,15 +804,15 @@ function computeTotals() {
       amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
     }
   }
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.manual));
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
   // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
   // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
   const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -782,7 +822,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.manual - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -790,7 +830,8 @@ function computeTotals() {
   // suman aparte con los empleos cubiertos; el total no baja de 0.
   const crimeFromHappiness = happiness.applicable ? pops * 0.02 * (100 - happiness.value) : 0;
   const crimeFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.crime || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
-  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, total: Math.max(0, crimeFromHappiness + crimeFromJobs) };
+  const crimeFromEdicts = pops > 0 ? edictConditions.crime : 0;
+  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, fromEdicts: crimeFromEdicts, total: Math.max(0, crimeFromHappiness + crimeFromJobs + crimeFromEdicts) };
   const conditions = {
     happiness,
     stability,
@@ -2155,6 +2196,7 @@ function refreshEconomyOnly() {
 const BREAKDOWN_SOURCES = [
   { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg" },
   { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
+  { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat" },
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
@@ -2378,6 +2420,7 @@ const MODIFIER_CATEGORIES = [
   { id: "tradeConversion", label: "modifierCatTradeConversion", unit: "percent" },
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
   { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
+  { id: "conditionFlat", label: "modifierCatConditionFlat", unit: "flat" },
   { id: "flat", label: "modifierCatFlat", unit: "flat" }
 ];
 
@@ -2391,15 +2434,19 @@ function modifierSourceName(source) {
   }
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
+  if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
   return source.id;
 }
 
 function modifierTargetName(modifier) {
   const parts = [];
-  if (modifier.job) parts.push(jobName(modifier.job));
+  if (modifier.job === "all") parts.push(t(currentLang, "modifierTargetAllJobs"));
+  else if (modifier.job === "civilian") parts.push(t(currentLang, CIVILIAN_OUTPUTS[ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id) ? "gestalt" : "individualist"].i18nKey));
+  else if (modifier.job) parts.push(jobName(modifier.job));
   if (modifier.stratum) parts.push(t(currentLang, STRATUM_I18N_KEYS[modifier.stratum]));
   if (modifier.resource) parts.push(resourceName(modifier.resource));
-  if (modifier.stat) parts.push(RESOURCES[modifier.stat] ? resourceName(modifier.stat) : (modifier.stat === "housing" ? t(currentLang, "planetSimStatHousingShort") : modifier.stat));
+  const conditionStatKeys = { happiness: "conditionsHappiness", stability: "conditionsStability", crime: "conditionsCrime" };
+  if (modifier.stat) parts.push(RESOURCES[modifier.stat] ? resourceName(modifier.stat) : (modifier.stat === "housing" ? t(currentLang, "planetSimStatHousingShort") : conditionStatKeys[modifier.stat] ? t(currentLang, conditionStatKeys[modifier.stat]) : modifier.stat));
   return parts.join(" · ");
 }
 
@@ -2523,6 +2570,9 @@ function renderConditions(totals) {
   } else {
     infoLine(t(currentLang, "conditionsInfoNoPops"), true);
   }
+  if (ih.edicts || ist.edicts || icr.fromEdicts) {
+    infoLine(t(currentLang, "conditionsInfoNowEdicts")(signed(ih.edicts || 0), signed(ist.edicts || 0), signed(icr.fromEdicts || 0)), true);
+  }
   infoLine(t(currentLang, "conditionsInfoSources"));
   conditionsEl.append(info);
   const rows = [
@@ -2583,6 +2633,7 @@ function renderConditions(totals) {
     addRows([
       ["happinessBase", "conditionsHappinessBase", h.base, false],
       ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
+      ...(h.edicts ? [["happinessEdicts", "conditionsHappinessEdicts", h.edicts, true]] : []),
       ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
     ]);
@@ -2597,6 +2648,7 @@ function renderConditions(totals) {
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
+      ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -2608,6 +2660,7 @@ function renderConditions(totals) {
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
+      ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -2623,7 +2676,7 @@ function renderConditions(totals) {
   const cr = c.crime;
   const crimeRows = cr.gestalt
     ? [["crimeJobs", "conditionsDeviancyJobs", cr.fromJobs], ["crime", "conditionsDeviancy", cr.total]]
-    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ["crime", "conditionsCrime", cr.total]];
+    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ...(cr.fromEdicts ? [["crimeEdicts", "conditionsCrimeEdicts", cr.fromEdicts]] : []), ["crime", "conditionsCrime", cr.total]];
   crimeRows.forEach(([key, labelKey, value]) => {
     const row = document.createElement("div");
     row.className = `planet-resource-row ${value > 0 ? "is-negative" : "is-positive"}`;
@@ -2698,7 +2751,8 @@ const CONDITION_SOURCES = {
   happinessBase: "derived", happinessAmenities: "estimated", happinessManual: "manual", happiness: "estimated",
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
-  crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated"
+  crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
+  happinessEdicts: "derived", stabilityEdicts: "derived", crimeEdicts: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };

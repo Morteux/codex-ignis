@@ -46,7 +46,8 @@ export const STACKING_RULES = {
     tradeConversion: rule("add", null, "modifierStackTradeConversion", "jobTradeOutput"),
     resourceMult: rule("add", null, "modifierStackResourceMult", "totalPositiveProduction"),
     resourceFlat: rule("add", null, "modifierStackExternal", "externalIncome"),
-    flat: rule("add", null, "modifierStackFlat", "monthlyTotal")
+    flat: rule("add", null, "modifierStackFlat", "monthlyTotal"),
+    conditionFlat: rule("add", null, "modifierStackConditionFlat", "conditions")
   }
 };
 

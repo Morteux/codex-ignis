@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18.1 — audit in GDD §5.1, P18.2, P18.3) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
@@ -13,9 +13,6 @@ Sources: *Celestial object* page (base modifiers per body type); Requirements co
 - [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
 - [ ] P10.7 Size and district-limit rules for artificial bodies
 - [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab)
-
-## P18 — Edicts (new tab before Sucursales)
-- [ ] P18.4 Engine: effects through the modifier list and stacking rules; modifiers panel and breakdown
 
 ## P19 — Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.

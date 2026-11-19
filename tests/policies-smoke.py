@@ -265,6 +265,30 @@ async def main():
         notice = await pg.inner_text("#planet-sim-notice")
         check("gestalt drops Industrial Subsidies with a notice", await pressed("industrialSubsidies") == "false" and "Industrial Subsidies" in notice, notice)
 
+        # 9. P18.4: edict effects in the engine (job efficiency + per-job trade upkeep, conditions points, modifiers panel)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("empire")
+        await ethic("Authoritarian"); await ethic("Pacifist")
+        await tab("planet")
+        await pg.evaluate("()=>{document.querySelectorAll('#planet-catalog details').forEach(d=>d.open=true);const f=(re)=>[...document.querySelectorAll('#planet-catalog button')].find(b=>re.test(b.innerText));f(/Commercial Zones/).click();f(/Alloy Foundries/).click()}")
+        cond = lambda: pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions .planet-resource-row[data-condition]')].map(r=>[r.dataset.condition,parseFloat((r.querySelector('.planet-resource-value')?.innerText||r.querySelector('input')?.value||'0').replace('−','-').replace('+',''))]))")
+        n0 = await net(); c0 = await cond()
+        await tab("edicts")
+        await pg.click(".edict-card[data-edict-id=forgeSubsidies]")
+        n1 = await net()
+        check("Forge Subsidies: +10% alloys from Metallurgists", n0.get("Alloys", 0) > 0 and approx(n1.get("Alloys"), n0["Alloys"] * 1.1), (n0, n1))
+        check("Forge Subsidies: -1 trade per Metallurgist (2 jobs)", approx(n1.get("Trade value"), n0.get("Trade value") - 2), (n0, n1))
+        for e in ["informationQuarantine", "peaceFestivals", "trackingImplants"]:
+            await pg.click(f".edict-card[data-edict-id={e}]")
+        c1 = await cond()
+        check("edict condition rows: happiness -5, stability +5, crime -10", c1.get("happinessEdicts") == -5 and c1.get("stabilityEdicts") == 5 and c1.get("crimeEdicts") == -10, c1)
+        check("happiness includes the edicts", approx(c1["happiness"], max(0, min(100, c1["happinessBase"] + c1["happinessAmenities"] + c1["happinessManual"] - 5))), c1)
+        comp = c1["stabilityBase"] + c1.get("stabilityApproval", 0) + c1.get("stabilityJobs", 0) + 5 + c1["stabilityManual"] + c1["stabilityHousing"]
+        check("stability includes the edicts", approx(c1["stability"], max(0, min(100, comp))), c1)
+        await tab("planet")
+        mods = await pg.inner_text("#planet-modifiers")
+        check("modifiers panel lists edicts", all(x in mods for x in ["Forge Subsidies", "Information Quarantine", "Tracking Implants"]), mods[-600:])
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

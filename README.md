@@ -40,7 +40,7 @@ La pestaña Imperio incluye las políticas con efecto económico (`js/policy-dat
 
 ## Pruebas
 
-`tests/policies-smoke.py` comprueba en un navegador real (Playwright, interfaz en inglés) los valores por defecto de las políticas, el cambio individualista/gestalt, las cifras de economía con cada política comercial, Ayuda mutua con y sin Cooperativa de trabajadores, el guardado de imperios y planetas (formato antiguo y nuevo) la importación con ids inválidos, los edictos (pestaña, guardado con el imperio, desactivación por requisitos), los paneles «i» (contenido con las cifras actuales, teclado Enter/Espacio, `aria-expanded`) y la paridad de claves es/en/jp de `js/i18n.js`. Ejecútalo desde la raíz del proyecto: `pip install playwright && playwright install chromium && python3 tests/policies-smoke.py`.
+`tests/policies-smoke.py` comprueba en un navegador real (Playwright, interfaz en inglés) los valores por defecto de las políticas, el cambio individualista/gestalt, las cifras de economía con cada política comercial, Ayuda mutua con y sin Cooperativa de trabajadores, el guardado de imperios y planetas (formato antiguo y nuevo) la importación con ids inválidos, los edictos (pestaña, guardado con el imperio, desactivación por requisitos, efectos en la economía y las condiciones), los paneles «i» (contenido con las cifras actuales, teclado Enter/Espacio, `aria-expanded`) y la paridad de claves es/en/jp de `js/i18n.js`. Ejecútalo desde la raíz del proyecto: `pip install playwright && playwright install chromium && python3 tests/policies-smoke.py`.
 
 ## Imágenes de Stellaris
 
