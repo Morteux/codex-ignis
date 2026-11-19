@@ -194,6 +194,14 @@ async def main():
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")
         check("consistency check hidden", await pg.evaluate("()=>document.querySelector('#planet-production-check').hidden"))
+        # P17.2: production "i" panel, hidden until clicked, trade conversion with the current numbers, kept open across re-renders
+        check("production info hidden by default", await pg.evaluate("()=>document.querySelector('#planet-production-info').hidden"))
+        await pg.evaluate("()=>document.querySelector('#planet-production-info-btn').click()")
+        pinfo = await pg.evaluate("()=>{const p=document.querySelector('#planet-production-info');return p.hidden?null:p.innerText}")
+        check("production info opens with trade conversion", bool(pinfo) and "Trade conversion (Wealth Creation)" in pinfo and "50% Energy" in pinfo, pinfo)
+        await pg.evaluate("()=>{const i=document.querySelector('#planet-conditions [data-condition=civilians] input');i.value='300';i.dispatchEvent(new Event('change'))}")
+        still = await pg.evaluate("()=>!document.querySelector('#planet-production-info').hidden && document.querySelector('#planet-production-info-btn').getAttribute('aria-expanded')")
+        check("production info stays open after re-render", still == "true", still)
         check("no page errors", not errors, errors)
         await browser.close()
 

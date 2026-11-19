@@ -2280,6 +2280,33 @@ function renderExternalIncome(totals) {
   });
 }
 
+/** P17.2: panel "i" de producción (columnas, desglose, conversión de comercio con las cifras actuales, ingresos externos). */
+function renderProductionInfo(totals) {
+  const slot = document.querySelector("#planet-production-info-slot");
+  if (!slot) return;
+  document.querySelectorAll(".info-btn").forEach((btn) => syncInfoButton(btn, btn.id.replace(/-info-btn$/, "")));
+  const info = createInfoPanel("planet-production");
+  const addLine = (text) => {
+    const line = document.createElement("p");
+    line.className = "planet-modifier-stacking";
+    line.textContent = text;
+    info.append(line);
+  };
+  addLine(t(currentLang, "productionInfoColumns"));
+  addLine(t(currentLang, "productionInfoBreakdown"));
+  const policyId = getPlanetState().policyIds && getPlanetState().policyIds.trade;
+  const conversion = totals.tradeConversion;
+  if (conversion) {
+    const rates = Object.entries(conversion.rates).map(([id, rate]) => `${Math.round(rate * 10000) / 100}% ${resourceName(id)}`).join(" · ");
+    addLine(t(currentLang, "productionInfoTrade")(t(currentLang, getPolicyOption("trade", conversion.optionId).i18nKey), formatAmount(conversion.amount, false), rates));
+  } else if (policyId && getPolicyOption("trade", policyId)) {
+    addLine(t(currentLang, "productionInfoTradeNone")(t(currentLang, getPolicyOption("trade", policyId).i18nKey)));
+  }
+  addLine(t(currentLang, "productionInfoExternal"));
+  addLine(t(currentLang, "productionInfoCheck"));
+  slot.replaceChildren(info);
+}
+
 let lastTotals = null;
 function renderProduction(totals) {
   lastTotals = totals;
@@ -2290,6 +2317,7 @@ function renderProduction(totals) {
       ? t(currentLang, "productionCheckFailed")(problems.map((p) => `${resourceName(p.resourceId)} (${formatAmount(p.net, true)} / ${formatAmount(p.breakdownSum, true)})`).join(", "))
       : "";
   }
+  renderProductionInfo(totals);
   renderExternalIncome(totals);
   renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
   renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");

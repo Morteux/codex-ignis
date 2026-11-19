@@ -48,7 +48,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Trade conversion:** trade from jobs and civilians, after job efficiency and before empire %; trade kept = trade × rate, the rest becomes the policy's resources (breakdown lines per resource). Branch-office trade will join it. Monthly Trades excluded.
 - **External income:** empire flat bonuses (influence) are shown apart from planet net, with a "total with external income" line.
 - **Consistency:** produced + consumed = sum of breakdown lines = net (tolerance 0.001), otherwise a bug warning.
-- **Panels:** per-resource breakdown (click a Net row), active-modifiers panel (source, target, value, category), "i" explanation panels (`.info-btn` + `createInfoPanel`, open state kept across re-renders/language).
+- **Panels:** per-resource breakdown (click a Net row), active-modifiers panel (source, target, value, category), "i" explanation panels (`.info-btn` + `createInfoPanel`, open state kept across re-renders/language; texts use the current numbers where they apply, e.g. the trade conversion of the Production panel).
 
 ## 7. Planetary conditions
 - Pops = staffed jobs + manual Civilians (Conditions panel, ×100, default 0, no cap, labelled Manual; they consume housing and amenities). Civilian output (wiki 4.5.2 *Jobs* → Special jobs, per pop): Civilian +0.5 amenities, +1 trade; gestalt Maintenance Drone +4 amenities, +1 trade. Their trade gets the stability effect and enters the trade conversion; no stratum efficiency or job % bonuses. Hedonist/Tourist job swaps not modelled.
