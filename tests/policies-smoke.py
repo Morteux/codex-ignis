@@ -66,15 +66,18 @@ async def main():
         await pg.evaluate("()=>{document.querySelectorAll('#planet-catalog details').forEach(d=>d.open=true);[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText)).click()}")
         await tab("empire")
         base = await net()
-        check("Wealth Creation: trade 8", approx(base.get("Trade value"), 8), base)
+        # P9.4: stability 62 (see 6b) gives +7.2 % to everything jobs produce, trade included (before the trade conversion).
+        S = 1.072
+        check("Wealth Creation: trade 8", approx(base.get("Trade value"), 8 * S), base)
         energy0 = base["Energy"]
         check("consumer goods -2", approx(base.get("Consumer goods"), -2), base)
+        check("Wealth Creation: energy -6 + 8 converted", approx(energy0, -6 + 8 * S), base)
         check("Consumer Benefits available", await pick_policy("Consumer Benefits"))
         n = await net()
-        check("Consumer Benefits: trade 8, goods +2, energy -8", approx(n["Trade value"], 8) and approx(n["Consumer goods"], 2) and approx(n["Energy"], energy0 - 8), n)
+        check("Consumer Benefits: trade 8, goods +2, energy -8", approx(n["Trade value"], 8 * S) and approx(n["Consumer goods"], -2 + 4 * S) and approx(n["Energy"], energy0 - 8 * S), n)
         check("Marketplace of Ideas available", await pick_policy("Marketplace of Ideas"))
         n = await net()
-        check("Marketplace: trade 8, unity +2", approx(n["Trade value"], 8) and approx(n.get("Unity"), 2), n)
+        check("Marketplace: trade 8, unity +2", approx(n["Trade value"], 8 * S) and approx(n.get("Unity"), 2 * S), n)
         check("Trade League disabled (federation)", await policy_disabled("Trade League") is True)
         check("Mutual Aid disabled without Worker Cooperative", await policy_disabled("Mutual Aid") is True)
 
@@ -85,8 +88,8 @@ async def main():
         check("Mutual Aid available with Worker Cooperative", await pick_policy("Mutual Aid"))
         n = await net()
         # Egalitarian adds +5% specialist efficiency, so the 2 Traders give 16.8 trade before conversion.
-        check("Mutual Aid: trade 4.2, energy 16.8*0.2 - 6", approx(n["Trade value"], 4.2) and approx(n["Energy"], 16.8 * 0.2 + (energy0 - 8)), n)
-        check("Mutual Aid minerals/food/unity", approx(n.get("Minerals"), 3.36) and approx(n.get("Food"), 2 + 3.36) and approx(n.get("Unity"), 1.26), n)
+        check("Mutual Aid: trade 4.2, energy 16.8*0.2 - 6", approx(n["Trade value"], 4.2 * S) and approx(n["Energy"], 16.8 * 0.2 * S + (energy0 - 8 * S)), n)
+        check("Mutual Aid minerals/food/unity", approx(n.get("Minerals"), 3.36 * S) and approx(n.get("Food"), (2 + 3.36) * S) and approx(n.get("Unity"), 1.26 * S), n)
         await pg.evaluate("()=>[...document.querySelectorAll('#empire-civics-list button')].find(b=>b.innerText.trim()==='Worker Cooperative').click()")
         check("Mutual Aid reverts to Wealth Creation", await selected_policy("Trade Policy") == "Wealth Creation")
         notice = await pg.inner_text("#planet-sim-notice")
@@ -136,6 +139,15 @@ async def main():
 
         stab = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=stability] .planet-resource-value')?.innerText")
         check("stability = 62 (50 + 12 approval, no housing penalty)", stab == "62", stab)
+        # P9.4: stability effect on job output (row in conditions, modifiers panel row, breakdown line)
+        eff = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=stabilityEffect] .planet-resource-value')?.innerText")
+        check("stability effect = +7.2 %", eff == "+7.2", eff)
+        mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText)")
+        check("modifiers panel lists the stability effect", any("Planetary condition" in m and "+7.2%" in m for m in mods), mods)
+        await tab("planet")
+        await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>/Trade value/.test(r.innerText))?.click()")
+        bd = await pg.evaluate("()=>document.querySelector('#planet-production-net')?.innerText")
+        check("breakdown shows the stability effect line", "Stability effect on job output" in (bd or ""), bd)
 
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")

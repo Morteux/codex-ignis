@@ -688,6 +688,91 @@ function computeTotals() {
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
   });
 
+  // P9.1: pops (1 por empleo cubierto), vivienda y servicios (wiki 4.5.2, Colony management). Todo en unidades reales;
+  // al mostrarse se multiplica por EFFECT_SCALE. Redondeos de la wiki: servicios de edificios al entero más cercano,
+  // servicios de empleos hacia abajo, uso de servicios al entero más cercano. Los modificadores de uso de servicios
+  // (especie, colonia, imperio) no se modelan: cada pop usa 1.
+  const pops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
+  // P9.4: las condiciones se calculan antes del paso 4a (efecto de la estabilidad), así que se suman aquí los servicios y la
+  // vivienda planos de la designación, que el paso 5 añade después a los totales (mismo resultado que calcularlas al final).
+  const designationHousing = designation ? (designation.flat.housing || 0) : 0;
+  const designationAmenities = designation ? (designation.flat.amenities || 0) : 0;
+  const conditionsHousing = housing + designationHousing;
+  const amenitiesFromBuildings = Math.round(amenities);
+  const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + designationAmenities + 1e-9);
+  const amenitiesProvided = amenitiesFromBuildings + amenitiesFromJobs;
+  const amenitiesUsage = Math.round(pops);
+  // P9.2: efecto de los servicios (wiki 4.5.2: bono máx. +20, penalización máx. −50). Se interpreta el "%" de la wiki como
+  // puntos, porque felicidad y estabilidad van de 0 a 100. En un imperio normal actúa sobre la felicidad (P9.2) y en uno
+  // gestalt directamente sobre la estabilidad (P9.6). Sin pops no hay nada que medir.
+  const amenitiesAvailable = amenitiesProvided - (AMENITIES_LOST + amenitiesUsage);
+  const amenitiesEffect = { mode: "none", raw: 0, effect: 0 };
+  if (pops > 0 && amenitiesUsage > 0) {
+    if (amenitiesAvailable > 0) {
+      amenitiesEffect.mode = "bonus";
+      amenitiesEffect.raw = (20 * amenitiesAvailable) / amenitiesUsage;
+      amenitiesEffect.effect = Math.min(20, amenitiesEffect.raw);
+    } else if (amenitiesAvailable < 0) {
+      amenitiesEffect.mode = "penalty";
+      amenitiesEffect.raw = ((200 / 3) * amenitiesAvailable) / amenitiesUsage;
+      amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
+    }
+  }
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect));
+  // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
+  // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
+  // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, value: STABILITY_BASE };
+  if (stability.applicable) {
+    if (gestaltEmpire) {
+      stability.amenitiesEffect = amenitiesEffect.effect;
+    } else {
+      stability.approval = Math.floor(happiness.value);
+      const delta = stability.approval - 50;
+      stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
+    }
+    stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect - stability.housingPenalty));
+  }
+  const conditions = {
+    happiness,
+    stability,
+    amenitiesEffect,
+    pops,
+    housingProvided: conditionsHousing,
+    housingMissing: Math.max(0, pops - conditionsHousing),
+    amenitiesFromBuildings,
+    amenitiesFromJobs,
+    amenitiesProvided,
+    amenitiesLost: AMENITIES_LOST,
+    amenitiesUsage,
+    amenitiesAvailable
+  };
+
+
+  // P9.4: efecto de la estabilidad (GDD §6), paso propio 4a. +0,6 % por punto por encima de 50 y −1 % por punto por debajo,
+  // solo sobre los recursos que producen los empleos (tras los pasos 1–4). No afecta a los servicios (son un modificador) ni a
+  // los modificadores planetarios. Se usa el valor de estabilidad sin redondear. Va antes de la conversión de comercio, así
+  // que el comercio de los empleos se convierte ya con el efecto aplicado.
+  const stabilityFraction = stability.applicable
+    ? (stability.value >= 50 ? 0.006 * (stability.value - 50) : -0.01 * (50 - stability.value))
+    : 0;
+  if (stabilityFraction) {
+    pushModifier({ kind: "stability", id: "stability" }, "stabilityEffect", {}, stabilityFraction);
+    Object.keys(jobProduced).forEach((resourceId) => {
+      if (resourceId === "amenities") return;
+      const amount = jobProduced[resourceId] * stabilityFraction;
+      if (Math.abs(amount) < 1e-12) return;
+      // Cambia lo producido (no es un coste): se suma a producidos y netos, como la conversión de comercio.
+      producedTotals[resourceId] = (producedTotals[resourceId] || 0) + amount;
+      resourceTotals[resourceId] = (resourceTotals[resourceId] || 0) + amount;
+      recordBreakdown(resourceId, "stabilityEffect", amount);
+      jobProduced[resourceId] += amount;
+    });
+  }
+  conditions.stabilityEffect = stabilityFraction;
+
   // Conversión de comercio (P16.7 = P8.5): el comercio que producen los empleos (tras la eficacia y antes de los multiplicadores
   // porcentuales del imperio) se reparte según las tasas de cambio de la política comercial. La parte no conservada sale de
   // producidos/netos y cada recurso destino recibe su parte (que después recibe los multiplicadores como cualquier producción).
@@ -739,63 +824,6 @@ function computeTotals() {
   // Servicios totales = capital + edificios + empleos (+ designación): es lo que muestra la cabecera.
   amenityBuildings.forEach((entry, id) => amenitySources.splice(1, 0, { kind: "building", id, count: entry.count, amount: entry.amount }));
   const amenitiesTotal = amenities + (resourceTotals.amenities || 0);
-
-  // P9.1: pops (1 por empleo cubierto), vivienda y servicios (wiki 4.5.2, Colony management). Todo en unidades reales;
-  // al mostrarse se multiplica por EFFECT_SCALE. Redondeos de la wiki: servicios de edificios al entero más cercano,
-  // servicios de empleos hacia abajo, uso de servicios al entero más cercano. Los modificadores de uso de servicios
-  // (especie, colonia, imperio) no se modelan: cada pop usa 1.
-  const pops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
-  const amenitiesFromBuildings = Math.round(amenities);
-  const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + 1e-9);
-  const amenitiesProvided = amenitiesFromBuildings + amenitiesFromJobs;
-  const amenitiesUsage = Math.round(pops);
-  // P9.2: efecto de los servicios (wiki 4.5.2: bono máx. +20, penalización máx. −50). Se interpreta el "%" de la wiki como
-  // puntos, porque felicidad y estabilidad van de 0 a 100. En un imperio normal actúa sobre la felicidad (P9.2) y en uno
-  // gestalt directamente sobre la estabilidad (P9.6). Sin pops no hay nada que medir.
-  const amenitiesAvailable = amenitiesProvided - (AMENITIES_LOST + amenitiesUsage);
-  const amenitiesEffect = { mode: "none", raw: 0, effect: 0 };
-  if (pops > 0 && amenitiesUsage > 0) {
-    if (amenitiesAvailable > 0) {
-      amenitiesEffect.mode = "bonus";
-      amenitiesEffect.raw = (20 * amenitiesAvailable) / amenitiesUsage;
-      amenitiesEffect.effect = Math.min(20, amenitiesEffect.raw);
-    } else if (amenitiesAvailable < 0) {
-      amenitiesEffect.mode = "penalty";
-      amenitiesEffect.raw = ((200 / 3) * amenitiesAvailable) / amenitiesUsage;
-      amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
-    }
-  }
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect));
-  // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
-  // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
-  // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, value: STABILITY_BASE };
-  if (stability.applicable) {
-    if (gestaltEmpire) {
-      stability.amenitiesEffect = amenitiesEffect.effect;
-    } else {
-      stability.approval = Math.floor(happiness.value);
-      const delta = stability.approval - 50;
-      stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
-    }
-    stability.housingPenalty = (40 * Math.max(0, pops - housing)) / pops;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect - stability.housingPenalty));
-  }
-  const conditions = {
-    happiness,
-    stability,
-    amenitiesEffect,
-    pops,
-    housingProvided: housing,
-    housingMissing: Math.max(0, pops - housing),
-    amenitiesFromBuildings,
-    amenitiesFromJobs,
-    amenitiesProvided,
-    amenitiesLost: AMENITIES_LOST,
-    amenitiesUsage,
-    amenitiesAvailable
-  };
 
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
@@ -2021,6 +2049,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
+  { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
@@ -2207,6 +2236,7 @@ const MODIFIER_CATEGORIES = [
   { id: "stratumOutput", label: "modifierCatStratumOutput", unit: "percent" },
   { id: "jobUpkeep", label: "modifierCatJobUpkeep", unit: "percent" },
   { id: "jobResourceMult", label: "modifierCatJobResourceMult", unit: "percent" },
+  { id: "stabilityEffect", label: "modifierCatStabilityEffect", unit: "percent" },
   { id: "tradeConversion", label: "modifierCatTradeConversion", unit: "percent" },
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
   { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
@@ -2222,6 +2252,7 @@ function modifierSourceName(source) {
     return t(currentLang, getPolicyOption(groupId, optionId).i18nKey);
   }
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
+  if (source.kind === "stability") return t(currentLang, "conditionsStability");
   return source.id;
 }
 
@@ -2425,7 +2456,8 @@ function renderConditions(totals) {
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
-      ["stability", "conditionsStability", st.value, false]
+      ["stability", "conditionsStability", st.value, false],
+      ["stabilityEffect", "conditionsStabilityEffect", c.stabilityEffect * 100, true]
     ]);
     addNote(amenitiesFormula());
   } else {
@@ -2433,7 +2465,8 @@ function renderConditions(totals) {
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
-      ["stability", "conditionsStability", st.value, false]
+      ["stability", "conditionsStability", st.value, false],
+      ["stabilityEffect", "conditionsStabilityEffect", c.stabilityEffect * 100, true]
     ]);
     addNote(st.approval >= 50
       ? t(currentLang, "conditionsFormulaApprovalHigh")(fmt(st.approval), formatAmount(st.approvalBonus, true))

@@ -42,6 +42,7 @@ export const STACKING_RULES = {
     stratumOutput: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
     jobUpkeep: rule("add", 0, "modifierStackJobUpkeep", "jobUpkeep"),
     jobResourceMult: rule("add", null, "modifierStackJobResourceMult", "jobProducedResource"),
+    stabilityEffect: rule("add", null, "modifierStackStabilityEffect", "jobProducedResource"),
     tradeConversion: rule("add", null, "modifierStackTradeConversion", "jobTradeOutput"),
     resourceMult: rule("add", null, "modifierStackResourceMult", "totalPositiveProduction"),
     resourceFlat: rule("add", null, "modifierStackExternal", "externalIncome"),
@@ -51,7 +52,7 @@ export const STACKING_RULES = {
 
 /** Orden en que computeTotals() aplica los pasos (claves i18n de la lista del panel). */
 export const CALCULATION_ORDER = {
-  "stellaris-pc-4.5.2": ["modifierOrder1", "modifierOrder2", "modifierOrder3", "modifierOrder4", "modifierOrder4b", "modifierOrder5", "modifierOrder6", "modifierOrder7"]
+  "stellaris-pc-4.5.2": ["modifierOrder1", "modifierOrder2", "modifierOrder3", "modifierOrder4", "modifierOrder4a", "modifierOrder4b", "modifierOrder5", "modifierOrder6", "modifierOrder7"]
 };
 
 export function getStackingRules(rulesetId) {
