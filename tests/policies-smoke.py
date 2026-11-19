@@ -374,6 +374,26 @@ async def main():
         cap = await pg.evaluate("()=>document.querySelector('#planet-capital-name')?.innerText")
         check("back to a regular planet: tier II kept (Planetary Administration)", cap == "Planetary Administration", cap)
 
+        # 13. P10.5: Hive / Machine / Nanite Worlds (Unspecialized Cluster / Nexus sets, machine pop housing usage -10 %)
+        await body("Hive World")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("hive world: Unspecialized Cluster sets", names[1:] == ["Unspecialized Cluster 1", "Unspecialized Cluster 2", "Unspecialized Cluster 3"], names)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[1].querySelectorAll('option')].map(o=>o.value)")
+        check("cluster specializations: urban + the three resource ones", all(x in opts for x in ["energyGeneration", "mineralExtraction", "agriculturalFocus", "heavyIndustry"]), opts)
+        await body("Machine World")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("machine world: Unspecialized Nexus sets", names[1:] == ["Unspecialized Nexus 1", "Unspecialized Nexus 2", "Unspecialized Nexus 3"], names)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[1].querySelectorAll('option')].map(o=>o.value)")
+        check("nexus specializations: no Agricultural Focus", "energyGeneration" in opts and "mineralExtraction" in opts and "agriculturalFocus" not in opts, opts)
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("housing: Unspecialized Nexus 1 x 1000", "Unspecialized Nexus 1 ×1 +1000" in housing, housing)
+        rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
+        check("machine world: housing used by pops row (-10 %)", "housingUsage" in rows, rows)
+        await body("Continental")
+        rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
+        check("regular planet: no housing usage row", "housingUsage" not in rows, rows)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

@@ -37,7 +37,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Jobs UI:** "Jobs created / Jobs assumed staffed"; click ±10, Ctrl/Cmd ±100, Shift = 100 %/0 %; no reset button; the notice under the summary explains only the click controls.
 
 ### 4.1 Body types audit (P10.1, wiki 4.5.2 *Celestial object*, *Districts*, *District specialization*, *Capital building*)
-Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads the bodies wired in so far (P10.2 Ecumenopolis, P10.3 Ring Worlds, P10.4 Habitats). Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
+Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads the bodies wired in so far (P10.2 Ecumenopolis, P10.3 Ring Worlds, P10.4 Habitats, P10.5 Hive / Machine / Nanite Worlds). Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
 
 | Body | Applied effects | Districts | Size / slots | Info only |
 |---|---|---|---|---|
@@ -47,7 +47,7 @@ Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads th
 | Tomb / Relic | — | regular; Relic: Collapsed Spire blocker locks the first primary specialization, cleared → Central Spire (P10.6/P10.8) | regular | capacity +300 / +400, habitability |
 | Ecumenopolis | +20 % resources from jobs | Residential Arcology primary (+1500 housing, +300 Clerks / gestalt +900 Logistic Drones, −5 energy) + 3 Unspecialized Arcology secondary sets (+1500 housing, −5 energy, one urban specialization each) | regular | capacity +600 |
 | Hive World | +10 % resources from jobs | Hive Cluster (+600 on Hive World, already modelled) + 3 Unspecialized Cluster sets (+1800 housing) | regular | capacity +600 |
-| Machine / Nanite World | Machine: +10 % resources from jobs, −10 % pop housing usage | Central Nexus + 3 Unspecialized Nexus sets (+1000 housing) | regular | Machine capacity +300; Nanite: no capacity on the wiki |
+| Machine / Nanite World | Machine: +10 % resources from jobs, −10 % pop housing usage (housing needed = pops × 0.9: extra row in the conditions panel, used for the missing housing and its stability penalty) | Central Nexus + 3 Unspecialized Nexus sets (+1000 housing) | regular | Machine capacity +300; Nanite: no capacity on the wiki |
 | Ring World | — | City / Hive / Nexus Segment primary (+2500/+3000/+2500 housing, jobs, −5 energy) + 3 Unspecialized Segment sets (+2500 housing) | fixed 10 | capacity +600 |
 | Shattered Ring World | — | regular, resource districts uncapped | fixed 25 | Repair decision |
 | Habitat | — | Habitation District primary (+1000 housing, −2 energy −0.5 alloys) + Reactor District / Astro-Mining Bay / Research District (+300 housing, +100 Technicians / +100 Miners / +30 of each researcher); habitat capitals II–IV | fixed 6 | capacity +300, habitability by tier, deposits cap |

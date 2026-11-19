@@ -977,6 +977,9 @@ function computeTotals() {
   const designationHousing = designation ? (designation.flat.housing || 0) : 0;
   const designationAmenities = designation ? (designation.flat.amenities || 0) : 0;
   const conditionsHousing = housing + designationHousing;
+  // P10.5: pop housing usage of the body (Machine World −10 %): housing needed = pops × (1 + pct/100).
+  const housingUsagePct = bodyRules()?.popHousingUsagePct || 0;
+  const housingUsage = pops * (1 + housingUsagePct / 100);
   const amenitiesFromBuildings = Math.round(amenities);
   const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + designationAmenities + 1e-9);
   const amenitiesProvided = amenitiesFromBuildings + amenitiesFromJobs;
@@ -1014,7 +1017,7 @@ function computeTotals() {
       const delta = stability.approval - 50;
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
-    stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
+    stability.housingPenalty = housingUsage > 0 ? (40 * Math.max(0, housingUsage - conditionsHousing)) / housingUsage : 0;
     stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
@@ -1032,7 +1035,9 @@ function computeTotals() {
     amenitiesEffect,
     pops,
     housingProvided: conditionsHousing,
-    housingMissing: Math.max(0, pops - conditionsHousing),
+    housingUsage,
+    housingUsagePct,
+    housingMissing: Math.max(0, housingUsage - conditionsHousing),
     amenitiesFromBuildings,
     amenitiesFromJobs,
     amenitiesProvided,
@@ -2827,6 +2832,8 @@ function renderConditions(totals) {
     ["civilians", "conditionsCivilians", c.civilians, false],
     ["pops", "conditionsPops", c.pops, false],
     ["housingProvided", "conditionsHousingProvided", c.housingProvided, false],
+    // P10.5: only on bodies that change the pop housing usage (Machine World).
+    ...(c.housingUsagePct ? [["housingUsage", "conditionsHousingUsage", -c.housingUsage, true]] : []),
     ["housingMissing", "conditionsHousingMissing", c.housingMissing, true],
     ["amenitiesProvided", "conditionsAmenitiesProvided", c.amenitiesProvided, false],
     ["amenitiesLost", "conditionsAmenitiesLost", -c.amenitiesLost, true],
@@ -2840,7 +2847,8 @@ function renderConditions(totals) {
     row.dataset.condition = key;
     const name = document.createElement("span");
     name.className = "planet-resource-name";
-    name.textContent = t(currentLang, labelKey);
+    const label = t(currentLang, labelKey);
+    name.textContent = typeof label === "function" ? label(c.housingUsagePct) : label;
     const val = document.createElement("span");
     val.className = "planet-resource-value";
     val.textContent = formatAmount(value * EFFECT_SCALE, key === "amenitiesAvailable");

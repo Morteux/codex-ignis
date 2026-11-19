@@ -8,7 +8,7 @@
  * *Jobs* (Clerk, Thermoforger, Thermotechnic Mentor, Neural Chip).
  *
  * The engine reads the rules of the body types wired in so far (P10.2:
- * Ecumenopolis, P10.3: Ring Worlds, P10.4: Habitats); P10.5–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
+ * Ecumenopolis, P10.3: Ring Worlds, P10.4: Habitats, P10.5: Hive / Machine / Nanite Worlds); P10.5–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
  * as written on the wiki (housing and jobs ×100, upkeep and costs as plain
  * numbers, percentages as whole numbers). Open questions are listed in
  * PLANET_SIM_GDD.md §4.1 and must be answered before the value is used.
@@ -31,7 +31,7 @@ export const REGULAR_BODY_RULES = {
  * - planetCapacity: per free district slot (info only; pop growth is out of scope).
  * - jobResourcePct: "+X% Resources from jobs" ({ all } or per resource id).
  * - happinessPct: flat happiness (treated as points, like edicts, GDD §5.1).
- * - popHousingUsagePct: pop housing usage change.
+ * - popHousingUsagePct: pop housing usage change (housing needed = pops × (1 + pct/100)).
  * - fixedSize: district slots fixed by the body (megastructures).
  * - districtLayout: "standard" | "urbanSecondary" (secondary urban districts
  *   replace resource districts) | "habitat" | "volcanic" | "lathe".
@@ -221,12 +221,22 @@ export const SPECIAL_DISTRICTS = {
   // Hive / Machine / Nanite Worlds
   unspecializedCluster: {
     role: "secondaryUrban", bodies: ["hive"], housing: 1800,
-    technologyHousing: [{ id: "weatherControlSystems", housing: 100 }, { id: "antiGravityEngineering", housing: 100 }],
+    i18nKey: "districtUnspecializedCluster", img: "districs/district_hive.png",
+    // "+100 with Extended Hives" is not on any technology page (not applied).
+    technologyHousing: [
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 100 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 100 }
+    ],
     upkeep: { energy: -2 }, cost: { minerals: 500 }, time: 480
   },
   unspecializedNexus: {
     role: "secondaryUrban", bodies: ["machine", "nanite"], housing: 1000,
-    technologyHousing: [{ id: "weatherControlSystems", housing: 100 }, { id: "antiGravityEngineering", housing: 100 }],
+    i18nKey: "districtUnspecializedNexus", img: "districs/district_nexus.png",
+    // "+100 with Optimized Nexus" is not on any technology page (not applied).
+    technologyHousing: [
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 100 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 100 }
+    ],
     upkeep: { energy: -2 }, cost: { minerals: 500 }, time: 480
   },
   // Habitat
