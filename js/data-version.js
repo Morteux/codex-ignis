@@ -135,6 +135,12 @@ export const DATA_COLLECTIONS = {
     // P16.10: tasas de cambio y efectos revisados contra las páginas 4.5.2; los requisitos de tradición/federación/origen siguen sin modelarse (ver policy-data.js).
     verification: VERIFICATION.WIKI_VERIFIED
   },
+  edicts: {
+    file: "js/edict-data.js",
+    sources: [WIKI + "Edicts"],
+    // P18: valores transcritos de la página 4.5.2; las decisiones de modelado (tradiciones cumplidas, % de felicidad como puntos) se revisan en P14.
+    verification: VERIFICATION.WIKI_VERIFIED
+  },
   stackingRules: {
     file: "js/stacking-rules.js",
     // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.

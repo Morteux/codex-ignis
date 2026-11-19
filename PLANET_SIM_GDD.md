@@ -20,7 +20,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 
 ## 3. Architecture
 - Vanilla JS ES modules, no build. Shared state `js/planet-state.js` (body, designation, ethics, authority, civics, species type, policies, planet name/id, empire id/modified, `rulesetId`).
-- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `info-panels.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`.
+- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `info-panels.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`, `edict-data.js`.
 - Images from `STELLARIS_ASSETS_BASE` (`asset-config.js`); UI icons in `img/ui/`.
 - Conventions: building/job effects stored ×100 as on the wiki, `divideEffect()` once when computing; jobs, pops, housing and amenities are **displayed ×100** (100 = 1 pop) and calculated in real units. CSS: never set `display` on an element toggled with `hidden` without `:not([hidden])`.
 - Test: `tests/policies-smoke.py` (Playwright, English UI, run from the project root).
