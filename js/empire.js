@@ -489,6 +489,27 @@ function renderCivicsList() {
   });
 }
 
+/**
+ * P13.7: id del último imperio guardado seleccionado, para restaurarlo al
+ * recargar (si sigue existiendo). null = borrador sin guardar.
+ */
+const LAST_EMPIRE_KEY = "codex-ignis-last-empire";
+function storeLastEmpire(id) {
+  try {
+    if (id) window.localStorage.setItem(LAST_EMPIRE_KEY, id);
+    else window.localStorage.removeItem(LAST_EMPIRE_KEY);
+  } catch (error) {
+    // Sin almacenamiento: la selección solo dura la visita.
+  }
+}
+function readLastEmpire() {
+  try {
+    return window.localStorage.getItem(LAST_EMPIRE_KEY);
+  } catch (error) {
+    return null;
+  }
+}
+
 let lastPublishedKey = null;
 /** Publica éticas, autoridad, principios e imperio seleccionado en el estado compartido (solo si cambian) para que planet-sim.js y la barra de resumen los usen. */
 function publishSelection() {
@@ -499,6 +520,7 @@ function publishSelection() {
   const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
+  storeLastEmpire(selectedEmpireId);
   updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, empireId: selectedEmpireId, empireModified: modified });
 }
 
@@ -757,4 +779,12 @@ langButtons.forEach((btn) => {
   });
 });
 
+// P13.7: al recargar se restaura el último imperio seleccionado si sigue existiendo.
+{
+  const lastEmpire = getEmpire(readLastEmpire());
+  if (lastEmpire) {
+    selectedEmpireId = lastEmpire.id;
+    applyConfig(lastEmpire);
+  }
+}
 refresh();

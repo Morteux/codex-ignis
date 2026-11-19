@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P17) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
@@ -42,7 +42,6 @@ Models another empire placing branch office buildings on this planet; any branch
 - [ ] P13.3 Automated UI smoke tests (tabs, save/load, empire switch)
 - [ ] P13.4 Accessibility pass
 - [ ] P13.6 Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
-- [ ] P13.7 Bug: restore the last selected empire on reload (if it still exists)
 
 ## P15 — Official localization
 - [ ] P15.1 Receive the game localisation files (owner) and decide the extraction format

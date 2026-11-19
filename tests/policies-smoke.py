@@ -129,6 +129,7 @@ async def main():
         old = dict(saved[0]); old.pop("policyIds"); old["name"] = "Old empire"; old["id"] = "old-1"
         await pg.evaluate("(o)=>{const a=JSON.parse(localStorage.getItem('codex-ignis-empires'));a.push(o);localStorage.setItem('codex-ignis-empires',JSON.stringify(a))}", old)
         await pg.reload(); await pg.wait_for_timeout(500)
+        check("last selected empire restored on reload (P13.7)", await pg.input_value("#planet-summary-empire") == saved[0]["id"])
         await pg.select_option("#planet-summary-empire", "old-1")
         await tab("empire")
         check("old empire loads with default trade policy", await selected_policy("Trade Policy") == "Wealth Creation")

@@ -61,6 +61,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - localStorage keys `codex-ignis-empires`, `codex-ignis-planets`. JSON export/import (`{type: "planet" | "empire"}`); missing/unsupported `rulesetId` or newer `schemaVersion` → rejected; fields sanitized; new id on import; unknown ids replaced by defaults, never invented.
 - Planet: `schemaVersion` (1), `rulesetId`, unique `name`, `celestialTypeId`, `designationId`, `planetSize`, `capitalTier`, districts, `built` (slot key → building id), `staffingOverrides`, `empireId`, `empireSnapshot`, `noEmpire`. Optional fields added later (`manualConditions` {happiness, stability}, `policyIds`, `civilians` (×100 integer), edicts, branch offices) keep `schemaVersion` 1 if older readers can ignore them.
 - Empire: `schemaVersion`, `rulesetId`, `id`, `name`, `ethicIds`, `authorityId`, `civicIds`, `speciesType`, `policyIds`.
+- Last selected empire: id in `codex-ignis-last-empire`; restored on reload if it still exists (otherwise the default draft). Not exported.
 - Deleted empire: the planet keeps the snapshot and shows "no empire". If the empire exists, its current version is used on load. Loading a planet replaces the current one without asking (only unsaved empire changes ask). A file with more districts than size raises the size.
 
 ## 9. Known simplifications and assumptions (verify in P14)
