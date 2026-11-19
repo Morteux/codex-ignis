@@ -456,6 +456,9 @@ export const JOBS = {
   politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png", stratum: "ruler" },
   // P10.2: Clerk (worker, individualist), created by Residential Arcologies and City Segments.
   clerk: { i18nKey: "jobClerk", img: "jobs/job_clerk.png", stratum: "worker" },
+  // P10.6: Volcanic Worlds (wiki 4.5.2 "Jobs"). Thermoforger = Miner job swap (worker), Thermotechnic Mentor (specialist).
+  thermoforger: { i18nKey: "jobThermoforger", img: "jobs/job_miner.png", stratum: "worker" },
+  thermotechnic_mentor: { i18nKey: "jobThermotechnicMentor", img: "jobs/job_polytechnic_mentor.png", stratum: "specialist" },
   // Especialistas ligados a edificios de ética/principio
   death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
   mortal_initiate: { i18nKey: "jobMortalInitiate", img: "jobs/job_mortal_initiate.png", stratum: "specialist" },
@@ -501,6 +504,8 @@ export const JOB_OUTPUTS = {
   farmer: { food: 6 },
   // P10.2: Clerk, wiki 4.5.2 "Jobs" (+3 trade, +300 amenities = 3 per pop; its +1% trade from jobs is JOB_RESOURCE_MULT).
   clerk: { trade: 3, amenities: 3 },
+  // P10.6: Thermoforger (Miner swap on Volcanic planets): +5 minerals +0.5 alloys, −1 energy.
+  thermoforger: { minerals: 5, alloys: 0.5, energy: -1 },
   // Especialistas
   metallurgist: { alloys: 3, minerals: -6 },
   artisan: { consumer_goods: 6, minerals: -6 },
@@ -519,6 +524,9 @@ export const JOB_OUTPUTS = {
   mortal_initiate: { unity: 1, society: 0.5, amenities: 2 },
   // "+2 Research" de la wiki = 2 de cada tipo de investigación.
   experiment_engineer: { physics: 2, society: 2, engineering: 2, consumer_goods: -2 },
+  // P10.6: Thermotechnic Mentor, "+1 Research" read as +1 of each research type (same reading as above); +1 unity.
+  // Its workforce-scaling bonuses are JOB_WORKFORCE_SCALING; gestalt upkeep in GESTALT_JOB_UPKEEP (Pyroclastic Drone).
+  thermotechnic_mentor: { physics: 1, society: 1, engineering: 1, unity: 1, consumer_goods: -3 },
   // Gestalt (el mantenimiento depende de la especie: ver GESTALT_JOB_UPKEEP)
   synapse_drone: { unity: 3 },
   coordinator: { unity: 3 },
@@ -561,6 +569,17 @@ export const CIVILIAN_OUTPUTS = {
 /** P10.2: "+X% <resource> from jobs" granted per staffed job (wiki 4.5.2 "Jobs"): fraction per job, step 4 of the calculation. */
 export const JOB_RESOURCE_MULT = {
   clerk: { trade: 0.01 }
+};
+
+/**
+ * P10.6: per-job bonuses that scale with the workforce of other jobs on the planet (wiki 4.5.2 "Jobs").
+ * Thermotechnic Mentor: per 100 workforce (= 1 staffed pop) producing minerals / energy / consumer goods / alloys,
+ * +0.05 unity / physics / society / engineering, up to +3 each per mentor. A job "produces" a resource when its base
+ * output (JOB_OUTPUTS, after the gestalt upkeep swap) is positive for it; Thermoforgers count for minerals and alloys.
+ * Applied as a per-job bonus (step 2, own breakdown line), so job efficiency and "% from jobs" apply on top.
+ */
+export const JOB_WORKFORCE_SCALING = {
+  thermotechnic_mentor: { perPop: 0.05, max: 3, outputs: { minerals: "unity", energy: "physics", consumer_goods: "society", alloys: "engineering" } }
 };
 
 export const JOB_EFFECTS = {
@@ -607,7 +626,9 @@ export const GESTALT_JOB_UPKEEP = {
   experiment_engineer: { machine: 6, hive: 6 },
   synapse_drone: { machine: 2, hive: 2 },
   coordinator: { machine: 4, hive: 4 },
-  logistic_drone: { machine: 2, hive: 2 }
+  logistic_drone: { machine: 2, hive: 2 },
+  // P10.6: Pyroclastic Drone (gestalt Thermotechnic Mentor): the wiki gives −7 minerals for every gestalt empire.
+  thermotechnic_mentor: { fixed: { minerals: 7 } }
 };
 
 /** Estadística de JOB_EFFECTS -> { i18nKey, icono (carpeta "modifiers/" de la API de assets; nombres verificados contra StellarisAssetsTree.txt) }. */

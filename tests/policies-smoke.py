@@ -458,6 +458,32 @@ async def main():
         names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
         check("back to a regular planet: four district groups", len(names) == 4, names)
 
+        # 15. P10.6: Volcanic World (Geothermal Powerplant / Magma Conduit / Thermotechnic Forum, Miner -> Thermoforger swap,
+        # Thermotechnic Mentor workforce bonuses, +5 % alloys from jobs)
+        await body("Volcanic")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("volcanic district cards", names[1:] == ["Geothermal Powerplant", "Magma Conduit", "Thermotechnic Forum"], names)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[2].querySelectorAll('option')].map(o=>o.value)")
+        check("Magma Conduit: mining specializations", "mineralExtraction" in opts, opts)
+        forum = await pg.evaluate("()=>{const c=document.querySelectorAll('.planet-district-card')[3];return [c.querySelector('select')===null,c.querySelector('.planet-district-cap-input')===null]}")
+        check("Thermotechnic Forum: no specializations, no manual cap", forum == [True, True], forum)
+        for i in (2, 3):
+            await pg.evaluate("""(i)=>{const c=document.querySelectorAll('.planet-district-card')[i];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""", i)
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[2];const s=c.querySelector('select');s.value='mineralExtraction';s.dispatchEvent(new Event('change'))}""")
+        jobs = await pg.inner_text("#planet-summary")
+        check("volcanic jobs: Thermoforgers and Thermotechnic Mentors, no Miners", "Thermoforger" in jobs and "Thermotechnic Mentor" in jobs and "Miner" not in jobs, jobs[:500])
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("housing: Magma Conduit +200, Thermotechnic Forum +200", "Magma Conduit ×1 +200" in housing and "Thermotechnic Forum ×1 +200" in housing, housing)
+        mods = await pg.evaluate("()=>document.querySelector('#planet-modifiers').innerText")
+        check("volcanic: +5 % alloys from jobs in the modifiers", "Volcanic" in mods and "Alloys" in mods, mods[:400])
+        await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>/^Unity/.test(r.innerText))?.click()")
+        bd = await pg.evaluate("()=>document.querySelector('#planet-production-net')?.innerText")
+        # 3 Thermoforgers produce minerals and alloys: +0.15 unity and +0.15 engineering per mentor (2 mentors).
+        check("breakdown: mentor bonuses per producing workforce", "bonuses per producing workforce" in (bd or ""), bd)
+        await body("Continental")
+        jobs = await pg.inner_text("#planet-summary")
+        check("back to a regular planet: Miners again", "Miner" in jobs and "Thermoforger" not in jobs, jobs[:500])
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

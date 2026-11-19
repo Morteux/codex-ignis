@@ -57,6 +57,7 @@ import {
   CAPITAL_SETS,
   capitalSetForAuthority,
   GESTALT_JOB_UPKEEP,
+  JOB_WORKFORCE_SCALING,
   SPECIES_TYPES,
   allowedSpeciesTypes,
   DISTRICTS,
@@ -286,15 +287,18 @@ function primaryDistrictDef() {
 function secondaryDistrictDef(cat) {
   const rules = bodyRules();
   // P10.4: Habitat resource districts (Reactor District, Astro-Mining Bay, Research District) with the specializations of their category.
-  if (rules?.districtLayout === "habitat") {
+  // P10.6: Volcanic resource districts (Geothermal Powerplant, Magma Conduit, Thermotechnic Forum), same shape, no manual cap.
+  if (rules?.districtLayout === "habitat" || rules?.districtLayout === "volcanic") {
     const special = SPECIAL_DISTRICTS[rules.resourceDistricts[RESOURCE_DISTRICT_ORDER.indexOf(cat)]];
     const regular = DISTRICTS[special.category];
     return {
-      habitatResource: true,
+      habitatResource: rules.districtLayout === "habitat",
       i18nKey: special.i18nKey,
       img: special.img,
       jobs: special.jobs || {},
       housing: special.housing,
+      gestaltHousing: special.gestaltHousing || 0,
+      agrarianIdyllHousing: special.agrarianIdyllHousing || 0,
       upkeep: special.upkeep,
       lockedTooltipKey: regular ? regular.lockedTooltipKey : "planetSimNoSpecializationTooltip",
       slotsPerSpecialization: regular ? regular.slotsPerSpecialization : 0,
@@ -643,9 +647,12 @@ function computeTotals() {
     }
   };
 
+  // P10.6: job swaps of the body (Volcanic: every Miner job becomes a Thermoforger job).
+  const bodyJobSwaps = bodyRules()?.jobSwaps || {};
   const addJobCapacity = (jobId, rawAmount) => {
     if (!rawAmount) return;
-    jobCapacities[jobId] = (jobCapacities[jobId] || 0) + rawAmount;
+    const swapped = bodyJobSwaps[jobId] || jobId;
+    jobCapacities[swapped] = (jobCapacities[swapped] || 0) + rawAmount;
   };
 
   // P10.5: active buildings first, for the upkeep multipliers of the Synaptic Lathe buildings (Expanded Reactor: −15 %
@@ -935,12 +942,34 @@ function computeTotals() {
   const allowedSpecies = allowedSpeciesTypes(empireState.authorityId);
   const speciesType = SPECIES_TYPES.find((type) => type.id === empireState.speciesType && allowedSpecies.includes(type.id))
     || SPECIES_TYPES.find((type) => type.id === allowedSpecies[0]);
+  // P10.6: staffed pops of the jobs producing each resource (base output > 0), for JOB_WORKFORCE_SCALING.
+  const producerPops = {};
+  Object.keys(jobCapacities).forEach((jobId) => {
+    const staffed = divideEffect(jobAssignments[jobId] || 0);
+    Object.entries(JOB_OUTPUTS[jobId] || {}).forEach(([resourceId, amount]) => {
+      if (amount > 0 && staffed) producerPops[resourceId] = (producerPops[resourceId] || 0) + staffed;
+    });
+  });
+  const workforceScalingBonus = (jobId) => {
+    const scaling = JOB_WORKFORCE_SCALING[jobId];
+    if (!scaling) return {};
+    const bonus = {};
+    Object.entries(scaling.outputs).forEach(([producedId, outputId]) => {
+      const amount = Math.min(scaling.max, scaling.perPop * (producerPops[producedId] || 0));
+      if (amount) bonus[outputId] = (bonus[outputId] || 0) + amount;
+    });
+    return bonus;
+  };
   Object.keys(jobCapacities).forEach((jobId) => {
     const unit = { ...(JOB_OUTPUTS[jobId] || {}) };
     // Conciencia gestalt: el mantenimiento en bienes de consumo se sustituye por el
     // del recurso que consume la especie elegida (ver GESTALT_JOB_UPKEEP).
     const gestaltUpkeep = gestaltEmpire ? GESTALT_JOB_UPKEEP[jobId] : null;
-    if (gestaltUpkeep) {
+    if (gestaltUpkeep?.fixed) {
+      // P10.6: gestalt upkeep in a fixed resource whatever the species (Pyroclastic Drone: −7 minerals).
+      delete unit.consumer_goods;
+      Object.entries(gestaltUpkeep.fixed).forEach(([resourceId, amount]) => { unit[resourceId] = (unit[resourceId] || 0) - amount; });
+    } else if (gestaltUpkeep) {
       delete unit.consumer_goods;
       const isMachine = speciesType.id === "machine";
       unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) - (isMachine ? gestaltUpkeep.machine : gestaltUpkeep.hive);
@@ -952,6 +981,12 @@ function computeTotals() {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
     const buildingUnit = { ...unit };
+    // P10.6: per-job bonuses scaling with the workforce of other jobs (Thermotechnic Mentor), own breakdown line.
+    Object.entries(workforceScalingBonus(jobId)).forEach(([resourceId, amount]) => {
+      unit[resourceId] = (unit[resourceId] || 0) + amount;
+      pushModifier({ kind: "job", id: jobId }, "jobFlat", { job: jobId, resource: resourceId }, amount);
+    });
+    const scaledUnit = { ...unit };
     Object.entries(edictJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
@@ -978,7 +1013,8 @@ function computeTotals() {
       addSignedResource(resourceId, perJob * assigned);
       recordBreakdown(resourceId, "jobsBase", (baseUnit[resourceId] || 0) * assigned);
       recordBreakdown(resourceId, "jobsBonus", ((buildingUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
-      recordBreakdown(resourceId, "edictJobFlat", ((bonusedUnit[resourceId] || 0) - (buildingUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "jobWorkforceScaling", ((scaledUnit[resourceId] || 0) - (buildingUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "edictJobFlat", ((bonusedUnit[resourceId] || 0) - (scaledUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobsModifier", (perJob - (bonusedUnit[resourceId] || 0)) * assigned);
       if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
     });
@@ -2588,6 +2624,7 @@ function refreshEconomyOnly() {
 const BREAKDOWN_SOURCES = [
   { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg" },
   { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
+  { id: "jobWorkforceScaling", pos: "breakdownJobWorkforceScaling", neg: "breakdownJobWorkforceScaling" },
   { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat" },
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },

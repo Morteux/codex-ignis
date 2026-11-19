@@ -8,7 +8,7 @@
  * *Jobs* (Clerk, Thermoforger, Thermotechnic Mentor, Neural Chip).
  *
  * The engine reads the rules of the body types wired in so far (P10.2:
- * Ecumenopolis, P10.3: Ring Worlds, P10.4: Habitats, P10.5: Hive / Machine / Nanite Worlds); P10.5–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
+ * Ecumenopolis, P10.3: Ring Worlds, P10.4: Habitats, P10.5: Hive / Machine / Nanite Worlds, P10.6: Volcanic / Gaia / Tomb / Relic); P10.5–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
  * as written on the wiki (housing and jobs ×100, upkeep and costs as plain
  * numbers, percentages as whole numbers). Open questions are listed in
  * PLANET_SIM_GDD.md §4.1 and must be answered before the value is used.
@@ -48,6 +48,12 @@ export const BODY_TYPE_RULES = {
     planetCapacity: 400,
     jobResourcePct: { alloys: 5 },
     districtLayout: "volcanic",
+    // P10.6: the three secondary groups (generator/mining/agriculture keys) hold these districts, in this order.
+    // Geothermal Powerplant takes the generator specializations, Magma Conduit the mining ones (District specialization
+    // page); no specialization lists the Thermotechnic Forum (it unlocks no building slots).
+    resourceDistricts: ["geothermalPowerplant", "magmaConduit", "thermotechnicForum"],
+    // Jobs page: Thermoforger is the Miner job swap on a Volcanic planet (every Miner job of the planet).
+    jobSwaps: { miner: "thermoforger" },
     infoOnly: ["Volcanic climate (habitability)"]
   },
   gaia: {
@@ -268,14 +274,17 @@ export const SPECIAL_DISTRICTS = {
   // Volcanic World (resource districts)
   geothermalPowerplant: {
     role: "resource", category: "generator", bodies: ["volcanic"], housing: 200, gestaltHousing: 100, agrarianIdyllHousing: 300,
+    i18nKey: "districtGeothermalPowerplant", img: "districs/district_geothermal.png",
     jobs: { technician: 200 }, upkeep: { energy: -1 }, cost: { minerals: 300 }, time: 240
   },
   magmaConduit: {
     role: "resource", category: "mining", bodies: ["volcanic"], housing: 200, gestaltHousing: 100, agrarianIdyllHousing: 300,
+    i18nKey: "districtMagmaConduit", img: "districs/district_melting.png",
     jobs: { thermoforger: 200 }, upkeep: { energy: -1 }, cost: { minerals: 300 }, time: 240
   },
   thermotechnicForum: {
     role: "resource", category: "research", bodies: ["volcanic"], housing: 200,
+    i18nKey: "districtThermotechnicForum", img: "districs/district_polytechnic.png",
     jobs: { thermotechnic_mentor: 200 }, upkeep: { energy: -3 }, cost: { minerals: 450 }, time: 250
   },
   // Synaptic Lathe
