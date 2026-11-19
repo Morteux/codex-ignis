@@ -256,8 +256,10 @@ export const DISTRICTS = {
    * en las opciones cuyo requisito se puede modelar: Bahías de Cultivo Solar (solo
    * hábitat), Aldeas Agrarias (Idilio Agrario, sin Pescadores) y Caseríos Costeros
    * (Idilio Agrario + Pescadores; sustituyen a las Aldeas). NO se modelan los de
-   * origen (Urbanización Subterránea: Subterráneo) ni de característica planetaria
-   * (Minas Gravitónicas: Montañas en el cielo, ver P10.8): siguen siempre disponibles.
+   * origen (Urbanización Subterránea: Subterráneo; Generación de Energía y Extracción de
+   * Minerales: no Naturaleza salvaje) ni de característica planetaria (Minas Gravitónicas:
+   * Montañas en el cielo, ver P10.8): siguen disponibles, con el requisito indicado
+   * (`{ type: "unmodelled" }`, ver js/building-requirements.js).
    *
    * Especializaciones confirmadas en la wiki (página "District
    * specialization", tablas "Generator/Mining/Agriculture
@@ -288,6 +290,7 @@ export const DISTRICTS = {
         id: "energyGeneration",
         i18nKey: "specializationEnergyGeneration",
         img: "districts_specialization/District_specialization_energy.png",
+        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }],
         jobs: { technician: 100 },
         permittedSets: ["energy"]
       },
@@ -317,6 +320,7 @@ export const DISTRICTS = {
         id: "mineralExtraction",
         i18nKey: "specializationMineralExtraction",
         img: "districts_specialization/District_specialization_minerals.png",
+        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }],
         jobs: { miner: 100 },
         permittedSets: ["minerals"]
       },
@@ -324,6 +328,7 @@ export const DISTRICTS = {
         id: "subterraneanUrbanization",
         i18nKey: "specializationSubterraneanUrbanization",
         img: "districts_specialization/District_specialization_minerals.png",
+        requires: [{ type: "unmodelled", i18nKey: "reqSubterraneanOrigin" }],
         jobs: { miner: 50, trader: 50 },
         permittedSets: ["minerals", "origin"]
       },
@@ -331,6 +336,7 @@ export const DISTRICTS = {
         id: "gravitonicMines",
         i18nKey: "specializationGravitonicMines",
         img: "districts_specialization/District_specialization_minerals.png",
+        requires: [{ type: "unmodelled", i18nKey: "reqMountainsInTheSky" }],
         jobs: { miner: 50, physicist: 50 },
         permittedSets: ["minerals"]
       }

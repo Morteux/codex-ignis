@@ -16,6 +16,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Inspectable and honest:** every number explains its source; manual/estimated values are labelled; unmodelled mechanics are listed, never faked.
 - **Deterministic**, no backend, localStorage only.
 - **Legality enforced:** illegal combinations are never allowed (no sandbox mode).
+- **Unmodelled requirements are shown, never hidden** (owner rule 2026-11-19): a requirement the simulator does not model and has no plan to model (origin, planetary feature, planet modifier, relic attunement...) never blocks the option, but is listed next to it as "Requirement not modelled: ..." (`{ type: "unmodelled", i18nKey }` in `requires`).
 - **Unlock assumptions:** all technologies researched; no tradition unlocked (exception: tradition-gated policy options and edicts are available); DLC requirements ignored.
 - **Language:** es/en/jp UI. Until P15 no new es/jp translations: every new text is English (from the wiki) in all three languages. Key parity between languages is mandatory.
 
@@ -61,10 +62,11 @@ New jobs needed: Clerk (+3 trade, +3 amenities, +1 % trade from jobs), Thermofor
 - Research Enclave and the three research specializations are available everywhere except a Habitat primary district (red cross on the wiki), so Unspecialized Arcologies can take them.
 - Mineral Extraction is not available on Ring Worlds; Agricultural Focus not on Machine/Nanite Worlds (red crosses).
 - Habitat resource districts: manual cap per district (orbital deposits), saved with the planet (P10.4).
+- Synaptic Lathe (P10.5): the district cap is two districts per capital level (not the size 2). Neural Chip scaling needs the total chips (all pops).
+- Nanite World (P10.5): the wiki gives no planet capacity or "resources from jobs": nothing applied (bonuses may come from the species or a tradition).
 
 **Open questions (owner) — block the task that uses them:**
-5. (P10.5) Synaptic Lathe: size 2 vs "two districts per capital level" (+2/+4 from tiers III/IV): which one is the cap? Neural Chip scaling needs the total chips (all pops).
-6. (P10.5) Nanite World has no planet capacity or "resources from jobs" on the page: none applied.
+8. (P10.4) Research Station requires "Can build Zero-G Research Districts": is it the habitat Research District? Owner checking; until then shown as an unmodelled requirement.
 7. (P10.3) Ring World secondary Commercial/Research etc. swaps: same urban list as regular worlds?
 
 ## 5. Empire
@@ -132,7 +134,7 @@ Percent happiness/stability/crime values are treated as points (as for amenities
 - Stacking rules are the simulator's own (all additive); parent/sub-category job inheritance not modelled.
 - P7.8 data assumptions: Chemical/Synthetic Crystal Plants cost-upkeep-time copied from Exotic Gas Refineries; untyped "Research" = +0.1 of each research type; Waste Reprocessing Center set `origin`, Baol Organic Plant `food`/`factory`; monuments with no upkeep outside Memorialist; settled (not nomadic) variants; Corporate monument icons provisional.
 - Production Policy treated as stratum efficiency.
-- P10.4: habitat designations "Can build Reactor Districts / Astro-Mining Bays / Zero-G Research Districts" are locked only when that district's manual cap is 0; "Zero-G Research District" is read as the Research District of the *Districts* page.
+- P10.4: habitat designations "Can build Reactor Districts / Astro-Mining Bays" are locked only when that district's manual cap is 0.
 - P7.10: Agrarian Utopias uses the Districts page value (+200); *Society research* says +100. Optimized Nexus and Extended Hives are not on any technology page (they look like gestalt variants of Public Works Division) and are not applied.
 - Policy requirement columns partly unreadable on the wiki (tradition/federation conditions as documented).
 - Amenity-usage modifiers, crime/deviancy effect on stability, factions, events, traits, origins, leaders: not modelled.

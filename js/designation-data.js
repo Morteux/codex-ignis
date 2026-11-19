@@ -52,7 +52,8 @@
  * tipo de especie no es ninguno: "Agri-World" exige al menos una especie
  * biológica, y aquí la única especie es la elegida en la pestaña Imperio).
  *
- * No se modelan (se ignoran, no se inventan): los requisitos de origen
+ * No se modelan (no bloquean, pero se muestran junto a la opción con
+ * `unmodelled(...)`, ver js/building-requirements.js): los requisitos de origen
  * (Naturaleza salvaje: Mundo tranquilo, Mundo tejedor y el bloque
  * "wilderness"), de modificador de planeta (Colonia penal, Mundo turístico,
  * Mundo del placer, Mundo de esclavos), de tradición (Mundo nanotecnológico:
@@ -69,11 +70,14 @@ const authority = (...ids) => ({ type: "authority", ids });
 const civic = (...keys) => ({ type: "civic", keys });
 const notCivic = (...keys) => ({ type: "notCivic", keys });
 const celestial = (...ids) => ({ type: "celestial", ids });
-// P10.4: "Can build Reactor Districts / Astro-Mining Bays / Zero-G Research Districts": not met only when the manual
-// cap of that habitat district group (orbital deposits) is 0. "Zero-G Research District" is read as the Research District.
+// P10.4: "Can build Reactor Districts / Astro-Mining Bays": not met only when the manual cap of that habitat district
+// group (orbital deposits) is 0. "Can build Zero-G Research Districts" stays unmodelled until the owner confirms which
+// district it is (GDD §4.1).
 const canBuildDistrict = (district) => ({ type: "districtBuildable", district });
 const notCelestial = (...ids) => ({ type: "notCelestial", ids });
 const notSpecies = (...ids) => ({ type: "notSpecies", ids });
+// Requirement not modelled (origin, planet modifier, relic attunement): never blocks, shown next to the option.
+const unmodelled = (i18nKey) => ({ type: "unmodelled", i18nKey });
 
 import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
 
@@ -106,14 +110,14 @@ export const DESIGNATION_CATEGORY_I18N_KEYS = {
 };
 
 export const DESIGNATIONS = [
-  { id: "unificationCenter", i18nKey: "designationUnificationCenter", category: "unity", img: "jobs/job_bureaucrat.png", requires: [notEthic("spiritualist"), notCivic("civicMachineServitor")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
+  { id: "unificationCenter", i18nKey: "designationUnificationCenter", category: "unity", img: "jobs/job_bureaucrat.png", requires: [unmodelled("reqNotWildernessOrigin"), notEthic("spiritualist"), notCivic("civicMachineServitor")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
   { id: "ecclesiasticalCenter", i18nKey: "designationEcclesiasticalCenter", category: "unity", img: "jobs/job_priest.png", requires: [ethic("spiritualist")], jobEfficiency: { priest: 0.15 }, flat: {} },
   { id: "sanctuaryWorld", i18nKey: "designationSanctuaryWorld", category: "unity", img: "resources/Amenities.png", requires: [civic("civicMachineServitor")], jobEfficiency: {}, flat: {} },
-  { id: "tranquilWorld", i18nKey: "designationTranquilWorld", category: "unity", img: "resources/Amenities.png", jobEfficiency: {}, flat: {} },
+  { id: "tranquilWorld", i18nKey: "designationTranquilWorld", category: "unity", img: "resources/Amenities.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
   { id: "urbanWorld", i18nKey: "designationUrbanWorld", category: "urban", img: "jobs/job_trader.png", requires: [NOT_GESTALT], jobEfficiency: { trader: 0.15 }, flat: {} },
-  { id: "nestWorld", i18nKey: "designationNestWorld", category: "urban", img: "planets/Planet_hive.png", requires: [authority("hiveMind")], jobEfficiency: {}, flat: {} },
+  { id: "nestWorld", i18nKey: "designationNestWorld", category: "urban", img: "planets/Planet_hive.png", requires: [unmodelled("reqNotWildernessOrigin"), authority("hiveMind")], jobEfficiency: {}, flat: {} },
   { id: "machineNexus", i18nKey: "designationMachineNexus", category: "urban", img: "planets/Planet_machine.png", requires: [authority("machineIntelligence"), notCelestial("machine")], jobEfficiency: {}, flat: {} },
-  { id: "weaverWorld", i18nKey: "designationWeaverWorld", category: "urban", img: "jobs/job_livestock.png", jobEfficiency: {}, flat: {} },
+  { id: "weaverWorld", i18nKey: "designationWeaverWorld", category: "urban", img: "jobs/job_livestock.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
   { id: "fortressWorld", i18nKey: "designationFortressWorld", category: "standard", img: "jobs/job_soldier.png", jobEfficiency: { soldier: 0.15 }, flat: {} },
   { id: "techWorld", i18nKey: "designationTechWorld", category: "standard", img: "jobs/job_biologist.png", jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "generatorWorld", i18nKey: "designationGeneratorWorld", category: "standard", img: "jobs/job_technician.png", jobEfficiency: { technician: 0.15 }, flat: {} },
@@ -122,22 +126,22 @@ export const DESIGNATIONS = [
   { id: "forgeWorld", i18nKey: "designationForgeWorld", category: "standard", img: "jobs/job_foundry.png", requires: [notCelestial("hive", "machine")], jobEfficiency: { metallurgist: 0.15 }, flat: {} },
   { id: "factoryWorld", i18nKey: "designationFactoryWorld", category: "standard", img: "jobs/job_artisan.png", requires: [USES_CONSUMER_GOODS, notCelestial("machine")], jobEfficiency: { artisan: 0.15 }, flat: {} },
   { id: "industrialWorld", i18nKey: "designationIndustrialWorld", category: "standard", img: "jobs/job_foundry.png", requires: [USES_CONSUMER_GOODS, notCelestial("machine")], jobEfficiency: { metallurgist: 0.1, artisan: 0.1 }, flat: {} },
-  { id: "penalColony", i18nKey: "designationPenalColony", category: "specialized", img: "jobs/job_criminal.png", jobEfficiency: {}, flat: {} },
-  { id: "resortWorld", i18nKey: "designationResortWorld", category: "specialized", img: "jobs/job_entertainer.png", jobEfficiency: {}, flat: {} },
-  { id: "pleasureWorld", i18nKey: "designationPleasureWorld", category: "specialized", img: "jobs/job_entertainer.png", jobEfficiency: {}, flat: {} },
-  { id: "thrallWorld", i18nKey: "designationThrallWorld", category: "specialized", img: "resources/Unity.png", jobEfficiency: {}, flat: {} },
+  { id: "penalColony", i18nKey: "designationPenalColony", category: "specialized", img: "jobs/job_criminal.png", requires: [unmodelled("reqPenalColonyModifier")], jobEfficiency: {}, flat: {} },
+  { id: "resortWorld", i18nKey: "designationResortWorld", category: "specialized", img: "jobs/job_entertainer.png", requires: [unmodelled("reqResortWorldModifier"), unmodelled("reqNotInstrumentOfDesire600")], jobEfficiency: {}, flat: {} },
+  { id: "pleasureWorld", i18nKey: "designationPleasureWorld", category: "specialized", img: "jobs/job_entertainer.png", requires: [unmodelled("reqResortWorldModifier"), unmodelled("reqInstrumentOfDesire600")], jobEfficiency: {}, flat: {} },
+  { id: "thrallWorld", i18nKey: "designationThrallWorld", category: "specialized", img: "resources/Unity.png", requires: [unmodelled("reqThrallWorldModifier")], jobEfficiency: {}, flat: {} },
   { id: "hiveWorld", i18nKey: "designationHiveWorld", category: "hiveWorld", img: "planets/Planet_hive.png", jobEfficiency: {}, flat: {} },
   { id: "hiveWorldFoundry", i18nKey: "designationHiveWorldFoundry", category: "hiveWorld", img: "jobs/job_foundry.png", jobEfficiency: {}, flat: {} },
   { id: "machineWorldFoundry", i18nKey: "designationMachineWorldFoundry", category: "machineWorld", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
   { id: "machineWorldFactory", i18nKey: "designationMachineWorldFactory", category: "machineWorld", img: "jobs/job_artisan.png", requires: [USES_CONSUMER_GOODS], jobEfficiency: { artisan: 0.15 }, flat: {} },
   { id: "nanotechWorld", i18nKey: "designationNanotechWorld", category: "machineWorld", img: "planets/Planet_nanite.png", requires: [celestial("nanite")], jobEfficiency: {}, flat: {} },
-  { id: "photosynthesisWorld", i18nKey: "designationPhotosynthesisWorld", category: "wilderness", img: "jobs/job_technician.png", jobEfficiency: {}, flat: {} },
-  { id: "lithicWorld", i18nKey: "designationLithicWorld", category: "wilderness", img: "jobs/job_miner.png", jobEfficiency: {}, flat: {} },
-  { id: "pollinatingWorld", i18nKey: "designationPollinatingWorld", category: "wilderness", img: "jobs/job_farmer.png", jobEfficiency: {}, flat: {} },
-  { id: "cogitationWorld", i18nKey: "designationCogitationWorld", category: "wilderness", img: "jobs/job_researcher.png", jobEfficiency: {}, flat: {} },
-  { id: "crucibleWorld", i18nKey: "designationCrucibleWorld", category: "wilderness", img: "jobs/job_foundry.png", jobEfficiency: {}, flat: {} },
-  { id: "hunterWorld", i18nKey: "designationHunterWorld", category: "wilderness", img: "jobs/job_soldier.png", jobEfficiency: {}, flat: {} },
-  { id: "refiningWorld", i18nKey: "designationRefiningWorld", category: "wilderness", img: "jobs/job_gas_refiner.png", jobEfficiency: {}, flat: {} },
+  { id: "photosynthesisWorld", i18nKey: "designationPhotosynthesisWorld", category: "wilderness", img: "jobs/job_technician.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "lithicWorld", i18nKey: "designationLithicWorld", category: "wilderness", img: "jobs/job_miner.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "pollinatingWorld", i18nKey: "designationPollinatingWorld", category: "wilderness", img: "jobs/job_farmer.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "cogitationWorld", i18nKey: "designationCogitationWorld", category: "wilderness", img: "jobs/job_researcher.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "crucibleWorld", i18nKey: "designationCrucibleWorld", category: "wilderness", img: "jobs/job_foundry.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "hunterWorld", i18nKey: "designationHunterWorld", category: "wilderness", img: "jobs/job_soldier.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
+  { id: "refiningWorld", i18nKey: "designationRefiningWorld", category: "wilderness", img: "jobs/job_gas_refiner.png", requires: [unmodelled("reqWildernessOrigin")], jobEfficiency: {}, flat: {} },
   { id: "ecumenopolis", i18nKey: "designationEcumenopolis", category: "ecumenopolis", img: "jobs/job_trader.png", jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "ecumenopolisResearch", i18nKey: "designationEcumenopolisResearch", category: "ecumenopolis", img: "jobs/job_biologist.png", jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "ecumenopolisFoundry", i18nKey: "designationEcumenopolisFoundry", category: "ecumenopolis", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
@@ -151,7 +155,7 @@ export const DESIGNATIONS = [
   { id: "hydroponicsStation", i18nKey: "designationHydroponicsStation", category: "habitat", img: "jobs/job_farmer.png", jobEfficiency: { farmer: 0.15 }, flat: {} },
   { id: "generatorStation", i18nKey: "designationGeneratorStation", category: "habitat", img: "jobs/job_technician.png", requires: [canBuildDistrict("generator")], jobEfficiency: { technician: 0.15 }, flat: {} },
   { id: "miningStation", i18nKey: "designationMiningStation", category: "habitat", img: "jobs/job_miner.png", requires: [canBuildDistrict("mining")], jobEfficiency: { miner: 0.15 }, flat: {} },
-  { id: "researchStation", i18nKey: "designationResearchStation", category: "habitat", img: "jobs/job_biologist.png", requires: [canBuildDistrict("agriculture")], jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
+  { id: "researchStation", i18nKey: "designationResearchStation", category: "habitat", img: "jobs/job_biologist.png", requires: [unmodelled("reqZeroGResearchDistrict")], jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "fortressStation", i18nKey: "designationFortressStation", category: "habitat", img: "jobs/job_soldier.png", jobEfficiency: { soldier: 0.15 }, flat: {} },
   { id: "foundryStation", i18nKey: "designationFoundryStation", category: "habitat", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
   { id: "factoryStation", i18nKey: "designationFactoryStation", category: "habitat", img: "jobs/job_artisan.png", requires: [USES_CONSUMER_GOODS], jobEfficiency: { artisan: 0.15 }, flat: {} },

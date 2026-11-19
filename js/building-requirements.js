@@ -62,6 +62,7 @@ function ruleMet(rule, ctx) {
     case "celestial": return rule.ids.includes(ctx.celestialTypeId);
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
+    case "unmodelled": return true; // requirement the simulator does not model (origin, planetary feature, planet modifier...): never blocks, only shown
     case "districtBuildable": return (ctx.districtCaps || {})[rule.district] !== 0; // P10.4: habitat district cap (orbital deposits) not 0
     case "federation": return false; // las federaciones no se modelan: lo que exige una federación no está disponible (P16)
     case "tradition": return true; // las tradiciones no se modelan: los edictos que exigen una se tratan como desbloqueados (P18, decisión de Morteux 2026-11-19)
@@ -78,6 +79,11 @@ export function buildingRequirementsMet(building, ctx) {
 /** Reglas del elemento (edificio, designación...) que NO se cumplen con el contexto dado. */
 export function unmetRequirements(item, ctx) {
   return (item.requires || []).filter((rule) => !ruleMet(rule, ctx));
+}
+
+/** Requisitos no modelados del elemento (se muestran al usuario, nunca bloquean). */
+export function unmodelledRequirements(item) {
+  return (item.requires || []).filter((rule) => rule.type === "unmodelled");
 }
 
 /** Clave estable del contexto (para saber si ha cambiado algo relevante). */

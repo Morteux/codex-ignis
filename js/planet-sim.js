@@ -71,7 +71,7 @@ import { getEdict } from "./edict-data.js";
 import { getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
-import { buildingRequirementsMet, requirementContextKey, unmetRequirements } from "./building-requirements.js";
+import { buildingRequirementsMet, requirementContextKey, unmetRequirements, unmodelledRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
@@ -283,7 +283,8 @@ function secondaryDistrictDef(cat) {
   // Secondary district specializations (wiki: "Effects per district" −200 Housing, like the urban ones).
   const resourceOptions = RESOURCE_DISTRICT_ORDER.flatMap((resourceCat) => DISTRICTS[resourceCat].specializationOptions)
     .filter((option) => (rules.secondarySpecializations || []).includes(option.id))
-    .map((option) => ({ ...option, housing: -200 }));
+    // The secondary specialization table lists no origin requirement: the resource-district "not Wilderness" note is dropped.
+    .map((option) => ({ ...option, housing: -200, requires: (option.requires || []).filter((rule) => rule.type !== "unmodelled") }));
   return {
     secondaryUrban: true,
     setIndex: RESOURCE_DISTRICT_ORDER.indexOf(cat) + 1,
@@ -1196,6 +1197,17 @@ function syncJobAssignments(jobCapacities) {
 
 /** Reconstruye las opciones del desplegable de designación (agrupadas por categoría y filtradas por el tipo de cuerpo celeste elegido), conservando la selección si sigue siendo válida. */
 /** Texto corto de una regla de requisito incumplida ("Requiere ética: Espiritualista"...), para el desplegable de designaciones. */
+/**
+ * Text, tooltip and disabled state of a select option (specialization, designation): unmet requirements disable it;
+ * requirements the simulator does not model never block, but are listed ("Requirement not modelled: ...").
+ */
+function requirementOptionLabel(name, item, ctx) {
+  const unmet = unmetRequirements(item, ctx).map(describeUnmetRule).filter(Boolean);
+  const unmodelled = unmodelledRequirements(item).map((rule) => t(currentLang, rule.i18nKey));
+  const notes = [...unmet, ...(unmodelled.length ? [t(currentLang, "requirementUnmodelled") + unmodelled.join("; ")] : [])];
+  return { text: notes.length ? `${name} — ${notes.join("; ")}` : name, title: notes.join("\n"), disabled: unmet.length > 0 };
+}
+
 function describeUnmetRule(rule) {
   const names = (list) => list.join(", ");
   switch (rule.type) {
@@ -1248,12 +1260,10 @@ function renderDesignationSelect() {
     items.forEach((d) => {
       const opt = document.createElement("option");
       opt.value = d.id;
-      const unmet = designationUnmetRules(d, ctx).map(describeUnmetRule).filter(Boolean);
-      opt.textContent = unmet.length ? `${t(currentLang, d.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, d.i18nKey);
-      if (unmet.length) {
-        opt.disabled = true;
-        opt.title = unmet.join("\n");
-      }
+      const label = requirementOptionLabel(t(currentLang, d.i18nKey), d, ctx);
+      opt.textContent = label.text;
+      opt.disabled = label.disabled;
+      if (label.title) opt.title = label.title;
       group.append(opt);
     });
     designationSelect.append(group);
@@ -2060,12 +2070,10 @@ function renderUrbanSpecializationPicker(slotIndex) {
   def.specializationOptions.forEach((option) => {
     const optionEl = document.createElement("option");
     optionEl.value = option.id;
-    const unmet = unmetRequirements(option, specCtx).map(describeUnmetRule).filter(Boolean);
-    optionEl.textContent = unmet.length ? `${t(currentLang, option.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, option.i18nKey);
-    if (unmet.length) {
-      optionEl.disabled = true;
-      optionEl.title = unmet.join("\n");
-    }
+    const label = requirementOptionLabel(t(currentLang, option.i18nKey), option, specCtx);
+    optionEl.textContent = label.text;
+    optionEl.disabled = label.disabled;
+    if (label.title) optionEl.title = label.title;
     if (option.id === currentId) optionEl.selected = true;
     select.append(optionEl);
   });
@@ -2145,12 +2153,10 @@ function renderResourceDistrictCard(cat) {
   def.specializationOptions.forEach((option) => {
     const optionEl = document.createElement("option");
     optionEl.value = option.id;
-    const unmet = unmetRequirements(option, specCtx).map(describeUnmetRule).filter(Boolean);
-    optionEl.textContent = unmet.length ? `${t(currentLang, option.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, option.i18nKey);
-    if (unmet.length) {
-      optionEl.disabled = true;
-      optionEl.title = unmet.join("\n");
-    }
+    const label = requirementOptionLabel(t(currentLang, option.i18nKey), option, specCtx);
+    optionEl.textContent = label.text;
+    optionEl.disabled = label.disabled;
+    if (label.title) optionEl.title = label.title;
     if (option.id === state.optionId) optionEl.selected = true;
     select.append(optionEl);
   });
