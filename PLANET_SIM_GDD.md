@@ -5,6 +5,7 @@ Design rules and decisions of the planet simulator. Pending work lives in `tasks
 - **Ruleset:** Stellaris PC 4.5.2 "Cygnus" (`stellaris-pc-4.5.2`). All data is tagged 4.5.2 and stays `unverified` until P14 (some values come from 4.3/4.4 pages, e.g. base job outputs).
 - **Scope:** only the simulator. Wiki, bingo, legal pages and tech tree (`tech_tree.md`) are out.
 - **Rule #1:** never invent rules, numbers or names. Missing or ambiguous wiki data → ask. Every simplification is documented in code and in §8.
+- **Wiki requirement columns:** a red-cross icon (`No.png`) before a requirement means "not" (not available on / not with). The markdown copies drop the icon, so requirement columns are always read from the HTML page.
 
 ## 1. Goal
 Browser sandbox to theorycraft the economy of **one planet**: districts, buildings, empire context → monthly production, upkeep and net per resource. Not a galaxy or pop simulator.
@@ -28,14 +29,14 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 ## 4. Planet model
 - **Slots:** 6 base (slot 1 = capital) +3 per district specialization, cap 21. Stable slot keys.
 - **Capital:** tiers I–V for 3 families (standard, hive, machine); tier kept when the authority changes.
-- **Districts:** urban (2 specialization slots, min 1 copy), generator/mining/agriculture (1 slot each). Total copies ≤ planet size (editable, default 20). Housing: urban +1000 (hive +1200, +600 more on Hive World; machine +1000), −200 per chosen urban specialization, Agrarian Idyll −200; resource districts +200 (gestalt +100, Agrarian Idyll +300). Technology housing bonuses apply per copy (listed in the housing tooltip of the header): Weather Control Systems +100 urban; Anti-Gravity Engineering +200 city, +100 nexus/hive cluster (not with Agrarian Idyll, which cannot research it); Agrarian Utopias +200 agriculture (Agrarian Idyll only). Tradition ones (Public Works Division) do not.
+- **Districts:** urban (2 specialization slots, min 1 copy), generator/mining/agriculture (1 slot each). The four groups keep their keys on every body; their definitions come from the body type (§4.1): on an Ecumenopolis the primary is the Residential Arcology (+1500 housing, +300 Clerks or gestalt +900 Logistic Drones, +300 with Anti-Gravity Engineering) and the three secondary groups are Unspecialized Arcology sets (+1500 housing, one urban specialization each, its housing loss ×3). Specialization jobs ×3 per copy on an Ecumenopolis. Switching body type resets the specializations the new districts do not offer (notice); their buildings turn inactive. Urban specializations: Mixed/Heavy/Civilian Industry, Military Defenses, Commercial Nexus, Research Enclave and the Engineering/Physics/Society research specializations (not on a Habitat primary district). Total copies ≤ planet size (editable, default 20). Housing: urban +1000 (hive +1200, +600 more on Hive World; machine +1000), −200 per chosen urban specialization, Agrarian Idyll −200; resource districts +200 (gestalt +100, Agrarian Idyll +300). Technology housing bonuses apply per copy (listed in the housing tooltip of the header): Weather Control Systems +100 urban; Anti-Gravity Engineering +200 city, +100 nexus/hive cluster (not with Agrarian Idyll, which cannot research it); Agrarian Utopias +200 agriculture (Agrarian Idyll only). Tradition ones (Public Works Division) do not.
 - **District body types:** a district or building with no body-type requirement on the wiki is available on every body type.
 - **Inactive, never deleted:** a building whose slot is locked, whose requirements are lost or whose slot specialization no longer permits its set stays built but inactive (no jobs/resources), drawn with `img/ui/blocker_frame_yellow.png`, tooltip with the reason; demolishing is always manual. Applies to empire switches and planet loads (report how many became inactive).
 - **Invalid choices reset with a notice:** designation → "no designation"; district specialization removed (its buildings turn inactive); policy option → group default.
 - **Jobs UI:** "Jobs created / Jobs assumed staffed"; click ±10, Ctrl/Cmd ±100, Shift = 100 %/0 %; no reset button; the notice under the summary explains only the click controls.
 
 ### 4.1 Body types audit (P10.1, wiki 4.5.2 *Celestial object*, *Districts*, *District specialization*, *Capital building*)
-Data in `js/body-type-data.js` (`bodyTypeRules` collection), not read by the engine until P10.2–P10.7. Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
+Data in `js/body-type-data.js` (`bodyTypeRules` collection); the engine reads the bodies wired in so far (P10.2 Ecumenopolis). Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
 
 | Body | Applied effects | Districts | Size / slots | Info only |
 |---|---|---|---|---|
@@ -55,11 +56,13 @@ Specialization multipliers (*District specialization*): jobs ×3 on Ecumenopolis
 
 New jobs needed: Clerk (+3 trade, +3 amenities, +1 % trade from jobs), Thermoforger (Miner swap), Thermotechnic Mentor (+1 research +1 unity, scaling bonuses), Neural Chip (output × chips/2000, upkeep × chips/4000).
 
+**Owner decisions (2026-11-19):**
+- Specialization jobs: the body multiplier (×3 / ×5) applies to the specialization jobs of every district copy, primary and secondary; the wiki's "×2 for secondary urban districts" is not a separate multiplier (it is the per-copy sum).
+- Research Enclave and the three research specializations are available everywhere except a Habitat primary district (red cross on the wiki), so Unspecialized Arcologies can take them.
+- Mineral Extraction is not available on Ring Worlds; Agricultural Focus not on Machine/Nanite Worlds (red crosses).
+- Habitat resource districts: manual cap per district (orbital deposits), saved with the planet (P10.4).
+
 **Open questions (owner) — block the task that uses them:**
-1. (P10.2–P10.5) Do the ×3/×5 body multiplier and the ×2 secondary-urban multiplier combine (×6 / ×10 on secondary districts)? Does the body multiplier also apply to the primary district specializations?
-2. (P10.2) Which urban specializations can Unspecialized Arcologies take? Research Enclave and the three research specializations say "Habitat primary district" but the district-swap table lists Research/Physics/Biology/Engineering Arcologies.
-3. (P10.3/P10.5) The "Requirements" column of the secondary specializations (Mineral Extraction: Ring World; Agricultural Focus: Machine/Nanite World) is read as "not available on" (the swap table has no Mining Segment nor Agricultural Nexus).
-4. (P10.4) Habitat resource districts are capped by orbital deposits (1 + half the deposit size): manual cap input per district?
 5. (P10.5) Synaptic Lathe: size 2 vs "two districts per capital level" (+2/+4 from tiers III/IV): which one is the cap? Neural Chip scaling needs the total chips (all pops).
 6. (P10.5) Nanite World has no planet capacity or "resources from jobs" on the page: none applied.
 7. (P10.3) Ring World secondary Commercial/Research etc. swaps: same urban list as regular worlds?

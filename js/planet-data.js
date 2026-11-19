@@ -202,6 +202,45 @@ export const DISTRICTS = {
         housing: -200,
         jobs: { trader: 100 },
         permittedSets: ["trade"]
+      },
+      // P10.2: research specializations (wiki 4.5.2 "District specialization"). The HTML marks the requirement with a
+      // red cross: NOT available in a Habitat primary district (the markdown copy loses the cross). Research labs are
+      // tagged "origin" in BUILDINGS, so these slots permit "research" and "origin" (wiki: Research; Origin).
+      {
+        id: "researchEnclave",
+        i18nKey: "specializationResearchEnclave",
+        img: "districts_specialization/District_specialization_research.png",
+        housing: -200,
+        requires: [{ type: "notCelestial", ids: ["habitat"] }],
+        jobs: { physicist: 30, biologist: 30, engineer: 30 },
+        permittedSets: ["research", "origin"]
+      },
+      {
+        id: "engineeringResearch",
+        i18nKey: "specializationEngineeringResearch",
+        img: "districts_specialization/District_specialization_engineering.png",
+        housing: -200,
+        requires: [{ type: "notCelestial", ids: ["habitat"] }],
+        jobs: { engineer: 100 },
+        permittedSets: ["engineering", "research", "origin"]
+      },
+      {
+        id: "physicsResearch",
+        i18nKey: "specializationPhysicsResearch",
+        img: "districts_specialization/District_specialization_physics.png",
+        housing: -200,
+        requires: [{ type: "notCelestial", ids: ["habitat"] }],
+        jobs: { physicist: 100 },
+        permittedSets: ["physics", "research", "origin"]
+      },
+      {
+        id: "societyResearch",
+        i18nKey: "specializationSocietyResearch",
+        img: "districts_specialization/District_specialization_society.png",
+        housing: -200,
+        requires: [{ type: "notCelestial", ids: ["habitat"] }],
+        jobs: { biologist: 100 },
+        permittedSets: ["society", "research", "origin"]
       }
     ]
   },
@@ -407,6 +446,8 @@ export const JOBS = {
   priest: { i18nKey: "jobPriest", img: "jobs/job_priest.png", stratum: "specialist" },
   bureaucrat: { i18nKey: "jobBureaucrat", img: "jobs/job_bureaucrat.png", stratum: "specialist" },
   politician: { i18nKey: "jobPolitician", img: "jobs/job_politician.png", stratum: "ruler" },
+  // P10.2: Clerk (worker, individualist), created by Residential Arcologies and City Segments.
+  clerk: { i18nKey: "jobClerk", img: "jobs/job_clerk.png", stratum: "worker" },
   // Especialistas ligados a edificios de ética/principio
   death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
   mortal_initiate: { i18nKey: "jobMortalInitiate", img: "jobs/job_mortal_initiate.png", stratum: "specialist" },
@@ -450,6 +491,8 @@ export const JOB_OUTPUTS = {
   technician: { energy: 6 },
   miner: { minerals: 4 },
   farmer: { food: 6 },
+  // P10.2: Clerk, wiki 4.5.2 "Jobs" (+3 trade, +300 amenities = 3 per pop; its +1% trade from jobs is JOB_RESOURCE_MULT).
+  clerk: { trade: 3, amenities: 3 },
   // Especialistas
   metallurgist: { alloys: 3, minerals: -6 },
   artisan: { consumer_goods: 6, minerals: -6 },
@@ -505,6 +548,11 @@ export const JOB_OUTPUTS = {
 export const CIVILIAN_OUTPUTS = {
   individualist: { i18nKey: "jobCivilian", output: { amenities: 0.5, trade: 1 } },
   gestalt: { i18nKey: "jobMaintenanceDrone", output: { amenities: 4, trade: 1 } }
+};
+
+/** P10.2: "+X% <resource> from jobs" granted per staffed job (wiki 4.5.2 "Jobs"): fraction per job, step 4 of the calculation. */
+export const JOB_RESOURCE_MULT = {
+  clerk: { trade: 0.01 }
 };
 
 export const JOB_EFFECTS = {

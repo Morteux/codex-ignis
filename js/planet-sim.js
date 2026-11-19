@@ -60,8 +60,10 @@ import {
   SPECIES_TYPES,
   allowedSpeciesTypes,
   DISTRICTS,
-  RESOURCE_DISTRICT_ORDER
+  RESOURCE_DISTRICT_ORDER,
+  JOB_RESOURCE_MULT
 } from "./planet-data.js";
+import { BODY_TYPE_RULES, SPECIAL_DISTRICTS } from "./body-type-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -177,13 +179,102 @@ const districtState = {
   agriculture: { count: 0, optionId: null }
 };
 
-/** Mapa id -> definición de especialización de distrito urbano, para búsquedas rápidas. */
-const urbanSpecOptionsById = new Map(DISTRICTS.urban.specializationOptions.map((option) => [option.id, option]));
+/**
+ * P10.2: district layout of the current body type (js/body-type-data.js). The four district groups keep their
+ * stable keys (urban = primary, generator/mining/agriculture = the three secondary sets) so saved planets and slot
+ * keys do not change; only their definitions depend on the body. On bodies with secondary urban districts
+ * (Ecumenopolis...) the three secondary sets are copies of the same district, each with one urban specialization.
+ */
+function bodyRules() {
+  return BODY_TYPE_RULES[getPlanetState().celestialTypeId] || null;
+}
 
-/** Igual que urbanSpecOptionsById, pero uno por cada categoría de distrito de recursos básicos. */
-const resourceSpecOptionsById = Object.fromEntries(
-  RESOURCE_DISTRICT_ORDER.map((cat) => [cat, new Map(DISTRICTS[cat].specializationOptions.map((option) => [option.id, option]))])
-);
+/** Jobs added by specializations are multiplied on some bodies (×3 Ecumenopolis); owner decision: per copy, primary and secondary. */
+function specializationJobMultiplier() {
+  return bodyRules()?.specializationJobMultiplier || 1;
+}
+
+/** Housing removed by the specialization of a secondary district (×3 Ecumenopolis). */
+function secondaryHousingPenaltyMultiplier() {
+  return bodyRules()?.secondaryHousingPenaltyMultiplier || 1;
+}
+
+function scaleJobs(jobs, factor) {
+  return Object.fromEntries(Object.entries(jobs || {}).map(([jobId, raw]) => [jobId, raw * factor]));
+}
+
+/** Primary district definition: the regular urban district, or the body's own primary district (Residential Arcology). */
+function primaryDistrictDef() {
+  const special = bodyRules()?.primaryDistrict ? SPECIAL_DISTRICTS[bodyRules().primaryDistrict] : null;
+  if (!special) return DISTRICTS.urban;
+  return {
+    i18nKey: special.i18nKey,
+    img: special.img,
+    jobs: {},
+    jobsByEmpire: special.jobsByEmpire,
+    technologyJobs: special.technologyJobs,
+    housing: special.housing,
+    agrarianIdyllHousing: special.agrarianIdyllHousing || 0,
+    technologyHousing: special.technologyHousing,
+    upkeep: special.upkeep,
+    specializationSlots: DISTRICTS.urban.specializationSlots,
+    slotsPerSpecialization: DISTRICTS.urban.slotsPerSpecialization,
+    specializationOptions: DISTRICTS.urban.specializationOptions
+  };
+}
+
+/** Definition of one secondary district set: a resource district (regular bodies) or a secondary urban district. */
+function secondaryDistrictDef(cat) {
+  const rules = bodyRules();
+  if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return DISTRICTS[cat];
+  const special = SPECIAL_DISTRICTS[rules.secondaryDistrict];
+  const resourceOptions = RESOURCE_DISTRICT_ORDER.flatMap((resourceCat) => DISTRICTS[resourceCat].specializationOptions)
+    .filter((option) => (rules.secondarySpecializations || []).includes(option.id));
+  return {
+    secondaryUrban: true,
+    setIndex: RESOURCE_DISTRICT_ORDER.indexOf(cat) + 1,
+    i18nKey: special.i18nKey,
+    img: special.img,
+    jobs: {},
+    housing: special.housing,
+    agrarianIdyllHousing: special.agrarianIdyllHousing || 0,
+    technologyHousing: special.technologyHousing,
+    upkeep: special.upkeep,
+    lockedTooltipKey: "planetSimUrbanSlotLockedTooltip",
+    slotsPerSpecialization: DISTRICTS.urban.slotsPerSpecialization,
+    specializationOptions: [...DISTRICTS.urban.specializationOptions, ...resourceOptions]
+  };
+}
+
+/** Definition of a district group by its key ("urban" or a secondary key). */
+function districtDefFor(key) {
+  return key === "urban" ? primaryDistrictDef() : secondaryDistrictDef(key);
+}
+
+/** Display name of a district group (secondary urban sets are numbered: "Unspecialized Arcology 2"). */
+function districtDisplayName(key) {
+  const def = districtDefFor(key);
+  return def.secondaryUrban ? `${t(currentLang, def.i18nKey)} ${def.setIndex}` : t(currentLang, def.i18nKey);
+}
+
+function primaryOption(optionId) {
+  return optionId ? primaryDistrictDef().specializationOptions.find((option) => option.id === optionId) || null : null;
+}
+
+function secondaryOption(cat, optionId) {
+  return optionId ? secondaryDistrictDef(cat).specializationOptions.find((option) => option.id === optionId) || null : null;
+}
+
+/** Base jobs of one copy of a district: per empire type (Residential Arcology) and technology jobs (all technologies researched). */
+function districtBaseJobs(def) {
+  const gestalt = ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id);
+  const jobs = { ...(def.jobsByEmpire ? def.jobsByEmpire[gestalt ? "gestalt" : "individualist"] : def.jobs) };
+  (def.technologyJobs || []).forEach((tech) => {
+    if (tech.empire && tech.empire !== (gestalt ? "gestalt" : "individualist")) return;
+    Object.entries(tech.jobs).forEach(([jobId, raw]) => { jobs[jobId] = (jobs[jobId] || 0) + raw; });
+  });
+  return jobs;
+}
 
 // Ranuras no-capital construidas: clave de ranura estable -> id de edificio.
 // Ver cabecera del archivo para qué es una "clave de ranura".
@@ -301,7 +392,7 @@ function slotSpecInfo(key) {
   if (urbanMatch) {
     const slotIndex = Number(urbanMatch[1]);
     const optionId = districtState.urban.slots[slotIndex];
-    const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+    const option = primaryOption(optionId);
     return {
       sets: option ? option.permittedSets : [],
       label: option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized")
@@ -312,7 +403,7 @@ function slotSpecInfo(key) {
   if (resourceMatch) {
     const cat = resourceMatch[1];
     const state = districtState[cat];
-    const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
+    const option = secondaryOption(cat, state.optionId);
     return {
       sets: option ? option.permittedSets : [],
       label: option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized")
@@ -463,7 +554,8 @@ function computeTotals() {
   const districtCtx = getPlanetState();
   const districtGestalt = ethicsSatisfy(districtCtx.ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   const agrarianIdyll = (districtCtx.civicIds || []).includes("civicAgrarianIdyll");
-  const urbanDef = DISTRICTS.urban;
+  const urbanDef = primaryDistrictDef();
+  const jobMultiplier = specializationJobMultiplier();
   // P7.10: bonos de vivienda por tecnología de un distrito (todas las tecnologías investigadas; las de tradición no).
   const addTechnologyHousing = (def, count) => {
     (def.technologyHousing || []).forEach((tech) => {
@@ -481,11 +573,11 @@ function computeTotals() {
   };
   if (districtState.urban.count > 0) {
     const count = districtState.urban.count;
-    let perDistrict = urbanDef.housingByAuthority[districtCtx.authorityId] ?? urbanDef.housing;
-    if (districtCtx.authorityId === "hiveMind" && districtCtx.celestialTypeId === "hive") perDistrict += urbanDef.hiveWorldHousing;
-    if (agrarianIdyll) perDistrict += urbanDef.agrarianIdyllHousing;
+    let perDistrict = urbanDef.housingByAuthority?.[districtCtx.authorityId] ?? urbanDef.housing;
+    if (urbanDef.hiveWorldHousing && districtCtx.authorityId === "hiveMind" && districtCtx.celestialTypeId === "hive") perDistrict += urbanDef.hiveWorldHousing;
+    if (agrarianIdyll) perDistrict += urbanDef.agrarianIdyllHousing || 0;
     districtState.urban.slots.forEach((optionId) => {
-      const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+      const option = primaryOption(optionId);
       if (option) perDistrict += option.housing || 0;
     });
     housing += divideEffect(perDistrict * count);
@@ -494,10 +586,15 @@ function computeTotals() {
     Object.entries(urbanDef.upkeep).forEach(([resourceId, amount]) => addSignedResource(resourceId, amount * count, "districts"));
   }
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
-    const def = DISTRICTS[cat];
+    const def = secondaryDistrictDef(cat);
     const count = districtState[cat].count;
     if (count <= 0) return;
-    const perDistrict = def.housing + (districtGestalt ? def.gestaltHousing : 0) + (agrarianIdyll ? def.agrarianIdyllHousing : 0);
+    let perDistrict = def.housing + (districtGestalt ? def.gestaltHousing || 0 : 0) + (agrarianIdyll ? def.agrarianIdyllHousing || 0 : 0);
+    // P10.2: a secondary urban district loses the housing of its specialization (×3 on an Ecumenopolis).
+    if (def.secondaryUrban) {
+      const option = secondaryOption(cat, districtState[cat].optionId);
+      if (option) perDistrict += (option.housing || 0) * secondaryHousingPenaltyMultiplier();
+    }
     housing += divideEffect(perDistrict * count);
     housingSources.push({ kind: "district", district: cat, count, amount: divideEffect(perDistrict * count) });
     addTechnologyHousing(def, count);
@@ -508,12 +605,12 @@ function computeTotals() {
   // especialización elegida (si hay una) por copia.
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const state = districtState[cat];
-    const def = DISTRICTS[cat];
+    const def = secondaryDistrictDef(cat);
     if (state.count > 0) {
-      Object.entries(def.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
-      const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
+      Object.entries(districtBaseJobs(def)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
+      const option = secondaryOption(cat, state.optionId);
       if (option) {
-        Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
+        Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * state.count));
       }
     }
   });
@@ -522,11 +619,12 @@ function computeTotals() {
   // sus 2 ranuras de especialización que tenga una especialización elegida
   // aporta sus empleos, multiplicados por el número de copias construidas.
   if (districtState.urban.count > 0) {
+    // P10.2: base jobs of the body's own primary district (Residential Arcology: Clerks / Logistic Drones).
+    Object.entries(districtBaseJobs(urbanDef)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * districtState.urban.count));
     districtState.urban.slots.forEach((optionId) => {
-      if (!optionId) return;
-      const option = urbanSpecOptionsById.get(optionId);
+      const option = primaryOption(optionId);
       if (!option) return;
-      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * districtState.urban.count));
+      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * districtState.urban.count));
     });
   }
 
@@ -739,6 +837,26 @@ function computeTotals() {
     }
   });
 
+  // P10.2: "+X% resources from jobs" of the body type (Ecumenopolis +20 %) and per staffed job (Clerk +1 % trade).
+  // Only resources that jobs actually produce get a modifier, so the panel lists what applies.
+  const bodyType = bodyRules();
+  Object.entries(bodyType?.jobResourcePct || {}).forEach(([key, pct]) => {
+    const resourceIds = key === "all" ? Object.keys(jobProduced).filter((id) => id !== "amenities") : [key];
+    resourceIds.forEach((resourceId) => {
+      if (!(jobProduced[resourceId] > 0)) return;
+      jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + pct / 100;
+      pushModifier({ kind: "celestial", id: empireState.celestialTypeId }, "jobResourceMult", { resource: resourceId }, pct / 100);
+    });
+  });
+  Object.entries(JOB_RESOURCE_MULT).forEach(([jobId, perJob]) => {
+    const staffed = divideEffect(jobAssignments[jobId] || 0);
+    if (!staffed) return;
+    Object.entries(perJob).forEach(([resourceId, fraction]) => {
+      jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + fraction * staffed;
+      pushModifier({ kind: "job", id: jobId }, "jobResourceMult", { resource: resourceId }, fraction * staffed);
+    });
+  });
+
   // "+X % de recurso de los empleos" de edificios (Refinería Antigua, Monumentos): solo sobre lo que producen los empleos.
   Object.keys(jobResourceMult).forEach((resourceId) => {
     const fromJobs = jobProduced[resourceId] || 0;
@@ -746,11 +864,16 @@ function computeTotals() {
     const fraction = combineFraction(stacking.jobResourceMult, entries.map((modifier) => modifier.value));
     if (fromJobs <= 0) return;
     // En el desglose se separa la parte de las políticas de la de los edificios (con la regla de suma, la parte de cada uno es su propio valor).
-    const policyFraction = stacking.jobResourceMult.combine === "add"
-      ? entries.filter((modifier) => modifier.source.kind === "policy").reduce((sum, modifier) => sum + modifier.value, 0)
-      : 0;
-    addSignedResource(resourceId, fromJobs * (fraction - policyFraction), "jobBuildingMult");
+    const kindFraction = (kind) => (stacking.jobResourceMult.combine === "add"
+      ? entries.filter((modifier) => modifier.source.kind === kind).reduce((sum, modifier) => sum + modifier.value, 0)
+      : 0);
+    const policyFraction = kindFraction("policy");
+    const celestialFraction = kindFraction("celestial");
+    const jobFraction = kindFraction("job");
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction), "jobBuildingMult");
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
+    if (celestialFraction) addSignedResource(resourceId, fromJobs * celestialFraction, "celestialJobMult");
+    if (jobFraction) addSignedResource(resourceId, fromJobs * jobFraction, "jobJobMult");
   });
 
   // P16.12: civiles (pops sin empleo, entrada manual ×100). Producen servicios y comercio (CIVILIAN_OUTPUTS) como un empleo
@@ -1430,7 +1553,7 @@ function renderSlotsVisual() {
  * de especialización lado a lado.
  */
 function renderUrbanDistrictGroup(unlocked) {
-  const def = DISTRICTS.urban;
+  const def = primaryDistrictDef();
 
   const group = document.createElement("div");
   group.className = "planet-urban-group";
@@ -1477,9 +1600,9 @@ function renderUrbanDistrictGroup(unlocked) {
 
 /** Caja visual de una de las 2 ranuras de especialización del distrito urbano: icono/estado + sus 3 ranuras de edificio. */
 function renderUrbanSpecializationBox(slotIndex, unlocked) {
-  const def = DISTRICTS.urban;
+  const def = primaryDistrictDef();
   const optionId = districtState.urban.slots[slotIndex];
-  const option = optionId ? urbanSpecOptionsById.get(optionId) : null;
+  const option = primaryOption(optionId);
 
   const box = document.createElement("div");
   box.className = "planet-resource-district-box";
@@ -1524,9 +1647,9 @@ function renderUrbanSpecializationBox(slotIndex, unlocked) {
 }
 
 function renderResourceDistrictBox(cat, unlocked) {
-  const def = DISTRICTS[cat];
+  const def = secondaryDistrictDef(cat);
   const state = districtState[cat];
-  const option = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
+  const option = secondaryOption(cat, state.optionId);
 
   const box = document.createElement("div");
   box.className = "planet-resource-district-box";
@@ -1542,7 +1665,7 @@ function renderResourceDistrictBox(cat, unlocked) {
   icon.src = `${IMAGE_BASE}${option ? option.img : def.img}`;
   icon.alt = "";
   const title = document.createElement("span");
-  title.textContent = `${t(currentLang, def.i18nKey)} ${t(currentLang, "planetSimDistrictCount")(state.count)}`;
+  title.textContent = `${districtDisplayName(cat)} ${t(currentLang, "planetSimDistrictCount")(state.count)}`;
   header.append(icon, title);
   box.append(header);
 
@@ -1790,7 +1913,7 @@ function renderDistrictsCatalog() {
 }
 
 function renderUrbanDistrictCard() {
-  const def = DISTRICTS.urban;
+  const def = primaryDistrictDef();
   const card = document.createElement("div");
   card.className = "planet-district-card";
 
@@ -1809,6 +1932,8 @@ function renderUrbanDistrictCard() {
   note.className = "planet-district-note";
   note.textContent = t(currentLang, "planetSimUrbanSlotsNote");
   card.append(note);
+  const primaryJobs = districtBaseJobs(def);
+  if (Object.keys(primaryJobs).length) card.append(renderJobsMini(primaryJobs));
 
   card.append(renderCountControl(
     districtState.urban.count,
@@ -1829,9 +1954,9 @@ function renderUrbanDistrictCard() {
 
 /** Selector de una de las 2 ranuras de especialización del distrito urbano, dentro de la ficha de la pestaña Distritos. */
 function renderUrbanSpecializationPicker(slotIndex) {
-  const def = DISTRICTS.urban;
+  const def = primaryDistrictDef();
   const currentId = districtState.urban.slots[slotIndex];
-  const currentOption = currentId ? urbanSpecOptionsById.get(currentId) : null;
+  const currentOption = primaryOption(currentId);
 
   const wrapper = document.createElement("div");
   wrapper.className = "planet-district-spec-row";
@@ -1860,10 +1985,17 @@ function renderUrbanSpecializationPicker(slotIndex) {
   if (!currentId) noneOption.selected = true;
   select.append(noneOption);
 
+  // P10.2: options whose requirements are not met (research specializations on a Habitat) are listed disabled with the reason.
+  const specCtx = requirementContext();
   def.specializationOptions.forEach((option) => {
     const optionEl = document.createElement("option");
     optionEl.value = option.id;
-    optionEl.textContent = t(currentLang, option.i18nKey);
+    const unmet = unmetRequirements(option, specCtx).map(describeUnmetRule).filter(Boolean);
+    optionEl.textContent = unmet.length ? `${t(currentLang, option.i18nKey)} — ${unmet.join("; ")}` : t(currentLang, option.i18nKey);
+    if (unmet.length) {
+      optionEl.disabled = true;
+      optionEl.title = unmet.join("\n");
+    }
     if (option.id === currentId) optionEl.selected = true;
     select.append(optionEl);
   });
@@ -1875,7 +2007,7 @@ function renderUrbanSpecializationPicker(slotIndex) {
   info.append(select);
 
   if (currentOption) {
-    info.append(renderJobsMini(currentOption.jobs));
+    info.append(renderJobsMini(scaleJobs(currentOption.jobs, specializationJobMultiplier())));
   }
 
   wrapper.append(info);
@@ -1884,9 +2016,9 @@ function renderUrbanSpecializationPicker(slotIndex) {
 }
 
 function renderResourceDistrictCard(cat) {
-  const def = DISTRICTS[cat];
+  const def = secondaryDistrictDef(cat);
   const state = districtState[cat];
-  const currentOption = state.optionId ? resourceSpecOptionsById[cat].get(state.optionId) : null;
+  const currentOption = secondaryOption(cat, state.optionId);
   const card = document.createElement("div");
   card.className = "planet-district-card";
 
@@ -1897,11 +2029,11 @@ function renderResourceDistrictCard(cat) {
   icon.src = `${IMAGE_BASE}${currentOption ? currentOption.img : def.img}`;
   icon.alt = "";
   const name = document.createElement("span");
-  name.textContent = t(currentLang, def.i18nKey);
+  name.textContent = districtDisplayName(cat);
   header.append(icon, name);
   card.append(header);
 
-  card.append(renderJobsMini(def.jobs));
+  card.append(renderJobsMini(districtBaseJobs(def)));
 
   card.append(renderCountControl(
     state.count,
@@ -1949,14 +2081,14 @@ function renderResourceDistrictCard(cat) {
   specRow.append(select);
 
   if (currentOption) {
-    specRow.append(renderJobsMini(currentOption.jobs));
+    specRow.append(renderJobsMini(scaleJobs(currentOption.jobs, specializationJobMultiplier())));
   }
 
   card.append(specRow);
 
   const note = document.createElement("p");
   note.className = "planet-district-note";
-  note.textContent = t(currentLang, "planetSimResourceSlotsNote");
+  note.textContent = t(currentLang, def.secondaryUrban ? "planetSimSecondaryUrbanSlotsNote" : "planetSimResourceSlotsNote");
   card.append(note);
 
   return card;
@@ -2200,6 +2332,8 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
+  { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult" },
+  { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
@@ -2435,6 +2569,8 @@ function modifierSourceName(source) {
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
   if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
+  if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
+  if (source.kind === "job") return jobName(source.id);
   return source.id;
 }
 
@@ -2774,7 +2910,7 @@ function renderStats(totals) {
     const lines = totals.housingSources.map((source) => {
       let label;
       if (source.kind === "capital") label = t(currentLang, "planetSimCapitalHeading");
-      else if (source.kind === "district") label = `${t(currentLang, DISTRICTS[source.district].i18nKey)} ×${source.count}`;
+      else if (source.kind === "district") label = `${districtDisplayName(source.district)} ×${source.count}`;
       else if (source.kind === "technology") label = t(currentLang, "planetSimHousingTechnology")(t(currentLang, source.i18nKey));
       else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
       else label = t(currentLang, "planetSimDesignationHeading");
@@ -2805,15 +2941,31 @@ function renderStats(totals) {
   if (districtsUsedLabel) districtsUsedLabel.textContent = `${totalDistrictCount()} / ${planetSize}`;
 }
 
-/** Especializaciones de distrito de recursos elegidas que dejan de cumplir sus requisitos (P7.4): se quitan y se avisa. Los edificios de esas ranuras quedan inactivos, no se borran. */
+/**
+ * Especializaciones elegidas que dejan de cumplir sus requisitos (P7.4) o que el distrito del cuerpo celeste actual ya
+ * no ofrece (P10.2: p. ej. al pasar de un planeta normal a una ecumenópolis): se quitan y se avisa. Los edificios de esas
+ * ranuras quedan inactivos, no se borran.
+ */
 function pruneInvalidSpecializations() {
   const ctx = requirementContext();
   const reset = [];
+  const allOptions = [...DISTRICTS.urban.specializationOptions, ...RESOURCE_DISTRICT_ORDER.flatMap((cat) => DISTRICTS[cat].specializationOptions)];
+  const optionName = (optionId) => { const option = allOptions.find((entry) => entry.id === optionId); return option ? t(currentLang, option.i18nKey) : optionId; };
+  districtState.urban.slots.forEach((optionId, slotIndex) => {
+    if (!optionId) return;
+    const option = primaryOption(optionId);
+    if (!option || !buildingRequirementsMet(option, ctx)) {
+      districtState.urban.slots[slotIndex] = null;
+      reset.push(optionName(optionId));
+    }
+  });
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
-    const option = districtState[cat].optionId ? resourceSpecOptionsById[cat].get(districtState[cat].optionId) : null;
-    if (option && !buildingRequirementsMet(option, ctx)) {
+    const optionId = districtState[cat].optionId;
+    if (!optionId) return;
+    const option = secondaryOption(cat, optionId);
+    if (!option || !buildingRequirementsMet(option, ctx)) {
       districtState[cat].optionId = null;
-      reset.push(t(currentLang, option.i18nKey));
+      reset.push(optionName(optionId));
     }
   });
   if (reset.length) showNotice(t(currentLang, "planetSimSpecializationResetNotice")(reset.join(", ")));
@@ -2916,12 +3068,12 @@ export function applyPlanetConfig(config) {
   // Distritos: solo ids de especialización que existen.
   const urban = config.districts?.urban || {};
   districtState.urban.count = Math.max(URBAN_MIN_COUNT, Number(urban.count) || URBAN_MIN_COUNT);
-  districtState.urban.slots = [0, 1].map((index) => (urbanSpecOptionsById.has(urban.slots?.[index]) ? urban.slots[index] : null));
+  districtState.urban.slots = [0, 1].map((index) => (primaryOption(urban.slots?.[index]) ? urban.slots[index] : null));
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const saved = config.districts?.[cat] || {};
     const count = Math.max(0, Number(saved.count) || 0);
     districtState[cat].count = count;
-    districtState[cat].optionId = count > 0 && resourceSpecOptionsById[cat].has(saved.optionId) ? saved.optionId : null;
+    districtState[cat].optionId = count > 0 && secondaryOption(cat, saved.optionId) ? saved.optionId : null;
   });
   planetSize = Math.max(Math.floor(Number(config.planetSize)) || 1, totalDistrictCount());
   if (planetSizeInput) planetSizeInput.value = String(planetSize);

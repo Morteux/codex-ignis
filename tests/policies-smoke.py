@@ -289,6 +289,32 @@ async def main():
         mods = await pg.inner_text("#planet-modifiers")
         check("modifiers panel lists edicts", all(x in mods for x in ["Forge Subsidies", "Information Quarantine", "Tracking Implants"]), mods[-600:])
 
+        # 10. P10.2: Ecumenopolis districts (Residential Arcology + 3 Unspecialized Arcology sets, specialization jobs x3, +20 % resources from jobs)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        async def body(name):
+            await tab("body")
+            await pg.evaluate("(n)=>{const c=[...document.querySelectorAll('.celestial-type-card')].find(x=>x.innerText.trim()===n);if(!c.classList.contains('is-selected'))c.click()}", name)
+            await tab("planet")
+            await pg.click("#planet-tab-districts")
+        await body("Ecumenopolis")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("ecumenopolis district cards", names == ["Residential Arcology ×2 built", "Unspecialized Arcology 1", "Unspecialized Arcology 2", "Unspecialized Arcology 3"], names)
+        opts = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[1].querySelectorAll('option')].map(o=>o.value)")
+        check("arcology specializations include research, no resource ones", "researchEnclave" in opts and "heavyIndustry" in opts and "energyGeneration" not in opts, opts)
+        await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];const s=c.querySelector('select');s.value='heavyIndustry';s.dispatchEvent(new Event('change'))}""")
+        for _ in range(2):
+            await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
+        mini = await pg.evaluate("()=>document.querySelectorAll('.planet-district-card')[1].querySelector('.planet-district-spec-row').innerText")
+        check("Heavy Industry on an arcology: +300 Metallurgists per copy (x3)", "300" in mini, mini)
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("housing: Residential Arcology 2 x 1500, arcology set 2 x (1500 - 600)", "Residential Arcology ×2 +3000" in housing and "Unspecialized Arcology 1 ×2 +1800" in housing, housing)
+        mods = await pg.inner_text("#planet-modifiers")
+        check("modifiers panel: Ecumenopolis +20 % and Clerk trade", "Ecumenopolis" in mods and "Clerk" in mods, mods[-600:])
+        await body("Continental")
+        notice = await pg.evaluate("()=>document.querySelector('#planet-sim-notice')?.innerText||''")
+        names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
+        check("back to a regular planet: resource districts and the arcology specialization reset", names[1:] == ["Generator district", "Mining district", "Agriculture district"] and "Heavy Industry" in notice, (names, notice))
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

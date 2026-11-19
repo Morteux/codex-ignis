@@ -7,8 +7,8 @@
  * (habitat and Synaptic Lathe capitals), *Designation* (designation sets) and
  * *Jobs* (Clerk, Thermoforger, Thermotechnic Mentor, Neural Chip).
  *
- * Data only: the engine does not read this file yet. P10.2–P10.7 wire it in,
- * one body type at a time. Every value is `unverified` until P14 and is copied
+ * The engine reads the rules of the body types wired in so far (P10.2:
+ * Ecumenopolis); P10.3–P10.7 wire in the rest, one body type at a time. Every value is `unverified` until P14 and is copied
  * as written on the wiki (housing and jobs ×100, upkeep and costs as plain
  * numbers, percentages as whole numbers). Open questions are listed in
  * PLANET_SIM_GDD.md §4.1 and must be answered before the value is used.
@@ -71,6 +71,8 @@ export const BODY_TYPE_RULES = {
     districtLayout: "urbanSecondary",
     primaryDistrict: "residentialArcology",
     secondaryDistrict: "unspecializedArcology",
+    // Owner decision 2026-11-19: ×3 applies to the specialization jobs of every district copy (primary and secondary);
+    // the wiki's extra "×2 for secondary urban districts" is not a separate multiplier.
     specializationJobMultiplier: 3,
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: [], // "None of them are available on Ecumenopolis"
@@ -155,9 +157,10 @@ export const SPECIAL_DISTRICTS = {
   // Ecumenopolis
   residentialArcology: {
     role: "primary", bodies: ["city"], housing: 1500,
+    i18nKey: "districtResidentialArcology", img: "districs/district_arcology_housing.png",
     technologyHousing: [
-      { id: "weatherControlSystems", housing: 300 },
-      { id: "antiGravityEngineering", housing: 300, excludedCivics: ["civicAgrarianIdyll"] }
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 300 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 300, excludedCivics: ["civicAgrarianIdyll"] }
     ],
     jobsByEmpire: { individualist: { clerk: 300 }, gestalt: { logistic_drone: 900 } },
     technologyJobs: [{ id: "antiGravityEngineering", empire: "gestalt", jobs: { logistic_drone: 300 } }],
@@ -165,9 +168,10 @@ export const SPECIAL_DISTRICTS = {
   },
   unspecializedArcology: {
     role: "secondaryUrban", bodies: ["city"], housing: 1500,
+    i18nKey: "districtUnspecializedArcology", img: "districs/district_arcology_housing_secondary.png",
     technologyHousing: [
-      { id: "weatherControlSystems", housing: 300 },
-      { id: "antiGravityEngineering", housing: 300, excludedCivics: ["civicAgrarianIdyll"] }
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 300 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 300, excludedCivics: ["civicAgrarianIdyll"] }
     ],
     upkeep: { energy: -5 }, cost: { alloys: 500 }, time: 480
   },
