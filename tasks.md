@@ -1,13 +1,12 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8, P16.1–P16.10, P9.1–P9.4, P9.6, P12.1, P17.1) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8, P16.1–P16.10, P9.1–P9.6, P12.1, P17.1) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P7 — Data
 - [ ] P7.10 Technology housing bonuses: apply the district housing bonuses gated by technologies (Weather Control Systems, Anti-Gravity Engineering, Optimized Nexus, Extended Hives…; exact list and values from the 4.5.2 Districts page). List each applied technology in the housing breakdown. Tradition-gated ones (e.g. Public Works Division) are not applied.
 
 ## P9 — Planetary conditions
-- [ ] P9.5 Crime from low happiness (+0.02 per pop per point below 50, up to +2 per pop), shown next to enforcer/educator crime; gestalt deviancy. Display only.
 - [ ] P9.7 Manual / Estimated / Derived labels on every conditions value; manual extra happiness and stability (default 0, Manual).
 
 ## P16 — Policies and trade

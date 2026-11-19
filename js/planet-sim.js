@@ -735,9 +735,17 @@ function computeTotals() {
     stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
     stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect - stability.housingPenalty));
   }
+  // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
+  // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
+  // Solo se muestra: no cambia la estabilidad (GDD §9). Las reducciones de los empleos (agentes de la ley, educadores...) se
+  // suman aparte con los empleos cubiertos; el total no baja de 0.
+  const crimeFromHappiness = happiness.applicable ? pops * 0.02 * (100 - happiness.value) : 0;
+  const crimeFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.crime || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
+  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, total: Math.max(0, crimeFromHappiness + crimeFromJobs) };
   const conditions = {
     happiness,
     stability,
+    crime,
     amenitiesEffect,
     pops,
     housingProvided: conditionsHousing,
@@ -1944,11 +1952,12 @@ function effectPills(jobId, assignedRaw, withLabel) {
   return Object.entries(JOB_EFFECTS[jobId] || {}).map(([statId, perJob]) => statPill(statId, perJob * divideEffect(assignedRaw), withLabel));
 }
 
-function renderNonResourceEffects(jobIds) {
+function renderNonResourceEffects(jobIds, conditions) {
   const nonResourceEntries = Object.keys(JOB_EFFECTS).filter((jobId) => (jobAssignments[jobId] || 0) > 0);
+  const lowHappinessCrime = conditions && conditions.crime ? conditions.crime.fromHappiness : 0;
   const capital = currentCapital();
   const capitalArmies = capital.defenseArmies || 0;
-  if ((nonResourceEntries.length || capitalArmies) && nonResourceEl) {
+  if ((nonResourceEntries.length || capitalArmies || lowHappinessCrime > 0) && nonResourceEl) {
     nonResourceEl.replaceChildren();
     const heading = document.createElement("p");
     heading.className = "planet-nonresource-heading";
@@ -1978,6 +1987,16 @@ function renderNonResourceEffects(jobIds) {
       effectPills(jobId, jobAssignments[jobId], true).forEach((pill) => line.append(pill));
       nonResourceEl.append(line);
     });
+    if (lowHappinessCrime > 0) {
+      // P9.5: delincuencia que producen los pops por baja felicidad (solo informativa), junto a la de los empleos.
+      const line = document.createElement("div");
+      line.className = "planet-nonresource-line";
+      line.dataset.effect = "crimeFromHappiness";
+      const text = document.createElement("span");
+      text.textContent = `${t(currentLang, "conditionsCrimeHappiness")} —`;
+      line.append(text, statPill("crime", lowHappinessCrime, true));
+      nonResourceEl.append(line);
+    }
   } else if (nonResourceEl) {
     nonResourceEl.replaceChildren();
   }
@@ -1995,7 +2014,7 @@ function renderSummary(totals) {
     empty.className = "planet-summary-empty";
     empty.textContent = t(currentLang, "planetSimSummaryEmpty");
     summaryEl.append(empty);
-    renderNonResourceEffects(jobIds);
+    renderNonResourceEffects(jobIds, totals.conditions);
     return;
   }
 
@@ -2019,7 +2038,7 @@ function renderSummary(totals) {
     });
   });
 
-  renderNonResourceEffects(jobIds);
+  renderNonResourceEffects(jobIds, totals.conditions);
 }
 
 /**
@@ -2038,7 +2057,7 @@ function refreshEconomyOnly() {
   renderStats(totals);
   const jobIds = Object.keys(totals.jobCapacities).filter((jobId) => totals.jobCapacities[jobId] > 0);
   updateJobsCounter(jobIds, totals.jobCapacities);
-  renderNonResourceEffects(jobIds);
+  renderNonResourceEffects(jobIds, totals.conditions);
 }
 
 
@@ -2473,6 +2492,28 @@ function renderConditions(totals) {
       : t(currentLang, "conditionsFormulaApprovalLow")(fmt(st.approval), formatAmount(st.approvalBonus, true)));
   }
   addNote(t(currentLang, "conditionsFormulaHousing")(fmt(Math.max(0, c.pops - c.housingProvided)), fmt(c.pops), formatAmount(-st.housingPenalty, st.housingPenalty !== 0)));
+
+  // P9.5: delincuencia (desviación en gestalt). Solo informativa; en rojo cuando sube.
+  const cr = c.crime;
+  const crimeRows = cr.gestalt
+    ? [["crimeJobs", "conditionsDeviancyJobs", cr.fromJobs], ["crime", "conditionsDeviancy", cr.total]]
+    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ["crime", "conditionsCrime", cr.total]];
+  crimeRows.forEach(([key, labelKey, value]) => {
+    const row = document.createElement("div");
+    row.className = `planet-resource-row ${value > 0 ? "is-negative" : "is-positive"}`;
+    row.dataset.condition = key;
+    const name = document.createElement("span");
+    name.className = "planet-resource-name";
+    name.textContent = t(currentLang, labelKey);
+    const val = document.createElement("span");
+    val.className = "planet-resource-value";
+    val.textContent = formatAmount(value, key !== "crime" && value !== 0);
+    row.append(name, val);
+    conditionsEl.append(row);
+  });
+  addNote(cr.gestalt
+    ? t(currentLang, "conditionsDeviancyNote")
+    : t(currentLang, "conditionsFormulaCrime")(fmt(c.pops), fmt(h.value), formatAmount(cr.fromHappiness, false)));
 }
 
 function renderSlots() {

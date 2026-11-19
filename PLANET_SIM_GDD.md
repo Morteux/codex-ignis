@@ -55,7 +55,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - Housing usage 1/pop; amenities provided = buildings (rounded) + jobs (rounded down) − 5 lost; usage 1/pop.
 - **Happiness** (non-gestalt): 50 + amenities effect (bonus min(+20, 20·avail/usage) points, penalty max(−50, 200/3·avail/usage)), clamped 0–100.
 - **Stability:** 50 + approval bonus (approval = floor(happiness); +0.6/pt above 50 rounded down, −1/pt below) − housing penalty 40·missing/pops, clamped 0–100. Gestalt: no happiness; amenities effect applies to stability directly.
-- Crime from low happiness is display-only (no invented penalty). Every value labelled Manual / Estimated / Derived; manual extra happiness/stability for unmodelled sources.
+- **Crime from low happiness** (display only, no invented penalty): wiki 4.5.2 *Colony management* — each pop produces 0 at 100 happiness up to +2 at 0, i.e. 0.02 × (100 − happiness) per pop (the old task text "per point below 50" contradicted the wiki). Shown in Conditions (from pops, job reductions, total ≥ 0) and next to the enforcer/educator crime in the jobs non-resource effects. Gestalt: named Deviancy; with no happiness, deviancy from pops is not modelled (only job reductions). Every value labelled Manual / Estimated / Derived; manual extra happiness/stability for unmodelled sources.
 
 ## 8. Saved data
 - localStorage keys `codex-ignis-empires`, `codex-ignis-planets`. JSON export/import (`{type: "planet" | "empire"}`); missing/unsupported `rulesetId` or newer `schemaVersion` → rejected; fields sanitized; new id on import; unknown ids replaced by defaults, never invented.

@@ -148,6 +148,13 @@ async def main():
         await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>/Trade value/.test(r.innerText))?.click()")
         bd = await pg.evaluate("()=>document.querySelector('#planet-production-net')?.innerText")
         check("breakdown shows the stability effect line", "Stability effect on job output" in (bd or ""), bd)
+        # P9.5: crime from low happiness (0.02 x (100 - 70) per pop; pops shown x100), display only
+        pops = float(cond.get("pops", "0")) / 100
+        crime = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=crimeHappiness] .planet-resource-value')?.innerText")
+        expected = 0.02 * 30 * pops
+        check("crime from low happiness = 0.6 per pop at 70 happiness", crime is not None and approx(float(crime.replace("+", "")), expected), (crime, pops))
+        line = await pg.evaluate("()=>document.querySelector('#planet-nonresource [data-effect=crimeFromHappiness]')?.innerText")
+        check("crime from low happiness shown with job effects", bool(line) and crime in line, line)
 
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")
