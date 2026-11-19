@@ -5,7 +5,7 @@ Order is a proposal; **P14 is always last**. When a task is done, remove it from
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] P10.6 Gaia / relic / tomb; wilderness-origin districts (Volcanic districts done)
+- [ ] P10.6 Wilderness-origin districts (Volcanic, Gaia, Tomb and Relic done)
 - [ ] P10.7 Size and district-limit rules for artificial bodies
 - [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab)
 - [ ] P10.9 Remaining urban specializations: Administrative Hub (not Spiritualist / Rogue Servitor; administrator job per authority), Spiritual Enclave (Spiritualist), primary-only Archives and Urban Expansion

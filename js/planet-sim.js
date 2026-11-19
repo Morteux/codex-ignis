@@ -1063,6 +1063,13 @@ function computeTotals() {
   });
   addJobResourcePct(bodyType?.jobResourcePct, { kind: "celestial", id: empireState.celestialTypeId });
   if (designation) addJobResourcePct(designation.jobResourcePct, { kind: "designation", id: designation.id });
+  // P10.6: planet effects of the chosen primary specializations (Central Spire +15 % research), once per option.
+  if (districtState.urban.count > 0) {
+    new Set(districtState.urban.slots.filter(Boolean)).forEach((optionId) => {
+      const option = primaryOption(optionId);
+      if (option?.jobResourcePct) addJobResourcePct(option.jobResourcePct, { kind: "specialization", id: option.id });
+    });
+  }
   buildingJobResourcePcts.forEach(({ pcts, source }) => addJobResourcePct(pcts, source));
   Object.entries(JOB_RESOURCE_MULT).forEach(([jobId, perJob]) => {
     const staffed = divideEffect(jobAssignments[jobId] || 0);
@@ -1087,7 +1094,9 @@ function computeTotals() {
     const celestialFraction = kindFraction("celestial");
     const jobFraction = kindFraction("job");
     const designationFraction = kindFraction("designation");
-    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction), "jobBuildingMult");
+    const specializationFraction = kindFraction("specialization");
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction - specializationFraction), "jobBuildingMult");
+    if (specializationFraction) addSignedResource(resourceId, fromJobs * specializationFraction, "specializationJobMult");
     if (designationFraction) addSignedResource(resourceId, fromJobs * designationFraction, "designationJobMult");
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
     if (celestialFraction) addSignedResource(resourceId, fromJobs * celestialFraction, "celestialJobMult");
@@ -1149,8 +1158,11 @@ function computeTotals() {
       amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
     }
   }
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.manual));
+  // P10.6: happiness of the body type (Gaia "+10% Happiness", treated as points like the edicts); no happiness in gestalt.
+  const bodyHappiness = gestaltEmpire ? 0 : bodyRules()?.happinessPct || 0;
+  if (bodyHappiness) pushModifier({ kind: "celestial", id: getPlanetState().celestialTypeId }, "conditionFlat", { stat: "happiness" }, bodyHappiness);
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
@@ -2252,6 +2264,8 @@ function renderUrbanSpecializationPicker(slotIndex) {
   // P10.2: options whose requirements are not met (research specializations on a Habitat) are listed disabled with the reason.
   const specCtx = requirementContext();
   def.specializationOptions.forEach((option) => {
+    // P10.6: first-slot-only specializations (Central Spire) are not offered in the second slot.
+    if (option.firstSlotOnly && slotIndex > 0) return;
     const optionEl = document.createElement("option");
     optionEl.value = option.id;
     const label = requirementOptionLabel(t(currentLang, option.i18nKey), option, specCtx);
@@ -2632,6 +2646,7 @@ const BREAKDOWN_SOURCES = [
   { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult" },
   { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
   { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult" },
+  { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
@@ -2869,6 +2884,7 @@ function modifierSourceName(source) {
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
   if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
+  if (source.kind === "specialization") { const option = primaryOption(source.id); return option ? t(currentLang, option.i18nKey) : source.id; }
   if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
   if (source.kind === "job") return jobName(source.id);
   return source.id;
@@ -3072,6 +3088,7 @@ function renderConditions(totals) {
     addRows([
       ["happinessBase", "conditionsHappinessBase", h.base, false],
       ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
+      ...(h.body ? [["happinessBody", "conditionsHappinessBody", h.body, true]] : []),
       ...(h.edicts ? [["happinessEdicts", "conditionsHappinessEdicts", h.edicts, true]] : []),
       ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
@@ -3205,7 +3222,7 @@ const CONDITION_SOURCES = {
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
-  happinessEdicts: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
+  happinessEdicts: "derived", happinessBody: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
@@ -3271,7 +3288,7 @@ function pruneInvalidSpecializations() {
   districtState.urban.slots.forEach((optionId, slotIndex) => {
     if (!optionId) return;
     const option = primaryOption(optionId);
-    if (!option || !buildingRequirementsMet(option, ctx)) {
+    if (!option || !buildingRequirementsMet(option, ctx) || (option.firstSlotOnly && slotIndex > 0)) {
       districtState.urban.slots[slotIndex] = null;
       reset.push(optionName(optionId));
     }

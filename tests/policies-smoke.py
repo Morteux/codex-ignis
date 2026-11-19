@@ -484,6 +484,30 @@ async def main():
         jobs = await pg.inner_text("#planet-summary")
         check("back to a regular planet: Miners again", "Miner" in jobs and "Thermoforger" not in jobs, jobs[:500])
 
+        # 16. P10.6: Gaia World (+10 happiness row, none in gestalt) and Relic World (Central Spire: first slot only, +15 % research)
+        await body("Gaia")
+
+        hrow = await pg.evaluate("()=>document.querySelector('[data-condition=happinessBody] .planet-resource-value')?.innerText")
+        check("Gaia: +10 happiness row", hrow == "+10", hrow)
+        await tab("empire"); await ethic("Gestalt Consciousness")
+        hrow = await pg.evaluate("()=>document.querySelector('[data-condition=happinessBody]')")
+        check("Gaia gestalt: no happiness row", hrow is None, hrow)
+        await tab("empire"); await ethic("Gestalt Consciousness")
+        await body("Relic World")
+        spire = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[0].querySelectorAll('select')].map(s=>[...s.options].filter(o=>o.value==='centralSpire').map(o=>[o.disabled,o.textContent]))")
+        check("Relic: Central Spire only in the first slot, with its unmodelled requirement", len(spire) == 2 and len(spire[0]) == 1 and spire[0][0][0] is False and "Collapsed Spire" in spire[0][0][1] and spire[1] == [], spire)
+        await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[0].querySelector('select');s.value='centralSpire';s.dispatchEvent(new Event('change'))}""")
+        jobs = await pg.inner_text("#planet-summary")
+        check("Central Spire: researchers created", "Physicist" in jobs and "Engineer" in jobs, jobs[:400])
+        mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText)")
+        check("Central Spire: +15 % research from jobs in the modifiers", any("Central Spire" in m and "district specialization" in m.lower() and "+15%" in m for m in mods), mods)
+        await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>/^Physics/.test(r.innerText))?.click()")
+        bd = await pg.evaluate("()=>document.querySelector('#planet-production-net')?.innerText")
+        check("breakdown: district specializations % line", "District specializations: % of job output" in (bd or ""), bd)
+        await body("Continental")
+        slot = await pg.evaluate("()=>document.querySelectorAll('.planet-district-card')[0].querySelector('select').value")
+        check("Central Spire reset on a regular planet", slot == "", slot)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

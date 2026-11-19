@@ -241,6 +241,21 @@ export const DISTRICTS = {
         requires: [{ type: "notCelestial", ids: ["habitat"] }],
         jobs: { biologist: 100 },
         permittedSets: ["society", "research", "origin"]
+      },
+      // P10.6: Central Spire (wiki 4.5.2 "District specialization"): Relic World only, first specialization slot only (it is
+      // set there when the Collapsed Spire blocker is cleared; the blocker itself is P10.8, shown as an unmodelled
+      // requirement until then). "+15% Physics / Society / Engineering research from jobs" is a planet effect, applied once
+      // whatever the number of district copies (jobResourcePct, like the body type's). "Cannot be rebuilt if removed" is not enforced.
+      {
+        id: "centralSpire",
+        i18nKey: "specializationCentralSpire",
+        img: "districts_specialization/District_specialization_research.png",
+        housing: -200,
+        firstSlotOnly: true,
+        requires: [{ type: "celestial", ids: ["relic"] }, { type: "unmodelled", i18nKey: "reqCollapsedSpireCleared" }],
+        jobs: { physicist: 60, biologist: 60, engineer: 60 },
+        jobResourcePct: { physics: 15, society: 15, engineering: 15 },
+        permittedSets: ["urban", "research", "origin"]
       }
     ]
   },
