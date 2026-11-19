@@ -496,6 +496,17 @@ export const JOB_OUTPUTS = {
  *    modelan).
  *  - soldier: +4 capacidad naval, +0.15 estabilidad, +1 ejércitos de defensa.
  */
+/**
+ * P16.12: salida de los civiles (pops sin empleo, entrada manual), wiki 4.5.2 "Jobs" → Special jobs, salida por 100 de
+ * fuerza laboral (unidades reales por pop, como JOB_OUTPUTS). Individualista: Civilian (+50 servicios, +1 comercio).
+ * Gestalt: Maintenance Drone (+400 servicios, +1 comercio). No se modelan los cambios de empleo Hedonist (Pleasure
+ * Seekers) ni Tourist (Resort World).
+ */
+export const CIVILIAN_OUTPUTS = {
+  individualist: { i18nKey: "jobCivilian", output: { amenities: 0.5, trade: 1 } },
+  gestalt: { i18nKey: "jobMaintenanceDrone", output: { amenities: 4, trade: 1 } }
+};
+
 export const JOB_EFFECTS = {
   enforcer: { stability: 0.2, crime: -25, defenseArmies: 1 },
   educator: { crime: -20, defenseArmies: 0.5 },

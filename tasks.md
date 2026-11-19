@@ -1,11 +1,7 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.10, P9.1–P9.7, P12.1, P17.1) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P17.1) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
-
-## P16 — Policies and trade
-- [ ] P16.11 Trade League and Holy Covenant (L3) selectable, each card with a short note of the federation it requires. Consumer Benefits / Marketplace of Ideas blocking by Trade League stays as on the wiki. Update `policy-data.js` and the smoke test.
-- [ ] P16.12 Civilians: manual input (pops without jobs, default 0, no cap, ×100 display, labelled Manual). They count as pops (housing, amenities, happiness/stability) and their trade (wiki 4.5.2 civilian output) enters the trade conversion. Saved with the planet.
 
 ## P17 — "i" explanation panels (pattern in GDD §6)
 - [ ] P17.2 Production panel (columns, breakdown sources, trade conversion, external income)

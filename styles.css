@@ -2750,3 +2750,11 @@ h1 {
 .info-panel[hidden] {
     display: none;
 }
+
+/* P16.11: nota de la federación que exige una política comercial */
+.empire-policy-federation-note {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  opacity: 0.8;
+}

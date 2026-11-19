@@ -26,10 +26,11 @@
  *
  * ── Decisiones provisionales (a confirmar con Morteux, ver P16.1 del GDD) ──
  *  1. Las opciones que exigen una federación (Liga comercial, Pacto sagrado) se
- *     listan pero no están disponibles: el simulador no modela federaciones
- *     (regla `federation`, siempre incumplida). Las que se bloquean POR una
+ *     pueden elegir (P16.11): el simulador supone que el imperio pertenece a esa
+ *     federación y la tarjeta lo indica con una nota (`federationNoteKey`). Las
+ *     federaciones no se modelan de otro modo. Las que se bloquean POR una
  *     federación (Beneficios para el consumidor, Mercado de ideas) siguen
- *     disponibles (regla `notFederation`, siempre cumplida).
+ *     disponibles (regla `notFederation`, siempre cumplida), como en la wiki.
  *  2. Las tradiciones (Adaptive Economic Policies, Supremacy) no se modelan: se
  *     tratan como desbloqueadas, igual que la tecnología.
  *  3. Por defecto: Política económica = Economía mixta, Política de producción =
@@ -54,7 +55,6 @@ const civic = (...keys) => ({ type: "civic", keys });
 const notCivic = (...keys) => ({ type: "notCivic", keys });
 const authority = (...ids) => ({ type: "authority", ids });
 const notAuthority = (...ids) => ({ type: "notAuthority", ids });
-const FEDERATION = { type: "federation" };
 const NOT_FEDERATION = { type: "notFederation" };
 
 export const POLICY_GROUPS = [
@@ -79,8 +79,8 @@ export const POLICY_GROUPS = [
       { id: "consumerBenefits", i18nKey: "policyConsumerBenefits", requires: [NOT_FEDERATION], effects: { tradeConversion: { trade: 0.5, consumer_goods: 0.25 } } },
       { id: "marketplaceOfIdeas", i18nKey: "policyMarketplaceOfIdeas", requires: [NOT_FEDERATION], effects: { tradeConversion: { trade: 0.5, unity: 0.125 } } },
       { id: "mutualAid", i18nKey: "policyMutualAid", requires: [civic("civicWorkerCoop")], effects: { tradeConversion: { trade: 0.25, energy: 0.2, minerals: 0.2, food: 0.2, unity: 0.075 } } },
-      { id: "tradeLeague", i18nKey: "policyTradeLeague", requires: [FEDERATION, NOT_GESTALT], effects: { tradeConversion: { trade: 0.5, energy: 0.15, consumer_goods: 0.15, unity: 0.075 } } },
-      { id: "holyCovenant", i18nKey: "policyHolyCovenant", requires: [FEDERATION, NOT_GESTALT], effects: { tradeConversion: { trade: 0.5, unity: 0.1875 } } }
+      { id: "tradeLeague", i18nKey: "policyTradeLeague", federationNoteKey: "policyFederationNoteTradeLeague", requires: [NOT_GESTALT], effects: { tradeConversion: { trade: 0.5, energy: 0.15, consumer_goods: 0.15, unity: 0.075 } } },
+      { id: "holyCovenant", i18nKey: "policyHolyCovenant", federationNoteKey: "policyFederationNoteHolyCovenant", requires: [NOT_GESTALT], effects: { tradeConversion: { trade: 0.5, unity: 0.1875 } } }
     ]
   },
   {

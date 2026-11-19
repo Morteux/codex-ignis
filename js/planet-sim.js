@@ -42,6 +42,7 @@ import {
   BUILDINGS,
   JOBS,
   JOB_OUTPUTS,
+  CIVILIAN_OUTPUTS,
   JOB_EFFECTS,
   JOB_STRATA,
   STRATUM_I18N_KEYS,
@@ -715,11 +716,26 @@ function computeTotals() {
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
   });
 
+  // P16.12: civiles (pops sin empleo, entrada manual ×100). Producen servicios y comercio (CIVILIAN_OUTPUTS) como un empleo
+  // más: su comercio entra en el efecto de la estabilidad y en la conversión de comercio; no reciben eficacia de estrato
+  // ni el % de los empleos de edificios y políticas.
+  const civilianDef = CIVILIAN_OUTPUTS[gestaltEmpire ? "gestalt" : "individualist"];
+  const civilianPops = divideEffect(civiliansRaw);
+  if (civilianPops > 0) {
+    Object.entries(civilianDef.output).forEach(([resourceId, perPop]) => {
+      const amount = perPop * civilianPops;
+      addSignedResource(resourceId, amount, "civilians");
+      jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
+    });
+    if (civilianDef.output.amenities) amenitySources.push({ kind: "civilians", i18nKey: civilianDef.i18nKey, assignedRaw: civiliansRaw, amount: civilianDef.output.amenities * civilianPops });
+  }
+
   // P9.1: pops (1 por empleo cubierto), vivienda y servicios (wiki 4.5.2, Colony management). Todo en unidades reales;
   // al mostrarse se multiplica por EFFECT_SCALE. Redondeos de la wiki: servicios de edificios al entero más cercano,
   // servicios de empleos hacia abajo, uso de servicios al entero más cercano. Los modificadores de uso de servicios
   // (especie, colonia, imperio) no se modelan: cada pop usa 1.
-  const pops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
+  const jobPops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
+  const pops = jobPops + civilianPops;
   // P9.4: las condiciones se calculan antes del paso 4a (efecto de la estabilidad), así que se suman aquí los servicios y la
   // vivienda planos de la designación, que el paso 5 añade después a los totales (mismo resultado que calcularlas al final).
   const designationHousing = designation ? (designation.flat.housing || 0) : 0;
@@ -782,7 +798,9 @@ function computeTotals() {
     amenitiesProvided,
     amenitiesLost: AMENITIES_LOST,
     amenitiesUsage,
-    amenitiesAvailable
+    amenitiesAvailable,
+    civilians: civilianPops,
+    civilianI18nKey: civilianDef.i18nKey
   };
 
 
@@ -902,6 +920,8 @@ function checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, 
 const jobAssignments = {};
 // P9.7: felicidad y estabilidad extra introducidas a mano (fuentes no modeladas). Por defecto 0; se guardan con el planeta.
 const manualConditions = { happiness: 0, stability: 0 };
+// P16.12: civiles introducidos a mano, en unidades ×100 (100 = 1 pop), sin tope.
+let civiliansRaw = 0;
 const MANUAL_CONDITION_LIMIT = 100;
 // Última capacidad conocida de cada empleo, para saber si el valor actual
 // "seguía" al máximo (sin tocar) o si el usuario lo cambió a mano.
@@ -2099,6 +2119,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
+  { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
@@ -2437,6 +2458,7 @@ function renderConditions(totals) {
   });
   conditionsEl.append(info);
   const rows = [
+    ["civilians", "conditionsCivilians", c.civilians, false],
     ["pops", "conditionsPops", c.pops, false],
     ["housingProvided", "conditionsHousingProvided", c.housingProvided, false],
     ["housingMissing", "conditionsHousingMissing", c.housingMissing, true],
@@ -2560,6 +2582,22 @@ function renderConditions(totals) {
     badge.textContent = t(currentLang, CONDITION_SOURCE_LABELS[source]);
     badge.title = t(currentLang, `${CONDITION_SOURCE_LABELS[source]}Tooltip`);
     row.querySelector(".planet-resource-name").append(" ", badge);
+    if (key === "civilians") {
+      // P16.12: civiles, ×100 como los empleos (100 = 1 pop), mínimo 0 y sin tope.
+      const input = document.createElement("input");
+      input.type = "number";
+      input.step = "1";
+      input.min = "0";
+      input.className = "planet-condition-input";
+      input.value = String(civiliansRaw);
+      input.setAttribute("aria-label", t(currentLang, "conditionsCivilians"));
+      input.addEventListener("change", () => {
+        civiliansRaw = sanitizeCivilians(input.value);
+        refreshEconomyOnly();
+      });
+      row.querySelector(".planet-resource-value").replaceWith(input);
+      return;
+    }
     const manualKey = MANUAL_CONDITION_ROWS[key];
     if (!manualKey) return;
     const input = document.createElement("input");
@@ -2585,7 +2623,7 @@ function renderConditions(totals) {
  * felicidad...); manual = introducido por el usuario.
  */
 const CONDITION_SOURCES = {
-  pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
+  civilians: "manual", pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
   amenitiesUsage: "estimated", amenitiesAvailable: "estimated",
   happinessBase: "derived", happinessAmenities: "estimated", happinessManual: "manual", happiness: "estimated",
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityManual: "manual",
@@ -2594,6 +2632,11 @@ const CONDITION_SOURCES = {
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
+/** P16.12: civiles válidos = entero ≥ 0 (×100); cualquier otra cosa → 0. */
+function sanitizeCivilians(raw) {
+  const value = Math.round(Number(raw));
+  return Number.isFinite(value) && value > 0 ? value : 0;
+}
 
 function renderSlots() {
   renderCapital();
@@ -2626,6 +2669,7 @@ function renderStats(totals) {
       if (source.kind === "capital") label = t(currentLang, "planetSimCapitalHeading");
       else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
       else if (source.kind === "job") label = `${formatAmount(source.assignedRaw)} ${jobName(source.jobId)}`;
+      else if (source.kind === "civilians") label = `${formatAmount(source.assignedRaw)} ${t(currentLang, source.i18nKey)}`;
       else label = t(currentLang, "planetSimDesignationHeading");
       return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
     });
@@ -2725,7 +2769,8 @@ export function capturePlanetConfig() {
     districts: JSON.parse(JSON.stringify(districtState)),
     built,
     staffingOverrides,
-    manualConditions: { ...manualConditions }
+    manualConditions: { ...manualConditions },
+    civilians: civiliansRaw
   };
 }
 
@@ -2779,6 +2824,9 @@ export function applyPlanetConfig(config) {
     const value = Number(config.manualConditions?.[key]);
     manualConditions[key] = Number.isFinite(value) ? Math.max(-MANUAL_CONDITION_LIMIT, Math.min(MANUAL_CONDITION_LIMIT, value)) : 0;
   });
+
+  // P16.12: civiles (campo opcional; los planetas antiguos no lo tienen → 0).
+  civiliansRaw = sanitizeCivilians(config.civilians);
 
   updatePlanetState({ designationId: selectedDesignationId || null });
   renderDesignationSelect();

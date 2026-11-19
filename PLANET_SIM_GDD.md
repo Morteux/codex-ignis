@@ -37,7 +37,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 ## 5. Empire
 - Ethics wheel (3 points, gestalt exclusive), 7 authorities, civics (max 3) with requirement/exclusion rules; civic keys derive from the icon file name (`principios_del_juego.md`), English name = wiki name.
 - Applied effects: unity %, trade %, influence flat (external income), stratum efficiency (Authoritarian/Fanatic +5/+10 % worker, Egalitarian/Fanatic +5/+10 % specialist). Everything else is informational.
-- **Policies** (`policy-data.js`): Economic (individualist), Trade (gestalt name: Logistics Policy), Production (gestalt), Diplomatic Stance. Defaults: Mixed Economy, Wealth Creation (individualist) / Logistics Policy (gestalt), Balanced Production, Expansionist. Switching individualist ↔ gestalt resets to the new defaults. Trade League and Holy Covenant are selectable with a note of the federation they need. Federations otherwise not modelled.
+- **Policies** (`policy-data.js`): Economic (individualist), Trade (gestalt name: Logistics Policy), Production (gestalt), Diplomatic Stance. Defaults: Mixed Economy, Wealth Creation (individualist) / Logistics Policy (gestalt), Balanced Production, Expansionist. Switching individualist ↔ gestalt resets to the new defaults. Trade League and Holy Covenant are selectable (membership assumed) with a note of the federation they need; Consumer Benefits / Marketplace of Ideas stay available (their federation block is never met). Federations otherwise not modelled.
 - **Edicts:** own tab before Sucursales, saved with the empire profile.
 - **Empire profiles:** saved by name (trimmed, 1–60 chars, unique case-insensitive). No auto-save: editing shows "●"; switching empire or loading a planet with unsaved changes asks Save / Don't save / Cancel. No profile selected = unsaved draft. The last selected empire is restored on reload. Policies, edicts and every empire-level setting count as empire changes. Empire-level tabs (Imperio, Edicts) are visually marked as saved with the profile.
 
@@ -51,7 +51,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Panels:** per-resource breakdown (click a Net row), active-modifiers panel (source, target, value, category), "i" explanation panels (`.info-btn` + `createInfoPanel`, open state kept across re-renders/language).
 
 ## 7. Planetary conditions
-- Pops = staffed jobs + manual Civilians (default 0, no cap; they consume housing and amenities).
+- Pops = staffed jobs + manual Civilians (Conditions panel, ×100, default 0, no cap, labelled Manual; they consume housing and amenities). Civilian output (wiki 4.5.2 *Jobs* → Special jobs, per pop): Civilian +0.5 amenities, +1 trade; gestalt Maintenance Drone +4 amenities, +1 trade. Their trade gets the stability effect and enters the trade conversion; no stratum efficiency or job % bonuses. Hedonist/Tourist job swaps not modelled.
 - Housing usage 1/pop; amenities provided = buildings (rounded) + jobs (rounded down) − 5 lost; usage 1/pop.
 - **Happiness** (non-gestalt): 50 + amenities effect (bonus min(+20, 20·avail/usage) points, penalty max(−50, 200/3·avail/usage)), clamped 0–100.
 - **Stability:** 50 + approval bonus (approval = floor(happiness); +0.6/pt above 50 rounded down, −1/pt below) − housing penalty 40·missing/pops, clamped 0–100. Gestalt: no happiness; amenities effect applies to stability directly.
@@ -59,7 +59,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 
 ## 8. Saved data
 - localStorage keys `codex-ignis-empires`, `codex-ignis-planets`. JSON export/import (`{type: "planet" | "empire"}`); missing/unsupported `rulesetId` or newer `schemaVersion` → rejected; fields sanitized; new id on import; unknown ids replaced by defaults, never invented.
-- Planet: `schemaVersion` (1), `rulesetId`, unique `name`, `celestialTypeId`, `designationId`, `planetSize`, `capitalTier`, districts, `built` (slot key → building id), `staffingOverrides`, `empireId`, `empireSnapshot`, `noEmpire`. Optional fields added later (`manualConditions` {happiness, stability}, `policyIds`, edicts, civilians, branch offices) keep `schemaVersion` 1 if older readers can ignore them.
+- Planet: `schemaVersion` (1), `rulesetId`, unique `name`, `celestialTypeId`, `designationId`, `planetSize`, `capitalTier`, districts, `built` (slot key → building id), `staffingOverrides`, `empireId`, `empireSnapshot`, `noEmpire`. Optional fields added later (`manualConditions` {happiness, stability}, `policyIds`, `civilians` (×100 integer), edicts, branch offices) keep `schemaVersion` 1 if older readers can ignore them.
 - Empire: `schemaVersion`, `rulesetId`, `id`, `name`, `ethicIds`, `authorityId`, `civicIds`, `speciesType`, `policyIds`.
 - Deleted empire: the planet keeps the snapshot and shows "no empire". If the empire exists, its current version is used on load. Loading a planet replaces the current one without asking (only unsaved empire changes ask). A file with more districts than size raises the size.
 

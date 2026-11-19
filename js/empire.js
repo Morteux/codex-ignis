@@ -427,6 +427,12 @@ function renderPoliciesList() {
         effects.append(item);
       });
       card.append(effects);
+      if (option.federationNoteKey) {
+        const fed = document.createElement("p");
+        fed.className = "empire-policy-federation-note";
+        fed.textContent = t(currentLang, option.federationNoteKey);
+        card.append(fed);
+      }
       if (!available) {
         const lock = document.createElement("em");
         lock.className = "empire-authority-lock";
