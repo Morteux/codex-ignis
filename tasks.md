@@ -5,7 +5,7 @@ Order is a proposal; **P14 is always last**. When a task is done, remove it from
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] P10.5 Synaptic Lathe: Neural Chips (manual count, scaled output/upkeep, per-chip district outputs) and the Lathe building set / slots (districts and capitals done)
+- [ ] P10.5 Synaptic Lathe: building set (6 slots max, 2 per building, per-chip effects) and the Synaptic Lathe designation effects (districts, capitals and Neural Chips done)
 - [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
 - [ ] P10.7 Size and district-limit rules for artificial bodies
 - [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab)

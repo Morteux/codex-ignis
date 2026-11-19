@@ -407,6 +407,12 @@ async def main():
         await pg.click("#planet-capital-upgrade")
         size = await pg.evaluate("()=>document.querySelector('#planet-size-input').value")
         check("lathe: Parallelized capital +2 Max Districts", size == "4", size)
+        rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
+        check("lathe: Neural Chips row instead of civilians", "neuralChips" in rows and "civilians" not in rows, rows)
+        await pg.evaluate("""()=>{const i=document.querySelector('[data-condition=neuralChips] input');i.value='2000';i.dispatchEvent(new Event('change'))}""")
+        n = await net()
+        # 2000 chips = 20 chip jobs: 0.375 x 20 x (2000/2000) physics + 2 Neural Gates x 0.75 x 20 = 37.5 before the stability effect
+        check("Neural Chips: research and Advanced Logic", n.get("Advanced Logic", 0) > 0 and n.get("Physics", 0) > 30, n)
         await body("Continental")
         names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
         check("back to a regular planet: four district groups", len(names) == 4, names)

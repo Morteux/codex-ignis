@@ -63,7 +63,7 @@ import {
   RESOURCE_DISTRICT_ORDER,
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
-import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS } from "./body-type-data.js";
+import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -937,6 +937,30 @@ function computeTotals() {
     }
   });
 
+  // P10.5: Neural Chips (Synaptic Lathe: all pops, manual count ×100). Job output ×(total chips / 2000) and upkeep
+  // ×(total chips / 4000) per chip job (100 chips); their output is job output (it gets the "% from jobs" below). The Lathe
+  // districts add per 100 chips per copy (Neural Gate "Research" read as each of the three research types).
+  const neuralChipPops = isLatheLayout() ? divideEffect(neuralChipsRaw) : 0;
+  if (neuralChipPops > 0) {
+    const chip = SPECIAL_BODY_JOBS.neural_chip;
+    Object.entries(chip.outputs).forEach(([resourceId, perJob]) => {
+      const amount = perJob * neuralChipPops * (neuralChipsRaw / chip.scaling.output);
+      addSignedResource(resourceId, amount, "neuralChips");
+      jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
+    });
+    Object.entries(chip.upkeep).forEach(([resourceId, perJob]) => {
+      addSignedResource(resourceId, perJob * neuralChipPops * (neuralChipsRaw / chip.scaling.upkeep), "neuralChips");
+    });
+    const latheCounts = { [bodyRules().latheDistricts[0]]: districtState.urban.count, [bodyRules().latheDistricts[1]]: districtState[RESOURCE_DISTRICT_ORDER[0]].count };
+    Object.entries(latheCounts).forEach(([districtId, count]) => {
+      if (!count) return;
+      Object.entries(SPECIAL_DISTRICTS[districtId].perNeuralChips || {}).forEach(([key, per]) => {
+        const resourceIds = key === "research" ? ["physics", "society", "engineering"] : [key];
+        resourceIds.forEach((resourceId) => addSignedResource(resourceId, per * neuralChipPops * count, "districts"));
+      });
+    });
+  }
+
   // P10.2: "+X% resources from jobs" of the body type (Ecumenopolis +20 %) and per staffed job (Clerk +1 % trade).
   // Only resources that jobs actually produce get a modifier, so the panel lists what applies.
   const bodyType = bodyRules();
@@ -980,7 +1004,7 @@ function computeTotals() {
   // más: su comercio entra en el efecto de la estabilidad y en la conversión de comercio; no reciben eficacia de estrato
   // ni el % de los empleos de edificios y políticas.
   const civilianDef = CIVILIAN_OUTPUTS[gestaltEmpire ? "gestalt" : "individualist"];
-  const civilianPops = divideEffect(civiliansRaw);
+  const civilianPops = isLatheLayout() ? 0 : divideEffect(civiliansRaw); // P10.5: every Lathe pop is a Neural Chip
   if (civilianPops > 0) {
     Object.entries(civilianDef.output).forEach(([resourceId, perPop]) => {
       const amount = perPop * civilianPops;
@@ -1001,7 +1025,7 @@ function computeTotals() {
   // servicios de empleos hacia abajo, uso de servicios al entero más cercano. Los modificadores de uso de servicios
   // (especie, colonia, imperio) no se modelan: cada pop usa 1.
   const jobPops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
-  const pops = jobPops + civilianPops;
+  const pops = jobPops + civilianPops + neuralChipPops;
   // P9.4: las condiciones se calculan antes del paso 4a (efecto de la estabilidad), así que se suman aquí los servicios y la
   // vivienda planos de la designación, que el paso 5 añade después a los totales (mismo resultado que calcularlas al final).
   const designationHousing = designation ? (designation.flat.housing || 0) : 0;
@@ -1075,6 +1099,8 @@ function computeTotals() {
     amenitiesUsage,
     amenitiesAvailable,
     civilians: civilianPops,
+    neuralChips: neuralChipPops,
+    lathe: isLatheLayout(),
     civilianI18nKey: civilianDef.i18nKey
   };
 
@@ -1197,6 +1223,8 @@ const jobAssignments = {};
 const manualConditions = { happiness: 0, stability: 0 };
 // P16.12: civiles introducidos a mano, en unidades ×100 (100 = 1 pop), sin tope.
 let civiliansRaw = 0;
+// P10.5: Neural Chips of a Synaptic Lathe (all its pops), manual, ×100 like the civilians; saved with the planet.
+let neuralChipsRaw = 0;
 const MANUAL_CONDITION_LIMIT = 100;
 // Última capacidad conocida de cada empleo, para saber si el valor actual
 // "seguía" al máximo (sin tocar) o si el usuario lo cambió a mano.
@@ -2484,6 +2512,7 @@ const BREAKDOWN_SOURCES = [
   { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult" },
   { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
+  { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
@@ -2861,7 +2890,7 @@ function renderConditions(totals) {
   infoLine(t(currentLang, "conditionsInfoSources"));
   conditionsEl.append(info);
   const rows = [
-    ["civilians", "conditionsCivilians", c.civilians, false],
+    c.lathe ? ["neuralChips", "conditionsNeuralChips", c.neuralChips, false] : ["civilians", "conditionsCivilians", c.civilians, false],
     ["pops", "conditionsPops", c.pops, false],
     ["housingProvided", "conditionsHousingProvided", c.housingProvided, false],
     // P10.5: only on bodies that change the pop housing usage (Machine World).
@@ -2995,17 +3024,19 @@ function renderConditions(totals) {
     badge.textContent = t(currentLang, CONDITION_SOURCE_LABELS[source]);
     badge.title = t(currentLang, `${CONDITION_SOURCE_LABELS[source]}Tooltip`);
     row.querySelector(".planet-resource-name").append(" ", badge);
-    if (key === "civilians") {
-      // P16.12: civiles, ×100 como los empleos (100 = 1 pop), mínimo 0 y sin tope.
+    if (key === "civilians" || key === "neuralChips") {
+      // P16.12: civiles, ×100 como los empleos (100 = 1 pop), mínimo 0 y sin tope. P10.5: Neural Chips, igual.
+      const chips = key === "neuralChips";
       const input = document.createElement("input");
       input.type = "number";
       input.step = "1";
       input.min = "0";
       input.className = "planet-condition-input";
-      input.value = String(civiliansRaw);
-      input.setAttribute("aria-label", t(currentLang, "conditionsCivilians"));
+      input.value = String(chips ? neuralChipsRaw : civiliansRaw);
+      input.setAttribute("aria-label", t(currentLang, chips ? "conditionsNeuralChips" : "conditionsCivilians"));
       input.addEventListener("change", () => {
-        civiliansRaw = sanitizeCivilians(input.value);
+        if (chips) neuralChipsRaw = sanitizeCivilians(input.value);
+        else civiliansRaw = sanitizeCivilians(input.value);
         refreshEconomyOnly();
       });
       row.querySelector(".planet-resource-value").replaceWith(input);
@@ -3036,7 +3067,7 @@ function renderConditions(totals) {
  * felicidad...); manual = introducido por el usuario.
  */
 const CONDITION_SOURCES = {
-  civilians: "manual", pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
+  civilians: "manual", neuralChips: "manual", pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
   amenitiesUsage: "estimated", amenitiesAvailable: "estimated",
   happinessBase: "derived", happinessAmenities: "estimated", happinessManual: "manual", happiness: "estimated",
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
@@ -3219,7 +3250,9 @@ export function capturePlanetConfig() {
     built,
     staffingOverrides,
     manualConditions: { ...manualConditions },
-    civilians: civiliansRaw
+    civilians: civiliansRaw,
+    // P10.5: optional field (Synaptic Lathe).
+    neuralChips: neuralChipsRaw
   };
 }
 
@@ -3279,6 +3312,8 @@ export function applyPlanetConfig(config) {
 
   // P16.12: civiles (campo opcional; los planetas antiguos no lo tienen → 0).
   civiliansRaw = sanitizeCivilians(config.civilians);
+  // P10.5: Neural Chips (optional field; older planets → 0).
+  neuralChipsRaw = sanitizeCivilians(config.neuralChips);
 
   updatePlanetState({ designationId: selectedDesignationId || null });
   renderDesignationSelect();

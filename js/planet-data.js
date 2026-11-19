@@ -409,7 +409,9 @@ export const RESOURCES = {
   rare_crystals: { i18nKey: "resourceRareCrystals", img: "resources/Rare_crystals.png" },
   exotic_gases: { i18nKey: "resourceExoticGases", img: "resources/Exotic_gases.png" },
   minor_artifacts: { i18nKey: "resourceMinorArtifacts", img: "resources/Minor_artifacts.png" },
-  astral_threads: { i18nKey: "resourceAstralThreads", img: "resources/Astral_threads.png" }
+  astral_threads: { i18nKey: "resourceAstralThreads", img: "resources/Astral_threads.png" },
+  // P10.5: Neural Chips and Synaptic Lathe districts (no resource icon in the assets repository: modifier icon).
+  advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "modifiers/mod_advanced_logic_produces_add.png" }
 };
 
 /**
