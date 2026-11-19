@@ -4,8 +4,11 @@ wiki_to_md.py - Convert saved MediaWiki pages (e.g. Stellaris Wiki "Save page as
 into clean Markdown, keeping only the article content, for use as LLM context.
 
 What is removed: site chrome (menus, sidebars, footer), table of contents, edit links,
-collapsible toggles, navigation boxes, scripts/styles, images (icons are turned into
-short text labels only when they carry information not present in the surrounding text).
+collapsible toggles, navigation boxes, scripts/styles.
+
+Images are never dropped: every image becomes `![label](file.ext)` with its file name, so
+icons that carry meaning (e.g. the red cross `24px-No.png` = "not" in requirement columns)
+survive. The label is the icon's name when it has one, otherwise empty.
 
 What is kept: headings, paragraphs, lists, definition lists, tables (rowspan/colspan
 expanded, nested tables extracted below their parent), DLC/notice boxes, tooltips
@@ -19,6 +22,7 @@ from __future__ import annotations
 
 import argparse
 import re
+from urllib.parse import unquote, urlsplit
 import sys
 from pathlib import Path
 
@@ -57,6 +61,8 @@ BLOCK_TAGS = HEADINGS | {
 ICON_SCOPE = ["td", "th", "li", "p", "div", "caption", "dd", "dt", "h2", "h3", "h4", "h5"]
 
 CELL_SEP = "; "
+# Markdown image written by replace_images: ![label](file.ext)
+IMAGE_MD_RE = re.compile(r"!\[[^\[\]]*\]\([^()]*\)\s*")
 
 
 # --------------------------------------------------------------------------- helpers
@@ -90,7 +96,8 @@ def clean_inline(text: str, sep: str = "\n") -> str:
 
 
 def plain_caption(text: str) -> str:
-    """Caption without markdown emphasis or icon labels."""
+    """Caption without markdown emphasis, images or icon labels."""
+    text = IMAGE_MD_RE.sub("", text)
     text = re.sub(r"\[[^\[\]]+\]\s*(x\d+)?", "", text)
     return norm(text.replace("**", "").replace("*", " ").replace("`", ""))
 
@@ -137,29 +144,37 @@ def following_text(img: Tag, limit: int = 80) -> str:
     return norm(" ".join(out)).lower()
 
 
+def image_file_name(img: Tag) -> str:
+    """File name with extension of an image (e.g. `24px-No.png`), from src/data-src or alt."""
+    for attr in ("src", "data-src", "srcset"):
+        value = (img.get(attr) or "").strip()
+        if not value:
+            continue
+        # srcset is "url 1.5x, url 2x"; src may contain spaces (saved pages: "Page - Wiki_files/...").
+        first = value.split(",")[0].strip().rsplit(" ", 1)[0] if attr == "srcset" else value
+        name = unquote(urlsplit(first).path.rsplit("/", 1)[-1])
+        if FILE_NAME_RE.search(name):
+            return name
+    alt = (img.get("alt") or "").strip()
+    return alt if FILE_NAME_RE.search(alt) else ""
+
+
 def replace_images(root: Tag) -> None:
-    """Drop decorative icons; keep a [label] when the icon carries unique information."""
+    """Keep every image as `![label](file.ext)` so no information carried by an icon is lost."""
     for img in list(root.find_all("img")):
-        names = icon_names(img)
+        file_name = image_file_name(img)
         link = img.find_parent("a")
         alt = (img.get("alt") or "").strip()
-        meaningful = bool(
-            (link is not None and (link.get("title") or "#" in link.get("href", "")))
-            or img.get("title")
-            or (alt and not FILE_NAME_RE.search(alt))
-        )
-        if not names or not meaningful or has_class(img, "thumbimage"):
-            img.decompose()
-            continue
-        nearby = following_text(img)
-        near_words = nearby.split()[:8]
-        if any(n.lower() in nearby or _shares_word(n, near_words) for n in names):
-            img.decompose()
-            continue
-        # Prefer the human title over the fragment for the label.
         label = (link.get("title") if link is not None and link.get("title") else None) \
-            or img.get("title") or names[0]
-        img.replace_with(NavigableString(f"[{norm(label)}] "))
+            or img.get("title") or (alt if alt and not FILE_NAME_RE.search(alt) else "")
+        if not label:
+            names = icon_names(img)
+            label = names[0] if names and not FILE_NAME_RE.search(names[0]) else ""
+        label = norm(label).replace("[", "(").replace("]", ")")
+        if not file_name and not label:
+            img.decompose()
+            continue
+        img.replace_with(NavigableString(f"![{label}]({file_name}) " if file_name else f"[{label}] "))
 
 
 def _shares_word(name: str, words: list[str]) -> bool:
@@ -354,8 +369,11 @@ class Converter:
                 flush()
                 cap = child.find(class_="thumbcaption") or child.find("figcaption")
                 text = clean_inline(self.inline(cap), " ") if cap else ""
-                if text:
-                    out.append(f"*Image: {text}*")
+                if cap is not None:
+                    cap.extract()
+                images = " ".join(m.group(0).strip() for m in IMAGE_MD_RE.finditer(child.get_text(" ")))
+                if text or images:
+                    out.append(" ".join(x for x in (images, f"*Image: {text}*" if text else "") if x))
             elif has_class(child, *NOTICE_CLASSES):
                 flush()
                 out.extend(self.notice(child))

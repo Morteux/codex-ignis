@@ -27,8 +27,7 @@ Defaults:
 ## What the parser does
 
 Removed: site chrome (menus, sidebars, footer), table of contents, edit links, "Expand"
-toggles, version/navigation outliners, the "Game concepts" navigation box, scripts, styles
-and images.
+toggles, version/navigation outliners, the "Game concepts" navigation box, scripts and styles.
 
 Kept / transformed:
 
@@ -36,9 +35,10 @@ Kept / transformed:
 - Tables as Markdown tables. `rowspan`/`colspan` are expanded so every row is
   self-contained; nested tables are moved right below their parent table and referenced
   as `(see table: <caption>)`.
-- Icons: dropped when the text next to them already says the same thing; otherwise kept as
-  a short label, e.g. `[Energy] 2`, `[Individualist] Stasis Warden`. Repeated icons are
-  collapsed (`[Barb Cannons] x4`).
+- Images are never dropped: every image becomes `![label](file.ext)` with its saved file
+  name, e.g. `![Energy](24px-Energy.png) 2`, `![No](24px-No.png) Ring World` (the red cross
+  means "not": not available on / not with). The label is the icon name, or empty.
+  Thumbnails keep their caption: `![](350px-Evt_astral_scar.png) *Image: An astral scar*`.
 - Tooltips are inlined in parentheses.
 - DLC notices become `> **Note:** Available only with the … DLC enabled.`
 - Tabbed panels become `**Tab: <name>**` sections. Math is kept as TeX (`$…$`).
