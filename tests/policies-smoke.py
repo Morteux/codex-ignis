@@ -353,9 +353,13 @@ async def main():
         await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[3];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
         housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
         check("housing: Habitation District 2 x 1000, Astro-Mining Bay +300", "Habitation District ×2 +2000" in housing and "Astro-Mining Bay ×1 +300" in housing, housing)
+        cap = await pg.evaluate("()=>[document.querySelector('#planet-capital-name')?.innerText,document.querySelector('#planet-capital-tier')?.innerText]")
+        check("habitat capital: Habitat Administration, tier II", cap == ["Habitat Administration", "2 / 5"], cap)
         jobs = await pg.inner_text("#planet-summary")
         check("Research District jobs: 30 of each researcher", "Physicist" in jobs and "Biologist" in jobs, jobs[:400])
         await body("Continental")
+        cap = await pg.evaluate("()=>document.querySelector('#planet-capital-name')?.innerText")
+        check("back to a regular planet: tier II kept (Planetary Administration)", cap == "Planetary Administration", cap)
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();

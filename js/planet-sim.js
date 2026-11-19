@@ -63,7 +63,7 @@ import {
   RESOURCE_DISTRICT_ORDER,
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
-import { BODY_TYPE_RULES, SPECIAL_DISTRICTS } from "./body-type-data.js";
+import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS } from "./body-type-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -125,9 +125,34 @@ let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agri
 let capitalTierIndex = 0;
 let lastCapitalSet = CAPITAL_SETS.standard;
 
-/** Capitales disponibles según la autoridad (estándar, Mente Colmena o Inteligencia de Máquina). */
+/** P10.4: habitat capitals (tiers II–IV), built once per empire type so the set keeps its identity (syncCapitalToAuthority). */
+const habitatCapitalCache = new Map();
+function habitatCapitalSet(authorityId, gestalt) {
+  const empire = authorityId === "hiveMind" || authorityId === "machineIntelligence" ? authorityId : "individualist";
+  const key = `${empire}|${gestalt}`;
+  if (!habitatCapitalCache.has(key)) {
+    habitatCapitalCache.set(key, SPECIAL_CAPITAL_SETS.habitat.map((entry) => ({
+      id: entry.id,
+      img: entry.img,
+      i18nKey: entry.i18nKey,
+      tier: entry.tier,
+      housing: entry.housing,
+      amenities: entry.amenities + (gestalt ? entry.gestaltAmenities || 0 : 0),
+      jobs: { ...entry.jobsByEmpire[empire] },
+      defenseArmies: entry.defenseArmies,
+      upkeep: { ...entry.upkeep }
+    })));
+  }
+  return habitatCapitalCache.get(key);
+}
+
+/** Capitales disponibles según la autoridad (estándar, Mente Colmena o Inteligencia de Máquina) o el cuerpo (hábitat, P10.4). */
 function currentCapitalSet() {
-  return capitalSetForAuthority(getPlanetState().authorityId);
+  const state = getPlanetState();
+  if (bodyRules()?.capitalSet === "habitat") {
+    return habitatCapitalSet(state.authorityId, ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id));
+  }
+  return capitalSetForAuthority(state.authorityId);
 }
 
 /** Al cambiar de autoridad cambia el conjunto de capitales: se conserva el nivel (I-V) o el más alto que no lo supere. */

@@ -280,21 +280,29 @@ export const SPECIAL_DISTRICTS = {
  * Capitals of special bodies (wiki 4.5.2 *Capital building*). Same shape as
  * CAPITAL_SETS in planet-data.js. Habitat upkeep is listed without a sign on
  * the wiki ("[Energy] 3; [Alloys] 5"); it is upkeep, stored as negative.
+ *
+ * P10.4: habitat capitals are used by every empire; jobsByEmpire is read by
+ * authority (individualist = any non-gestalt authority) and gestaltAmenities is
+ * added for Gestalt Consciousness. Not modelled (same as the regular capitals):
+ * the "Additional jobs" (Roboticists, Medical Workers, Enforcers by civic or
+ * species), Worker Cooperative Stewards, Order's Keep, the Expansion tradition
+ * alloy discount, max districts per celestial body in the system, habitability
+ * and the tier III/IV pop requirements (all technologies are researched).
  */
 export const SPECIAL_CAPITAL_SETS = {
   habitat: [
     {
-      id: "habitat_administration", tier: 2, housing: 500, amenities: 500, gestaltAmenities: 300, defenseArmies: 4,
+      id: "habitat_administration", i18nKey: "buildingHabitatAdministration", img: "buildings/building_capital.png", tier: 2, housing: 500, amenities: 500, gestaltAmenities: 300, defenseArmies: 4,
       jobsByEmpire: { individualist: { politician: 200 }, hiveMind: { synapse_drone: 200 }, machineIntelligence: { coordinator: 100, replicator: 100, logistic_drone: 200 } },
       upkeep: { energy: -3, alloys: -5 }
     },
     {
-      id: "habitat_central_control", tier: 3, housing: 750, amenities: 750, gestaltAmenities: 300, defenseArmies: 8,
+      id: "habitat_central_control", i18nKey: "buildingHabitatCentralControl", img: "buildings/building_major_capital.png", tier: 3, housing: 750, amenities: 750, gestaltAmenities: 300, defenseArmies: 8,
       jobsByEmpire: { individualist: { politician: 200, enforcer: 100 }, hiveMind: { synapse_drone: 300 }, machineIntelligence: { coordinator: 200, replicator: 100, logistic_drone: 300 } },
       upkeep: { energy: -3, alloys: -5 }, cost: { minerals: 600 }, time: 480
     },
     {
-      id: "habitat_system_control", tier: 4, housing: 1000, amenities: 1000, gestaltAmenities: 300, defenseArmies: 16,
+      id: "habitat_system_control", i18nKey: "buildingHabitatSystemControl", img: "buildings/building_system_capital.png", tier: 4, housing: 1000, amenities: 1000, gestaltAmenities: 300, defenseArmies: 16,
       jobsByEmpire: { individualist: { politician: 200, enforcer: 200 }, hiveMind: { synapse_drone: 400 }, machineIntelligence: { coordinator: 300, replicator: 100, logistic_drone: 300 } },
       upkeep: { energy: -5, alloys: -5 }, cost: { minerals: 800 }, time: 600
     }

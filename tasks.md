@@ -5,7 +5,7 @@ Order is a proposal; **P14 is always last**. When a task is done, remove it from
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] P10.4 Habitats — districts done (see GDD §4); pending: habitat capitals (tiers II–IV) and habitat designations
+- [ ] P10.4 Habitats — districts and capitals done (see GDD §4); pending: habitat designations
 - [ ] P10.5 Hive, machine, nanite worlds, synaptic lathe
 - [ ] P10.6 Gaia / relic / tomb / volcanic; wilderness-origin districts
 - [ ] P10.7 Size and district-limit rules for artificial bodies
