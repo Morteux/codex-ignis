@@ -7,6 +7,9 @@
  *  - jobEfficiency: { jobId: fracción }. Multiplica la salida de recursos
  *    de ESE empleo (ver JOB_OUTPUTS en planet-data.js), tal cual la columna
  *    "Effects" de la Wiki lo describe como "+X% <Job> job efficiency".
+ *  - P10.5 (Synaptic Lathe): jobResourcePct ({ all | resourceId: % }, "+X% Resources
+ *    from Jobs"), jobUpkeepPct (% de "Upkeep from Jobs", todos los empleos) y
+ *    popHousingUsagePct (% de uso de vivienda por pop), como los del cuerpo celeste.
  *  - flat: { resourceId: cantidad }. Solo para bonos PLANOS (no en %) a
  *    Servicios/Vivienda/Unidad, que ya son recursos/estadísticas que este
  *    simulador rastrea.
@@ -162,7 +165,8 @@ export const DESIGNATIONS = [
   { id: "industrialStation", i18nKey: "designationIndustrialStation", category: "habitat", img: "jobs/job_foundry.png", requires: [USES_CONSUMER_GOODS], jobEfficiency: { metallurgist: 0.1, artisan: 0.1 }, flat: {} },
   { id: "unificationStation", i18nKey: "designationUnificationStation", category: "habitat", img: "jobs/job_bureaucrat.png", requires: [notEthic("spiritualist")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
   { id: "ecclesiasticalStation", i18nKey: "designationEcclesiasticalStation", category: "habitat", img: "jobs/job_priest.png", requires: [ethic("spiritualist")], jobEfficiency: { priest: 0.15 }, flat: {} },
-  { id: "synapticLathe", i18nKey: "designationSynapticLathe", category: "synapticLathe", img: "planets/Planet_synaptic_lathe.png", jobEfficiency: {}, flat: {} }
+  // P10.5: +15 % resources from jobs, −5 % job upkeep, −10 % pop housing usage; −5 % pop decline speed is not modelled (no purge).
+  { id: "synapticLathe", i18nKey: "designationSynapticLathe", category: "synapticLathe", img: "planets/Planet_synaptic_lathe.png", jobEfficiency: {}, flat: {}, jobResourcePct: { all: 15 }, jobUpkeepPct: -5, popHousingUsagePct: -10 }
 ];
 
 const DESIGNATIONS_BY_ID = Object.fromEntries(DESIGNATIONS.map((d) => [d.id, d]));

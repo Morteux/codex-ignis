@@ -415,6 +415,17 @@ async def main():
         n = await net()
         # 2000 chips = 20 chip jobs: 0.375 x 20 x (2000/2000) physics + 2 Neural Gates x 0.75 x 20 = 37.5 before the stability effect
         check("Neural Chips: research and Advanced Logic", n.get("Advanced Logic", 0) > 0 and n.get("Physics", 0) > 30, n)
+        # Synaptic Lathe designation: +15 % resources from jobs, -5 % job upkeep (chips: -4.5 x 20 x 2000/4000 = -45 -> -42.75), -10 % pop housing usage
+        async def designation(value):
+            await pg.evaluate("(v)=>{const s=document.querySelector('#planet-designation-select');s.value=v;s.dispatchEvent(new Event('change'))}", value)
+        await designation("synapticLathe")
+        n2 = await net()
+        check("Lathe designation: -5 % job upkeep on the chips", approx(n2.get("Energy", 0) - n.get("Energy", 0), 2.25), (n.get("Energy"), n2.get("Energy")))
+        rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
+        check("Lathe designation: housing used by pops row (-10 %)", "housingUsage" in rows, rows)
+        mods = await pg.evaluate("()=>document.querySelector('#planet-modifiers').innerText")
+        check("Lathe designation: +15 % resources from jobs in the modifiers", "Synaptic Lathe" in mods and "15" in mods, mods[:300])
+        await designation("")
         await body("Continental")
         names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
         check("back to a regular planet: four district groups", len(names) == 4, names)

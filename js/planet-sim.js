@@ -809,6 +809,8 @@ function computeTotals() {
     const designationSource = { kind: "designation", id: designation.id };
     Object.entries(designation.jobEfficiency || {}).forEach(([jobId, fraction]) => pushModifier(designationSource, "jobEfficiency", { job: jobId }, fraction));
     Object.entries(designation.flat || {}).forEach(([key, amount]) => pushModifier(designationSource, "flat", { stat: key }, amount));
+    // P10.5: "Upkeep from Jobs" of the designation (Synaptic Lathe −5 %), on every job.
+    if (designation.jobUpkeepPct) pushModifier(designationSource, "jobUpkeep", { job: "all" }, designation.jobUpkeepPct / 100);
   }
   // Efectos de éticas y autoridad que sí se aplican a los cálculos (los demás son solo informativos, ver empire-data.js).
   const empireModifierState = getPlanetState();
@@ -948,8 +950,10 @@ function computeTotals() {
       addSignedResource(resourceId, amount, "neuralChips");
       jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
     });
+    // Job upkeep modifiers (designation, buildings) apply to the chip jobs too.
+    const chipUpkeepFactor = stackFactor(stacking.jobUpkeep, [...modifierValues("jobUpkeep", { job: "neural_chip" }), ...modifierValues("jobUpkeep", { job: "all" })]);
     Object.entries(chip.upkeep).forEach(([resourceId, perJob]) => {
-      addSignedResource(resourceId, perJob * neuralChipPops * (neuralChipsRaw / chip.scaling.upkeep), "neuralChips");
+      addSignedResource(resourceId, perJob * neuralChipPops * (neuralChipsRaw / chip.scaling.upkeep) * chipUpkeepFactor, "neuralChips");
     });
     const latheCounts = { [bodyRules().latheDistricts[0]]: districtState.urban.count, [bodyRules().latheDistricts[1]]: districtState[RESOURCE_DISTRICT_ORDER[0]].count };
     Object.entries(latheCounts).forEach(([districtId, count]) => {
@@ -963,15 +967,18 @@ function computeTotals() {
 
   // P10.2: "+X% resources from jobs" of the body type (Ecumenopolis +20 %) and per staffed job (Clerk +1 % trade).
   // Only resources that jobs actually produce get a modifier, so the panel lists what applies.
+  // P10.5: the same for the designation (Synaptic Lathe +15 %).
   const bodyType = bodyRules();
-  Object.entries(bodyType?.jobResourcePct || {}).forEach(([key, pct]) => {
+  const addJobResourcePct = (pcts, source) => Object.entries(pcts || {}).forEach(([key, pct]) => {
     const resourceIds = key === "all" ? Object.keys(jobProduced).filter((id) => id !== "amenities") : [key];
     resourceIds.forEach((resourceId) => {
       if (!(jobProduced[resourceId] > 0)) return;
       jobResourceMult[resourceId] = (jobResourceMult[resourceId] || 0) + pct / 100;
-      pushModifier({ kind: "celestial", id: empireState.celestialTypeId }, "jobResourceMult", { resource: resourceId }, pct / 100);
+      pushModifier(source, "jobResourceMult", { resource: resourceId }, pct / 100);
     });
   });
+  addJobResourcePct(bodyType?.jobResourcePct, { kind: "celestial", id: empireState.celestialTypeId });
+  if (designation) addJobResourcePct(designation.jobResourcePct, { kind: "designation", id: designation.id });
   Object.entries(JOB_RESOURCE_MULT).forEach(([jobId, perJob]) => {
     const staffed = divideEffect(jobAssignments[jobId] || 0);
     if (!staffed) return;
@@ -994,7 +1001,9 @@ function computeTotals() {
     const policyFraction = kindFraction("policy");
     const celestialFraction = kindFraction("celestial");
     const jobFraction = kindFraction("job");
-    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction), "jobBuildingMult");
+    const designationFraction = kindFraction("designation");
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction), "jobBuildingMult");
+    if (designationFraction) addSignedResource(resourceId, fromJobs * designationFraction, "designationJobMult");
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
     if (celestialFraction) addSignedResource(resourceId, fromJobs * celestialFraction, "celestialJobMult");
     if (jobFraction) addSignedResource(resourceId, fromJobs * jobFraction, "jobJobMult");
@@ -1032,7 +1041,8 @@ function computeTotals() {
   const designationAmenities = designation ? (designation.flat.amenities || 0) : 0;
   const conditionsHousing = housing + designationHousing;
   // P10.5: pop housing usage of the body (Machine World −10 %): housing needed = pops × (1 + pct/100).
-  const housingUsagePct = bodyRules()?.popHousingUsagePct || 0;
+  // P10.5: plus the designation's (Synaptic Lathe −10 %).
+  const housingUsagePct = (bodyRules()?.popHousingUsagePct || 0) + (designation?.popHousingUsagePct || 0);
   const housingUsage = pops * (1 + housingUsagePct / 100);
   const amenitiesFromBuildings = Math.round(amenities);
   const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + designationAmenities + 1e-9);
@@ -2526,6 +2536,7 @@ const BREAKDOWN_SOURCES = [
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
   { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult" },
   { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
+  { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
@@ -2974,7 +2985,11 @@ function renderConditions(totals) {
     addNote(t(currentLang, "conditionsHappinessNA"));
   }
 
-  if (!st.applicable) return;
+  // Without pops there are no stability/crime rows, but the manual rows (civilians / Neural Chips) still need their inputs.
+  if (!st.applicable) {
+    decorateConditionRows();
+    return;
+  }
   if (st.gestalt) {
     addRows([
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
@@ -3028,7 +3043,11 @@ function renderConditions(totals) {
     ? t(currentLang, "conditionsDeviancyNote")
     : t(currentLang, "conditionsFormulaCrime")(fmt(c.pops), fmt(h.value), formatAmount(cr.fromHappiness, false)));
 
-  // P9.7: etiqueta de origen de cada valor y campos de los valores manuales.
+  decorateConditionRows();
+}
+
+/** P9.7: etiqueta de origen de cada valor y campos de los valores manuales. */
+function decorateConditionRows() {
   conditionsEl.querySelectorAll(".planet-resource-row[data-condition]").forEach((row) => {
     const key = row.dataset.condition;
     const source = CONDITION_SOURCES[key];
