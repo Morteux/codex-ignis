@@ -8,7 +8,7 @@
  *
  * Formato de cada planeta (ver PLANET_SIM_GDD.md §8): { schemaVersion, rulesetId,
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
- * built, staffingOverrides, empireId, empireSnapshot, noEmpire }.
+ * built, staffingOverrides, manualConditions, empireId, empireSnapshot, noEmpire }.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|
  *    agriculture: { count, optionId } } (mismo formato que districtState).
  *  - built: { claveDeRanura: idDeEdificio } de las ranuras no capital. Los
@@ -141,6 +141,11 @@ export function sanitizePlanetData(raw) {
     districts,
     built,
     staffingOverrides,
+    // P9.7: felicidad/estabilidad manuales (opcional; −100 a 100, 0 si falta o no es un número).
+    manualConditions: Object.fromEntries(["happiness", "stability"].map((key) => {
+      const value = Number(raw.manualConditions?.[key]);
+      return [key, Number.isFinite(value) ? Math.max(-100, Math.min(100, value)) : 0];
+    })),
     empireId: textOrNull(raw.empireId),
     empireSnapshot
   };

@@ -718,12 +718,12 @@ function computeTotals() {
       amenitiesEffect.effect = Math.max(-50, amenitiesEffect.raw);
     }
   }
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect));
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, value: STABILITY_BASE };
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -733,7 +733,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -872,6 +872,9 @@ function checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, 
  * computeTotals(), al calcular los recursos que produce esa población.
  */
 const jobAssignments = {};
+// P9.7: felicidad y estabilidad extra introducidas a mano (fuentes no modeladas). Por defecto 0; se guardan con el planeta.
+const manualConditions = { happiness: 0, stability: 0 };
+const MANUAL_CONDITION_LIMIT = 100;
 // Última capacidad conocida de cada empleo, para saber si el valor actual
 // "seguía" al máximo (sin tocar) o si el usuario lo cambió a mano.
 const jobCapacityMemo = {};
@@ -2398,7 +2401,7 @@ function renderConditions(totals) {
   conditionsEl.replaceChildren();
   const c = totals.conditions;
   const info = createInfoPanel("planet-conditions");
-  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness", "conditionsInfoStability"].forEach((key) => {
+  ["conditionsInfoPops", "conditionsInfoHousing", "conditionsInfoAmenities", "conditionsInfoHappiness", "conditionsInfoStability", "conditionsInfoSources"].forEach((key) => {
     const line = document.createElement("p");
     line.className = "planet-modifier-stacking";
     line.textContent = t(currentLang, key);
@@ -2462,6 +2465,7 @@ function renderConditions(totals) {
     addRows([
       ["happinessBase", "conditionsHappinessBase", h.base, false],
       ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
+      ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
     ]);
     addNote(amenitiesFormula());
@@ -2474,6 +2478,7 @@ function renderConditions(totals) {
     addRows([
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
+      ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
       ["stabilityEffect", "conditionsStabilityEffect", c.stabilityEffect * 100, true]
@@ -2483,6 +2488,7 @@ function renderConditions(totals) {
     addRows([
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
+      ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
       ["stabilityEffect", "conditionsStabilityEffect", c.stabilityEffect * 100, true]
@@ -2514,7 +2520,52 @@ function renderConditions(totals) {
   addNote(cr.gestalt
     ? t(currentLang, "conditionsDeviancyNote")
     : t(currentLang, "conditionsFormulaCrime")(fmt(c.pops), fmt(h.value), formatAmount(cr.fromHappiness, false)));
+
+  // P9.7: etiqueta de origen de cada valor y campos de los valores manuales.
+  conditionsEl.querySelectorAll(".planet-resource-row[data-condition]").forEach((row) => {
+    const key = row.dataset.condition;
+    const source = CONDITION_SOURCES[key];
+    if (!source) return;
+    const badge = document.createElement("span");
+    badge.className = `planet-condition-source is-${source}`;
+    badge.dataset.source = source;
+    badge.textContent = t(currentLang, CONDITION_SOURCE_LABELS[source]);
+    badge.title = t(currentLang, `${CONDITION_SOURCE_LABELS[source]}Tooltip`);
+    row.querySelector(".planet-resource-name").append(" ", badge);
+    const manualKey = MANUAL_CONDITION_ROWS[key];
+    if (!manualKey) return;
+    const input = document.createElement("input");
+    input.type = "number";
+    input.step = "1";
+    input.min = String(-MANUAL_CONDITION_LIMIT);
+    input.max = String(MANUAL_CONDITION_LIMIT);
+    input.className = "planet-condition-input";
+    input.value = String(manualConditions[manualKey]);
+    input.setAttribute("aria-label", t(currentLang, manualKey === "happiness" ? "conditionsHappinessManual" : "conditionsStabilityManual"));
+    input.addEventListener("change", () => {
+      const value = Number(input.value);
+      manualConditions[manualKey] = Number.isFinite(value) ? Math.max(-MANUAL_CONDITION_LIMIT, Math.min(MANUAL_CONDITION_LIMIT, value)) : 0;
+      refreshEconomyOnly();
+    });
+    row.querySelector(".planet-resource-value").replaceWith(input);
+  });
 }
+
+/**
+ * P9.7: origen de cada valor del panel de condiciones. derived = calculado directamente con los datos y las reglas de la wiki;
+ * estimated = depende de una simplificación del simulador (uso de servicios 1 por pop, todos los pops iguales, aprobación =
+ * felicidad...); manual = introducido por el usuario.
+ */
+const CONDITION_SOURCES = {
+  pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
+  amenitiesUsage: "estimated", amenitiesAvailable: "estimated",
+  happinessBase: "derived", happinessAmenities: "estimated", happinessManual: "manual", happiness: "estimated",
+  stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityManual: "manual",
+  stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
+  crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated"
+};
+const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
+const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
 
 function renderSlots() {
   renderCapital();
@@ -2629,7 +2680,8 @@ export function capturePlanetConfig() {
     capitalTier: currentCapital().tier,
     districts: JSON.parse(JSON.stringify(districtState)),
     built,
-    staffingOverrides
+    staffingOverrides,
+    manualConditions: { ...manualConditions }
   };
 }
 
@@ -2677,6 +2729,12 @@ export function applyPlanetConfig(config) {
   Object.keys(jobCapacityMemo).forEach((jobId) => { delete jobCapacityMemo[jobId]; });
   selectedSlotKey = null;
   catalogSlotSignature = null;
+
+  // P9.7: valores manuales de condiciones (campo opcional; los planetas antiguos no lo tienen → 0).
+  ["happiness", "stability"].forEach((key) => {
+    const value = Number(config.manualConditions?.[key]);
+    manualConditions[key] = Number.isFinite(value) ? Math.max(-MANUAL_CONDITION_LIMIT, Math.min(MANUAL_CONDITION_LIMIT, value)) : 0;
+  });
 
   updatePlanetState({ designationId: selectedDesignationId || null });
   renderDesignationSelect();

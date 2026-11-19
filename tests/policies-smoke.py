@@ -131,7 +131,7 @@ async def main():
 
         # 6b. P9.1: conditions panel (2 Traders staffed = 200 pops in x100 scale)
         await pg.evaluate("()=>[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText))?.click()")
-        cond = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions [data-condition]')].map(r=>[r.dataset.condition,r.querySelector('.planet-resource-value').innerText.replace('\u2212','-').replace('+','')]))")
+        cond = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions [data-condition]')].map(r=>[r.dataset.condition,(r.querySelector('.planet-resource-value')?.innerText??r.querySelector('input').value).replace('\u2212','-').replace('+','')]))")
         check("conditions: pops and lost amenities present", cond.get("amenitiesLost") == "-500" if isinstance(cond, dict) else False, cond)
 
         hap = await pg.evaluate("()=>{const r=document.querySelector('#planet-conditions [data-condition=happiness] .planet-resource-value');return r&&r.innerText}")
@@ -155,6 +155,17 @@ async def main():
         check("crime from low happiness = 0.6 per pop at 70 happiness", crime is not None and approx(float(crime.replace("+", "")), expected), (crime, pops))
         line = await pg.evaluate("()=>document.querySelector('#planet-nonresource [data-effect=crimeFromHappiness]')?.innerText")
         check("crime from low happiness shown with job effects", bool(line) and crime in line, line)
+        # P9.7: Manual / Estimated / Derived label on every conditions value; manual extra stability
+        await tab("planet")
+        unlabelled = await pg.evaluate("()=>[...document.querySelectorAll('#planet-conditions .planet-resource-row[data-condition]')].filter(r=>!r.querySelector('.planet-condition-source')).map(r=>r.dataset.condition)")
+        check("every conditions value has a source label", unlabelled == [], unlabelled)
+        manual = await pg.evaluate("()=>[...document.querySelectorAll('#planet-conditions .planet-condition-source.is-manual')].length")
+        check("manual happiness and stability rows", manual == 2, manual)
+        await pg.evaluate("()=>{const i=document.querySelector('#planet-conditions [data-condition=stabilityManual] input');i.value='10';i.dispatchEvent(new Event('change'))}")
+        stab2 = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=stability] .planet-resource-value')?.innerText")
+        eff2 = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=stabilityEffect] .planet-resource-value')?.innerText")
+        check("manual +10 stability: 72 and +13.2 % effect", stab2 == "72" and eff2 == "+13.2", (stab2, eff2))
+        await pg.evaluate("()=>{const i=document.querySelector('#planet-conditions [data-condition=stabilityManual] input');i.value='0';i.dispatchEvent(new Event('change'))}")
 
         # 7. P8.7: gross - costs = net consistency check never fires
         await tab("planet")

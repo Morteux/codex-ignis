@@ -1775,6 +1775,29 @@ h1 {
     color: #ff8a7a;
 }
 
+/* P9.7: origen de los valores del panel de condiciones y campos manuales. */
+.planet-condition-source {
+    margin-left: .35rem;
+    padding: 0 .35rem;
+    border: 1px solid currentColor;
+    border-radius: .6rem;
+    font-size: .7rem;
+    opacity: .8;
+}
+
+.planet-condition-source.is-manual {
+    color: #ffd27a;
+}
+
+.planet-condition-source.is-estimated {
+    color: #9ec7ff;
+}
+
+.planet-condition-input {
+    width: 4.5rem;
+    text-align: right;
+}
+
 .planet-nonresource-heading {
     margin: 1rem 0 .5rem;
     color: var(--muted);
