@@ -41,6 +41,35 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Edicts:** own tab before Sucursales, saved with the empire profile.
 - **Empire profiles:** saved by name (trimmed, 1–60 chars, unique case-insensitive). No auto-save: editing shows "●"; switching empire or loading a planet with unsaved changes asks Save / Don't save / Cancel. No profile selected = unsaved draft. The last selected empire is restored on reload. Policies, edicts and every empire-level setting count as empire changes. Empire-level tabs (Imperio, Edicts) are visually marked as saved with the profile.
 
+### 5.1 Edicts audit (P18.1, wiki 4.5.2 *Edicts*)
+Included: edicts with at least one effect on this planet's economy or conditions that the simulator can compute, and whose requirements are empire data (ethics, authority, civics, gestalt, consumer goods). Technologies and "Communications with another empire" count as met; tradition requirements count as met (same exception as policy options, provisional); edict cost/upkeep (unity, empire-size scaling, Edict Fund) is empire-level: shown, never charged to the planet. Jobs are ×100, so "per 100 X" = per staffed job. Effects marked *info* are listed on the card but not computed. Edicts never limit each other except Storm Attraction/Repulsion (excluded) and Sacrifices (excluded); the page gives no edict cap.
+
+| Edict | Applied | Info only | Requirement (modelled) |
+|---|---|---|---|
+| Capacity / Mining / Farming Subsidies | +20 % Technician / Miner / Farmer efficiency; −0.5 trade upkeep per job | — | — |
+| Forge Subsidies | +10 % Metallurgist efficiency; −1 trade per job | — | — |
+| Industrial Subsidies | +10 % Artisan efficiency; −1 trade per job | — | uses consumer goods |
+| Research Subsidies | +10 % Physicist/Engineer/Biologist efficiency; −1 trade per job each | — | tradition (met) |
+| Synaptic Reinforcement / Industrial Maintenance | +1 trade per Maintenance Drone (gestalt civilians) | — | Hive Mind / Machine Intelligence |
+| Extended Shifts | +10 % worker efficiency | −15 % worker happiness (one happiness for all pops); slaves | tradition (met) |
+| Veneration of Saints | +5 % Priest efficiency | ethics attraction | Spiritualist |
+| Information Quarantine | +5 stability | ethics attraction | Authoritarian |
+| Peace Festivals | +5 happiness | ethics attraction | Pacifist |
+| Enhanced Surveillance | +5 stability, −10 happiness | encryption, attraction | not gestalt |
+| Tracking Implants | −10 crime, −10 happiness | encryption, attraction | not gestalt |
+| Thought Enforcement | −10 happiness | −0.3 crime per Telepath (job not modelled), encryption | not gestalt |
+| Thought Pre-Emption | −10 % upkeep of all jobs, −5 stability | −0.3 deviancy per Telepath, encryption | gestalt |
+| Omnifarious Acquisition (decree) | +25 % monthly minerals (settled) | nomadic effects | — |
+| Scientific Revolution (decree) | +10 % researcher efficiency | +1 research alternative | — |
+| Decentralized Research | −10 % researcher efficiency (settled) | research stations | Galactic Curators (all variants) |
+| Fear Campaign | +10 % monthly unity | attraction | Xenophobe |
+| Inner Focus | +10 % monthly unity | — | Sovereign Guardianship (all variants) |
+| Nanite Actuators | +10 % researcher upkeep | +10 % research speed | — |
+| Baryonic Insight / Dark Matter Forging / Unraveling | +10 % physics / +5 % alloys / +10 % energy | — | Dark Consortium, Shadow Corporation |
+| Coordinated Nanocomplexes / Nanoconnected Generators | +15 % alloys / +25 % energy | — | tradition (met) |
+
+Percent happiness/stability/crime values are treated as points (as for amenities). "Monthly X" = step 6 (`resourceMult`). Excluded: edicts with no planet effect (fleet, intel, survey, leaders, ethics attraction only, megastructures, strategic-resource ship edicts, campaigns other than Fear, network edicts — Hyper Relay systems not modelled — and the rest); edicts gated by origins, situations, anomalies, relics, astral actions/rifts, minor patrons, caravan deals, ambitions, federations or cybernetic authorities (none modelled); Sacrifices (random multiplier, killed pops); pop-upkeep edicts (Nutritional Plenitude, Expanded Breeding Program, Recycling Campaign: pop upkeep is not modelled, only job upkeep — confirm with the owner whether "pop consumer goods upkeep" should hit job upkeep); amenity-usage edicts (Drone/Symbiont Overdrive need Wilderness, Networked Amenities); Galactic Dowsing, Centrifugal Siphoning, Energy Drain (jobs/resources not modelled).
+
 ## 6. Economy calculation
 - **Order** (`CALCULATION_ORDER` in `stacking-rules.js`, texts `modifierOrder*`): 1 job base output/upkeep → 2 per-job building bonuses → 3 efficiency (designation + building + stratum + Production Policy, one pool, floor 0, positive output only) or upkeep change, × staffed jobs → 4 % of job output (buildings, Economic Policy) → 4a stability effect → 4b trade conversion → 5 flat outputs (buildings, designation) and upkeep (capital, districts, buildings) → 6 ethic/authority/stance multipliers on accumulated positive production → 7 empire flat bonuses (external income).
 - **Stacking:** modifiers of the same category **add** (owner decision, kept until P14 verifies against game files).
