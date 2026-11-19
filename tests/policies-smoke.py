@@ -226,6 +226,19 @@ async def main():
         await pg.evaluate("()=>{const i=document.querySelector('#planet-conditions [data-condition=civilians] input');i.value='300';i.dispatchEvent(new Event('change'))}")
         still = await pg.evaluate("()=>!document.querySelector('#planet-production-info').hidden && document.querySelector('#planet-production-info-btn').getAttribute('aria-expanded')")
         check("production info stays open after re-render", still == "true", still)
+        # Job stability (Enforcers of the capital) adds to stability as a modifier; the stability effect does not change it
+        await tab("planet")
+        for _ in range(4):
+            await pg.evaluate("()=>{const b=document.querySelector('#planet-capital-upgrade');if(!b.disabled)b.click()}")
+        rows = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions .planet-resource-row[data-condition]')].map(r=>[r.dataset.condition,parseFloat((r.querySelector('.planet-resource-value')?.innerText||r.querySelector('input')?.value||'0').replace('−','-').replace('+',''))]))")
+        jobs_st = rows.get("stabilityJobs", 0)
+        comp = rows["stabilityBase"] + rows.get("stabilityApproval", 0) + jobs_st + rows["stabilityManual"] + rows["stabilityHousing"]
+        check("stability from jobs > 0 with enforcers", jobs_st > 0, rows)
+        check("stability = base + approval + jobs + manual - housing", approx(rows["stability"], max(0, min(100, comp))), rows)
+        st = rows["stability"]
+        exp_eff = 0.6 * (st - 50) if st >= 50 else -(50 - st)
+        check("stability effect uses the stability with jobs", approx(rows["stabilityEffect"], exp_eff), rows)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

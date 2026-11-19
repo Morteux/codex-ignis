@@ -767,7 +767,10 @@ function computeTotals() {
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
+  // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
+  // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
+  const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -777,7 +780,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = (40 * Math.max(0, pops - conditionsHousing)) / pops;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.manual - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -2507,7 +2510,7 @@ function renderConditions(totals) {
   if (ist.applicable) {
     const main = ist.gestalt ? ist.amenitiesEffect : ist.approvalBonus;
     const mainLabel = t(currentLang, ist.gestalt ? "conditionsInfoNowStabilityAmenities" : "conditionsInfoNowStabilityApproval");
-    infoLine(t(currentLang, "conditionsInfoNowStability")(signed(main), mainLabel, signed(ist.manual), signed(-ist.housingPenalty), formatAmount(ist.value, false), formatAmount(c.stabilityEffect * 100, true)), true);
+    infoLine(t(currentLang, "conditionsInfoNowStability")(signed(main), mainLabel, signed(ist.jobs), signed(ist.manual), signed(-ist.housingPenalty), formatAmount(ist.value, false), formatAmount(c.stabilityEffect * 100, true)), true);
   }
   const icr = c.crime;
   infoLine(t(currentLang, icr.gestalt ? "conditionsInfoDeviancy" : "conditionsInfoCrime"));
@@ -2591,6 +2594,7 @@ function renderConditions(totals) {
     addRows([
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
+      ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -2601,6 +2605,7 @@ function renderConditions(totals) {
     addRows([
       ["stabilityBase", "conditionsStabilityBase", st.base, false],
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
+      ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
       ["stabilityHousing", "conditionsStabilityHousing", -st.housingPenalty, true],
       ["stability", "conditionsStability", st.value, false],
@@ -2689,7 +2694,7 @@ const CONDITION_SOURCES = {
   civilians: "manual", pops: "derived", housingProvided: "derived", housingMissing: "derived", amenitiesProvided: "derived", amenitiesLost: "derived",
   amenitiesUsage: "estimated", amenitiesAvailable: "estimated",
   happinessBase: "derived", happinessAmenities: "estimated", happinessManual: "manual", happiness: "estimated",
-  stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityManual: "manual",
+  stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated"
 };
