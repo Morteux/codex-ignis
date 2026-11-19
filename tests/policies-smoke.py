@@ -226,6 +226,26 @@ async def main():
         await pg.evaluate("()=>{const i=document.querySelector('#planet-conditions [data-condition=civilians] input');i.value='300';i.dispatchEvent(new Event('change'))}")
         still = await pg.evaluate("()=>!document.querySelector('#planet-production-info').hidden && document.querySelector('#planet-production-info-btn').getAttribute('aria-expanded')")
         check("production info stays open after re-render", still == "true", still)
+        # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
+        parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
+            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
+            const m=await import(url);const k=(l)=>new Set(Object.keys(m.strings[l]));const es=k('es'),en=k('en'),jp=k('jp');
+            const diff=(a,b)=>[...a].filter(x=>!b.has(x));return {enNotEs:diff(en,es),esNotEn:diff(es,en),enNotJp:diff(en,jp),jpNotEn:diff(jp,en)}}""")
+        check("i18n key parity es/en/jp", not any(parity.values()), parity)
+        buttons = await pg.evaluate("()=>[...document.querySelectorAll('.info-btn')].map(b=>[b.id,b.closest('section[id^=planet-tab-panel-]')?.id.replace('planet-tab-panel-','')||'planet'])")
+        check("info buttons found", len(buttons) >= 7, buttons)
+        for bid, tabname in buttons:
+            await tab(tabname)
+            pid = bid.replace("-info-btn", "-info")
+            await pg.evaluate("(b)=>{const x=document.getElementById(b);if(x.getAttribute('aria-expanded')==='true')x.click()}", bid)
+            state0 = await pg.evaluate("(b)=>document.getElementById(b).getAttribute('aria-expanded')", bid)
+            await pg.focus("#" + bid)
+            await pg.keyboard.press("Enter")
+            s1 = await pg.evaluate("([b,p])=>{const btn=document.getElementById(b),panel=document.getElementById(p);return [btn.getAttribute('aria-controls')===p,!!panel,panel&&!panel.hidden,btn.getAttribute('aria-expanded'),panel?panel.innerText.trim().length:0]}", [bid, pid])
+            await pg.keyboard.press("Space")
+            s2 = await pg.evaluate("([b,p])=>[document.getElementById(p).hidden,document.getElementById(b).getAttribute('aria-expanded')]", [bid, pid])
+            ok = state0 == "false" and s1[0] and s1[1] and s1[2] and s1[3] == "true" and s1[4] > 0 and s2 == [True, "false"]
+            check("info button " + bid + ": panel, Enter/Space, aria-expanded", ok, (state0, s1, s2))
         check("no page errors", not errors, errors)
         await browser.close()
 
