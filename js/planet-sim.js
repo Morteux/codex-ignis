@@ -64,7 +64,8 @@ import {
 } from "./planet-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
-import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset } from "./planet-state.js";
+import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
+import { getEdict } from "./edict-data.js";
 import { getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
@@ -106,6 +107,7 @@ const mainTabPanels = {
   planet: document.querySelector("#planet-tab-panel-planet"),
   empire: document.querySelector("#planet-tab-panel-empire"),
   body: document.querySelector("#planet-tab-panel-body"),
+  edicts: document.querySelector("#planet-tab-panel-edicts"),
   branches: document.querySelector("#planet-tab-panel-branches")
 };
 
@@ -2935,9 +2937,15 @@ onPoliciesReset(({ typeChange, gestalt, policyIds, changes }) => {
   showNotice(t(currentLang, "planetSimPolicyResetNotice")(parts.join(" ")));
 });
 
+// Edictos desactivados solos por requisitos (P18.3).
+onEdictsRemoved(({ removed }) => {
+  const names = removed.map((id) => { const edict = getEdict(id); return edict ? t(currentLang, edict.i18nKey) : id; });
+  showNotice(t(currentLang, "planetSimEdictsRemovedNotice")(names.join(", ")));
+});
+
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
-  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}|${JSON.stringify(state.policyIds || {})}`;
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}|${JSON.stringify(state.policyIds || {})}|${(state.edictIds || []).join(",")}`;
   if (key === lastRelevantKey) return;
   lastRelevantKey = key;
   renderDesignationSelect();

@@ -2766,3 +2766,11 @@ h1 {
   font-style: italic;
   opacity: 0.8;
 }
+
+/* P18.3: Edicts tab */
+.edict-upkeep {
+    display: block;
+    margin-top: .2rem;
+    font-size: .68rem;
+    color: var(--muted);
+}

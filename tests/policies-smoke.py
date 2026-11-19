@@ -240,6 +240,31 @@ async def main():
         exp_eff = 0.6 * (st - 50) if st >= 50 else -(50 - st)
         check("stability effect uses the stability with jobs", approx(rows["stabilityEffect"], exp_eff), rows)
 
+        # 8. P18.3: Edicts tab, saved with the empire profile; edicts that lose their requirements are dropped with a notice
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("edicts")
+        pressed = lambda eid: pg.evaluate("(e)=>document.querySelector(`.edict-card[data-edict-id=${e}]`).getAttribute('aria-pressed')", eid)
+        check("edicts tab lists edicts", await pg.evaluate("()=>document.querySelectorAll('.edict-card').length") >= 20)
+        check("no edicts active by default", await pg.inner_text("#empire-edicts-count") == "Active edicts: 0")
+        check("gestalt-only edict locked for individualist", await pg.evaluate("()=>document.querySelector('.edict-card[data-edict-id=thoughtPreEmption]').disabled"))
+        await pg.click(".edict-card[data-edict-id=industrialSubsidies]")
+        check("edict toggles on", await pressed("industrialSubsidies") == "true" and await pg.inner_text("#empire-edicts-count") == "Active edicts: 1")
+        await tab("empire")
+        await pg.fill("#empire-profile-name", "Edict empire")
+        await pg.click("#empire-profile-save-new")
+        saved = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-empires'))")
+        check("saved empire has edictIds", saved[0].get("edictIds") == ["industrialSubsidies"], saved)
+        await tab("edicts")
+        await pg.click(".edict-card[data-edict-id=capacitySubsidies]")
+        check("edict change marks the empire modified", await pg.evaluate("()=>document.querySelector('#planet-summary-empire').classList.contains('is-modified')"))
+        await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("edicts")
+        check("saved edicts restored on reload", await pressed("industrialSubsidies") == "true" and await pressed("capacitySubsidies") == "false")
+        await tab("empire")
+        await ethic("Gestalt Consciousness")
+        notice = await pg.inner_text("#planet-sim-notice")
+        check("gestalt drops Industrial Subsidies with a notice", await pressed("industrialSubsidies") == "false" and "Industrial Subsidies" in notice, notice)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

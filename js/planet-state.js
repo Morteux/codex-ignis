@@ -17,6 +17,7 @@ const state = {
   authorityId: null,
   civicIds: [],
   policyIds: {}, // políticas del imperio { grupo: idOpcion } (js/policy-data.js, P16); solo los grupos que aplican al tipo de imperio
+  edictIds: [], // edictos activos del imperio (js/edict-data.js, P18)
   speciesType: "organic",
   empireId: null,
   empireModified: false,
@@ -76,4 +77,18 @@ export function onPoliciesReset(fn) {
 
 export function emitPoliciesReset(detail) {
   policyResetListeners.forEach((fn) => fn(detail));
+}
+
+/**
+ * Aviso de "se han desactivado edictos" (P18.3): lo emite js/empire.js cuando un cambio de éticas, autoridad o
+ * principios deja edictos activos sin sus requisitos (detail.removed: [ids]). js/planet-sim.js lo muestra.
+ */
+const edictRemovedListeners = new Set();
+
+export function onEdictsRemoved(fn) {
+  edictRemovedListeners.add(fn);
+}
+
+export function emitEdictsRemoved(detail) {
+  edictRemovedListeners.forEach((fn) => fn(detail));
 }

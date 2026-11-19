@@ -12,7 +12,7 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 |---|---|
 | Wiki | `index.html`, `js/app.js`, `js/content.js` (artículos), `js/highlight-config.js` |
 | Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
-| Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `info-panels.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, datos en `*-data.js` y `civic-rules.js` |
+| Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `edicts-ui.js`, `info-panels.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, datos en `*-data.js` y `civic-rules.js` |
 | Árbol de tecnologías | `tech-tree.html` (marcador; plan en `tech_tree.md`) |
 | Pruebas | `tests/policies-smoke.py` (navegador, ver más abajo) |
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
@@ -40,7 +40,7 @@ La pestaña Imperio incluye las políticas con efecto económico (`js/policy-dat
 
 ## Pruebas
 
-`tests/policies-smoke.py` comprueba en un navegador real (Playwright, interfaz en inglés) los valores por defecto de las políticas, el cambio individualista/gestalt, las cifras de economía con cada política comercial, Ayuda mutua con y sin Cooperativa de trabajadores, el guardado de imperios y planetas (formato antiguo y nuevo) la importación con ids inválidos, los paneles «i» (contenido con las cifras actuales, teclado Enter/Espacio, `aria-expanded`) y la paridad de claves es/en/jp de `js/i18n.js`. Ejecútalo desde la raíz del proyecto: `pip install playwright && playwright install chromium && python3 tests/policies-smoke.py`.
+`tests/policies-smoke.py` comprueba en un navegador real (Playwright, interfaz en inglés) los valores por defecto de las políticas, el cambio individualista/gestalt, las cifras de economía con cada política comercial, Ayuda mutua con y sin Cooperativa de trabajadores, el guardado de imperios y planetas (formato antiguo y nuevo) la importación con ids inválidos, los edictos (pestaña, guardado con el imperio, desactivación por requisitos), los paneles «i» (contenido con las cifras actuales, teclado Enter/Espacio, `aria-expanded`) y la paridad de claves es/en/jp de `js/i18n.js`. Ejecútalo desde la raíz del proyecto: `pip install playwright && playwright install chromium && python3 tests/policies-smoke.py`.
 
 ## Imágenes de Stellaris
 

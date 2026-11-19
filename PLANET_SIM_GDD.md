@@ -38,7 +38,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - Ethics wheel (3 points, gestalt exclusive), 7 authorities, civics (max 3) with requirement/exclusion rules; civic keys derive from the icon file name (`principios_del_juego.md`), English name = wiki name.
 - Applied effects: unity %, trade %, influence flat (external income), stratum efficiency (Authoritarian/Fanatic +5/+10 % worker, Egalitarian/Fanatic +5/+10 % specialist). Everything else is informational.
 - **Policies** (`policy-data.js`): Economic (individualist), Trade (gestalt name: Logistics Policy), Production (gestalt), Diplomatic Stance. Defaults: Mixed Economy, Wealth Creation (individualist) / Logistics Policy (gestalt), Balanced Production, Expansionist. Switching individualist ↔ gestalt resets to the new defaults. Trade League and Holy Covenant are selectable (membership assumed) with a note of the federation they need; Consumer Benefits / Marketplace of Ideas stay available (their federation block is never met). Federations otherwise not modelled.
-- **Edicts:** own tab before Sucursales, saved with the empire profile.
+- **Edicts:** own tab before Sucursales (`js/edicts-ui.js`), any number active, saved with the empire profile (`edictIds`, optional field, catalog order). Unknown/unavailable ids are dropped on load (no default); edicts that lose their requirements after an empire edit are deactivated with a notice.
 - **Empire profiles:** saved by name (trimmed, 1–60 chars, unique case-insensitive). No auto-save: editing shows "●"; switching empire or loading a planet with unsaved changes asks Save / Don't save / Cancel. No profile selected = unsaved draft. The last selected empire is restored on reload. Policies, edicts and every empire-level setting count as empire changes. Empire-level tabs (Imperio, Edicts) are visually marked as saved with the profile.
 
 ### 5.1 Edicts audit (P18.1, wiki 4.5.2 *Edicts*)
@@ -89,7 +89,7 @@ Percent happiness/stability/crime values are treated as points (as for amenities
 ## 8. Saved data
 - localStorage keys `codex-ignis-empires`, `codex-ignis-planets`. JSON export/import (`{type: "planet" | "empire"}`); missing/unsupported `rulesetId` or newer `schemaVersion` → rejected; fields sanitized; new id on import; unknown ids replaced by defaults, never invented.
 - Planet: `schemaVersion` (1), `rulesetId`, unique `name`, `celestialTypeId`, `designationId`, `planetSize`, `capitalTier`, districts, `built` (slot key → building id), `staffingOverrides`, `empireId`, `empireSnapshot`, `noEmpire`. Optional fields added later (`manualConditions` {happiness, stability}, `policyIds`, `civilians` (×100 integer), edicts, branch offices) keep `schemaVersion` 1 if older readers can ignore them.
-- Empire: `schemaVersion`, `rulesetId`, `id`, `name`, `ethicIds`, `authorityId`, `civicIds`, `speciesType`, `policyIds`.
+- Empire: `schemaVersion`, `rulesetId`, `id`, `name`, `ethicIds`, `authorityId`, `civicIds`, `speciesType`, `policyIds`, `edictIds`.
 - Last selected empire: id in `codex-ignis-last-empire`; restored on reload if it still exists (otherwise the default draft). Not exported.
 - Deleted empire: the planet keeps the snapshot and shows "no empire". If the empire exists, its current version is used on load. Loading a planet replaces the current one without asking (only unsaved empire changes ask). A file with more districts than size raises the size.
 

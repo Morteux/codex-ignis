@@ -25,7 +25,9 @@
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";
-import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset } from "./planet-state.js";
+import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset, emitEdictsRemoved } from "./planet-state.js";
+import { resolveEdicts } from "./edict-data.js";
+import { renderEdictsList } from "./edicts-ui.js";
 import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, policyUnmetRules, policyDefaults, isGestaltContext } from "./policy-data.js";
 import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
@@ -57,6 +59,8 @@ const speciesSelectEl = document.querySelector("#empire-species-select");
 const civicsLabelEl = document.querySelector("#empire-civics-label");
 const civicsListEl = document.querySelector("#empire-civics-list");
 const policiesListEl = document.querySelector("#empire-policies-list");
+const edictsListEl = document.querySelector("#empire-edicts-list");
+const edictsCountEl = document.querySelector("#empire-edicts-count");
 const profileNameEl = document.querySelector("#empire-profile-name");
 const profileSaveNewBtn = document.querySelector("#empire-profile-save-new");
 const profileSaveBtn = document.querySelector("#empire-profile-save");
@@ -79,6 +83,8 @@ let selectedEmpireId = null; // imperio guardado seleccionado (null = borrador s
 // (syncPolicies las normaliza en cada refresh). lastGestalt detecta el paso de imperio normal a gestalt y viceversa.
 let selectedPolicies = {};
 let lastGestalt = false;
+// Edictos activos (P18): ids en el orden del catálogo, siempre disponibles para el imperio (syncEdicts los normaliza).
+let selectedEdicts = [];
 
 function currentEthicIds() {
   if (gestaltActive) return [GESTALT_CONSCIOUSNESS.id];
@@ -117,6 +123,33 @@ function syncPolicies() {
   const { policyIds, changes } = resolvePolicies(selectedPolicies, ctx);
   selectedPolicies = policyIds;
   if (changes.length) emitPoliciesReset({ typeChange: false, gestalt, policyIds: { ...selectedPolicies }, changes });
+}
+
+/**
+ * Mantiene los edictos válidos (P18.3): los que dejan de cumplir sus requisitos al cambiar éticas, autoridad o
+ * principios se desactivan con aviso (no hay un edicto "por defecto" que los sustituya).
+ */
+function syncEdicts() {
+  const { edictIds, removed } = resolveEdicts(selectedEdicts, policyContext());
+  selectedEdicts = edictIds;
+  if (removed.length) emitEdictsRemoved({ removed });
+}
+
+function toggleEdict(edictId) {
+  const next = selectedEdicts.includes(edictId) ? selectedEdicts.filter((id) => id !== edictId) : [...selectedEdicts, edictId];
+  selectedEdicts = resolveEdicts(next, policyContext()).edictIds;
+  refresh();
+}
+
+function renderEdicts() {
+  if (edictsCountEl) edictsCountEl.textContent = t(currentLang, "edictsActiveCount")(selectedEdicts.length);
+  renderEdictsList(edictsListEl, {
+    lang: currentLang,
+    ctx: policyContext(),
+    selected: new Set(selectedEdicts),
+    onToggle: toggleEdict,
+    describeRule: describePolicyRule
+  });
 }
 
 /** Políticas elegidas ahora mismo (copia). */
@@ -348,6 +381,7 @@ function describePolicyRule(rule) {
   switch (rule.type) {
     case "federation": return t(currentLang, "requirementFederation");
     case "notGestalt": return t(currentLang, "requirementNotGestalt");
+    case "usesConsumerGoods": return t(currentLang, "requirementUsesConsumerGoods");
     case "ethic": return t(currentLang, "requirementEthic") + names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
     case "authority": return t(currentLang, "requirementAuthority") + names(authorityNames(rule.ids));
     case "notAuthority": return t(currentLang, "requirementNotAuthority") + names(authorityNames(rule.ids));
@@ -517,11 +551,11 @@ function publishSelection() {
   const civicIds = [...selectedCivics];
   const modified = isModified();
   const policyKey = Object.entries(selectedPolicies).sort().map(([group, option]) => `${group}:${option}`).join(",");
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}`;
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}|${selectedEdicts.join(",")}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
   storeLastEmpire(selectedEmpireId);
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, empireId: selectedEmpireId, empireModified: modified });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], empireId: selectedEmpireId, empireModified: modified });
 }
 
 /** P17.5: paneles "i" de la pestaña Imperio (efectos aplicados/informativos, límites de principios, políticas y conversión de comercio). */
@@ -560,6 +594,7 @@ function renderEmpireInfo() {
 
 function refresh() {
   syncPolicies();
+  syncEdicts();
   renderEmpireInfo();
   if (pointsLabelEl) pointsLabelEl.textContent = t(currentLang, "empirePointsLabel")(pointsUsed(), ETHICS_MAX_POINTS);
   renderWheel();
@@ -568,6 +603,7 @@ function refresh() {
   renderSpeciesSelect();
   renderCivicsList();
   renderPoliciesList();
+  renderEdicts();
   renderProfilePanel();
   publishSelection();
 }
@@ -576,7 +612,7 @@ function refresh() {
 
 /** Configuración actual de la pestaña Imperio, con la misma forma que un perfil guardado. */
 function currentConfig() {
-  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies } };
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts] };
 }
 
 /** ¿Hay un imperio guardado seleccionado y la pestaña ya no coincide con lo guardado? (sin imperio seleccionado no hay "cambios sin guardar": es un borrador) */
@@ -617,6 +653,8 @@ function applyConfig(config) {
   const appliedContext = policyContext();
   selectedPolicies = resolvePolicies(config.policyIds, appliedContext).policyIds;
   lastGestalt = isGestaltContext(appliedContext);
+  // Edictos del perfil (P18.3): lo desconocido o no disponible se descarta sin aviso (perfiles anteriores a P18: ninguno).
+  selectedEdicts = resolveEdicts(config.edictIds, appliedContext).edictIds;
 }
 
 let messageTimer = null;

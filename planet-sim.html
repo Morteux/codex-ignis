@@ -63,6 +63,7 @@
         <button type="button" class="planet-main-tab is-active" data-main-tab="planet"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="planetSimMainTabPlanet">Planeta</span></button>
         <button type="button" class="planet-main-tab" data-main-tab="empire"><img class="ui-icon" src="img/ui/Icon_council.png" alt="" /><span data-i18n="planetSimMainTabEmpire">Imperio</span></button>
         <button type="button" class="planet-main-tab" data-main-tab="body"><img class="ui-icon" src="img/ui/Focus_core.png" alt="" /><span data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="edicts"><img class="ui-icon" src="img/ui/Menu_icon_policies.png" alt="" /><span data-i18n="planetSimMainTabEdicts">Edicts</span></button>
         <button type="button" class="planet-main-tab" data-main-tab="branches"><img class="ui-icon" src="img/ui/Faction_support.png" alt="" /><span data-i18n="planetSimMainTabBranches">Sucursales</span></button>
       </nav>
 
@@ -251,6 +252,15 @@
           <div id="celestial-natural-list" class="celestial-type-grid"></div>
           <h3 class="entry-heading-subsub" data-i18n="celestialArtificialHeading">Artificial</h3>
           <div id="celestial-artificial-list" class="celestial-type-grid"></div>
+        </div>
+      </section>
+
+      <section id="planet-tab-panel-edicts" hidden>
+        <div class="planet-slots-panel">
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_policies.png" alt="" /><span data-i18n="edictsHeading">Edicts</span></h2>
+          <p class="empire-note" data-i18n="edictsNote"></p>
+          <p class="empire-points-label" id="empire-edicts-count"></p>
+          <div id="empire-edicts-list"></div>
         </div>
       </section>
 

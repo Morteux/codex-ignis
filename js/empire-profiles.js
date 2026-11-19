@@ -7,7 +7,8 @@
  * es js/planet-summary.js.
  *
  * Formato de cada perfil (ver PLANET_SIM_GDD.md §8): { schemaVersion,
- * rulesetId, id, name, ethicIds, authorityId, civicIds, speciesType }.
+ * rulesetId, id, name, ethicIds, authorityId, civicIds, speciesType,
+ * policyIds, edictIds }.
  *
  * Decisiones (documentadas, no son reglas del juego):
  *  - El nombre se recorta, no puede estar vacío (máx. 60 caracteres) y es
@@ -21,6 +22,7 @@
 
 import { SCHEMA_VERSION, CURRENT_RULESET_ID, stampRuleset, checkRuleset } from "./data-version.js";
 import { resolvePolicies } from "./policy-data.js";
+import { resolveEdicts } from "./edict-data.js";
 
 const STORAGE_KEY = "codex-ignis-empires";
 export const MAX_EMPIRE_NAME_LENGTH = 60;
@@ -71,7 +73,9 @@ export function normalizeConfig(config) {
     civicIds: [...(config.civicIds || [])].sort(),
     speciesType: config.speciesType || "organic",
     // Políticas (P16): lo que falte (perfiles guardados antes de P16) o no sea válido para ese imperio se sustituye por el valor por defecto, así dos configuraciones equivalentes se comparan como iguales.
-    policyIds: resolvePolicies(config.policyIds, config).policyIds
+    policyIds: resolvePolicies(config.policyIds, config).policyIds,
+    // Edictos (P18): campo opcional; lo que falte o no sea válido se descarta (en orden de catálogo).
+    edictIds: resolveEdicts(config.edictIds, config).edictIds
   };
 }
 
@@ -193,7 +197,8 @@ export function sanitizeEmpireConfig(raw) {
     // Solo se aceptan textos { grupo: idOpcion }; lo desconocido lo sustituye por el valor por defecto normalizeConfig (nunca se inventa).
     policyIds: raw.policyIds && typeof raw.policyIds === "object" && !Array.isArray(raw.policyIds)
       ? Object.fromEntries(Object.entries(raw.policyIds).filter(([, value]) => typeof value === "string"))
-      : {}
+      : {},
+    edictIds: strings(raw.edictIds) || []
   });
 }
 

@@ -200,7 +200,8 @@ async function saveCurrentPlanet({ asNew = false } = {}) {
       authorityId: state.authorityId,
       civicIds: state.civicIds || [],
       speciesType: state.speciesType,
-      policyIds: state.policyIds || {}
+      policyIds: state.policyIds || {},
+      edictIds: state.edictIds || []
     }
   };
 
