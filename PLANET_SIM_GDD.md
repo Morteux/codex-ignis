@@ -20,7 +20,7 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 
 ## 3. Architecture
 - Vanilla JS ES modules, no build. Shared state `js/planet-state.js` (body, designation, ethics, authority, civics, species type, policies, planet name/id, empire id/modified, `rulesetId`).
-- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `info-panels.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`, `edict-data.js`.
+- Modules: `planet-sim.js` (economy, slots, districts, catalog, jobs, production, conditions; split it whenever convenient), `empire.js` (Imperio tab, policies), `empire-profiles.js`, `celestial.js`, `planet-summary.js`, `planet-library.js` / `planet-library-ui.js`, `confirm-dialog.js`, `info-panels.js`, `stacking-rules.js`, `data-version.js`. Data: `planet-data.js`, `body-type-data.js`, `empire-data.js`, `civic-rules.js`, `designation-data.js`, `celestial-data.js`, `building-requirements.js`, `policy-data.js`, `edict-data.js`.
 - Images from `STELLARIS_ASSETS_BASE` (`asset-config.js`); UI icons in `img/ui/`.
 - Conventions: building/job effects stored ×100 as on the wiki, `divideEffect()` once when computing; jobs, pops, housing and amenities are **displayed ×100** (100 = 1 pop) and calculated in real units. CSS: never set `display` on an element toggled with `hidden` without `:not([hidden])`.
 - Test: `tests/policies-smoke.py` (Playwright, English UI, run from the project root).
@@ -33,6 +33,36 @@ Browser sandbox to theorycraft the economy of **one planet**: districts, buildin
 - **Inactive, never deleted:** a building whose slot is locked, whose requirements are lost or whose slot specialization no longer permits its set stays built but inactive (no jobs/resources), drawn with `img/ui/blocker_frame_yellow.png`, tooltip with the reason; demolishing is always manual. Applies to empire switches and planet loads (report how many became inactive).
 - **Invalid choices reset with a notice:** designation → "no designation"; district specialization removed (its buildings turn inactive); policy option → group default.
 - **Jobs UI:** "Jobs created / Jobs assumed staffed"; click ±10, Ctrl/Cmd ±100, Shift = 100 %/0 %; no reset button; the notice under the summary explains only the click controls.
+
+### 4.1 Body types audit (P10.1, wiki 4.5.2 *Celestial object*, *Districts*, *District specialization*, *Capital building*)
+Data in `js/body-type-data.js` (`bodyTypeRules` collection), not read by the engine until P10.2–P10.7. Regular planets: capacity +400 per free district, current district model. "Resources from jobs" = step 4 (% of job output).
+
+| Body | Applied effects | Districts | Size / slots | Info only |
+|---|---|---|---|---|
+| Regular (9) | — | urban primary + generator/mining/agriculture | 12–25 (moons 10–15) | capacity +400 |
+| Volcanic | +5 % alloys from jobs | Geothermal Powerplant (+200 Technicians), Magma Conduit (+200 Thermoforgers: +5 minerals +0.5 alloys, −1 energy), Thermotechnic Forum (+200 Thermotechnic Mentors) | regular | capacity +400 |
+| Gaia | +10 % resources from jobs, +10 happiness | regular | regular | capacity +600, growth, resettlement |
+| Tomb / Relic | — | regular; Relic: Collapsed Spire blocker locks the first primary specialization, cleared → Central Spire (P10.6/P10.8) | regular | capacity +300 / +400, habitability |
+| Ecumenopolis | +20 % resources from jobs | Residential Arcology primary (+1500 housing, +300 Clerks / gestalt +900 Logistic Drones, −5 energy) + 3 Unspecialized Arcology secondary sets (+1500 housing, −5 energy, one urban specialization each) | regular | capacity +600 |
+| Hive World | +10 % resources from jobs | Hive Cluster (+600 on Hive World, already modelled) + 3 Unspecialized Cluster sets (+1800 housing) | regular | capacity +600 |
+| Machine / Nanite World | Machine: +10 % resources from jobs, −10 % pop housing usage | Central Nexus + 3 Unspecialized Nexus sets (+1000 housing) | regular | Machine capacity +300; Nanite: no capacity on the wiki |
+| Ring World | — | City / Hive / Nexus Segment primary (+2500/+3000/+2500 housing, jobs, −5 energy) + 3 Unspecialized Segment sets (+2500 housing) | fixed 10 | capacity +600 |
+| Shattered Ring World | — | regular, resource districts uncapped | fixed 25 | Repair decision |
+| Habitat | — | Habitation District primary (+1000 housing, −2 energy −0.5 alloys) + Reactor District / Astro-Mining Bay / Research District (+300 housing, +100 Technicians / +100 Miners / +30 of each researcher); habitat capitals II–IV | fixed 6 | capacity +300, habitability by tier, deposits cap |
+| Synaptic Lathe | — | Neural Gate / Ampliative Speculator (+1 building slot, +1500 housing, −50 energy), no specializations; Processing Unit capitals II–IV | fixed 2, +2 districts per capital level | Neural Chips, purge, no branch offices |
+
+Specialization multipliers (*District specialization*): jobs ×3 on Ecumenopolis/Hive/Machine/Nanite, ×5 on Ring World, ×2 on secondary urban districts; housing removed by secondary specializations ×3 / ×5. Technology bonuses: Weather Control Systems and Anti-Gravity Engineering apply per copy (values per district in the data file); Productivity Simulations and Public Works Division are traditions, Optimized Nexus / Extended Hives / Modular Superstructures are on no technology page — none applied.
+
+New jobs needed: Clerk (+3 trade, +3 amenities, +1 % trade from jobs), Thermoforger (Miner swap), Thermotechnic Mentor (+1 research +1 unity, scaling bonuses), Neural Chip (output × chips/2000, upkeep × chips/4000).
+
+**Open questions (owner) — block the task that uses them:**
+1. (P10.2–P10.5) Do the ×3/×5 body multiplier and the ×2 secondary-urban multiplier combine (×6 / ×10 on secondary districts)? Does the body multiplier also apply to the primary district specializations?
+2. (P10.2) Which urban specializations can Unspecialized Arcologies take? Research Enclave and the three research specializations say "Habitat primary district" but the district-swap table lists Research/Physics/Biology/Engineering Arcologies.
+3. (P10.3/P10.5) The "Requirements" column of the secondary specializations (Mineral Extraction: Ring World; Agricultural Focus: Machine/Nanite World) is read as "not available on" (the swap table has no Mining Segment nor Agricultural Nexus).
+4. (P10.4) Habitat resource districts are capped by orbital deposits (1 + half the deposit size): manual cap input per district?
+5. (P10.5) Synaptic Lathe: size 2 vs "two districts per capital level" (+2/+4 from tiers III/IV): which one is the cap? Neural Chip scaling needs the total chips (all pops).
+6. (P10.5) Nanite World has no planet capacity or "resources from jobs" on the page: none applied.
+7. (P10.3) Ring World secondary Commercial/Research etc. swaps: same urban list as regular worlds?
 
 ## 5. Empire
 - Ethics wheel (3 points, gestalt exclusive), 7 authorities, civics (max 3) with requirement/exclusion rules; civic keys derive from the icon file name (`principios_del_juego.md`), English name = wiki name.

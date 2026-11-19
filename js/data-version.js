@@ -147,6 +147,12 @@ export const DATA_COLLECTIONS = {
     sources: [WIKI + "Jobs", WIKI + "Empire_modifiers"],
     verification: VERIFICATION.UNVERIFIED
   },
+  bodyTypeRules: {
+    file: "js/body-type-data.js",
+    // P10.1: base modifiers, district sets, special capitals and jobs per body type (special planets).
+    sources: ["Celestial_object", "Districts", "District_specialization", "Capital_building", "Designation", "Jobs"].map((page) => WIKI + page),
+    verification: VERIFICATION.UNVERIFIED
+  },
   celestialTypes: {
     file: "js/celestial-data.js",
     // No hay una página de la wiki dedicada a tipos de planeta entre las aportadas: la lista sale de los iconos de la carpeta planets/ de la API de assets.
