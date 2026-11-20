@@ -157,3 +157,35 @@ export function swapGestaltUpkeep(jobId, ctx) {
   const inherited = SWAP_BASES[jobId].map((base) => GESTALT_JOB_UPKEEP[base]).find(Boolean);
   return inherited ? { inherit: inherited } : { none: true };
 }
+
+/** Top-level conditions of a swap that are not met. */
+export function unmetSwapRules(swap, ctx) {
+  return (swap.requires || []).filter((rule) => !swapRuleMet(rule, ctx));
+}
+
+function ruleNeedsUnmodelled(rule, ctx) {
+  if (rule.type === "unmodelled") return true;
+  if (rule.type === "anyOf") return rule.rules.some((inner) => ruleNeedsUnmodelled(inner, ctx));
+  if (rule.type === "swap") { const other = JOB_SWAPS_BY_ID.get(rule.id); return !!other && blockedByUnmodelled(other, ctx); }
+  return false;
+}
+
+/**
+ * P21.4: the swap fits the empire and every unmet condition involves an unmodelled one (origin, unmodelled building,
+ * habitability...): it could apply in the game, the simulator cannot tell. Listed in the jobs panel.
+ */
+export function blockedByUnmodelled(swap, ctx) {
+  if (!empireFits(swap, ctx)) return false;
+  const unmet = unmetSwapRules(swap, ctx);
+  return unmet.length > 0 && unmet.every((rule) => ruleNeedsUnmodelled(rule, ctx));
+}
+
+/** Unmodelled conditions inside a rule list (flattened, swaps followed). */
+export function unmodelledSwapRules(rules, ctx) {
+  return rules.flatMap((rule) => {
+    if (rule.type === "unmodelled") return [rule];
+    if (rule.type === "anyOf") return unmodelledSwapRules(rule.rules, ctx);
+    if (rule.type === "swap") { const other = JOB_SWAPS_BY_ID.get(rule.id); return other ? unmodelledSwapRules(unmetSwapRules(other, ctx), ctx) : []; }
+    return [];
+  });
+}

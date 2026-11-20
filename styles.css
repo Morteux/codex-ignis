@@ -1687,6 +1687,33 @@ h1 {
     font-size: .74rem;
 }
 
+/* P21.4: job swap note under a swapped job (base job, weight, conditions, stacked changes). */
+.planet-job-swap-note {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+    flex: 1 1 100%;
+    order: 10;
+    color: var(--muted, var(--text));
+    font-size: .66rem;
+    opacity: .85;
+}
+
+.planet-job-swaps-unapplied {
+    margin-top: .6rem;
+    font-size: .68rem;
+    color: var(--muted, var(--text));
+}
+
+.planet-job-swaps-unapplied summary {
+    cursor: pointer;
+}
+
+.planet-job-swaps-unapplied ul {
+    margin: .3rem 0 0 1rem;
+    padding: 0;
+}
+
 .planet-job-slider {
     flex: 2 1 10rem;
     min-width: 6rem;

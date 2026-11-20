@@ -66,7 +66,8 @@ import {
   JOB_RESOURCE_MULT,
   ANGLERS_WET_CLIMATE
 } from "./planet-data.js";
-import { registerSwapJobs, resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, SWAP_BASES } from "./job-swaps.js";
+import { registerSwapJobs, resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, swapWeight, swapRuleMet, blockedByUnmodelled, unmodelledSwapRules, SWAP_BASES, MODELLED_SWAPS } from "./job-swaps.js";
+import { JOB_SWAPS_BY_ID } from "./job-swap-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { PLANET_MODIFIERS, PLANET_MODIFIER_GROUPS } from "./planet-modifier-data.js";
 import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES, BLOCKERS } from "./planetary-features-data.js";
@@ -1172,6 +1173,7 @@ function computeTotals() {
   const swapCtx = swapContext(activeBuildings.map(([, building]) => building.id),
     branchBuildings.map((building) => (branchBuildingVariant(building, branchOffice.illegal) || building).id));
   const resolvedSwaps = resolveJobSwaps(swapCtx);
+  const preSwapJobIds = Object.keys(jobCapacities).filter((jobId) => jobCapacities[jobId] > 0);
   const appliedSwaps = swapMap(resolvedSwaps);
   Object.entries(appliedSwaps).forEach(([base, swapped]) => {
     if (!jobCapacities[base]) return;
@@ -1715,7 +1717,7 @@ function computeTotals() {
 
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
-  return { jobCapacities, jobSwaps: { resolved: resolvedSwaps, applied: appliedSwaps, context: swapCtx }, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, branchOffice: branchValueInfo, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobSwaps: { resolved: resolvedSwaps, applied: appliedSwaps, context: swapCtx, baseJobIds: preSwapJobIds }, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, branchOffice: branchValueInfo, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -1814,6 +1816,85 @@ function ruleSubjects(rule) {
     case "authority": return names(rule.ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)));
     default: return describeUnmetRule(rule);
   }
+}
+
+/** P21.4: specialization (zone) name by option id, primary or resource district. */
+function zoneDisplayName(optionId) {
+  const option = primaryOption(optionId) || RESOURCE_DISTRICT_ORDER.map((cat) => secondaryOption(cat, optionId)).find(Boolean);
+  return option ? t(currentLang, option.i18nKey) : optionId;
+}
+
+/** P21.4: one condition of a job swap, as text (met or not). */
+function describeSwapRule(rule) {
+  const names = (list) => list.join(", ");
+  switch (rule.type) {
+    case "building": return t(currentLang, "jobSwapRuleBuilding") + names(rule.ids.map((id) => buildingsById.get(id) ? buildingDisplayName(buildingsById.get(id)) : id));
+    case "zone": return t(currentLang, "jobSwapRuleZone") + names(rule.ids.map(zoneDisplayName));
+    case "designation": return t(currentLang, "jobSwapRuleDesignation") + names(rule.ids.map((id) => t(currentLang, getDesignation(id).i18nKey)));
+    case "planetModifier": return t(currentLang, "jobSwapRulePlanetModifier") + names(rule.ids.map((id) => { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === id); return modifier ? t(currentLang, modifier.i18nKey) : id; }));
+    case "branchBuilding": return t(currentLang, "jobSwapRuleBranch") + names(rule.ids.map(branchBuildingName));
+    case "swap": return t(currentLang, "modifierSourceJobSwap").replace("{job}", JOBS[rule.id] ? jobName(rule.id) : (JOB_SWAPS_BY_ID.get(rule.id)?.name || rule.id));
+    case "anyOf": return rule.rules.map(describeSwapRule).join(" / ");
+    case "unmodelled": return t(currentLang, "requirementUnmodelled") + rule.name;
+    case "notAuthority": return t(currentLang, "jobSwapRuleNotAuthority") + names(rule.ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)));
+    case "tradition": return t(currentLang, "jobSwapRuleTradition");
+    case "federation": return t(currentLang, "jobSwapRuleFederation");
+    default: return describeUnmetRule(rule);
+  }
+}
+
+/** P21.4: "Replaces <base> · weight · conditions" and the stacked changes of a swapped job row. */
+function renderSwapNote(jobId, swapInfo) {
+  const swap = JOB_SWAPS_BY_ID.get(jobId);
+  if (!swap || !swapInfo) return null;
+  const base = Object.keys(swapInfo.applied).find((key) => swapInfo.applied[key] === jobId);
+  const stacked = stackedSwapChanges(jobId, swapInfo.context);
+  if (!base && !stacked.length) return null;
+  const note = document.createElement("div");
+  note.className = "planet-job-swap-note";
+  if (base) {
+    const line = document.createElement("span");
+    // Of an "one of" condition only the met alternatives are shown.
+    const reasons = (swap.requires || []).map((rule) => (rule.type === "anyOf"
+      ? rule.rules.filter((inner) => swapRuleMet(inner, swapInfo.context)).map(describeSwapRule).join(" / ")
+      : describeSwapRule(rule))).filter(Boolean);
+    line.textContent = [t(currentLang, "jobSwapReplaces").replace("{job}", jobName(base)), t(currentLang, "jobSwapWeight").replace("{n}", String(swapWeight(swap, swapInfo.context))), ...reasons].join(" · ");
+    note.append(line);
+  }
+  if (stacked.length) {
+    const line = document.createElement("span");
+    line.textContent = t(currentLang, "jobSwapStacked") + stacked.map((change) => {
+      const label = change.kind === "zone" ? zoneDisplayName(change.id) : t(currentLang, "modifierSourceJobSwap").replace("{job}", JOBS[change.id] ? jobName(change.id) : change.id);
+      const parts = [...Object.entries(change.output).map(([resourceId, amount]) => `${formatAmount(displayAmount(resourceId, amount), true)} ${resourceName(resourceId)}`),
+        ...Object.entries(change.effects).map(([stat, amount]) => `${formatAmount(amount, true)} ${t(currentLang, STAT_EFFECTS[stat]?.i18nKey || stat)}`)];
+      return `${label} (${parts.join(", ")})`;
+    }).join("; ");
+    note.append(line);
+  }
+  return note;
+}
+
+/** P21.4: swaps of the planet's base jobs that the simulator cannot apply because a condition is not modelled. */
+function renderUnappliedSwaps(swapInfo) {
+  if (!swapInfo) return null;
+  const bases = new Set(swapInfo.baseJobIds);
+  const entries = MODELLED_SWAPS.filter((swap) => SWAP_BASES[swap.id].some((base) => bases.has(base)) && blockedByUnmodelled(swap, swapInfo.context));
+  if (!entries.length) return null;
+  const box = document.createElement("details");
+  box.className = "planet-job-swaps-unapplied";
+  const summary = document.createElement("summary");
+  summary.textContent = `${t(currentLang, "jobSwapsNotAppliedTitle")} (${entries.length})`;
+  box.append(summary);
+  const list = document.createElement("ul");
+  entries.forEach((swap) => {
+    const item = document.createElement("li");
+    const base = SWAP_BASES[swap.id].find((id) => bases.has(id));
+    const missing = [...new Set(unmodelledSwapRules(swap.requires || [], swapInfo.context).map((rule) => rule.name))];
+    item.textContent = `${jobName(base)} → ${jobName(swap.id)}: ${t(currentLang, "requirementUnmodelled")}${missing.join(" / ")}`;
+    list.append(item);
+  });
+  box.append(list);
+  return box;
 }
 
 function describeUnmetRule(rule) {
@@ -1986,7 +2067,7 @@ function buildingDisplayName(building) {
  * recorrido real. Los recursos de la derecha SÍ se muestran ya convertidos
  * a unidades reales (única división, con divideEffect, al calcularlos).
  */
-function renderJobSliderRow(jobId, capacity, unitOutputs) {
+function renderJobSliderRow(jobId, capacity, unitOutputs, swapInfo) {
   const assigned = jobAssignments[jobId] || 0;
 
   const row = document.createElement("div");
@@ -1999,6 +2080,8 @@ function renderJobSliderRow(jobId, capacity, unitOutputs) {
   label.textContent = `${jobName(jobId)} · ${t(currentLang, "planetSimJobCreatedLabel")(formatAmount(capacity))}`;
   info.append(label);
   row.append(info);
+  const swapNote = renderSwapNote(jobId, swapInfo);
+  if (swapNote) row.append(swapNote);
 
   const decreaseBtn = document.createElement("button");
   decreaseBtn.type = "button";
@@ -3067,9 +3150,11 @@ function renderSummary(totals) {
       return;
     }
     stratumJobIds.forEach((jobId) => {
-      summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId], totals.jobUnitOutputs[jobId]));
+      summaryEl.append(renderJobSliderRow(jobId, totals.jobCapacities[jobId], totals.jobUnitOutputs[jobId], totals.jobSwaps));
     });
   });
+  const unapplied = renderUnappliedSwaps(totals.jobSwaps);
+  if (unapplied) summaryEl.append(unapplied);
 
   renderNonResourceEffects(jobIds, totals.conditions);
 }
