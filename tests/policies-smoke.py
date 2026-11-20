@@ -774,6 +774,25 @@ async def main():
         mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText)")
         check("branch: no branch office -> no branch modifiers", not any("Branch office" in m for m in mods), mods)
 
+        # P21.2: generic job swaps — Politicians become Nobles (Aristocratic Elite), Merchants (Merchant Guilds), Patricians (both, weight 20)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("empire")
+        await ethic("Fanatic Authoritarian"); await ethic("Materialist")
+        await pg.evaluate("()=>[...document.querySelectorAll('#empire-authority-list button')].find(b=>b.innerText.startsWith('Imperial')).click()")
+        await pg.evaluate("()=>document.querySelector('#planet-capital-upgrade').click()")
+        await civic_toggle("Aristocratic Elite")
+        jobs = await pg.inner_text("#planet-summary")
+        check("swap: Aristocratic Elite turns Politicians into Nobles", "Noble" in jobs and "Politician" not in jobs, jobs[:300])
+        await civic_toggle("Merchant Guilds")
+        jobs = await pg.inner_text("#planet-summary")
+        check("swap: Noble + Merchant conditions -> Patrician (highest weight)", "Patrician" in jobs and "Noble ·" not in jobs and "Politician" not in jobs, jobs[:300])
+        await civic_toggle("Aristocratic Elite")
+        jobs = await pg.inner_text("#planet-summary")
+        check("swap: Merchant Guilds alone -> Merchant", "Merchant" in jobs and "Patrician" not in jobs, jobs[:300])
+        await civic_toggle("Merchant Guilds")
+        jobs = await pg.inner_text("#planet-summary")
+        check("swap: no swap civics -> Politicians back", "Politician" in jobs and "Merchant" not in jobs, jobs[:300])
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

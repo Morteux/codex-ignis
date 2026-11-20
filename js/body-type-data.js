@@ -52,8 +52,7 @@ export const BODY_TYPE_RULES = {
     // Geothermal Powerplant takes the generator specializations, Magma Conduit the mining ones (District specialization
     // page); no specialization lists the Thermotechnic Forum (it unlocks no building slots).
     resourceDistricts: ["geothermalPowerplant", "magmaConduit", "thermotechnicForum"],
-    // Jobs page: Thermoforger is the Miner job swap on a Volcanic planet (every Miner job of the planet).
-    jobSwaps: { miner: "thermoforger" },
+    // Jobs page: Thermoforger is the Miner job swap on a Volcanic planet (P21.2: js/job-swap-data.js).
     infoOnly: ["Volcanic climate (habitability)"]
   },
   gaia: {

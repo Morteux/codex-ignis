@@ -123,11 +123,10 @@ export function capitalSetForAuthority(authorityId) {
  * share civicCorporateAnglers) on a wet-climate world (Ocean, Continental, Tropical). Wiki 4.5.2 "District
  * specialization", Agriculture specializations: Agricultural Focus and Agrarian Villages are NOT available there
  * (Aquaculture and Coastal Hamlets replace them); Coastal Hamlets and Aquaculture need it. Anglers civic page: there
- * every Farmer becomes an Angler and every Artisan a Pearl Diver (Jobs page job swaps, see ANGLERS_JOB_SWAPS).
+ * every Farmer becomes an Angler and every Artisan a Pearl Diver (Jobs page job swaps, js/job-swap-data.js).
  */
 export const ANGLERS_WET_CLIMATE = [{ type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }, { type: "celestial", ids: ["ocean", "continental", "tropical"] }];
 const ANGLERS_WET_CLIMATE_BLOCK = { type: "notAll", rules: ANGLERS_WET_CLIMATE };
-export const ANGLERS_JOB_SWAPS = { farmer: "angler", artisan: "pearl_diver" };
 
 export const DISTRICTS = {
   /**
@@ -374,7 +373,6 @@ export const DISTRICTS = {
         img: "districts_specialization/District_specialization_volatile_motes.png",
         requires: [{ type: "deposit", specialization: "volatileMotesHarvesting" }],
         jobs: { mote_harvester: 100 },
-        jobSwaps: { technician: "mote_harvester" },
         permittedSets: ["energy"]
       },
       {
@@ -429,7 +427,6 @@ export const DISTRICTS = {
         img: "districts_specialization/District_specialization_rare_crystals.png",
         requires: [{ type: "deposit", specialization: "rareCrystalExtraction" }],
         jobs: { crystal_miner: 100 },
-        jobSwaps: { miner: "crystal_miner" },
         permittedSets: ["minerals"]
       },
       {
@@ -500,7 +497,6 @@ export const DISTRICTS = {
         img: "districts_specialization/District_specialization_exotic_gases.png",
         requires: [{ type: "deposit", specialization: "exoticGasCapture" }],
         jobs: { gas_extractor: 100 },
-        jobSwaps: { farmer: "gas_extractor" },
         permittedSets: ["food"]
       }
     ]

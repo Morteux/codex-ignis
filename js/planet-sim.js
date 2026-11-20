@@ -64,9 +64,9 @@ import {
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER,
   JOB_RESOURCE_MULT,
-  ANGLERS_WET_CLIMATE,
-  ANGLERS_JOB_SWAPS
+  ANGLERS_WET_CLIMATE
 } from "./planet-data.js";
+import { registerSwapJobs, resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, SWAP_BASES } from "./job-swaps.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { PLANET_MODIFIERS, PLANET_MODIFIER_GROUPS } from "./planet-modifier-data.js";
 import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES, BLOCKERS } from "./planetary-features-data.js";
@@ -82,6 +82,9 @@ import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js"
 import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OWNER_CIVICS, BRANCH_OFFICE_BUILDINGS, BRANCH_OFFICE_VALUE, ILLEGAL_BRANCH_RULES, branchBuildingAvailable, branchBuildingVariant, branchBuildingJobs, branchJobTrade, isIllegalVariant } from "./branch-office-data.js";
 import { renderBranchOffices } from "./branch-offices-ui.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
+
+// P21.2: swapped jobs join JOBS / JOB_OUTPUTS / JOB_EFFECTS / JOB_CATEGORIES (js/job-swaps.js).
+registerSwapJobs();
 
 const langButtons = document.querySelectorAll(".lang-btn");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
@@ -530,23 +533,28 @@ function activeStrategicDeposits() {
   }).filter(Boolean);
 }
 
-/** P10.10: Anglers-family civic on a wet-climate world (Farmer → Angler, Artisan → Pearl Diver). */
-function anglersSwapsActive() {
-  return buildingRequirementsMet({ requires: ANGLERS_WET_CLIMATE }, requirementContext());
+/** P21.2: district specializations chosen on the planet (primary slots and resource districts with copies). */
+function chosenZoneIds() {
+  const ids = new Set();
+  if (districtState.urban.count > 0) districtState.urban.slots.filter(Boolean).forEach((id) => ids.add(id));
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => { if (districtState[cat].count > 0 && districtState[cat].optionId) ids.add(districtState[cat].optionId); });
+  return [...ids];
 }
 
 /**
- * Job swaps on the planet: the body's (Volcanic), the Anglers ones (P10.10; job swap weight 50, above the Gas Extractor's
- * 20, so Anglers keep the Farmer jobs under Exotic Gas Capture) and those of the chosen specializations ("zone on planet").
+ * P21.2: context of the job swap conditions (js/job-swaps.js): the requirement context plus gestalt, the active buildings,
+ * the chosen specializations, the active planet modifiers and the active branch office buildings (legal or illegal id).
  */
-function planetJobSwaps() {
-  const swaps = { ...(bodyRules()?.jobSwaps || {}) };
-  if (anglersSwapsActive()) Object.entries(ANGLERS_JOB_SWAPS).forEach(([from, to]) => { if (!swaps[from]) swaps[from] = to; });
-  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
-    const option = districtState[cat].count > 0 ? secondaryOption(cat, districtState[cat].optionId) : null;
-    Object.entries(option?.jobSwaps || {}).forEach(([from, to]) => { if (!swaps[from]) swaps[from] = to; });
-  });
-  return swaps;
+function swapContext(buildingIds, branchBuildingIds) {
+  const state = getPlanetState();
+  return {
+    ...requirementContext(),
+    gestalt: ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id),
+    buildingIds,
+    zoneIds: chosenZoneIds(),
+    planetModifierIds: activePlanetModifiers().map((modifier) => modifier.id),
+    branchBuildingIds
+  };
 }
 
 /** P10.8: per-job bonuses of strategic deposits and of specializations by job category (Betharian Processing), per staffed job. */
@@ -561,11 +569,6 @@ function featureJobBonuses() {
   activeBlockers().forEach((blocker) => {
     if (blocker.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[blocker.jobBonus.category], resource: blocker.jobBonus.resource, perJob: blocker.jobBonus.perJob, source: { kind: "blocker", id: blocker.id } });
   });
-  // P10.10: Angler under Exotic Gas Capture (Jobs page): −3 food, +0.5 exotic gases per job.
-  if (planetJobSwaps().farmer === "angler" && chosenStrategicSpecializations().some((option) => option.id === "exoticGasCapture")) {
-    bonuses.push({ jobs: ["angler"], resource: "food", perJob: -3, source: { kind: "specialization", id: "exoticGasCapture" } });
-    bonuses.push({ jobs: ["angler"], resource: "exotic_gases", perJob: 0.5, source: { kind: "specialization", id: "exoticGasCapture" } });
-  }
   new Set(RESOURCE_DISTRICT_ORDER.map((cat) => (districtState[cat].count > 0 ? districtState[cat].optionId : null)).filter(Boolean)).forEach((optionId) => {
     const cat = RESOURCE_DISTRICT_ORDER.find((entry) => districtState[entry].optionId === optionId);
     const option = secondaryOption(cat, optionId);
@@ -929,13 +932,11 @@ function computeTotals() {
     }
   };
 
-  // P10.6: job swaps of the body (Volcanic: every Miner job becomes a Thermoforger job); P10.8: and of the chosen
-  // strategic specializations (Rare Crystal Extraction: every Miner job becomes a Crystal Miner job).
-  const bodyJobSwaps = planetJobSwaps();
+  // P21.2: jobs are added unswapped; the job swaps (js/job-swaps.js) are applied once every source is known (after the
+  // branch office), since their conditions depend on buildings, specializations and branch office buildings.
   const addJobCapacity = (jobId, rawAmount) => {
     if (!rawAmount) return;
-    const swapped = bodyJobSwaps[jobId] || jobId;
-    jobCapacities[swapped] = (jobCapacities[swapped] || 0) + rawAmount;
+    jobCapacities[jobId] = (jobCapacities[jobId] || 0) + rawAmount;
   };
 
   // P10.5: active buildings first, for the upkeep multipliers of the Synaptic Lathe buildings (Expanded Reactor: −15 %
@@ -1167,6 +1168,17 @@ function computeTotals() {
     Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, -amount, "branchBuildings"));
   });
 
+  // P21.2: job swaps (GDD §6.1). Every job of a base job becomes the winning swap (highest weight among the met ones).
+  const swapCtx = swapContext(activeBuildings.map(([, building]) => building.id),
+    branchBuildings.map((building) => (branchBuildingVariant(building, branchOffice.illegal) || building).id));
+  const resolvedSwaps = resolveJobSwaps(swapCtx);
+  const appliedSwaps = swapMap(resolvedSwaps);
+  Object.entries(appliedSwaps).forEach(([base, swapped]) => {
+    if (!jobCapacities[base]) return;
+    jobCapacities[swapped] = (jobCapacities[swapped] || 0) + jobCapacities[base];
+    delete jobCapacities[base];
+  });
+
   // La población asignada a cada empleo (slider) se ajusta a la nueva
   // capacidad antes de calcular recursos: ver syncJobAssignments más abajo.
   syncJobAssignments(jobCapacities);
@@ -1293,12 +1305,24 @@ function computeTotals() {
     return bonus;
   };
   const featureBonuses = featureJobBonuses();
+  const swapStackEffects = {}; // P21.2: jobId -> { stat: per job } stacked "With X swap conditions" effects
   Object.keys(jobCapacities).forEach((jobId) => {
     const unit = { ...(JOB_OUTPUTS[jobId] || {}) };
+    // P21.2: a swapped job inherits the modifiers of its base job (building bonuses, efficiency, upkeep, edicts, branch).
+    const modJobIds = [jobId, ...(SWAP_BASES[jobId] || [])];
+    const mergeByJob = (map) => modJobIds.reduce((merged, id) => {
+      Object.entries(map[id] || {}).forEach(([resourceId, amount]) => { merged[resourceId] = (merged[resourceId] || 0) + amount; });
+      return merged;
+    }, {});
     // Conciencia gestalt: el mantenimiento en bienes de consumo se sustituye por el
     // del recurso que consume la especie elegida (ver GESTALT_JOB_UPKEEP).
-    const gestaltUpkeep = gestaltEmpire ? GESTALT_JOB_UPKEEP[jobId] : null;
-    if (gestaltUpkeep?.fixed) {
+    // P21.2: a swapped job uses its own wiki variant or inherits its base job's.
+    const swapUpkeep = gestaltEmpire ? swapGestaltUpkeep(jobId, { ...swapCtx, speciesType: speciesType.id }) : null;
+    const gestaltUpkeep = gestaltEmpire ? (swapUpkeep ? swapUpkeep.inherit || null : GESTALT_JOB_UPKEEP[jobId]) : null;
+    if (swapUpkeep?.replace) {
+      if (!swapUpkeep.extra) delete unit.consumer_goods;
+      Object.entries(swapUpkeep.replace).forEach(([resourceId, amount]) => { unit[resourceId] = (unit[resourceId] || 0) + amount; });
+    } else if (gestaltUpkeep?.fixed) {
       // P10.6: gestalt upkeep in a fixed resource whatever the species (Pyroclastic Drone: −7 minerals).
       delete unit.consumer_goods;
       Object.entries(gestaltUpkeep.fixed).forEach(([resourceId, amount]) => { unit[resourceId] = (unit[resourceId] || 0) - amount; });
@@ -1309,8 +1333,22 @@ function computeTotals() {
     }
     // Colonista (Refugio Colonial, P7.5): +1 del recurso propio de la especie (orgánica comida, litoide minerales, infernal aleaciones, máquina energía).
     if (jobId === "colonist") unit[speciesType.upkeepResource] = (unit[speciesType.upkeepResource] || 0) + 1;
+    // P21.2: output changes of the other met swaps listed on this job ("With X swap conditions") and its zone change
+    // (Angler under Exotic Gas Capture): part of the job's own output, own breakdown line and modifier source.
+    const preStackUnit = { ...unit };
+    stackedSwapChanges(jobId, swapCtx).forEach((change) => {
+      const source = change.kind === "zone" ? { kind: "specialization", id: change.id } : { kind: "jobSwap", id: change.id };
+      Object.entries(change.output).forEach(([resourceId, amount]) => {
+        unit[resourceId] = (unit[resourceId] || 0) + amount;
+        pushModifier(source, "jobFlat", { job: jobId, resource: resourceId }, amount);
+      });
+      Object.entries(change.effects).forEach(([stat, amount]) => {
+        swapStackEffects[jobId] = swapStackEffects[jobId] || {};
+        swapStackEffects[jobId][stat] = (swapStackEffects[jobId][stat] || 0) + amount;
+      });
+    });
     const baseUnit = { ...unit };
-    Object.entries(jobBonuses[jobId] || {}).forEach(([resourceId, amount]) => {
+    Object.entries(mergeByJob(jobBonuses)).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
     const buildingUnit = { ...unit };
@@ -1326,12 +1364,12 @@ function computeTotals() {
       pushModifier(bonus.source, "jobFlat", { job: jobId, resource: bonus.resource }, bonus.perJob);
     });
     const scaledUnit = { ...unit };
-    Object.entries(edictJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
+    Object.entries(mergeByJob(edictJobFlat)).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
     const edictUnit = { ...unit };
     // P19.3: per-job bonuses of the branch office buildings (own breakdown line).
-    Object.entries(branchJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
+    Object.entries(mergeByJob(branchJobFlat)).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
     const bonusedUnit = { ...unit };
@@ -1340,11 +1378,11 @@ function computeTotals() {
     // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
     // La eficacia de designación, edificios y estrato forma un solo montón (ver stacking-rules.js).
     const efficiencyFactor = stackFactor(stacking.jobEfficiency, [
-      ...modifierValues("jobEfficiency", { job: jobId }),
+      ...modJobIds.flatMap((id) => modifierValues("jobEfficiency", { job: id })),
       ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum }),
       ...modifierValues("stratumOutput", { stratum: JOBS[jobId]?.stratum })
     ]);
-    const upkeepFactor = stackFactor(stacking.jobUpkeep, [...modifierValues("jobUpkeep", { job: jobId }), ...modifierValues("jobUpkeep", { job: "all" })]);
+    const upkeepFactor = stackFactor(stacking.jobUpkeep, [...modJobIds.flatMap((id) => modifierValues("jobUpkeep", { job: id })), ...modifierValues("jobUpkeep", { job: "all" })]);
     Object.keys(unit).forEach((resourceId) => {
       if (unit[resourceId] > 0) unit[resourceId] *= efficiencyFactor;
       else if (unit[resourceId] < 0) unit[resourceId] *= upkeepFactor;
@@ -1355,7 +1393,8 @@ function computeTotals() {
     const assigned = divideEffect(assignedRaw);
     Object.entries(unit).forEach(([resourceId, perJob]) => {
       addSignedResource(resourceId, perJob * assigned);
-      recordBreakdown(resourceId, "jobsBase", (baseUnit[resourceId] || 0) * assigned);
+      recordBreakdown(resourceId, "jobsBase", (preStackUnit[resourceId] || 0) * assigned);
+      recordBreakdown(resourceId, "jobSwapStack", ((baseUnit[resourceId] || 0) - (preStackUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobsBonus", ((buildingUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobWorkforceScaling", ((scaledUnit[resourceId] || 0) - (buildingUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "edictJobFlat", ((edictUnit[resourceId] || 0) - (scaledUnit[resourceId] || 0)) * assigned);
@@ -1537,7 +1576,9 @@ function computeTotals() {
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
   // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
   // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
-  const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
+  // P21.2: plus the stacked swap effects (Technophant with Noble conditions...).
+  const jobEffect = (stat) => Object.keys(jobCapacities).reduce((sum, jobId) => sum + ((JOB_EFFECTS[jobId]?.[stat] || 0) + (swapStackEffects[jobId]?.[stat] || 0)) * divideEffect(jobAssignments[jobId] || 0), 0);
+  const stabilityFromJobs = jobEffect("stability");
   const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, planetModifiers: planetModifierConditions.stability, capital: capital.stability || 0, buildings: buildingStability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
@@ -1555,7 +1596,7 @@ function computeTotals() {
   // Solo se muestra: no cambia la estabilidad (GDD §9). Las reducciones de los empleos (agentes de la ley, educadores...) se
   // suman aparte con los empleos cubiertos; el total no baja de 0.
   const crimeFromHappiness = happiness.applicable ? pops * 0.02 * (100 - happiness.value) : 0;
-  const crimeFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.crime || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
+  const crimeFromJobs = jobEffect("crime");
   const crimeFromEdicts = pops > 0 ? edictConditions.crime : 0;
   const crimeFromModifiers = pops > 0 ? planetModifierConditions.crime : 0;
   const crimeFromBranch = pops > 0 ? branchConditions.crime : 0;
@@ -1674,7 +1715,7 @@ function computeTotals() {
 
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, branchOffice: branchValueInfo, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobSwaps: { resolved: resolvedSwaps, applied: appliedSwaps, context: swapCtx }, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, branchOffice: branchValueInfo, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -3057,6 +3098,7 @@ function refreshEconomyOnly() {
 /** Fuentes del desglose por recurso (P8.1), en el orden en que se muestran. `pos`/`neg` son las claves i18n según el signo del importe. */
 const BREAKDOWN_SOURCES = [
   { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg" },
+  { id: "jobSwapStack", pos: "breakdownJobSwapStack", neg: "breakdownJobSwapStack" },
   { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
   { id: "jobWorkforceScaling", pos: "breakdownJobWorkforceScaling", neg: "breakdownJobWorkforceScaling" },
   { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat" },
@@ -3316,6 +3358,7 @@ function modifierSourceName(source) {
   if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
   if (source.kind === "job") return jobName(source.id);
   if (source.kind === "branch") return branchBuildingName(source.id);
+  if (source.kind === "jobSwap") return t(currentLang, "modifierSourceJobSwap").replace("{job}", JOBS[source.id] ? jobName(source.id) : source.id);
   return source.id;
 }
 
