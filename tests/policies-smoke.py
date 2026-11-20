@@ -559,6 +559,35 @@ async def main():
         check("Ecumenopolis: deposit features not applicable", "no deposit features" in na, na)
         await body("Continental")
 
+        # 19. P10.8: strategic deposits (worst by default, user choice, saved), Rare Crystal Extraction swaps Miners, Betharian Processing
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await body("Continental")
+        await card_plus(2, 2)
+        await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[2].querySelector('select');s.value='rareCrystalExtraction';s.dispatchEvent(new Event('change'))}""")
+        jobs = await pg.inner_text("#planet-summary")
+        check("Rare Crystal Extraction: Crystal Miners replace Miners", "Crystal Miner" in jobs and "\nMiner" not in jobs, jobs[:600])
+        f = await features()
+        check("strategic deposit: Crystalline Caverns (worst) covers 2 mining districts", f["items"] == ["crystallineCaverns"] and f["count"] == "1", f)
+        rc0 = (await net()).get("Rare crystals", 0)
+        await pg.evaluate("()=>{const s=document.querySelector('.celestial-strategic-select');s.value='crystalForest';s.dispatchEvent(new Event('change'))}")
+        rc1 = (await net()).get("Rare crystals", 0)
+        # 6 Crystal Miners (2 districts x (200 + 100 specialization)): +0.05 more each
+        check("Crystal Forest: +0.05 rare crystals per Miner more", rc1 > rc0 and abs((rc1 - rc0) - 0.3) < 0.02, (rc0, rc1))
+        await pg.fill("#planet-summary-name", "Deposit planet")
+        await pg.evaluate("()=>document.querySelector('#planet-summary-save').click()")
+        await pg.wait_for_timeout(300)
+        await pg.evaluate("()=>[...document.querySelectorAll('.confirm-btn')].find(b=>/don't save/i.test(b.innerText))?.click()")
+        await pg.wait_for_timeout(300)
+        planets = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-planets')||'[]')")
+        dep = [p.get("strategicDeposits") for p in planets if p.get("name") == "Deposit planet"]
+        check("strategic deposit choice saved with the planet", dep == [{"rareCrystalExtraction": "crystalForest"}], dep)
+        await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[2].querySelector('select');s.value='betharianProcessing';s.dispatchEvent(new Event('change'))}""")
+        n = await net()
+        f = await features()
+        check("Betharian Processing: Betharian Fields, Miners back, energy from Miners", f["items"] == ["betharianFields"] and n.get("Energy", 0) > 0, (f, n))
+        await body("Ecumenopolis")
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

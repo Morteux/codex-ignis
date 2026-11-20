@@ -63,6 +63,7 @@ function ruleMet(rule, ctx) {
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
     case "unmodelled": return true; // requirement the simulator does not model (origin, planetary feature, planet modifier...): never blocks, only shown
+    case "deposit": return (ctx.depositSpecializations || []).includes(rule.specialization); // P10.8: a strategic deposit of this specialization can exist on the body
     case "districtBuildable": return (ctx.districtCaps || {})[rule.district] !== 0; // P10.4: habitat district cap (orbital deposits) not 0
     case "federation": return false; // las federaciones no se modelan: lo que exige una federación no está disponible (P16)
     case "tradition": return true; // las tradiciones no se modelan: los edictos que exigen una se tratan como desbloqueados (P18, decisión de Morteux 2026-11-19)

@@ -354,6 +354,18 @@ export const DISTRICTS = {
         jobs: { technician: 100 },
         permittedSets: ["energy"]
       },
+      // P10.8: strategic specializations (wiki 4.5.2 "District specialization"). They need a strategic deposit
+      // (js/planetary-features-data.js STRATEGIC_DEPOSITS, rule "deposit": only bodies with deposit features) and swap
+      // every job of the base job on the planet ("Swaps Technicians into Mote Harvesters", Jobs page "zone on planet").
+      {
+        id: "volatileMotesHarvesting",
+        i18nKey: "specializationVolatileMotesHarvesting",
+        img: "districts_specialization/District_specialization_volatile_motes.png",
+        requires: [{ type: "deposit", specialization: "volatileMotesHarvesting" }],
+        jobs: { mote_harvester: 100 },
+        jobSwaps: { technician: "mote_harvester" },
+        permittedSets: ["energy"]
+      },
       {
         id: "solarFarmingBays",
         i18nKey: "specializationSolarFarmingBays",
@@ -399,6 +411,25 @@ export const DISTRICTS = {
         requires: [{ type: "unmodelled", i18nKey: "reqMountainsInTheSky" }],
         jobs: { miner: 50, physicist: 50 },
         permittedSets: ["minerals"]
+      },
+      {
+        id: "rareCrystalExtraction",
+        i18nKey: "specializationRareCrystalExtraction",
+        img: "districts_specialization/District_specialization_rare_crystals.png",
+        requires: [{ type: "deposit", specialization: "rareCrystalExtraction" }],
+        jobs: { crystal_miner: 100 },
+        jobSwaps: { miner: "crystal_miner" },
+        permittedSets: ["minerals"]
+      },
+      {
+        // "Per 100 Miners: −2 Minerals, +6 Energy" (Effects column): per staffed job of the Miners category, once for the planet.
+        id: "betharianProcessing",
+        i18nKey: "specializationBetharianProcessing",
+        img: "districts_specialization/District_specialization_betharian.png",
+        requires: [{ type: "deposit", specialization: "betharianProcessing" }],
+        jobs: { miner: 100 },
+        jobCategoryFlat: { miners: { minerals: -2, energy: 6 } },
+        permittedSets: ["minerals"]
       }
     ]
   },
@@ -441,6 +472,15 @@ export const DISTRICTS = {
         requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, { type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }],
         jobs: { farmer: 50, artisan: 50, trader: 50 },
         permittedSets: ["food", "origin"]
+      },
+      {
+        id: "exoticGasCapture",
+        i18nKey: "specializationExoticGasCapture",
+        img: "districts_specialization/District_specialization_exotic_gases.png",
+        requires: [{ type: "deposit", specialization: "exoticGasCapture" }],
+        jobs: { gas_extractor: 100 },
+        jobSwaps: { farmer: "gas_extractor" },
+        permittedSets: ["food"]
       }
     ]
   }
@@ -518,6 +558,10 @@ export const JOBS = {
   clerk: { i18nKey: "jobClerk", img: "jobs/job_clerk.png", stratum: "worker" },
   // P10.6: Volcanic Worlds (wiki 4.5.2 "Jobs"). Thermoforger = Miner job swap (worker), Thermotechnic Mentor (specialist).
   thermoforger: { i18nKey: "jobThermoforger", img: "jobs/job_miner.png", stratum: "worker" },
+  // P10.8: strategic job swaps (wiki 4.5.2 "Jobs"; robotic founder variants not modelled).
+  crystal_miner: { i18nKey: "jobCrystalMiner", img: "jobs/job_crystal_miner.png", stratum: "worker" },
+  mote_harvester: { i18nKey: "jobMoteHarvester", img: "jobs/job_mote_harvester.png", stratum: "worker" },
+  gas_extractor: { i18nKey: "jobGasExtractor", img: "jobs/job_gas_extractor.png", stratum: "worker" },
   thermotechnic_mentor: { i18nKey: "jobThermotechnicMentor", img: "jobs/job_polytechnic_mentor.png", stratum: "specialist" },
   // Especialistas ligados a edificios de ética/principio
   death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
@@ -566,6 +610,11 @@ export const JOB_OUTPUTS = {
   clerk: { trade: 3, amenities: 3 },
   // P10.6: Thermoforger (Miner swap on Volcanic planets): +5 minerals +0.5 alloys, −1 energy.
   thermoforger: { minerals: 5, alloys: 0.5, energy: -1 },
+  // P10.8: Crystal Miner (Miner swap, Rare Crystal Extraction), Mote Harvester (Technician swap, Volatile Motes Harvesting),
+  // Gas Extractor (Farmer swap, Exotic Gas Capture: Jobs page +0.5 exotic gases; the specialization page says +0.75, P14).
+  crystal_miner: { minerals: 2, rare_crystals: 0.5 },
+  mote_harvester: { energy: 3, volatile_motes: 0.5 },
+  gas_extractor: { food: 3, exotic_gases: 0.5 },
   // Especialistas
   metallurgist: { alloys: 3, minerals: -6 },
   artisan: { consumer_goods: 6, minerals: -6 },

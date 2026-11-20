@@ -75,3 +75,40 @@ export const UNCAPPED_DISTRICTS = [
 
 /** Deposit features a planet has according to the wiki (warning outside this range). */
 export const DEPOSIT_FEATURE_COUNT = { min: 4, max: 15 };
+
+const NATURAL_NOT_VOLCANIC = ["continental", "ocean", "tropical", "savannah", "arid", "desert", "tundra", "arctic", "alpine", "gaia", "tomb", "relic"];
+
+/**
+ * P10.8 (part 2): strategic resource deposits (wiki *Planetary features*, "Strategic resource deposits"). A strategic
+ * specialization needs one of its deposits on the planet; the simulator adds the worst one by default (lowest bonus,
+ * owner decision 2026-11-20) and the user can pick another (saved with the planet, optional field `strategicDeposits`
+ * { specializationId: depositId }). Their caps count towards the required deposit features.
+ * jobBonus: "+X <resource> per 100 <job category>" = +X per staffed job of the category (JOB_CATEGORIES), applied as a
+ * per-job bonus (all extraction technologies are researched). bodies: Fumaroles and Stifling Atmosphere are Volcanic
+ * only ("Volcanic" climate, the mining features of the other deposits cannot appear on Volcanic Worlds); the others may
+ * appear on any natural planet (the favoured climate only changes their chance).
+ * Fumaroles unlocks Exotic Gas Capture, an agriculture specialization that the Thermotechnic Forum (agriculture group of
+ * a Volcanic World) cannot take: it is never required.
+ */
+export const STRATEGIC_DEPOSITS = [
+  { id: "betharianFields", i18nKey: "featureBetharianFields", img: "planetary_features/D_betharian_deposit.png", caps: { mining: 4 }, unlocks: "betharianProcessing", bodies: NATURAL_NOT_VOLCANIC },
+  { id: "dustCaverns", i18nKey: "featureDustCaverns", img: "planetary_features/D_dust_caverns.png", caps: { generator: 3 }, unlocks: "volatileMotesHarvesting", jobBonus: { category: "technicians", resource: "volatile_motes", perJob: 0.05 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "dustDesert", i18nKey: "featureDustDesert", img: "planetary_features/D_dust_desert.png", caps: { generator: 3 }, unlocks: "volatileMotesHarvesting", jobBonus: { category: "technicians", resource: "volatile_motes", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "bubblingSwamp", i18nKey: "featureBubblingSwamp", img: "planetary_features/D_bubbling_swamp.png", caps: { agriculture: 3 }, unlocks: "exoticGasCapture", jobBonus: { category: "farmers", resource: "exotic_gases", perJob: 0.05 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "fumingBog", i18nKey: "featureFumingBog", img: "planetary_features/D_fuming_bog.png", caps: { agriculture: 3 }, unlocks: "exoticGasCapture", jobBonus: { category: "farmers", resource: "exotic_gases", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "crystallineCaverns", i18nKey: "featureCrystallineCaverns", img: "planetary_features/D_crystalline_caverns.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.05 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "crystalForest", i18nKey: "featureCrystalForest", img: "planetary_features/D_crystal_forest.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "crystalReef", i18nKey: "featureCrystalReef", img: "planetary_features/D_crystal_reef.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
+  { id: "fumaroles", i18nKey: "featureFumaroles", img: "planetary_features/D_gaseous_eruption.png", caps: { mining: 3 }, unlocks: "exoticGasCapture", jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.2 }, bodies: ["volcanic"] },
+  { id: "stiflingAtmosphere", i18nKey: "featureStiflingAtmosphere", img: "planetary_features/D_tempestous_mountain.png", caps: { mining: 3 }, unlocks: "volatileMotesHarvesting", jobBonus: { category: "miners", resource: "volatile_motes", perJob: 0.2 }, bodies: ["volcanic"] }
+];
+
+/**
+ * Job categories used by "per 100 <category>" effects (wiki *Jobs*: Technicians, Miners, Farmers categories), limited to
+ * the jobs the simulator has.
+ */
+export const JOB_CATEGORIES = {
+  technicians: ["technician", "mote_harvester"],
+  miners: ["miner", "crystal_miner", "thermoforger"],
+  farmers: ["farmer", "gas_extractor"]
+};

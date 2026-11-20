@@ -65,7 +65,7 @@ import {
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
-import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT } from "./planetary-features-data.js";
+import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -453,6 +453,60 @@ function districtHasNoFeature(cat) {
   return depositFeaturesApply() && !districtUncapped(cat) && depositFeaturesFor(cat).length === 0;
 }
 
+/** P10.8: user's choice of strategic deposit per strategic specialization (saved with the planet); missing = the worst one. */
+const strategicDepositChoice = {};
+
+/** Strategic deposits that can unlock a specialization on the current planet type, worst (lowest bonus) first. */
+function strategicDepositCandidates(specializationId) {
+  if (!depositFeaturesApply()) return [];
+  const typeId = getPlanetState().celestialTypeId;
+  return STRATEGIC_DEPOSITS.filter((deposit) => deposit.unlocks === specializationId && deposit.bodies.includes(typeId))
+    .map((deposit, index) => ({ deposit, index }))
+    .sort((a, b) => ((a.deposit.jobBonus?.perJob || 0) - (b.deposit.jobBonus?.perJob || 0)) || a.index - b.index)
+    .map((entry) => entry.deposit);
+}
+
+/** Strategic specializations chosen on the planet (resource district groups with a built copy). */
+function chosenStrategicSpecializations() {
+  return RESOURCE_DISTRICT_ORDER.map((cat) => (districtState[cat].count > 0 ? secondaryOption(cat, districtState[cat].optionId) : null))
+    .filter((option) => option && (option.requires || []).some((rule) => rule.type === "deposit"));
+}
+
+/** Active strategic deposits: one per chosen strategic specialization (the user's choice if valid, otherwise the worst). */
+function activeStrategicDeposits() {
+  return chosenStrategicSpecializations().map((option) => {
+    const candidates = strategicDepositCandidates(option.id);
+    const chosen = candidates.find((deposit) => deposit.id === strategicDepositChoice[option.id]) || candidates[0];
+    return chosen ? { specialization: option, deposit: chosen, candidates } : null;
+  }).filter(Boolean);
+}
+
+/** Job swaps on the planet: the body's (Volcanic) and those of the chosen specializations ("zone on planet"). */
+function planetJobSwaps() {
+  const swaps = { ...(bodyRules()?.jobSwaps || {}) };
+  RESOURCE_DISTRICT_ORDER.forEach((cat) => {
+    const option = districtState[cat].count > 0 ? secondaryOption(cat, districtState[cat].optionId) : null;
+    Object.entries(option?.jobSwaps || {}).forEach(([from, to]) => { if (!swaps[from]) swaps[from] = to; });
+  });
+  return swaps;
+}
+
+/** P10.8: per-job bonuses of strategic deposits and of specializations by job category (Betharian Processing), per staffed job. */
+function featureJobBonuses() {
+  const bonuses = []; // { jobs, resource, perJob, source }
+  activeStrategicDeposits().forEach(({ deposit }) => {
+    if (deposit.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[deposit.jobBonus.category], resource: deposit.jobBonus.resource, perJob: deposit.jobBonus.perJob, source: { kind: "feature", id: deposit.id } });
+  });
+  new Set(RESOURCE_DISTRICT_ORDER.map((cat) => (districtState[cat].count > 0 ? districtState[cat].optionId : null)).filter(Boolean)).forEach((optionId) => {
+    const cat = RESOURCE_DISTRICT_ORDER.find((entry) => districtState[entry].optionId === optionId);
+    const option = secondaryOption(cat, optionId);
+    Object.entries(option?.jobCategoryFlat || {}).forEach(([category, resources]) => Object.entries(resources).forEach(([resource, perJob]) => {
+      bonuses.push({ jobs: JOB_CATEGORIES[category], resource, perJob, source: { kind: "specialization", id: option.id } });
+    }));
+  });
+  return bonuses;
+}
+
 /**
  * Fewest deposit features covering the built resource districts (exact search over the remaining need per group;
  * ties: least spare capacity, then data order). Features with the same caps are interchangeable: the first one is
@@ -486,13 +540,18 @@ function requiredDepositFeatures() {
     memo.set(key, result);
     return result;
   };
-  const found = best(need);
+  // Strategic deposits of the chosen strategic specializations are on the planet: their caps count first.
+  const strategic = activeStrategicDeposits();
+  strategic.forEach(({ deposit }) => cats.forEach((cat, i) => { need[i] -= deposit.caps[cat] || 0; }));
+  const found = best(need.map((value) => Math.max(0, value)));
   const uncovered = cats.filter((cat, i) => need[i] > 0 && !groups.some((group) => group.caps[i] > 0));
+  // (need already includes the strategic caps)
   const picks = new Map();
   (found?.picks || []).forEach((index) => picks.set(index, (picks.get(index) || 0) + 1));
   return {
+    strategic,
     features: [...picks.entries()].sort((a, b) => a[0] - b[0]).map(([index, copies]) => ({ ...groups[index], copies })),
-    count: found ? found.count : null,
+    count: found ? found.count + strategic.length : null,
     uncovered,
     uncapped: RESOURCE_DISTRICT_ORDER.filter((cat) => districtUncapped(cat))
   };
@@ -548,6 +607,8 @@ function requirementContext() {
     celestialTypeId: state.celestialTypeId,
     speciesType: state.speciesType,
     capitalTierNumber: currentCapital().tier,
+    // P10.8: strategic specializations whose deposit can exist on this body.
+    depositSpecializations: [...new Set(STRATEGIC_DEPOSITS.filter((deposit) => depositFeaturesApply() && deposit.bodies.includes(state.celestialTypeId)).map((deposit) => deposit.unlocks))],
     // P10.4: manual caps of the habitat district groups (null = not set), for the "Can build ..." designation requirements.
     districtCaps: Object.fromEntries(RESOURCE_DISTRICT_ORDER.map((cat) => [cat, districtCap(cat)]))
   };
@@ -746,8 +807,9 @@ function computeTotals() {
     }
   };
 
-  // P10.6: job swaps of the body (Volcanic: every Miner job becomes a Thermoforger job).
-  const bodyJobSwaps = bodyRules()?.jobSwaps || {};
+  // P10.6: job swaps of the body (Volcanic: every Miner job becomes a Thermoforger job); P10.8: and of the chosen
+  // strategic specializations (Rare Crystal Extraction: every Miner job becomes a Crystal Miner job).
+  const bodyJobSwaps = planetJobSwaps();
   const addJobCapacity = (jobId, rawAmount) => {
     if (!rawAmount) return;
     const swapped = bodyJobSwaps[jobId] || jobId;
@@ -1059,6 +1121,7 @@ function computeTotals() {
     });
     return bonus;
   };
+  const featureBonuses = featureJobBonuses();
   Object.keys(jobCapacities).forEach((jobId) => {
     const unit = { ...(JOB_OUTPUTS[jobId] || {}) };
     // Conciencia gestalt: el mantenimiento en bienes de consumo se sustituye por el
@@ -1084,6 +1147,12 @@ function computeTotals() {
     Object.entries(workforceScalingBonus(jobId)).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
       pushModifier({ kind: "job", id: jobId }, "jobFlat", { job: jobId, resource: resourceId }, amount);
+    });
+    // P10.8: strategic deposits and Betharian Processing, per staffed job of their job category (same breakdown line).
+    featureBonuses.forEach((bonus) => {
+      if (!bonus.jobs.includes(jobId)) return;
+      unit[bonus.resource] = (unit[bonus.resource] || 0) + bonus.perJob;
+      pushModifier(bonus.source, "jobFlat", { job: jobId, resource: bonus.resource }, bonus.perJob);
     });
     const scaledUnit = { ...unit };
     Object.entries(edictJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
@@ -1491,6 +1560,7 @@ function describeUnmetRule(rule) {
     case "notCelestial": return t(currentLang, "requirementNotCelestial") + names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
     case "notSpecies": return t(currentLang, "requirementBiologicalSpecies");
     case "districtBuildable": return t(currentLang, "requirementDistrictBuildable") + districtDisplayName(rule.district);
+    case "deposit": return t(currentLang, "requirementDeposit");
     default: return "";
   }
 }
@@ -2995,6 +3065,7 @@ function modifierSourceName(source) {
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
   if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
+  if (source.kind === "feature") { const deposit = STRATEGIC_DEPOSITS.find((entry) => entry.id === source.id); return deposit ? t(currentLang, deposit.i18nKey) : source.id; }
   if (source.kind === "specialization") { const option = primaryOption(source.id); return option ? t(currentLang, option.i18nKey) : source.id; }
   if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
   if (source.kind === "job") return jobName(source.id);
@@ -3049,7 +3120,33 @@ function renderDepositFeatures() {
     }
     list.append(item);
   });
-  if (result.features.length) depositFeaturesEl.append(list);
+  result.strategic.forEach(({ specialization, deposit, candidates }) => {
+    const item = document.createElement("li");
+    item.className = "celestial-feature is-strategic";
+    item.dataset.feature = deposit.id;
+    const img = document.createElement("img");
+    img.src = `${IMAGE_BASE}${deposit.img}`;
+    img.alt = "";
+    img.loading = "lazy";
+    const label = document.createElement("span");
+    label.textContent = t(currentLang, "featuresStrategicFor")(t(currentLang, specialization.i18nKey));
+    const select = document.createElement("select");
+    select.className = "celestial-strategic-select";
+    select.dataset.specialization = specialization.id;
+    candidates.forEach((candidate) => {
+      const option = document.createElement("option");
+      option.value = candidate.id;
+      const caps = RESOURCE_DISTRICT_ORDER.filter((cat) => candidate.caps[cat]).map((cat) => `+${candidate.caps[cat]} ${districtDisplayName(cat)}`).join(", ");
+      const bonus = candidate.jobBonus ? `, +${candidate.jobBonus.perJob} ${t(currentLang, RESOURCES[candidate.jobBonus.resource].i18nKey)} / ${t(currentLang, "featuresPerJobCategory_" + candidate.jobBonus.category)}` : "";
+      option.textContent = `${t(currentLang, candidate.i18nKey)} (${caps}${bonus})`;
+      option.selected = candidate.id === deposit.id;
+      select.append(option);
+    });
+    select.addEventListener("change", () => { strategicDepositChoice[specialization.id] = select.value; refresh(); });
+    item.append(img, label, select);
+    list.prepend(item);
+  });
+  if (result.features.length || result.strategic.length) depositFeaturesEl.append(list);
   else addNote(t(currentLang, "featuresNoneNeeded"));
   result.uncapped.forEach((cat) => addNote(t(currentLang, "featuresUncapped")(districtDisplayName(cat))));
   result.uncovered.forEach((cat) => addNote(t(currentLang, "featuresUncovered")(districtDisplayName(cat)), "planet-district-note is-warning"));
@@ -3564,7 +3661,9 @@ export function capturePlanetConfig() {
     manualConditions: { ...manualConditions },
     civilians: civiliansRaw,
     // P10.5: optional field (Synaptic Lathe).
-    neuralChips: neuralChipsRaw
+    neuralChips: neuralChipsRaw,
+    // P10.8: optional field, strategic deposit chosen per strategic specialization (missing = the worst one).
+    strategicDeposits: { ...strategicDepositChoice }
   };
 }
 
@@ -3626,6 +3725,11 @@ export function applyPlanetConfig(config) {
   civiliansRaw = sanitizeCivilians(config.civilians);
   // P10.5: Neural Chips (optional field; older planets → 0).
   neuralChipsRaw = sanitizeCivilians(config.neuralChips);
+  // P10.8: strategic deposits (optional field; unknown ids are ignored, the worst deposit is used instead).
+  Object.keys(strategicDepositChoice).forEach((key) => { delete strategicDepositChoice[key]; });
+  Object.entries(config.strategicDeposits || {}).forEach(([specializationId, depositId]) => {
+    if (STRATEGIC_DEPOSITS.some((deposit) => deposit.id === depositId && deposit.unlocks === specializationId)) strategicDepositChoice[specializationId] = depositId;
+  });
 
   updatePlanetState({ designationId: selectedDesignationId || null });
   renderDesignationSelect();

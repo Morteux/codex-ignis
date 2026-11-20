@@ -6,7 +6,7 @@ Order is a proposal; **P14 is always last**. When a task is done, remove it from
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
 - [ ] P10.6 Wilderness-origin districts — **on hold, owner decides later** (not modelled for now, see GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
-- [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab) — decisions in GDD §4.2; part 1 (deposit features, limit, 4–15 warning) done. Pending: strategic deposits + their specializations (worst variant by default, user can change, saved), selectable useful blockers (saved), planet modifiers with direct effects (saved)
+- [ ] P10.8 Planetary features, blockers, deposits and planet modifiers (Cuerpo celeste tab) — decisions in GDD §4.2; parts 1–2 (deposit features, limit, 4–15 warning, strategic deposits and specializations) done. Pending: selectable useful blockers (saved), planet modifiers with direct effects (saved)
 - [ ] P10.10 Re-read every requirement column of the existing districts/specializations/buildings (the regenerated markdown keeps `![No](24px-No.png)` = "not"); e.g. Agricultural Focus is not available with Anglers on a wet-climate world (Aquaculture replaces it)
 
 ## P19 — Branch offices (Sucursales tab)

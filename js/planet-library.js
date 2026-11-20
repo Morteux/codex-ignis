@@ -153,6 +153,9 @@ export function sanitizePlanetData(raw) {
     civilians: Number.isFinite(Math.round(Number(raw.civilians))) && Math.round(Number(raw.civilians)) > 0 ? Math.round(Number(raw.civilians)) : 0,
     // P10.5: Neural Chips of a Synaptic Lathe (optional; same rule as the civilians).
     neuralChips: Number.isFinite(Math.round(Number(raw.neuralChips))) && Math.round(Number(raw.neuralChips)) > 0 ? Math.round(Number(raw.neuralChips)) : 0,
+    // P10.8: strategic deposit per strategic specialization (optional; text ids only, validated when applied).
+    strategicDeposits: Object.fromEntries(Object.entries(raw.strategicDeposits && typeof raw.strategicDeposits === "object" ? raw.strategicDeposits : {})
+      .filter(([key, value]) => typeof key === "string" && typeof value === "string").slice(0, 10)),
     empireId: textOrNull(raw.empireId),
     empireSnapshot
   };
