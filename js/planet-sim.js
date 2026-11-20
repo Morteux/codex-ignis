@@ -65,7 +65,7 @@ import {
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
-import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES } from "./planetary-features-data.js";
+import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES, BLOCKERS } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -453,6 +453,30 @@ function districtHasNoFeature(cat) {
   return depositFeaturesApply() && !districtUncapped(cat) && depositFeaturesFor(cat).length === 0;
 }
 
+/** P10.8: blockers placed by the user (saved with the planet); only the ones whose body and requirements fit have effects. */
+const selectedBlockers = new Set();
+
+function blockerFitsBody(blocker) {
+  return !blocker.bodies || blocker.bodies.includes(getPlanetState().celestialTypeId);
+}
+
+/** Reason a selected blocker has no effect (wrong body or unmet requirement), or null. */
+function blockerInactiveReason(blocker, ctx = requirementContext()) {
+  if (!blockerFitsBody(blocker)) return t(currentLang, "blockerWrongBody");
+  const unmet = unmetRequirements(blocker, ctx).map(describeUnmetRule).filter(Boolean);
+  return unmet.length ? unmet.join("; ") : null;
+}
+
+function activeBlockers() {
+  const ctx = requirementContext();
+  return BLOCKERS.filter((blocker) => selectedBlockers.has(blocker.id) && !blockerInactiveReason(blocker, ctx));
+}
+
+/** P10.8: the Collapsed Spire locks the first primary specialization slot while it is on the planet. */
+function firstSpecializationLocked() {
+  return activeBlockers().some((blocker) => blocker.locksFirstSpecialization);
+}
+
 /** P10.8: user's choice of strategic deposit per strategic specialization (saved with the planet); missing = the worst one. */
 const strategicDepositChoice = {};
 
@@ -496,6 +520,9 @@ function featureJobBonuses() {
   const bonuses = []; // { jobs, resource, perJob, source }
   activeStrategicDeposits().forEach(({ deposit }) => {
     if (deposit.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[deposit.jobBonus.category], resource: deposit.jobBonus.resource, perJob: deposit.jobBonus.perJob, source: { kind: "feature", id: deposit.id } });
+  });
+  activeBlockers().forEach((blocker) => {
+    if (blocker.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[blocker.jobBonus.category], resource: blocker.jobBonus.resource, perJob: blocker.jobBonus.perJob, source: { kind: "blocker", id: blocker.id } });
   });
   new Set(RESOURCE_DISTRICT_ORDER.map((cat) => (districtState[cat].count > 0 ? districtState[cat].optionId : null)).filter(Boolean)).forEach((optionId) => {
     const cat = RESOURCE_DISTRICT_ORDER.find((entry) => districtState[entry].optionId === optionId);
@@ -608,6 +635,7 @@ function requirementContext() {
     speciesType: state.speciesType,
     capitalTierNumber: currentCapital().tier,
     // P10.8: strategic specializations whose deposit can exist on this body.
+    blockerIds: [...selectedBlockers].filter((id) => { const blocker = BLOCKERS.find((entry) => entry.id === id); return blocker && blockerFitsBody(blocker); }),
     depositSpecializations: [...new Set(STRATEGIC_DEPOSITS.filter((deposit) => depositFeaturesApply() && deposit.bodies.includes(state.celestialTypeId)).map((deposit) => deposit.unlocks))],
     // P10.4: manual caps of the habitat district groups (null = not set), for the "Can build ..." designation requirements.
     districtCaps: Object.fromEntries(RESOURCE_DISTRICT_ORDER.map((cat) => [cat, districtCap(cat)]))
@@ -1422,6 +1450,19 @@ function computeTotals() {
     tradeConversion = { optionId: tradePolicy.optionId, rates: tradePolicy.rates, amount: tradeFromJobs };
   }
 
+  // P10.8: flat output and amenities of the active blockers (Blazing Scourge, Nanite Harvest Basin...).
+  activeBlockers().forEach((blocker) => {
+    Object.entries(blocker.flat || {}).forEach(([resourceId, amount]) => {
+      addSignedResource(resourceId, amount, "blockers");
+      pushModifier({ kind: "blocker", id: blocker.id }, "flat", { resource: resourceId }, amount);
+    });
+    if (blocker.amenities) {
+      const amount = divideEffect(blocker.amenities);
+      addSignedResource("amenities", amount, "blockers");
+      amenitySources.push({ kind: "blocker", id: blocker.id, amount });
+    }
+  });
+
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
   if (designation) {
     Object.entries(designation.flat).forEach(([key, amount]) => {
@@ -1561,6 +1602,7 @@ function describeUnmetRule(rule) {
     case "notSpecies": return t(currentLang, "requirementBiologicalSpecies");
     case "districtBuildable": return t(currentLang, "requirementDistrictBuildable") + districtDisplayName(rule.district);
     case "deposit": return t(currentLang, "requirementDeposit");
+    case "notBlocker": return t(currentLang, "requirementNotBlocker") + rule.ids.map((id) => t(currentLang, BLOCKERS.find((blocker) => blocker.id === id).i18nKey)).join(", ");
     default: return "";
   }
 }
@@ -2450,6 +2492,14 @@ function renderUrbanSpecializationPicker(slotIndex) {
     refresh();
   });
   info.append(select);
+  // P10.8: the Collapsed Spire blocker locks the first slot.
+  if (slotIndex === 0 && firstSpecializationLocked()) {
+    select.disabled = true;
+    const note = document.createElement("p");
+    note.className = "planet-district-note";
+    note.textContent = t(currentLang, "blockerSlotLocked");
+    info.append(note);
+  }
 
   if (currentOption) {
     info.append(renderJobsMini(scaleJobs(specializationJobs(currentOption), specializationJobMultiplier())));
@@ -2833,6 +2883,7 @@ const BREAKDOWN_SOURCES = [
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
   { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
+  { id: "blockers", pos: "breakdownBlockers", neg: "breakdownBlockers" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
   { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
   { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
@@ -3065,6 +3116,7 @@ function modifierSourceName(source) {
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
   if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
+  if (source.kind === "blocker") { const blocker = BLOCKERS.find((entry) => entry.id === source.id); return blocker ? t(currentLang, blocker.i18nKey) : source.id; }
   if (source.kind === "feature") { const deposit = STRATEGIC_DEPOSITS.find((entry) => entry.id === source.id); return deposit ? t(currentLang, deposit.i18nKey) : source.id; }
   if (source.kind === "specialization") { const option = primaryOption(source.id); return option ? t(currentLang, option.i18nKey) : source.id; }
   if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
@@ -3157,6 +3209,66 @@ function renderDepositFeatures() {
     const warning = addNote(t(currentLang, count < DEPOSIT_FEATURE_COUNT.min ? "featuresTooFew" : "featuresTooMany")(count, DEPOSIT_FEATURE_COUNT.min, DEPOSIT_FEATURE_COUNT.max), "planet-district-note is-warning");
     warning.id = "celestial-feature-warning";
   }
+}
+
+/** P10.8: selectable blockers of the Cuerpo celeste tab (only the useful ones, GDD §4.2). */
+const blockersEl = document.querySelector("#celestial-blockers");
+function renderBlockers() {
+  if (!blockersEl) return;
+  blockersEl.replaceChildren();
+  const ctx = requirementContext();
+  const fitting = BLOCKERS.filter((blocker) => blockerFitsBody(blocker) || selectedBlockers.has(blocker.id));
+  if (!fitting.length) {
+    const p = document.createElement("p");
+    p.className = "planet-district-note";
+    p.textContent = t(currentLang, "blockersNone");
+    blockersEl.append(p);
+    return;
+  }
+  const list = document.createElement("ul");
+  list.className = "celestial-feature-list";
+  fitting.forEach((blocker) => {
+    const item = document.createElement("li");
+    item.className = "celestial-feature celestial-blocker";
+    item.dataset.blocker = blocker.id;
+    const label = document.createElement("label");
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = selectedBlockers.has(blocker.id);
+    box.addEventListener("change", () => {
+      if (box.checked) selectedBlockers.add(blocker.id); else selectedBlockers.delete(blocker.id);
+      refresh();
+    });
+    const img = document.createElement("img");
+    img.src = `${IMAGE_BASE}${blocker.img}`;
+    img.alt = "";
+    img.loading = "lazy";
+    const name = document.createElement("span");
+    const effects = [
+      ...Object.entries(blocker.flat || {}).map(([resourceId, amount]) => `+${amount} ${t(currentLang, RESOURCES[resourceId].i18nKey)}`),
+      ...(blocker.jobBonus ? [`+${blocker.jobBonus.perJob} ${t(currentLang, RESOURCES[blocker.jobBonus.resource].i18nKey)} / ${t(currentLang, "featuresPerJobCategory_" + blocker.jobBonus.category)}`] : []),
+      ...(blocker.amenities ? [`+${blocker.amenities} ${t(currentLang, "resourceAmenities")}`] : []),
+      ...(blocker.locksFirstSpecialization ? [t(currentLang, "blockerLocksFirstSlot")] : [])
+    ];
+    name.textContent = `${t(currentLang, blocker.i18nKey)} (${effects.join(", ")})`;
+    label.append(box, img, name);
+    item.append(label);
+    const notes = [];
+    const unmodelled = unmodelledRequirements(blocker).map((rule) => t(currentLang, rule.i18nKey));
+    if (unmodelled.length) notes.push(t(currentLang, "requirementUnmodelled") + unmodelled.join("; "));
+    const reason = selectedBlockers.has(blocker.id) ? blockerInactiveReason(blocker, ctx) : (unmetRequirements(blocker, ctx).map(describeUnmetRule).filter(Boolean).join("; ") || null);
+    if (reason) {
+      notes.push(selectedBlockers.has(blocker.id) ? t(currentLang, "blockerInactive")(reason) : reason);
+      item.classList.toggle("is-inactive", selectedBlockers.has(blocker.id));
+    }
+    if (notes.length) {
+      const small = document.createElement("small");
+      small.textContent = notes.join(" · ");
+      item.append(small);
+    }
+    list.append(item);
+  });
+  blockersEl.append(list);
 }
 
 // P17.1: botones "i" y paneles de explicación (js/info-panels.js).
@@ -3521,6 +3633,7 @@ function renderStats(totals) {
       else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
       else if (source.kind === "job") label = `${formatAmount(source.assignedRaw)} ${jobName(source.jobId)}`;
       else if (source.kind === "civilians") label = `${formatAmount(source.assignedRaw)} ${t(currentLang, source.i18nKey)}`;
+      else if (source.kind === "blocker") label = t(currentLang, BLOCKERS.find((blocker) => blocker.id === source.id).i18nKey);
       else label = t(currentLang, "planetSimDesignationHeading");
       return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
     });
@@ -3545,7 +3658,7 @@ function pruneInvalidSpecializations() {
   districtState.urban.slots.forEach((optionId, slotIndex) => {
     if (!optionId) return;
     const option = primaryOption(optionId);
-    if (!option || !buildingRequirementsMet(option, ctx) || (option.firstSlotOnly && slotIndex > 0)) {
+    if (!option || !buildingRequirementsMet(option, ctx) || (option.firstSlotOnly && slotIndex > 0) || (slotIndex === 0 && firstSpecializationLocked())) {
       districtState.urban.slots[slotIndex] = null;
       reset.push(optionName(optionId));
     }
@@ -3596,6 +3709,7 @@ function refresh() {
   renderConditions(totals);
   renderModifiers(totals);
   renderDepositFeatures();
+  renderBlockers();
   updatePlanetState({ planetSize });
 }
 
@@ -3663,7 +3777,9 @@ export function capturePlanetConfig() {
     // P10.5: optional field (Synaptic Lathe).
     neuralChips: neuralChipsRaw,
     // P10.8: optional field, strategic deposit chosen per strategic specialization (missing = the worst one).
-    strategicDeposits: { ...strategicDepositChoice }
+    strategicDeposits: { ...strategicDepositChoice },
+    // P10.8: optional field, blockers placed on the planet.
+    blockerIds: [...selectedBlockers]
   };
 }
 
@@ -3727,6 +3843,8 @@ export function applyPlanetConfig(config) {
   neuralChipsRaw = sanitizeCivilians(config.neuralChips);
   // P10.8: strategic deposits (optional field; unknown ids are ignored, the worst deposit is used instead).
   Object.keys(strategicDepositChoice).forEach((key) => { delete strategicDepositChoice[key]; });
+  selectedBlockers.clear();
+  (Array.isArray(config.blockerIds) ? config.blockerIds : []).forEach((id) => { if (BLOCKERS.some((blocker) => blocker.id === id)) selectedBlockers.add(id); });
   Object.entries(config.strategicDeposits || {}).forEach(([specializationId, depositId]) => {
     if (STRATEGIC_DEPOSITS.some((deposit) => deposit.id === depositId && deposit.unlocks === specializationId)) strategicDepositChoice[specializationId] = depositId;
   });

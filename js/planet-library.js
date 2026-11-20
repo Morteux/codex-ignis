@@ -8,7 +8,7 @@
  *
  * Formato de cada planeta (ver PLANET_SIM_GDD.md §8): { schemaVersion, rulesetId,
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
- * built, staffingOverrides, manualConditions, civilians, neuralChips, empireId, empireSnapshot, noEmpire }.
+ * built, staffingOverrides, manualConditions, civilians, neuralChips, strategicDeposits, blockerIds, empireId, empireSnapshot, noEmpire }.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|
  *    agriculture: { count, optionId, cap? } } (mismo formato que districtState; cap: límite
  *    manual de los distritos de recursos de un hábitat, P10.4, opcional).
@@ -156,6 +156,8 @@ export function sanitizePlanetData(raw) {
     // P10.8: strategic deposit per strategic specialization (optional; text ids only, validated when applied).
     strategicDeposits: Object.fromEntries(Object.entries(raw.strategicDeposits && typeof raw.strategicDeposits === "object" ? raw.strategicDeposits : {})
       .filter(([key, value]) => typeof key === "string" && typeof value === "string").slice(0, 10)),
+    // P10.8: blockers placed on the planet (optional; text ids only, validated when applied).
+    blockerIds: Array.isArray(raw.blockerIds) ? [...new Set(raw.blockerIds.filter((id) => typeof id === "string"))].slice(0, 20) : [],
     empireId: textOrNull(raw.empireId),
     empireSnapshot
   };

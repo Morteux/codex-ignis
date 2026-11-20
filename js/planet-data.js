@@ -297,7 +297,7 @@ export const DISTRICTS = {
         housing: -200,
         firstSlotOnly: true,
         primaryOnly: true,
-        requires: [{ type: "celestial", ids: ["relic"] }, { type: "unmodelled", i18nKey: "reqCollapsedSpireCleared" }],
+        requires: [{ type: "celestial", ids: ["relic"] }, { type: "notBlocker", ids: ["collapsedSpire"] }, { type: "unmodelled", i18nKey: "reqCollapsedSpireCleared" }],
         jobs: { physicist: 60, biologist: 60, engineer: 60 },
         jobResourcePct: { physics: 15, society: 15, engineering: 15 },
         permittedSets: ["urban", "research", "origin"]
@@ -511,7 +511,10 @@ export const RESOURCES = {
   minor_artifacts: { i18nKey: "resourceMinorArtifacts", img: "resources/Minor_artifacts.png" },
   astral_threads: { i18nKey: "resourceAstralThreads", img: "resources/Astral_threads.png" },
   // P10.5: Neural Chips and Synaptic Lathe districts (no resource icon in the assets repository: modifier icon).
-  advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "modifiers/mod_advanced_logic_produces_add.png" }
+  advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "modifiers/mod_advanced_logic_produces_add.png" },
+  // P10.8: produced by selectable blockers (Nanite Harvest Basin, Shroudstone, Ruined Sanctum of the Dreamer).
+  nanites: { i18nKey: "resourceNanites", img: "resources/Nanites.png" },
+  zro: { i18nKey: "resourceZro", img: "resources/Zro.png" }
 };
 
 /**

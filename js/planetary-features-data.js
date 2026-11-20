@@ -112,3 +112,34 @@ export const JOB_CATEGORIES = {
   miners: ["miner", "crystal_miner", "thermoforger"],
   farmers: ["farmer", "gas_extractor"]
 };
+
+const BLAZING_SCOURGE_BODIES = ["continental", "ocean", "tropical", "savannah", "arid", "desert", "tundra", "arctic", "alpine", "volcanic", "tomb", "relic"];
+const blazingScourge = (id, i18nKey, img, effect) => ({
+  id, i18nKey, img: `planetary_features/${img}`, group: "blazingScourge", bodies: BLAZING_SCOURGE_BODIES,
+  requires: [{ type: "civic", keys: ["civicPyrolatry"] }], amenities: 500, ...effect
+});
+
+/**
+ * P10.8 (part 3): blockers the user can place on the planet (owner decision 2026-11-20: only the useful ones; blockers
+ * that only remove districts are covered by the manual size). Saved with the planet (optional field `blockerIds`).
+ * - Collapsed Spire (Relic World): while present, the first primary specialization slot is locked and the Central
+ *   Spire is not available (it is set when the blocker is cleared).
+ * - Blazing Scourge (Blazing Scourge decision: Fire Cult civic, not Gaia, artificial or converted worlds): their
+ *   resources ("+5 Energy" flat for the planet; "+0.25 per 100 Miners / Technicians" per staffed job of the category)
+ *   and +500 amenities each with Fire Cult. The −20 % habitability is not modelled.
+ * - Nanite Harvest Basin, Shroudstone, Ruined Sanctum of the Dreamer: their flat output; their origin (situation,
+ *   psionic aura, conquest) is an unmodelled requirement. Shroudstone's Covenant bonus (+0.05 Zro per 100 Miners, +1
+ *   max mining district) is not modelled.
+ * flat: planet output per month (step 5, own breakdown line); jobBonus: as STRATEGIC_DEPOSITS.
+ */
+export const BLOCKERS = [
+  { id: "collapsedSpire", i18nKey: "blockerCollapsedSpire", img: "planetary_features/D_broken_spire.png", bodies: ["relic"], locksFirstSpecialization: true },
+  blazingScourge("chargedAtmosphere", "blockerChargedAtmosphere", "D_tempestous_mountain.png", { flat: { energy: 5 } }),
+  blazingScourge("largeVolcano", "blockerLargeVolcano", "D_active_volcano.png", { flat: { unity: 5 } }),
+  blazingScourge("seasonalLavaFlooding", "blockerSeasonalLavaFlooding", "D_lava_flooding.png", { flat: { minerals: 5 } }),
+  blazingScourge("toxicAtmosphere", "blockerToxicAtmosphere", "D_lava_flooding.png", { jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.25 } }),
+  blazingScourge("ashStorms", "blockerAshStorms", "D_ash_storms.png", { jobBonus: { category: "technicians", resource: "volatile_motes", perJob: 0.25 } }),
+  { id: "naniteHarvestBasin", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerNaniteHarvestBasin", img: "planetary_features/D_buried_lithoids.png", requires: [{ type: "unmodelled", i18nKey: "reqExtractNanitesSituation" }], flat: { nanites: 0.5 } },
+  { id: "shroudstone", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerShroudstone", img: "planetary_features/D_shroudstone.png", requires: [{ type: "unmodelled", i18nKey: "reqAuraOfStrands" }], flat: { zro: 1 } },
+  { id: "ruinedSanctumOfTheDreamer", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerRuinedSanctumOfTheDreamer", img: "planetary_features/D_ruined_sanctum_of_the_lost.png", requires: [{ type: "unmodelled", i18nKey: "reqConquerMindwardens" }], flat: { zro: 1 } }
+];

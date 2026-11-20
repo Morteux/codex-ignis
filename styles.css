@@ -2110,6 +2110,17 @@ h1 {
     font-size: .75rem;
 }
 
+.celestial-blocker label {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    cursor: pointer;
+}
+
+.celestial-blocker.is-inactive {
+    border-color: #f5b942;
+}
+
 .planet-district-note.is-warning {
     color: #f5b942;
 }

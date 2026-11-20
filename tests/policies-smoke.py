@@ -588,6 +588,32 @@ async def main():
         await body("Ecumenopolis")
         await body("Continental")
 
+        # 20. P10.8: selectable blockers (Collapsed Spire locks the first slot, Blazing Scourge needs Fire Cult, Nanite Harvest Basin output)
+        async def blocker(bid):
+            await pg.evaluate("(b)=>document.querySelector(`#celestial-blockers [data-blocker=${b}] input`).click()", bid)
+        await body("Relic World")
+        await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[0].querySelector('select');s.value='centralSpire';s.dispatchEvent(new Event('change'))}""")
+        await blocker("collapsedSpire")
+        slot = await pg.evaluate("()=>{const s=document.querySelectorAll('.planet-district-card')[0].querySelector('select');return [s.value,s.disabled]}")
+        check("Collapsed Spire: first slot locked, Central Spire removed", slot == ["", True], slot)
+        await blocker("collapsedSpire")
+        await blocker("naniteHarvestBasin")
+        n = await net()
+        check("Nanite Harvest Basin: +0.5 nanites", approx(n.get("Nanites"), 0.5), n)
+        await blocker("chargedAtmosphere")
+        txt = await pg.evaluate("()=>document.querySelector('#celestial-blockers [data-blocker=chargedAtmosphere]').innerText")
+        check("Charged Atmosphere without Fire Cult: no effect, reason shown", "No effect" in txt and "Fire Cult" in txt, txt)
+        await pg.fill("#planet-summary-name", "Blocker planet")
+        await pg.evaluate("()=>document.querySelector('#planet-summary-save').click()")
+        await pg.wait_for_timeout(300)
+        await pg.evaluate("()=>[...document.querySelectorAll('.confirm-btn')].find(b=>/don't save/i.test(b.innerText))?.click()")
+        await pg.wait_for_timeout(300)
+        planets = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-planets')||'[]')")
+        saved_b = [p.get("blockerIds") for p in planets if p.get("name") == "Blocker planet"]
+        check("blockers saved with the planet", bool(saved_b) and saved_b[0] is not None and sorted(saved_b[0]) == ["chargedAtmosphere", "naniteHarvestBasin"], saved_b)
+        await blocker("naniteHarvestBasin"); await blocker("chargedAtmosphere")
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
