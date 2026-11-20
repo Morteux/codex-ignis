@@ -2792,6 +2792,60 @@ h1 {
     margin-top: .6rem;
 }
 
+/* ── Sucursales (P19.2) ─────────────────────────────────────────────── */
+
+.branch-present,
+.branch-legality {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: .6rem 0;
+}
+
+.branch-civic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: .3rem .8rem;
+    margin-top: .5rem;
+    font-size: .72rem;
+}
+
+.branch-civic {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+.branch-civic.is-selected span {
+    color: var(--accent, inherit);
+}
+
+.branch-slot-select {
+    width: 100%;
+    margin-top: .4rem;
+}
+
+.branch-building-title {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-top: .5rem;
+}
+
+.branch-building-title img {
+    width: 40px;
+    height: 40px;
+}
+
+.branch-slot.is-locked,
+.branch-slot.is-inactive {
+    opacity: .7;
+}
+
+.branch-slot.is-inactive {
+    outline: 2px solid #c9a227;
+}
+
 .empire-policy-card .empire-authority-header {
     flex-wrap: wrap;
 }

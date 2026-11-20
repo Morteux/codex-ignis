@@ -34,7 +34,9 @@
  *  - colony: other colony effects { tradeFromJobsPct, workerOutputPct,
  *    happinessPct, amenitiesPer100: { jobs, amount } } and `info` (i18n keys of
  *    effects shown but not computed: ethics attraction, army experience, aura...).
- *  - owner: corporate-empire effects, never applied to this planet (shown only):
+ *  - owner: corporate-empire effects, never applied to this planet (shown only;
+ *    resource ids of planet-data.js RESOURCES plus "research" (untyped) and
+ *    "navalCapacity"):
  *    perBranchValue { resource: amount } per 100 branch office value,
  *    capitalTraders: civics giving +200 Traders on the owner's capital, info.
  *  - upkeep / cost: as on the wiki (cost.alt = Nomadic alternative resource).
@@ -52,6 +54,8 @@
  *    (same exception as edicts); origins, cybernetic/synthetic corporate
  *    authorities, Imperial Charter and pop counts are `unmodelled` (shown).
  */
+
+import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
 
 const civic = (...keys) => ({ type: "civic", keys, scope: "owner" });
 const notCivic = (...keys) => ({ type: "notCivic", keys, scope: "owner" });
@@ -103,19 +107,19 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobTrade: [trade(["soldier"], 0.1, 0.1, ["civicPrivateMilitaryCompanies", "civicCrusaderSpiritCorporate", "civicCorporateHiredGuns", "civicCorporateFlightSchools"])],
     colony: { info: ["branchInfoArmyExperience"] },
     owner: { perBranchValue: { navalCapacity: 5 }, [CAPITAL_TRADERS]: ["civicPrivateMilitaryCompanies", "civicCrusaderSpiritCorporate", "civicCorporateHiredGuns", "civicCorporateFlightSchools"] },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatileMotes", 50), requires: [] },
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatile_motes", 50), requires: [] },
   { id: "privateMilitaryIndustries", i18nKey: "branchPrivateMilitaryIndustries", img: "buildings/building_private_shipyards.png", kind: "corporate",
     illegal: { id: "wreckingYards", i18nKey: "branchWreckingYards", img: "buildings/building_wrecking_yards.png" },
     jobs: { metallurgist: 200 },
     jobTrade: [trade(["metallurgist"], 0.1, 0.1, ["civicNavalContractors", "civicCorporateCatalyticProcessing"])],
     owner: { perBranchValue: { alloys: 3 }, [CAPITAL_TRADERS]: ["civicNavalContractors", "civicCorporateCatalyticProcessing"] },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatileMotes", 50), requires: [] },
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatile_motes", 50), requires: [] },
   { id: "privateResearchEnterprises", i18nKey: "branchPrivateResearchEnterprises", img: "buildings/building_private_research_initiative.png", kind: "corporate",
     illegal: { id: "illicitResearchLabs", i18nKey: "branchIllicitResearchLabs", img: "buildings/building_illicit_research_labs.png" },
     jobs: { physicist: 60, biologist: 60, engineer: 60 },
     jobTrade: [trade(["physicist", "biologist", "engineer"], 0.1, 0.1, ["civicCorporateAstrometeorology", "civicCorporateCrowdsourcing", "civicCorporateDarkConsortium"])],
     owner: { perBranchValue: { research: 5 }, [CAPITAL_TRADERS]: ["civicCorporateAstrometeorology", "civicCorporateCrowdsourcing", "civicCorporateDarkConsortium"] },
-    upkeep: { energy: 3 }, cost: cost(480, 25, 800, "exoticGases", 80), requires: [] },
+    upkeep: { energy: 3 }, cost: cost(480, 25, 800, "exotic_gases", 80), requires: [] },
   { id: "privateSecurityCompany", i18nKey: "branchPrivateSecurityCompany", img: "buildings/holding_overlord_garrison.png", kind: "corporate",
     illegal: "same",
     jobs: { enforcer: 200 },
@@ -129,20 +133,20 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobs: { bureaucrat: 200 },
     jobTrade: [trade(["bureaucrat"], 0.1, 0.1, ["civicCorporateAscensionists", "civicPublicRelationsSpecialists", "civicCorporateGalacticCurators"])],
     owner: { perBranchValue: { unity: 6 }, [CAPITAL_TRADERS]: ["civicCorporateAscensionists", "civicPublicRelationsSpecialists", "civicCorporateGalacticCurators"] },
-    upkeep: { energy: 3 }, cost: cost(480, 25, 800, "rareCrystals", 80), requires: [] },
+    upkeep: { energy: 3 }, cost: cost(480, 25, 800, "rare_crystals", 80), requires: [] },
   { id: "virtualEntertainmentStudios", i18nKey: "branchVirtualEntertainmentStudios", img: "buildings/building_virtual_entertainment_studios.png", kind: "corporate",
     illegal: { id: "concealedDrugLabs", i18nKey: "branchConcealedDrugLabs", img: "buildings/building_underground_chemists.png" },
     jobs: { artisan: 200 },
     jobTrade: [trade(["artisan"], 0.1, 0.1, ["civicMediaConglomerate", "civicCorporateCrafters", "civicCorporateTankbound"])],
-    owner: { perBranchValue: { consumerGoods: 6 }, [CAPITAL_TRADERS]: ["civicMediaConglomerate", "civicCorporateCrafters", "civicCorporateTankbound"] },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatileMotes", 50), requires: [] },
+    owner: { perBranchValue: { consumer_goods: 6 }, [CAPITAL_TRADERS]: ["civicMediaConglomerate", "civicCorporateCrafters", "civicCorporateTankbound"] },
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatile_motes", 50), requires: [] },
   { id: "fastFoodChain", i18nKey: "branchFastFoodChain", img: "buildings/building_food_conglomerate.png", kind: "corporate",
     illegal: { id: "bioReprocessingPlants", i18nKey: "branchBioReprocessingPlants", img: "buildings/building_bio_reprocessing_facilities.png" },
     jobs: { farmer: 200 },
     // Trawling Operations and Maritime Robotics share the corporate anglers icon (one key).
     jobTrade: [trade(["farmer"], 0.1, 0.1, ["civicPermanentEmployment", "civicCorporateAnglers", "civicCorporateBeastmasters", "civicCorporateDeepSleep"])],
     owner: { perBranchValue: { food: 10 }, [CAPITAL_TRADERS]: ["civicPermanentEmployment", "civicCorporateAnglers", "civicCorporateBeastmasters", "civicCorporateDeepSleep"] },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatileMotes", 50),
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatile_motes", 50),
     // wiki note: does not prohibit Nanite Worlds (likely a bug) — Nanite Worlds have no branch offices anyway
     requires: [notCelestial("relic", "hive", "machine")] },
   { id: "privateMiningConsortium", i18nKey: "branchPrivateMiningConsortium", img: "buildings/building_private_mining_consortium.png", kind: "corporate",
@@ -150,7 +154,7 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobs: { miner: 200 },
     jobTrade: [trade(["miner"], 0.1, 0.1, ["civicPrivateProspectors", "civicPrivatizedExploration"])],
     owner: { perBranchValue: { minerals: 10 }, [CAPITAL_TRADERS]: ["civicPrivateProspectors", "civicPrivatizedExploration"] },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatileMotes", 50),
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "volatile_motes", 50),
     // Artificial worlds (Ring World, Shattered Ring World, Habitat, Arkship — arkships not modelled), Ecumenopolis, Hive World, Machine World
     requires: [notCelestial("ringworld", "shatteredRingworld", "habitat", "city", "hive", "machine")] },
   { id: "amusementMegaplex", i18nKey: "branchAmusementMegaplex", img: "buildings/building_amusement_megaplex.png", kind: "corporate",
@@ -173,15 +177,15 @@ export const BRANCH_OFFICE_BUILDINGS = [
     illegal: null,
     jobs: { artisan: 100, metallurgist: 100 },
     jobTrade: [trade(["metallurgist", "artisan"], 0.1, 0.1, ["civicCorporateScavengers", "civicCorporateRelentlessIndustrialists"])],
-    owner: { perBranchValue: { alloys: 1, consumerGoods: 1 }, [CAPITAL_TRADERS]: ["civicCorporateScavengers", "civicCorporateRelentlessIndustrialists"] },
-    upkeep: { energy: 2 }, cost: cost(360, 25, 800, "volatileMotes", 80),
+    owner: { perBranchValue: { alloys: 1, consumer_goods: 1 }, [CAPITAL_TRADERS]: ["civicCorporateScavengers", "civicCorporateRelentlessIndustrialists"] },
+    upkeep: { energy: 2 }, cost: cost(360, 25, 800, "volatile_motes", 80),
     requires: [notCivic("civicCriminalHeritage")] },
   { id: "executiveRetreat", i18nKey: "branchExecutiveRetreat", img: "buildings/building_executive_retreat.png", kind: "corporate",
     illegal: null,
     jobs: { entertainer: 200 },
     jobTrade: [trade(["entertainer"], 0.2, 0.2, ["civicRuthlessCompetition", "civicCorporateTaskDelegation", "civicCorporatePlanetscapers", "civicCorporateEntropyDrinkers"])],
     owner: { [CAPITAL_TRADERS]: ["civicRuthlessCompetition", "civicCorporateTaskDelegation", "civicCorporatePlanetscapers", "civicCorporateEntropyDrinkers"], info: ["branchInfoEmpireAmenities"] },
-    upkeep: { energy: 5, exoticGases: 1 }, cost: { ...cost(600, 25, 1000, "alloys", 100), exoticGases: 50 },
+    upkeep: { energy: 5, exotic_gases: 1 }, cost: { ...cost(600, 25, 1000, "alloys", 100), exotic_gases: 50 },
     // Executive Leisure Program technology (researched)
     requires: [hostUnmodelled("branchReqPops2500")] },
   { id: "xenoOutreachAgency", i18nKey: "branchXenoOutreachAgency", img: "buildings/building_xeno_tourism_agency.png", kind: "corporate",
@@ -189,7 +193,7 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobs: { entertainer: 100 },
     jobTrade: [trade(["entertainer"], 0.1, 0.1, ["civicCorporateDeathCult", "civicCorporateDimensionalWorship", "civicCorporateGuidedSapience"])],
     owner: { [CAPITAL_TRADERS]: ["civicCorporateDeathCult", "civicCorporateDimensionalWorship", "civicCorporateGuidedSapience"], info: ["branchInfoResettlementChance"] },
-    upkeep: { energy: 5, rareCrystals: 1 }, cost: { ...cost(600, 25, 1000, "alloys", 100), rareCrystals: 50 },
+    upkeep: { energy: 5, rare_crystals: 1 }, cost: { ...cost(600, 25, 1000, "alloys", 100), rare_crystals: 50 },
     // Xeno Outreach Agencies technology (researched)
     requires: [hostUnmodelled("branchReqPops2500")] },
   { id: "knightlyFairGrounds", i18nKey: "branchKnightlyFairGrounds", img: "buildings/building_order_holding.png", kind: "corporate",
@@ -205,13 +209,13 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobs: { prosperity_preacher: 200 },
     colony: { info: ["branchInfoSpiritualistAttraction"] },
     owner: { perBranchValue: { unity: 6 } },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "rareCrystals", 50),
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "rare_crystals", 50),
     requires: [civic("civicGospelOfTheMasses"), branch("legal")] },
   { id: "subversiveShrine", i18nKey: "branchSubversiveShrine", img: "buildings/building_subversive_shrine.png", kind: "civic",
     jobs: { prosperity_preacher: 200 },
     colony: { info: ["branchInfoSpiritualistAttraction"] },
     owner: { perBranchValue: { unity: 6 } },
-    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "rareCrystals", 50),
+    upkeep: { energy: 2 }, cost: cost(360, 10, 500, "rare_crystals", 50),
     requires: [civic("civicGospelOfTheMasses"), branch("illegal")] },
   { id: "corporateClinic", i18nKey: "branchCorporateClinic", img: "buildings/building_corporate_clinic.png", kind: "civic",
     jobs: { medical_worker: 200 },
@@ -219,24 +223,24 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobTrade: [{ jobs: ["medical_worker"], amount: 2, perCivic: 1, civics: ["civicPrivateHealthcareCorporate", "civicCorporateToxicBaths"], allCivics: true }],
     colony: { amenitiesPer100: { jobs: ["medical_worker"], amount: 100 } },
     owner: { perBranchValue: { energy: 8, unity: 2 }, [CAPITAL_TRADERS]: ["civicPrivateHealthcareCorporate", "civicCorporateToxicBaths"] },
-    upkeep: { consumerGoods: 1 }, cost: cost(480, 25, 800, "rareCrystals", 80),
+    upkeep: { consumer_goods: 1 }, cost: cost(480, 25, 800, "rare_crystals", 80),
     requires: [civic("civicPrivateHealthcareCorporate", "civicCorporateToxicBaths")] },
   { id: "offworldImplantHub", i18nKey: "branchOffworldImplantHub", img: "buildings/building_corporate_augmentation_bazaars.png", kind: "civic",
     jobs: { augmentor: 200 },
     jobTrade: [trade(["augmentor"], 1, 0, [])],
     colony: { tradeFromJobsPct: 10 },
     owner: { perBranchValue: { engineering: 10 } },
-    upkeep: { energy: 5 }, cost: cost(480, 25, 600, "rareCrystals", 60),
+    upkeep: { energy: 5 }, cost: cost(480, 25, 600, "rare_crystals", 60),
     requires: [civic("civicCorporateAugmentationBazaars")] },
   { id: "experimentationOffices", i18nKey: "branchExperimentationOffices", img: "buildings/building_carceral_test_facility.png", kind: "civic",
     jobs: { enforcer: 100, orderly: 50 },
     owner: { perBranchValue: { research: 1 } },
-    upkeep: { energy: 3 }, cost: cost(480, null, 800, "exoticGases", 80),
+    upkeep: { energy: 3 }, cost: cost(480, null, 800, "exotic_gases", 80),
     requires: [civic("civicCorporateTwistedExperimenters")] },
   { id: "livingMetalEnhancementClinic", i18nKey: "branchLivingMetalEnhancementClinic", img: "buildings/building_living_metal_clinic.png", kind: "civic",
     jobs: {},
     colony: { workerOutputPct: 5 },
-    owner: { perBranchValue: { exoticGases: 1.5 } },
+    owner: { perBranchValue: { exotic_gases: 1.5 } },
     upkeep: { energy: 3 }, cost: cost(360, 20, 500, "alloys", 50),
     requires: [civic("civicCorporateGalvanicSymbiosis"), branch("legal")] },
   { id: "imperialConcessionPort", i18nKey: "branchImperialConcessionPort", img: "buildings/building_imperial_concession_port.png", kind: "civic",
@@ -263,9 +267,74 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobTrade: [trade(["trader"], 0, 0.05, ["civicCorporateChosen"])],
     colony: { info: ["branchInfoPsionicAura"] },
     owner: { perBranchValue: { unity: 5 }, [CAPITAL_TRADERS]: ["civicCorporateChosen"] },
-    upkeep: { zro: 0.5 }, cost: cost(480, 25, 800, "rareCrystals", 80),
+    upkeep: { zro: 0.5 }, cost: cost(480, 25, 800, "rare_crystals", 80),
     requires: [tradition("branchReqPsiCorps"), ownerUnmodelled("branchReqNotEndbringers")] }
 ];
 
 /** Jobs the branch office buildings create that the simulator does not have yet (job data added in P19.3 from the 4.5.2 Jobs page). */
 export const BRANCH_OFFICE_NEW_JOBS = ["prosperity_preacher", "medical_worker", "augmentor", "orderly", "merchant", "roboticist", "empathic_marketer"];
+
+// ── Helpers (P19.2) ─────────────────────────────────────────────────────
+
+
+/** Building by id (legal id; illegal variants are looked up through the legal building). */
+export function getBranchBuilding(id) {
+  return BRANCH_OFFICE_BUILDINGS.find((building) => building.id === id) || null;
+}
+
+/** Owner civics the Sucursales tab offers: every civic a corporate building uses (requirements, per-civic trade, capital Traders) plus Criminal Heritage (illegal branch offices). */
+export const BRANCH_OWNER_CIVICS = (() => {
+  const keys = new Set(["civicCriminalHeritage"]);
+  const addRules = (rules) => rules.forEach((rule) => {
+    if (rule.type === "civic" || rule.type === "notCivic") rule.keys.forEach((key) => keys.add(key));
+    if (rule.type === "anyOf") addRules(rule.rules);
+  });
+  BRANCH_OFFICE_BUILDINGS.forEach((building) => {
+    addRules(building.requires || []);
+    [...(building.jobTrade || []), ...(building.illegalJobTrade || [])].forEach((entry) => entry.civics.forEach((key) => keys.add(key)));
+    (building.owner?.capitalTraders || []).forEach((key) => keys.add(key));
+  });
+  return [...keys].sort();
+})();
+
+/** Number of branch office building slots the host capital gives (0 with no branch office allowed). */
+export function branchSlotCount(capitalTier) {
+  return BRANCH_OFFICE_SLOTS_BY_TIER[capitalTier] || 0;
+}
+
+/** Why this host planet cannot have a branch office (i18n key), or null. hostCtx: requirement context of the planet. */
+export function branchHostBlockReason(hostCtx, gestalt) {
+  if (BRANCH_OFFICE_HOST_RULES.notCelestial.includes(hostCtx.celestialTypeId)) return "branchHostBlockedBody";
+  if (gestalt) return "branchHostBlockedGestalt";
+  if ((hostCtx.civicIds || []).some((key) => BRANCH_OFFICE_HOST_RULES.notCivic.includes(key))) return "branchHostBlockedPurifiers";
+  return null;
+}
+
+/** The variant built in this branch office: { id, i18nKey, img } or null when the building has no illegal variant ("Unavailable"). */
+export function branchBuildingVariant(building, illegal) {
+  if (!illegal || building.kind !== "corporate" || building.illegal === "same") return { id: building.id, i18nKey: building.i18nKey, img: building.img };
+  return building.illegal || null;
+}
+
+function scoped(building, scope) {
+  return { requires: (building.requires || []).filter((rule) => rule.scope === scope) };
+}
+
+/** Owner requirement context from the tab settings. */
+export function branchOwnerContext({ ownerCivicIds, illegal }) {
+  return { civicIds: ownerCivicIds || [], branchLegality: illegal ? "illegal" : "legal" };
+}
+
+/** Unmet rules of a building for this owner and host: [{ rule, scope }]; an illegal branch office without an illegal variant gives { rule: { type: "noIllegalVariant" } }. */
+export function branchBuildingUnmet(building, ownerCtx, hostCtx) {
+  const unmet = [];
+  if (ownerCtx.branchLegality === "illegal" && !branchBuildingVariant(building, true)) unmet.push({ rule: { type: "noIllegalVariant" }, scope: "owner" });
+  unmetRequirements(scoped(building, "owner"), ownerCtx).forEach((rule) => unmet.push({ rule, scope: "owner" }));
+  unmetRequirements(scoped(building, "host"), hostCtx).forEach((rule) => unmet.push({ rule, scope: "host" }));
+  return unmet;
+}
+
+export function branchBuildingAvailable(building, ownerCtx, hostCtx) {
+  return branchBuildingUnmet(building, ownerCtx, hostCtx).length === 0
+    && buildingRequirementsMet(scoped(building, "owner"), ownerCtx) && buildingRequirementsMet(scoped(building, "host"), hostCtx);
+}

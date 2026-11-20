@@ -27,7 +27,8 @@
  *  - Recursos: tres columnas siempre visibles (producidos, consumidos,
  *    netos), calculadas en computeTotals().
  *  - Pestañas de planeta (Planeta/Imperio/Cuerpo celeste/Sucursales):
- *    todo lo anterior vive bajo "Planeta"; Sucursales es un marcador.
+ *    todo lo anterior vive bajo "Planeta"; Sucursales (P19) guarda la
+ *    sucursal de otro imperio en `branchOffice` y la pinta js/branch-offices-ui.js.
  *
  * Modelo de ranuras: cada ranura no-capital tiene una "clave" estable
  * (p. ej. "urban-spec-0-1", "generator-spec-3") en vez de una simple
@@ -78,6 +79,8 @@ import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements, unmodelledRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
+import { branchSlotCount, branchHostBlockReason, branchOwnerContext } from "./branch-office-data.js";
+import { renderBranchOffices } from "./branch-offices-ui.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -665,6 +668,36 @@ function unlockedKeys() {
     }
   });
   return keys.slice(0, buildableCapacity());
+}
+
+/**
+ * P19: branch office another (corporate) empire placed on this planet. Owner civics and legality are the owner's,
+ * not the host empire's (GDD §5.2); `slots` keeps every chosen building, also in slots the capital no longer unlocks
+ * (they stay inactive, never deleted).
+ */
+const BRANCH_MAX_SLOTS = 4;
+const branchOffice = { present: false, illegal: false, ownerCivicIds: [], slots: Array(BRANCH_MAX_SLOTS).fill(null) };
+const branchesEl = document.querySelector("#branch-offices");
+
+function branchHostBlock() {
+  const state = getPlanetState();
+  return branchHostBlockReason(requirementContext(), ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id));
+}
+
+function renderBranchTab() {
+  if (!branchesEl) return;
+  renderBranchOffices(branchesEl, {
+    lang: currentLang,
+    branch: branchOffice,
+    hostBlockKey: branchHostBlock(),
+    slotCount: branchSlotCount(currentCapital().tier),
+    capitalTier: currentCapital().tier,
+    ownerCtx: branchOwnerContext(branchOffice),
+    hostCtx: requirementContext(),
+    describeRule: describeUnmetRule,
+    onChange: (patch) => { Object.assign(branchOffice, patch); refresh(); },
+    onSlotChange: (index, buildingId) => { branchOffice.slots[index] = buildingId; refresh(); }
+  });
 }
 
 /** Contexto con el que se evalúan los requisitos de los edificios (ver js/building-requirements.js). */
@@ -3894,6 +3927,7 @@ function refresh() {
   renderDepositFeatures();
   renderBlockers();
   renderPlanetModifiers();
+  renderBranchTab();
   updatePlanetState({ planetSize });
 }
 

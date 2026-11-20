@@ -27,6 +27,8 @@
  *   { type: "notAll", rules: [...] }         no se cumplen TODAS esas reglas a la vez (P10.10: p. ej.
  *                                            Pescadores en un mundo de clima húmedo)
  *   { type: "capitalTier", min: n }          nivel del edificio capital en números (I = 1 ... V = 5)
+ *   { type: "branch", value: "legal"|"illegal" }  P19: branch office legality (ctx.branchLegality)
+ *   { type: "anyOf", rules: [...] }          P19: one of the rules is met (an unmodelled one counts as met)
  *
  * Simplificaciones deliberadas (documentadas, no inventadas):
  *  - Los requisitos de tecnología, población y tradiciones se ignoran: este
@@ -68,6 +70,8 @@ function ruleMet(rule, ctx) {
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
     case "notAll": return !rule.rules.every((inner) => ruleMet(inner, ctx)); // P10.10: blocked only when every inner rule is met
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
+    case "branch": return ctx.branchLegality === rule.value; // P19: legal / illegal branch office
+    case "anyOf": return rule.rules.some((inner) => ruleMet(inner, ctx)); // P19: "Either: (...)"
     case "unmodelled": return true; // requirement the simulator does not model (origin, planetary feature, planet modifier...): never blocks, only shown
     case "notBlocker": return !rule.ids.some((id) => (ctx.blockerIds || []).includes(id)); // P10.8: an active blocker on the planet
     case "deposit": return (ctx.depositSpecializations || []).includes(rule.specialization); // P10.8: a strategic deposit of this specialization can exist on the body
@@ -89,9 +93,10 @@ export function unmetRequirements(item, ctx) {
   return (item.requires || []).filter((rule) => !ruleMet(rule, ctx));
 }
 
-/** Requisitos no modelados del elemento (se muestran al usuario, nunca bloquean). */
+/** Requisitos no modelados del elemento (se muestran al usuario, nunca bloquean); también los que van dentro de un "anyOf" (P19). */
 export function unmodelledRequirements(item) {
-  return (item.requires || []).filter((rule) => rule.type === "unmodelled");
+  const collect = (rules) => rules.flatMap((rule) => (rule.type === "unmodelled" ? [rule] : rule.type === "anyOf" ? collect(rule.rules) : []));
+  return collect(item.requires || []);
 }
 
 /** Clave estable del contexto (para saber si ha cambiado algo relevante). */

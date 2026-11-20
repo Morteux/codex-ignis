@@ -3,6 +3,7 @@
 Run from the project root:  python3 tests/policies-smoke.py
 Needs: pip install playwright && playwright install chromium
 Uses the English UI (browser locale en-US) and file:// URLs.
+PLAYWRIGHT_CHROME=/path/to/chrome uses an installed Chrome instead of Playwright's Chromium.
 """
 import asyncio, json, os, sys, tempfile
 from playwright.async_api import async_playwright
@@ -24,7 +25,7 @@ def approx(a, b):
 
 async def main():
     async with async_playwright() as p:
-        browser = await p.chromium.launch(args=["--allow-file-access-from-files"])
+        browser = await p.chromium.launch(executable_path=os.environ.get("PLAYWRIGHT_CHROME") or None, args=["--allow-file-access-from-files"])
         ctx = await browser.new_context(locale="en-US")
         pg = await ctx.new_page()
         errors = []
@@ -684,6 +685,38 @@ async def main():
         check("Experimentation Chambers: needs Experimental Sentencing, not Materialist", breq[0] is False and breq[1] is True, breq)
         check("Uplink Node: not with Rogue Servitor", breq[2] is False and breq[3] is True, breq)
         check("Stronghold: not-Wilderness shown as unmodelled", breq[4] == ["reqNotWildernessOrigin"], breq)
+
+        # P19.2: Sucursales tab (owner civics, legal/illegal, slots by capital tier, requirements, inactive buildings)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("branches")
+        await pg.evaluate("()=>document.querySelector('#branch-present-toggle').click()")
+        slots_i = await pg.inner_text("#branch-slots-label")
+        check("branch: tier I capital gives 0 slots", "Building slots: 0" in slots_i, slots_i)
+        for _ in range(2): await pg.evaluate("()=>document.querySelector('#planet-capital-upgrade').click()")
+        slots_iii = await pg.inner_text("#branch-slots-label")
+        check("branch: tier III capital gives 2 slots", "Building slots: 2" in slots_iii, slots_iii)
+        ill = await pg.evaluate("()=>document.querySelector('#branch-legality-select option[value=illegal]').disabled")
+        check("branch: illegal needs Criminal Heritage", ill is True)
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicCriminalHeritage] input').click()")
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicTradingPosts] input').click()")
+        await pg.select_option("#branch-legality-select", "illegal")
+        await pg.select_option(".branch-slot[data-branch-slot='0'] select", "commercialForum")
+        s0 = await pg.inner_text(".branch-slot[data-branch-slot='0']")
+        check("branch: illegal Commercial Forum = Smuggler's Port, half Criminals, +25 crime, trade per Criminal with the owner civic",
+              "Smuggler's Port" in s0 and "+100 Trader jobs" in s0 and "+100 Criminal jobs" in s0 and "+0.1 Trade per Criminal job" in s0 and "+25 Crime" in s0 and "paid by this planet" in s0, s0)
+        opts = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('.branch-slot[data-branch-slot=\"1\"] option')].map(o=>[o.value,o.disabled]))")
+        check("branch: illegal office blocks Industrial Subsidiary / Executive Retreat / Temple, allows Disinformation Center (tier III)",
+              opts.get("industrialSubsidiary") and opts.get("executiveRetreat") and opts.get("templeOfProsperity") and opts.get("corporateEmbassy") is False, opts)
+        await pg.select_option("#branch-legality-select", "legal")
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicGospelOfTheMasses] input').click()")
+        await pg.select_option(".branch-slot[data-branch-slot='1'] select", "templeOfProsperity")
+        conflict = await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicFranchising] input').disabled")
+        check("branch: max 3 owner civics", conflict is True)
+        await pg.evaluate("()=>document.querySelector('#planet-capital-downgrade').click()")
+        s1 = await pg.evaluate("()=>{const c=document.querySelector('.branch-slot[data-branch-slot=\"1\"]');return [c.classList.contains('is-inactive'),c.innerText]}")
+        check("branch: building in a slot the capital no longer unlocks stays, inactive", s1[0] and "Temple of Prosperity" in s1[1] and "Inactive" in s1[1], s1)
+        block_txt = await pg.evaluate("async()=>{const d=await import('./js/branch-office-data.js');return [d.branchHostBlockReason({celestialTypeId:'nanite'},false),d.branchHostBlockReason({celestialTypeId:'continental'},true),d.branchHostBlockReason({celestialTypeId:'continental',civicIds:['civicFanaticPurifiers']},false),d.branchHostBlockReason({celestialTypeId:'continental'},false)]}")
+        check("branch: no branch offices on Nanite World / gestalt / Fanatic Purifiers hosts", block_txt == ["branchHostBlockedBody", "branchHostBlockedGestalt", "branchHostBlockedPurifiers", None], block_txt)
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
