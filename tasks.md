@@ -18,6 +18,14 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [ ] P20.3 Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
 - [ ] P20.4 Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
 
+## P21 — Job swaps
+Owner decision 2026-11-20: model every job swap of the 4.5.2 *Jobs* page (~90: Politician, Bureaucrat, Physicist, Miner, Farmer, Entertainer...). Swapped jobs inherit the base job's modifiers; the highest-weight swap wins; output changes stack (save exceptions, see the page's "Job swaps" section).
+- [ ] P21.1 Audit every swap: base job, swapped job, conditions (civics, ethics, authority, buildings/zones on planet, branch office buildings, origins...), weight, output changes and their stacking exceptions; data file and GDD section
+- [ ] P21.2 Engine: generic swap step (conditions, weight precedence, stacked output changes), breakdown and modifier lines; replaces the hard-coded swaps (body/deposit swaps, Anglers) where they are the same mechanism
+- [ ] P21.3 Branch office swaps: Politician → Merchant with Corporate Embassy / Disinformation Center / Imperial Concession Port, Medical Worker swaps and the rest triggered by branch offices
+- [ ] P21.4 UI: swapped jobs shown in the jobs panel with the base job and the reason; unmodelled conditions listed
+- [ ] P21.5 Smoke tests
+
 ## P11 — Comparison & timeline
 - [ ] P11.1 Scenario A/B comparison with marginal-change highlighting
 - [ ] P11.2 Monthly stockpile timeline (1 / 12 / 60 / 120 months)
