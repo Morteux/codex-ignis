@@ -856,6 +856,31 @@ async def main():
         check("engine: individualist swaps never apply to gestalt", eng["gestaltNoIndividualist"] is None, eng)
         check("engine: Technophant not applied, listed as blocked by an unmodelled origin", eng["technophantBlocked"] == [None, True], eng)
 
+        # P11.1: scenario A/B comparison — pin A, build Commercial Zones (B), changed rows highlighted with B − A
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("planet")
+        empty = await pg.inner_text("#planet-compare")
+        check("compare: no scenario A -> hint, no table", "Pin the current planet as scenario A" in empty and await pg.evaluate("()=>!document.querySelector('.planet-compare-table')"), empty)
+        await pg.evaluate("()=>document.querySelector('.planet-compare-pin').click()")
+        same = await pg.evaluate("()=>[document.querySelector('.planet-compare-summary').innerText,document.querySelectorAll('.planet-compare-row.is-changed').length]")
+        check("compare: right after pinning nothing changes", same == ["0 values change", 0], same)
+        await pg.evaluate("()=>{document.querySelectorAll('#planet-catalog details').forEach(d=>d.open=true);[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText)).click()}")
+        cmp = await pg.evaluate("""()=>Object.fromEntries([...document.querySelectorAll('.planet-compare-row')].map(r=>[r.dataset.id,[r.className,[...r.querySelectorAll('td')].map(td=>td.innerText.trim())]]))""")
+        tr, cg = cmp.get("trade"), cmp.get("consumer_goods")
+        check("compare: trade changed and better (+, green)", tr is not None and "is-changed" in tr[0] and "is-better" in tr[0] and tr[1][3].startswith("+"), cmp)
+        check("compare: consumer goods changed and worse (Merchants' upkeep)", cg is not None and "is-worse" in cg[0] and cg[1][3] == "−2", cmp)
+        first = await pg.evaluate("()=>document.querySelector('.planet-compare-row').classList.contains('is-changed')")
+        check("compare: changed rows listed first", first)
+        await pg.evaluate("()=>document.querySelector('.planet-compare-clear').click()")
+        check("compare: clearing A hides the table", await pg.evaluate("()=>!document.querySelector('.planet-compare-table')"))
+        pure = await pg.evaluate("""async()=>{const m=await import('./js/scenario-compare.js');
+            const a={resources:{energy:5,minerals:2},conditions:{stability:50,happiness:null,crime:10,freeHousing:1,pops:3}};
+            const b={resources:{energy:5,minerals:-1,food:4},conditions:{stability:55,happiness:null,crime:12,freeHousing:1,pops:3}};
+            return m.compareSnapshots(a,b).map(r=>[r.id,r.delta,r.changed,r.better])}""")
+        check("compare engine: order by change size, crime increase is worse, unchanged/not applicable after",
+              pure[:4] == [["stability", 5, True, True], ["food", 4, True, True], ["minerals", -3, True, False], ["crime", 2, True, False]]
+              and ["happiness", None, False, None] in pure and ["energy", 0, False, None] in pure, pure)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

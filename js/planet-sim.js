@@ -82,6 +82,7 @@ import { buildingRequirementsMet, requirementContextKey, unmetRequirements, unmo
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
 import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OWNER_CIVICS, BRANCH_OFFICE_BUILDINGS, BRANCH_OFFICE_VALUE, ILLEGAL_BRANCH_RULES, branchBuildingAvailable, branchBuildingVariant, branchBuildingJobs, branchJobTrade, isIllegalVariant } from "./branch-office-data.js";
 import { renderBranchOffices } from "./branch-offices-ui.js";
+import { renderScenarioCompare } from "./scenario-compare.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
 // P21.2: swapped jobs join JOBS / JOB_OUTPUTS / JOB_EFFECTS / JOB_CATEGORIES (js/job-swaps.js).
@@ -3403,6 +3404,21 @@ function renderProduction(totals) {
   renderResourceList(producedEl, totals.producedTotals, false, "planetSimProducedEmpty");
   renderResourceList(consumedEl, totals.consumedTotals, false, "planetSimConsumedEmpty");
   renderResourceList(netEl, totals.resourceTotals, true, "planetSimProductionEmpty", totals.breakdown);
+  renderComparison(totals);
+}
+
+/** P11.1: scenario A/B comparison (js/scenario-compare.js), repainted with the production panel. */
+const compareEl = document.querySelector("#planet-compare");
+function renderComparison(totals) {
+  renderScenarioCompare(compareEl, {
+    lang: currentLang,
+    totals,
+    planetName: getPlanetState().planetName,
+    resourceIcon,
+    formatAmount,
+    displayAmount,
+    onChange: () => renderComparison(lastTotals)
+  });
 }
 
 /**
