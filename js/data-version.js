@@ -147,6 +147,12 @@ export const DATA_COLLECTIONS = {
     sources: [WIKI + "Holdings", WIKI + "Capital_building"],
     verification: VERIFICATION.UNVERIFIED
   },
+  jobSwaps: {
+    file: "js/job-swap-data.js",
+    // P21.1: every job swap of the Jobs page (base job, conditions, weight, output, stacked output changes).
+    sources: [WIKI + "Jobs"],
+    verification: VERIFICATION.UNVERIFIED
+  },
   stackingRules: {
     file: "js/stacking-rules.js",
     // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.
