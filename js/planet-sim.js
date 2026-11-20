@@ -76,10 +76,10 @@ import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitche
 import { getEdict } from "./edict-data.js";
 import { getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels.js";
-import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
+import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS, MAX_CIVICS, civicsConflict } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements, unmodelledRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
-import { branchSlotCount, branchHostBlockReason, branchOwnerContext } from "./branch-office-data.js";
+import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OWNER_CIVICS } from "./branch-office-data.js";
 import { renderBranchOffices } from "./branch-offices-ui.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
@@ -3999,7 +3999,11 @@ export function capturePlanetConfig() {
     // P10.8: optional field, blockers placed on the planet.
     blockerIds: [...selectedBlockers],
     // P10.8: optional field, planet modifiers chosen by the user.
-    planetModifierIds: [...selectedPlanetModifiers]
+    planetModifierIds: [...selectedPlanetModifiers],
+    // P19.4: optional field, another empire's branch office (null = none ever set up).
+    branchOffice: branchOffice.present || branchOffice.ownerCivicIds.length || branchOffice.slots.some(Boolean)
+      ? { present: branchOffice.present, illegal: branchOffice.illegal, ownerCivicIds: [...branchOffice.ownerCivicIds], slots: [...branchOffice.slots] }
+      : null
   };
 }
 
@@ -4070,6 +4074,18 @@ export function applyPlanetConfig(config) {
   Object.entries(config.strategicDeposits || {}).forEach(([specializationId, depositId]) => {
     if (STRATEGIC_DEPOSITS.some((deposit) => deposit.id === depositId && deposit.unlocks === specializationId)) strategicDepositChoice[specializationId] = depositId;
   });
+
+  // P19.4: branch office (optional field; older planets have none). Unknown civics/buildings are dropped, civics past
+  // the cap or incompatible with an earlier one are dropped, illegal needs Criminal Heritage.
+  const savedBranch = config.branchOffice || {};
+  const ownerCivicIds = [];
+  (savedBranch.ownerCivicIds || []).forEach((key) => {
+    if (BRANCH_OWNER_CIVICS.includes(key) && ownerCivicIds.length < MAX_CIVICS && !ownerCivicIds.includes(key) && !ownerCivicIds.some((other) => civicsConflict(key, other))) ownerCivicIds.push(key);
+  });
+  branchOffice.present = savedBranch.present === true;
+  branchOffice.ownerCivicIds = ownerCivicIds;
+  branchOffice.illegal = savedBranch.illegal === true && ownerCivicIds.includes("civicCriminalHeritage");
+  branchOffice.slots = Array.from({ length: BRANCH_MAX_SLOTS }, (_, index) => (getBranchBuilding(savedBranch.slots?.[index]) ? savedBranch.slots[index] : null));
 
   updatePlanetState({ designationId: selectedDesignationId || null });
   renderDesignationSelect();

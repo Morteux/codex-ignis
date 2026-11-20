@@ -8,7 +8,9 @@
  *
  * Formato de cada planeta (ver PLANET_SIM_GDD.md §8): { schemaVersion, rulesetId,
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
- * built, staffingOverrides, manualConditions, civilians, neuralChips, strategicDeposits, blockerIds, planetModifierIds, empireId, empireSnapshot, noEmpire }.
+ * built, staffingOverrides, manualConditions, civilians, neuralChips, strategicDeposits, blockerIds, planetModifierIds, branchOffice, empireId, empireSnapshot, noEmpire }.
+ *  - branchOffice (P19.4, optional; null = none): { present, illegal, ownerCivicIds: [≤3], slots: [id|null ×4] }
+ *    of another empire's branch office; ids are validated when applied.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|
  *    agriculture: { count, optionId, cap? } } (mismo formato que districtState; cap: límite
  *    manual de los distritos de recursos de un hábitat, P10.4, opcional).
@@ -160,8 +162,22 @@ export function sanitizePlanetData(raw) {
     blockerIds: Array.isArray(raw.blockerIds) ? [...new Set(raw.blockerIds.filter((id) => typeof id === "string"))].slice(0, 20) : [],
     // P10.8: planet modifiers (optional; text ids only, validated when applied).
     planetModifierIds: Array.isArray(raw.planetModifierIds) ? [...new Set(raw.planetModifierIds.filter((id) => typeof id === "string"))].slice(0, 60) : [],
+    // P19.4: branch office of another empire (optional; text ids only, validated when applied).
+    branchOffice: sanitizeBranchOffice(raw.branchOffice),
     empireId: textOrNull(raw.empireId),
     empireSnapshot
+  };
+}
+
+function sanitizeBranchOffice(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const slots = Array.isArray(raw.slots) ? raw.slots.slice(0, 4).map((id) => (typeof id === "string" && id ? id : null)) : [];
+  while (slots.length < 4) slots.push(null);
+  return {
+    present: raw.present === true,
+    illegal: raw.illegal === true,
+    ownerCivicIds: Array.isArray(raw.ownerCivicIds) ? [...new Set(raw.ownerCivicIds.filter((id) => typeof id === "string"))].slice(0, 3) : [],
+    slots
   };
 }
 
