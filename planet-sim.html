@@ -61,10 +61,10 @@
       <nav class="planet-main-tabs" role="tablist" aria-label="Secciones del planeta">
         <button type="button" class="planet-main-tab" data-main-tab="library"><img class="ui-icon" src="img/ui/Menu_icon_planets_and_sectors.png" alt="" /><span data-i18n="planetSimMainTabLibrary">Biblioteca</span></button>
         <button type="button" class="planet-main-tab is-active" data-main-tab="planet"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="planetSimMainTabPlanet">Planeta</span></button>
-        <button type="button" class="planet-main-tab" data-main-tab="empire"><img class="ui-icon" src="img/ui/Icon_council.png" alt="" /><span data-i18n="planetSimMainTabEmpire">Imperio</span></button>
-        <button type="button" class="planet-main-tab" data-main-tab="body"><img class="ui-icon" src="img/ui/Focus_core.png" alt="" /><span data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="empire"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_cat_government.png" alt="" /><span data-i18n="planetSimMainTabEmpire">Imperio</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="body"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/planets/Planet_continental.png" alt="" /><span data-i18n="planetSimMainTabCelestialBody">Cuerpo celeste</span></button>
         <button type="button" class="planet-main-tab" data-main-tab="edicts"><img class="ui-icon" src="img/ui/Menu_icon_policies.png" alt="" /><span data-i18n="planetSimMainTabEdicts">Edicts</span></button>
-        <button type="button" class="planet-main-tab" data-main-tab="branches"><img class="ui-icon" src="img/ui/Faction_support.png" alt="" /><span data-i18n="planetSimMainTabBranches">Sucursales</span></button>
+        <button type="button" class="planet-main-tab" data-main-tab="branches"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_branch_office_value_mult.png" alt="" /><span data-i18n="planetSimMainTabBranches">Sucursales</span></button>
       </nav>
 
       <p class="entry-note planet-notice" id="planet-sim-notice" role="status" aria-live="polite" hidden></p>
@@ -89,7 +89,7 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_leaders.png" alt="" /><span data-i18n="libraryEmpiresHeading">Imperios guardados</span></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_cat_government.png" alt="" /><span data-i18n="libraryEmpiresHeading">Imperios guardados</span></h2>
           <div id="library-empires" class="library-grid"></div>
         </div>
       </section>
@@ -141,7 +141,7 @@
             </div>
 
             <div class="planet-production-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Focus_development.png" alt="" /><span data-i18n="planetSimProductionHeading">Producción total de recursos</span><button type="button" class="info-btn" id="planet-production-info-btn" aria-expanded="false" aria-controls="planet-production-info">i</button></h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Empire_economy.png" alt="" /><span data-i18n="planetSimProductionHeading">Producción total de recursos</span><button type="button" class="info-btn" id="planet-production-info-btn" aria-expanded="false" aria-controls="planet-production-info">i</button></h2>
               <div id="planet-production-info-slot"></div>
               <div class="planet-production-columns">
                 <div class="planet-production-column is-produced">
@@ -162,27 +162,27 @@
             </div>
 
             <div class="planet-modifiers-panel planet-compare-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Focus_development.png" alt="" /><span data-i18n="compareHeading">Comparación de escenarios A/B</span></h2>
+              <h2 class="panel-heading planet-panel-heading"><span data-i18n="compareHeading">Comparación de escenarios A/B</span></h2>
               <div id="planet-compare"></div>
             </div>
 
             <div class="planet-modifiers-panel planet-timeline-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Focus_development.png" alt="" /><span data-i18n="timelineHeading">Reservas mes a mes</span></h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_cat_economy.png" alt="" /><span data-i18n="timelineHeading">Reservas mes a mes</span></h2>
               <div id="planet-timeline"></div>
             </div>
 
             <div class="planet-modifiers-panel planet-conditions-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Housing.png" alt="" /><span data-i18n="conditionsHeading">Condiciones del planeta</span><button type="button" class="info-btn" id="planet-conditions-info-btn" aria-expanded="false" aria-controls="planet-conditions-info">i</button></h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/resources/Stability.png" alt="" /><span data-i18n="conditionsHeading">Condiciones del planeta</span><button type="button" class="info-btn" id="planet-conditions-info-btn" aria-expanded="false" aria-controls="planet-conditions-info">i</button></h2>
               <div id="planet-conditions"></div>
             </div>
 
             <div class="planet-modifiers-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_traditions.png" alt="" /><span data-i18n="modifiersHeading">Modificadores activos</span><button type="button" class="info-btn" id="planet-modifiers-info-btn" aria-expanded="false" aria-controls="planet-modifiers-info">i</button></h2>
+              <h2 class="panel-heading planet-panel-heading"><span data-i18n="modifiersHeading">Modificadores activos</span><button type="button" class="info-btn" id="planet-modifiers-info-btn" aria-expanded="false" aria-controls="planet-modifiers-info">i</button></h2>
               <div id="planet-modifiers"></div>
             </div>
 
             <div class="planet-summary-panel">
-              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Job_clerk.png" alt="" /><span data-i18n="planetSimSummaryHeading">Resumen de empleos totales</span><button type="button" class="info-btn" id="planet-jobs-info-btn" aria-expanded="false" aria-controls="planet-jobs-info">i</button></h2>
+              <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Pop_job.png" alt="" /><span data-i18n="planetSimSummaryHeading">Resumen de empleos totales</span><button type="button" class="info-btn" id="planet-jobs-info-btn" aria-expanded="false" aria-controls="planet-jobs-info">i</button></h2>
               <div id="planet-jobs-info-slot"></div>
               <p class="entry-note planet-staffing-notice" data-i18n="planetSimStaffingNotice"></p>
               <p class="planet-summary-population" id="planet-jobs-counter"></p>
@@ -206,7 +206,7 @@
 
       <section id="planet-tab-panel-empire" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_leaders.png" alt="" /><span data-i18n="empireProfileHeading">Perfil de imperio</span></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_cat_government.png" alt="" /><span data-i18n="empireProfileHeading">Perfil de imperio</span></h2>
           <p class="empire-note" data-i18n="empireProfileNote"></p>
           <div class="empire-profile-controls">
             <input type="text" id="empire-profile-name" class="empire-profile-name-input" maxlength="60" data-i18n-attr="placeholder:empireProfileNamePlaceholder" />
@@ -220,7 +220,7 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_traditions.png" alt="" /><span data-i18n="empireEthicsHeading">Éticas</span><button type="button" class="info-btn" id="empire-ethics-info-btn" aria-expanded="false" aria-controls="empire-ethics-info">i</button></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_ethic_attraction_mult.png" alt="" /><span data-i18n="empireEthicsHeading">Éticas</span><button type="button" class="info-btn" id="empire-ethics-info-btn" aria-expanded="false" aria-controls="empire-ethics-info">i</button></h2>
           <div id="empire-ethics-info-slot"></div>
           <p class="empire-points-label" id="empire-points-label"></p>
           <div class="empire-ethics-layout">
@@ -235,20 +235,20 @@
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Colony_type_automated.png" alt="" /><span data-i18n="empireSpeciesHeading">Tipo de especie</span></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Icon_pop.png" alt="" /><span data-i18n="empireSpeciesHeading">Tipo de especie</span></h2>
           <p class="empire-note" data-i18n="empireSpeciesNote"></p>
           <select id="empire-species-select" class="planet-designation-select"></select>
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_traditions.png" alt="" /><span data-i18n="empireCivicsHeading">Principios</span><button type="button" class="info-btn" id="empire-civics-info-btn" aria-expanded="false" aria-controls="empire-civics-info">i</button></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_cat_government.png" alt="" /><span data-i18n="empireCivicsHeading">Principios</span><button type="button" class="info-btn" id="empire-civics-info-btn" aria-expanded="false" aria-controls="empire-civics-info">i</button></h2>
           <div id="empire-civics-info-slot"></div>
           <p class="empire-points-label" id="empire-civics-label"></p>
           <div id="empire-civics-list" class="empire-civics-grid"></div>
         </div>
 
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Icon_council.png" alt="" /><span data-i18n="empirePoliciesHeading">Políticas</span><button type="button" class="info-btn" id="empire-policies-info-btn" aria-expanded="false" aria-controls="empire-policies-info">i</button></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Menu_icon_policies.png" alt="" /><span data-i18n="empirePoliciesHeading">Políticas</span><button type="button" class="info-btn" id="empire-policies-info-btn" aria-expanded="false" aria-controls="empire-policies-info">i</button></h2>
           <div id="empire-policies-info-slot"></div>
           <p class="empire-note" data-i18n="empirePoliciesNote"></p>
           <div id="empire-policies-list"></div>
@@ -257,7 +257,7 @@
 
       <section id="planet-tab-panel-body" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Planet.png" alt="" /><span data-i18n="celestialHeading">Tipo de cuerpo celeste</span></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/planets/Planet_continental.png" alt="" /><span data-i18n="celestialHeading">Tipo de cuerpo celeste</span></h2>
           <h3 class="entry-heading-subsub" data-i18n="celestialNaturalHeading">Natural</h3>
           <div id="celestial-natural-list" class="celestial-type-grid"></div>
           <h3 class="entry-heading-subsub" data-i18n="celestialArtificialHeading">Artificial</h3>
@@ -282,7 +282,7 @@
 
       <section id="planet-tab-panel-branches" hidden>
         <div class="planet-slots-panel">
-          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="img/ui/Faction_support.png" alt="" /><span data-i18n="branchHeading">Branch Offices</span></h2>
+          <h2 class="panel-heading planet-panel-heading"><img class="ui-icon" src="https://morteux.github.io/StellarisAssets/modifiers/mod_branch_office_value_mult.png" alt="" /><span data-i18n="branchHeading">Branch Offices</span></h2>
           <p class="empire-note" data-i18n="branchNote"></p>
           <div id="branch-offices"></div>
         </div>
