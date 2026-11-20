@@ -686,8 +686,8 @@ export const JOB_OUTPUTS = {
   servant: { amenities: 4 },
   // P19.3: branch office jobs (wiki 4.5.2 "Jobs", per 100 workforce). Not modelled: pop growth / assembly speed (Medical
   // Worker, Augmentor, Roboticist +2 mechanical pop assembly), Augmentor cybernetic bonus, Orderly +2.5 % Experiment
-  // Engineer / Test Subject efficiency, Empathic Marketer Shroud bonus, Prosperity Preacher Manager / Steward swaps and the
-  // Politician → Merchant job swap (job swaps are not modelled, GDD §10).
+  // Engineer / Test Subject efficiency, Empathic Marketer Shroud bonus. P21.3: their job swaps (Prosperity Preacher with
+  // Manager / Steward conditions, Politician → Merchant with Corporate Embassy...) come from js/job-swap-data.js.
   prosperity_preacher: { unity: 3, amenities: 2, consumer_goods: -2 },
   medical_worker: { amenities: 7.5, consumer_goods: -1 },
   augmentor: { amenities: 5, society: 1.5, engineering: 1.5, alloys: -1 },
