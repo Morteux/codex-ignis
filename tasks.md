@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21.1 — job swaps audit in GDD §6.1, P21.2, P21.3, P21.4) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
@@ -17,10 +17,6 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [ ] P20.2 Living standard saved with the empire profile (optional field), selectable in the Imperio tab
 - [ ] P20.3 Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
 - [ ] P20.4 Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
-
-## P21 — Job swaps
-Owner decision 2026-11-20: model every job swap of the 4.5.2 *Jobs* page (~90: Politician, Bureaucrat, Physicist, Miner, Farmer, Entertainer...). Swapped jobs inherit the base job's modifiers; the highest-weight swap wins; output changes stack (save exceptions, see the page's "Job swaps" section).
-- [ ] P21.5 Smoke tests
 
 ## P11 — Comparison & timeline
 - [ ] P11.1 Scenario A/B comparison with marginal-change highlighting

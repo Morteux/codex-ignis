@@ -475,6 +475,15 @@ async def main():
         await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[2];const s=c.querySelector('select');s.value='mineralExtraction';s.dispatchEvent(new Event('change'))}""")
         jobs = await pg.inner_text("#planet-summary")
         check("volcanic jobs: Thermoforgers and Thermotechnic Mentors, no Miners", "Thermoforger" in jobs and "Thermotechnic Mentor" in jobs and "Miner · created" not in jobs, jobs[:500])
+        # P21.5: a swapped job inherits its base job's modifiers (Mining Subsidies: +20 % Miner efficiency, −0.5 trade per Miner)
+        row_pills = "(n)=>{const r=[...document.querySelectorAll('.planet-job-row')].find(x=>x.innerText.startsWith(n+' ·'));return r?[...r.querySelectorAll('.planet-job-output-pill')].map(p=>p.innerText.trim()):[]}"
+        before = await pg.evaluate(row_pills, "Thermoforger")
+        await tab("edicts"); await pg.click(".edict-card[data-edict-id=miningSubsidies]"); await tab("planet")
+        after = await pg.evaluate(row_pills, "Thermoforger")
+        num = lambda v: float(v.replace("−", "-").replace("+", "")) if v else None
+        check("swap inherits: Mining Subsidies raises Thermoforger minerals and adds trade upkeep",
+              bool(before) and bool(after) and num(after[0]) > num(before[0]) and len(after) == len(before) + 1, (before, after))
+        await tab("edicts"); await pg.click(".edict-card[data-edict-id=miningSubsidies]"); await tab("planet")
         housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
         check("housing: Magma Conduit +200, Thermotechnic Forum +200", "Magma Conduit ×1 +200" in housing and "Thermotechnic Forum ×1 +200" in housing, housing)
         mods = await pg.evaluate("()=>document.querySelector('#planet-modifiers').innerText")
@@ -810,6 +819,42 @@ async def main():
         check("swap: not-applied list names the unmodelled origin (Politician -> Technophant)", "Job swaps not applied" in unap, unap)
         items = await pg.evaluate("()=>{const d=document.querySelector('.planet-job-swaps-unapplied');if(!d)return '';d.open=true;return d.innerText}")
         check("swap: Technophant listed with Cybernetic Creed", "Technophant" in items and "Cybernetic Creed" in items, items)
+
+        # P21.5: job swap engine (js/job-swaps.js) — precedence, exclusions, stacking, gestalt upkeep, unmodelled conditions
+        eng = await pg.evaluate("""async()=>{const m=await import('./js/job-swaps.js');
+            const base={gestalt:false,ethicIds:[],civicIds:[],authorityId:'democratic',buildingIds:[],zoneIds:[],planetModifierIds:[],branchBuildingIds:[]};
+            const ctx=(o)=>({...base,...o});const win=(c,j)=>m.resolveJobSwaps(c)[j]?.winner?.id||null;
+            const stack=(id,c)=>m.stackedSwapChanges(id,c).map(x=>[x.id,x.output,x.effects]);
+            return {
+              manager: win(ctx({authorityId:'corporate'}),'bureaucrat'),
+              steward: win(ctx({authorityId:'corporate',civicIds:['civicWorkerCoop']}),'bureaucrat'),
+              preacher: win(ctx({authorityId:'corporate',civicIds:['civicWorkerCoop'],ethicIds:['spiritualist']}),'bureaucrat'),
+              preacherStack: stack('prosperity_preacher',ctx({authorityId:'corporate',civicIds:['civicWorkerCoop'],ethicIds:['spiritualist']})),
+              priest: win(ctx({ethicIds:['fanaticSpiritualist']}),'bureaucrat'),
+              deathPriestStack: stack('death_priest',ctx({civicIds:['civicDeathCult']})),
+              chronicler: win(ctx({civicIds:['civicMemorialist','civicDeathCult']}),'bureaucrat'),
+              chroniclerStack: stack('death_chronicler',ctx({civicIds:['civicMemorialist','civicDeathCult']})),
+              fireNoHabitability: win(ctx({civicIds:['civicPyrolatry']}),'politician'),
+              warden: win(ctx({designationId:'penalColony'}),'politician'),
+              thermo: win(ctx({celestialTypeId:'volcanic',gestalt:true,authorityId:'machineIntelligence'}),'miner'),
+              crystalVsThermo: win(ctx({celestialTypeId:'volcanic',zoneIds:['rareCrystalExtraction']}),'miner'),
+              anglerGas: [win(ctx({civicIds:['civicAnglers'],celestialTypeId:'ocean',zoneIds:['exoticGasCapture']}),'farmer'),stack('angler',ctx({zoneIds:['exoticGasCapture']}))],
+              gestaltUpkeep: [m.swapGestaltUpkeep('astrometeorologist',ctx({gestalt:true,authorityId:'machineIntelligence'})),m.swapGestaltUpkeep('crystal_miner',ctx({gestalt:true,authorityId:'hiveMind'})),m.swapGestaltUpkeep('chronicle_drone',ctx({gestalt:true,authorityId:'hiveMind',speciesType:'lithoid'}))],
+              gestaltNoIndividualist: win(ctx({gestalt:true,authorityId:'hiveMind',civicIds:['civicAristocraticElite']}),'politician'),
+              technophantBlocked: [win(ctx({}),'politician'), m.blockedByUnmodelled(m.MODELLED_SWAPS.find(s=>s.id==='technophant'),ctx({}))]
+            }}""")
+        check("engine: Corporate -> Manager; with Worker Cooperative -> Steward", eng["manager"] == "manager" and eng["steward"] == "steward", eng)
+        check("engine: Prosperity Preacher (15) beats Steward and stacks its +1 trade +1 amenity", eng["preacher"] == "prosperity_preacher" and eng["preacherStack"] == [["steward", {"trade": 1, "amenities": 1}, {}]], eng)
+        check("engine: Fanatic Spiritualist -> Priest", eng["priest"] == "priest", eng)
+        check("engine: Death Priest without Steward/Culture conditions stacks nothing", eng["deathPriestStack"] == [], eng)
+        check("engine: Death Chronicler (200) wins and stacks the Death Priest changes", eng["chronicler"] == "death_chronicler" and eng["chroniclerStack"] == [["death_priest", {"unity": -1, "amenities": 2, "society": 0.5}, {}]], eng)
+        check("engine: Fire Cult swaps need the (unmodelled) habitability -> no swap", eng["fireNoHabitability"] is None, eng)
+        check("engine: Penal Colony -> Planetary Warden", eng["warden"] == "planetary_warden", eng)
+        check("engine: Thermoforger for any empire; beats Crystal Miner (35 > 20)", eng["thermo"] == "thermoforger" and eng["crystalVsThermo"] == "thermoforger", eng)
+        check("engine: Angler beats Gas Extractor and gets the zone change", eng["anglerGas"] == ["angler", [["exoticGasCapture", {"food": -3, "exotic_gases": 0.5}, {}]]], eng)
+        check("engine: gestalt upkeep (own variant / inherited / per species extra)", eng["gestaltUpkeep"] == [{"replace": {"energy": -3}, "extra": False}, {"none": True}, {"replace": {"minerals": -2}, "extra": True}], eng)
+        check("engine: individualist swaps never apply to gestalt", eng["gestaltNoIndividualist"] is None, eng)
+        check("engine: Technophant not applied, listed as blocked by an unmodelled origin", eng["technophantBlocked"] == [None, True], eng)
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
