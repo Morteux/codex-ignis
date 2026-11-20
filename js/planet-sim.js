@@ -62,7 +62,9 @@ import {
   allowedSpeciesTypes,
   DISTRICTS,
   RESOURCE_DISTRICT_ORDER,
-  JOB_RESOURCE_MULT
+  JOB_RESOURCE_MULT,
+  ANGLERS_WET_CLIMATE,
+  ANGLERS_JOB_SWAPS
 } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { PLANET_MODIFIERS, PLANET_MODIFIER_GROUPS } from "./planet-modifier-data.js";
@@ -525,9 +527,18 @@ function activeStrategicDeposits() {
   }).filter(Boolean);
 }
 
-/** Job swaps on the planet: the body's (Volcanic) and those of the chosen specializations ("zone on planet"). */
+/** P10.10: Anglers-family civic on a wet-climate world (Farmer → Angler, Artisan → Pearl Diver). */
+function anglersSwapsActive() {
+  return buildingRequirementsMet({ requires: ANGLERS_WET_CLIMATE }, requirementContext());
+}
+
+/**
+ * Job swaps on the planet: the body's (Volcanic), the Anglers ones (P10.10; job swap weight 50, above the Gas Extractor's
+ * 20, so Anglers keep the Farmer jobs under Exotic Gas Capture) and those of the chosen specializations ("zone on planet").
+ */
 function planetJobSwaps() {
   const swaps = { ...(bodyRules()?.jobSwaps || {}) };
+  if (anglersSwapsActive()) Object.entries(ANGLERS_JOB_SWAPS).forEach(([from, to]) => { if (!swaps[from]) swaps[from] = to; });
   RESOURCE_DISTRICT_ORDER.forEach((cat) => {
     const option = districtState[cat].count > 0 ? secondaryOption(cat, districtState[cat].optionId) : null;
     Object.entries(option?.jobSwaps || {}).forEach(([from, to]) => { if (!swaps[from]) swaps[from] = to; });
@@ -547,6 +558,11 @@ function featureJobBonuses() {
   activeBlockers().forEach((blocker) => {
     if (blocker.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[blocker.jobBonus.category], resource: blocker.jobBonus.resource, perJob: blocker.jobBonus.perJob, source: { kind: "blocker", id: blocker.id } });
   });
+  // P10.10: Angler under Exotic Gas Capture (Jobs page): −3 food, +0.5 exotic gases per job.
+  if (planetJobSwaps().farmer === "angler" && chosenStrategicSpecializations().some((option) => option.id === "exoticGasCapture")) {
+    bonuses.push({ jobs: ["angler"], resource: "food", perJob: -3, source: { kind: "specialization", id: "exoticGasCapture" } });
+    bonuses.push({ jobs: ["angler"], resource: "exotic_gases", perJob: 0.5, source: { kind: "specialization", id: "exoticGasCapture" } });
+  }
   new Set(RESOURCE_DISTRICT_ORDER.map((cat) => (districtState[cat].count > 0 ? districtState[cat].optionId : null)).filter(Boolean)).forEach((optionId) => {
     const cat = RESOURCE_DISTRICT_ORDER.find((entry) => districtState[entry].optionId === optionId);
     const option = secondaryOption(cat, optionId);

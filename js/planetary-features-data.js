@@ -110,7 +110,7 @@ export const STRATEGIC_DEPOSITS = [
 export const JOB_CATEGORIES = {
   technicians: ["technician", "mote_harvester"],
   miners: ["miner", "crystal_miner", "thermoforger"],
-  farmers: ["farmer", "gas_extractor"],
+  farmers: ["farmer", "gas_extractor", "angler"],
   thermoforgers: ["thermoforger"]
 };
 

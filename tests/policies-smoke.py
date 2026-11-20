@@ -662,7 +662,14 @@ async def main():
         await body("Ocean")
         ao = {v: (d, txt) for v, d, txt in await agri_opts()}
         check("Anglers on Ocean: Agricultural Focus disabled with the reason", ao.get("agriculturalFocus", (False, ""))[0] and "Not available with: Anglers" in ao["agriculturalFocus"][1] and "Ocean" in ao["agriculturalFocus"][1], ao.get("agriculturalFocus"))
+        check("Anglers on Ocean: Aquaculture available", ao.get("aquaculture", (True, ""))[0] is False, ao.get("aquaculture"))
+        await card_plus(3, 1)
+        await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[3].querySelector('select');s.value='aquaculture';s.dispatchEvent(new Event('change'))}""")
+        jobs = await pg.inner_text("#planet-summary")
+        check("Anglers on Ocean: Anglers and Pearl Divers replace Farmers", "Angler" in jobs and "Pearl Diver" in jobs and "\nFarmer" not in jobs, jobs[:600])
         await body("Arid")
+        jobs = await pg.inner_text("#planet-summary")
+        check("Anglers on Arid: Farmers again, Aquaculture dropped", "Farmer" in jobs and "Angler" not in jobs, jobs[:600])
         ao = {v: d for v, d, _ in await agri_opts()}
         check("Anglers on Arid: Agricultural Focus available", ao.get("agriculturalFocus") is False, ao)
         await civic_toggle("Anglers / Marine Machines")

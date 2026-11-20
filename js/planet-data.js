@@ -122,10 +122,12 @@ export function capitalSetForAuthority(authorityId) {
  * P10.10: Anglers-family civics (Anglers / Marine Machines share civicAnglers, Trawling Operations / Maritime Robotics
  * share civicCorporateAnglers) on a wet-climate world (Ocean, Continental, Tropical). Wiki 4.5.2 "District
  * specialization", Agriculture specializations: Agricultural Focus and Agrarian Villages are NOT available there
- * (Aquaculture and Coastal Hamlets replace them); Coastal Hamlets needs it.
+ * (Aquaculture and Coastal Hamlets replace them); Coastal Hamlets and Aquaculture need it. Anglers civic page: there
+ * every Farmer becomes an Angler and every Artisan a Pearl Diver (Jobs page job swaps, see ANGLERS_JOB_SWAPS).
  */
-const ANGLERS_WET_CLIMATE = [{ type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }, { type: "celestial", ids: ["ocean", "continental", "tropical"] }];
+export const ANGLERS_WET_CLIMATE = [{ type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }, { type: "celestial", ids: ["ocean", "continental", "tropical"] }];
 const ANGLERS_WET_CLIMATE_BLOCK = { type: "notAll", rules: ANGLERS_WET_CLIMATE };
+export const ANGLERS_JOB_SWAPS = { farmer: "angler", artisan: "pearl_diver" };
 
 export const DISTRICTS = {
   /**
@@ -468,6 +470,15 @@ export const DISTRICTS = {
         permittedSets: ["food"]
       },
       {
+        // P10.10: replaces Agricultural Focus with Anglers on a wet-climate world.
+        id: "aquaculture",
+        i18nKey: "specializationAquaculture",
+        img: "districts_specialization/District_specialization_angler.png",
+        requires: ANGLERS_WET_CLIMATE,
+        jobs: { angler: 50, pearl_diver: 50 },
+        permittedSets: ["food"]
+      },
+      {
         id: "agrarianVillages",
         i18nKey: "specializationAgrarianVillages",
         img: "districts_specialization/District_specialization_food.png",
@@ -575,6 +586,8 @@ export const JOBS = {
   crystal_miner: { i18nKey: "jobCrystalMiner", img: "jobs/job_crystal_miner.png", stratum: "worker" },
   mote_harvester: { i18nKey: "jobMoteHarvester", img: "jobs/job_mote_harvester.png", stratum: "worker" },
   gas_extractor: { i18nKey: "jobGasExtractor", img: "jobs/job_gas_extractor.png", stratum: "worker" },
+  angler: { i18nKey: "jobAngler", img: "jobs/job_angler.png", stratum: "worker" },
+  pearl_diver: { i18nKey: "jobPearlDiver", img: "jobs/job_pearl_diver.png", stratum: "specialist" },
   thermotechnic_mentor: { i18nKey: "jobThermotechnicMentor", img: "jobs/job_polytechnic_mentor.png", stratum: "specialist" },
   // Especialistas ligados a edificios de ética/principio
   death_priest: { i18nKey: "jobDeathPriest", img: "jobs/job_death_priest.png", stratum: "specialist" },
@@ -628,6 +641,8 @@ export const JOB_OUTPUTS = {
   crystal_miner: { minerals: 2, rare_crystals: 0.5 },
   mote_harvester: { energy: 3, volatile_motes: 0.5 },
   gas_extractor: { food: 3, exotic_gases: 0.5 },
+  angler: { food: 6, trade: 2 },
+  pearl_diver: { consumer_goods: 6, trade: 2, minerals: -4, food: -3 },
   // Especialistas
   metallurgist: { alloys: 3, minerals: -6 },
   artisan: { consumer_goods: 6, minerals: -6 },
