@@ -4,6 +4,7 @@ Run from the project root:  python3 tests/policies-smoke.py
 Needs: pip install playwright && playwright install chromium
 Uses the English UI (browser locale en-US) and file:// URLs.
 PLAYWRIGHT_CHROME=/path/to/chrome uses an installed Chrome instead of Playwright's Chromium.
+BLOCK_REMOTE=1 skips the remote asset images (much faster without network).
 """
 import asyncio, json, os, sys, tempfile
 from playwright.async_api import async_playwright
@@ -27,6 +28,7 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(executable_path=os.environ.get("PLAYWRIGHT_CHROME") or None, args=["--allow-file-access-from-files"])
         ctx = await browser.new_context(locale="en-US")
+        if os.environ.get("BLOCK_REMOTE"): await ctx.route("https://**/*", lambda r: r.abort())  # skip remote images (faster offline)
         pg = await ctx.new_page()
         errors = []
         pg.on("pageerror", lambda e: errors.append(str(e)))
@@ -736,6 +738,41 @@ async def main():
         check("branch office restored: unknown civic and building dropped, illegal without Criminal Heritage -> legal", restored == [True, "legal", ["civicTradingPosts"], ["", "commercialForum"]], restored)
         block_txt = await pg.evaluate("async()=>{const d=await import('./js/branch-office-data.js');return [d.branchHostBlockReason({celestialTypeId:'nanite'},false),d.branchHostBlockReason({celestialTypeId:'continental'},true),d.branchHostBlockReason({celestialTypeId:'continental',civicIds:['civicFanaticPurifiers']},false),d.branchHostBlockReason({celestialTypeId:'continental'},false)]}")
         check("branch: no branch offices on Nanite World / gestalt / Fanatic Purifiers hosts", block_txt == ["branchHostBlockedBody", "branchHostBlockedGestalt", "branchHostBlockedPurifiers", None], block_txt)
+
+        # P19.3: branch office effects on the planet economy and conditions
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        for _ in range(2): await pg.evaluate("()=>document.querySelector('#planet-capital-upgrade').click()")
+        await tab("branches")
+        await pg.evaluate("()=>document.querySelector('#branch-present-toggle').click()")
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicTradingPosts] input').click()")
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicGospelOfTheMasses] input').click()")
+        await pg.select_option(".branch-slot[data-branch-slot='0'] select", "commercialForum")
+        await pg.select_option(".branch-slot[data-branch-slot='1'] select", "clearThoughtClinic")
+        mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText.replace(/\\n/g,' '))")
+        check("branch: Commercial Forum +0.1 trade per Trader (0.05 + 0.05 Trading Posts)", any("Commercial Forum" in m and "Trader" in m and "+0.1" in m for m in mods), mods)
+        check("branch: Clear Thought Clinic +10% trade from jobs and -5 happiness", any("Clear Thought Clinic" in m and "+10%" in m for m in mods) and any("Clear Thought Clinic" in m and "Happiness" in m and "−5" in m for m in mods), mods)
+        cond = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions [data-condition]')].map(r=>[r.dataset.condition,r.querySelector('.planet-resource-value')?.innerText]))")
+        check("branch: happiness row from the branch office", cond.get("happinessBranchOffice") == "−5", cond)
+        summ = await pg.inner_text("#planet-summary")
+        check("branch: 400 Traders (capital tier III has none, the two buildings add 200 each)", "Trader" in summ, summ[:400])
+        val = await pg.inner_text("#branch-value-line")
+        check("branch: value line = 50% of the colony's trade", "Branch office value:" in val and "50%" in val, val)
+        check("branch: economy consistent", not (await pg.inner_text("#planet-production-check")).strip())
+        await pg.select_option(".branch-slot[data-branch-slot='1'] select", "templeOfProsperity")
+        summ = await pg.inner_text("#planet-summary")
+        check("branch: Temple of Prosperity adds Prosperity Preacher jobs", "Prosperity Preacher" in summ, summ[:500])
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicGospelOfTheMasses] input').click()")
+        await pg.evaluate("()=>document.querySelector('.branch-civic[data-civic=civicCriminalHeritage] input').click()")
+        await pg.select_option("#branch-legality-select", "illegal")
+        cond = await pg.evaluate("()=>Object.fromEntries([...document.querySelectorAll('#planet-conditions [data-condition]')].map(r=>[r.dataset.condition,r.querySelector('.planet-resource-value')?.innerText]))")
+        check("branch: illegal Smuggler's Port +25 crime; Temple inactive without Gospel", cond.get("crimeBranchOffice") == "+25", cond)
+        mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText.replace(/\\n/g,' '))")
+        check("branch: illegal per-job trade on Criminals", any("Smuggler's Port" in m and "Criminal" in m and "+0.1" in m for m in mods) and not any("Temple of Prosperity" in m for m in mods), mods)
+        val = await pg.inner_text("#branch-value-line")
+        check("branch: illegal value shown as a 25-75% range", "25–75%" in val, val)
+        await pg.evaluate("()=>document.querySelector('#branch-present-toggle').click()")
+        mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText)")
+        check("branch: no branch office -> no branch modifiers", not any("Branch office" in m for m in mods), mods)
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();

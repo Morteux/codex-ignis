@@ -79,7 +79,7 @@ import { createInfoPanel, syncInfoButtons, initInfoButtons } from "./info-panels
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, ETHIC_EFFECTS, AUTHORITY_EFFECTS, MAX_CIVICS, civicsConflict } from "./empire-data.js";
 import { buildingRequirementsMet, requirementContextKey, unmetRequirements, unmodelledRequirements } from "./building-requirements.js";
 import { allowedDesignationCategories, PLANET_TYPES } from "./celestial-data.js";
-import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OWNER_CIVICS } from "./branch-office-data.js";
+import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OWNER_CIVICS, BRANCH_OFFICE_BUILDINGS, BRANCH_OFFICE_VALUE, ILLEGAL_BRANCH_RULES, branchBuildingAvailable, branchBuildingVariant, branchBuildingJobs, branchJobTrade, isIllegalVariant } from "./branch-office-data.js";
 import { renderBranchOffices } from "./branch-offices-ui.js";
 import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEYS, getDesignation, designationAvailable, designationUnmetRules } from "./designation-data.js";
 
@@ -684,9 +684,26 @@ function branchHostBlock() {
   return branchHostBlockReason(requirementContext(), ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id));
 }
 
-function renderBranchTab() {
+/** P19.3: branch office buildings that act on the planet (office present, host allowed, slot unlocked, requirements met). */
+function activeBranchBuildings() {
+  if (!branchOffice.present || branchHostBlock()) return [];
+  const ownerCtx = branchOwnerContext(branchOffice);
+  const hostCtx = requirementContext();
+  const slots = branchSlotCount(currentCapital().tier);
+  return branchOffice.slots.slice(0, slots).map((id) => getBranchBuilding(id)).filter((building) => building && branchBuildingAvailable(building, ownerCtx, hostCtx));
+}
+
+/** Name of a branch office building (legal id or illegal twin id) for the modifier panel. */
+function branchBuildingName(id) {
+  const building = BRANCH_OFFICE_BUILDINGS.find((entry) => entry.id === id || entry.illegal?.id === id);
+  if (!building) return id;
+  return t(currentLang, (building.id === id ? building : building.illegal).i18nKey);
+}
+
+function renderBranchTab(totals) {
   if (!branchesEl) return;
   renderBranchOffices(branchesEl, {
+    value: totals?.branchOffice || null,
     lang: currentLang,
     branch: branchOffice,
     hostBlockKey: branchHostBlock(),
@@ -1115,6 +1132,41 @@ function computeTotals() {
     });
   });
 
+  // P19.3: branch office of another empire (GDD §5.2). Its jobs work for this planet; "Per 100 X: +a Trade" is a per-job
+  // bonus on every X job of the colony (own breakdown line, before job efficiency); "% Trade from jobs" is step 4;
+  // "% Worker pop resource output" is stratum output; happiness and crime are condition points; the building upkeep is
+  // paid by this planet (owner decision 2026-11-20). Owner effects are never applied here.
+  const branchJobFlat = {}; // jobId -> { resourceId: amount per job }
+  const branchConditions = { happiness: 0, crime: 0 };
+  const branchBuildings = activeBranchBuildings();
+  branchBuildings.forEach((building) => {
+    const variant = branchBuildingVariant(building, branchOffice.illegal) || building;
+    const source = { kind: "branch", id: variant.id };
+    Object.entries(branchBuildingJobs(building, branchOffice.illegal)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw));
+    const addFlat = (jobId, resourceId, amount) => {
+      if (!amount) return;
+      branchJobFlat[jobId] = branchJobFlat[jobId] || {};
+      branchJobFlat[jobId][resourceId] = (branchJobFlat[jobId][resourceId] || 0) + amount;
+      pushModifier(source, "jobFlat", { job: jobId, resource: resourceId }, amount);
+    };
+    branchJobTrade(building, branchOffice.illegal, branchOffice.ownerCivicIds).forEach(({ jobs, total }) => jobs.forEach((jobId) => addFlat(jobId, "trade", total)));
+    const colony = building.colony || {};
+    // "+100 Amenities per 100 Medical Workers": wiki amenities are ×100, so +1 amenity per staffed job.
+    if (colony.amenitiesPer100) colony.amenitiesPer100.jobs.forEach((jobId) => addFlat(jobId, "amenities", divideEffect(colony.amenitiesPer100.amount)));
+    if (colony.tradeFromJobsPct) buildingJobResourcePcts.push({ pcts: { trade: colony.tradeFromJobsPct }, source });
+    if (colony.workerOutputPct) pushModifier(source, "stratumOutput", { stratum: "worker" }, colony.workerOutputPct / 100);
+    if (colony.happinessPct) {
+      branchConditions.happiness += colony.happinessPct;
+      pushModifier(source, "conditionFlat", { stat: "happiness" }, colony.happinessPct);
+    }
+    const crime = isIllegalVariant(building, branchOffice.illegal) ? ILLEGAL_BRANCH_RULES.crime : (branchOffice.illegal ? building.illegalCrime || 0 : 0);
+    if (crime) {
+      branchConditions.crime += crime;
+      pushModifier(source, "conditionFlat", { stat: "crime" }, crime);
+    }
+    Object.entries(building.upkeep || {}).forEach(([resourceId, amount]) => addSignedResource(resourceId, -amount, "branchBuildings"));
+  });
+
   // La población asignada a cada empleo (slider) se ajusta a la nueva
   // capacidad antes de calcular recursos: ver syncJobAssignments más abajo.
   syncJobAssignments(jobCapacities);
@@ -1277,6 +1329,11 @@ function computeTotals() {
     Object.entries(edictJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
       unit[resourceId] = (unit[resourceId] || 0) + amount;
     });
+    const edictUnit = { ...unit };
+    // P19.3: per-job bonuses of the branch office buildings (own breakdown line).
+    Object.entries(branchJobFlat[jobId] || {}).forEach(([resourceId, amount]) => {
+      unit[resourceId] = (unit[resourceId] || 0) + amount;
+    });
     const bonusedUnit = { ...unit };
     // Eficacia laboral (designación + edificios): puede ser positiva o negativa
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
@@ -1301,7 +1358,8 @@ function computeTotals() {
       recordBreakdown(resourceId, "jobsBase", (baseUnit[resourceId] || 0) * assigned);
       recordBreakdown(resourceId, "jobsBonus", ((buildingUnit[resourceId] || 0) - (baseUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobWorkforceScaling", ((scaledUnit[resourceId] || 0) - (buildingUnit[resourceId] || 0)) * assigned);
-      recordBreakdown(resourceId, "edictJobFlat", ((bonusedUnit[resourceId] || 0) - (scaledUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "edictJobFlat", ((edictUnit[resourceId] || 0) - (scaledUnit[resourceId] || 0)) * assigned);
+      recordBreakdown(resourceId, "branchJobFlat", ((bonusedUnit[resourceId] || 0) - (edictUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobsModifier", (perJob - (bonusedUnit[resourceId] || 0)) * assigned);
       if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
     });
@@ -1384,7 +1442,9 @@ function computeTotals() {
     const designationFraction = kindFraction("designation");
     const specializationFraction = kindFraction("specialization");
     const planetModifierFraction = kindFraction("planetModifier");
-    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction - specializationFraction - planetModifierFraction), "jobBuildingMult");
+    const branchFraction = kindFraction("branch");
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction - specializationFraction - planetModifierFraction - branchFraction), "jobBuildingMult");
+    if (branchFraction) addSignedResource(resourceId, fromJobs * branchFraction, "branchJobMult");
     if (planetModifierFraction) addSignedResource(resourceId, fromJobs * planetModifierFraction, "planetModifierJobMult");
     if (specializationFraction) addSignedResource(resourceId, fromJobs * specializationFraction, "specializationJobMult");
     if (designationFraction) addSignedResource(resourceId, fromJobs * designationFraction, "designationJobMult");
@@ -1470,8 +1530,8 @@ function computeTotals() {
   // P10.6: happiness of the body type (Gaia "+10% Happiness", treated as points like the edicts); no happiness in gestalt.
   const bodyHappiness = gestaltEmpire ? 0 : bodyRules()?.happinessPct || 0;
   if (bodyHappiness) pushModifier({ kind: "celestial", id: getPlanetState().celestialTypeId }, "conditionFlat", { stat: "happiness" }, bodyHappiness);
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, planetModifiers: gestaltEmpire ? 0 : planetModifierConditions.happiness, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.planetModifiers + happiness.manual));
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, planetModifiers: gestaltEmpire ? 0 : planetModifierConditions.happiness, branchOffice: gestaltEmpire ? 0 : branchConditions.happiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.planetModifiers + happiness.branchOffice + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
@@ -1498,7 +1558,8 @@ function computeTotals() {
   const crimeFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.crime || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
   const crimeFromEdicts = pops > 0 ? edictConditions.crime : 0;
   const crimeFromModifiers = pops > 0 ? planetModifierConditions.crime : 0;
-  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, fromEdicts: crimeFromEdicts, fromModifiers: crimeFromModifiers, total: Math.max(0, crimeFromHappiness + crimeFromJobs + crimeFromEdicts + crimeFromModifiers) };
+  const crimeFromBranch = pops > 0 ? branchConditions.crime : 0;
+  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, fromEdicts: crimeFromEdicts, fromModifiers: crimeFromModifiers, fromBranch: crimeFromBranch, total: Math.max(0, crimeFromHappiness + crimeFromJobs + crimeFromEdicts + crimeFromModifiers + crimeFromBranch) };
   const conditions = {
     happiness,
     stability,
@@ -1549,6 +1610,12 @@ function computeTotals() {
   // producidos/netos y cada recurso destino recibe su parte (que después recibe los multiplicadores como cualquier producción).
   let tradeConversion = null;
   const tradeFromJobs = jobProduced.trade || 0;
+  // P19.3: branch office value (info only): the owner gains a share of the colony's trade, read here as the trade the jobs
+  // and civilians produce before the trade conversion (assumption, GDD §5.2). Never charged to this planet.
+  const branchValueInfo = branchOffice.present && !branchHostBlock()
+    ? { trade: tradeFromJobs, illegal: branchOffice.illegal, value: branchOffice.illegal ? null : tradeFromJobs * BRANCH_OFFICE_VALUE.legal,
+      min: tradeFromJobs * BRANCH_OFFICE_VALUE.illegal.min, max: tradeFromJobs * BRANCH_OFFICE_VALUE.illegal.max, buildings: branchBuildings.map((building) => building.id) }
+    : null;
   if (tradePolicy && tradeFromJobs > 0) {
     const kept = tradePolicy.rates.trade ?? 0;
     const lost = tradeFromJobs * (1 - kept);
@@ -1607,7 +1674,7 @@ function computeTotals() {
 
   const inconsistencies = checkTotalsConsistency(resourceTotals, producedTotals, consumedTotals, breakdown);
 
-  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
+  return { jobCapacities, jobUnitOutputs, resourceTotals, producedTotals, consumedTotals, breakdown, inconsistencies, conditions, tradeConversion, branchOffice: branchValueInfo, externalTotals, modifiers: [...modifierMap.values()], housing, housingSources, amenities, amenitiesTotal, amenitySources };
 }
 
 /**
@@ -2993,6 +3060,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
   { id: "jobWorkforceScaling", pos: "breakdownJobWorkforceScaling", neg: "breakdownJobWorkforceScaling" },
   { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat" },
+  { id: "branchJobFlat", pos: "breakdownBranchJobFlat", neg: "breakdownBranchJobFlat" },
   { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
   { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
   { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
@@ -3001,6 +3069,7 @@ const BREAKDOWN_SOURCES = [
   { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult" },
   { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult" },
   { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult" },
+  { id: "branchJobMult", pos: "breakdownBranchJobMult", neg: "breakdownBranchJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
@@ -3011,7 +3080,8 @@ const BREAKDOWN_SOURCES = [
   { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
   { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
   { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts" },
-  { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" }
+  { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" },
+  { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings" }
 ];
 
 // Recursos de la columna "Netos" con el desglose desplegado (se conserva entre repintados).
@@ -3245,6 +3315,7 @@ function modifierSourceName(source) {
   if (source.kind === "specialization") { const option = primaryOption(source.id); return option ? t(currentLang, option.i18nKey) : source.id; }
   if (source.kind === "celestial") { const type = PLANET_TYPES.find((entry) => entry.id === source.id); return type ? t(currentLang, type.i18nKey) : source.id; }
   if (source.kind === "job") return jobName(source.id);
+  if (source.kind === "branch") return branchBuildingName(source.id);
   return source.id;
 }
 
@@ -3671,6 +3742,7 @@ function renderConditions(totals) {
       ...(h.body ? [["happinessBody", "conditionsHappinessBody", h.body, true]] : []),
       ...(h.edicts ? [["happinessEdicts", "conditionsHappinessEdicts", h.edicts, true]] : []),
       ...(h.planetModifiers ? [["happinessPlanetModifiers", "conditionsPlanetModifiers", h.planetModifiers, true]] : []),
+      ...(h.branchOffice ? [["happinessBranchOffice", "conditionsBranchOffice", h.branchOffice, true]] : []),
       ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
     ]);
@@ -3723,7 +3795,7 @@ function renderConditions(totals) {
   const cr = c.crime;
   const crimeRows = cr.gestalt
     ? [["crimeJobs", "conditionsDeviancyJobs", cr.fromJobs], ["crime", "conditionsDeviancy", cr.total]]
-    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ...(cr.fromEdicts ? [["crimeEdicts", "conditionsCrimeEdicts", cr.fromEdicts]] : []), ...(cr.fromModifiers ? [["crimePlanetModifiers", "conditionsPlanetModifiers", cr.fromModifiers]] : []), ["crime", "conditionsCrime", cr.total]];
+    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ...(cr.fromEdicts ? [["crimeEdicts", "conditionsCrimeEdicts", cr.fromEdicts]] : []), ...(cr.fromModifiers ? [["crimePlanetModifiers", "conditionsPlanetModifiers", cr.fromModifiers]] : []), ...(cr.fromBranch ? [["crimeBranchOffice", "conditionsBranchOffice", cr.fromBranch]] : []), ["crime", "conditionsCrime", cr.total]];
   crimeRows.forEach(([key, labelKey, value]) => {
     const row = document.createElement("div");
     row.className = `planet-resource-row ${value > 0 ? "is-negative" : "is-positive"}`;
@@ -3805,7 +3877,8 @@ const CONDITION_SOURCES = {
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
-  happinessEdicts: "derived", happinessBody: "derived", happinessPlanetModifiers: "derived", stabilityPlanetModifiers: "derived", crimePlanetModifiers: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
+  happinessEdicts: "derived", happinessBody: "derived", happinessPlanetModifiers: "derived", stabilityPlanetModifiers: "derived", crimePlanetModifiers: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived",
+  happinessBranchOffice: "derived", crimeBranchOffice: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
@@ -3927,7 +4000,7 @@ function refresh() {
   renderDepositFeatures();
   renderBlockers();
   renderPlanetModifiers();
-  renderBranchTab();
+  renderBranchTab(totals);
   updatePlanetState({ planetSize });
 }
 

@@ -604,7 +604,15 @@ export const JOBS = {
   civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
   criminal: { i18nKey: "jobCriminal", img: "jobs/job_criminal.png", stratum: "special" },
   test_subject: { i18nKey: "jobTestSubject", img: "jobs/job_test_subject.png", stratum: "special" },
-  servant: { i18nKey: "jobServant", img: "jobs/job_servant.png", stratum: "special" }
+  servant: { i18nKey: "jobServant", img: "jobs/job_servant.png", stratum: "special" },
+  // P19.3: jobs created by branch office buildings of another empire (wiki 4.5.2 "Jobs").
+  prosperity_preacher: { i18nKey: "jobProsperityPreacher", img: "jobs/job_numistic_priest.png", stratum: "specialist" },
+  medical_worker: { i18nKey: "jobMedicalWorker", img: "jobs/job_healthcare.png", stratum: "specialist" },
+  augmentor: { i18nKey: "jobAugmentor", img: "jobs/job_augmentor.png", stratum: "specialist" },
+  roboticist: { i18nKey: "jobRoboticist", img: "jobs/job_roboticist.png", stratum: "specialist" },
+  empathic_marketer: { i18nKey: "jobEmpathicMarketer", img: "jobs/job_telepath.png", stratum: "specialist" },
+  merchant: { i18nKey: "jobMerchant", img: "jobs/job_merchant.png", stratum: "ruler" },
+  orderly: { i18nKey: "jobOrderly", img: "jobs/job_slave_orderly.png", stratum: "worker" }
 };
 
 /**
@@ -679,7 +687,18 @@ export const JOB_OUTPUTS = {
   civilian: { amenities: 0.5, trade: 1 },
   criminal: {},
   test_subject: { physics: 0.5, society: 1, engineering: 0.5, amenities: 3, consumer_goods: -1 },
-  servant: { amenities: 4 }
+  servant: { amenities: 4 },
+  // P19.3: branch office jobs (wiki 4.5.2 "Jobs", per 100 workforce). Not modelled: pop growth / assembly speed (Medical
+  // Worker, Augmentor, Roboticist +2 mechanical pop assembly), Augmentor cybernetic bonus, Orderly +2.5 % Experiment
+  // Engineer / Test Subject efficiency, Empathic Marketer Shroud bonus, Prosperity Preacher Manager / Steward swaps and the
+  // Politician → Merchant job swap (job swaps are not modelled, GDD §10).
+  prosperity_preacher: { unity: 3, amenities: 2, consumer_goods: -2 },
+  medical_worker: { amenities: 7.5, consumer_goods: -1 },
+  augmentor: { amenities: 5, society: 1.5, engineering: 1.5, alloys: -1 },
+  roboticist: { alloys: -2 },
+  empathic_marketer: { trade: 6, consumer_goods: -1 },
+  merchant: { unity: 3.5, trade: 6, amenities: 3, consumer_goods: -3 },
+  orderly: { amenities: 5 }
 };
 
 /**

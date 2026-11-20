@@ -6,7 +6,7 @@
  * Layout: host check → "branch office on this planet" toggle → owner (civics,
  * legal / Criminal Heritage illegal) → building slots (by host capital tier).
  * Owner effects are greyed out: they go to the corporate empire, never to
- * this planet (GDD §5.2). Effects on the planet are applied in P19.3.
+ * this planet (GDD §5.2). Effects on the planet are computed in js/planet-sim.js (P19.3).
  */
 
 import { t } from "./i18n.js";
@@ -16,7 +16,7 @@ import { civicsConflict, MAX_CIVICS } from "./empire-data.js";
 import { unmodelledRequirements } from "./building-requirements.js";
 import {
   BRANCH_OFFICE_BUILDINGS, BRANCH_OFFICE_SLOTS_BY_TIER, BRANCH_OWNER_CIVICS, ILLEGAL_BRANCH_RULES,
-  branchBuildingVariant, branchBuildingUnmet, getBranchBuilding
+  branchBuildingVariant, branchBuildingUnmet, getBranchBuilding, branchBuildingJobs, branchJobTrade, isIllegalVariant
 } from "./branch-office-data.js";
 
 const MAX_SLOTS = Math.max(...Object.values(BRANCH_OFFICE_SLOTS_BY_TIER));
@@ -39,36 +39,14 @@ function civicNames(lang, keys) {
   return keys.map((key) => t(lang, key)).join(", ");
 }
 
-/** Jobs created on the colony by this building in this branch office (×100, as displayed elsewhere). */
-export function branchBuildingJobs(building, illegal) {
-  if (illegal && building.illegalJobs) return { ...building.illegalJobs };
-  const jobs = { ...building.jobs };
-  if (!illegal || building.kind !== "corporate" || building.illegal === "same") return jobs;
-  // Criminal Heritage illegal variant: half of the produced jobs become Criminal jobs.
-  const result = {};
-  let criminals = 0;
-  Object.entries(jobs).forEach(([jobId, amount]) => {
-    const moved = amount * ILLEGAL_BRANCH_RULES.criminalJobShare;
-    result[jobId] = amount - moved;
-    criminals += moved;
-  });
-  if (criminals) result.criminal = (result.criminal || 0) + criminals;
-  return result;
-}
-
 /** Colony effect lines (applied to this planet from P19.3). */
 function colonyLines(lang, building, illegal, ownerCivicIds) {
   const lines = [];
   Object.entries(branchBuildingJobs(building, illegal)).forEach(([jobId, amount]) => {
     if (amount) lines.push(t(lang, "branchLineJobs")(num(amount), jobName(lang, jobId)));
   });
-  const illegalVariant = illegal && building.kind === "corporate" && building.illegal !== "same";
-  const tradeEntries = illegal && building.illegalJobTrade ? building.illegalJobTrade : (building.jobTrade || []);
-  tradeEntries.forEach((entry) => {
-    const matched = entry.civics.filter((key) => ownerCivicIds.includes(key));
-    const extra = entry.allCivics ? (matched.length === entry.civics.length ? entry.perCivic : 0) : entry.perCivic * matched.length;
-    const total = Math.round((entry.amount + extra) * 1000) / 1000;
-    const jobs = illegalVariant ? ["criminal"] : entry.jobs;
+  const illegalVariant = isIllegalVariant(building, illegal);
+  branchJobTrade(building, illegal, ownerCivicIds).forEach(({ entry, jobs, total }) => {
     const civicPart = entry.civics.length ? t(lang, entry.allCivics ? "branchLineTradeAllCivics" : "branchLineTradePerCivic")(num(entry.perCivic), civicNames(lang, entry.civics)) : "";
     lines.push(t(lang, "branchLineJobTrade")(num(total), jobs.map((jobId) => jobName(lang, jobId)).join(", "), civicPart));
   });
@@ -326,6 +304,19 @@ export function renderBranchOffices(container, options) {
   const grid = document.createElement("div");
   grid.className = "empire-policy-grid";
   for (let index = 0; index < MAX_SLOTS; index += 1) grid.append(renderSlot(lang, index, options));
-  section.append(title, slotsNote, grid);
+  section.append(title, slotsNote);
+  // P19.3: branch office value (info only: the owner's trade).
+  if (options.value) {
+    const v = options.value;
+    const round = (amount) => Math.round(amount * 100) / 100;
+    const valueLine = document.createElement("p");
+    valueLine.className = "empire-note";
+    valueLine.id = "branch-value-line";
+    valueLine.textContent = v.illegal
+      ? t(lang, "branchValueIllegal")(round(v.min), round(v.max), round(v.trade))
+      : t(lang, "branchValueLegal")(round(v.value), round(v.trade));
+    section.append(valueLine);
+  }
+  section.append(grid);
   container.append(section);
 }

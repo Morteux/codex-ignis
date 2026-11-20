@@ -338,3 +338,40 @@ export function branchBuildingAvailable(building, ownerCtx, hostCtx) {
   return branchBuildingUnmet(building, ownerCtx, hostCtx).length === 0
     && buildingRequirementsMet(scoped(building, "owner"), ownerCtx) && buildingRequirementsMet(scoped(building, "host"), hostCtx);
 }
+
+/** Is this the Criminal Heritage illegal twin of a corporate building (not the same building in both offices)? */
+export function isIllegalVariant(building, illegal) {
+  return Boolean(illegal) && building.kind === "corporate" && building.illegal !== "same";
+}
+
+/** Jobs created on the colony by this building in this branch office (×100, as displayed elsewhere). */
+export function branchBuildingJobs(building, illegal) {
+  if (illegal && building.illegalJobs) return { ...building.illegalJobs };
+  const jobs = { ...building.jobs };
+  if (!isIllegalVariant(building, illegal)) return jobs;
+  // Criminal Heritage illegal variant: half of the produced jobs become Criminal jobs.
+  const result = {};
+  let criminals = 0;
+  Object.entries(jobs).forEach(([jobId, amount]) => {
+    const moved = amount * ILLEGAL_BRANCH_RULES.criminalJobShare;
+    result[jobId] = amount - moved;
+    criminals += moved;
+  });
+  if (criminals) result.criminal = (result.criminal || 0) + criminals;
+  return result;
+}
+
+/**
+ * Colony trade per staffed job of each "Per 100 X" entry: [{ entry, jobs, total }]. The extra is added once per owner
+ * civic in the list (or once with every civic for `allCivics`); in an illegal twin the bonus goes to the Criminal jobs
+ * (owner decision 2026-11-20; the Private Security Company lists it as `illegalJobTrade`).
+ */
+export function branchJobTrade(building, illegal, ownerCivicIds) {
+  const entries = illegal && building.illegalJobTrade ? building.illegalJobTrade : (building.jobTrade || []);
+  return entries.map((entry) => {
+    const matched = entry.civics.filter((key) => ownerCivicIds.includes(key));
+    const extra = entry.allCivics ? (matched.length === entry.civics.length ? entry.perCivic : 0) : entry.perCivic * matched.length;
+    const total = Math.round((entry.amount + extra) * 1000) / 1000;
+    return { entry, jobs: isIllegalVariant(building, illegal) && !building.illegalJobTrade ? ["criminal"] : entry.jobs, total };
+  });
+}
