@@ -18,7 +18,7 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
 | Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |
 
-Documentación del proyecto: `PLANET_SIM_GDD.md` (diseño y decisiones del simulador), `tasks.md` (tareas pendientes del simulador), `tech_tree.md` (plan del árbol de tecnologías), `principios_del_juego.md` (nombres e iconos de los principios), `WIKI_URLS.md` (páginas de la wiki de Stellaris usadas como fuente) y `StellarisAssetsFileTree.txt` (árbol del repositorio de assets).
+Documentación del proyecto: `PLANET_SIM_GDD.md` (diseño y decisiones del simulador), `tasks.md` (tareas pendientes del simulador), `DECISIONS_TO_REVIEW.md` (decisiones tomadas sin el dueño, pendientes de revisar), `tech_tree.md` (plan del árbol de tecnologías), `principios_del_juego.md` (nombres e iconos de los principios), `WIKI_URLS.md` (páginas de la wiki de Stellaris usadas como fuente) y `StellarisAssetsFileTree.txt` (árbol del repositorio de assets).
 
 ## Contenido de la wiki
 
