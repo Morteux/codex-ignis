@@ -141,6 +141,12 @@ export const DATA_COLLECTIONS = {
     // P18: valores transcritos de la página 4.5.2; las decisiones de modelado (tradiciones cumplidas, % de felicidad como puntos) se revisan en P14.
     verification: VERIFICATION.WIKI_VERIFIED
   },
+  branchOffices: {
+    file: "js/branch-office-data.js",
+    // P19.1: branch office buildings placed by another (corporate) empire, slots per capital tier.
+    sources: [WIKI + "Holdings", WIKI + "Capital_building"],
+    verification: VERIFICATION.UNVERIFIED
+  },
   stackingRules: {
     file: "js/stacking-rules.js",
     // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.

@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
@@ -9,8 +9,7 @@ Sources: *Celestial object* page (base modifiers per body type); Requirements co
 
 ## P19 — Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
-- [ ] P19.1 Audit branch office buildings (4.5.2 wiki): effects on the host planet, requirements, slots
-- [ ] P19.2 Sucursales tab: pick branch office buildings
+- [ ] P19.2 Sucursales tab: owner civics and legal/illegal, pick branch office buildings (slots by capital tier), i18n names. Open questions in GDD §5.2
 - [ ] P19.3 Engine: effects on the planet economy; branch-office trade joins the trade conversion
 - [ ] P19.4 Saved with the planet (optional field)
 
