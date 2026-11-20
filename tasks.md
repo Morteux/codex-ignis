@@ -12,6 +12,7 @@ Models another empire placing branch office buildings on this planet; any branch
 - [ ] P19.2 Sucursales tab: owner civics and legal/illegal, pick branch office buildings (slots by capital tier), i18n names. Open questions in GDD §5.2
 - [ ] P19.3 Engine: effects on the planet economy; branch-office trade joins the trade conversion
 - [ ] P19.4 Saved with the planet (optional field)
+- [ ] P19.5 Owner marks which branch office buildings are limited to one per colony (`maxPerColony`); until then all are repeatable
 
 ## P20 — Pop upkeep and living standards
 Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task starts).

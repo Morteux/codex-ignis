@@ -27,6 +27,8 @@
  *    ILLEGAL_BRANCH_RULES (half of the jobs become Criminals, +25 crime).
  *  - jobTrade: colony trade "Per 100 X" = per staffed job (×100 scale), on the
  *    listed jobs of the colony: { jobs, amount, perCivic, civics, allCivics }.
+ *    In an illegal building the bonus applies to the colony's Criminal jobs
+ *    instead (owner decision 2026-11-20, as the Private Security Company).
  *    `perCivic` is added once per OWNER civic in `civics`; `allCivics: true`
  *    = the extra is given only with every civic in `civics` (Corporate Clinic).
  *  - colony: other colony effects { tradeFromJobsPct, workerOutputPct,
@@ -36,6 +38,10 @@
  *    perBranchValue { resource: amount } per 100 branch office value,
  *    capitalTraders: civics giving +200 Traders on the owner's capital, info.
  *  - upkeep / cost: as on the wiki (cost.alt = Nomadic alternative resource).
+ *    Upkeep is paid by the host planet (owner decision 2026-11-20); cost is
+ *    paid by the owner (shown only).
+ *  - Limit per colony: some buildings are limited to one per colony; the owner
+ *    marks them later (`maxPerColony`, absent = repeatable).
  *  - requires: rules of js/building-requirements.js plus `scope`:
  *      "owner" → evaluated with the owner's civics / branch legality
  *      "host"  → evaluated with this planet (body type, capital tier)
