@@ -931,6 +931,9 @@ async def main():
         loose = [s for s in icons["all"] if any(n in s for n in ("Faction_support", "Colony_type_automated", "Focus_core", "Menu_icon_traditions", "Menu_icon_leaders", "Job_clerk"))]
         check("icons: no loose first-pass placements left", not loose, loose)
         check("icons: branch offices / empire / species / ethics / jobs by meaning", icons["branches"].endswith("modifiers/mod_branch_office_value_mult.png") and icons["empire"].endswith("modifiers/mod_cat_government.png") and icons["species"] == "img/ui/Icon_pop.png" and icons["ethics"].endswith("modifiers/mod_ethic_attraction_mult.png") and icons["jobs"] == "img/ui/Pop_job.png", icons)
+        # P12.3: empire-level tabs (Imperio, Edicts) marked as saved with the empire profile
+        marked = await pg.evaluate("()=>[...document.querySelectorAll('.planet-main-tab')].filter(b=>b.classList.contains('is-empire-saved')).map(b=>[b.dataset.mainTab,b.title,getComputedStyle(b,'::before').backgroundImage.includes('mod_cat_government'),getComputedStyle(b).boxShadow!=='none'])")
+        check("empire tabs: only Imperio and Edicts, tooltip, empire icon background, accent line", marked == [["empire", "Saved with the empire profile", True, True], ["edicts", "Saved with the empire profile", True, True]], marked)
         check("no page errors", not errors, errors)
         await browser.close()
 

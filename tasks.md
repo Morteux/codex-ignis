@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-> Progreso: **4 / 27 tareas (15%)**
+> Progreso: **5 / 27 tareas (19%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
@@ -40,7 +40,8 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
   - Prueba manual: abre `planet-sim.html`: la pestaña Sucursales lleva el icono de valor de sucursal, Imperio el de gobierno y, en Imperio, «Tipo de especie» el icono de pop y «Éticas» el de atracción ética; «Resumen de empleos totales» lleva el icono genérico de empleo.
 - [ ] **T1204** (P12.4) Proper Advanced Logic resource icon (replaces `modifiers/mod_advanced_logic_produces_add.png` in `RESOURCES.advanced_logic` of `js/planet-data.js`)
   - ❓ Bloqueada: StellarisAssets has no `resources/Advanced_logic.png` and the wiki image could not be downloaded from here; can the owner add the in-game resource icon to `StellarisAssets/resources/`?
-- [ ] **T1203** (P12.3) Mark the empire-level tabs (Imperio, Edicts) as saved with the empire profile. Proposal: semi-transparent empire icon as tab background, shared accent line, tooltip "Saved with the empire profile".
+- [x] **T1203** (P12.3) Mark the empire-level tabs (Imperio, Edicts) as saved with the empire profile. Proposal: semi-transparent empire icon as tab background, shared accent line, tooltip "Saved with the empire profile".
+  - Prueba manual: abre `planet-sim.html`: las pestañas Imperio y Edicts llevan de fondo el icono de gobierno semitransparente y una línea dorada abajo; al pasar el ratón sale «Se guarda con el perfil de imperio» (cambia con el idioma).
 
 ## 13 · Polish & QA
 - [ ] **T1301** (P13.1) Mobile layout review of all tabs

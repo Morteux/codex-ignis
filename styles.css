@@ -966,6 +966,23 @@ h1 {
     cursor: not-allowed;
 }
 
+/* Pestañas de nivel imperio (Imperio, Edicts), guardadas con el perfil de imperio (P12.3): icono de imperio semitransparente de fondo y línea de acento común. */
+.planet-main-tab.is-empire-saved {
+    position: relative;
+    isolation: isolate;
+    box-shadow: inset 0 -3px 0 var(--empire-saved, #d8b45a);
+}
+
+.planet-main-tab.is-empire-saved::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url("https://morteux.github.io/StellarisAssets/modifiers/mod_cat_government.png") right .3rem center / auto 85% no-repeat;
+    opacity: .18;
+    pointer-events: none;
+}
+
 .planet-placeholder-panel {
     padding: 2.4rem 1.35rem;
     border: 1px solid var(--line);
