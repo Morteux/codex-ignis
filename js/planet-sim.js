@@ -1647,6 +1647,18 @@ function requirementOptionLabel(name, item, ctx) {
   return { text: notes.length ? `${name} — ${notes.join("; ")}` : name, title: notes.join("\n"), disabled: unmet.length > 0 };
 }
 
+/** Names a positive rule refers to (civics, celestial bodies, ethics, authorities), for combined rules (P10.10 "notAll"). */
+function ruleSubjects(rule) {
+  const names = (list) => list.join(", ");
+  switch (rule.type) {
+    case "civic": return names(rule.keys.map((key) => t(currentLang, key)));
+    case "celestial": return names(rule.ids.map((id) => t(currentLang, PLANET_TYPES.find((type) => type.id === id).i18nKey)));
+    case "ethic": return names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
+    case "authority": return names(rule.ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)));
+    default: return describeUnmetRule(rule);
+  }
+}
+
 function describeUnmetRule(rule) {
   const names = (list) => list.join(", ");
   switch (rule.type) {
@@ -1662,6 +1674,7 @@ function describeUnmetRule(rule) {
     case "notSpecies": return t(currentLang, "requirementBiologicalSpecies");
     case "districtBuildable": return t(currentLang, "requirementDistrictBuildable") + districtDisplayName(rule.district);
     case "deposit": return t(currentLang, "requirementDeposit");
+    case "notAll": return t(currentLang, "requirementNotAll") + rule.rules.map(ruleSubjects).join(" + ");
     case "notBlocker": return t(currentLang, "requirementNotBlocker") + rule.ids.map((id) => t(currentLang, BLOCKERS.find((blocker) => blocker.id === id).i18nKey)).join(", ");
     default: return "";
   }

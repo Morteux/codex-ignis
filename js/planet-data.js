@@ -118,6 +118,15 @@ export function capitalSetForAuthority(authorityId) {
  * (simplificación: se ignoran sus propias especializaciones, como Mixed
  * Industry, que darían empleos de fábrica/fundición en vez de ranuras).
  */
+/**
+ * P10.10: Anglers-family civics (Anglers / Marine Machines share civicAnglers, Trawling Operations / Maritime Robotics
+ * share civicCorporateAnglers) on a wet-climate world (Ocean, Continental, Tropical). Wiki 4.5.2 "District
+ * specialization", Agriculture specializations: Agricultural Focus and Agrarian Villages are NOT available there
+ * (Aquaculture and Coastal Hamlets replace them); Coastal Hamlets needs it.
+ */
+const ANGLERS_WET_CLIMATE = [{ type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }, { type: "celestial", ids: ["ocean", "continental", "tropical"] }];
+const ANGLERS_WET_CLIMATE_BLOCK = { type: "notAll", rules: ANGLERS_WET_CLIMATE };
+
 export const DISTRICTS = {
   /**
    * Distrito urbano: construir copias NO da ranuras de edificio ni empleos
@@ -314,8 +323,8 @@ export const DISTRICTS = {
    *
    * P7.4: `requires` (mismas reglas que los edificios, ver js/building-requirements.js)
    * en las opciones cuyo requisito se puede modelar: Bahías de Cultivo Solar (solo
-   * hábitat), Aldeas Agrarias (Idilio Agrario, sin Pescadores) y Caseríos Costeros
-   * (Idilio Agrario + Pescadores; sustituyen a las Aldeas). NO se modelan los de
+   * hábitat), Aldeas Agrarias (Idilio Agrario, sin Pescadores en clima húmedo) y Caseríos Costeros
+   * (Idilio Agrario + Pescadores en clima húmedo; sustituyen a las Aldeas). NO se modelan los de
    * origen (Urbanización Subterránea: Subterráneo; Generación de Energía y Extracción de
    * Minerales: no Naturaleza salvaje) ni de característica planetaria (Minas Gravitónicas:
    * Montañas en el cielo, ver P10.8): siguen disponibles, con el requisito indicado
@@ -454,6 +463,7 @@ export const DISTRICTS = {
         id: "agriculturalFocus",
         i18nKey: "specializationAgriculturalFocus",
         img: "districts_specialization/District_specialization_food.png",
+        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }, ANGLERS_WET_CLIMATE_BLOCK],
         jobs: { farmer: 100 },
         permittedSets: ["food"]
       },
@@ -461,7 +471,7 @@ export const DISTRICTS = {
         id: "agrarianVillages",
         i18nKey: "specializationAgrarianVillages",
         img: "districts_specialization/District_specialization_food.png",
-        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, { type: "notCivic", keys: ["civicAnglers", "civicCorporateAnglers"] }],
+        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, ANGLERS_WET_CLIMATE_BLOCK],
         jobs: { farmer: 75, trader: 75 },
         permittedSets: ["food", "origin"]
       },
@@ -469,7 +479,7 @@ export const DISTRICTS = {
         id: "coastalHamlets",
         i18nKey: "specializationCoastalHamlets",
         img: "districts_specialization/District_specialization_food.png",
-        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, { type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }],
+        requires: [{ type: "civic", keys: ["civicAgrarianIdyll"] }, ...ANGLERS_WET_CLIMATE],
         jobs: { farmer: 50, artisan: 50, trader: 50 },
         permittedSets: ["food", "origin"]
       },

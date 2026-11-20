@@ -648,6 +648,26 @@ async def main():
         check("Volcanic: Lavafalls listed, Lush (x0 on Volcanic) not", vis == [True, False], vis)
         await body("Continental")
 
+        # P10.10: Anglers on a wet-climate world blocks Agricultural Focus and Agrarian Villages; other worlds keep them
+        async def civic_toggle(label):
+            await tab("empire")
+            await pg.evaluate("(l)=>[...document.querySelectorAll('#empire-civics-list button')].find(b=>b.innerText.trim()===l).click()", label)
+        async def agri_opts():
+            return await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card')[3].querySelectorAll('option')].map(o=>[o.value,o.disabled,o.textContent])")
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("empire")
+        await ethic("Gestalt Consciousness")
+        await pg.evaluate("()=>[...document.querySelectorAll('#empire-authority-list button')].find(b=>b.innerText.startsWith('Machine Intelligence')).click()")
+        await civic_toggle("Anglers / Marine Machines")
+        await body("Ocean")
+        ao = {v: (d, txt) for v, d, txt in await agri_opts()}
+        check("Anglers on Ocean: Agricultural Focus disabled with the reason", ao.get("agriculturalFocus", (False, ""))[0] and "Not available with: Anglers" in ao["agriculturalFocus"][1] and "Ocean" in ao["agriculturalFocus"][1], ao.get("agriculturalFocus"))
+        await body("Arid")
+        ao = {v: d for v, d, _ in await agri_opts()}
+        check("Anglers on Arid: Agricultural Focus available", ao.get("agriculturalFocus") is False, ao)
+        await civic_toggle("Anglers / Marine Machines")
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

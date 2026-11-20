@@ -24,6 +24,8 @@
  *   { type: "celestial", ids: [...] }       tipo de cuerpo celeste es alguno de esos (P7.9)
  *   { type: "notSpecies", ids: [...] }       el tipo de especie no es ninguno de esos (P7.9)
  *   { type: "federation" } / { type: "notFederation" }   (P16) exige / está bloqueado por una federación; no se modelan, así que la primera nunca se cumple y la segunda siempre
+ *   { type: "notAll", rules: [...] }         no se cumplen TODAS esas reglas a la vez (P10.10: p. ej.
+ *                                            Pescadores en un mundo de clima húmedo)
  *   { type: "capitalTier", min: n }          nivel del edificio capital en números (I = 1 ... V = 5)
  *
  * Simplificaciones deliberadas (documentadas, no inventadas):
@@ -61,6 +63,7 @@ function ruleMet(rule, ctx) {
     case "notCelestial": return !rule.ids.includes(ctx.celestialTypeId);
     case "celestial": return rule.ids.includes(ctx.celestialTypeId);
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
+    case "notAll": return !rule.rules.every((inner) => ruleMet(inner, ctx)); // P10.10: blocked only when every inner rule is met
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
     case "unmodelled": return true; // requirement the simulator does not model (origin, planetary feature, planet modifier...): never blocks, only shown
     case "notBlocker": return !rule.ids.some((id) => (ctx.blockerIds || []).includes(id)); // P10.8: an active blocker on the planet

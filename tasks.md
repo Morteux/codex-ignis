@@ -7,6 +7,9 @@ Order is a proposal; **P14 is always last**. When a task is done, remove it from
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
 - [ ] P10.6 Wilderness-origin districts — **on hold, owner decides later** (not modelled for now, see GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
 - [ ] P10.10 Re-read every requirement column of the existing districts/specializations/buildings (the regenerated markdown keeps `![No](24px-No.png)` = "not"); e.g. Agricultural Focus is not available with Anglers on a wet-climate world (Aquaculture replaces it)
+  - Done (1/3): urban, secondary and resource specializations re-read from the HTML (the markdown loses the Agriculture table); Agricultural Focus / Agrarian Villages blocked with Anglers on a wet-climate world (new `notAll` rule), Coastal Hamlets needs it, Agricultural Focus notes not-Wilderness.
+  - Next (2/3): Aquaculture (+50 Anglers, +50 Pearl Divers) and the Anglers + wet-climate planet-wide swaps (Farmer → Angler, Artisan → Pearl Diver; Jobs page). Not modelled yet: Sanctuary Enclave (Rogue Servitor, Bio-Trophies), habitat Exotic Gas Capture (system deposit).
+  - Then (3/3): building requirement columns (Buildings, Resource / Industry / Unity / Research, Planet unique, Capital).
 
 ## P19 — Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
