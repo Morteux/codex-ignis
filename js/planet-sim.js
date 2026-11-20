@@ -3319,7 +3319,9 @@ function syncPlanetSize() {
   if (planetSizeInput) {
     planetSizeInput.value = String(planetSize);
     planetSizeInput.disabled = Boolean(fixed);
-    planetSizeInput.title = fixed ? t(currentLang, "planetSimFixedSizeTooltip") : "";
+    // P10.7: editable bodies (regular planets and converted worlds: Ecumenopolis, Hive / Machine / Nanite Worlds) show the
+    // wiki size ranges; the input is the district slots, so features, blockers and modifiers can move it outside them.
+    planetSizeInput.title = t(currentLang, fixed ? "planetSimFixedSizeTooltip" : "planetSimSizeRangeTooltip");
   }
 }
 
