@@ -2117,6 +2117,16 @@ h1 {
     cursor: pointer;
 }
 
+.celestial-modifier-group summary {
+    cursor: pointer;
+    color: var(--text);
+    font-size: .78rem;
+}
+
+.celestial-modifier-group > .celestial-feature-list {
+    margin-top: .4rem;
+}
+
 .celestial-blocker.is-inactive {
     border-color: #f5b942;
 }

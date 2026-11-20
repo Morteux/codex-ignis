@@ -65,6 +65,7 @@ import {
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
+import { PLANET_MODIFIERS, PLANET_MODIFIER_GROUPS } from "./planet-modifier-data.js";
 import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT, STRATEGIC_DEPOSITS, JOB_CATEGORIES, BLOCKERS } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
@@ -477,6 +478,25 @@ function firstSpecializationLocked() {
   return activeBlockers().some((blocker) => blocker.locksFirstSpecialization);
 }
 
+/** P10.8: planet modifiers chosen by the user (saved with the planet). */
+const selectedPlanetModifiers = new Set();
+
+function planetModifierFitsBody(modifier) {
+  const typeId = getPlanetState().celestialTypeId;
+  return (!modifier.bodies || modifier.bodies.includes(typeId)) && !(modifier.notBodies || []).includes(typeId);
+}
+
+/** Selected modifier that excludes this one (the earlier one in data order wins), or null. */
+function planetModifierExcludedBy(modifier) {
+  return PLANET_MODIFIERS.find((other) => other.id !== modifier.id && selectedPlanetModifiers.has(other.id) && planetModifierFitsBody(other)
+    && ((other.excludes || []).includes(modifier.id) || (modifier.excludes || []).includes(other.id))
+    && PLANET_MODIFIERS.indexOf(other) < PLANET_MODIFIERS.indexOf(modifier)) || null;
+}
+
+function activePlanetModifiers() {
+  return PLANET_MODIFIERS.filter((modifier) => selectedPlanetModifiers.has(modifier.id) && planetModifierFitsBody(modifier) && !planetModifierExcludedBy(modifier));
+}
+
 /** P10.8: user's choice of strategic deposit per strategic specialization (saved with the planet); missing = the worst one. */
 const strategicDepositChoice = {};
 
@@ -521,6 +541,9 @@ function featureJobBonuses() {
   activeStrategicDeposits().forEach(({ deposit }) => {
     if (deposit.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[deposit.jobBonus.category], resource: deposit.jobBonus.resource, perJob: deposit.jobBonus.perJob, source: { kind: "feature", id: deposit.id } });
   });
+  activePlanetModifiers().forEach((modifier) => (modifier.effects.jobCategoryFlat || []).forEach((bonus) => {
+    bonuses.push({ jobs: JOB_CATEGORIES[bonus.category], resource: bonus.resource, perJob: bonus.perJob, source: { kind: "planetModifier", id: modifier.id } });
+  }));
   activeBlockers().forEach((blocker) => {
     if (blocker.jobBonus) bonuses.push({ jobs: JOB_CATEGORIES[blocker.jobBonus.category], resource: blocker.jobBonus.resource, perJob: blocker.jobBonus.perJob, source: { kind: "blocker", id: blocker.id } });
   });
@@ -570,6 +593,10 @@ function requiredDepositFeatures() {
   // Strategic deposits of the chosen strategic specializations are on the planet: their caps count first.
   const strategic = activeStrategicDeposits();
   strategic.forEach(({ deposit }) => cats.forEach((cat, i) => { need[i] -= deposit.caps[cat] || 0; }));
+  // Planet modifiers add (or remove) max districts per group (High Quality Minerals +4 mining, Bleak −4 agriculture...).
+  const modifierCaps = {};
+  activePlanetModifiers().forEach((modifier) => Object.entries(modifier.effects.maxDistricts || {}).forEach(([cat, amount]) => { modifierCaps[cat] = (modifierCaps[cat] || 0) + amount; }));
+  cats.forEach((cat, i) => { need[i] -= modifierCaps[cat] || 0; });
   const found = best(need.map((value) => Math.max(0, value)));
   const uncovered = cats.filter((cat, i) => need[i] > 0 && !groups.some((group) => group.caps[i] > 0));
   // (need already includes the strategic caps)
@@ -577,6 +604,7 @@ function requiredDepositFeatures() {
   (found?.picks || []).forEach((index) => picks.set(index, (picks.get(index) || 0) + 1));
   return {
     strategic,
+    modifierCaps,
     features: [...picks.entries()].sort((a, b) => a[0] - b[0]).map(([index, copies]) => ({ ...groups[index], copies })),
     count: found ? found.count + strategic.length : null,
     uncovered,
@@ -1116,6 +1144,20 @@ function computeTotals() {
       pushModifier(source, "conditionFlat", { stat }, value);
     });
   });
+  // P10.8: planet modifiers — stratum output / job efficiency, job upkeep and condition points.
+  const planetModifierConditions = { happiness: 0, stability: 0, crime: 0 };
+  const modifierEmpireKey = ethicsSatisfy(empireModifierState.ethicIds || [], GESTALT_CONSCIOUSNESS.id) ? "gestalt" : "individualist";
+  activePlanetModifiers().forEach((modifier) => {
+    const source = { kind: "planetModifier", id: modifier.id };
+    const effects = modifier.effects;
+    Object.entries(effects.stratumOutput || {}).forEach(([stratum, pct]) => pushModifier(source, "stratumOutput", { stratum }, pct / 100));
+    Object.entries(effects.stratumEfficiency || {}).forEach(([stratum, pct]) => pushModifier(source, "stratumEfficiency", { stratum }, pct / 100));
+    if (effects.jobUpkeepPct) pushModifier(source, "jobUpkeep", { job: "all" }, effects.jobUpkeepPct / 100);
+    [effects.conditions || {}, effects.conditionsByEmpire?.[modifierEmpireKey] || {}].forEach((stats) => Object.entries(stats).forEach(([stat, value]) => {
+      planetModifierConditions[stat] += value;
+      pushModifier(source, "conditionFlat", { stat }, value);
+    }));
+  });
   // Salida por empleo = base (JOB_OUTPUTS) + bonos de edificios; la eficacia
   // de la designación multiplica solo la parte positiva (la wiki la define
   // sobre la producción, no sobre el mantenimiento).
@@ -1259,6 +1301,7 @@ function computeTotals() {
   });
   addJobResourcePct(bodyType?.jobResourcePct, { kind: "celestial", id: empireState.celestialTypeId });
   if (designation) addJobResourcePct(designation.jobResourcePct, { kind: "designation", id: designation.id });
+  activePlanetModifiers().forEach((modifier) => addJobResourcePct(modifier.effects.jobResourcePct, { kind: "planetModifier", id: modifier.id }));
   // P10.6: planet effects of the chosen primary specializations (Central Spire +15 % research), once per option.
   if (districtState.urban.count > 0) {
     new Set(districtState.urban.slots.filter(Boolean)).forEach((optionId) => {
@@ -1291,7 +1334,9 @@ function computeTotals() {
     const jobFraction = kindFraction("job");
     const designationFraction = kindFraction("designation");
     const specializationFraction = kindFraction("specialization");
-    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction - specializationFraction), "jobBuildingMult");
+    const planetModifierFraction = kindFraction("planetModifier");
+    addSignedResource(resourceId, fromJobs * (fraction - policyFraction - celestialFraction - jobFraction - designationFraction - specializationFraction - planetModifierFraction), "jobBuildingMult");
+    if (planetModifierFraction) addSignedResource(resourceId, fromJobs * planetModifierFraction, "planetModifierJobMult");
     if (specializationFraction) addSignedResource(resourceId, fromJobs * specializationFraction, "specializationJobMult");
     if (designationFraction) addSignedResource(resourceId, fromJobs * designationFraction, "designationJobMult");
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
@@ -1327,12 +1372,31 @@ function computeTotals() {
   const pops = jobPops + civilianPops + neuralChipPops;
   // P9.4: las condiciones se calculan antes del paso 4a (efecto de la estabilidad), así que se suman aquí los servicios y la
   // vivienda planos de la designación, que el paso 5 añade después a los totales (mismo resultado que calcularlas al final).
-  const designationHousing = designation ? (designation.flat.housing || 0) : 0;
-  const designationAmenities = designation ? (designation.flat.amenities || 0) : 0;
+  // P10.8: amenities of the active blockers (Blazing Scourge with Fire Cult) and housing / amenities of the planet modifiers
+  // (flat ×100 as on the wiki, then % of the planet's housing / amenities), before the conditions.
+  activeBlockers().forEach((blocker) => {
+    if (!blocker.amenities) return;
+    const amount = divideEffect(blocker.amenities);
+    amenities += amount;
+    amenitySources.push({ kind: "blocker", id: blocker.id, amount });
+  });
+  const designationHousingPre = designation ? (designation.flat.housing || 0) : 0;
+  const designationAmenitiesPre = designation ? (designation.flat.amenities || 0) : 0;
+  let modifierHousingUsagePct = 0;
+  activePlanetModifiers().forEach((modifier) => {
+    const effects = modifier.effects;
+    modifierHousingUsagePct += effects.popHousingUsagePct || 0;
+    const housingAmount = divideEffect(effects.flat?.housing || 0) + ((effects.pct?.housing || 0) / 100) * (housing + designationHousingPre);
+    const amenityAmount = divideEffect(effects.flat?.amenities || 0) + ((effects.pct?.amenities || 0) / 100) * (amenities + (resourceTotals.amenities || 0) + designationAmenitiesPre);
+    if (housingAmount) { housing += housingAmount; housingSources.push({ kind: "planetModifier", id: modifier.id, amount: housingAmount }); }
+    if (amenityAmount) { amenities += amenityAmount; amenitySources.push({ kind: "planetModifier", id: modifier.id, amount: amenityAmount }); }
+  });
+  const designationHousing = designationHousingPre;
+  const designationAmenities = designationAmenitiesPre;
   const conditionsHousing = housing + designationHousing;
   // P10.5: pop housing usage of the body (Machine World −10 %): housing needed = pops × (1 + pct/100).
   // P10.5: plus the designation's (Synaptic Lathe −10 %).
-  const housingUsagePct = (bodyRules()?.popHousingUsagePct || 0) + (designation?.popHousingUsagePct || 0);
+  const housingUsagePct = (bodyRules()?.popHousingUsagePct || 0) + (designation?.popHousingUsagePct || 0) + modifierHousingUsagePct;
   const housingUsage = pops * (1 + housingUsagePct / 100);
   const amenitiesFromBuildings = Math.round(amenities);
   const amenitiesFromJobs = Math.floor((resourceTotals.amenities || 0) + designationAmenities + 1e-9);
@@ -1357,15 +1421,15 @@ function computeTotals() {
   // P10.6: happiness of the body type (Gaia "+10% Happiness", treated as points like the edicts); no happiness in gestalt.
   const bodyHappiness = gestaltEmpire ? 0 : bodyRules()?.happinessPct || 0;
   if (bodyHappiness) pushModifier({ kind: "celestial", id: getPlanetState().celestialTypeId }, "conditionFlat", { stat: "happiness" }, bodyHappiness);
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.manual));
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, planetModifiers: gestaltEmpire ? 0 : planetModifierConditions.happiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.planetModifiers + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
   // Estabilidad de los empleos (JOB_EFFECTS.stability × empleos cubiertos, igual que las píldoras de "otros efectos"). Es un
   // modificador, no un recurso: no recibe el efecto de la estabilidad (paso 4a) ni la eficacia de los empleos.
   const stabilityFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.stability || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
-  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, capital: capital.stability || 0, buildings: buildingStability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
+  const stability = { applicable: pops > 0, gestalt: gestaltEmpire, base: STABILITY_BASE, approval: 0, approvalBonus: 0, amenitiesEffect: 0, jobs: stabilityFromJobs, edicts: edictConditions.stability, planetModifiers: planetModifierConditions.stability, capital: capital.stability || 0, buildings: buildingStability, housingPenalty: 0, manual: manualConditions.stability, value: STABILITY_BASE };
   if (stability.applicable) {
     if (gestaltEmpire) {
       stability.amenitiesEffect = amenitiesEffect.effect;
@@ -1375,7 +1439,7 @@ function computeTotals() {
       stability.approvalBonus = delta >= 0 ? Math.floor(0.6 * delta + 1e-9) : delta;
     }
     stability.housingPenalty = housingUsage > 0 ? (40 * Math.max(0, housingUsage - conditionsHousing)) / housingUsage : 0;
-    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.capital + stability.buildings + stability.manual - stability.housingPenalty));
+    stability.value = Math.max(0, Math.min(100, STABILITY_BASE + stability.approvalBonus + stability.amenitiesEffect + stability.jobs + stability.edicts + stability.planetModifiers + stability.capital + stability.buildings + stability.manual - stability.housingPenalty));
   }
   // P9.5: delincuencia por baja felicidad (wiki 4.5.2, Colony management: cada pop produce de 0 con 100 de felicidad a +2 con 0,
   // es decir 0,02 por pop y punto por debajo de 100). Gestalt: se llama desviación y, sin felicidad, no se modela la de los pops.
@@ -1384,7 +1448,8 @@ function computeTotals() {
   const crimeFromHappiness = happiness.applicable ? pops * 0.02 * (100 - happiness.value) : 0;
   const crimeFromJobs = Object.entries(JOB_EFFECTS).reduce((sum, [jobId, effects]) => sum + (effects.crime || 0) * divideEffect(jobAssignments[jobId] || 0), 0);
   const crimeFromEdicts = pops > 0 ? edictConditions.crime : 0;
-  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, fromEdicts: crimeFromEdicts, total: Math.max(0, crimeFromHappiness + crimeFromJobs + crimeFromEdicts) };
+  const crimeFromModifiers = pops > 0 ? planetModifierConditions.crime : 0;
+  const crime = { gestalt: gestaltEmpire, fromHappiness: crimeFromHappiness, fromJobs: crimeFromJobs, fromEdicts: crimeFromEdicts, fromModifiers: crimeFromModifiers, total: Math.max(0, crimeFromHappiness + crimeFromJobs + crimeFromEdicts + crimeFromModifiers) };
   const conditions = {
     happiness,
     stability,
@@ -1450,17 +1515,12 @@ function computeTotals() {
     tradeConversion = { optionId: tradePolicy.optionId, rates: tradePolicy.rates, amount: tradeFromJobs };
   }
 
-  // P10.8: flat output and amenities of the active blockers (Blazing Scourge, Nanite Harvest Basin...).
+  // P10.8: flat output of the active blockers (Blazing Scourge, Nanite Harvest Basin...); their amenities are counted before the conditions.
   activeBlockers().forEach((blocker) => {
     Object.entries(blocker.flat || {}).forEach(([resourceId, amount]) => {
       addSignedResource(resourceId, amount, "blockers");
       pushModifier({ kind: "blocker", id: blocker.id }, "flat", { resource: resourceId }, amount);
     });
-    if (blocker.amenities) {
-      const amount = divideEffect(blocker.amenities);
-      addSignedResource("amenities", amount, "blockers");
-      amenitySources.push({ kind: "blocker", id: blocker.id, amount });
-    }
   });
 
   // Bonos planos de la designación planetaria a servicios/vivienda/unidad.
@@ -2878,6 +2938,7 @@ const BREAKDOWN_SOURCES = [
   { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
   { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult" },
   { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult" },
+  { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
@@ -3116,6 +3177,7 @@ function modifierSourceName(source) {
   if (source.kind === "authority") return t(currentLang, AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(currentLang, "conditionsStability");
   if (source.kind === "edict") return t(currentLang, getEdict(source.id).i18nKey);
+  if (source.kind === "planetModifier") { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === source.id); return modifier ? t(currentLang, modifier.i18nKey) : source.id; }
   if (source.kind === "blocker") { const blocker = BLOCKERS.find((entry) => entry.id === source.id); return blocker ? t(currentLang, blocker.i18nKey) : source.id; }
   if (source.kind === "feature") { const deposit = STRATEGIC_DEPOSITS.find((entry) => entry.id === source.id); return deposit ? t(currentLang, deposit.i18nKey) : source.id; }
   if (source.kind === "specialization") { const option = primaryOption(source.id); return option ? t(currentLang, option.i18nKey) : source.id; }
@@ -3269,6 +3331,93 @@ function renderBlockers() {
     list.append(item);
   });
   blockersEl.append(list);
+}
+
+/** P10.8: planet modifiers of the Cuerpo celeste tab, grouped like the wiki (collapsed groups, the chosen ones listed first). */
+const planetModifiersEl = document.querySelector("#celestial-planet-modifiers");
+const openModifierGroups = new Set();
+function planetModifierEffectText(modifier) {
+  const e = modifier.effects;
+  const sign = (value) => (value > 0 ? `+${value}` : `${value}`);
+  const res = (id) => (id === "all" ? t(currentLang, "planetModifierAllResources") : t(currentLang, RESOURCES[id].i18nKey));
+  const parts = [
+    ...Object.entries(e.jobResourcePct || {}).map(([id, pct]) => `${sign(pct)}% ${res(id)} ${t(currentLang, "planetModifierFromJobs")}`),
+    ...(e.jobCategoryFlat || []).map((bonus) => `${sign(bonus.perJob)} ${res(bonus.resource)} / ${t(currentLang, "featuresPerJobCategory_" + bonus.category)}`),
+    ...Object.entries(e.conditions || {}).map(([stat, value]) => `${sign(value)} ${t(currentLang, { happiness: "conditionsHappiness", stability: "conditionsStability", crime: "conditionsCrime" }[stat])}`),
+    ...Object.entries(e.conditionsByEmpire || {}).flatMap(([empire, stats]) => Object.entries(stats).map(([stat, value]) => `${sign(value)} ${t(currentLang, { happiness: "conditionsHappiness", stability: "conditionsStability" }[stat])} (${t(currentLang, empire === "gestalt" ? "planetModifierIfGestalt" : "planetModifierIfIndividualist")})`)),
+    ...Object.entries(e.flat || {}).map(([stat, value]) => `${sign(value)} ${t(currentLang, stat === "housing" ? "planetSimStatHousingShort" : "resourceAmenities")}`),
+    ...Object.entries(e.pct || {}).map(([stat, value]) => `${sign(value)}% ${t(currentLang, stat === "housing" ? "planetSimStatHousingShort" : "resourceAmenities")}`),
+    ...Object.entries(e.maxDistricts || {}).map(([cat, value]) => `${sign(value)} ${t(currentLang, "planetModifierMaxDistricts")(districtDisplayName(cat))}`),
+    ...Object.entries(e.stratumOutput || {}).map(([stratum, value]) => `${sign(value)}% ${t(currentLang, STRATUM_I18N_KEYS[stratum])} ${t(currentLang, "planetModifierOutput")}`),
+    ...Object.entries(e.stratumEfficiency || {}).map(([stratum, value]) => `${sign(value)}% ${t(currentLang, STRATUM_I18N_KEYS[stratum])} ${t(currentLang, "planetModifierJobEfficiency")}`),
+    ...(e.jobUpkeepPct ? [`${sign(e.jobUpkeepPct)}% ${t(currentLang, "planetModifierJobUpkeep")}`] : []),
+    ...(e.popHousingUsagePct ? [`${sign(e.popHousingUsagePct)}% ${t(currentLang, "planetModifierPopHousingUsage")}`] : [])
+  ];
+  return parts.join(", ");
+}
+function renderPlanetModifiers() {
+  if (!planetModifiersEl) return;
+  planetModifiersEl.replaceChildren();
+  const intro = document.createElement("p");
+  intro.className = "planet-district-note";
+  intro.textContent = t(currentLang, "planetModifiersIntro");
+  planetModifiersEl.append(intro);
+  PLANET_MODIFIER_GROUPS.forEach((group) => {
+    const modifiers = PLANET_MODIFIERS.filter((modifier) => modifier.group === group && (planetModifierFitsBody(modifier) || selectedPlanetModifiers.has(modifier.id)));
+    if (!modifiers.length) return;
+    const details = document.createElement("details");
+    details.className = "celestial-modifier-group";
+    details.dataset.group = group;
+    const chosen = modifiers.filter((modifier) => selectedPlanetModifiers.has(modifier.id)).length;
+    details.open = openModifierGroups.has(group);
+    details.addEventListener("toggle", () => { if (details.open) openModifierGroups.add(group); else openModifierGroups.delete(group); });
+    const summary = document.createElement("summary");
+    summary.textContent = `${t(currentLang, "planetModifierGroup_" + group)}${chosen ? ` (${chosen})` : ""}`;
+    details.append(summary);
+    const list = document.createElement("ul");
+    list.className = "celestial-feature-list";
+    modifiers.forEach((modifier) => {
+      const item = document.createElement("li");
+      item.className = "celestial-feature celestial-blocker";
+      item.dataset.modifier = modifier.id;
+      const label = document.createElement("label");
+      const box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = selectedPlanetModifiers.has(modifier.id);
+      const excludedBy = planetModifierExcludedBy(modifier);
+      if (excludedBy && !box.checked) box.disabled = true;
+      box.addEventListener("change", () => {
+        if (box.checked) selectedPlanetModifiers.add(modifier.id); else selectedPlanetModifiers.delete(modifier.id);
+        refresh();
+      });
+      label.append(box);
+      if (modifier.img) {
+        const img = document.createElement("img");
+        img.src = `${IMAGE_BASE}${modifier.img}`;
+        img.alt = "";
+        img.loading = "lazy";
+        label.append(img);
+      }
+      const name = document.createElement("span");
+      name.textContent = `${t(currentLang, modifier.i18nKey)} (${planetModifierEffectText(modifier)})`;
+      label.append(name);
+      item.append(label);
+      const notes = [];
+      if (modifier.notModelled?.length) notes.push(t(currentLang, "planetModifierNotModelled") + modifier.notModelled.join("; "));
+      if (modifier.source) notes.push(t(currentLang, "planetModifierSource") + modifier.source);
+      if (excludedBy) notes.push(t(currentLang, "planetModifierExcluded")(t(currentLang, excludedBy.i18nKey)));
+      if (box.checked && !planetModifierFitsBody(modifier)) notes.push(t(currentLang, "blockerInactive")(t(currentLang, "blockerWrongBody")));
+      item.classList.toggle("is-inactive", box.checked && (!planetModifierFitsBody(modifier) || Boolean(excludedBy)));
+      if (notes.length) {
+        const small = document.createElement("small");
+        small.textContent = notes.join(" · ");
+        item.append(small);
+      }
+      list.append(item);
+    });
+    details.append(list);
+    planetModifiersEl.append(details);
+  });
 }
 
 // P17.1: botones "i" y paneles de explicación (js/info-panels.js).
@@ -3459,6 +3608,7 @@ function renderConditions(totals) {
       ["happinessAmenities", "conditionsHappinessAmenities", h.effect, true],
       ...(h.body ? [["happinessBody", "conditionsHappinessBody", h.body, true]] : []),
       ...(h.edicts ? [["happinessEdicts", "conditionsHappinessEdicts", h.edicts, true]] : []),
+      ...(h.planetModifiers ? [["happinessPlanetModifiers", "conditionsPlanetModifiers", h.planetModifiers, true]] : []),
       ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
     ]);
@@ -3478,6 +3628,7 @@ function renderConditions(totals) {
       ["stabilityAmenities", "conditionsStabilityAmenities", st.amenitiesEffect, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
+      ...(st.planetModifiers ? [["stabilityPlanetModifiers", "conditionsPlanetModifiers", st.planetModifiers, true]] : []),
       ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
       ...(st.buildings ? [["stabilityBuildings", "conditionsStabilityBuildings", st.buildings, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
@@ -3492,6 +3643,7 @@ function renderConditions(totals) {
       ["stabilityApproval", "conditionsStabilityApproval", st.approvalBonus, true],
       ["stabilityJobs", "conditionsStabilityJobs", st.jobs, true],
       ...(st.edicts ? [["stabilityEdicts", "conditionsStabilityEdicts", st.edicts, true]] : []),
+      ...(st.planetModifiers ? [["stabilityPlanetModifiers", "conditionsPlanetModifiers", st.planetModifiers, true]] : []),
       ...(st.capital ? [["stabilityCapital", "conditionsStabilityCapital", st.capital, true]] : []),
       ...(st.buildings ? [["stabilityBuildings", "conditionsStabilityBuildings", st.buildings, true]] : []),
       ["stabilityManual", "conditionsStabilityManual", st.manual, true],
@@ -3509,7 +3661,7 @@ function renderConditions(totals) {
   const cr = c.crime;
   const crimeRows = cr.gestalt
     ? [["crimeJobs", "conditionsDeviancyJobs", cr.fromJobs], ["crime", "conditionsDeviancy", cr.total]]
-    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ...(cr.fromEdicts ? [["crimeEdicts", "conditionsCrimeEdicts", cr.fromEdicts]] : []), ["crime", "conditionsCrime", cr.total]];
+    : [["crimeHappiness", "conditionsCrimeHappiness", cr.fromHappiness], ["crimeJobs", "conditionsCrimeJobs", cr.fromJobs], ...(cr.fromEdicts ? [["crimeEdicts", "conditionsCrimeEdicts", cr.fromEdicts]] : []), ...(cr.fromModifiers ? [["crimePlanetModifiers", "conditionsPlanetModifiers", cr.fromModifiers]] : []), ["crime", "conditionsCrime", cr.total]];
   crimeRows.forEach(([key, labelKey, value]) => {
     const row = document.createElement("div");
     row.className = `planet-resource-row ${value > 0 ? "is-negative" : "is-positive"}`;
@@ -3591,7 +3743,7 @@ const CONDITION_SOURCES = {
   stabilityBase: "derived", stabilityAmenities: "estimated", stabilityApproval: "estimated", stabilityJobs: "derived", stabilityManual: "manual",
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
-  happinessEdicts: "derived", happinessBody: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
+  happinessEdicts: "derived", happinessBody: "derived", happinessPlanetModifiers: "derived", stabilityPlanetModifiers: "derived", crimePlanetModifiers: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };
@@ -3616,6 +3768,7 @@ function renderStats(totals) {
       else if (source.kind === "district") label = `${districtDisplayName(source.district)} ×${source.count}`;
       else if (source.kind === "technology") label = t(currentLang, "planetSimHousingTechnology")(t(currentLang, source.i18nKey));
       else if (source.kind === "building") label = `${buildingDisplayName(buildingsById.get(source.id))}${source.count > 1 ? ` ×${source.count}` : ""}`;
+      else if (source.kind === "planetModifier") label = t(currentLang, PLANET_MODIFIERS.find((modifier) => modifier.id === source.id).i18nKey);
       else label = t(currentLang, "planetSimDesignationHeading");
       return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
     });
@@ -3634,6 +3787,7 @@ function renderStats(totals) {
       else if (source.kind === "job") label = `${formatAmount(source.assignedRaw)} ${jobName(source.jobId)}`;
       else if (source.kind === "civilians") label = `${formatAmount(source.assignedRaw)} ${t(currentLang, source.i18nKey)}`;
       else if (source.kind === "blocker") label = t(currentLang, BLOCKERS.find((blocker) => blocker.id === source.id).i18nKey);
+      else if (source.kind === "planetModifier") label = t(currentLang, PLANET_MODIFIERS.find((modifier) => modifier.id === source.id).i18nKey);
       else label = t(currentLang, "planetSimDesignationHeading");
       return `${label} ${formatAmount(source.amount * EFFECT_SCALE, true)}`;
     });
@@ -3710,6 +3864,7 @@ function refresh() {
   renderModifiers(totals);
   renderDepositFeatures();
   renderBlockers();
+  renderPlanetModifiers();
   updatePlanetState({ planetSize });
 }
 
@@ -3779,7 +3934,9 @@ export function capturePlanetConfig() {
     // P10.8: optional field, strategic deposit chosen per strategic specialization (missing = the worst one).
     strategicDeposits: { ...strategicDepositChoice },
     // P10.8: optional field, blockers placed on the planet.
-    blockerIds: [...selectedBlockers]
+    blockerIds: [...selectedBlockers],
+    // P10.8: optional field, planet modifiers chosen by the user.
+    planetModifierIds: [...selectedPlanetModifiers]
   };
 }
 
@@ -3844,6 +4001,8 @@ export function applyPlanetConfig(config) {
   // P10.8: strategic deposits (optional field; unknown ids are ignored, the worst deposit is used instead).
   Object.keys(strategicDepositChoice).forEach((key) => { delete strategicDepositChoice[key]; });
   selectedBlockers.clear();
+  selectedPlanetModifiers.clear();
+  (Array.isArray(config.planetModifierIds) ? config.planetModifierIds : []).forEach((id) => { if (PLANET_MODIFIERS.some((modifier) => modifier.id === id)) selectedPlanetModifiers.add(id); });
   (Array.isArray(config.blockerIds) ? config.blockerIds : []).forEach((id) => { if (BLOCKERS.some((blocker) => blocker.id === id)) selectedBlockers.add(id); });
   Object.entries(config.strategicDeposits || {}).forEach(([specializationId, depositId]) => {
     if (STRATEGIC_DEPOSITS.some((deposit) => deposit.id === depositId && deposit.unlocks === specializationId)) strategicDepositChoice[specializationId] = depositId;

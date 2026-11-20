@@ -110,7 +110,8 @@ export const STRATEGIC_DEPOSITS = [
 export const JOB_CATEGORIES = {
   technicians: ["technician", "mote_harvester"],
   miners: ["miner", "crystal_miner", "thermoforger"],
-  farmers: ["farmer", "gas_extractor"]
+  farmers: ["farmer", "gas_extractor"],
+  thermoforgers: ["thermoforger"]
 };
 
 const BLAZING_SCOURGE_BODIES = ["continental", "ocean", "tropical", "savannah", "arid", "desert", "tundra", "arctic", "alpine", "volcanic", "tomb", "relic"];

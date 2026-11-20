@@ -614,6 +614,40 @@ async def main():
         await blocker("naniteHarvestBasin"); await blocker("chargedAtmosphere")
         await body("Continental")
 
+        # 21. P10.8: planet modifiers (max districts change the required features, % from jobs, conditions rows, exclusions, saved)
+        async def pmod(mid):
+            await pg.evaluate("(m)=>document.querySelector(`#celestial-planet-modifiers [data-modifier=${m}] input`).click()", mid)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await body("Continental")
+        await card_plus(2, 5)
+        m0 = (await net()).get("Minerals", 0)
+        await pmod("highQualityMinerals")
+        f = await features()
+        check("High Quality Minerals (+4 mining): 1 feature for 5 mining districts", f["count"] == "1" and f["items"] == ["oreVeinedCliffs"], f)
+        m1 = (await net()).get("Minerals", 0)
+        check("High Quality Minerals: +15 % minerals from jobs", m1 > m0, (m0, m1))
+        await pmod("weakMagneticField")
+        dis = await pg.evaluate("()=>document.querySelector('#celestial-planet-modifiers [data-modifier=strongMagneticField] input').disabled")
+        check("Weak Magnetic Field excludes Strong Magnetic Field", dis is True, dis)
+        await pmod("localMycelialNetwork")
+        crime = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=crimePlanetModifiers] .planet-resource-value')?.innerText")
+        check("Local Mycelial Network: -25 crime row", crime is not None and "25" in crime, crime)
+        await pmod("residentialMonument")
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("Residential Monument: +800 housing in the tooltip", "Residential Monument +800" in housing, housing)
+        await pg.fill("#planet-summary-name", "Modifier planet")
+        await pg.evaluate("()=>document.querySelector('#planet-summary-save').click()")
+        await pg.wait_for_timeout(300)
+        await pg.evaluate("()=>[...document.querySelectorAll('.confirm-btn')].find(b=>/don't save/i.test(b.innerText))?.click()")
+        await pg.wait_for_timeout(300)
+        planets = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-planets')||'[]')")
+        saved_m = [p.get("planetModifierIds") for p in planets if p.get("name") == "Modifier planet"]
+        check("planet modifiers saved with the planet", bool(saved_m) and saved_m[0] is not None and sorted(saved_m[0]) == ["highQualityMinerals", "localMycelialNetwork", "residentialMonument", "weakMagneticField"], saved_m)
+        await body("Volcanic")
+        vis = await pg.evaluate("()=>[!!document.querySelector('#celestial-planet-modifiers [data-modifier=lavafalls]'),!!document.querySelector('#celestial-planet-modifiers [data-modifier=lush]')]")
+        check("Volcanic: Lavafalls listed, Lush (x0 on Volcanic) not", vis == [True, False], vis)
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
