@@ -36,6 +36,7 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [ ] P13.2 i18n parity check for all new strings
 - [ ] P13.3 Automated UI smoke tests (tabs, save/load, empire switch)
 - [ ] P13.4 Accessibility pass
+- [ ] P13.8 Move every data text shown in the UI to i18n keys (es/en/jp, English until P15): planet modifier `notModelled` effects and `source`, body type `infoOnly` lines and any other English string kept in the data files; nothing may be shown in a language other than the selected one
 - [ ] P13.6 Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
 
 ## P15 — Official localization
