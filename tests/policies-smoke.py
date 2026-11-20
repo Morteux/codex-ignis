@@ -675,6 +675,16 @@ async def main():
         await civic_toggle("Anglers / Marine Machines")
         await body("Continental")
 
+        # P10.10: building requirement columns (Experimental Sentencing family, not Materialist; Uplink Node not Rogue Servitor)
+        breq = await pg.evaluate("""async()=>{const r=await import('./js/building-requirements.js');const d=await import('./js/planet-data.js');
+            const b=(id)=>d.BUILDINGS.find(x=>x.id===id);const ok=(id,ctx)=>r.buildingRequirementsMet(b(id),ctx);
+            return [ok('experimentation_chambers',{ethicIds:['materialist'],civicIds:[]}),ok('experimentation_chambers',{ethicIds:['authoritarian'],civicIds:['civicTwistedExperimenters']}),
+              ok('uplink_node',{ethicIds:['gestaltConsciousness'],authorityId:'machineIntelligence',civicIds:['civicMachineServitor']}),ok('uplink_node',{ethicIds:['gestaltConsciousness'],authorityId:'machineIntelligence',civicIds:[]}),
+              r.unmodelledRequirements(b('stronghold')).map(x=>x.i18nKey)]}""")
+        check("Experimentation Chambers: needs Experimental Sentencing, not Materialist", breq[0] is False and breq[1] is True, breq)
+        check("Uplink Node: not with Rogue Servitor", breq[2] is False and breq[3] is True, breq)
+        check("Stronghold: not-Wilderness shown as unmodelled", breq[4] == ["reqNotWildernessOrigin"], breq)
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

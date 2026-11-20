@@ -34,6 +34,9 @@
  *  - Los requisitos de origen (Naturaleza salvaje, Moradores del vacío,
  *    Grilletes rotos...), de federación ("A Union of Faith") y de
  *    capital especial (Command Center) no se aplican: no se modelan aquí.
+ *    P10.10: los que la wiki marca (no Naturaleza salvaje, no Command Center,
+ *    acción astral, trato con los Caravaneros, "Empire uses food") se
+ *    muestran como `{ type: "unmodelled" }`, sin bloquear.
  *  - "Uses Priest jobs" se evalúa solo con la ética Espiritualista (normal o
  *    fanática), sin la rama de la federación.
  */

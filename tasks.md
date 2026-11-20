@@ -1,15 +1,11 @@
 # Planet Simulator — pending tasks
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2) are in git history.
 Order is a proposal; **P14 is always last**. When a task is done, remove it from this file and move any new design decision into the GDD.
 
 ## P10 — Special planets
 Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
 - [ ] P10.6 Wilderness-origin districts — **on hold, owner decides later** (not modelled for now, see GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
-- [ ] P10.10 Re-read every requirement column of the existing districts/specializations/buildings (the regenerated markdown keeps `![No](24px-No.png)` = "not"); e.g. Agricultural Focus is not available with Anglers on a wet-climate world (Aquaculture replaces it)
-  - Done (1/3): urban, secondary and resource specializations re-read from the HTML (the markdown loses the Agriculture table); Agricultural Focus / Agrarian Villages blocked with Anglers on a wet-climate world (new `notAll` rule), Coastal Hamlets needs it, Agricultural Focus notes not-Wilderness.
-  - Done (2/3): Aquaculture (+50 Anglers, +50 Pearl Divers) and the Anglers + wet-climate swaps (Farmer → Angler, Artisan → Pearl Diver). Not modelled: Sanctuary Enclave (Rogue Servitor, Bio-Trophies), habitat Exotic Gas Capture (system deposit), civic job-output bonuses (Catalytic Processing, robotic founder).
-  - Next (3/3): building requirement columns (Buildings, Resource / Industry / Unity / Research, Planet unique, Capital).
 
 ## P19 — Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.

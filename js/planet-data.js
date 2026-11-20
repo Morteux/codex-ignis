@@ -796,6 +796,11 @@ const notDesignation = (...ids) => ({ type: "notDesignation", ids });
 const notCelestial = (...ids) => ({ type: "notCelestial", ids });
 const ethic = (...ids) => ({ type: "ethic", ids });
 const authority = (...ids) => ({ type: "authority", ids });
+/** P10.10: requirement the simulator does not model (origin, capital, astral action...): shown, never blocks. */
+const unmodelled = (i18nKey) => ({ type: "unmodelled", i18nKey });
+const NOT_WILDERNESS = unmodelled("reqNotWildernessOrigin");
+const NOT_COMMAND_CENTER = unmodelled("reqNotCommandCenter");
+const EXPERIMENTAL_SENTENCING = civic("civicTwistedExperimenters", "civicCorporateTwistedExperimenters", "civicHiveTwistedExperimenters");
 
 /** P10.5: technology requirement of a Synaptic Lathe building (technologies are not modelled: shown, never blocks). */
 const LATHE_TECH = (i18nKey) => ({ type: "unmodelled", i18nKey });
@@ -900,7 +905,7 @@ export const BUILDINGS = [
   },
   {
     id: "hydroponics_farm",
-    requires: [notCelestial("machine")],
+    requires: [notCelestial("machine"), unmodelled("reqEmpireUsesFood")],
     img: "buildings/building_hydroponics_farm.png",
     i18nKey: "buildingHydroponicsFarm",
     category: "resource",
@@ -1243,7 +1248,7 @@ export const BUILDINGS = [
   // ── Militares ───────────────────────────────────────────────────────
   {
     id: "stronghold",
-    requires: [notDesignation("resortWorld")],
+    requires: [notDesignation("resortWorld"), NOT_WILDERNESS],
     img: "buildings/building_stronghold.png",
     i18nKey: "buildingStronghold",
     category: "military",
@@ -1256,7 +1261,7 @@ export const BUILDINGS = [
   },
   {
     id: "fortress",
-    requires: [notDesignation("resortWorld"), CAPITAL_TIER_2],
+    requires: [notDesignation("resortWorld"), NOT_WILDERNESS, CAPITAL_TIER_2],
     img: "buildings/building_fortress.png",
     i18nKey: "buildingFortress",
     category: "military",
@@ -1272,7 +1277,7 @@ export const BUILDINGS = [
   // ── Otros ───────────────────────────────────────────────────────────
   {
     id: "commercial_zones",
-    requires: [NOT_GESTALT, notDesignation("penalColony", "thrallWorld")],
+    requires: [NOT_GESTALT, NOT_COMMAND_CENTER, notDesignation("penalColony", "thrallWorld")],
     img: "buildings/building_commercial_zone.png",
     i18nKey: "buildingCommercialZones",
     category: "other",
@@ -1284,7 +1289,7 @@ export const BUILDINGS = [
   },
   {
     id: "holo_theatres",
-    requires: [NOT_GESTALT, notCivic("civicDystopianSociety"), notDesignation("penalColony", "thrallWorld")],
+    requires: [NOT_GESTALT, NOT_COMMAND_CENTER, notCivic("civicDystopianSociety"), notDesignation("penalColony", "thrallWorld")],
     img: "buildings/building_holo_theatres.png",
     i18nKey: "buildingHoloTheatres",
     category: "other",
@@ -1401,13 +1406,13 @@ export const BUILDINGS = [
     sets: ["origin"]
   },
 
-  // ── Cámaras de experimentación (ética materialista) ──
+  // ── Cámaras de experimentación (P10.10: principio Sentencias Experimentales y equivalentes, no ética materialista) ──
   {
     id: "experimentation_chambers",
     img: "buildings/building_experimentation_chambers_1.png",
     i18nKey: "buildingExperimentationChambers",
     category: "research",
-    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    requires: [EXPERIMENTAL_SENTENCING, notDesignation("resortWorld", "thrallWorld")],
     tier: 1,
     jobs: { experiment_engineer: 200, test_subject: 200 },
     colonyLimit: 1,
@@ -1420,7 +1425,7 @@ export const BUILDINGS = [
     img: "buildings/building_experimentation_chambers_2.png",
     i18nKey: "buildingExperimentationComplex",
     category: "research",
-    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    requires: [EXPERIMENTAL_SENTENCING, notDesignation("resortWorld", "thrallWorld")],
     tier: 2,
     upgradesFrom: "experimentation_chambers",
     jobs: { experiment_engineer: 200, test_subject: 400 },
@@ -1434,7 +1439,7 @@ export const BUILDINGS = [
     img: "buildings/building_experimentation_chambers_3.png",
     i18nKey: "buildingExperimentationNexus",
     category: "research",
-    requires: [ethic("materialist"), notDesignation("resortWorld", "thrallWorld")],
+    requires: [EXPERIMENTAL_SENTENCING, notDesignation("resortWorld", "thrallWorld")],
     tier: 3,
     upgradesFrom: "experimentation_complex",
     jobs: { experiment_engineer: 200, test_subject: 600 },
@@ -1514,7 +1519,7 @@ export const BUILDINGS = [
     img: "buildings/building_hive_node.png",
     i18nKey: "buildingSynapticNodes",
     category: "unity",
-    requires: [authority("hiveMind")],
+    requires: [authority("hiveMind"), NOT_WILDERNESS],
     tier: 1,
     jobs: { synapse_drone: 200 },
     colonyLimit: 1,
@@ -1526,7 +1531,7 @@ export const BUILDINGS = [
     img: "buildings/building_hive_cluster.png",
     i18nKey: "buildingSynapticClusters",
     category: "unity",
-    requires: [authority("hiveMind"), { type: "capitalTier", min: 2 }],
+    requires: [authority("hiveMind"), NOT_WILDERNESS, { type: "capitalTier", min: 2 }],
     tier: 2,
     upgradesFrom: "synaptic_nodes",
     jobs: {},
@@ -1540,7 +1545,7 @@ export const BUILDINGS = [
     img: "buildings/building_hive_confluence.png",
     i18nKey: "buildingConfluenceOfThought",
     category: "unity",
-    requires: [authority("hiveMind"), { type: "capitalTier", min: 4 }],
+    requires: [authority("hiveMind"), NOT_WILDERNESS, { type: "capitalTier", min: 4 }],
     tier: 3,
     upgradesFrom: "synaptic_clusters",
     jobs: {},
@@ -1556,7 +1561,7 @@ export const BUILDINGS = [
     img: "buildings/building_citadel_uplink.png",
     i18nKey: "buildingUplinkNode",
     category: "unity",
-    requires: [authority("machineIntelligence")],
+    requires: [authority("machineIntelligence"), notCivic("civicMachineServitor")],
     tier: 1,
     jobs: { coordinator: 200 },
     colonyLimit: 1,
@@ -1568,7 +1573,7 @@ export const BUILDINGS = [
     img: "buildings/building_citadel_uplink.png",
     i18nKey: "buildingNetworkJunction",
     category: "unity",
-    requires: [authority("machineIntelligence"), { type: "capitalTier", min: 2 }],
+    requires: [authority("machineIntelligence"), notCivic("civicMachineServitor"), { type: "capitalTier", min: 2 }],
     tier: 2,
     upgradesFrom: "uplink_node",
     jobs: {},
@@ -1582,7 +1587,7 @@ export const BUILDINGS = [
     img: "buildings/building_citadel_uplink.png",
     i18nKey: "buildingSystemConflux",
     category: "unity",
-    requires: [authority("machineIntelligence"), { type: "capitalTier", min: 2 }],
+    requires: [authority("machineIntelligence"), notCivic("civicMachineServitor"), { type: "capitalTier", min: 2 }],
     tier: 3,
     upgradesFrom: "network_junction",
     jobs: {},
@@ -1925,7 +1930,7 @@ export const BUILDINGS = [
     img: "buildings/building_astral_siphon_1.png",
     i18nKey: "buildingAstralSiphon",
     category: "research",
-    requires: [{"type": "notDesignation", "ids": ["resortWorld", "thrallWorld", "penalColony"]}],
+    requires: [{"type": "notDesignation", "ids": ["resortWorld", "thrallWorld", "penalColony"]}, {"type": "unmodelled", "i18nKey": "reqAstralSiphonAction"}],
     tier: 1,
     jobs: {},
     jobModifiers: {"physicist": {"physics": 0.2, "astral_threads": 0.2}},
@@ -2015,7 +2020,7 @@ export const BUILDINGS = [
     img: "buildings/building_waste_reprocessing_center.png",
     i18nKey: "buildingWasteReprocessingCenter",
     category: "resource",
-    requires: [{"type": "ethic", "ids": ["gestaltConsciousness"]}],
+    requires: [{"type": "ethic", "ids": ["gestaltConsciousness"]}, {"type": "unmodelled", "i18nKey": "reqCaravanDeal"}],
     jobs: {"technician": 200},
     produces: {"energy": 10, "minerals": 10},
     amenities: 500,
