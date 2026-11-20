@@ -65,6 +65,7 @@ import {
   JOB_RESOURCE_MULT
 } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
+import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, DEPOSIT_FEATURE_COUNT } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { getStackingRules, getCalculationOrder, combineFraction, stackFactor } from "./stacking-rules.js";
 import { updatePlanetState, getPlanetState, onPlanetStateChange, onEmpireSwitched, onPoliciesReset, onEdictsRemoved } from "./planet-state.js";
@@ -426,9 +427,81 @@ function districtCap(cat) {
   return Number.isInteger(cap) ? cap : null;
 }
 
+/**
+ * P10.8: deposit features (js/planetary-features-data.js). On natural planets the resource districts need deposit
+ * features; the simulator computes the fewest the built districts need (owner decision 2026-11-20). null = the body has
+ * no deposit features (artificial bodies, converted worlds) or the group is uncapped (Anglers on an Ocean World).
+ */
+function depositFeaturesApply() {
+  return DEPOSIT_FEATURE_BODIES.includes(getPlanetState().celestialTypeId);
+}
+
+function districtUncapped(cat) {
+  const state = getPlanetState();
+  return UNCAPPED_DISTRICTS.some((rule) => rule.district === cat && rule.bodies.includes(state.celestialTypeId)
+    && rule.civics.some((key) => (state.civicIds || []).includes(key)));
+}
+
+/** Deposit features of the current planet type that raise the cap of a district group. */
+function depositFeaturesFor(cat) {
+  const typeId = getPlanetState().celestialTypeId;
+  return DEPOSIT_FEATURES.filter((feature) => feature.bodies.includes(typeId) && feature.caps[cat]);
+}
+
+/** Can this district group be capped by features and does the planet type have none for it (Relic agriculture)? */
+function districtHasNoFeature(cat) {
+  return depositFeaturesApply() && !districtUncapped(cat) && depositFeaturesFor(cat).length === 0;
+}
+
+/**
+ * Fewest deposit features covering the built resource districts (exact search over the remaining need per group;
+ * ties: least spare capacity, then data order). Features with the same caps are interchangeable: the first one is
+ * used and the others are listed as alternatives. Returns null when the body has no deposit features.
+ */
+function requiredDepositFeatures() {
+  if (!depositFeaturesApply()) return null;
+  const cats = RESOURCE_DISTRICT_ORDER.filter((cat) => !districtUncapped(cat));
+  const need = cats.map((cat) => districtState[cat].count);
+  const typeId = getPlanetState().celestialTypeId;
+  const groups = [];
+  DEPOSIT_FEATURES.filter((feature) => feature.bodies.includes(typeId) && cats.some((cat) => feature.caps[cat])).forEach((feature) => {
+    const signature = cats.map((cat) => feature.caps[cat] || 0).join(",");
+    const group = groups.find((entry) => entry.signature === signature);
+    if (group) group.alternatives.push(feature);
+    else groups.push({ signature, caps: cats.map((cat) => feature.caps[cat] || 0), feature, alternatives: [] });
+  });
+  const memo = new Map();
+  const best = (state) => {
+    if (state.every((value) => value <= 0)) return { count: 0, spare: -state.reduce((sum, value) => sum + Math.min(0, value), 0), picks: [] };
+    const key = state.join(",");
+    if (memo.has(key)) return memo.get(key);
+    let result = null;
+    groups.forEach((group, index) => {
+      if (!group.caps.some((cap, i) => cap > 0 && state[i] > 0)) return;
+      const sub = best(state.map((value, i) => (value > 0 ? value - group.caps[i] : value)));
+      if (!sub) return;
+      const candidate = { count: sub.count + 1, spare: sub.spare, picks: [index, ...sub.picks] };
+      if (!result || candidate.count < result.count || (candidate.count === result.count && candidate.spare < result.spare)) result = candidate;
+    });
+    memo.set(key, result);
+    return result;
+  };
+  const found = best(need);
+  const uncovered = cats.filter((cat, i) => need[i] > 0 && !groups.some((group) => group.caps[i] > 0));
+  const picks = new Map();
+  (found?.picks || []).forEach((index) => picks.set(index, (picks.get(index) || 0) + 1));
+  return {
+    features: [...picks.entries()].sort((a, b) => a[0] - b[0]).map(([index, copies]) => ({ ...groups[index], copies })),
+    count: found ? found.count : null,
+    uncovered,
+    uncapped: RESOURCE_DISTRICT_ORDER.filter((cat) => districtUncapped(cat))
+  };
+}
+
 /** ¿Cabe una copia más de este distrito de recursos (tamaño del planeta y, en hábitats, límite manual por depósitos)? */
 function canAddResourceDistrict(cat) {
   if (secondaryDistrictDef(cat).unavailable) return false;
+  if (districtHasNoFeature(cat)) return false; // P10.8: no deposit feature for this group on the planet type
   const cap = districtCap(cat);
   return canAddDistrict() && (cap === null || districtState[cat].count < cap);
 }
@@ -2357,6 +2430,12 @@ function renderResourceDistrictCard(cat) {
   ));
 
   if (def.habitatResource) card.append(renderDistrictCapInput(cat));
+  if (districtHasNoFeature(cat)) {
+    const note = document.createElement("p");
+    note.className = "planet-district-note";
+    note.textContent = t(currentLang, "featuresNoFeatureForDistrict");
+    card.append(note);
+  }
 
   // P10.4: the Habitat Research District has no specializations.
   if (!def.specializationOptions.length) {
@@ -2934,6 +3013,55 @@ function modifierTargetName(modifier) {
   return parts.join(" · ");
 }
 
+/** P10.8: "Required deposit features" panel of the Cuerpo celeste tab (computed from the built resource districts). */
+const depositFeaturesEl = document.querySelector("#celestial-deposit-features");
+function renderDepositFeatures() {
+  if (!depositFeaturesEl) return;
+  depositFeaturesEl.replaceChildren();
+  const result = requiredDepositFeatures();
+  const addNote = (text, className = "planet-district-note") => {
+    const p = document.createElement("p");
+    p.className = className;
+    p.textContent = text;
+    depositFeaturesEl.append(p);
+    return p;
+  };
+  if (!result) { addNote(t(currentLang, "featuresNotApplicable")); return; }
+  addNote(t(currentLang, "featuresIntro"));
+  const list = document.createElement("ul");
+  list.className = "celestial-feature-list";
+  result.features.forEach((group) => {
+    const item = document.createElement("li");
+    item.className = "celestial-feature";
+    item.dataset.feature = group.feature.id;
+    const img = document.createElement("img");
+    img.src = `${IMAGE_BASE}${group.feature.img}`;
+    img.alt = "";
+    img.loading = "lazy";
+    const text = document.createElement("span");
+    const caps = RESOURCE_DISTRICT_ORDER.filter((cat) => group.feature.caps[cat]).map((cat) => `+${group.feature.caps[cat]} ${districtDisplayName(cat)}`).join(", ");
+    text.textContent = `${group.copies > 1 ? `${group.copies}× ` : ""}${t(currentLang, group.feature.i18nKey)} (${caps})`;
+    item.append(img, text);
+    if (group.alternatives.length) {
+      const alt = document.createElement("small");
+      alt.textContent = t(currentLang, "featuresAlternatives") + group.alternatives.map((feature) => t(currentLang, feature.i18nKey)).join(", ");
+      item.append(alt);
+    }
+    list.append(item);
+  });
+  if (result.features.length) depositFeaturesEl.append(list);
+  else addNote(t(currentLang, "featuresNoneNeeded"));
+  result.uncapped.forEach((cat) => addNote(t(currentLang, "featuresUncapped")(districtDisplayName(cat))));
+  result.uncovered.forEach((cat) => addNote(t(currentLang, "featuresUncovered")(districtDisplayName(cat)), "planet-district-note is-warning"));
+  const count = result.count || 0;
+  const total = addNote(t(currentLang, "featuresCount")(count), "celestial-feature-count");
+  total.dataset.count = String(count);
+  if (count < DEPOSIT_FEATURE_COUNT.min || count > DEPOSIT_FEATURE_COUNT.max) {
+    const warning = addNote(t(currentLang, count < DEPOSIT_FEATURE_COUNT.min ? "featuresTooFew" : "featuresTooMany")(count, DEPOSIT_FEATURE_COUNT.min, DEPOSIT_FEATURE_COUNT.max), "planet-district-note is-warning");
+    warning.id = "celestial-feature-warning";
+  }
+}
+
 // P17.1: botones "i" y paneles de explicación (js/info-panels.js).
 initInfoButtons(() => currentLang);
 
@@ -3370,6 +3498,7 @@ function refresh() {
   renderProduction(totals);
   renderConditions(totals);
   renderModifiers(totals);
+  renderDepositFeatures();
   updatePlanetState({ planetSize });
 }
 

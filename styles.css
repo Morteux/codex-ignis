@@ -2066,6 +2066,54 @@ h1 {
     background: rgba(167, 245, 106, .08);
 }
 
+/* P10.8: required deposit features (Cuerpo celeste tab) */
+.celestial-features {
+    display: grid;
+    gap: .45rem;
+    margin: .8rem 0 1.4rem;
+}
+
+.celestial-feature-list {
+    display: grid;
+    gap: .35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.celestial-feature {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    padding: .35rem .5rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+    font-size: .72rem;
+}
+
+.celestial-feature img {
+    width: 1.8rem;
+    height: 1.8rem;
+    object-fit: cover;
+}
+
+.celestial-feature small {
+    flex-basis: 100%;
+    color: var(--muted);
+}
+
+.celestial-feature-count {
+    margin: 0;
+    color: var(--text);
+    font-size: .75rem;
+}
+
+.planet-district-note.is-warning {
+    color: #f5b942;
+}
+
 /* ── Panel fijo de resumen del planeta (visible en las 4 pestañas) ────── */
 
 .planet-summary-fixed {

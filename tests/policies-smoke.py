@@ -535,6 +535,30 @@ async def main():
         check("secondary urban: no Archives / Urban Expansion / Central Spire, Administrative Hub offered", "archives" not in sopts and "urbanExpansion" not in sopts and "centralSpire" not in sopts and "administrativeHub" in sopts, sopts)
         await body("Continental")
 
+        # 18. P10.8: required deposit features (computed from the built resource districts), 4-15 warning, Relic agriculture blocked
+        async def card_plus(i, times=1):
+            for _ in range(times):
+                await pg.evaluate("""(i)=>{const c=document.querySelectorAll('.planet-district-card')[i];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""", i)
+        async def features():
+            return await pg.evaluate("()=>({items:[...document.querySelectorAll('#celestial-deposit-features .celestial-feature')].map(e=>e.dataset.feature),count:document.querySelector('#celestial-deposit-features .celestial-feature-count')?.dataset.count,warning:document.querySelector('#celestial-feature-warning')?.innerText||null})")
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await body("Continental")
+        await card_plus(2, 5)
+        f = await features()
+        # Continental mining: Rich Mountain (+3) and Prosperous Mesa (+2) = 2 features
+        check("Continental, 5 mining districts: Rich Mountain + Prosperous Mesa", sorted(f["items"]) == ["prosperousMesa", "richMountain"] and f["count"] == "2", f)
+        check("fewer than 4 deposit features: warning", bool(f["warning"]) and "Fewer than 4" in f["warning"], f)
+        await card_plus(1, 9)
+        f = await features()
+        check("5 mining + 9 generator: 5 features, no warning", f["count"] == "5" and f["warning"] is None, f)
+        await body("Relic World")
+        agri = await pg.evaluate("()=>{const c=document.querySelectorAll('.planet-district-card')[3];return [[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').disabled,c.innerText]}")
+        check("Relic World: no agriculture feature, + disabled with a note", agri[0] is True and "No deposit feature" in agri[1], agri)
+        await body("Ecumenopolis")
+        na = await pg.evaluate("()=>document.querySelector('#celestial-deposit-features').innerText")
+        check("Ecumenopolis: deposit features not applicable", "no deposit features" in na, na)
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

@@ -73,6 +73,15 @@ New jobs needed: Clerk (+3 trade, +3 amenities, +1 % trade from jobs), Thermofor
 8. (P10.4) Research Station requires "Can build Zero-G Research Districts": is it the habitat Research District? Owner checking; until then shown as an unmodelled requirement.
 7. (P10.3) Ring World secondary Commercial/Research etc. swaps: same urban list as regular worlds?
 
+### 4.2 Planetary features, blockers and planet modifiers (P10.8, wiki 4.5.2 *Planetary features*, *Planet modifiers*)
+**Owner decisions (2026-11-20):**
+- Resource district limit is active, worked the other way round: the user does not pick the planet's features; the simulator computes the fewest deposit features the built resource districts need on this planet type (Cuerpo celeste tab, "Required deposit features"; data in `js/planetary-features-data.js`). Warning when that number is below 4 or above 15 (the wiki's range, which depends on planet size; no formula is applied).
+- Strategic resource deposits (needed by the strategic specializations): the simulator picks the worst variant by default (e.g. Crystalline Caverns +0.05 rather than Crystal Forest +0.10) and the user can choose another one.
+- Selectable blockers (only useful ones): Collapsed Spire (Relic), the five Blazing Scourge blockers, Nanite Harvest Basin, Shroudstone and Ruined Sanctum of the Dreamer. Blockers that only remove districts are covered by the manual size.
+- Planet modifiers: a selectable list with direct effects (resources, but also stability, crime, amenities, happiness and other planet values), not only resources.
+
+**Deposit features (P10.8, part 1):** applies to the 9 regular planets and Volcanic, Gaia, Tomb and Relic Worlds (artificial bodies and converted worlds have none). Exact search: fewest features, then least spare capacity; features with the same caps are interchangeable (the first in wiki order is shown, the others as alternatives). Sulfuric Lava (Volcanic) counts for both Magma Conduits and Thermotechnic Forums. A district group with no feature on the planet type cannot be built (+ disabled, note): Relic Worlds have no agriculture feature. Uncapped: agriculture on an Ocean World with Anglers / Trawling Operations (Marine Machines / Maritime Robotics share the keys); Shattered Ring World and habitats keep their own rules. Not modelled: district-cap buildings (Industrial Mining Site...), Subterranean origin mining, features from events, the Alien Zoo feature.
+
 ## 5. Empire
 - Ethics wheel (3 points, gestalt exclusive), 7 authorities, civics (max 3) with requirement/exclusion rules; civic keys derive from the icon file name (`principios_del_juego.md`), English name = wiki name.
 - Applied effects: unity %, trade %, influence flat (external income), stratum efficiency (Authoritarian/Fanatic +5/+10 % worker, Egalitarian/Fanatic +5/+10 % specialist). Everything else is informational.
