@@ -330,7 +330,8 @@ function secondaryDistrictDef(cat) {
     upkeep: special.upkeep,
     lockedTooltipKey: "planetSimUrbanSlotLockedTooltip",
     slotsPerSpecialization: DISTRICTS.urban.slotsPerSpecialization,
-    specializationOptions: [...DISTRICTS.urban.specializationOptions, ...resourceOptions]
+    // P10.9: primary-only specializations (Archives, Urban Expansion, Central Spire) are not offered in secondary urban districts.
+    specializationOptions: [...DISTRICTS.urban.specializationOptions.filter((option) => !option.primaryOnly), ...resourceOptions]
   };
 }
 
@@ -351,6 +352,28 @@ function primaryOption(optionId) {
 
 function secondaryOption(cat, optionId) {
   return optionId ? secondaryDistrictDef(cat).specializationOptions.find((option) => option.id === optionId) || null : null;
+}
+
+/** P10.9: Administrator job of each authority (Jobs page: Bureaucrat; Hive Mind Synapse Drone; Machine Intelligence Coordinator). */
+const ADMINISTRATOR_JOB_BY_AUTHORITY = { hiveMind: "synapse_drone", machineIntelligence: "coordinator" };
+
+/** Jobs of one copy of a specialization: its fixed jobs plus its Administrator jobs by authority (P10.9), before the body multiplier. */
+function specializationJobs(option) {
+  const jobs = { ...(option?.jobs || {}) };
+  if (option?.administratorJobs) {
+    const state = getPlanetState();
+    if (!(option.administratorExcludedCivics || []).some((key) => (state.civicIds || []).includes(key))) {
+      const jobId = ADMINISTRATOR_JOB_BY_AUTHORITY[state.authorityId] || "bureaucrat";
+      jobs[jobId] = (jobs[jobId] || 0) + option.administratorJobs;
+    }
+  }
+  return jobs;
+}
+
+/** P10.9: notes for the effects of a specialization that are not modelled under the current civics (Archives Bio-Trophies). */
+function specializationNotes(option) {
+  const civics = getPlanetState().civicIds || [];
+  return Object.entries(option?.civicNotes || {}).filter(([key]) => civics.includes(key)).map(([, i18nKey]) => t(currentLang, i18nKey));
 }
 
 /** Base jobs of one copy of a district: per empire type (Residential Arcology) and technology jobs (all technologies researched). */
@@ -509,6 +532,8 @@ function slotSpecInfo(key) {
     const slotIndex = Number(urbanMatch[1]);
     const optionId = districtState.urban.slots[slotIndex];
     const option = primaryOption(optionId);
+    // P10.9: Urban Expansion permits every set except the listed ones (excludedSets).
+    if (option?.excludedSets) return { sets: null, excludedSets: option.excludedSets, label: t(currentLang, option.i18nKey) };
     return {
       sets: option ? option.permittedSets : [],
       label: option ? t(currentLang, option.i18nKey) : t(currentLang, "planetSimNotSpecialized")
@@ -533,6 +558,7 @@ function slotSpecInfo(key) {
 /** ¿Puede este edificio construirse en esta ranura, según su especialización? */
 function slotAcceptsBuilding(key, building) {
   const info = slotSpecInfo(key);
+  if (info.excludedSets) return !building.sets.some((set) => info.excludedSets.includes(set) || set === "lathe");
   if (info.sets === null) {
     if (isLatheLayout()) return building.sets.includes("lathe"); // P10.5
     return !building.sets.some((set) => EXTRACTION_BUILDING_SETS.includes(set) || set === "lathe");
@@ -749,7 +775,7 @@ function computeTotals() {
       Object.entries(districtBaseJobs(def)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * state.count));
       const option = secondaryOption(cat, state.optionId);
       if (option) {
-        Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * state.count));
+        Object.entries(specializationJobs(option)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * state.count));
       }
     }
   });
@@ -763,7 +789,7 @@ function computeTotals() {
     districtState.urban.slots.forEach((optionId) => {
       const option = primaryOption(optionId);
       if (!option) return;
-      Object.entries(option.jobs || {}).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * districtState.urban.count));
+      Object.entries(specializationJobs(option)).forEach(([jobId, raw]) => addJobCapacity(jobId, raw * jobMultiplier * districtState.urban.count));
     });
   }
 
@@ -2283,7 +2309,13 @@ function renderUrbanSpecializationPicker(slotIndex) {
   info.append(select);
 
   if (currentOption) {
-    info.append(renderJobsMini(scaleJobs(currentOption.jobs, specializationJobMultiplier())));
+    info.append(renderJobsMini(scaleJobs(specializationJobs(currentOption), specializationJobMultiplier())));
+    specializationNotes(currentOption).forEach((note) => {
+      const noteEl = document.createElement("p");
+      noteEl.className = "planet-district-spec-note";
+      noteEl.textContent = note;
+      info.append(noteEl);
+    });
   }
 
   wrapper.append(info);
@@ -2366,7 +2398,7 @@ function renderResourceDistrictCard(cat) {
   specRow.append(select);
 
   if (currentOption) {
-    specRow.append(renderJobsMini(scaleJobs(currentOption.jobs, specializationJobMultiplier())));
+    specRow.append(renderJobsMini(scaleJobs(specializationJobs(currentOption), specializationJobMultiplier())));
   }
 
   card.append(specRow);

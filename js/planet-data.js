@@ -242,6 +242,50 @@ export const DISTRICTS = {
         jobs: { biologist: 100 },
         permittedSets: ["society", "research", "origin"]
       },
+      // P10.9: Administrative Hub, Spiritual Enclave (urban, primary and secondary urban districts) and the primary-only
+      // Archives and Urban Expansion (wiki 4.5.2 "District specialization"). administratorJobs: Bureaucrats, or the
+      // Administrator job of the authority (Hive Mind Synapse Drones, Machine Intelligence Coordinators; Jobs page).
+      // primaryOnly: not offered in secondary urban districts. excludedSets: building sets the slots do NOT permit (Urban
+      // Expansion permits every set but Generator / Mining / Farming; Knights, Betharian and Automation are not modelled).
+      {
+        id: "administrativeHub",
+        i18nKey: "specializationAdministrativeHub",
+        img: "districts_specialization/District_specialization_unity.png",
+        housing: -200,
+        requires: [{ type: "notEthic", ids: ["spiritualist"] }, { type: "notCivic", keys: ["civicMachineServitor"] }],
+        administratorJobs: 100,
+        permittedSets: ["unity", "origin"]
+      },
+      {
+        id: "spiritualEnclave",
+        i18nKey: "specializationSpiritualEnclave",
+        img: "districts_specialization/District_specialization_priest.png",
+        housing: -200,
+        requires: [{ type: "ethic", ids: ["spiritualist"] }],
+        jobs: { priest: 100 },
+        permittedSets: ["unity", "origin"]
+      },
+      {
+        id: "urbanExpansion",
+        i18nKey: "specializationUrbanExpansion",
+        img: "districts_specialization/District_specialization_urban.png",
+        housing: 200,
+        primaryOnly: true,
+        excludedSets: ["energy", "minerals", "food"]
+      },
+      {
+        // "+200 Bio-Trophies (if Rogue Servitor)" replaces the Bureaucrats: Bio-Trophies are not modelled (GDD §10), shown as a note.
+        id: "archives",
+        i18nKey: "specializationArchives",
+        img: "districts_specialization/District_specialization_bureaucrat.png",
+        housing: -200,
+        primaryOnly: true,
+        jobs: { biologist: 20, engineer: 20, physicist: 20 },
+        administratorJobs: 40,
+        administratorExcludedCivics: ["civicMachineServitor"],
+        civicNotes: { civicMachineServitor: "specNoteArchivesBioTrophies" },
+        permittedSets: ["research", "unity", "origin"]
+      },
       // P10.6: Central Spire (wiki 4.5.2 "District specialization"): Relic World only, first specialization slot only (it is
       // set there when the Collapsed Spire blocker is cleared; the blocker itself is P10.8, shown as an unmodelled
       // requirement until then). "+15% Physics / Society / Engineering research from jobs" is a planet effect, applied once
@@ -252,6 +296,7 @@ export const DISTRICTS = {
         img: "districts_specialization/District_specialization_research.png",
         housing: -200,
         firstSlotOnly: true,
+        primaryOnly: true,
         requires: [{ type: "celestial", ids: ["relic"] }, { type: "unmodelled", i18nKey: "reqCollapsedSpireCleared" }],
         jobs: { physicist: 60, biologist: 60, engineer: 60 },
         jobResourcePct: { physics: 15, society: 15, engineering: 15 },

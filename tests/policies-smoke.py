@@ -508,6 +508,33 @@ async def main():
         slot = await pg.evaluate("()=>document.querySelectorAll('.planet-district-card')[0].querySelector('select').value")
         check("Central Spire reset on a regular planet", slot == "", slot)
 
+        # 17. P10.9: Administrative Hub (Administrator job by authority), Spiritual Enclave (Spiritualist), primary-only Archives and Urban Expansion
+        async def primary_opts(card=0, sel=0):
+            return await pg.evaluate("([c,i])=>Object.fromEntries([...document.querySelectorAll('.planet-district-card')[c].querySelectorAll('select')[i].options].map(o=>[o.value,o.disabled]))", [card, sel])
+        async def pick_primary(value, sel=0):
+            await pg.evaluate("([v,i])=>{const s=document.querySelectorAll('.planet-district-card')[0].querySelectorAll('select')[i];s.value=v;s.dispatchEvent(new Event('change'))}", [value, sel])
+        opts = await primary_opts()
+        check("primary: Administrative Hub, Archives and Urban Expansion offered", all(k in opts for k in ["administrativeHub", "archives", "urbanExpansion", "spiritualEnclave"]), opts)
+        spiritualist = await pg.evaluate("()=>!!document.querySelector('#empire-ethics-wheel button.is-selected[title^=\"Spiritualist\"], #empire-ethics-wheel button.is-selected[title^=\"Fanatic Spiritualist\"]')")
+        check("Spiritual Enclave needs Spiritualist / Administrative Hub not with it", opts["spiritualEnclave"] is (not spiritualist) and opts["administrativeHub"] is spiritualist, (spiritualist, opts))
+        if not spiritualist:
+            await pick_primary("archives", 0); await pick_primary("administrativeHub", 1)
+            jobs = await pg.inner_text("#planet-summary")
+            check("Archives + Administrative Hub: Bureaucrats and researchers", "Bureaucrat" in jobs and "Physicist" in jobs, jobs[:500])
+            await tab("empire"); await ethic("Gestalt Consciousness")
+            await pg.evaluate("()=>[...document.querySelectorAll('#empire-authority-list button')].find(b=>/Hive Mind/.test(b.innerText)).click()")
+            await tab("planet")
+            jobs = await pg.inner_text("#planet-summary")
+            check("hive mind: Administrative Hub / Archives create Synapse Drones", "Synapse Drone" in jobs and "Bureaucrat" not in jobs, jobs[:500])
+            await tab("empire"); await ethic("Gestalt Consciousness"); await tab("planet"); await pg.click("#planet-tab-districts")
+        await pick_primary("urbanExpansion", 0)
+        housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
+        check("Urban Expansion selectable (housing tooltip still lists the 2 primary districts)", "×2" in housing, housing)
+        await body("Ecumenopolis")
+        sopts = await primary_opts(1)
+        check("secondary urban: no Archives / Urban Expansion / Central Spire, Administrative Hub offered", "archives" not in sopts and "urbanExpansion" not in sopts and "centralSpire" not in sopts and "administrativeHub" in sopts, sopts)
+        await body("Continental")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
