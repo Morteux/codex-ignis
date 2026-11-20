@@ -1061,6 +1061,7 @@ h1 {
 
 .planet-main-panel {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.4rem;
     min-width: 0;
 }
@@ -1885,7 +1886,7 @@ h1 {
 
 @media (max-width: 900px) {
     .planet-shell {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
     }
 
     .planet-catalog-panel {
@@ -1990,7 +1991,7 @@ h1 {
 
 #empire-authority-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
     gap: .6rem;
 }
 
@@ -2536,7 +2537,7 @@ h1 {
 
 .library-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
     gap: .8rem;
 }
 
@@ -2918,7 +2919,7 @@ h1 {
 
 .empire-policy-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
     gap: .6rem;
     margin-top: .6rem;
 }
@@ -2935,7 +2936,7 @@ h1 {
 
 .branch-civic-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
     gap: .3rem .8rem;
     margin-top: .5rem;
     font-size: .72rem;
@@ -3045,4 +3046,61 @@ h1 {
     margin-top: .2rem;
     font-size: .68rem;
     color: var(--muted);
+}
+
+/* P13.1: mobile layout. Kept at the end of the file so it wins over the
+   earlier rules of the same specificity (media queries add none). */
+#planet-compare,
+#planet-timeline {
+    overflow-x: auto;
+}
+
+@media (max-width: 700px) {
+    .planet-main-tab {
+        padding: .5rem .7rem;
+    }
+
+    .planet-slots-panel,
+    .planet-modifiers-panel,
+    .planet-summary-panel,
+    .planet-production-panel,
+    .planet-catalog-panel {
+        padding: 1rem .8rem;
+    }
+
+    /* 5 x 2.8rem + gaps fits a 320px screen; 3.4rem cells did not. */
+    .empire-ethics-wheel {
+        grid-template-columns: repeat(5, 2.8rem);
+        grid-template-rows: repeat(5, 2.8rem);
+    }
+
+    .planet-header-stat {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: .7rem 1rem;
+    }
+
+    .planet-header-stat .planet-designation-select {
+        width: 100%;
+    }
+
+    .planet-summary-item-end {
+        margin-left: 0;
+    }
+
+    .planet-summary-item {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .planet-data-version-select,
+    .planet-empire-select {
+        max-width: 100%;
+    }
+
+    .planet-timeline-start {
+        width: 4.5rem;
+    }
 }

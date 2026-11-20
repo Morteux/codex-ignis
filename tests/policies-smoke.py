@@ -934,6 +934,14 @@ async def main():
         # P12.3: empire-level tabs (Imperio, Edicts) marked as saved with the empire profile
         marked = await pg.evaluate("()=>[...document.querySelectorAll('.planet-main-tab')].filter(b=>b.classList.contains('is-empire-saved')).map(b=>[b.dataset.mainTab,b.title,getComputedStyle(b,'::before').backgroundImage.includes('mod_cat_government'),getComputedStyle(b).boxShadow!=='none'])")
         check("empire tabs: only Imperio and Edicts, tooltip, empire icon background, accent line", marked == [["empire", "Saved with the empire profile", True, True], ["edicts", "Saved with the empire profile", True, True]], marked)
+        # P13.1: mobile layout — no tab may scroll the page sideways on a 320px screen
+        await pg.set_viewport_size({"width": 320, "height": 800})
+        for name in ("library", "planet", "empire", "body", "edicts", "branches"):
+            await tab(name)
+            wide = await pg.evaluate("()=>{const w=document.documentElement.clientWidth;return {sw:document.documentElement.scrollWidth,w,over:[...document.querySelectorAll('body *')].filter(e=>{const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};return out(e)&&![...e.children].some(out)&&!e.closest('#planet-compare,#planet-timeline')}).slice(0,8).map(e=>e.tagName+'.'+e.className+'#'+e.id)}}")
+            check("mobile 320px: " + name + " tab has no horizontal overflow", wide["sw"] <= wide["w"] and not wide["over"], wide)
+        await pg.set_viewport_size({"width": 1280, "height": 900})
+        await tab("planet")
         check("no page errors", not errors, errors)
         await browser.close()
 
