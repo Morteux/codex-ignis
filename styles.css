@@ -2863,6 +2863,17 @@ h1 {
     color: #ff8a7a;
 }
 
+/* ── Monthly stockpile timeline (P11.2) ───────────────────────────────── */
+
+.planet-timeline-start {
+    width: 6rem;
+    text-align: right;
+}
+
+.planet-compare-value.is-negative {
+    color: #ff8a7a;
+}
+
 /* ── Políticas del imperio (P16.4) ────────────────────────────────────── */
 
 .empire-policy-group {

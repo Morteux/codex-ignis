@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-> Progreso: **1 / 26 tareas (4%)**
+> Progreso: **2 / 26 tareas (8%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
@@ -29,7 +29,8 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 ## 11 · Comparison & timeline
 - [x] **T1101** (P11.1) Scenario A/B comparison with marginal-change highlighting
   - Prueba manual: abre `planet-sim.html`, pulsa «Pin the current planet as scenario A» en el panel «Scenario A/B comparison» y construye un edificio (p. ej. Commercial Zones): las filas que cambian (Trade value, Consumer goods…) salen arriba resaltadas con su cambio B − A en verde o rojo.
-- [ ] **T1102** (P11.2) Monthly stockpile timeline (1 / 12 / 60 / 120 months)
+- [x] **T1102** (P11.2) Monthly stockpile timeline (1 / 12 / 60 / 120 months)
+  - Prueba manual: en `planet-sim.html` construye Commercial Zones y mira el panel «Monthly stockpile timeline»: Consumer goods −2/mes; escribe 100 como reserva inicial y debería verse 98 / 76 / 0 / 0 a 1 / 12 / 60 / 120 meses.
 - [ ] **T1103** (P11.3) Deficit and stockpile-exhaustion flags
 
 ## 12 · UI icons

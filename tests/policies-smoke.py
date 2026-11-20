@@ -860,7 +860,7 @@ async def main():
         await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
         await tab("planet")
         empty = await pg.inner_text("#planet-compare")
-        check("compare: no scenario A -> hint, no table", "Pin the current planet as scenario A" in empty and await pg.evaluate("()=>!document.querySelector('.planet-compare-table')"), empty)
+        check("compare: no scenario A -> hint, no table", "Pin the current planet as scenario A" in empty and await pg.evaluate("()=>!document.querySelector('#planet-compare .planet-compare-table')"), empty)
         await pg.evaluate("()=>document.querySelector('.planet-compare-pin').click()")
         same = await pg.evaluate("()=>[document.querySelector('.planet-compare-summary').innerText,document.querySelectorAll('.planet-compare-row.is-changed').length]")
         check("compare: right after pinning nothing changes", same == ["0 values change", 0], same)
@@ -872,7 +872,7 @@ async def main():
         first = await pg.evaluate("()=>document.querySelector('.planet-compare-row').classList.contains('is-changed')")
         check("compare: changed rows listed first", first)
         await pg.evaluate("()=>document.querySelector('.planet-compare-clear').click()")
-        check("compare: clearing A hides the table", await pg.evaluate("()=>!document.querySelector('.planet-compare-table')"))
+        check("compare: clearing A hides the table", await pg.evaluate("()=>!document.querySelector('#planet-compare .planet-compare-table')"))
         pure = await pg.evaluate("""async()=>{const m=await import('./js/scenario-compare.js');
             const a={resources:{energy:5,minerals:2},conditions:{stability:50,happiness:null,crime:10,freeHousing:1,pops:3}};
             const b={resources:{energy:5,minerals:-1,food:4},conditions:{stability:55,happiness:null,crime:12,freeHousing:1,pops:3}};
@@ -880,6 +880,21 @@ async def main():
         check("compare engine: order by change size, crime increase is worse, unchanged/not applicable after",
               pure[:4] == [["stability", 5, True, True], ["food", 4, True, True], ["minerals", -3, True, False], ["crime", 2, True, False]]
               and ["happiness", None, False, None] in pure and ["energy", 0, False, None] in pure, pure)
+
+        # P11.2: monthly stockpile timeline — start + net x months at 1/12/60/120, never below 0; no research/amenities/trade
+        async def timeline():
+            return await pg.evaluate("""()=>Object.fromEntries([...document.querySelectorAll('.planet-timeline-row')].map(r=>[r.dataset.id,[...r.querySelectorAll('td')].slice(2).map(td=>td.innerText.trim())]))""")
+        tl = await timeline()
+        heads = await pg.evaluate("()=>[...document.querySelectorAll('.planet-timeline-table th')].map(th=>th.innerText.trim())")
+        check("timeline: columns 1 / 12 / 60 / 120 months", heads[-4:] == ["1 month", "12 months", "60 months", "120 months"], heads)
+        check("timeline: no research, amenities or trade rows", not any(k in tl for k in ["physics", "society", "engineering", "amenities", "trade"]), tl)
+        cg = tl.get("consumer_goods")
+        check("timeline: consumer goods -2/month from 0 stays at 0", cg is not None and cg[0] == "−2" and cg[1:] == ["0", "0", "0", "0"], tl)
+        await pg.evaluate("()=>{const i=document.querySelector('.planet-timeline-row[data-id=consumer_goods] .planet-timeline-start');i.value='100';i.dispatchEvent(new Event('change'))}")
+        cg = (await timeline()).get("consumer_goods")
+        check("timeline: start 100 -> 98 / 76 / 0 / 0", cg is not None and cg[1:] == ["98", "76", "0", "0"], cg)
+        proj = await pg.evaluate("async()=>{const m=await import('./js/stockpile-timeline.js');return [m.projectStockpile(10,2.5,12),m.projectStockpile(10,-1,12),m.timelineRows({energy:3,physics:5,trade:2},{}).map(r=>[r.id,r.values])]}")
+        check("timeline engine: linear projection floored at 0, research/trade left out", proj == [40, 0, [["energy", [3, 36, 180, 360]]]], proj)
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();

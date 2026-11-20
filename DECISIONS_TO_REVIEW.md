@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P11.2 — Monthly stockpile timeline (2026-11-21, GDD §6)
+- [ ] **Linear projection of the current planet**: start + net × months; no pop growth, construction, events or monthly changes.
+- [ ] **Storage caps not modelled**: the 4.5.2 *Resources* page could not be read (the wiki did not load), so no cap figure is used; stockpiles only stop at 0.
+- [ ] **Resources left out**: research (physics / society / engineering), amenities and trade (already converted into other resources by the trade policy). Advanced Logic, strategic resources, nanites and Zro are treated as stockpiles.
+- [ ] **Planet net only** (no external empire income, which is not this planet's); starting stockpiles kept in memory only, not saved with the planet or the empire.
+- [ ] **Only resources the planet produces or consumes** get a row (plus any with a starting stockpile already entered).
+
 ## P11.1 — Scenario A/B comparison (2026-11-21, GDD §6)
 - [ ] **A is a pinned snapshot, B is the live planet**: no comparison between two saved planets (that would need running the engine on a second configuration); to compare a saved planet, load it, pin it, then load or edit the other.
 - [ ] **Snapshot only in memory**: lost on reload, not saved with the planet nor exported.
