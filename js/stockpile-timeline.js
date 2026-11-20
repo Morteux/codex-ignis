@@ -10,6 +10,11 @@
  * value) and trade (converted into other resources by the trade policy) are
  * left out. The engine (js/planet-sim.js) passes its totals in; this module
  * only projects and draws.
+ *
+ * P11.3: a resource with a negative net is flagged as a deficit, with the
+ * month its stockpile runs out (or "empty" when it starts at 0); the
+ * horizons where it is used up are marked. The game's deficit penalties are
+ * not modelled: the flag only warns.
  */
 
 import { t } from "./i18n.js";
@@ -26,13 +31,42 @@ export function projectStockpile(start, net, months) {
   return Math.max(0, start + net * months);
 }
 
-/** Rows of the timeline: stockpiled resources with a net or a starting stockpile, in the canonical resource order. */
+/**
+ * P11.3: months until a stockpile in deficit (net < 0) is used up — the first whole month after which it is 0
+ * (ceil(start / −net)); 0 = already empty; null = no deficit.
+ */
+export function exhaustionMonth(start, net) {
+  if (net > -EPSILON) return null;
+  if (start <= 0) return 0;
+  return Math.ceil(start / -net - 1e-9);
+}
+
+/**
+ * Rows of the timeline: stockpiled resources with a net or a starting stockpile, in the canonical resource order.
+ * P11.3: `deficit` (net < 0), `exhaustedAfter` (exhaustionMonth) and `exhausted` per horizon (stockpile used up by then).
+ */
 export function timelineRows(resourceTotals, starts = startStockpiles) {
   return Object.keys(RESOURCES)
     .filter((id) => !NON_STOCKPILED.includes(id))
     .map((id) => ({ id, start: starts[id] || 0, net: resourceTotals[id] || 0 }))
     .filter((row) => Math.abs(row.net) > EPSILON || row.start > 0)
-    .map((row) => ({ ...row, values: TIMELINE_MONTHS.map((months) => projectStockpile(row.start, row.net, months)) }));
+    .map((row) => {
+      const exhaustedAfter = exhaustionMonth(row.start, row.net);
+      return {
+        ...row,
+        deficit: exhaustedAfter !== null,
+        exhaustedAfter,
+        values: TIMELINE_MONTHS.map((months) => projectStockpile(row.start, row.net, months)),
+        exhausted: TIMELINE_MONTHS.map((months) => exhaustedAfter !== null && months >= exhaustedAfter)
+      };
+    });
+}
+
+/** P11.3: flag text of a row (empty when there is no deficit). */
+function flagText(lang, row) {
+  if (!row.deficit) return "";
+  if (row.exhaustedAfter === 0) return t(lang, "timelineFlagEmpty");
+  return t(lang, "timelineFlagExhausted")(row.exhaustedAfter);
 }
 
 /**
@@ -58,10 +92,20 @@ export function renderStockpileTimeline(container, helpers) {
     return;
   }
 
+  // P11.3: one alert line naming every resource in deficit, soonest exhausted first.
+  const deficits = rows.filter((row) => row.deficit).sort((a, b) => a.exhaustedAfter - b.exhaustedAfter);
+  if (deficits.length) {
+    const alert = document.createElement("p");
+    alert.className = "entry-note planet-timeline-alert";
+    alert.setAttribute("role", "alert");
+    alert.textContent = t(lang, "timelineDeficitAlert")(deficits.map((row) => `${t(lang, RESOURCES[row.id].i18nKey)} (${flagText(lang, row)})`).join(", "));
+    container.append(alert);
+  }
+
   const table = document.createElement("table");
   table.className = "planet-compare-table planet-timeline-table";
   const head = document.createElement("tr");
-  ["", t(lang, "timelineStart"), t(lang, "timelineNet"), ...TIMELINE_MONTHS.map((months) => t(lang, "timelineMonths")(months))].forEach((text) => {
+  ["", t(lang, "timelineStart"), t(lang, "timelineNet"), ...TIMELINE_MONTHS.map((months) => t(lang, "timelineMonths")(months)), t(lang, "timelineFlags")].forEach((text) => {
     const th = document.createElement("th");
     th.textContent = text;
     head.append(th);
@@ -101,7 +145,9 @@ export function renderStockpileTimeline(container, helpers) {
       return td;
     };
     tr.append(nameCell, startCell, cell(formatAmount(row.net, true), `planet-compare-value${row.net < 0 ? " is-negative" : ""}`));
-    row.values.forEach((value) => tr.append(cell(formatAmount(value, false), "planet-compare-value planet-timeline-value")));
+    row.values.forEach((value, index) => tr.append(cell(formatAmount(value, false), `planet-compare-value planet-timeline-value${row.exhausted[index] ? " is-exhausted" : ""}`)));
+    tr.append(cell(flagText(lang, row), "planet-timeline-flag"));
+    if (row.deficit) tr.classList.add("is-deficit");
     tbody.append(tr);
   });
   table.append(thead, tbody);

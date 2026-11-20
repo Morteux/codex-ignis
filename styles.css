@@ -2874,6 +2874,21 @@ h1 {
     color: #ff8a7a;
 }
 
+/* Deficit and stockpile-exhaustion flags (P11.3) */
+
+.planet-timeline-row.is-deficit .planet-timeline-flag,
+.planet-timeline-value.is-exhausted {
+    color: #ff8a7a;
+}
+
+.planet-timeline-value.is-exhausted {
+    font-weight: 700;
+}
+
+.planet-timeline-flag {
+    font-size: .8rem;
+}
+
 /* ── Políticas del imperio (P16.4) ────────────────────────────────────── */
 
 .empire-policy-group {
