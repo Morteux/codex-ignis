@@ -457,6 +457,10 @@ function applyStaticStrings() {
   if (footerText) footerText.textContent = t(currentLang, "footerText");
   if (privacyLink) privacyLink.textContent = t(currentLang, "privacyLink");
   if (cookiesLink) cookiesLink.textContent = t(currentLang, "cookiesLink");
+  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
+    const [attr, key] = el.dataset.i18nAttr.split(":");
+    el.setAttribute(attr, t(currentLang, key));
+  });
   langButtons.forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
   });

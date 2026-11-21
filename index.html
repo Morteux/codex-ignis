@@ -15,24 +15,24 @@
 <body>
     <a class="skip-link" id="skip-link" href="#archivo">Saltar al archivo</a>
     <main class="terminal-shell">
-        <header class="topbar" aria-label="Cabecera del archivo">
+        <header class="topbar" aria-label="Cabecera del archivo" data-i18n-attr="aria-label:a11yTopbarLabel">
             <div class="topbar-left">
-                <a class="brand" href="./" aria-label="Codex Ignis: inicio" aria-current="page">
+                <a class="brand" href="./" aria-label="Codex Ignis: inicio" data-i18n-attr="aria-label:a11yHomeLink" aria-current="page">
                     <span class="brand-mark" aria-hidden="true">✦</span>
                     <span>CODEX_IGNIS</span>
                 </a>
-                <nav class="primary-nav" aria-label="Proyectos del archivo">
+                <nav class="primary-nav" aria-label="Proyectos del archivo" data-i18n-attr="aria-label:a11yProjectsNav">
                     <a href="bingo.html">BINGO</a>
                     <a href="planet-sim.html">PLANET_SIM</a>
                     <a href="tech-tree.html">TECH_TREE</a>
                 </nav>
             </div>
             <div class="topbar-status">
-                <div class="connection" aria-label="Sistema en línea">
+                <div class="connection" aria-label="Sistema en línea" data-i18n-attr="aria-label:a11yOnlineStatus">
                     <span class="status-dot" aria-hidden="true"></span>
                     <span id="connection-status">EN LÍNEA</span>
                 </div>
-                <div class="lang-switch" id="lang-switch" role="group" aria-label="Selector de idioma">
+                <div class="lang-switch" id="lang-switch" role="group" aria-label="Selector de idioma" data-i18n-attr="aria-label:a11yLangSwitch">
                     <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
                     <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
                     <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false">JP</button>
@@ -48,11 +48,11 @@
             </p>
         </section>
 
-        <section class="workspace" id="archivo" aria-label="Explorador del archivo">
-            <aside class="navigator" aria-label="Navegación de conocimiento">
+        <section class="workspace" id="archivo" aria-label="Explorador del archivo" data-i18n-attr="aria-label:a11yArchiveExplorer">
+            <aside class="navigator" aria-label="Navegación de conocimiento" data-i18n-attr="aria-label:a11yKnowledgeNav">
                 <div class="panel-heading">
                     <span id="index-heading">ÍNDICE</span>
-                    <span id="entry-count" aria-label="Número de entradas">00</span>
+                    <span id="entry-count" aria-label="Número de entradas" data-i18n-attr="aria-label:a11yEntryCount">00</span>
                 </div>
 
                 <label class="search-label" id="search-label" for="knowledge-search">Buscar registros</label>
@@ -72,16 +72,16 @@
                 <div class="reader-meta" id="reader-meta"></div>
                 <div class="reader-body" id="reader-body"></div>
                 <div class="ad-slot" data-ad-slot="article-inline" id="article-ad-slot"
-                    aria-label="Espacio publicitario reservado" hidden></div>
+                    aria-label="Espacio publicitario reservado" data-i18n-attr="aria-label:a11yAdSlot" hidden></div>
             </article>
         </section>
 
-        <section class="ad-slot" data-ad-slot="index-footer" aria-label="Espacio publicitario reservado" hidden>
+        <section class="ad-slot" data-ad-slot="index-footer" aria-label="Espacio publicitario reservado" data-i18n-attr="aria-label:a11yAdSlot" hidden>
         </section>
 
         <footer class="footer">
             <p id="footer-text">CODEX_IGNIS <span aria-hidden="true">·</span> volcando base de conocimiento</p>
-            <nav aria-label="Información legal">
+            <nav aria-label="Información legal" data-i18n-attr="aria-label:a11yLegalNav">
                 <a href="privacy.html" id="privacy-link">Privacidad</a>
                 <a href="cookies.html" id="cookies-link">Cookies</a>
             </nav>
@@ -89,7 +89,7 @@
     </main>
 
     <div class="lightbox" id="image-lightbox" hidden>
-        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen">×</button>
+        <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen" data-i18n-attr="aria-label:a11yCloseImage">×</button>
         <img class="lightbox-image" id="lightbox-image" src="" alt="" />
     </div>
 

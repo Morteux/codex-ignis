@@ -1070,6 +1070,20 @@ async def main():
         await pg.set_viewport_size({"width": 1280, "height": 900})
         await tab("planet")
         check("no page errors", not errors, errors)
+        # P13.9: landmark aria-labels of the other pages follow the selected language
+        labels_js = "()=>[...document.querySelectorAll('[aria-label]')].filter(e=>!e.classList.contains('lang-btn')&&!e.closest('#bingo-grid > *')).map(e=>e.getAttribute('aria-label'))"
+        spanish = ("Cabecera", "inicio", "Proyectos", "Selector", "Sistema", "Explorador", "Navegación", "Número", "Espacio", "Información", "Cerrar", "Casillas")
+        other = await ctx.new_page()
+        for page_name in ("index.html", "bingo.html", "privacy.html", "cookies.html", "404.html", "tech-tree.html"):
+            await other.goto("file://" + ROOT + "/" + page_name)
+            await other.wait_for_timeout(300)
+            await other.click(".lang-btn[data-lang=en]")
+            en_labels = await other.evaluate(labels_js)
+            await other.click(".lang-btn[data-lang=es]")
+            es_labels = await other.evaluate(labels_js)
+            await other.click(".lang-btn[data-lang=en]")
+            check("aria-labels translated: " + page_name, en_labels and not any(w in l for l in en_labels for w in spanish) and en_labels != es_labels and "Proyectos del archivo" in es_labels, (en_labels, es_labels))
+        await other.close()
         await browser.close()
 
 asyncio.run(main())
