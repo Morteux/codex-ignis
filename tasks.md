@@ -57,6 +57,7 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
   - Prueba manual: open `planet-sim.html` → Cuerpo celeste: hovering a body card (e.g. Gaia) lists "Not computed by the simulator:" and its effects; a planet modifier such as Tidal Locked still shows "Not modelled: …" and "Source: …" notes, also after switching to ES or JP.
 - [ ] **T1306** (P13.6) Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
   - Modelo: sonnet
+  - ❓ Bloqueada: this environment denied running any script (node/python only allowed with --check/--version), so the es/jp to English replacement (about 100 keys, best done with a script comparing es/en/jp) and tests/policies-smoke.py could not be run; rerun this task in a session that allows node/python.
 - [ ] **T1309** (P13.9) Translate the hard-coded Spanish landmark `aria-label`s of `index.html`, `bingo.html` and the legal pages (`data-i18n-attr` + es/en/jp keys, the `a11y*` keys of P13.4 can be reused)
 
 ## 15 · Official localization
