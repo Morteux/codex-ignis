@@ -66,7 +66,7 @@ import {
   JOB_RESOURCE_MULT,
   ANGLERS_WET_CLIMATE
 } from "./planet-data.js";
-import { registerSwapJobs, resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, swapWeight, swapRuleMet, blockedByUnmodelled, unmodelledSwapRules, SWAP_BASES, MODELLED_SWAPS } from "./job-swaps.js";
+import { registerSwapJobs, resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, swapWeight, swapRuleMet, blockedByUnmodelled, unmodelledSwapRules, swapJobI18nKey, SWAP_BASES, MODELLED_SWAPS } from "./job-swaps.js";
 import { JOB_SWAPS_BY_ID } from "./job-swap-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { PLANET_MODIFIERS, PLANET_MODIFIER_GROUPS } from "./planet-modifier-data.js";
@@ -1835,9 +1835,9 @@ function describeSwapRule(rule) {
     case "designation": return t(currentLang, "jobSwapRuleDesignation") + names(rule.ids.map((id) => t(currentLang, getDesignation(id).i18nKey)));
     case "planetModifier": return t(currentLang, "jobSwapRulePlanetModifier") + names(rule.ids.map((id) => { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === id); return modifier ? t(currentLang, modifier.i18nKey) : id; }));
     case "branchBuilding": return t(currentLang, "jobSwapRuleBranch") + names(rule.ids.map(branchBuildingName));
-    case "swap": return t(currentLang, "modifierSourceJobSwap").replace("{job}", JOBS[rule.id] ? jobName(rule.id) : (JOB_SWAPS_BY_ID.get(rule.id)?.name || rule.id));
+    case "swap": return t(currentLang, "modifierSourceJobSwap").replace("{job}", JOBS[rule.id] ? jobName(rule.id) : (t(currentLang, swapJobI18nKey(rule.id)) || rule.id));
     case "anyOf": return rule.rules.map(describeSwapRule).join(" / ");
-    case "unmodelled": return t(currentLang, "requirementUnmodelled") + rule.name;
+    case "unmodelled": return t(currentLang, "requirementUnmodelled") + t(currentLang, rule.i18nKey);
     case "notAuthority": return t(currentLang, "jobSwapRuleNotAuthority") + names(rule.ids.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)));
     case "tradition": return t(currentLang, "jobSwapRuleTradition");
     case "federation": return t(currentLang, "jobSwapRuleFederation");
@@ -1891,7 +1891,7 @@ function renderUnappliedSwaps(swapInfo) {
   entries.forEach((swap) => {
     const item = document.createElement("li");
     const base = SWAP_BASES[swap.id].find((id) => bases.has(id));
-    const missing = [...new Set(unmodelledSwapRules(swap.requires || [], swapInfo.context).map((rule) => rule.name))];
+    const missing = [...new Set(unmodelledSwapRules(swap.requires || [], swapInfo.context).map((rule) => t(currentLang, rule.i18nKey)))];
     item.textContent = `${jobName(base)} → ${jobName(swap.id)}: ${t(currentLang, "requirementUnmodelled")}${missing.join(" / ")}`;
     list.append(item);
   });
@@ -3735,8 +3735,8 @@ function renderPlanetModifiers() {
       label.append(name);
       item.append(label);
       const notes = [];
-      if (modifier.notModelled?.length) notes.push(t(currentLang, "planetModifierNotModelled") + modifier.notModelled.join("; "));
-      if (modifier.source) notes.push(t(currentLang, "planetModifierSource") + modifier.source);
+      if (modifier.notModelledKeys?.length) notes.push(t(currentLang, "planetModifierNotModelled") + modifier.notModelledKeys.map((key) => t(currentLang, key)).join("; "));
+      if (modifier.sourceKey) notes.push(t(currentLang, "planetModifierSource") + t(currentLang, modifier.sourceKey));
       if (excludedBy) notes.push(t(currentLang, "planetModifierExcluded")(t(currentLang, excludedBy.i18nKey)));
       if (box.checked && !planetModifierFitsBody(modifier)) notes.push(t(currentLang, "blockerInactive")(t(currentLang, "blockerWrongBody")));
       item.classList.toggle("is-inactive", box.checked && (!planetModifierFitsBody(modifier) || Boolean(excludedBy)));

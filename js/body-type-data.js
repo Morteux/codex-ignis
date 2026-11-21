@@ -41,7 +41,7 @@ export const REGULAR_BODY_RULES = {
  * - secondarySpecializations: which secondary (resource-like) specializations a
  *   secondary urban district may pick (see GDD §4.1 Q3 for the reading of the
  *   wiki's "Requirements" column).
- * - infoOnly: effects shown on the card but not computed.
+ * - infoOnlyKeys: i18n keys of the effects shown on the card but not computed (P13.8: English until P15).
  */
 export const BODY_TYPE_RULES = {
   volcanic: {
@@ -53,22 +53,22 @@ export const BODY_TYPE_RULES = {
     // page); no specialization lists the Thermotechnic Forum (it unlocks no building slots).
     resourceDistricts: ["geothermalPowerplant", "magmaConduit", "thermotechnicForum"],
     // Jobs page: Thermoforger is the Miner job swap on a Volcanic planet (P21.2: js/job-swap-data.js).
-    infoOnly: ["Volcanic climate (habitability)"]
+    infoOnlyKeys: ["bodyInfoVolcanic1"]
   },
   gaia: {
     planetCapacity: 600,
     jobResourcePct: { all: 10 },
     happinessPct: 10,
-    infoOnly: ["Perfect habitability", "+15% Pop growth speed", "+50% Automatic resettlement destination chance"]
+    infoOnlyKeys: ["bodyInfoGaia1", "bodyInfoGaia2", "bodyInfoGaia3"]
   },
   tomb: {
     planetCapacity: 300,
-    infoOnly: ["0% Base habitability", "Traditionalist faction displeased (unless Post-Apocalyptic / Memorialists)"]
+    infoOnlyKeys: ["bodyInfoTomb1", "bodyInfoTomb2"]
   },
   relic: {
     planetCapacity: 400,
     // Collapsed Spire blocker: the first primary specialization is locked until cleared and then set to Central Spire (P10.6 / P10.8).
-    infoOnly: ["80% Base habitability", "Restore Ecumenopolis decision", "Research planetary features and expensive blockers"]
+    infoOnlyKeys: ["bodyInfoRelic1", "bodyInfoRelic2", "bodyInfoRelic3"]
   },
   city: {
     planetCapacity: 600,
@@ -81,7 +81,7 @@ export const BODY_TYPE_RULES = {
     specializationJobMultiplier: 3,
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: [], // "None of them are available on Ecumenopolis"
-    infoOnly: ["Perfect habitability", "+15% Pop assembly speed", "+15% Monthly organic pop growth", "+50% Automatic resettlement destination chance", "Cannot be terraformed"]
+    infoOnlyKeys: ["bodyInfoCity1", "bodyInfoCity2", "bodyInfoCity3", "bodyInfoCity4", "bodyInfoCity5"]
   },
   hive: {
     planetCapacity: 600,
@@ -93,7 +93,7 @@ export const BODY_TYPE_RULES = {
     secondarySpecializations: ["energyGeneration", "mineralExtraction", "agriculturalFocus"],
     // Wiki: the Hive Cluster is not available with the Wilderness origin (red cross); origins are not modelled.
     // "+600 Housing from districts" is already the hiveWorldHousing of the Hive Cluster (planet-data.js).
-    infoOnly: ["Perfect habitability (Hive-Minded species only)", "+50% Automatic resettlement destination chance"]
+    infoOnlyKeys: ["bodyInfoHive1", "bodyInfoHive2"]
   },
   machine: {
     planetCapacity: 300,
@@ -104,7 +104,7 @@ export const BODY_TYPE_RULES = {
     specializationJobMultiplier: 3,
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: ["energyGeneration", "mineralExtraction"],
-    infoOnly: ["Perfect habitability for Machine/Mechanical (0% otherwise)", "+50% Automatic resettlement destination chance"]
+    infoOnlyKeys: ["bodyInfoMachine1", "bodyInfoMachine2"]
   },
   nanite: {
     districtLayout: "urbanSecondary",
@@ -113,7 +113,7 @@ export const BODY_TYPE_RULES = {
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: ["energyGeneration", "mineralExtraction"],
     // The wiki gives no planet capacity for Nanite Worlds.
-    infoOnly: ["Perfect habitability for Nanotech (0% otherwise)"]
+    infoOnlyKeys: ["bodyInfoNanite1"]
   },
   ringworld: {
     planetCapacity: 600,
@@ -125,13 +125,13 @@ export const BODY_TYPE_RULES = {
     secondaryHousingPenaltyMultiplier: 5,
     // Mineral Extraction has a red cross for Ring World (not available).
     secondarySpecializations: ["energyGeneration", "agriculturalFocus"],
-    infoOnly: ["Ideal habitability", "+50% Automatic resettlement destination chance"]
+    infoOnlyKeys: ["bodyInfoRingworld1", "bodyInfoRingworld2"]
   },
   shatteredRingworld: {
     fixedSize: 25,
     // Generator, mining and agriculture districts are uncapped (Districts page, "Uncapped if either").
     resourceDistrictsUncapped: true,
-    infoOnly: ["Ideal habitability", "Repair the Shattered Ring decision"]
+    infoOnlyKeys: ["bodyInfoShatteredRingworld1", "bodyInfoShatteredRingworld2"]
   },
   habitat: {
     planetCapacity: 300,
@@ -146,7 +146,7 @@ export const BODY_TYPE_RULES = {
     // Void Dwellers / Voidborne ×1.5 (origins and ascension perks are not modelled).
     specializationJobMultiplier: 1,
     capitalSet: "habitat",
-    infoOnly: ["Habitability 40/50/60% (tier I/II/III)", "+200% Colony development speed", "Resource districts limited by orbital deposits: 1 + half the deposit size"]
+    infoOnlyKeys: ["bodyInfoHabitat1", "bodyInfoHabitat2", "bodyInfoHabitat3"]
   },
   synapticLathe: {
     fixedSize: 2,
@@ -157,7 +157,7 @@ export const BODY_TYPE_RULES = {
     // "Each Synaptic Lathe can build two districts for every capital building level" (Districts); capitals add Max Districts (Capital building).
     // Reading (P10.5): district slots = fixedSize 2 + the capital's maxDistricts (Processing Unit 2, Parallelized 4, Vectorial 6).
     capitalSet: "synapticLathe",
-    infoOnly: ["85% habitability", "Separate building set", "All pops are Neural Chips", "Pops are purged and cannot grow", "Cannot have branch offices"]
+    infoOnlyKeys: ["bodyInfoSynapticLathe1", "bodyInfoSynapticLathe2", "bodyInfoSynapticLathe3", "bodyInfoSynapticLathe4", "bodyInfoSynapticLathe5"]
   }
 };
 

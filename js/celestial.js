@@ -10,6 +10,7 @@
 import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PLANET_TYPES } from "./celestial-data.js";
+import { BODY_TYPE_RULES } from "./body-type-data.js";
 import { updatePlanetState } from "./planet-state.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
@@ -43,6 +44,12 @@ function renderGroup(container, category) {
     const name = document.createElement("span");
     name.textContent = t(currentLang, type.i18nKey);
     card.append(name);
+
+    // P13.8: effects of the body that the simulator does not compute, in the tooltip.
+    const infoKeys = BODY_TYPE_RULES[type.id]?.infoOnlyKeys || [];
+    card.title = infoKeys.length
+      ? [t(currentLang, type.i18nKey), t(currentLang, "celestialInfoOnlyTitle"), ...infoKeys.map((key) => `• ${t(currentLang, key)}`)].join("\n")
+      : t(currentLang, type.i18nKey);
 
     card.addEventListener("click", () => {
       selectedTypeId = selectedTypeId === type.id ? null : type.id;

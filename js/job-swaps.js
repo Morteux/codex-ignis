@@ -29,6 +29,9 @@ import { buildingRequirementsMet } from "./building-requirements.js";
 const basesOf = (swap) => (Array.isArray(swap.base) ? swap.base : [swap.base]);
 const pascal = (id) => id.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
 
+/** i18n key of a swapped job's name ("job" + PascalCase id), modelled or not (P13.8). */
+export const swapJobI18nKey = (id) => `job${pascal(id)}`;
+
 /** Swaps whose base job (one of them) is in the simulator. */
 export const MODELLED_SWAPS = JOB_SWAPS.filter((swap) => basesOf(swap).some((base) => JOBS[base] && !JOB_SWAPS_BY_ID.has(base)));
 
@@ -41,7 +44,7 @@ export function registerSwapJobs() {
   registered = true;
   MODELLED_SWAPS.forEach((swap) => {
     const base = SWAP_BASES[swap.id][0];
-    if (!JOBS[swap.id]) JOBS[swap.id] = { i18nKey: `job${pascal(swap.id)}`, img: swap.img, stratum: JOBS[base].stratum, swapOf: base };
+    if (!JOBS[swap.id]) JOBS[swap.id] = { i18nKey: swapJobI18nKey(swap.id), img: swap.img, stratum: JOBS[base].stratum, swapOf: base };
     else JOBS[swap.id].swapOf = base;
     if (!JOB_OUTPUTS[swap.id]) JOB_OUTPUTS[swap.id] = { ...swap.output };
     if (swap.effects && !JOB_EFFECTS[swap.id]) JOB_EFFECTS[swap.id] = { ...swap.effects };

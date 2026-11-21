@@ -1006,6 +1006,33 @@ async def main():
                 for(const x of t.matchAll(/\\bt\\(\\s*["'`](\\w+)["'`]/g))if(!(x[1] in s.en))bad.push('missing '+x[1]+' @'+f)}
             return bad}""")
         check("i18n values: same type/arity, none empty, used keys exist", not deep, deep)
+        # P13.8: data files keep i18n keys, never shown text; every key they name exists in es/en/jp
+        datakeys = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
+            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
+            const s=(await import(url)).strings;const bad=[];let n=0;
+            const mods=['planet-modifier-data','body-type-data','job-swap-data'];
+            const keyField=/^(i18nKey|sourceKey|notModelledKeys|infoOnlyKeys)$/;
+            const walk=(v,path)=>{if(Array.isArray(v))v.forEach((x,i)=>walk(x,path+'['+i+']'));else if(v&&typeof v==='object')for(const [k,x] of Object.entries(v)){
+                if(/^(name|source|notModelled|infoOnly)$/.test(k))bad.push('raw text field '+path+'.'+k);
+                if(keyField.test(k))for(const key of [].concat(x)){n++;for(const l of ['es','en','jp'])if(typeof s[l][key]!=='string')bad.push('missing '+l+' '+key+' @'+path)}
+                else walk(x,path+'.'+k)}};
+            for(const f of mods){const m=await import('./js/'+f+'.js');for(const [k,v] of Object.entries(m))walk(v,f+':'+k)}
+            const swaps=(await import('./js/job-swap-data.js')).JOB_SWAPS;
+            for(const w of swaps){n++;const key='job'+w.id.split('_').map(p=>p[0].toUpperCase()+p.slice(1)).join('');if(!(key in s.en)||!(key in s.es)||!(key in s.jp))bad.push('missing swap name '+key)}
+            return {n,bad}}""")
+        check("data texts: i18n keys only, all present in es/en/jp", datakeys["n"] > 300 and not datakeys["bad"], datakeys)
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        await tab("body")
+        tip = await pg.evaluate("()=>[...document.querySelectorAll('.celestial-type-card')].map(c=>c.title).find(x=>x.includes('Not computed'))||''")
+        check("body type card tooltip lists the effects not computed", "habitability" in tip.lower(), tip)
+        note_js = "()=>document.querySelector('#celestial-planet-modifiers [data-modifier=tidalLocked] small')?.textContent||''"
+        ptxt = await pg.evaluate(note_js)
+        check("planet modifier: not-modelled effects shown from i18n keys", "Not modelled:" in ptxt and "Day Farm Construction" in ptxt and "planetModifier" not in ptxt, ptxt[:300])
+        await pg.click(".lang-btn[data-lang=es]")
+        ptxt_es = await pg.evaluate(note_js)
+        await pg.click(".lang-btn[data-lang=en]")
+        check("planet modifier notes still resolve in Spanish (English text until P15)", "Day Farm Construction" in ptxt_es and "planetModifier" not in ptxt_es, ptxt_es[:300])
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
         buttons = await pg.evaluate("()=>[...document.querySelectorAll('.info-btn')].map(b=>[b.id,b.closest('section[id^=planet-tab-panel-]')?.id.replace('planet-tab-panel-','')||'planet'])")
         check("info buttons found", len(buttons) >= 7, buttons)
         for bid, tabname in buttons:
