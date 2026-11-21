@@ -953,6 +953,38 @@ async def main():
         await pg.reload(); await pg.wait_for_timeout(500)
         check("empire switch: last empire kept after a reload", await pg.input_value("#planet-summary-empire") == ids["Alpha"])
 
+        # P13.4: accessibility — ARIA tabs with arrow keys, and every visible control has an accessible name
+        await tab("planet")
+        aria = await pg.evaluate("()=>[...document.querySelectorAll('[role=tablist]')].map(l=>[...l.querySelectorAll('[role=tab]')].map(b=>[b.getAttribute('aria-selected'),b.tabIndex,!!document.getElementById(b.getAttribute('aria-controls'))&&document.getElementById(b.getAttribute('aria-controls')).getAttribute('role')==='tabpanel']))")
+        check("a11y: tabs have role, aria-selected, roving tabindex and a tabpanel", len(aria) == 2 and all(sum(s == "true" for s, _, _ in tl) == 1 and all((s == "true") == (i == 0) and p for s, i, p in tl) for tl in aria), aria)
+        await pg.focus("#planet-main-tab-planet")
+        await pg.keyboard.press("ArrowRight")
+        k1 = await pg.evaluate("()=>[document.activeElement.id,document.getElementById('planet-main-tab-empire').getAttribute('aria-selected'),!document.getElementById('planet-tab-panel-empire').hidden]")
+        await pg.keyboard.press("End"); await pg.keyboard.press("ArrowRight")
+        k2 = await pg.evaluate("()=>[document.activeElement.id,!document.getElementById('planet-tab-panel-library').hidden]")
+        await pg.keyboard.press("Home"); await pg.keyboard.press("ArrowLeft")
+        k3 = await pg.evaluate("()=>document.activeElement.id")
+        check("a11y: Arrow/Home/End move between the main tabs and activate them", k1 == ["planet-main-tab-empire", "true", True] and k2 == ["planet-main-tab-library", True] and k3 == "planet-main-tab-branches", (k1, k2, k3))
+        await tab("planet")
+        await pg.focus("#planet-tab-buildings"); await pg.keyboard.press("ArrowRight")
+        k4 = await pg.evaluate("()=>[document.activeElement.id,document.querySelector('#planet-tab-districts').getAttribute('aria-selected'),!document.getElementById('planet-districts-catalog').hidden]")
+        check("a11y: arrow keys switch Buildings / Districts", k4 == ["planet-tab-districts", "true", True], k4)
+        await pg.keyboard.press("ArrowLeft")
+        unnamed = []
+        for name in tab_names:
+            await tab(name)
+            unnamed += await pg.evaluate("""()=>[...document.querySelectorAll('button,a[href],input:not([type=hidden]),select,textarea')].filter(e=>!e.closest('[hidden]')&&e.offsetParent!==null).filter(e=>{
+                if(e.getAttribute('aria-label')||e.getAttribute('aria-labelledby')||e.closest('label')||(e.id&&document.querySelector(`label[for="${e.id}"]`)))return false;
+                const txt=['INPUT','SELECT','TEXTAREA'].includes(e.tagName)?'':(e.innerText||'').trim();
+                return !(txt.length>2||[...e.querySelectorAll('img')].some(i=>i.alt)||(e.title&&e.tagName==='BUTTON'))}).map(e=>e.tagName+'.'+e.className+'#'+e.id+' '+(e.innerText||'').trim())""")
+        check("a11y: every visible control has an accessible name", not unnamed, sorted(set(unnamed))[:20])
+        await pg.click(".lang-btn[data-lang=es]")
+        es_labels = await pg.evaluate("()=>[document.querySelector('.planet-main-tabs').getAttribute('aria-label'),document.querySelector('.planet-count-btn')?.getAttribute('aria-label')]")
+        await pg.click(".lang-btn[data-lang=en]")
+        en_labels = await pg.evaluate("()=>[document.querySelector('.planet-main-tabs').getAttribute('aria-label'),document.querySelector('.planet-count-btn')?.getAttribute('aria-label')]")
+        check("a11y: screen-reader labels follow the language", es_labels[0] == "Secciones del planeta" and en_labels[0] == "Planet sections" and (en_labels[1] or "").startswith("Remove one district") and (es_labels[1] or "").startswith("Quitar un distrito"), (es_labels, en_labels))
+        await tab("planet")
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
@@ -997,11 +1029,17 @@ async def main():
         marked = await pg.evaluate("()=>[...document.querySelectorAll('.planet-main-tab')].filter(b=>b.classList.contains('is-empire-saved')).map(b=>[b.dataset.mainTab,b.title,getComputedStyle(b,'::before').backgroundImage.includes('mod_cat_government'),getComputedStyle(b).boxShadow!=='none'])")
         check("empire tabs: only Imperio and Edicts, tooltip, empire icon background, accent line", marked == [["empire", "Saved with the empire profile", True, True], ["edicts", "Saved with the empire profile", True, True]], marked)
         # P13.1: mobile layout — no tab may scroll the page sideways on a 320px screen
+        overflow_js = "()=>{const w=document.documentElement.clientWidth;return {sw:document.documentElement.scrollWidth,w,over:[...document.querySelectorAll('body *')].filter(e=>{const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};return out(e)&&![...e.children].some(out)&&!e.closest('#planet-compare,#planet-timeline')}).slice(0,8).map(e=>e.tagName+'.'+e.className+'#'+e.id)}}"
         await pg.set_viewport_size({"width": 320, "height": 800})
         for name in ("library", "planet", "empire", "body", "edicts", "branches"):
             await tab(name)
-            wide = await pg.evaluate("()=>{const w=document.documentElement.clientWidth;return {sw:document.documentElement.scrollWidth,w,over:[...document.querySelectorAll('body *')].filter(e=>{const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};return out(e)&&![...e.children].some(out)&&!e.closest('#planet-compare,#planet-timeline')}).slice(0,8).map(e=>e.tagName+'.'+e.className+'#'+e.id)}}")
+            wide = await pg.evaluate(overflow_js)
             check("mobile 320px: " + name + " tab has no horizontal overflow", wide["sw"] <= wide["w"] and not wide["over"], wide)
+            if name == "planet":  # the Districts catalog too (the Buildings one is the default)
+                await pg.evaluate("()=>document.querySelector('#planet-tab-districts').click()")
+                wide = await pg.evaluate(overflow_js)
+                check("mobile 320px: districts catalog has no horizontal overflow", wide["sw"] <= wide["w"] and not wide["over"], wide)
+                await pg.evaluate("()=>document.querySelector('#planet-tab-buildings').click()")
         await pg.set_viewport_size({"width": 1280, "height": 900})
         await tab("planet")
         check("no page errors", not errors, errors)

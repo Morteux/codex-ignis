@@ -1983,9 +1983,12 @@ function applyTranslations() {
     el.innerHTML = t(currentLang, el.dataset.i18n);
   });
 
+  // "attr:key" pairs, several separated by ";" (e.g. a placeholder and its aria-label).
   document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-    const [attr, key] = el.dataset.i18nAttr.split(":");
-    el.setAttribute(attr, t(currentLang, key));
+    el.dataset.i18nAttr.split(";").forEach((pair) => {
+      const [attr, key] = pair.split(":");
+      el.setAttribute(attr, t(currentLang, key));
+    });
   });
 
   langButtons.forEach((btn) => {
@@ -2090,6 +2093,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs, swapInfo) {
   decreaseBtn.className = "planet-job-step-btn";
   decreaseBtn.textContent = "−";
   decreaseBtn.title = t(currentLang, "planetSimJobStepTooltip");
+  decreaseBtn.setAttribute("aria-label", t(currentLang, "a11yJobStepDown")(jobName(jobId)));
 
   const slider = document.createElement("input");
   slider.type = "range";
@@ -2106,6 +2110,7 @@ function renderJobSliderRow(jobId, capacity, unitOutputs, swapInfo) {
   increaseBtn.className = "planet-job-step-btn";
   increaseBtn.textContent = "+";
   increaseBtn.title = t(currentLang, "planetSimJobStepTooltip");
+  increaseBtn.setAttribute("aria-label", t(currentLang, "a11yJobStepUp")(jobName(jobId)));
 
   const valueLabel = document.createElement("span");
   valueLabel.className = "planet-job-row-value";
@@ -2376,7 +2381,8 @@ function renderUrbanDistrictGroup(unlocked) {
     canAddDistrict(),
     () => { districtState.urban.count = primaryMinCount(); refresh(); },
     () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
-    primaryMinCount()
+    primaryMinCount(),
+    t(currentLang, def.i18nKey)
   ));
 
   group.append(summary);
@@ -2472,7 +2478,9 @@ function renderResourceDistrictBox(cat, unlocked) {
     () => { state.count += 1; refresh(); },
     canAddResourceDistrict(cat),
     () => { state.count = 0; state.optionId = null; refresh(); },
-    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); }
+    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); },
+    0,
+    districtDisplayName(cat)
   ));
 
   const statusLine = document.createElement("p");
@@ -2502,10 +2510,32 @@ function openDistrictsTab(filter) {
   setActiveTab("districts");
 }
 
+/** P13.4: ARIA tab state (selected + roving tabindex: only the active tab is in the Tab order). */
+function markTab(btn, selected) {
+  btn.classList.toggle("is-active", selected);
+  btn.setAttribute("aria-selected", String(selected));
+  btn.tabIndex = selected ? 0 : -1;
+}
+
+/** P13.4: Left/Right (and Up/Down), Home and End move between the tabs of a tablist and activate them. */
+function enableTabKeys(tabs) {
+  tabs.forEach((btn, index) => {
+    btn.addEventListener("keydown", (event) => {
+      const last = tabs.length - 1;
+      const next = { ArrowRight: index + 1, ArrowDown: index + 1, ArrowLeft: index - 1, ArrowUp: index - 1, Home: 0, End: last }[event.key];
+      if (next === undefined) return;
+      event.preventDefault();
+      const target = tabs[(next + tabs.length) % tabs.length];
+      target.focus();
+      target.click();
+    });
+  });
+}
+
 function setActiveTab(tab) {
   activeTab = tab;
-  if (tabBuildingsBtn) tabBuildingsBtn.classList.toggle("is-active", tab === "buildings");
-  if (tabDistrictsBtn) tabDistrictsBtn.classList.toggle("is-active", tab === "districts");
+  if (tabBuildingsBtn) markTab(tabBuildingsBtn, tab === "buildings");
+  if (tabDistrictsBtn) markTab(tabDistrictsBtn, tab === "districts");
   if (catalogEl) catalogEl.hidden = tab !== "buildings";
   if (districtsCatalogEl) districtsCatalogEl.hidden = tab !== "districts";
   renderActiveTabContent();
@@ -2516,13 +2546,12 @@ if (tabDistrictsBtn) tabDistrictsBtn.addEventListener("click", () => {
   districtFilter = null;
   setActiveTab("districts");
 });
+enableTabKeys([tabBuildingsBtn, tabDistrictsBtn].filter(Boolean));
 
 /* ── Pestañas principales del planeta (Planeta / Imperio / Cuerpo celeste / Sucursales) ── */
 
 function setMainTab(tab) {
-  mainTabButtons.forEach((btn) => {
-    btn.classList.toggle("is-active", btn.dataset.mainTab === tab);
-  });
+  mainTabButtons.forEach((btn) => markTab(btn, btn.dataset.mainTab === tab));
   Object.entries(mainTabPanels).forEach(([key, panel]) => {
     if (panel) panel.hidden = key !== tab;
   });
@@ -2531,6 +2560,7 @@ function setMainTab(tab) {
 mainTabButtons.forEach((btn) => {
   btn.addEventListener("click", () => setMainTab(btn.dataset.mainTab));
 });
+enableTabKeys([...mainTabButtons]);
 
 function renderActiveTabContent() {
   if (activeTab === "buildings") renderCatalog();
@@ -2744,7 +2774,8 @@ function renderUrbanDistrictCard() {
     canAddDistrict(),
     () => { districtState.urban.count = primaryMinCount(); refresh(); },
     () => { while (canAddDistrict()) districtState.urban.count += 1; refresh(); },
-    primaryMinCount()
+    primaryMinCount(),
+    t(currentLang, def.i18nKey)
   ));
 
   for (let slotIndex = 0; slotIndex < def.specializationSlots; slotIndex += 1) {
@@ -2780,6 +2811,7 @@ function renderUrbanSpecializationPicker(slotIndex) {
 
   const select = document.createElement("select");
   select.className = "planet-urban-spec-select";
+  select.setAttribute("aria-label", t(currentLang, "planetSimUrbanSpecializationSlot")(slotIndex + 1));
 
   const noneOption = document.createElement("option");
   noneOption.value = "";
@@ -2861,7 +2893,9 @@ function renderResourceDistrictCard(cat) {
     () => { state.count += 1; refresh(); },
     canAddResourceDistrict(cat),
     () => { state.count = 0; state.optionId = null; refresh(); },
-    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); }
+    () => { while (canAddResourceDistrict(cat)) state.count += 1; refresh(); },
+    0,
+    districtDisplayName(cat)
   ));
 
   if (def.habitatResource) card.append(renderDistrictCapInput(cat));
@@ -2886,6 +2920,7 @@ function renderResourceDistrictCard(cat) {
 
   const select = document.createElement("select");
   select.className = "planet-urban-spec-select";
+  select.setAttribute("aria-label", t(currentLang, "a11ySpecializationOf")(districtDisplayName(cat)));
 
   const noneOption = document.createElement("option");
   noneOption.value = "";
@@ -2960,8 +2995,9 @@ function renderDistrictCapInput(cat) {
  * min (por defecto 0): valor mínimo de count; el botón "−" se desactiva al
  * alcanzarlo. Se usa para el distrito urbano, que siempre debe tener al
  * menos URBAN_MIN_COUNT copias construidas.
+ * name (P13.4): district name for the screen-reader labels of "−"/"+" and the count.
  */
-function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, onDecreaseAll, onIncreaseAll, min = 0) {
+function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, onDecreaseAll, onIncreaseAll, min = 0, name = "") {
   const wrapper = document.createElement("div");
   wrapper.className = "planet-count-control";
 
@@ -2994,6 +3030,11 @@ function renderCountControl(count, onDecrease, onIncrease, canIncrease = true, o
     if ((event.ctrlKey || event.metaKey) && onIncreaseAll) onIncreaseAll();
     else onIncrease();
   });
+
+  decreaseBtn.setAttribute("aria-label", t(currentLang, "a11yCountRemove")(name));
+  increaseBtn.setAttribute("aria-label", t(currentLang, "a11yCountAdd")(name));
+  wrapper.setAttribute("role", "group");
+  wrapper.setAttribute("aria-label", t(currentLang, "a11yCountValue")(name, count));
 
   wrapper.append(decreaseBtn, countLabel, increaseBtn);
   return wrapper;

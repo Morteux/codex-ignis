@@ -3103,4 +3103,24 @@ h1 {
     .planet-timeline-start {
         width: 4.5rem;
     }
+
+    /* Districts catalog: long specialization names must not widen the cards past the screen. */
+    .planet-district-card {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .planet-urban-spec-select {
+        max-width: 100%;
+    }
+}
+
+/* P13.4: no transitions or animations when the system asks for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+        scroll-behavior: auto !important;
+    }
 }
