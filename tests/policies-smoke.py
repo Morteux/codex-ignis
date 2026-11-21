@@ -906,6 +906,53 @@ async def main():
         check("timeline engine: linear projection floored at 0, research/trade left out", proj[:3] == [40, 0, [["energy", [3, 36, 180, 360]]]], proj)
         check("flags engine: runs out after ceil(start / -net) months, 0 = empty, null = no deficit", proj[3:] == [12, 13, 0, None, None], proj)
 
+        # P13.3: UI smoke — tabs, planet save/load round trip, empire switch
+        await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
+        tab_names = ["library", "planet", "empire", "body", "edicts", "branches"]
+        for name in tab_names:
+            await tab(name)
+            vis = await pg.evaluate("(n)=>[...document.querySelectorAll('.planet-main-tab')].map(b=>[b.dataset.mainTab,b.classList.contains('is-active'),!document.getElementById('planet-tab-panel-'+b.dataset.mainTab).hidden])", name)
+            check("tabs: " + name + " shows only its panel and is the active tab", all((k == name) == a == v for k, a, v in vis), vis)
+        await tab("planet")
+        await pg.evaluate("()=>{document.querySelectorAll('#planet-catalog details').forEach(d=>d.open=true);[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText)).click()}")
+        await pg.fill("#planet-size-input", "15"); await pg.dispatch_event("#planet-size-input", "input")
+        await pg.fill("#planet-summary-name", "Smoke planet")
+        built = lambda: pg.evaluate("()=>[...document.querySelectorAll('.planet-slot.is-filled:not(.is-capital) img')].map(i=>i.alt)")
+        before = [await built(), await net()]
+        await pg.click("#planet-summary-save"); await pg.wait_for_timeout(300)
+        stored = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-planets')||'[]').map(p=>[p.name,p.planetSize])")
+        check("save: planet stored with its name and size", stored == [["Smoke planet", 15]], stored)
+        await pg.reload(); await pg.wait_for_timeout(500)
+        await pg.fill("#planet-size-input", "10"); await pg.dispatch_event("#planet-size-input", "input")
+        await tab("library")
+        cards = await pg.evaluate("()=>[...document.querySelectorAll('#library-planets .library-card-title')].map(x=>x.innerText)")
+        check("library: saved planet listed after a reload", cards == ["Smoke planet"], cards)
+        await pg.evaluate("()=>document.querySelector('#library-planets .library-card .is-primary').click()"); await pg.wait_for_timeout(400)
+        after = [await built(), await net()]
+        loaded = await pg.evaluate("()=>[document.querySelector('#planet-size-input').value,document.querySelector('#planet-summary-name').value,!document.getElementById('planet-tab-panel-planet').hidden]")
+        check("load: size, name, buildings and production restored, Planet tab shown", loaded == ["15", "Smoke planet", True] and after == before and before[0], (loaded, before, after))
+        await tab("empire")
+        await pg.fill("#empire-profile-name", "Alpha"); await pg.click("#empire-profile-save-new")
+        await ethic("Gestalt Consciousness")
+        await pg.fill("#empire-profile-name", "Beta"); await pg.click("#empire-profile-save-new")
+        ids = await pg.evaluate("()=>Object.fromEntries(JSON.parse(localStorage.getItem('codex-ignis-empires')).map(e=>[e.name,e.id]))")
+        await pg.select_option("#planet-summary-empire", ids["Alpha"]); await pg.wait_for_timeout(300)
+        check("empire switch: Alpha (individualist) policies", await selected_policy("Trade Policy") == "Wealth Creation" and await pg.input_value("#planet-summary-empire") == ids["Alpha"])
+        await pg.select_option("#planet-summary-empire", ids["Beta"]); await pg.wait_for_timeout(300)
+        check("empire switch: Beta (gestalt) policies", await selected_policy("Logistics Policy") == "Logistics Policy")
+        await ethic("Gestalt Consciousness")
+        await pg.select_option("#planet-summary-empire", ids["Alpha"]); await pg.wait_for_timeout(300)
+        dialog = await pg.evaluate("()=>!!document.querySelector('.confirm-dialog')")
+        await pg.evaluate("()=>[...document.querySelectorAll('.confirm-btn')].find(b=>/cancel/i.test(b.innerText))?.click()"); await pg.wait_for_timeout(300)
+        kept = await pg.evaluate("()=>[document.querySelector('#planet-summary-empire').value,document.querySelector('#planet-summary-empire').classList.contains('is-modified')]")
+        check("empire switch with unsaved changes: dialog, Cancel keeps the modified empire", dialog and kept == [ids["Beta"], True], (dialog, kept))
+        await pg.select_option("#planet-summary-empire", ids["Alpha"]); await pg.wait_for_timeout(300)
+        await pg.evaluate("()=>[...document.querySelectorAll('.confirm-btn')].find(b=>/don't save/i.test(b.innerText))?.click()"); await pg.wait_for_timeout(300)
+        beta = await pg.evaluate("(id)=>JSON.parse(localStorage.getItem('codex-ignis-empires')).find(e=>e.id===id).ethicIds", ids["Beta"])
+        check("empire switch: Don't save drops the change and loads Alpha", await pg.input_value("#planet-summary-empire") == ids["Alpha"] and "gestaltConsciousness" in beta, beta)
+        await pg.reload(); await pg.wait_for_timeout(500)
+        check("empire switch: last empire kept after a reload", await pg.input_value("#planet-summary-empire") == ids["Alpha"])
+
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
         parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
             const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));

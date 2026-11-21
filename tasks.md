@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-> Progreso: **7 / 27 tareas (26%)**
+> Progreso: **8 / 27 tareas (30%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
@@ -49,7 +49,8 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [x] **T1302** (P13.2) i18n parity check for all new strings
   - Modelo: sonnet
   - Prueba manual: run `BLOCK_REMOTE=1 python tests/policies-smoke.py`; the checks "i18n key parity es/en/jp" and "i18n values: same type/arity, none empty, used keys exist" should pass.
-- [ ] **T1303** (P13.3) Automated UI smoke tests (tabs, save/load, empire switch)
+- [x] **T1303** (P13.3) Automated UI smoke tests (tabs, save/load, empire switch)
+  - Prueba manual: run `BLOCK_REMOTE=1 python tests/policies-smoke.py`; the "tabs:", "save:", "library:", "load:" and "empire switch" checks should pass (each tab shows only its panel, a saved planet reopens identical after a reload, switching empires asks before dropping unsaved changes).
 - [ ] **T1304** (P13.4) Accessibility pass
 - [ ] **T1308** (P13.8) Move every data text shown in the UI to i18n keys (es/en/jp, English until P15): planet modifier `notModelled` effects and `source`, body type `infoOnly` lines and any other English string kept in the data files; nothing may be shown in a language other than the selected one
 - [ ] **T1306** (P13.6) Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
