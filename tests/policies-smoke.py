@@ -912,6 +912,21 @@ async def main():
             const m=await import(url);const k=(l)=>new Set(Object.keys(m.strings[l]));const es=k('es'),en=k('en'),jp=k('jp');
             const diff=(a,b)=>[...a].filter(x=>!b.has(x));return {enNotEs:diff(en,es),esNotEn:diff(es,en),enNotJp:diff(en,jp),jpNotEn:diff(jp,en)}}""")
         check("i18n key parity es/en/jp", not any(parity.values()), parity)
+        # P13.2: same value type/arity and no empty text per language, and every key used by data-i18n* / t('key') exists
+        deep = await pg.evaluate("""async()=>{const get=async(f)=>(await fetch(f)).text();
+            const src=await get('js/i18n.js');
+            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
+            const s=(await import(url)).strings;const bad=[];
+            for(const l of ['es','jp'])for(const k of Object.keys(s.en)){const a=s.en[k],b=s[l][k];
+                if(typeof a!==typeof b)bad.push('type '+l+' '+k);
+                else if(typeof b==='string'&&!b.trim())bad.push('empty '+l+' '+k);
+                else if(typeof a==='function'&&a.length!==b.length)bad.push('arity '+l+' '+k)}
+            const files=['planet-sim.html','index.html','js/planet-sim.js','js/app.js','js/empire.js','js/edicts-ui.js','js/branch-offices-ui.js','js/info-panels.js','js/stockpile-timeline.js','js/planet-library-ui.js','js/planet-summary.js','js/scenario-compare.js','js/job-swaps.js'];
+            for(const f of files){const r=await fetch(f);if(!r.ok)continue;const t=await r.text();
+                for(const x of t.matchAll(/data-i18n(?:-[a-z]+)?="([\\w.]+)"/g))if(!(x[1] in s.en))bad.push('missing '+x[1]+' @'+f);
+                for(const x of t.matchAll(/\\bt\\(\\s*["'`](\\w+)["'`]/g))if(!(x[1] in s.en))bad.push('missing '+x[1]+' @'+f)}
+            return bad}""")
+        check("i18n values: same type/arity, none empty, used keys exist", not deep, deep)
         buttons = await pg.evaluate("()=>[...document.querySelectorAll('.info-btn')].map(b=>[b.id,b.closest('section[id^=planet-tab-panel-]')?.id.replace('planet-tab-panel-','')||'planet'])")
         check("info buttons found", len(buttons) >= 7, buttons)
         for bid, tabname in buttons:
