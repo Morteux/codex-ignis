@@ -3,6 +3,11 @@
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
  "date": "2026-11-22",
  "sets": {
+  "jobs": {
+   "file": "jobs.json",
+   "count": 367,
+   "warnings": 0
+  },
   "technologies": {
    "file": "technologies.json",
    "count": 679,

@@ -1,0 +1,35 @@
+test = {
+	category = worker
+	swappable_data = {
+		default = {
+			icon = test
+			condition_string = WORKER_JOB_TRIGGER
+			building_icon = building_test
+		}
+		swap_type = {
+			trigger = { is_wilderness_empire = yes }
+			name = test_swap
+			desc = test_swap
+			icon = test_swap
+			weight = 20
+		}
+	}
+	tags = { minerals }
+	possible = {
+		owner = { host_has_dlc = "Test DLC" }
+	}
+	resources = {
+		category = planet_miners
+		produces = { minerals = 4 }
+		produces = {
+			trigger = { is_wilderness_empire = yes }
+			minerals = -2
+			food = 2
+		}
+		upkeep = { consumer_goods = 1 }
+	}
+	triggered_planet_modifier = {
+		potential = { has_flag = test }
+		planet_stability_add = 5
+	}
+}

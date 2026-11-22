@@ -1,0 +1,3 @@
+worker = {
+	rank = 2
+}
