@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **22 / 126 tareas (17%)**
+> Progreso: **23 / 128 tareas (18%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -81,14 +81,22 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
 
 ## 23 · Refactoring (whole site)
 No behaviour change: every task keeps all smoke tests passing without changing what they check (only how they are organised, in T2306). Runs before the tech tree, which reuses the shared shell.
-- [ ] **T2301** (P23.1) Refactoring audit of the whole site: duplicated code (header, language selector, applying `data-i18n`, footer, dialogs) between `app.js`, `bingo.js`, `legal.js`, `planet-sim.js`; oversized modules; dead code. Add each concrete refactor found as a new task of this section
+- [x] **T2301** (P23.1) Refactoring audit of the whole site: duplicated code (header, language selector, applying `data-i18n`, footer, dialogs) between `app.js`, `bingo.js`, `legal.js`, `planet-sim.js`; oversized modules; dead code. Add each concrete refactor found as a new task of this section
+  - Findings in `DECISIONS_TO_REVIEW.md` (P23.1); the ones already covered are noted under T2302, T2303, T2304 and T2307, the new ones are T2309 and T2310.
+  - Prueba manual: abrir `DECISIONS_TO_REVIEW.md`, sección P23.1, y `tasks.md`, sección 23: cada hallazgo aparece como nota de una tarea existente o como tarea nueva (T2309, T2310).
 - [ ] **T2302** (P23.2) Shared page shell module (header, language selector, applying `data-i18n` / `data-i18n-attr`, footer) used by every page
+  - Audit (T2301): the same `applyTranslations()` lives in `legal.js`, `bingo.js` and `planet-sim.js` (only the latter accepts several `attr:key` pairs separated by `;`), `app.js` translates the index by element id (`applyStaticStrings()`) instead of `data-i18n`; five simulator modules (`planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library-ui.js`) each add their own click listeners to `.lang-btn` and store the language; the header markup differs per page (language buttons have `aria-label`/`lang` only in the simulator, the brand link of the legal pages has no `aria-label`, the simulator header and footer are still inside `<main>`); `bingo.js` and `planet-sim.js` keep a dead meta-description fallback.
 - [ ] **T2303** (P23.3) Split `js/planet-sim.js` (~235 KB) into modules by responsibility (economy engine, one renderer per tab, events, state) without changing behaviour; update `README.md` and GDD §3
+  - Audit (T2301): `computeTotals()` alone is ~850 lines (lines 890–1735), the economy engine; the rest are district/slot rules (~140–890), renderers (~1800–4140) and the refresh/config glue.
 - [ ] **T2304** (P23.4) Split `js/i18n.js` (~430 KB) by area (common, wiki, bingo, simulator, tech tree) so every page loads only what it uses; adapt the parity checks
+  - Audit (T2301): the parity checks live twice, in `tests/i18n-audit.mjs` (regex over the source) and in three blocks of `tests/policies-smoke.py` (they rewrite `const strings =` into an export); both have to read the split files.
 - [ ] **T2305** (P23.5) Organise `styles.css` by page/component with shared colour tokens and remove unused selectors
 - [ ] **T2306** (P23.6) Split `tests/policies-smoke.py` (~110 KB) into one file per area with shared helpers and a single runner; update `README.md`
 - [ ] **T2307** (P23.7) Remove dead code: unused exports, functions, i18n keys and CSS. Unused files in `img/` are only listed in `DECISIONS_TO_REVIEW.md`, never deleted
+  - Audit (T2301): exports used nowhere: `REGULAR_BODY_RULES` (`body-type-data.js`), `BRANCH_OFFICE_NEW_JOBS` (`branch-office-data.js`), `getSelectedPolicies` (`empire.js`), `getScenarioA` (`scenario-compare.js`); about 25 more exports are only used inside their own file (the `export` can go unless a test imports them).
 - [ ] **T2308** (P23.8) Load performance follow-ups from P22.9: serve `fonts/Orbitron-VariableFont_wght.ttf` as WOFF2 (keep the TTF as fallback in `@font-face`) and add `<link rel="modulepreload">` for the simulator's deep import chain (`policy-data.js` → `building-requirements.js` → `empire-data.js` → `civic-rules.js`), with a smoke check that every preloaded module is in the page's graph; compare before/after with `node tests/load-budget.mjs .`
+- [ ] **T2309** (P23.9) Shared simulator text helpers: `sign` / `num` / `pct`, `resourceName()` and `jobName()` (including the job key built from a swap id, also `swapJobI18nKey()` in `job-swaps.js`) are written again in `planet-sim.js`, `edicts-ui.js` and `branch-offices-ui.js`; move them to one module and import it
+- [ ] **T2310** (P23.10) Shared modal helper (overlay, Escape, click outside, focus trap, focus back to the opener) used by `confirmChoice()` and `promptText()` in `js/confirm-dialog.js` and by the wiki image lightbox in `app.js`, which repeat that code three times
 
 ## 24 · Generic bingo and new bingos
 - [ ] **T2401** (P24.1) Generic bingo engine: every bingo is one entry of `js/bingo-data.js` (id, title/description keys, items with image path or `null`, i18n key, tags, DLC), with its own `iconSize` and `layout`: `grid` (default, number of columns), `ordered` (explicit order, e.g. origins as in the game) or `shape` (custom cell positions, e.g. the ethics wheel). Missing images keep a reserved, fixed-size empty slot. Selector, marking and PNG download work with every layout. Origins and principles migrated with no visible change; smoke tests

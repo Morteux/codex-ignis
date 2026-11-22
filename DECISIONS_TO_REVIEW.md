@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P23.1 — Refactoring audit of the whole site (2026-11-22)
+- [ ] **Duplicated page shell**: header, language buttons and the `data-i18n` / `data-i18n-attr` sweep are copied in `legal.js`, `bingo.js`, `planet-sim.js` and (by element id) `app.js`; five simulator modules listen to the language buttons on their own. Kept in T2302 (shared shell), with the details noted there.
+- [ ] **Duplicated helpers**: the sign/number/percent formatters and the resource/job name lookups exist in three simulator modules → new task T2309. The modal scaffolding (overlay, Escape, focus trap, focus return) exists three times (`confirmChoice`, `promptText`, wiki lightbox) → new task T2310.
+- [ ] **Oversized modules**: `i18n.js` (424 KB, T2304), `content.js` (280 KB), `planet-sim.js` (229 KB, T2303, with an ~850-line `computeTotals()`), `planet-data.js` (107 KB), `styles.css` (65 KB, T2305), `tests/policies-smoke.py` (142 KB, one 1400-line function, T2306). **`content.js` and `planet-data.js` are not split**: they are data, the wiki search needs every article loaded at once, and splitting them would only add requests.
+- [ ] **Dead code** found by a scan of exports and top-level functions: four exports used nowhere and ~25 exports used only in their own file (listed under T2307); no unused top-level function and no JS file outside every page graph.
+
 ## P22.9 — Load performance (2026-11-22)
 - [ ] **Measured with `tests/load-budget.mjs`** (static import graph + stylesheet + font + local images in the HTML; raw / gzip): wiki 845 / 227 KB, bingo 571 / 165 KB, simulator 1346 / 363 KB (33 modules), tech tree and legal pages ~533 / 156 KB, 404 3 / 1 KB. `js/i18n.js` (424 / 119 KB) is ~75% of every page except the simulator and the wiki, where `content.js` (280 / 61 KB) and `planet-sim.js` (229 / 58 KB) follow. Splitting `i18n.js` per page is already T2304.
 - [ ] **Only lazy-loading was added**: the 12 static heading icons of the simulator tabs hidden at start (Library, Empire, Celestial body, Edicts, Branch offices) and the ethics/authority icons of the Empire tab. Every other script-created image was already lazy; the bingo keeps `eager` where the PNG download needs the images.
