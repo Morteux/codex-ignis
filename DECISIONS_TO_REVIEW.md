@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P23.6 — Smoke test split by area (2026-11-22)
+- [ ] **`tests/policies-smoke.py` stays the only entry point** (same command, same output) and runs the 13 area files of `tests/smoke/` in order; helpers shared by several areas (`check`, `approx`, simulator actions such as `tab`, `net`, `ethic`, `body`) are in `tests/smoke/common.py`. The code of every check moved as it was: the run gives the same 483 checks in the same order.
+- [ ] **The simulator areas are not independent**: they share one page and each starts from the state the previous one leaves (as before the split). Making them independent (each one reloading a clean planet) would change what they check, so it was left for later if wanted.
+
 ## P23.5 — styles.css organised by page and component (2026-11-22)
 - [ ] **One file, nine numbered sections** with a table of contents at the top (base and tokens, page shell, wiki, legal pages, shared mobile layout, bingo, simulator, simulator mobile layout, reduced motion). Rules were not reordered beyond moving the footer into the shell section: in CSS a later rule with the same specificity wins, so moving blocks can change the look; the computed style of every element of every page (desktop and 375 px, every simulator tab) was compared before and after and is the same.
 - [ ] **New colour tokens** in `:root` for the colours used more than once: `--danger`, `--warning`, `--caution`, `--muted-dim`, `--panel-shade`, `--accent-tint`, `--accent-faint`, `--grid-line`, `--shadow-modal`. Colours used once stay literal.

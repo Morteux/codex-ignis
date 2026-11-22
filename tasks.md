@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **27 / 129 tareas (21%)**
+> Progreso: **28 / 129 tareas (22%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -86,7 +86,8 @@ No behaviour change: every task keeps all smoke tests passing without changing w
   - Prueba manual: abrir index.html, bingo.html, planet-sim.html, tech-tree.html y privacy.html con el panel Red abierto y pulsar EN y JP: cada página solo descarga i18n-common.js y sus propios i18n-<área>.js, y todos los textos cambian de idioma; node tests/i18n-audit.mjs . termina con problems 0.
 - [x] **T2305** (P23.5) Organise `styles.css` by page/component with shared colour tokens and remove unused selectors
   - Prueba manual: abrir styles.css (índice de secciones y tokens de color en :root) y después index.html, bingo.html, planet-sim.html y privacy.html en escritorio y a 375 px: todo se ve exactamente igual que antes.
-- [ ] **T2306** (P23.6) Split `tests/policies-smoke.py` (~110 KB) into one file per area with shared helpers and a single runner; update `README.md`
+- [x] **T2306** (P23.6) Split `tests/policies-smoke.py` (~110 KB) into one file per area with shared helpers and a single runner; update `README.md`
+  - Prueba manual: ejecutar BLOCK_REMOTE=1 python tests/policies-smoke.py: salen las mismas comprobaciones que antes (ahora repartidas en tests/smoke/<área>.py) y termina en All passed.
 - [ ] **T2307** (P23.7) Remove dead code: unused exports, functions, i18n keys and CSS. Unused files in `img/` are only listed in `DECISIONS_TO_REVIEW.md`, never deleted
   - Audit (T2301): exports used nowhere: `REGULAR_BODY_RULES` (`body-type-data.js`), `BRANCH_OFFICE_NEW_JOBS` (`branch-office-data.js`), `getSelectedPolicies` (`empire.js`), `getScenarioA` (`scenario-compare.js`); about 25 more exports are only used inside their own file (the `export` can go unless a test imports them).
 - [ ] **T2308** (P23.8) Load performance follow-ups from P22.9: serve `fonts/Orbitron-VariableFont_wght.ttf` as WOFF2 (keep the TTF as fallback in `@font-face`) and add `<link rel="modulepreload">` for the simulator's deep import chain (`policy-data.js` → `building-requirements.js` → `empire-data.js` → `civic-rules.js`), with a smoke check that every preloaded module is in the page's graph; compare before/after with `node tests/load-budget.mjs .`
