@@ -1,0 +1,5 @@
+name = "Test DLC"
+localizable_name = "DLC_TEST"
+archive = "dlc/dlc900_test/dlc900.zip"
+steam_id = 900
+category = "expansion"

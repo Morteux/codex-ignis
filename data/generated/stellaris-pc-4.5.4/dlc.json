@@ -1,0 +1,824 @@
+{
+ "set": "dlc",
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "sources": [
+  "dlc_metadata/dlc_info.txt",
+  "dlc",
+  "interface/dlc_icons.gfx"
+ ],
+ "count": 36,
+ "items": [
+  {
+   "id": "dlc001",
+   "name": "Symbols of Domination",
+   "localised_name": null,
+   "category": null,
+   "installed": false,
+   "folder": null,
+   "steam_id": "447680",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc002",
+   "name": "Arachnoid Portrait Pack",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc002_arachnoid",
+   "steam_id": "447683",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc003",
+   "name": "Paradox Account Sign-up Bonus",
+   "localised_name": null,
+   "category": null,
+   "installed": false,
+   "folder": null,
+   "steam_id": "447681",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc004",
+   "name": "Plantoids Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc004_plantoid",
+   "steam_id": "498870",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc017",
+    "dlc021",
+    "dlc023",
+    "dlc026"
+   ],
+   "icon": null,
+   "icon_big": {
+    "sprite": "GFX_plantoidsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/plantoids_species_pack_big.dds",
+    "asset": "dlc/plantoids_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc010",
+   "name": "Creatures of the Void Portrait Pack",
+   "localised_name": null,
+   "category": null,
+   "installed": false,
+   "folder": null,
+   "steam_id": "462720",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc011",
+   "name": "Original Game Soundrack",
+   "localised_name": null,
+   "category": null,
+   "installed": false,
+   "folder": null,
+   "steam_id": "492740",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc012",
+   "name": "Leviathans Story Pack",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc012_leviathans",
+   "steam_id": "518910",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc019",
+    "dlc021",
+    "dlc017"
+   ],
+   "icon": {
+    "sprite": "GFX_leviathansstorypack",
+    "texture": "gfx/interface/icons/dlc/leviathans_story_pack.dds",
+    "asset": "dlc/leviathans_story_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_leviathansstorypack_big",
+    "texture": "gfx/interface/icons/dlc/leviathans_big.dds",
+    "asset": "dlc/leviathans_big.png"
+   }
+  },
+  {
+   "id": "dlc013",
+   "name": "Horizon Signal",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc013_horizon_signal",
+   "steam_id": "554350",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc014",
+   "name": "Utopia",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc014_utopia",
+   "steam_id": "553280",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc020",
+    "dlc016",
+    "dlc021",
+    "dlc017",
+    "dlc022"
+   ],
+   "icon": {
+    "sprite": "GFX_utopia",
+    "texture": "gfx/interface/icons/dlc/utopia.dds",
+    "asset": "dlc/utopia.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_utopia_big",
+    "texture": "gfx/interface/icons/dlc/utopia_big.dds",
+    "asset": "dlc/utopia_big.png"
+   }
+  },
+  {
+   "id": "dlc015",
+   "name": "Anniversary Portraits",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc015_anniversary",
+   "steam_id": "633310",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc016",
+   "name": "Synthetic Dawn Story Pack",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc016_synthetic_dawn",
+   "steam_id": "642750",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc017",
+    "dlc023",
+    "dlc019"
+   ],
+   "icon": {
+    "sprite": "GFX_syntheticdawnstorypack",
+    "texture": "gfx/interface/icons/dlc/synthetic_dawn.dds",
+    "asset": "dlc/synthetic_dawn.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_syntheticdawnstorypack_big",
+    "texture": "gfx/interface/icons/dlc/synthetic_dawn_big.dds",
+    "asset": "dlc/synthetic_dawn_big.png"
+   }
+  },
+  {
+   "id": "dlc017",
+   "name": "Apocalypse",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc017_apocalypse",
+   "steam_id": "716670",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc020",
+    "dlc012",
+    "dlc016",
+    "dlc004"
+   ],
+   "icon": {
+    "sprite": "GFX_apocalypse",
+    "texture": "gfx/interface/icons/dlc/apocalypse.dds",
+    "asset": "dlc/apocalypse.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_apocalypse_big",
+    "texture": "gfx/interface/icons/dlc/apocalypse_big.dds",
+    "asset": "dlc/apocalypse_big.png"
+   }
+  },
+  {
+   "id": "dlc018",
+   "name": "Humanoids Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc018_humanoids",
+   "steam_id": "756010",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc023",
+    "dlc026"
+   ],
+   "icon": null,
+   "icon_big": {
+    "sprite": "GFX_humanoidsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/humanoid_species_pack_big.dds",
+    "asset": "dlc/humanoid_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc019",
+   "name": "Distant Stars Story Pack",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc019_distant_stars",
+   "steam_id": "844810",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc021",
+    "dlc012",
+    "dlc016",
+    "dlc023"
+   ],
+   "icon": {
+    "sprite": "GFX_distantstarsstorypack",
+    "texture": "gfx/interface/icons/dlc/distant_stars.dds",
+    "asset": "dlc/distant_stars.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_distantstarsstorypack_big",
+    "texture": "gfx/interface/icons/dlc/distant_stars_big.dds",
+    "asset": "dlc/distant_stars_big.png"
+   }
+  },
+  {
+   "id": "dlc020",
+   "name": "Megacorp",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc020_megacorp",
+   "steam_id": "944290",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc017",
+    "dlc023",
+    "dlc022"
+   ],
+   "icon": {
+    "sprite": "GFX_megacorp",
+    "texture": "gfx/interface/icons/dlc/megacorp.dds",
+    "asset": "dlc/megacorp.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_megacorp_big",
+    "texture": "gfx/interface/icons/dlc/megacorp_big.dds",
+    "asset": "dlc/megacorp_big.png"
+   }
+  },
+  {
+   "id": "dlc021",
+   "name": "Ancient Relics Story Pack",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc021_ancient_relics",
+   "steam_id": "1045980",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc019",
+    "dlc012",
+    "dlc004"
+   ],
+   "icon": {
+    "sprite": "GFX_ancientrelicsstorypack",
+    "texture": "gfx/interface/icons/dlc/ancient_relics.dds",
+    "asset": "dlc/ancient_relics.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_ancientrelicsstorypack_big",
+    "texture": "gfx/interface/icons/dlc/ancient_relics_big.dds",
+    "asset": "dlc/ancient_relics_big.png"
+   }
+  },
+  {
+   "id": "dlc022",
+   "name": "Lithoids Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc022_lithoids",
+   "steam_id": "1140000",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc023",
+    "dlc021",
+    "dlc026"
+   ],
+   "icon": {
+    "sprite": "GFX_lithoidsspeciespack",
+    "texture": "gfx/interface/icons/dlc/lithoids.dds",
+    "asset": "dlc/lithoids.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_lithoidsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/lithoids_species_pack_big.dds",
+    "asset": "dlc/lithoids_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc023",
+   "name": "Federations",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc023_federations",
+   "steam_id": "1140001",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc020",
+    "dlc016",
+    "dlc019",
+    "dlc004",
+    "dlc018"
+   ],
+   "icon": {
+    "sprite": "GFX_federations",
+    "texture": "gfx/interface/icons/dlc/federations.dds",
+    "asset": "dlc/federations.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_federations_big",
+    "texture": "gfx/interface/icons/dlc/federations_big.dds",
+    "asset": "dlc/federations_big.png"
+   }
+  },
+  {
+   "id": "dlc024",
+   "name": "Necroids Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc024_necroids",
+   "steam_id": "1341520",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc022",
+    "dlc021",
+    "dlc017",
+    "dlc026"
+   ],
+   "icon": {
+    "sprite": "GFX_necroidsspeciespack",
+    "texture": "gfx/interface/icons/dlc/necroids_species_pack.dds",
+    "asset": "dlc/necroids_species_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_necroidsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/necroids_species_pack_big.dds",
+    "asset": "dlc/necroids_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc025",
+   "name": "Nemesis",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc025_nemesis",
+   "steam_id": "1522090",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc012",
+    "dlc016",
+    "dlc017",
+    "dlc020",
+    "dlc023"
+   ],
+   "icon": {
+    "sprite": "GFX_nemesis",
+    "texture": "gfx/interface/icons/dlc/nemesis.dds",
+    "asset": "dlc/nemesis.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_nemesis_big",
+    "texture": "gfx/interface/icons/dlc/nemesis_big.dds",
+    "asset": "dlc/nemesis_big.png"
+   }
+  },
+  {
+   "id": "dlc026",
+   "name": "Aquatics Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc026_aquatics",
+   "steam_id": "1749080",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc004",
+    "dlc018",
+    "dlc022",
+    "dlc024",
+    "dlc025"
+   ],
+   "icon": {
+    "sprite": "GFX_aquaticsspeciespack",
+    "texture": "gfx/interface/icons/dlc/aquatics_species_pack.dds",
+    "asset": "dlc/aquatics_species_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_aquaticsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/aquatics_species_pack_big.dds",
+    "asset": "dlc/aquatics_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc027",
+   "name": "Overlord",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc027_overlord",
+   "steam_id": "1889490",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc024",
+    "dlc023",
+    "dlc020",
+    "dlc017",
+    "dlc014"
+   ],
+   "icon": {
+    "sprite": "GFX_overlord",
+    "texture": "gfx/interface/icons/dlc/overlord.dds",
+    "asset": "dlc/overlord.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_overlord_big",
+    "texture": "gfx/interface/icons/dlc/overlord_big.dds",
+    "asset": "dlc/overlord_big.png"
+   }
+  },
+  {
+   "id": "dlc028",
+   "name": "Toxoids Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc028_toxoids",
+   "steam_id": "2115770",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc027",
+    "dlc020",
+    "dlc026",
+    "dlc024"
+   ],
+   "icon": {
+    "sprite": "GFX_toxoidsspeciespack",
+    "texture": "gfx/interface/icons/dlc/toxoids_species_pack.dds",
+    "asset": "dlc/toxoids_species_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_toxoidsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/toxoids_species_pack_big.dds",
+    "asset": "dlc/toxoids_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc029",
+   "name": "First Contact Story Pack",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc029_firstcontact",
+   "steam_id": "2277860",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc020",
+    "dlc023",
+    "dlc027",
+    "dlc024"
+   ],
+   "icon": {
+    "sprite": "GFX_firstcontactstorypack",
+    "texture": "gfx/interface/icons/dlc/first_contact_story_pack.dds",
+    "asset": "dlc/first_contact_story_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_firstcontactstorypack_big",
+    "texture": "gfx/interface/icons/dlc/first_contact_story_pack_big.dds",
+    "asset": "dlc/first_contact_story_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc030",
+   "name": "Galactic Paragons",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc030_paragon",
+   "steam_id": "2380030",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc014",
+    "dlc023",
+    "dlc027",
+    "dlc021"
+   ],
+   "icon": {
+    "sprite": "GFX_galacticparagons",
+    "texture": "gfx/interface/icons/dlc/galactic_paragons.dds",
+    "asset": "dlc/galactic_paragons.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_galacticparagons_big",
+    "texture": "gfx/interface/icons/dlc/galactic_paragons_big.dds",
+    "asset": "dlc/galactic_paragons_big.png"
+   }
+  },
+  {
+   "id": "dlc031",
+   "name": "Astral Planes",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc031_astral_planes",
+   "steam_id": "2534090",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [
+    "dlc024"
+   ],
+   "icon": {
+    "sprite": "GFX_astralplanes",
+    "texture": "gfx/interface/icons/dlc/astral_planes.dds",
+    "asset": "dlc/astral_planes.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_astralplanes_big",
+    "texture": "gfx/interface/icons/dlc/astral_planes_big.dds",
+    "asset": "dlc/astral_planes_big.png"
+   }
+  },
+  {
+   "id": "dlc032",
+   "name": "The Machine Age",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc032_machine_age",
+   "steam_id": "2840100",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_themachineage",
+    "texture": "gfx/interface/icons/dlc/machine_age.dds",
+    "asset": "dlc/machine_age.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_themachineage_big",
+    "texture": "gfx/interface/icons/dlc/machine_age_big.dds",
+    "asset": "dlc/machine_age_big.png"
+   }
+  },
+  {
+   "id": "dlc033",
+   "name": "Cosmic Storms",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc033_cosmic_storms",
+   "steam_id": "2863060",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_cosmicstorms",
+    "texture": "gfx/interface/icons/dlc/cosmic_storms.dds",
+    "asset": "dlc/cosmic_storms.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_cosmicstorms_big",
+    "texture": "gfx/interface/icons/dlc/cosmic_storms_big.dds",
+    "asset": "dlc/cosmic_storms_big.png"
+   }
+  },
+  {
+   "id": "dlc034",
+   "name": "Grand Archive",
+   "localised_name": null,
+   "category": "story_pack",
+   "installed": true,
+   "folder": "dlc/dlc034_grand_archive",
+   "steam_id": "2863080",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_grandarchive",
+    "texture": "gfx/interface/icons/dlc/grand_archive.dds",
+    "asset": "dlc/grand_archive.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_grandarchive_big",
+    "texture": "gfx/interface/icons/dlc/grand_archive_big.dds",
+    "asset": "dlc/grand_archive_big.png"
+   }
+  },
+  {
+   "id": "dlc035",
+   "name": "Rick The Cube Species Portrait",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc035_rick_the_cube",
+   "steam_id": "2863180",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc036",
+   "name": "BioGenesis",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc036_biogenesis",
+   "steam_id": "3417840",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_biogenesis",
+    "texture": "gfx/interface/icons/dlc/biogenesis.dds",
+    "asset": "dlc/biogenesis.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_biogenesis_big",
+    "texture": "gfx/interface/icons/dlc/biogenesis_big.dds",
+    "asset": "dlc/biogenesis_big.png"
+   }
+  },
+  {
+   "id": "dlc037",
+   "name": "Shadows of the Shroud",
+   "localised_name": null,
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc037_shadows_shroud",
+   "steam_id": "3417850",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_shadowsoftheshroud",
+    "texture": "gfx/interface/icons/dlc/shadows_shroud.dds",
+    "asset": "dlc/shadows_shroud.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_shadowsoftheshroud_big",
+    "texture": "gfx/interface/icons/dlc/shadows_shroud_big.dds",
+    "asset": "dlc/shadows_shroud_big.png"
+   }
+  },
+  {
+   "id": "dlc038",
+   "name": "Infernals Species Pack",
+   "localised_name": null,
+   "category": "species_pack",
+   "installed": true,
+   "folder": "dlc/dlc038_infernals",
+   "steam_id": "3283220",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_infernalsspeciespack",
+    "texture": "gfx/interface/icons/dlc/infernals_species_pack.dds",
+    "asset": "dlc/infernals_species_pack.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_infernalsspeciespack_big",
+    "texture": "gfx/interface/icons/dlc/infernals_species_pack_big.dds",
+    "asset": "dlc/infernals_species_pack_big.png"
+   }
+  },
+  {
+   "id": "dlc039",
+   "name": "Stargazer Species Portrait",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc039_stargazer",
+   "steam_id": "3417860",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  },
+  {
+   "id": "dlc040",
+   "name": "Nomads",
+   "localised_name": "Nomads",
+   "category": "expansion",
+   "installed": true,
+   "folder": "dlc/dlc040_nomads",
+   "steam_id": "4241420",
+   "show": true,
+   "affects_gameplay": true,
+   "recommendations": [],
+   "icon": {
+    "sprite": "GFX_nomads",
+    "texture": "gfx/interface/icons/dlc/nomads.dds",
+    "asset": "dlc/nomads.png"
+   },
+   "icon_big": {
+    "sprite": "GFX_nomads_big",
+    "texture": "gfx/interface/icons/dlc/nomads_big.dds",
+    "asset": "dlc/nomads_big.png"
+   }
+  },
+  {
+   "id": "dlc042",
+   "name": "Vipra the Vapor Species Portrait",
+   "localised_name": null,
+   "category": "content_pack",
+   "installed": true,
+   "folder": "dlc/dlc042_vipra_the_vapor",
+   "steam_id": "4241410",
+   "show": false,
+   "affects_gameplay": false,
+   "recommendations": [],
+   "icon": null,
+   "icon_big": null
+  }
+ ],
+ "warnings": [
+  "dlc001 (Symbols of Domination): icon not found",
+  "dlc002 (Arachnoid Portrait Pack): icon not found",
+  "dlc003 (Paradox Account Sign-up Bonus): icon not found",
+  "dlc004 (Plantoids Species Pack): icon not found",
+  "dlc010 (Creatures of the Void Portrait Pack): icon not found",
+  "dlc011 (Original Game Soundrack): icon not found",
+  "dlc013 (Horizon Signal): icon not found",
+  "dlc015 (Anniversary Portraits): icon not found",
+  "dlc018 (Humanoids Species Pack): icon not found"
+ ]
+}

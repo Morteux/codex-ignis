@@ -1,0 +1,17 @@
+# Meta-information about the DLCs of the fixture
+dlcs = {
+	dlc900 = {
+		name = "Test DLC"
+		steam_id = "900"
+		icon = "GFX_test_strip"
+		show = yes
+		affects_gameplay = yes
+		recommendations = { dlc901 }
+	}
+	dlc901 = {
+		name = "Second Test DLC"
+		steam_id = "901"
+		show = yes
+		affects_gameplay = no
+	}
+}

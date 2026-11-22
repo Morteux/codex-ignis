@@ -33,6 +33,11 @@
    "count": 147,
    "warnings": 0
   },
+  "dlc": {
+   "file": "dlc.json",
+   "count": 36,
+   "warnings": 9
+  },
   "economic_categories": {
    "file": "economic_categories.json",
    "count": 270,

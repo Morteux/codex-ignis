@@ -21,6 +21,7 @@
  policy_test_policy:0 "Test Policy"
  test_option_a:0 "Option A"
  test_option_b:0 "Option B"
+ DLC_TEST:0 "Test DLC (localised)"
  ethic_test:0 "Testist"
  ethic_fanatic_test:0 "Fanatic Testist"
  job_test_desc:0 "A "quoted" word inside the text."
