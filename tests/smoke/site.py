@@ -74,7 +74,7 @@ async def run(t):
         await mpg.set_viewport_size({"width": width, "height": 700})
         for lang in ("es", "en", "jp"):
             for page_name, setup in (("index.html", None), ("index.html#/" + "diseño-naves-mecnicas", None), ("index.html#/enlaces-utiles", None), ("index.html#/singularidad-clase-30", None),
-                                     ("bingo.html", None), ("bingo.html", "principles"), ("bingo.html", "ethics"), ("privacy.html", None), ("cookies.html", None), ("404.html", None), ("tech-tree.html", None)):
+                                     ("bingo.html", None), ("bingo.html", "principles"), ("bingo.html", "ethics"), ("bingo.html", "authorities"), ("privacy.html", None), ("cookies.html", None), ("404.html", None), ("tech-tree.html", None)):
                 await mpg.goto("file://" + ROOT + "/" + page_name)
                 await mpg.wait_for_timeout(250)
                 await mpg.click(".lang-btn[data-lang=" + lang + "]")

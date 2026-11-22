@@ -32,11 +32,20 @@ const downloadStatus = document.querySelector("#bingo-download-status");
 
 let currentLang = getLang();
 let currentBingo = BINGOS[0];
-// Marked cells per bingo, for the whole visit ("<bingo id>:<i18nKey>").
+// Marked cells per bingo, for the whole visit ("<bingo id>:<item id>").
 const markedState = new Map();
 
+/** Identity of an item inside its bingo: its `id`, or its i18n key when it has none. */
+const itemId = (item) => item.id ?? item.i18nKey;
+
+/** Name of an item: its i18n text, plus its variant in brackets when it has one. */
+function itemName(item) {
+    const name = t(currentLang, item.i18nKey);
+    return item.variantKey ? `${name} (${t(currentLang, item.variantKey)})` : name;
+}
+
 function cardKey(bingo, item) {
-    return `${bingo.id}:${item.i18nKey}`;
+    return `${bingo.id}:${itemId(item)}`;
 }
 
 /**
@@ -47,13 +56,13 @@ function layoutCells(bingo) {
     const layout = bingo.layout || { type: "grid" };
     if (layout.type === "shape") {
         return bingo.items
-            .filter((item) => layout.cells[item.i18nKey])
-            .map((item) => ({ item, position: layout.cells[item.i18nKey] }));
+            .filter((item) => layout.cells[itemId(item)])
+            .map((item) => ({ item, position: layout.cells[itemId(item)] }));
     }
     let items = bingo.items;
     if (layout.type === "ordered") {
         const rank = new Map(layout.order.map((key, index) => [key, index]));
-        items = [...items].sort((a, b) => (rank.get(a.i18nKey) ?? Infinity) - (rank.get(b.i18nKey) ?? Infinity));
+        items = [...items].sort((a, b) => (rank.get(itemId(a)) ?? Infinity) - (rank.get(itemId(b)) ?? Infinity));
     }
     return items.map((item) => ({ item, position: null }));
 }
@@ -80,7 +89,7 @@ function buildCard(bingo, item, position) {
     card.classList.toggle("is-marked", isMarked);
     card.setAttribute("aria-pressed", String(isMarked));
 
-    const name = t(currentLang, item.i18nKey);
+    const name = itemName(item);
     card.title = name;
     card.setAttribute("aria-label", name);
 

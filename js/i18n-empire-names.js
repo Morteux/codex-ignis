@@ -1,5 +1,5 @@
 /**
- * Origin, civic and ethic names, shared by the bingo and the planet simulator, es/en/jp.
+ * Origin, civic, ethic and authority names, shared by the bingo and the planet simulator, es/en/jp.
  * Imported by the page scripts that need it; importing it registers the texts in js/i18n.js.
  */
 
@@ -310,6 +310,15 @@ export const strings = {
         ethicAuthoritarian: "Autoritario",
         ethicFanaticAuthoritarian: "Autoritario fanático",
         ethicGestaltConsciousness: "Consciencia gestalt",
+
+        // Authorities (simulator empire tab and authorities bingo)
+        authorityDemocratic: "Democrática",
+        authorityOligarchic: "Oligárquica",
+        authorityDictatorial: "Dictatorial",
+        authorityImperial: "Imperial",
+        authorityCorporate: "Corporativa",
+        authorityMachineIntelligence: "Inteligencia de Máquina",
+        authorityHiveMind: "Mente Colmena",
     },
     en: {
 
@@ -615,6 +624,15 @@ export const strings = {
         ethicAuthoritarian: "Authoritarian",
         ethicFanaticAuthoritarian: "Fanatic Authoritarian",
         ethicGestaltConsciousness: "Gestalt Consciousness",
+
+        // Authorities (simulator empire tab and authorities bingo)
+        authorityDemocratic: "Democratic",
+        authorityOligarchic: "Oligarchic",
+        authorityDictatorial: "Dictatorial",
+        authorityImperial: "Imperial",
+        authorityCorporate: "Corporate",
+        authorityMachineIntelligence: "Machine Intelligence",
+        authorityHiveMind: "Hive Mind",
     },
     jp: {
 
@@ -920,6 +938,15 @@ export const strings = {
         ethicAuthoritarian: "権威主義",
         ethicFanaticAuthoritarian: "熱狂的権威主義",
         ethicGestaltConsciousness: "ゲシュタルト意識",
+
+        // Authorities (simulator empire tab and authorities bingo)
+        authorityDemocratic: "民主制",
+        authorityOligarchic: "寡頭制",
+        authorityDictatorial: "独裁制",
+        authorityImperial: "帝政",
+        authorityCorporate: "企業制",
+        authorityMachineIntelligence: "機械知性",
+        authorityHiveMind: "ハイブマインド",
     },
 };
 

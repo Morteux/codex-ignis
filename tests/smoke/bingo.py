@@ -79,6 +79,19 @@ async def run(t):
     head = open(path, "rb").read(24)
     check("bingo: PNG download of the ethics wheel (5 columns)", head[:8] == b"\x89PNG\r\n\x1a\n" and int.from_bytes(head[16:20], "big") == (24 * 2 + 5 * 150) * 2 and dl.suggested_filename == "bingo-eticas-stellaris.png", dl.suggested_filename)
     os.remove(path)
+    # P24.4: authorities bingo, one cell per icon of authorities/, base authorities first
+    await bingo.select_option("#bingo-type", "authorities")
+    auths = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.querySelector('img').src.split('/').pop(),c.dataset.tags||''])")
+    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l))
+    names = [a[0] for a in auths]
+    check("bingo: authorities bingo has one cell per icon of authorities/ (75), each with its own name", len(auths) == 75 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 75
+          and not any("undefined" in n or n.startswith("authority") for n in names), (len(auths), names[:3]))
+    check("bingo: authorities start with the 10 base ones, then the ascension variants named '<authority> (<variant>)'",
+          auths[0][1] == "Auth_democratic.png" and all("(" not in n for n in names[:10]) and all(n.endswith(")") and a[2] for n, a in zip(names[10:], auths[10:])) and names[10].startswith(names[0] + " ("), names[:12])
+    await bingo.click("#bingo-grid .bingo-card >> nth=10")
+    await bingo.select_option("#bingo-type", "ethics")
+    await bingo.select_option("#bingo-type", "authorities")
+    check("bingo: a variant cell is marked on its own (not its base authority)", await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map((c,i)=>c.classList.contains('is-marked')?i:-1).filter(i=>i>=0)") == [10])
     # P24.1: a "shape" bingo with an item without image (test-only entry added to BINGOS)
     await bingo.evaluate("async()=>{const m=await import('./js/bingo-data.js');m.BINGOS.push({id:'smokeShape',titleKey:'bingoTypeOrigins',fileSlug:'smoke',iconSize:70,showNames:false,layout:{type:'shape',rows:3,columns:3,cells:{originDefault:[1,1],originRemnants:[2,2],originTree:[3,3]}},items:[{img:'origins/GFX_origin_remnants.png',i18nKey:'originRemnants'},{img:null,i18nKey:'originTree'},{img:'origins/GFX_origin_scion.png',i18nKey:'originScion'}]})}")
     await bingo.click(".lang-btn[data-lang=es]")

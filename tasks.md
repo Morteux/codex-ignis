@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **35 / 129 tareas (27%)**
+> Progreso: **36 / 130 tareas (28%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -105,7 +105,8 @@ No behaviour change: every task keeps all smoke tests passing without changing w
   - Prueba manual: open `bingo.html`: origins and civics look as before (same cell sizes, names under the origins, tooltip only on civics) with a one-line description under the controls; marks survive switching bingo and language, and the PNG download still has 9 columns.
 - [x] **T2403** (P24.3) Ethics bingo with the in-game ethics wheel shape (four axes, fanatic ethics on the outer ring, gestalt in the centre; reuse the simulator's ethics wheel drawing). Icons from `ethics/`, names already in `js/i18n.js`
   - Prueba manual: open `bingo.html` and pick "Éticas": the 17 ethics appear as the in-game wheel (fanatic ones on the outer ring, gestalt consciousness in the centre) with their names; click some, download the PNG and it shows the same 5×5 wheel with the marks.
-- [ ] **T2404** (P24.4) Authorities bingo from `authorities/` (75 icons): decide which variants are separate cells from the file names and record it in `DECISIONS_TO_REVIEW.md`; names already in `js/i18n.js`
+- [x] **T2404** (P24.4) Authorities bingo from `authorities/` (75 icons): decide which variants are separate cells from the file names and record it in `DECISIONS_TO_REVIEW.md`; names already in `js/i18n.js`
+  - Prueba manual: open `bingo.html` and pick "Autoridades": 75 small cells, the 10 base authorities first and then the ascension variants; hovering a variant shows e.g. "Democrática (Sintética: virtual)", and marking it does not mark the base authority.
 
 ## 25 · Game files extractor
 Replaces the wiki as data source (the wiki cannot be scraped automatically). Python, one script per data set plus `extract_all.py`, so any part can be extracted on its own. Design: `GAME_FILES_EXTRACTOR.md` (T2501). Game files are never committed; the game folder is a parameter.
@@ -192,6 +193,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 
 ## 35 · Bingos from game data
 - [ ] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout), order taken from the T2511 output
+- [ ] **T2405** (P24.5) Authorities bingo: replace the draft names of `js/i18n-bingo.js` (Mutualistic Intelligence, Memory Aggregator, Neural Chorus and the 13 `authorityVariant*` labels) with the official es/en/jp names from the T2512 / T2520 output, and check that each `Auth_<path>_<authority>_<variant>.png` icon is the variant `js/bingo-data.js` says (see `DECISIONS_TO_REVIEW.md`, P24.4)
+  - Modelo: sonnet
 - [ ] **T3501** (P35.1) Rare and dangerous technologies bingo (purple = rare, red = dangerous) from the tech data, with reserved icon slots until T3008
 - [ ] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots
 
