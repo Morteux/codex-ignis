@@ -2,6 +2,8 @@
 import os, tempfile
 from smoke.common import check, ROOT
 
+# Icons of authorities/ exported from the game (T2524) that are not bingo cells yet (T2406).
+PENDING_AUTH_ICONS = {f"Auth_cyber_dictatorial_collectivist_{c}.png" for c in ("commander", "official", "scientist", "vacant")}
 
 async def run(t):
     ctx = t.ctx
@@ -82,7 +84,7 @@ async def run(t):
     # P24.4: authorities bingo, one cell per icon of authorities/, base authorities first
     await bingo.select_option("#bingo-type", "authorities")
     auths = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.querySelector('img').src.split('/').pop(),c.dataset.tags||''])")
-    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l))
+    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l) - PENDING_AUTH_ICONS)
     names = [a[0] for a in auths]
     check("bingo: authorities bingo has one cell per icon of authorities/ (75), each with its own name", len(auths) == 75 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 75
           and not any("undefined" in n or n.startswith("authority") for n in names), (len(auths), names[:3]))

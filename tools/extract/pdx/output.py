@@ -145,6 +145,20 @@ def run_sets(game, extract_fns, out_dir=None, icons_dir=None, log=print):
     return entries, exporter
 
 
+def write_icon_report(game, exporter, path=None):
+    """reports/<rulesetId>/icon_export.json: every exported icon by status (new, replaced,
+    unchanged, kept_larger, missing), for the StellarisAssets commit message (T2524)."""
+    path = (path or f"{ROOT}/reports/{game.ruleset_id}/icon_export.json").replace("\\", "/")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    data = {"rulesetId": game.ruleset_id, "assets": exporter.dir,
+            "counts": {k: len(v) for k, v in exporter.report.items()},
+            **{k: sorted(v) for k, v in exporter.report.items()}}
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, ensure_ascii=False, indent=1)
+        f.write("\n")
+    return path
+
+
 def write_manifest(game, out_dir, entries, exporter=None):
     path = os.path.join(out_dir, "manifest.json").replace("\\", "/")
     old = {}

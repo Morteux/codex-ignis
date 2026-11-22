@@ -1,102 +1,179 @@
 {
  "rulesetId": "stellaris-pc-4.5.4",
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
- "date": "2026-11-22",
+ "date": "2026-11-23",
  "sets": {
   "authorities": {
    "file": "authorities.json",
    "count": 8,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 24,
+    "replaced": 50,
+    "new": 4
+   }
   },
   "buildings": {
    "file": "buildings.json",
    "count": 498,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 403,
+    "replaced": 9,
+    "new": 6
+   }
   },
   "civics": {
    "file": "civics.json",
    "count": 281,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "kept_larger": 193,
+    "new": 68
+   }
   },
   "deposits": {
    "file": "deposits.json",
    "count": 592,
-   "warnings": 24
+   "warnings": 24,
+   "icons": {
+    "unchanged": 131,
+    "new": 15,
+    "replaced": 1
+   }
   },
   "designations": {
    "file": "designations.json",
    "count": 101,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "new": 44
+   }
   },
   "districts": {
    "file": "districts.json",
    "count": 147,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 57,
+    "new": 6
+   }
   },
   "dlc": {
    "file": "dlc.json",
    "count": 36,
-   "warnings": 9
+   "warnings": 9,
+   "icons": {
+    "new": 50
+   }
   },
   "economic_categories": {
    "file": "economic_categories.json",
    "count": 270,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "edicts": {
    "file": "edicts.json",
    "count": 171,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "new": 2
+   }
   },
   "ethics": {
    "file": "ethics.json",
    "count": 17,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "kept_larger": 17
+   }
   },
   "jobs": {
    "file": "jobs.json",
    "count": 367,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 218,
+    "new": 9
+   }
   },
   "origins": {
    "file": "origins.json",
    "count": 77,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 91,
+    "new": 6,
+    "replaced": 18
+   }
   },
   "planet_classes": {
    "file": "planet_classes.json",
    "count": 69,
-   "warnings": 2
+   "warnings": 2,
+   "icons": {
+    "replaced": 14,
+    "unchanged": 4,
+    "new": 36
+   }
   },
   "planet_modifiers": {
    "file": "planet_modifiers.json",
    "count": 70,
-   "warnings": 15
+   "warnings": 15,
+   "icons": {
+    "unchanged": 33,
+    "replaced": 8,
+    "new": 9
+   }
   },
   "policies": {
    "file": "policies.json",
    "count": 60,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 9,
+    "new": 1,
+    "replaced": 1
+   }
   },
   "static_modifiers": {
    "file": "static_modifiers.json",
    "count": 3080,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "technologies": {
    "file": "technologies.json",
    "count": 679,
-   "warnings": 2
+   "warnings": 2,
+   "icons": {
+    "new": 812
+   }
   },
   "zone_slots": {
    "file": "zone_slots.json",
    "count": 33,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "zones": {
    "file": "zones.json",
    "count": 146,
-   "warnings": 1
+   "warnings": 1,
+   "icons": {
+    "new": 1,
+    "unchanged": 53,
+    "replaced": 1
+   }
   }
+ },
+ "icons": {
+  "new": 1069,
+  "replaced": 102,
+  "unchanged": 1023,
+  "kept_larger": 210,
+  "missing": 0
  }
 }

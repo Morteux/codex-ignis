@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **57 / 130 tareas (44%)**
+> Progreso: **58 / 131 tareas (44%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -154,7 +154,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `python tools/extract/extract_all.py` (about 5 s): it writes every set and `data/generated/stellaris-pc-4.5.4/manifest.json` with the count and warnings of each; `--only zones,jobs` runs only the jobs and districts extractors; the README section "Extractor de datos del juego" explains it.
 - [x] **T2522** (P25.22) Difference report per data set between the generated data and the current simulator data (`js/*-data.js`) in `reports/<rulesetId>/`; the simulator is not changed
   - Prueba manual: run `python tools/extract/report_differences.py` and open `reports/stellaris-pc-4.5.4/README.md`: a table with simulator, game, matched and differing items per set; `buildings.md` lists e.g. Alloy Foundries with 200 metallurgists against the game's 200 foundry jobs.
-- [ ] **T2524** (P25.24) Icon export of every data set into the StellarisAssets repository (`C:/Users/ignis/OneDrive/Documentos/StellarisAssets`), same folder and file names it already uses (`buildings/`, `jobs/`, `civics/`…); new folders only for new kinds (`technologies/`, `dlc/`); commit there with `git -C`, never push; regenerate `StellarisAssetsFileTree.txt`; list replaced files in the commit message
+- [x] **T2524** (P25.24) Icon export of every data set into the StellarisAssets repository (`C:/Users/ignis/OneDrive/Documentos/StellarisAssets`), same folder and file names it already uses (`buildings/`, `jobs/`, `civics/`…); new folders only for new kinds (`technologies/`, `dlc/`); commit there with `git -C`, never push; regenerate `StellarisAssetsFileTree.txt`; list replaced files in the commit message
+  - Prueba manual: run `git -C "C:/Users/ignis/OneDrive/Documentos/StellarisAssets" log -1` (commit "Icons exported from the Stellaris 4.5.4 game files" with the 102 replaced files) and open `StellarisAssetsFileTree.txt`: it now lists `technologies/` (812 icons) and `dlc/` (50).
 - [ ] **T2525** (P25.25) Advanced Logic resource icon (old T1204): export it from the game files into `resources/` of StellarisAssets and use it in `RESOURCES.advanced_logic` of `js/planet-data.js`
 - [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
   - ❓ Bloqueada: The owner has to review the T2522 reports first.
@@ -216,6 +217,7 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 - [ ] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout), order taken from the T2511 output
 - [ ] **T2405** (P24.5) Authorities bingo: replace the draft names of `js/i18n-bingo.js` (Mutualistic Intelligence, Memory Aggregator, Neural Chorus and the 13 `authorityVariant*` labels) with the official es/en/jp names from the T2512 / T2520 output, and check that each `Auth_<path>_<authority>_<variant>.png` icon is the variant `js/bingo-data.js` says (see `DECISIONS_TO_REVIEW.md`, P24.4)
   - Modelo: sonnet
+- [ ] **T2406** (P24.6) Authorities bingo: add the 4 icons the T2524 export added to `authorities/` (`Auth_cyber_dictatorial_collectivist_commander`, `_official`, `_scientist`, `_vacant`: the game's "Dictatorial Alignment" variants by ruler class, `auth_cyber_dictatorial_collectivist_*` in `authorities.json`) as cells with es/en/jp names, and remove them from `PENDING_AUTH_ICONS` of `tests/smoke/bingo.py`
 - [ ] **T3501** (P35.1) Rare and dangerous technologies bingo (purple = rare, red = dangerous) from the tech data, with reserved icon slots until T3008
 - [ ] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots
 

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.24 — Icon export into StellarisAssets (2026-11-23)
+- [ ] **Full export committed in StellarisAssets** (not pushed): 1069 new files (812 in the new `technologies/`, 50 in the new `dlc/`, 44 in `designations/` and 2 in the new `edicts/`, plus new icons in the existing folders), 102 replaced with the game version (all with the same size as before: authorities, the science buildings, 18 origin icons, 14 planets, 8 planet modifiers...), 210 kept because the existing file is larger (civics and ethics from the wiki). The replaced list is in the StellarisAssets commit message and in `reports/stellaris-pc-4.5.4/icon_export.json`.
+- [ ] **`edicts/` is a new folder** (the edicts had no folder; only 2 edicts have an icon file of their own in the game).
+- [ ] **4 new authority icons** (`Auth_cyber_dictatorial_collectivist_*`) are not in the authorities bingo yet: new task T2406; the bingo smoke check ignores them until then.
+
 ## P25.22 — Difference report against the simulator data (2026-11-23)
 - [ ] **Format**: one Markdown file per data set in `reports/stellaris-pc-4.5.4/` (differences table, simulator-only items, game-only items, matched items without differences), a `README.md` summary and `summary.json`; written by `tools/extract/report_differences.py`, committed so the owner can read them on GitHub.
 - [ ] **Matching** of simulator items to game items: simulator id in snake_case with the game prefix, then English name (from the `en` texts of `js/i18n-*.js`), then icon only for items without an English name. A wrong match by name is possible (e.g. 104 of the 153 buildings matched by name); the table shows how each pair was matched.

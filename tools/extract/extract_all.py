@@ -6,7 +6,7 @@ python tools/extract/extract_all.py [--game DIR] [--out DIR] [--icons [DIR]] [--
 """
 import importlib, sys
 from pdx.game import GameFiles
-from pdx.output import arg_parser, default_out, run_sets, write_manifest
+from pdx.output import arg_parser, default_out, run_sets, write_icon_report, write_manifest
 
 EXTRACTORS = {
     "technologies": ["technologies"],
@@ -55,6 +55,7 @@ def main():
     print("manifest:", path)
     if exporter:
         print("icons:", {k: len(v) for k, v in exporter.report.items()})
+        print("icon report:", write_icon_report(game, exporter))
     return exporter
 
 
