@@ -2,6 +2,8 @@
 import argparse, datetime, json, os, sys
 from .game import GameFiles
 from .icons import DEFAULT_ASSETS_DIR, IconExporter
+from .parser import Block, Color, to_python
+from .text import cond
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))).replace("\\", "/")
 
@@ -35,12 +37,14 @@ class DataSet:
 
 
 def public(value):
-    """Drop the internal `_keys` (localisation keys, frames) from the JSON."""
+    """Drop the internal `_keys` (localisation keys, frames); blocks left as raw values become text (lists stay lists)."""
     if isinstance(value, dict):
         return {k: public(v) for k, v in value.items() if not (k.startswith("_") and k != "_text" and k != "_values")}
     if isinstance(value, list):
         return [public(v) for v in value]
-    return value
+    if isinstance(value, (Block, Color)):
+        return cond(value) if isinstance(value, Block) and value.keys() else to_python(value)
+    return to_python(value)
 
 
 def write_set(game, out_dir, ds):

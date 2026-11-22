@@ -1,0 +1,13 @@
+cost = {
+	trigger = {
+		from? = { is_nomadic = no }
+	}
+	$REGULAR_RESOURCE$ = $COST$
+}
+cost = {
+	trigger = {
+		from? = { is_nomadic = yes }
+	}
+	$NOMADIC_RESOURCE$ = $COST$
+	mult = 0.5
+}

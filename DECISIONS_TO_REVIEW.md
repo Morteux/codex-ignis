@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.8 — Buildings extractor (2026-11-22)
+- [ ] **`cost` / `upkeep` / `produces` summaries** (buildings, jobs and the next sets) are the amounts of a regular empire: unconditional entries plus the ones whose only condition is `is_nomadic = no` (the `nomadic_cost_switcher` inline script puts every building cost behind it). All entries, with their conditions as text, stay in `resources`.
+- [ ] **Jobs of a building** are read from the `job_<id>_add` statements of `planet_modifier` (`jobs`) and of each `triggered_planet_modifier` (`jobs_conditional`, with the condition as text). The amounts are the game numbers as written (e.g. `foundry = 200`), not divided into jobs.
+
 ## P25.6 — Technologies extractor (2026-11-22)
 - [ ] **Generated data is committed** in `data/generated/stellaris-pc-4.5.4/` (the simulator will read it, T2523): it holds the English names and descriptions of the game localisation, as the site already shows game texts; the game files themselves are never committed.
 - [ ] **"Event" technology** = not a start technology, not repeatable and `weight = 0` (never drawn as a research option; events, anomalies, relics or other effects give it). 99 technologies in 4.5.4. The game has no explicit flag for it.

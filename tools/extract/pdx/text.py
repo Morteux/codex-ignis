@@ -98,11 +98,18 @@ def resources(block):
     return out
 
 
+# The regular (non-nomadic) case of the `buildings/nomadic_cost_switcher`-style inline scripts
+_BASE_TRIGGER = re.compile(r"^(from|owner)\??\s*=\s*\{\s*is_nomadic\s*=\s*no\s*\}$")
+
+
 def simple_resources(res, part):
-    """Unconditional amounts of one part (cost / upkeep / produces) summed: {resource: amount}."""
+    """Amounts of one part (cost / upkeep / produces) for a regular empire, summed: {resource: amount}.
+
+    Unconditional entries plus the ones whose only condition is `is_nomadic = no`; every other
+    conditional entry is only in the full `resources`."""
     total = {}
     for entry in (res or {}).get(part, []):
-        if entry.get("trigger"):
+        if entry.get("trigger") and not _BASE_TRIGGER.match(entry["trigger"]):
             continue
         for k, v in entry.items():
             if isinstance(v, (int, float)) and k not in ("multiplier", "mult"):
