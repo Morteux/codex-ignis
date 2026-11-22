@@ -78,18 +78,60 @@ def export_icons(exporter, ds):
     return statuses
 
 
+def localised_names(game, ds, language):
+    """{id: name} of every item of a set (and of its swaps, options...) in one language (T2520)."""
+    L, out = game.localisation, {}
+
+    def walk(value):
+        if isinstance(value, dict):
+            keys = value.get("_loc")
+            if keys and value.get("id") is not None and keys.get("name"):
+                out.setdefault(str(value["id"]), L.get(keys["name"], language))
+            for v in value.values():
+                walk(v)
+        elif isinstance(value, list):
+            for v in value:
+                walk(v)
+    walk(ds.items)
+    walk(ds.extra)
+    return out
+
+
+def write_localisation(game, out_dir, datasets):
+    """data/generated/<rulesetId>/localisation/<language>.json: {set: {id: name}} for every game
+    language. Updates the sets given and keeps the others (one extractor can run on its own)."""
+    folder = os.path.join(out_dir, "localisation")
+    os.makedirs(folder, exist_ok=True)
+    for language in game.localisation.languages():
+        path = os.path.join(folder, language + ".json")
+        data = {}
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+        sets = data.get("sets", {})
+        for ds in datasets:
+            names = localised_names(game, ds, language)
+            if names:
+                sets[ds.name] = names
+        data = {"rulesetId": game.ruleset_id, "language": language, "sets": dict(sorted(sets.items()))}
+        with open(path, "w", encoding="utf-8", newline="\n") as f:
+            json.dump(data, f, ensure_ascii=False, indent=0)
+            f.write("\n")
+
+
 def run_sets(game, extract_fns, out_dir=None, icons_dir=None, log=print):
     """Run extract functions, write their sets and (optionally) export icons. Returns manifest entries."""
     out_dir = out_dir or default_out(game)
     if icons_dir:
         game.assets_dir = icons_dir  # icon file names follow the folder the icons go to
     exporter = IconExporter(game, icons_dir) if icons_dir else None
-    entries = {}
+    entries, written = {}, []
     for fn in extract_fns:
         before = len(game.warnings)
         sets = fn(game)
         parse_warnings = game.warnings[before:]
         for i, ds in enumerate(sets if isinstance(sets, list) else [sets]):
+            written.append(ds)
             if i == 0:
                 ds.warnings = parse_warnings + ds.warnings
             path = write_set(game, out_dir, ds)
@@ -99,6 +141,7 @@ def run_sets(game, extract_fns, out_dir=None, icons_dir=None, log=print):
             entries[ds.name] = entry
             if log:
                 log(f"{ds.name}: {len(ds.items)} items, {len(ds.warnings)} warnings" + (f", icons {entry['icons']}" if exporter else "") + f" -> {path}")
+    write_localisation(game, out_dir, written)
     return entries, exporter
 
 

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **54 / 130 tareas (42%)**
+> Progreso: **55 / 130 tareas (42%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -148,7 +148,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `python tools/extract/extract_economic_categories.py` and open `data/generated/stellaris-pc-4.5.4/economic_categories.json`: 270 categories with parent, ancestors, children, generated modifiers (`planet_miners_<resource>_produces_mult`...) and the jobs, buildings, districts... they apply to (`used_by`, `used_by_descendants`).
 - [x] **T2519** (P25.19) `extract_dlc.py`: DLC list, names and icons (for T3502)
   - Prueba manual: run `python tools/extract/extract_dlc.py` and open `data/generated/stellaris-pc-4.5.4/dlc.json`: 36 DLCs from `dlc_info.txt` with the name used by `host_has_dlc`, category, whether it is installed, Steam id and icon (e.g. Nomads, `dlc/nomads.png`).
-- [ ] **T2520** (P25.20) Localised names of every data set in every game language (extracted only: not used until P15 is unblocked)
+- [x] **T2520** (P25.20) Localised names of every data set in every game language (extracted only: not used until P15 is unblocked)
+  - Prueba manual: open `data/generated/stellaris-pc-4.5.4/localisation/spanish.json` (or any of the 10 languages): every set lists its names by id, e.g. `jobs.miner` = "Minero", `civics.civic_corvee_system` = "Sistema de trabajo forzado"; `japanese.json` has 鉱山労働者 for the miner.
 - [ ] **T2521** (P25.21) `extract_all.py`: runs every extractor or a chosen subset (`--only technologies,jobs`), writes the manifest; documented in `README.md`
 - [ ] **T2522** (P25.22) Difference report per data set between the generated data and the current simulator data (`js/*-data.js`) in `reports/<rulesetId>/`; the simulator is not changed
 - [ ] **T2524** (P25.24) Icon export of every data set into the StellarisAssets repository (`C:/Users/ignis/OneDrive/Documentos/StellarisAssets`), same folder and file names it already uses (`buildings/`, `jobs/`, `civics/`…); new folders only for new kinds (`technologies/`, `dlc/`); commit there with `git -C`, never push; regenerate `StellarisAssetsFileTree.txt`; list replaced files in the commit message

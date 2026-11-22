@@ -61,7 +61,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 - `dlc`: the DLC names found in `host_has_dlc` / `has_*_dlc`-style triggers of the item (as the game writes them).
 - `icon`: `{ "sprite": "GFX_...", "texture": "gfx/....dds", "asset": "jobs/job_miner.png" }` (`asset` = path inside StellarisAssets), or `null`.
 
-**Localisation of every language** (T2520): `data/generated/<rulesetId>/localisation/<language>.json` with `{ "<set>": { "<id>": { "name": "...", "desc": "..." } } }` for the 10 game languages (`english`, `braz_por`, `french`, `german`, `japanese`, `korean`, `polish`, `russian`, `simp_chinese`, `spanish`). Not used by the site until phase P15 is unblocked.
+**Localisation of every language** (T2520): `data/generated/<rulesetId>/localisation/<language>.json` with `{ "rulesetId": ..., "language": ..., "sets": { "<set>": { "<id>": "name" } } }` (names only, `null` when the language has no text; swaps and options included) for the 10 game languages (`english`, `braz_por`, `french`, `german`, `japanese`, `korean`, `polish`, `russian`, `simp_chinese`, `spanish`). Not used by the site until phase P15 is unblocked.
 
 **Icons**: only with `--icons [DIR]`; `DIR` defaults to the StellarisAssets repository `C:/Users/ignis/OneDrive/Documentos/StellarisAssets`. Each `.dds` is converted to `.png` (first frame of multi-frame sprites) into the folder that kind already uses there, with the file name that folder already uses (§6). The loop commits in StellarisAssets with `git -C`, the owner pushes; after an export `StellarisAssetsFileTree.txt` of this project is regenerated.
 
