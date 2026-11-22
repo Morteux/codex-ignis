@@ -1,0 +1,17 @@
+district_test = {
+	base_buildtime = 250
+	icon = district_test_icon
+	zone_slots = { slot_test }
+	potential = { uses_district_set = standard }
+	resources = {
+		category = planet_districts
+		cost = { minerals = 300 }
+		upkeep = { energy = 1 }
+	}
+	planet_modifier = {
+		planet_housing_add = 1000
+		job_test_add = 100
+	}
+	min_for_deposits_on_planet = 4
+	max_for_deposits_on_planet = 15
+}

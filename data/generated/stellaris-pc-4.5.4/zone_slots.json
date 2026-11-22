@@ -1,0 +1,414 @@
+{
+ "set": "zone_slots",
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "sources": [
+  "common/zone_slots"
+ ],
+ "count": 33,
+ "items": [
+  {
+   "id": "slot_city_government",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": "zone_default",
+   "included_zone_sets": [
+    "zone_default"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": "always = yes",
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_city_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban",
+    "ark_forever_cruise_city",
+    "knights_settled_world"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = d_collapsed_spire_blocks_zone\n\tNOT = {\n\t\thas_deposit = d_collapsed_spire\n\t}\n}"
+  },
+  {
+   "id": "slot_city_02",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban",
+    "ark_forever_cruise_city",
+    "knights_settled_world"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_city_02_prereq\n\tif = {\n\t\tlimit = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_primitive = yes\n\t\t\t}\n\t\t}\n\t\talways = yes\n\t}\n\telse = {\n\t\thas_upgraded_capital = yes\n\t}\n}"
+  },
+  {
+   "id": "slot_minerals",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "minerals"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_mineral_purification_1\n\texists = owner\n\towner = {\n\t\thas_tech_or_functional_civic = {\n\t\t\tTECH = tech_mineral_purification_1\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_energy",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "energy"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_power_hub_1\n\texists = owner\n\towner = {\n\t\thas_tech_or_functional_civic = {\n\t\t\tTECH = tech_power_hub_1\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_food",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "food"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_food_processing_1\n\tOR = {\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_anglers_empire = yes\n\t\t\t}\n\t\t\tis_wet = yes\n\t\t}\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_valid_civic = civic_agrarian_idyll\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_food_processing_1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_city_04",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_city_03_prereq\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_technology = tech_planetary_unification\n\t\t\t}\n\t\t\thas_upgraded_capital = yes\n\t\t}\n\t\tAND = {\n\t\t\tis_capital = no\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_colonial_bureaucracy\n\t\t\t\t}\n\t\t\t}\n\t\t\thas_upgraded_capital = yes\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_city_05",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_city_03_prereq\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_technology = tech_planetary_unification\n\t\t\t}\n\t\t\thas_upgraded_capital = yes\n\t\t}\n\t\tAND = {\n\t\t\tis_capital = no\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_colonial_bureaucracy\n\t\t\t\t}\n\t\t\t}\n\t\t\thas_upgraded_capital = yes\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_rw_urban_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ring_world"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = ring_world"
+  },
+  {
+   "id": "slot_rw_urban_02",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ring_world"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = ring_world"
+  },
+  {
+   "id": "slot_rw_urban_03",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ring_world"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = ring_world"
+  },
+  {
+   "id": "slot_arcology_urban_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "arcology"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = city_world"
+  },
+  {
+   "id": "slot_arcology_urban_02",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "arcology"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = city_world"
+  },
+  {
+   "id": "slot_arcology_urban_03",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "arcology"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = city_world"
+  },
+  {
+   "id": "slot_nexus",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "nexus"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = machine_world"
+  },
+  {
+   "id": "slot_hive",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "hive"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "uses_district_set = hive_world"
+  },
+  {
+   "id": "slot_cosmogenesis_government",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": "zone_cosmogenesis_default",
+   "included_zone_sets": [
+    "cosmogenesis_default"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": "always = yes",
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_empty",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [],
+   "include": [],
+   "exclude": [],
+   "potential": "always = no",
+   "unlock": "always = no"
+  },
+  {
+   "id": "slot_resort_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "resort"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_resort_02",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "resort"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_city_02_prereq\n\tOR = {\n\t\tis_capital = yes\n\t\tAND = {\n\t\t\tis_capital = no\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_colonial_centralization\n\t\t\t\t}\n\t\t\t}\n\t\t\thas_upgraded_capital = yes\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_resort_attraction_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "resort_attraction"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_polytechnic",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "polytechnic"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_planetary_unification\n\texists = owner\n\towner = {\n\t\thas_tech_or_functional_civic = {\n\t\t\tTECH = tech_planetary_unification\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_ark_military",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ark_military"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_doctrine_navy_size_1\n\tOR = {\n\t\tis_capital = yes\n\t\towner? = {\n\t\t\thas_tech_or_functional_civic = {\n\t\t\t\tTECH = tech_doctrine_navy_size_1\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_ark_basic",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ark_basic"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_planetary_unification\n\texists = owner\n\towner = {\n\t\thas_tech_or_functional_civic = {\n\t\t\tTECH = tech_planetary_unification\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_ark_reactor",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ark_reactor"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_power_hub_1\n\tOR = {\n\t\tis_capital = yes\n\t\towner? = {\n\t\t\thas_tech_or_functional_civic = {\n\t\t\t\tTECH = tech_power_hub_1\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_ark_forever_cruise",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "ark_forever_cruise"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "OR = {\n\tcustom_tooltip = {\n\t\tfail_text = zone_unavailable_tech_hyper_entertainment_forum\n\t\tOR = {\n\t\t\tis_capital = yes\n\t\t\towner? = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_hyper_entertainment_forum\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\towner? = {\n\t\tis_gestalt = yes\n\t}\n}"
+  },
+  {
+   "id": "slot_ark_city_01",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban",
+    "ark_urban",
+    "ark_forever_cruise_city"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_ark_city_02",
+   "file": "common/zone_slots/00_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "urban",
+    "ark_urban",
+    "ark_forever_cruise_city"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_habitat_01",
+   "file": "common/zone_slots/01_habitat_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "habitat_urban"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "always = yes"
+  },
+  {
+   "id": "slot_habitat_02",
+   "file": "common/zone_slots/01_habitat_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "habitat_urban"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_habitat_2\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_void_dweller_empire = yes\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_habitat_2\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_habitat_energy",
+   "file": "common/zone_slots/01_habitat_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "habitat_energy"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_power_hub_1\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_void_dweller_empire = yes\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_power_hub_1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_habitat_minerals",
+   "file": "common/zone_slots/01_habitat_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "habitat_minerals"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_mineral_purification_1\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_void_dweller_empire = yes\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_mineral_purification_1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+  },
+  {
+   "id": "slot_habitat_research",
+   "file": "common/zone_slots/01_habitat_zone_slots.txt",
+   "start": null,
+   "included_zone_sets": [
+    "habitat_research"
+   ],
+   "include": [],
+   "exclude": [],
+   "potential": null,
+   "unlock": "custom_tooltip = {\n\tfail_text = zone_unavailable_tech_space_science_1\n\tOR = {\n\t\tAND = {\n\t\t\tis_capital = yes\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\tis_void_dweller_empire = yes\n\t\t\t}\n\t\t}\n\t\thas_deposit = d_payback_habitat_research\n\t\tAND = {\n\t\t\texists = owner\n\t\t\towner = {\n\t\t\t\thas_tech_or_functional_civic = {\n\t\t\t\t\tTECH = tech_space_science_1\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}"
+  }
+ ],
+ "warnings": []
+}

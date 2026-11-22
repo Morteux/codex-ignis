@@ -74,7 +74,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 | `technologies` | `extract_technologies.py` | `common/technology` (+ `category/`, `tier/`) | `gfx/interface/icons/technologies` → `technologies/` (new) |
 | `jobs` | `extract_jobs.py` | `common/pop_jobs`, `common/pop_categories` | `gfx/interface/icons/jobs` → `jobs/` |
 | `buildings` | `extract_buildings.py` | `common/buildings` | `gfx/interface/icons/buildings` → `buildings/` |
-| `districts`, `zones`, `zone_slots`, `district_specializations` | `extract_districts.py` | `common/districts`, `common/zones`, `common/zone_slots` | `gfx/interface/icons/districts` → `districs/` (sic, the existing folder); zones → `districts_specialization/` |
+| `districts`, `zones` (the district specializations), `zone_slots` | `extract_districts.py` | `common/districts`, `common/zones`, `common/zone_slots` | `gfx/interface/icons/districts` → `districs/` (sic, the existing folder); zones (sprite `GFX_district_specialization_*`) → `districts_specialization/`, named after the sprite |
 | `designations` | `extract_designations.py` | `common/colony_types` | `gfx/interface/icons/planet_designations`… → `designations/` (new) |
 | `civics`, `origins` | `extract_civics.py` | `common/governments/civics` | `gfx/interface/icons/governments/civics` → `civics/`; `gfx/interface/icons/origins` → `origin_icons/` |
 | `authorities` | `extract_authorities.py` | `common/governments/authorities` | `gfx/interface/icons/governments/authorities` → `authorities/` |

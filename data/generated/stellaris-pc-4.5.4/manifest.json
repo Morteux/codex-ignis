@@ -8,6 +8,11 @@
    "count": 498,
    "warnings": 1
   },
+  "districts": {
+   "file": "districts.json",
+   "count": 147,
+   "warnings": 0
+  },
   "jobs": {
    "file": "jobs.json",
    "count": 367,
@@ -17,6 +22,16 @@
    "file": "technologies.json",
    "count": 679,
    "warnings": 2
+  },
+  "zone_slots": {
+   "file": "zone_slots.json",
+   "count": 33,
+   "warnings": 0
+  },
+  "zones": {
+   "file": "zones.json",
+   "count": 146,
+   "warnings": 1
   }
  }
 }

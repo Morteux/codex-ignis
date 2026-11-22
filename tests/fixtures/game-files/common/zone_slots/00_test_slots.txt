@@ -1,0 +1,5 @@
+slot_test = {
+	start = zone_test
+	included_zone_sets = { urban }
+	unlock = { always = yes }
+}

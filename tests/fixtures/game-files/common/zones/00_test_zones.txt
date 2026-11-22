@@ -1,0 +1,14 @@
+zone_test = {
+	icon = GFX_district_specialization_test
+	zone_sets = { urban }
+	included_building_sets = { research }
+	max_buildings = 6
+	resources = {
+		cost = { minerals = 1000 }
+	}
+	triggered_district_planet_modifier = {
+		potential = { exists = owner }
+		job_test_add = 200
+	}
+	unlock = { owner = { has_technology = tech_test } }
+}
