@@ -1,6 +1,6 @@
 # Planet Simulator — pending tasks
 
-> Progreso: **11 / 28 tareas (39%)**
+> Progreso: **12 / 28 tareas (43%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
@@ -55,8 +55,9 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
   - Prueba manual: open `planet-sim.html`, click the "Planeta" tab and use the Left/Right arrows: focus moves through the tabs and each panel opens; with a screen reader the "−"/"+" district buttons are read with the district name, in the selected language.
 - [x] **T1308** (P13.8) Move every data text shown in the UI to i18n keys (es/en/jp, English until P15): planet modifier `notModelled` effects and `source`, body type `infoOnly` lines and any other English string kept in the data files; nothing may be shown in a language other than the selected one
   - Prueba manual: open `planet-sim.html` → Cuerpo celeste: hovering a body card (e.g. Gaia) lists "Not computed by the simulator:" and its effects; a planet modifier such as Tidal Locked still shows "Not modelled: …" and "Source: …" notes, also after switching to ES or JP.
-- [ ] **T1306** (P13.6) Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
+- [x] **T1306** (P13.6) Replace the hand-written es/jp texts (policy group titles/notes/effects, requirement reasons, policy notices, empire-tab policy heading, stacking and trade-conversion texts, P7.8 resource/category names) with the English text
   - Modelo: sonnet
+  - Prueba manual: open `planet-sim.html`, switch to ES or JP and open the Empire tab: policy titles, notes, requirement reasons and resource names (Energy, Minerals…) appear in English.
 - [x] **T1309** (P13.9) Translate the hard-coded Spanish landmark `aria-label`s of `index.html`, `bingo.html` and the legal pages (`data-i18n-attr` + es/en/jp keys, the `a11y*` keys of P13.4 can be reused)
   - Prueba manual: open `index.html` (also `bingo.html`, `privacy.html`, `cookies.html`, `404.html`, `tech-tree.html`), click EN and inspect the header: its `aria-label` reads "Archive header" and the projects nav "Archive projects"; with ES they go back to "Cabecera del archivo" / "Proyectos del archivo".
 
