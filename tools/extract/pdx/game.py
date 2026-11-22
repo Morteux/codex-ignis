@@ -1,5 +1,6 @@
 """Access to an installed game folder: version, scripted variables, inline scripts and parsed folders."""
 import json, os
+from .localisation import Localisation
 from .parser import Parser
 
 DEFAULT_GAME_DIR = "D:/Program Files (x86)/Steam/steamapps/common/Stellaris"
@@ -61,6 +62,13 @@ class GameFiles:
         else:
             out = [os.path.join(base, n) for n in os.listdir(base) if n.lower().endswith(ext) and os.path.isfile(os.path.join(base, n))]
         return sorted(p.replace("\\", "/") for p in out)
+
+    # -- localisation
+    @property
+    def localisation(self):
+        if self._localisation is None:
+            self._localisation = Localisation(self.root)
+        return self._localisation
 
     # -- scripted variables and inline scripts
     @property

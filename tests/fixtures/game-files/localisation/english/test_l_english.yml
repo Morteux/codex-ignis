@@ -1,0 +1,13 @@
+﻿l_english:
+ # comment line
+ tech_test:0 "Test Technology"
+ tech_test_desc:1 "Unlocks the $building_test$ and gives £energy£ §Y+5§! Energy."
+ building_test:0 "Test Building"
+ job_test:0 "Tester"
+ job_test_desc:0 "A "quoted" word inside the text."
+ no_version: "No version number"
+ cycle_a:0 "A $cycle_b$"
+ cycle_b:0 "B $cycle_a$"
+ formatted:0 "Discount $DISCOUNT|%0$ and $building_test|Y$"
+ to_replace:0 "Original"
+ trailing:0 "Text" # trailing comment
