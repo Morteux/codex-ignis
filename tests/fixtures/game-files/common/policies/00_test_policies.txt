@@ -1,0 +1,15 @@
+test_policy = {
+	category = { diplomacy military }
+	potential = { is_country_type = default }
+	option = {
+		name = "test_option_a"
+		icon = "GFX_test_strip"
+		valid = { is_homicidal = no }
+		policy_flags = { test_flag }
+		modifier = { country_naval_cap_mult = 0.1 }
+	}
+	option = {
+		name = "test_option_b"
+		modifier = { country_war_exhaustion_mult = -0.1 }
+	}
+}

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **51 / 130 tareas (39%)**
+> Progreso: **52 / 130 tareas (40%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -142,7 +142,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `python tools/extract/extract_planet_features.py` and open `data/generated/stellaris-pc-4.5.4/`: `planet_modifiers.json` (70, e.g. Hostile Fauna with its modifiers and icon), `static_modifiers.json` (3080) and `deposits.json` (592 deposits; blockers flagged, with their clearing cost and time).
 - [x] **T2516** (P25.16) `extract_edicts.py`: edicts
   - Prueba manual: run `python tools/extract/extract_edicts.py` and open `data/generated/stellaris-pc-4.5.4/edicts.json`: 171 edicts, campaigns, ambitions and sacrifices (`group`) with cost and upkeep (Research Subsidies: 30 unity), modifiers, requirements as text and icon.
-- [ ] **T2517** (P25.17) `extract_policies.py`: policies and their options
+- [x] **T2517** (P25.17) `extract_policies.py`: policies and their options
+  - Prueba manual: run `python tools/extract/extract_policies.py` and open `data/generated/stellaris-pc-4.5.4/policies.json`: 60 policies with their 224 options (names, modifiers, conditions as text; diplomatic stance icons in `diplomatic_stances/`).
 - [ ] **T2518** (P25.18) `extract_economic_categories.py`: economic categories (what each modifier applies to)
 - [ ] **T2519** (P25.19) `extract_dlc.py`: DLC list, names and icons (for T3502)
 - [ ] **T2520** (P25.20) Localised names of every data set in every game language (extracted only: not used until P15 is unblocked)
