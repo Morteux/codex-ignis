@@ -16,8 +16,8 @@ async def run(t):
     # P23.8: every <link rel="modulepreload"> of the simulator is in its import graph and shortens it; the font is WOFF2 with the TTF as fallback
     preloads = re.findall(r'<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"', sim_html)
     rounds = re.search(r"planet-sim\.html:[^\n]*\n(?:[^\n]*\n)*?  fetch rounds (\d+) \((\d+) with (\d+) modulepreload\)", budget.stdout)
-    check("load budget: every simulator modulepreload is in the page's graph and cuts the fetch rounds",
-          preloads and "PRELOAD NOT IN GRAPH" not in budget.stdout and rounds and int(rounds.group(3)) == len(preloads) and int(rounds.group(2)) < int(rounds.group(1)), (len(preloads), rounds and rounds.groups()))
+    check("load budget: every simulator modulepreload is in the page's graph and the browser finds every module in 2 rounds",
+          preloads and "PRELOAD NOT IN GRAPH" not in budget.stdout and rounds and int(rounds.group(3)) == len(preloads) and int(rounds.group(2)) == 2 < int(rounds.group(1)), (len(preloads), rounds and rounds.groups()))
     ppg = await ctx.new_page()
     requested = []
     ppg.on("requestfinished", lambda r: requested.append(r.url))

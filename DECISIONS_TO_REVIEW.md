@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P23.9 — Shared simulator text helpers (2026-11-22)
+- [ ] **New module `js/sim-text-helpers.js`** (`sign`, `num`, `pct`, `swapJobI18nKey`, `resourceName(lang, id)`, `jobName(lang, id)`), imported by `edicts-ui.js`, `branch-offices-ui.js`, `job-swaps.js` and `planet-sim-text.js` (where `planet-sim.js`'s copies went in P23.3; it keeps `jobName(id)` / `resourceName(id)` in the page language as one-line wrappers). It only imports `i18n.js` and `planet-data.js`, so the Edicts tab does not pull in the simulator.
+- [ ] **Unified fallbacks**: a job without a JOBS entry is named by its built key everywhere (before, only the Sucursales tab and the job swap conditions did; the other places would have thrown); a non-resource id is shown as is (the Sucursales tab keeps its "naval capacity" / "all research" names for its two owner effects). No text shown today changes.
+- [ ] **Not merged**: `signed` in `planet-sim-conditions-ui.js` (spaces after the sign, `formatAmount`), `sign` in `planet-sim-body-tab.js` (ASCII minus) and `signedPercentText` in `empire.js` format differently; merging them would change the text shown.
+- [ ] **Preload**: the new module is found at the third import level, so it joins the `modulepreload` list of P23.8 (the smoke test now requires 2 fetch rounds, so a new deep module without its preload fails).
+
 ## P23.8 — WOFF2 font and simulator modulepreload (2026-11-22)
 - [ ] **Font**: `fonts/Orbitron-VariableFont_wght.woff2` made from the TTF with fontTools (same 266 glyphs and the `wght` axis); `@font-face` lists it first and keeps the TTF as fallback. Every page downloads 15.4 KB instead of 37.1 KB (19.5 KB if the server gzips the TTF).
 - [ ] **Preloaded modules**: the chain named in the task (`policy-data.js` → … → `civic-rules.js`) no longer exists after the P23.3 split; the simulator now has 4 import levels (`planet-sim.js` → `planet-sim-state.js` → `job-swaps.js` → `job-swap-data.js`). The 15 modules the browser only found at level 3 or 4 have a `<link rel="modulepreload">` in `planet-sim.html`, so it finds every module in 2 rounds. Level-2 modules are not preloaded (they are found in the first round of imports anyway). The other pages (3–4 levels, 5–10 small modules) get no preloads.

@@ -6,7 +6,7 @@
 import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
 import { JOBS, RESOURCES, EFFECT_SCALE, RESOURCE_DISTRICT_ORDER } from "./planet-data.js";
-import { swapJobI18nKey } from "./job-swaps.js";
+import { jobName as jobNameIn, resourceName as resourceNameIn } from "./sim-text-helpers.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { BLOCKERS } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
@@ -57,7 +57,7 @@ export function describeSwapRule(rule) {
     case "designation": return t(getLang(), "jobSwapRuleDesignation") + names(rule.ids.map((id) => t(getLang(), getDesignation(id).i18nKey)));
     case "planetModifier": return t(getLang(), "jobSwapRulePlanetModifier") + names(rule.ids.map((id) => { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === id); return modifier ? t(getLang(), modifier.i18nKey) : id; }));
     case "branchBuilding": return t(getLang(), "jobSwapRuleBranch") + names(rule.ids.map(branchBuildingName));
-    case "swap": return t(getLang(), "modifierSourceJobSwap").replace("{job}", JOBS[rule.id] ? jobName(rule.id) : (t(getLang(), swapJobI18nKey(rule.id)) || rule.id));
+    case "swap": return t(getLang(), "modifierSourceJobSwap").replace("{job}", jobName(rule.id) || rule.id);
     case "anyOf": return rule.rules.map(describeSwapRule).join(" / ");
     case "unmodelled": return t(getLang(), "requirementUnmodelled") + t(getLang(), rule.i18nKey);
     case "notAuthority": return t(getLang(), "jobSwapRuleNotAuthority") + names(rule.ids.map((id) => t(getLang(), AUTHORITIES.find((a) => a.id === id).i18nKey)));
@@ -117,12 +117,13 @@ export function resourceIcon(resourceId) {
   return img;
 }
 
+/** Job and resource names in the page language (js/sim-text-helpers.js). */
 export function jobName(jobId) {
-  return t(getLang(), JOBS[jobId].i18nKey);
+  return jobNameIn(getLang(), jobId);
 }
 
 export function resourceName(resourceId) {
-  return t(getLang(), RESOURCES[resourceId].i18nKey);
+  return resourceNameIn(getLang(), resourceId);
 }
 
 /** La vivienda y los servicios (amenities) se muestran en escala ×100 como en la wiki; aquí solo los servicios son un "recurso" (la vivienda se multiplica en el sitio donde se muestra). Servicios:  ("+1250" = 12,5); el resto de recursos, en unidades normales. Internamente se calculan en unidades normales. */

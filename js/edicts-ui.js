@@ -7,20 +7,13 @@
 
 import { t } from "./i18n.js";
 import { EDICTS, EDICT_KINDS, edictAvailable, edictUnmetRules, edictTraditionRules } from "./edict-data.js";
-import { JOBS, RESOURCES, STRATUM_I18N_KEYS } from "./planet-data.js";
-
-const sign = (value) => (value < 0 ? "−" : "+");
-const pct = (fraction) => `${sign(fraction)}${Math.round(Math.abs(fraction) * 10000) / 100}%`;
-const num = (value) => `${sign(value)}${Math.abs(value)}`;
-
-function resourceName(lang, resourceId) {
-  return RESOURCES[resourceId] ? t(lang, RESOURCES[resourceId].i18nKey) : resourceId;
-}
+import { STRATUM_I18N_KEYS } from "./planet-data.js";
+import { num, pct, resourceName, jobName as jobNameIn } from "./sim-text-helpers.js";
 
 /** Applied effect lines of an edict, in the wiki's wording. */
 function edictEffectLines(lang, edict) {
   const effects = edict.effects || {};
-  const jobName = (jobId) => t(lang, JOBS[jobId].i18nKey);
+  const jobName = (jobId) => jobNameIn(lang, jobId);
   const lines = [];
   Object.entries(effects.jobEfficiency || {}).forEach(([jobId, fraction]) => lines.push(t(lang, "edictLineJobEfficiency")(pct(fraction), jobName(jobId))));
   Object.entries(effects.stratumEfficiency || {}).forEach(([stratum, fraction]) => lines.push(t(lang, "edictLineJobEfficiency")(pct(fraction), t(lang, STRATUM_I18N_KEYS[stratum]))));

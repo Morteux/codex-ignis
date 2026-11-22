@@ -1,9 +1,17 @@
 """Planet simulator: UI smoke (tabs, planet save/load round trip, empire switch) and accessibility (P13.3, P13.4)."""
-from smoke.common import check
+import os, re
+from smoke.common import check, ROOT
 
 
 async def run(t):
     pg, tab, net, selected_policy, ethic = t.pg, t.tab, t.net, t.selected_policy, t.ethic
+    # P23.9: one module of text helpers, no local copies left in the simulator modules
+    helpers = await pg.evaluate("""async()=>{const m=await import('./js/sim-text-helpers.js');
+        return [m.num(2),m.num(-0.5),m.pct(0.125),m.pct(-0.1),m.swapJobI18nKey('foundry_drone'),m.resourceName('en','minerals'),m.resourceName('en','navalCapacity'),m.jobName('en','miner')]}""")
+    copies = [f for f in ("edicts-ui.js", "branch-offices-ui.js", "planet-sim-text.js", "job-swaps.js")
+              if re.search(r"(?:const|function)\s+(?:sign|num|pct|pascal|swapJobI18nKey)\b|toUpperCase\(\) \+|RESOURCES\[resourceId\]\.i18nKey|JOBS\[jobId\]\.i18nKey", open(os.path.join(ROOT, "js", f), encoding="utf-8").read())]
+    check("text helpers: sign/num/pct, resource and job names come from js/sim-text-helpers.js only",
+          helpers == ["+2", "−0.5", "+12.5%", "−10%", "jobFoundryDrone", "Minerals", "navalCapacity", "Miner"] and not copies, (helpers, copies))
     # P13.3: UI smoke — tabs, planet save/load round trip, empire switch
     await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
     tab_names = ["library", "planet", "empire", "body", "edicts", "branches"]

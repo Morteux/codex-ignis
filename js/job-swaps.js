@@ -26,11 +26,9 @@ import { JOBS, JOB_OUTPUTS, JOB_EFFECTS, GESTALT_JOB_UPKEEP } from "./planet-dat
 import { JOB_CATEGORIES } from "./planetary-features-data.js";
 import { buildingRequirementsMet } from "./building-requirements.js";
 
-const basesOf = (swap) => (Array.isArray(swap.base) ? swap.base : [swap.base]);
-const pascal = (id) => id.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
+import { swapJobI18nKey } from "./sim-text-helpers.js";
 
-/** i18n key of a swapped job's name ("job" + PascalCase id), modelled or not (P13.8). */
-export const swapJobI18nKey = (id) => `job${pascal(id)}`;
+const basesOf = (swap) => (Array.isArray(swap.base) ? swap.base : [swap.base]);
 
 /** Swaps whose base job (one of them) is in the simulator. */
 export const MODELLED_SWAPS = JOB_SWAPS.filter((swap) => basesOf(swap).some((base) => JOBS[base] && !JOB_SWAPS_BY_ID.has(base)));

@@ -11,7 +11,8 @@
 
 import { t } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
-import { JOBS, RESOURCES } from "./planet-data.js";
+import { RESOURCES } from "./planet-data.js";
+import { num, resourceName as resourceNameIn, jobName } from "./sim-text-helpers.js";
 import { civicsConflict, MAX_CIVICS } from "./empire-data.js";
 import { unmodelledRequirements } from "./building-requirements.js";
 import {
@@ -23,16 +24,10 @@ const MAX_SLOTS = Math.max(...Object.values(BRANCH_OFFICE_SLOTS_BY_TIER));
 const TIER_NUMERALS = ["I", "II", "III", "IV", "V"];
 const KIND_I18N_KEYS = { corporate: "branchKindCorporate", civic: "branchKindCivic", ascension: "branchKindAscension" };
 
-const sign = (value) => (value < 0 ? "−" : "+");
-const num = (value) => `${sign(value)}${Math.abs(value)}`;
-
+/** Resource name, plus the two owner effects that are not resources (naval capacity, all research). */
 function resourceName(lang, resourceId) {
-  if (RESOURCES[resourceId]) return t(lang, RESOURCES[resourceId].i18nKey);
+  if (RESOURCES[resourceId]) return resourceNameIn(lang, resourceId);
   return t(lang, resourceId === "navalCapacity" ? "branchNavalCapacity" : "branchResearchAll");
-}
-
-function jobName(lang, jobId) {
-  return t(lang, JOBS[jobId] ? JOBS[jobId].i18nKey : `job${jobId.split("_").map((part) => part[0].toUpperCase() + part.slice(1)).join("")}`); // jobs added in P19.3
 }
 
 function civicNames(lang, keys) {
