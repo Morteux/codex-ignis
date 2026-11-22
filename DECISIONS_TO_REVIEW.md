@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P24.3 — Ethics bingo (2026-11-22)
+- [ ] **Shared wheel**: `ETHIC_WHEEL` (positions) and `ETHIC_ICONS` moved from `js/empire-data.js` to the new `js/ethic-wheel.js`, which `empire-data.js` re-exports; the bingo builds its `shape` layout from it, so both wheels always match. The simulator's round buttons are not reused: the bingo keeps its square cards with the name visible under the icon (`iconSize` 90).
+- [ ] **Names moved**: the 17 `ethic*` names moved from `js/i18n-simulator.js` to `js/i18n-empire-names.js` (loaded by both pages), so the bingo page does not download the simulator texts. No text changed.
+- [ ] **Texts to review**: `bingoTypeEthics` (Éticas / Ethics / 倫理観) and the draft description `bingoEthicsDescription`; the file name of the PNG is `bingo-eticas-stellaris.png`.
+- [ ] **Tags**: `fanatic` for the 8 fanatic ethics, `gestalt` for gestalt consciousness.
+
 ## P24.1 — Generic bingo engine (2026-11-22)
 - [ ] **Data split**: `BINGOS` (the bingos) is in `js/bingo-data.js`; the origin and civic item lists moved to the new `js/bingo-items.js`, because the simulator (`empire.js`, `planet-library-ui.js`) imports them and must not load the bingo page texts (the i18n audit requires it).
 - [ ] **Layouts**: `grid` keeps the array order, fills the screen with as many columns as fit (as before) and uses `columns` (9) only in the PNG; `ordered` follows `order` (list of i18n keys; unlisted items go last) and otherwise works like `grid`; `shape` puts each cell at `cells[key] = [row, col]` on screen and in the PNG, and hides items without a position. Origins use `ordered` with the current list order (assumed to be the in-game order); civics use `grid`.

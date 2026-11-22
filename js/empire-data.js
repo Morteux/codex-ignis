@@ -211,32 +211,8 @@ export function civicAvailable(i18nKey, selectedEthicIds, authorityId, selectedC
   });
 }
 
-/**
- * Rueda de éticas tal y como se ve en el juego (la Wiki la muestra con la
- * misma cuadrícula de 5×5): fanáticas en el anillo exterior, moderadas en
- * el interior, cada eje es un diámetro que pasa por el centro y la
- * consciencia gestalt ocupa el centro. [fila, columna] empiezan en 1.
- */
-export const ETHIC_WHEEL = {
-  fanaticSpiritualist: [1, 1], fanaticMilitarist: [1, 3], fanaticXenophobe: [1, 5],
-  spiritualist: [2, 2], militarist: [2, 3], xenophobe: [2, 4],
-  fanaticAuthoritarian: [3, 1], authoritarian: [3, 2], gestaltConsciousness: [3, 3], egalitarian: [3, 4], fanaticEgalitarian: [3, 5],
-  xenophile: [4, 2], pacifist: [4, 3], materialist: [4, 4],
-  fanaticXenophile: [5, 1], fanaticPacifist: [5, 3], fanaticMaterialist: [5, 5]
-};
-
-/** Icono de cada ética (carpeta ethics/ de StellarisAssets). */
-export const ETHIC_ICONS = {
-  xenophile: "ethics/Xenophile.png", fanaticXenophile: "ethics/Fanatic_xenophile.png",
-  xenophobe: "ethics/Xenophobe.png", fanaticXenophobe: "ethics/Fanatic_xenophobe.png",
-  militarist: "ethics/Militarist.png", fanaticMilitarist: "ethics/Fanatic_militarist.png",
-  pacifist: "ethics/Pacifist.png", fanaticPacifist: "ethics/Fanatic_pacifist.png",
-  materialist: "ethics/Materialist.png", fanaticMaterialist: "ethics/Fanatic_materialist.png",
-  spiritualist: "ethics/Spiritualist.png", fanaticSpiritualist: "ethics/Fanatic_spiritualist.png",
-  egalitarian: "ethics/Egalitarian.png", fanaticEgalitarian: "ethics/Fanatic_egalitarian.png",
-  authoritarian: "ethics/Authoritarian.png", fanaticAuthoritarian: "ethics/Fanatic_authoritarian.png",
-  gestaltConsciousness: "ethics/Gestalt_consciousness.png"
-};
+/** Wheel position and icon of every ethic: see js/ethic-wheel.js (shared with the ethics bingo). */
+export { ETHIC_WHEEL, ETHIC_ICONS } from "./ethic-wheel.js";
 
 /**
  * Efectos numéricos de cada ética y autoridad (Wiki: páginas Ethics y

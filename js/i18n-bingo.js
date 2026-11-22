@@ -18,10 +18,12 @@ export const strings = {
         bingoTypeLabel: "Tipo de bingo",
         bingoTypeOrigins: "Orígenes",
         bingoTypePrinciples: "Principios",
+        bingoTypeEthics: "Éticas",
         bingoTypeEmpty: "Este bingo todavía no tiene casillas. Vuelve pronto.",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "Marca los orígenes con los que ya has jugado una partida.",
         bingoPrinciplesDescription: "Marca los principios que ya has usado en algún imperio.",
+        bingoEthicsDescription: "Marca las éticas que ya has tenido en un imperio, sobre la rueda de éticas del juego.",
         a11yBingoGrid: "Casillas del bingo",
     },
     en: {
@@ -36,10 +38,12 @@ export const strings = {
         bingoTypeLabel: "Bingo type",
         bingoTypeOrigins: "Origins",
         bingoTypePrinciples: "Civics",
+        bingoTypeEthics: "Ethics",
         bingoTypeEmpty: "This bingo has no tiles yet. Check back soon.",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "Mark the origins you have already played a game with.",
         bingoPrinciplesDescription: "Mark the civics you have already used in an empire.",
+        bingoEthicsDescription: "Mark the ethics you have already had in an empire, on the in-game ethics wheel.",
         a11yBingoGrid: "Bingo squares",
     },
     jp: {
@@ -54,10 +58,12 @@ export const strings = {
         bingoTypeLabel: "ビンゴの種類",
         bingoTypeOrigins: "起源",
         bingoTypePrinciples: "国是",
+        bingoTypeEthics: "倫理観",
         bingoTypeEmpty: "このビンゴにはまだマスがありません。またお越しください。",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "これまでにプレイしたことのある起源をマークしましょう。",
         bingoPrinciplesDescription: "これまでに帝国で使ったことのある国是をマークしましょう。",
+        bingoEthicsDescription: "ゲーム内の倫理観ホイール上で、これまでに帝国で採用したことのある倫理観をマークしましょう。",
         a11yBingoGrid: "ビンゴのマス",
     },
 };

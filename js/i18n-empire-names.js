@@ -1,5 +1,5 @@
 /**
- * Origin and civic names, shared by the bingo and the planet simulator, es/en/jp.
+ * Origin, civic and ethic names, shared by the bingo and the planet simulator, es/en/jp.
  * Imported by the page scripts that need it; importing it registers the texts in js/i18n.js.
  */
 
@@ -291,6 +291,25 @@ export const strings = {
         civicWarriorCulture: "Cultura Guerrera / Visión del Gran Kan",
         civicWorkerCoop: "Cooperativa de Trabajadores",
         civicWorldForgers: "Planet Forgers",
+
+        // Ethics (simulator empire tab and ethics bingo)
+        ethicXenophile: "Xenófilo",
+        ethicFanaticXenophile: "Xenófilo fanático",
+        ethicXenophobe: "Xenófobo",
+        ethicFanaticXenophobe: "Xenófobo fanático",
+        ethicMilitarist: "Militarista",
+        ethicFanaticMilitarist: "Militarista fanático",
+        ethicPacifist: "Pacifista",
+        ethicFanaticPacifist: "Pacifista fanático",
+        ethicMaterialist: "Materialista",
+        ethicFanaticMaterialist: "Materialista fanático",
+        ethicSpiritualist: "Espiritualista",
+        ethicFanaticSpiritualist: "Espiritualista fanático",
+        ethicEgalitarian: "Igualitario",
+        ethicFanaticEgalitarian: "Igualitario fanático",
+        ethicAuthoritarian: "Autoritario",
+        ethicFanaticAuthoritarian: "Autoritario fanático",
+        ethicGestaltConsciousness: "Consciencia gestalt",
     },
     en: {
 
@@ -577,6 +596,25 @@ export const strings = {
         civicWarriorCulture: "Warrior Culture / Great Khan's Vision",
         civicWorkerCoop: "Worker Cooperative",
         civicWorldForgers: "Planet Forgers",
+
+        // Ethics (simulator empire tab and ethics bingo)
+        ethicXenophile: "Xenophile",
+        ethicFanaticXenophile: "Fanatic Xenophile",
+        ethicXenophobe: "Xenophobe",
+        ethicFanaticXenophobe: "Fanatic Xenophobe",
+        ethicMilitarist: "Militarist",
+        ethicFanaticMilitarist: "Fanatic Militarist",
+        ethicPacifist: "Pacifist",
+        ethicFanaticPacifist: "Fanatic Pacifist",
+        ethicMaterialist: "Materialist",
+        ethicFanaticMaterialist: "Fanatic Materialist",
+        ethicSpiritualist: "Spiritualist",
+        ethicFanaticSpiritualist: "Fanatic Spiritualist",
+        ethicEgalitarian: "Egalitarian",
+        ethicFanaticEgalitarian: "Fanatic Egalitarian",
+        ethicAuthoritarian: "Authoritarian",
+        ethicFanaticAuthoritarian: "Fanatic Authoritarian",
+        ethicGestaltConsciousness: "Gestalt Consciousness",
     },
     jp: {
 
@@ -863,6 +901,25 @@ export const strings = {
         civicWarriorCulture: "戦士文化",
         civicWorkerCoop: "労働者協同組合",
         civicWorldForgers: "Planet Forgers",
+
+        // Ethics (simulator empire tab and ethics bingo)
+        ethicXenophile: "ゼノファイル",
+        ethicFanaticXenophile: "熱狂的ゼノファイル",
+        ethicXenophobe: "ゼノフォーブ",
+        ethicFanaticXenophobe: "熱狂的ゼノフォーブ",
+        ethicMilitarist: "軍国主義",
+        ethicFanaticMilitarist: "熱狂的軍国主義",
+        ethicPacifist: "平和主義",
+        ethicFanaticPacifist: "熱狂的平和主義",
+        ethicMaterialist: "唯物主義",
+        ethicFanaticMaterialist: "熱狂的唯物主義",
+        ethicSpiritualist: "精神主義",
+        ethicFanaticSpiritualist: "熱狂的精神主義",
+        ethicEgalitarian: "平等主義",
+        ethicFanaticEgalitarian: "熱狂的平等主義",
+        ethicAuthoritarian: "権威主義",
+        ethicFanaticAuthoritarian: "熱狂的権威主義",
+        ethicGestaltConsciousness: "ゲシュタルト意識",
     },
 };
 

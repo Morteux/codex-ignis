@@ -63,6 +63,22 @@ async def run(t):
         status = await bingo.evaluate("()=>document.querySelector('#bingo-download-status').textContent")
         check("bingo: PNG download of " + kind + " (valid PNG, 9 columns, no error)", head[:8] == b"\x89PNG\r\n\x1a\n" and width == (24 * 2 + 9 * 150) * 2 and height > 0 and not status and dl.suggested_filename == "bingo-" + ("origenes" if kind == "origins" else "principios") + "-stellaris.png", (dl.suggested_filename, width, height, status))
         os.remove(path)
+    # P24.3: ethics bingo on the in-game wheel (fanatic ethics on the outer ring, gestalt in the centre)
+    await bingo.select_option("#bingo-type", "ethics")
+    ethics = await bingo.evaluate("()=>{const g=document.querySelector('#bingo-grid').getBoundingClientRect();return [...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>{const r=c.getBoundingClientRect();return {name:c.getAttribute('aria-label'),row:+c.style.gridRow,col:+c.style.gridColumn,fanatic:(c.dataset.tags||'').includes('fanatic'),gestalt:(c.dataset.tags||'')==='gestalt',img:c.querySelector('img').src,cx:Math.round(r.left+r.width/2-g.left-g.width/2),visible:!!c.querySelector('.bingo-card-title--visible')}})}")
+    centre = [e for e in ethics if e["gestalt"]]
+    check("bingo: ethics bingo has the 17 ethics, named, with their ethics/ icons", len(ethics) == 17 and all(e["name"] and not e["name"].startswith("ethic") and "/ethics/" in e["img"] and e["visible"] for e in ethics), ethics[:2])
+    check("bingo: ethics wheel — fanatic ethics on the outer ring, moderate inside, gestalt centred", len(centre) == 1 and (centre[0]["row"], centre[0]["col"]) == (3, 3) and abs(centre[0]["cx"]) <= 2
+          and all((e["row"] in (1, 5) or e["col"] in (1, 5)) == e["fanatic"] for e in ethics) and len({(e["row"], e["col"]) for e in ethics}) == 17, centre)
+    await bingo.click("#bingo-grid .bingo-card[data-tags=gestalt]")
+    async with bingo.expect_download() as dl_info:
+        await bingo.click("#bingo-download")
+    dl = await dl_info.value
+    path = os.path.join(tempfile.gettempdir(), dl.suggested_filename)
+    await dl.save_as(path)
+    head = open(path, "rb").read(24)
+    check("bingo: PNG download of the ethics wheel (5 columns)", head[:8] == b"\x89PNG\r\n\x1a\n" and int.from_bytes(head[16:20], "big") == (24 * 2 + 5 * 150) * 2 and dl.suggested_filename == "bingo-eticas-stellaris.png", dl.suggested_filename)
+    os.remove(path)
     # P24.1: a "shape" bingo with an item without image (test-only entry added to BINGOS)
     await bingo.evaluate("async()=>{const m=await import('./js/bingo-data.js');m.BINGOS.push({id:'smokeShape',titleKey:'bingoTypeOrigins',fileSlug:'smoke',iconSize:70,showNames:false,layout:{type:'shape',rows:3,columns:3,cells:{originDefault:[1,1],originRemnants:[2,2],originTree:[3,3]}},items:[{img:'origins/GFX_origin_remnants.png',i18nKey:'originRemnants'},{img:null,i18nKey:'originTree'},{img:'origins/GFX_origin_scion.png',i18nKey:'originScion'}]})}")
     await bingo.click(".lang-btn[data-lang=es]")

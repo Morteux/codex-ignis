@@ -33,6 +33,7 @@
  */
 
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-items.js";
+import { ETHIC_WHEEL, ETHIC_ICONS } from "./ethic-wheel.js";
 
 /** Tags of a civic from its icon name: the gestalt and corporate variants share the base name. */
 function civicTags(img) {
@@ -40,6 +41,16 @@ function civicTags(img) {
   if (!match) return [];
   return [match[1] === undefined ? "corporate" : match[1].replace("individual_machine", "machine")];
 }
+
+/** i18n key of an ethic id of js/ethic-wheel.js ("fanaticXenophile" -> "ethicFanaticXenophile"). */
+const ethicKey = (id) => `ethic${id[0].toUpperCase()}${id.slice(1)}`;
+
+/** Ethics (P24.3): the 17 ethics of the wheel, at their in-game wheel position. */
+const ETHIC_BINGO = Object.keys(ETHIC_WHEEL).map((id) => ({
+  img: ETHIC_ICONS[id],
+  i18nKey: ethicKey(id),
+  tags: id === "gestaltConsciousness" ? ["gestalt"] : id.startsWith("fanatic") ? ["fanatic"] : []
+}));
 
 export const BINGOS = [
   {
@@ -61,5 +72,20 @@ export const BINGOS = [
     showNames: false,
     layout: { type: "grid", columns: 9 },
     items: PRINCIPLE_BINGO.map((item) => ({ ...item, tags: civicTags(item.img) }))
+  },
+  {
+    id: "ethics",
+    titleKey: "bingoTypeEthics",
+    descriptionKey: "bingoEthicsDescription",
+    fileSlug: "eticas",
+    iconSize: 90,
+    showNames: true,
+    layout: {
+      type: "shape",
+      rows: 5,
+      columns: 5,
+      cells: Object.fromEntries(Object.entries(ETHIC_WHEEL).map(([id, position]) => [ethicKey(id), position]))
+    },
+    items: ETHIC_BINGO
   }
 ];

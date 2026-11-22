@@ -966,6 +966,12 @@ h1 {
     justify-content: center;
 }
 
+/* Fixed-width cells: long names wrap inside the cell instead of widening it. */
+.bingo-grid--shape .bingo-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
 .bingo-card {
     display: flex;
     flex-direction: column;
