@@ -3,18 +3,8 @@
 > Progreso: **23 / 128 tareas (18%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
-**Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
+**Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
-
-## 10 · Special planets
-Sources: *Celestial object* page (base modifiers per body type); Requirements column of the Districts/buildings pages (no body-type requirement = all bodies).
-- [ ] **T1006** (P10.6) Wilderness-origin districts — **on hold, owner decides later** (not modelled for now, see GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
-  - ❓ Bloqueada: Owner decides later whether to model the Wilderness origin (GDD §10).
-
-## 19 · Branch offices (Sucursales tab)
-Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
-- [ ] **T1905** (P19.5) Owner marks which branch office buildings are limited to one per colony (`maxPerColony`); until then all are repeatable
-  - ❓ Bloqueada: Which branch office buildings are limited to one per colony?
 
 ## 11 · Comparison & timeline
 - [x] **T1101** (P11.1) Scenario A/B comparison with marginal-change highlighting
@@ -133,6 +123,14 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
 - [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
   - ❓ Bloqueada: The owner has to review the T2522 reports first.
 
+## 10 · Special planets
+Source: the 4.5.4 game files through the extractor (section 25); runs after it.
+- [ ] **T1006** (P10.6) Wilderness origin, modelled from the extractor output (owner, 2026-11-22; update GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
+
+## 19 · Branch offices (Sucursales tab)
+Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
+- [ ] **T1905** (P19.5) `maxPerColony` of every branch office building, taken from its limits in the game files (extractor output of T2508)
+
 ## 20 · Pop upkeep and living standards
 Source: the 4.5.4 game files through the extractor (species rights / living standards in `common/`); runs after section 25.
 - [ ] **T2001** (P20.1) Extract (new `extract_living_standards.py`) and audit living standards: pop upkeep per standard and stratum/species type, effects (happiness, political power...), availability by ethics/authority/civics
@@ -141,12 +139,12 @@ Source: the 4.5.4 game files through the extractor (species rights / living stan
 - [ ] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
 
 ## 30 · Tech tree: data
-Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506); the saved wiki pages are only a cross-check. Until the real data exists, sections 31–34 are built and tested with the fixture version (T3001).
+Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Until the real data exists, sections 31–34 are built and tested with the fixture version (T3001).
 - [ ] **T3001** (P30.1) Fixture data version under `tests/fixtures/` with the schema of GDD §4.2: a few dozen invented, clearly fake technologies covering every area, kind, tier, prerequisite chains and requirements; never shown on the site
 - [ ] **T3002** (P30.2) Data validations module and tests: every prerequisite exists, no cycles, unique ids, area / category / tier present (run on the fixture now, on the real data later)
 - [ ] **T3003** (P30.3) Reserved icon slot: every record has its `icon` path (`technologies/<id>.png`, as exported by T2506); nodes and the detail card keep a fixed-size empty frame, images load lazily and a missing file leaves the frame empty with no layout shift
 - [ ] **T3004** (P30.4) Confirm the data model of GDD §4.2 against the extractor output (ids, kinds, tier gating, event and repeatable techs, DLC) and write it as GDD §4.3
-- [ ] **T3005** (P30.5) Data file of 4.5.4 generated from the extractor output, every technology including event and repeatable ones; counts cross-checked with the 4.5.2 wiki tables (differences between versions listed, not treated as errors)
+- [ ] **T3005** (P30.5) Data file of 4.5.4 generated from the extractor output, every technology including event and repeatable ones
 - [ ] **T3006** (P30.6) Register the collection in `js/data-version.js` with status `unverified`
 - [ ] **T3007** (P30.7) Link unlocks to simulator ids (buildings, jobs, districts) through the game ids
 - [ ] **T3008** (P30.8) Technology icons: write the PNGs exported by T2506 into the StellarisAssets repository (`technologies/`), commit them there (never push: the owner pushes), regenerate `StellarisAssetsFileTree.txt`, and check with a local file server that nodes and cards show them
@@ -188,26 +186,25 @@ Quiz game: consecutive questions of increasing difficulty by tiers, 3 lives, lif
 - [ ] **T4001** (P40.1) Write `TESTELLARIS_GDD.md`: rules (tiers and how the game advances through them, lives, lifelines: 50 % plus proposals, scoring, end of game), DLC filter, question format, sources, languages, hall of fame (top 10, name of at most 10 characters), anti-abuse; proposals recorded in `DECISIONS_TO_REVIEW.md`
 
 ## 41 · Testellaris: questions
-Sources: the extractor output (4.5.4 game files) and the saved 4.5.2 wiki pages (`../Codex Ignis Wiki/markdown/v4-5-2/`; a wiki fact that the 4.5.4 data contradicts is dropped). Game names inside the questions use the **official es/en/jp names from the game localisation** (owner, 2026-11-22; only Testellaris, the rest of the site keeps English until P15). Each batch aims at about 150 questions spread across all tiers.
-- [ ] **T4101** (P41.1) Question bank format and validator in the tests: id, tier, topic, DLC list, source (page and section or game file), text, four answers and a short explanation in es/en/jp, correct answer; unique ids, four distinct answers, every language present, source present, tier in range
+Source: only the extractor output (4.5.4 game files and their localisation, including the description texts). Game names inside the questions use the **official es/en/jp names from the game localisation** (owner, 2026-11-22; only Testellaris, the rest of the site keeps English until P15). Each batch aims at about 150 questions spread across all tiers.
+- [ ] **T4101** (P41.1) Question bank format and validator in the tests: id, tier, topic, DLC list, source (game file and key), text, four answers and a short explanation in es/en/jp, correct answer; unique ids, four distinct answers, every language present, source present, tier in range
 - [ ] **T4111** (P41.11) Question generator from the extractor data (`tools/`): templates in es/en/jp with the official names (which tier is X, what does Y require, which technology unlocks Z, base cost of W, which ethics a civic needs…), tier by how obscure the fact is (rules in the GDD), DLC from the data, source = game file; output into the question bank, validated; re-runnable for new versions
-- [ ] **T4102** (P41.2) Questions: origins and civics (*Origin*, *Civics*, corporate, hive mind and machine civics)
+- [ ] **T4102** (P41.2) Questions: origins and civics, including corporate, hive mind and machine civics (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4103** (P41.3) Questions: ethics, government, authorities, council and leaders
+- [ ] **T4103** (P41.3) Questions: ethics, government, authorities, council and leaders (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4104** (P41.4) Questions: technology and research (*Technology*, the three research pages, research policies and buildings)
+- [ ] **T4104** (P41.4) Questions: technology and research (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4105** (P41.5) Questions: planets and colonies (*Celestial object*, *Colonization*, *Colony management*, planetary features, planet modifiers, designations, districts, specializations, capital building)
+- [ ] **T4105** (P41.5) Questions: planets and colonies: planet classes, planetary features and modifiers, designations, districts, specializations, capital buildings (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4106** (P41.6) Questions: economy (*Resources*, *Jobs*, *Population*, the building pages, *Holdings*)
+- [ ] **T4106** (P41.6) Questions: economy: resources, jobs, buildings, branch offices, living standards (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4107** (P41.7) Questions: policies, edicts, decisions, traditions, ascension perks and ambition
+- [ ] **T4107** (P41.7) Questions: policies, edicts, decisions, traditions, ascension perks and ambition (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-- [ ] **T4108** (P41.8) Questions: *The Shroud*, *Astral threads*, *Minor artifacts*, subject empires, empire modifiers and *Jargon*
+- [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
 - [ ] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
-- [ ] **T4110** (P41.10) More topics to reach thousands of questions (species and traits, crises, fallen empires, events, ships, megastructures, diplomacy, war…)
-  - ❓ Bloqueada: The owner has to save those wiki pages in `Codex Ignis Wiki` (which ones?).
+- [ ] **T4110** (P41.10) More topics to reach thousands of questions: new extractors (one script each, added to `extract_all.py`) for species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and event texts, and their questions
 
 ## 42 · Testellaris: game page
 - [ ] **T4201** (P42.1) `testellaris.html` with the shared shell and a start screen (DLC filter), linked from the home page
@@ -225,15 +222,11 @@ Sources: the extractor output (4.5.4 game files) and the saved 4.5.2 wiki pages 
 - [ ] **T4304** (P43.4) Production setup: MongoDB Atlas free cluster, database user, `MONGODB_URI` in the Vercel project, deploy check
   - ❓ Bloqueada: The owner has to create the Atlas account and cluster and set the variable in Vercel (the loop cannot create accounts).
 
-## 15 · Official localization
-- [ ] **T1501** (P15.1) Localisation files: they come from the game files extractor (T2503, T2520)
-  - ❓ Bloqueada: Translations are on hold until the owner says otherwise (and waits for T2520).
+## 15 · Official localization (all at once, before the final check)
+- [ ] **T1501** (P15.1) Translation plan from the extractor localisation (T2503, T2520): every game name and text keyed by game id, which languages each page gets, how interface texts without an official string are handled
 - [ ] **T1502** (P15.2) Replace es/en/jp game names (civics, buildings, jobs, resources, designations, ethics, authorities, planet types, policies) with official strings keyed by game ids
-  - ❓ Bloqueada: Waits for P15.1 (localisation files).
 - [ ] **T1503** (P15.3) All official Stellaris languages for the planet simulator and the tech tree only (wiki and bingo stay es/en/jp); key parity per language
-  - ❓ Bloqueada: Waits for P15.1 (localisation files).
 - [ ] **T1504** (P15.4) Review the civics with English placeholder names and the keys that group several civics under one icon
-  - ❓ Bloqueada: Waits for P15.1 (localisation files).
 
 ## 14 · Final 4.5.4 data verification (last)
 - [ ] **T1401** (P14.1) Run `extract_all.py` on the installed game (check its version first) and use its output and the T2522 reports as the source of the final review
