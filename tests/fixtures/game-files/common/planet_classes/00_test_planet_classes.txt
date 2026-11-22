@@ -1,0 +1,25 @@
+pc_test = {
+	icon = GFX_strip_second
+	climate = "wet"
+	colonizable = yes
+	initial = yes
+	district_set = standard
+	planet_size = 16
+	atmosphere_color = hsv { 0.5 0.2 0.8 }
+}
+
+pc_test_star = {
+	icon = GFX_test_strip
+	star = yes
+	colonizable = no
+}
+
+random_list = {
+	name = "rl_test"
+	planets = { pc_test }
+}
+
+random_list = {
+	name = "rl_second"
+	planets = { pc_test pc_test_star }
+}

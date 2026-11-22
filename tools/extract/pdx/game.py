@@ -118,10 +118,11 @@ class GameFiles:
         self.warnings.extend(p.warnings)
         return block
 
-    def folder(self, folder, recursive=False):
+    def folder(self, folder, recursive=False, repeated=("random_list",)):
         """Top-level definitions of every file of a common/ folder: list of (file, key, value).
 
-        Files load in path order; a key defined again replaces the earlier one (warned)."""
+        Files load in path order; a key defined again replaces the earlier one (warned), except
+        the `repeated` keys, which are lists rather than definitions (`random_list` of planet classes)."""
         key = (folder, recursive)
         if key not in self._folders:
             seen, out = {}, []
@@ -129,7 +130,7 @@ class GameFiles:
                 for k, op, v in self.parse_file(f):
                     if k is None:
                         continue
-                    if k in seen:
+                    if k in seen and k not in repeated:
                         self.warnings.append(f"{self.rel(f)}: {k} redefined (first in {seen[k]})")
                         out = [e for e in out if e[1] != k]
                     seen[k] = self.rel(f)

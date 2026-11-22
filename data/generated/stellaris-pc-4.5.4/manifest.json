@@ -43,6 +43,11 @@
    "count": 77,
    "warnings": 0
   },
+  "planet_classes": {
+   "file": "planet_classes.json",
+   "count": 69,
+   "warnings": 2
+  },
   "technologies": {
    "file": "technologies.json",
    "count": 679,
