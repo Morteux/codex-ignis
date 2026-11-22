@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **47 / 130 tareas (36%)**
+> Progreso: **48 / 130 tareas (37%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -134,7 +134,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `python tools/extract/extract_civics.py` and open `data/generated/stellaris-pc-4.5.4/`: `civics.json` (281 civics with modifiers, requirements as text, DLC and icon) and `origins.json` (77 origins with `game_order`, icon and picture).
 - [x] **T2512** (P25.12) `extract_authorities.py`: authorities
   - Prueba manual: run `python tools/extract/extract_authorities.py` and open `data/generated/stellaris-pc-4.5.4/authorities.json`: 8 authorities with election data, modifiers and icon, each with its ascension variants in `swaps` (72, e.g. Democratic Augmentocracy with its own icon).
-- [ ] **T2513** (P25.13) `extract_ethics.py`: ethics and their axes
+- [x] **T2513** (P25.13) `extract_ethics.py`: ethics and their axes
+  - Prueba manual: run `python tools/extract/extract_ethics.py` and open `data/generated/stellaris-pc-4.5.4/ethics.json`: 17 ethics with cost, axis (`category`, `category_value`), fanatic variants, modifiers and icon, plus `axes` (col, xen, mil, spi and hive).
 - [ ] **T2514** (P25.14) `extract_planets.py`: planet classes and celestial bodies
 - [ ] **T2515** (P25.15) `extract_planet_features.py`: planet modifiers, static modifiers, deposits and blockers
 - [ ] **T2516** (P25.16) `extract_edicts.py`: edicts

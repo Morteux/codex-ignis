@@ -1,0 +1,23 @@
+ethic_fanatic_test = {
+	cost = 2
+	category = col
+	category_value = 0
+	regular_variant = ethic_test
+	country_modifier = { country_unity_produces_mult = 0.2 }
+}
+
+ethic_test = {
+	cost = 1
+	category = col
+	category_value = 1
+	category_opposite = yes
+	fanatic_variant = ethic_fanatic_test
+	tags = { ETHIC_TEST_TAG }
+	country_modifier = { country_unity_produces_mult = 0.1 }
+}
+
+ethic_other = {
+	cost = 1
+	category = col
+	category_value = 3
+}

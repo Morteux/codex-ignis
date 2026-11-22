@@ -14,6 +14,8 @@
  auth_test:0 "Test Authority"
  auth_test_cyber:0 "Test Cyber Authority"
  auth_test_cyber_desc:0 "Augmented test authority."
+ ethic_test:0 "Testist"
+ ethic_fanatic_test:0 "Fanatic Testist"
  job_test_desc:0 "A "quoted" word inside the text."
  no_version: "No version number"
  cycle_a:0 "A $cycle_b$"
