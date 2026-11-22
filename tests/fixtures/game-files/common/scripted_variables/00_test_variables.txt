@@ -1,0 +1,5 @@
+# Global variables of the fixture
+@tier1cost1 = 1000
+@tier1weight1 = 100
+@half = 0.5
+@derived = @[ tier1cost1 * 2 ]

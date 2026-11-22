@@ -1,0 +1,5 @@
+inline_script = {
+	script = test/upkeep
+	RESOURCE = energy
+	AMOUNT = $AMOUNT$
+}

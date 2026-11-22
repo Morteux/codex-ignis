@@ -1,0 +1,4 @@
+upkeep = {
+	$RESOURCE$ = $AMOUNT$
+	multiplier = $MULT|1$
+}

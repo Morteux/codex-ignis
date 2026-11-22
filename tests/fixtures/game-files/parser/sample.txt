@@ -1,0 +1,54 @@
+# Hand-written sample of the Paradox script syntax
+@local_cost = 250
+
+sample_item = {
+	cost = @local_cost         # local variable
+	global_cost = @tier1cost1  # common/scripted_variables
+	derived = @derived
+	maths = @[ local_cost * 2 + tier1weight1 / 4 ]
+	brackets = @[ ( local_cost - 50 ) * @half ]
+	name = "Quoted # not a comment"
+	number_string = "10"
+	enabled = yes
+	disabled = no
+	negative = -3
+	decimal = 0.25
+	category = { computing "voidcraft" }
+	color = rgb { 255 128 0 }
+	map_color = hsv { 0.5 0.25 1.0 }
+	potential = {
+		num_pops >= 10
+		has_monthly_income < 5
+		years_passed > 20
+		tier <= 3
+		value != 2
+		other == 4
+		maybe ?= yes
+		NOT = { has_flag = no_flag }
+	}
+	modifier = { factor = 2 }
+	modifier = { factor = 0.5 }
+	list_of_blocks = { { a = 1 } { a = 2 } }
+	date = 2200.01.01
+	scope:target = value:some_value|PARAM|1|
+}
+
+second_item = {
+	inline_script = {
+		script = test/upkeep
+		RESOURCE = minerals
+		AMOUNT = 3
+	}
+	inline_script = { script = test/nested AMOUNT = 2 }
+	inline_script = {
+		script = test/statements
+		STATEMENTS = "alpha = 1 beta = { 2 3 }"
+	}
+	inline_script = {
+		script = test/statements
+		STATEMENTS = "owner? = {
+			has_country_flag = multi_line
+		}"
+	}
+	unknown = @not_defined
+}
