@@ -1,8 +1,9 @@
-# Planet Simulator — pending tasks
+# Codex Ignis — pending tasks
 
-> Progreso: **12 / 28 tareas (43%)**
+> Progreso: **12 / 69 tareas (17%)**
 
-Design rules and decisions: `PLANET_SIM_GDD.md`. Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
+Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34).
+**Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
 Decisions taken without the owner, pending review: `DECISIONS_TO_REVIEW.md` (every task adds its own there). Order is a proposal; **P14 is always last**. When a task is done, mark it `[x]` (the automatic loop needs it) and move any new design decision into the GDD. Task ids: `T<phase><step>` = `P<phase>.<step>` (T1305 = P13.5).
 
 ## 10 · Special planets
@@ -61,6 +62,68 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [x] **T1309** (P13.9) Translate the hard-coded Spanish landmark `aria-label`s of `index.html`, `bingo.html` and the legal pages (`data-i18n-attr` + es/en/jp keys, the `a11y*` keys of P13.4 can be reused)
   - Prueba manual: open `index.html` (also `bingo.html`, `privacy.html`, `cookies.html`, `404.html`, `tech-tree.html`), click EN and inspect the header: its `aria-label` reads "Archive header" and the projects nav "Archive projects"; with ES they go back to "Cabecera del archivo" / "Proyectos del archivo".
 
+## 22 · Site-wide QA (all pages)
+Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo, planet simulator, tech tree page, legal pages and 404. Every bug found is fixed in its task (or added as a new task if large) and gets a smoke test.
+- [ ] **T2201** (P22.1) QA of the wiki: navigation between articles, URL hashes, search, easter eggs, every block type of `content.js`, language switch, local images that do not exist, console errors
+- [ ] **T2202** (P22.2) QA of the bingo: both bingos (origins, principles), marking, PNG download, language switch, missing icons, console errors
+- [ ] **T2203** (P22.3) QA of the legal pages, 404 and the tech tree placeholder: links, language switch, ads/consent stay disabled (`js/ads-config.js`), `vercel.json` routing of the 404
+- [ ] **T2204** (P22.4) Smoke test that opens every page in es/en/jp and fails on console errors or local resources that do not load (404)
+- [ ] **T2205** (P22.5) Mobile layout review at 320–375 px of every page other than the simulator (like T1301)
+- [ ] **T2206** (P22.6) Accessibility pass of every page other than the simulator: keyboard, visible focus, contrast, `alt` texts, landmarks, `lang` attribute following the language (like T1304)
+- [ ] **T2207** (P22.7) i18n review of the wiki, bingo and legal pages: no hard-coded interface text, keys used exist in es/en/jp, articles of `content.js` with a missing language listed (never machine-translate: list them in `DECISIONS_TO_REVIEW.md`)
+  - Modelo: sonnet
+- [ ] **T2208** (P22.8) Page metadata of every page: `<title>`, description, favicon, Open Graph, canonical, `lang`; consistent between pages
+  - Modelo: sonnet
+- [ ] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23
+
+## 23 · Refactoring (whole site)
+No behaviour change: every task keeps all smoke tests passing without changing what they check (only how they are organised, in T2306). Runs before the tech tree, which reuses the shared shell.
+- [ ] **T2301** (P23.1) Refactoring audit of the whole site: duplicated code (header, language selector, applying `data-i18n`, footer, dialogs) between `app.js`, `bingo.js`, `legal.js`, `planet-sim.js`; oversized modules; dead code. Add each concrete refactor found as a new task of this section
+- [ ] **T2302** (P23.2) Shared page shell module (header, language selector, applying `data-i18n` / `data-i18n-attr`, footer) used by every page
+- [ ] **T2303** (P23.3) Split `js/planet-sim.js` (~235 KB) into modules by responsibility (economy engine, one renderer per tab, events, state) without changing behaviour; update `README.md` and GDD §3
+- [ ] **T2304** (P23.4) Split `js/i18n.js` (~430 KB) by area (common, wiki, bingo, simulator, tech tree) so every page loads only what it uses; adapt the parity checks
+- [ ] **T2305** (P23.5) Organise `styles.css` by page/component with shared colour tokens and remove unused selectors
+- [ ] **T2306** (P23.6) Split `tests/policies-smoke.py` (~110 KB) into one file per area with shared helpers and a single runner; update `README.md`
+- [ ] **T2307** (P23.7) Remove dead code: unused exports, functions, i18n keys and CSS. Unused files in `img/` are only listed in `DECISIONS_TO_REVIEW.md`, never deleted
+
+## 30 · Tech tree: data
+Design: `TECH_TREE_GDD.md`. Sources: `../Codex Ignis Wiki/v4-5-2/*.html` and `../Codex Ignis Wiki/markdown/v4-5-2/` (*Technology*, *Physics research*, *Society research*, *Engineering research*).
+- [ ] **T3001** (P30.1) Audit the 4.5.2 technology pages and confirm the data model of GDD §4.2: id scheme (icon names repeated by variants), row kinds from the HTML colours, prerequisites vs other requirements, event technologies, empty costs. Write the audit as GDD §4.3
+- [ ] **T3002** (P30.2) Re-runnable extraction script (Python, next to `parser wiki/`) that reads the pages of one version and writes its data file with a given `rulesetId`
+- [ ] **T3003** (P30.3) Data file of 4.5.2 (`js/tech-data-4.5.2.js` or as decided in T3001) generated by the script, every technology of the three areas including event technologies
+- [ ] **T3004** (P30.4) Automatic validations in the tests: every prerequisite exists, no cycles, unique ids, area/field/tier present, counts per area match the wiki tables
+- [ ] **T3005** (P30.5) Register the collection in `js/data-version.js` with status `unverified`
+- [ ] **T3006** (P30.6) Link unlocks to simulator ids (buildings, jobs, districts) only where the wiki names them, so the tech tree can link to the simulator
+- [ ] **T3007** (P30.7) Technology icons in the nodes and the detail card
+  - ❓ Bloqueada: StellarisAssets has no technology icons (`StellarisAssetsFileTree.txt`). Can the owner add them (e.g. `technologies/Tech_*.png`, the names used by the wiki)?
+
+## 31 · Tech tree: page and drawing
+- [ ] **T3101** (P31.1) `tech-tree.html` layout with the shared shell: three areas (tabs on mobile), credits section and footer mention (GDD §2), data version visible
+- [ ] **T3102** (P31.2) Layout by tier columns and field rows; nodes with name, tier and kind (no tech icon until T3007)
+- [ ] **T3103** (P31.3) Prerequisite lines between nodes (SVG), redrawn on resize
+- [ ] **T3104** (P31.4) Visual states: normal, selected, prerequisite, unlocked by the selected, kind colours (starter, rare, dangerous, repeatable, event)
+- [ ] **T3105** (P31.5) Mobile layout at 320–375 px
+
+## 32 · Tech tree: exploration
+- [ ] **T3201** (P32.1) Detail card on click: base cost, tier, kind, description, prerequisites and other requirements, unlocks (linked to the simulator where T3006 linked them), draw weight as information, DLC, version
+- [ ] **T3202** (P32.2) Highlight the whole prerequisite chain and everything that depends on the selected tech
+- [ ] **T3203** (P32.3) Accent-insensitive search by name and filters (area, field, tier, kind, DLC)
+- [ ] **T3204** (P32.4) Zoom and pan of the tree (mouse, touch, keyboard)
+- [ ] **T3205** (P32.5) Deep link to a technology (URL hash), also from the wiki articles
+
+## 33 · Tech tree: versions
+- [ ] **T3301** (P33.1) Version selector and per-version data loading (only 4.5.2 exists; tested with a small fixture version under `tests/`)
+- [ ] **T3302** (P33.2) Procedure to add a new version without losing the previous ones (GDD §5 and the script's help)
+  - Modelo: sonnet
+- [ ] **T3303** (P33.3) Comparison view between two versions: added, removed, changed cost / tier / prerequisites (tested with the fixture version)
+
+## 34 · Tech tree: integration
+- [ ] **T3401** (P34.1) Interface texts of the tech tree in es/en/jp; game names in English in every language (official names wait for P15)
+- [ ] **T3402** (P34.2) Links from the wiki (`content.js` tech mentions, "Enlaces útiles") and from the simulator (building info) to the tech tree
+- [ ] **T3403** (P34.3) Accessibility of the tech tree: keyboard navigation between nodes, screen-reader names, contrast
+- [ ] **T3404** (P34.4) `README.md` (structure, sources, tests, credits) and GDD updated for the finished tech tree
+  - Modelo: sonnet
+
 ## 15 · Official localization
 - [ ] **T1501** (P15.1) Receive the game localisation files (owner) and decide the extraction format
   - ❓ Bloqueada: Owner must provide the game localisation files.
@@ -81,4 +144,6 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [ ] **T1404** (P14.4) Review GDD §9 (assumptions and stacking rules)
   - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
 - [ ] **T1405** (P14.5) Deliver the final data files
+  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
+- [ ] **T1406** (P14.6) Review the tech tree data against the updated wiki technology pages and set its `verification` status
   - ❓ Bloqueada: Waits for P14.1 (updated wiki files).

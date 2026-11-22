@@ -9,7 +9,9 @@
     "Bash(python3 tests/*)",
     "Bash(node *)",
     "Bash(python *)",
-    "Bash(python3 *)"
+    "Bash(python3 *)",
+    "Read(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)",
+    "Grep(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)"
   ],
   "commitTrailer": "Co-Authored-By: Claude <noreply@anthropic.com>",
   "rules": [

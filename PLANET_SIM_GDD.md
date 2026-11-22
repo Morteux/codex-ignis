@@ -3,7 +3,7 @@
 Design rules and decisions of the planet simulator. Pending work lives in `tasks.md`; the full history of finished tasks is in git (GDD before 2026-11-19).
 
 - **Ruleset:** Stellaris PC 4.5.2 "Cygnus" (`stellaris-pc-4.5.2`). All data is tagged 4.5.2 and stays `unverified` until P14 (some values come from 4.3/4.4 pages, e.g. base job outputs).
-- **Scope:** only the simulator. Wiki, bingo, legal pages and tech tree (`tech_tree.md`) are out.
+- **Scope:** only the simulator. Wiki, bingo, legal pages and tech tree (`TECH_TREE_GDD.md`) are out.
 - **Rule #1:** never invent rules, numbers or names. Missing or ambiguous wiki data → ask. Every simplification is documented in code and in §8.
 - **Wiki requirement columns:** a red-cross icon (`No.png`) before a requirement means "not" (not available on / not with). Markdown generated before 2026-11-19 drops the icon (read those requirement columns from the HTML); the parser now keeps every image as `![label](file.ext)`, e.g. `![No](24px-No.png)`.
 

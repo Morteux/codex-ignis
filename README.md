@@ -13,12 +13,12 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 | Wiki | `index.html`, `js/app.js`, `js/content.js` (artículos), `js/highlight-config.js` |
 | Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
 | Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `planetary-features-data.js`, `planet-modifier-data.js`, `edicts-ui.js`, `branch-offices-ui.js`, `info-panels.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, `job-swaps.js` (cambios de empleo), `scenario-compare.js` (comparación de escenarios A/B), `stockpile-timeline.js` (reservas mes a mes), datos en `*-data.js` y `civic-rules.js` |
-| Árbol de tecnologías | `tech-tree.html` (marcador; plan en `tech_tree.md`) |
+| Árbol de tecnologías | `tech-tree.html` (marcador; diseño en `TECH_TREE_GDD.md`) |
 | Pruebas | `tests/policies-smoke.py` (navegador, ver más abajo) |
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
 | Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |
 
-Documentación del proyecto: `PLANET_SIM_GDD.md` (diseño y decisiones del simulador), `tasks.md` (tareas pendientes del simulador), `DECISIONS_TO_REVIEW.md` (decisiones tomadas sin el dueño, pendientes de revisar), `tech_tree.md` (plan del árbol de tecnologías), `principios_del_juego.md` (nombres e iconos de los principios), `WIKI_URLS.md` (páginas de la wiki de Stellaris usadas como fuente) y `StellarisAssetsFileTree.txt` (árbol del repositorio de assets).
+Documentación del proyecto: `PLANET_SIM_GDD.md` (diseño y decisiones del simulador), `tasks.md` (tareas pendientes de toda la web), `DECISIONS_TO_REVIEW.md` (decisiones tomadas sin el dueño, pendientes de revisar), `TECH_TREE_GDD.md` (diseño y decisiones del árbol de tecnologías), `principios_del_juego.md` (nombres e iconos de los principios), `WIKI_URLS.md` (páginas de la wiki de Stellaris usadas como fuente) y `StellarisAssetsFileTree.txt` (árbol del repositorio de assets).
 
 ## Contenido de la wiki
 
@@ -55,4 +55,4 @@ La integración está desactivada en `js/ads-config.js`. Solo debe activarse con
 
 ## Créditos
 
-Contenido y marcas de Stellaris © Paradox Interactive (ver `privacy.html`). El futuro árbol de tecnologías se inspira en el *Stellaris Tech Tree* de BloodStainedCrow (https://bloodstainedcrow.github.io/stellaris-tech-tree/); ver `tech_tree.md`.
+Contenido y marcas de Stellaris © Paradox Interactive (ver `privacy.html`). El futuro árbol de tecnologías se inspira en el *Stellaris Tech Tree* de BloodStainedCrow (https://bloodstainedcrow.github.io/stellaris-tech-tree/); ver `TECH_TREE_GDD.md`.
