@@ -1,0 +1,1232 @@
+{
+ "set": "planet_modifiers",
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "sources": [
+  "common/planet_modifiers",
+  "common/static_modifiers"
+ ],
+ "count": 70,
+ "items": [
+  {
+   "id": "pm_hazardous_weather",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hazardous Weather",
+   "desc": "This world suffers from unstable weather patterns, with violent storms frequently appearing out of nowhere to wreak havoc on the surface.",
+   "static_modifier": "hazardous_weather",
+   "modifier": {
+    "pop_environment_tolerance": -0.1,
+    "pop_happiness": -0.05,
+    "planet_jobs_energy_produces_mult": 0.2,
+    "district_generator_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_hazardous_weather\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_hazardous_weather.dds",
+    "asset": "planet_modifiers/Pm_hazardous_weather.png"
+   }
+  },
+  {
+   "id": "pm_dangerous_wildlife",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hostile Fauna",
+   "desc": "This world has evolved extremely Hostile Fauna, and the surface is rife with lethal predators waiting to ambush their next meal. Studying the creature's biology offers excellent research opportunities.",
+   "static_modifier": "dangerous_wildlife",
+   "modifier": {
+    "pop_environment_tolerance": -0.1,
+    "pop_happiness": -0.05,
+    "planet_jobs_society_research_produces_mult": 0.2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_dangerous_wildlife\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_docile_fauna\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_titanic_life\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_dangerous_wildlife.dds",
+    "asset": "planet_modifiers/Pm_dangerous_wildlife.png"
+   }
+  },
+  {
+   "id": "pm_weak_magnetic_field",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Weak Magnetic Field",
+   "desc": "Although habitable, this world has a weak magnetic field that offers little protection against cosmic radiation.",
+   "static_modifier": "weak_magnetic_field",
+   "modifier": {
+    "pop_environment_tolerance": -0.05,
+    "logistic_growth_mult": -0.05,
+    "planet_jobs_physics_research_produces_mult": 0.1
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_weak_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_strong_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_weak_magnetic_field.dds",
+    "asset": "planet_modifiers/Pm_weak_magnetic_field.png"
+   }
+  },
+  {
+   "id": "pm_strong_magnetic_field",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Strong Magnetic Field",
+   "desc": "This planet has an abnormally high magnetic field and will interfere with many of our instruments and computers. Mitigating these effects will help inform field manipulation research.",
+   "static_modifier": "strong_magnetic_field",
+   "modifier": {
+    "planet_technician_physics_research_produces_add": 1,
+    "district_generator_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_strong_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_weak_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_abundant_geothermal_activity\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_strong_magnetic_field.dds",
+    "asset": "planet_modifiers/Pm_strong_magnetic_field.png"
+   }
+  },
+  {
+   "id": "pm_abundant_geothermal_activity",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Abundant Geothermal Activity",
+   "desc": "This planet has many accessible geothermal hot spots. While this poses some engineering challenges, it also provides extra energy generation opportunities.",
+   "static_modifier": "abundant_geothermal_activity",
+   "modifier": {
+    "planet_technician_engineering_research_produces_add": 1,
+    "district_generator_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_strong_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_weak_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_strong_magnetic_field\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_drilling_for_gas.dds",
+    "asset": "planet_modifiers/Pm_drilling_for_gas.png"
+   }
+  },
+  {
+   "id": "pm_unstable_tectonics",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Unstable Tectonics",
+   "desc": "This world has very unstable plate tectonics and is prone to massive earthquakes and volcanic activity.",
+   "static_modifier": "unstable_tectonics",
+   "modifier": {
+    "pop_environment_tolerance": -0.1,
+    "pop_happiness": -0.05,
+    "planet_jobs_engineering_research_produces_mult": 0.2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tfactor = 4\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_unstable_tectonics\"\n}\nmodifier = {\n\tfactor = 0\n\thas_deposit = \"d_volcanic_stable_plateaus\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_unstable_tectonics.dds",
+    "asset": "planet_modifiers/Pm_unstable_tectonics.png"
+   }
+  },
+  {
+   "id": "pm_tidal_locked",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Tidal Locked",
+   "desc": "This world is tidally locked around its star, meaning that one side always has daylight while the other is locked in eternal darkness. If life exists here, it is likely limited to the twilight regions where the two sides meet.",
+   "static_modifier": "tidal_locked",
+   "modifier": {
+    "planet_max_districts_mult": -0.3,
+    "district_farming_max_add": -3
+   },
+   "spawn_chance": "modifier = {\n\tadd = 1\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_tidal_locked\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = pc_volcanic\n}\nmodifier = {\n\tfactor = 3\n\tis_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_tidal_locked.dds",
+    "asset": "planet_modifiers/Pm_tidal_locked.png"
+   }
+  },
+  {
+   "id": "pm_chthonian_planet",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Chthonian Planet",
+   "desc": "This planet was once a gas giant, but its proximity to its star has burned away the thick atmosphere. All that remains now is a super-dense and mineral rich metallic core.",
+   "static_modifier": "chthonian_planet",
+   "modifier": {},
+   "spawn_chance": "modifier = {\n\tadd = 30\n\tis_planet_class = \"pc_molten\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_chthonian_planet\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_chthonian_planet.dds",
+    "asset": "planet_modifiers/Pm_chthonian_planet.png"
+   }
+  },
+  {
+   "id": "pm_asteroid_impacts",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Asteroid Impacts",
+   "desc": "The orbital path this world takes around its star is littered with small asteroids, meteors, and comet swarms. Large impacts on the surface occur at an alarming frequency.",
+   "static_modifier": "asteroid_impacts",
+   "modifier": {
+    "pop_environment_tolerance": -0.05,
+    "planet_jobs_minerals_produces_mult": 0.05,
+    "district_mining_max_add": 2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_asteroid_impacts\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_asteroid_impacts.dds",
+    "asset": "planet_modifiers/Pm_asteroid_impacts.png"
+   }
+  },
+  {
+   "id": "pm_extensive_moon_system",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Extensive Moon System",
+   "desc": "This gas giant has an unusually large amount of natural satellites. Hundreds of small moons and moonlets orbit the planet.",
+   "static_modifier": "extensive_moon_system",
+   "modifier": {},
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gas_giant\"\n}\nmodifier = {\n\tfactor = 2\n\tnum_moons > 1\n}\nmodifier = {\n\tfactor = 2\n\tnum_moons > 2\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_extensive_moon_system\"\n}\nmodifier = {\n\tfactor = 0\n\thas_moon = no\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_extensive_moon_system.dds",
+    "asset": "planet_modifiers/Pm_extensive_moon_system.png"
+   }
+  },
+  {
+   "id": "pm_carbon_world",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Carbon World",
+   "desc": "This world has been formed mostly out of carbon, and contains little oxygen.",
+   "static_modifier": "carbon_world",
+   "modifier": {},
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren_cold\"\n}\nmodifier = {\n\tfactor = 4\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_carbon_world\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_carbon_world.dds",
+    "asset": "planet_modifiers/Pm_carbon_world.png"
+   }
+  },
+  {
+   "id": "pm_wild_storms",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Wild Storms",
+   "desc": "Spectacular electrical storms wrack this planet's atmosphere on a semi-regular basis.",
+   "static_modifier": "wild_storms",
+   "modifier": {
+    "pop_environment_tolerance": -0.05,
+    "pop_happiness": -0.05,
+    "planet_jobs_physics_research_produces_mult": 0.2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_wild_storms\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_wild_storms.dds",
+    "asset": "planet_modifiers/Pm_wild_storms.png"
+   }
+  },
+  {
+   "id": "pm_low_gravity",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Low Gravity",
+   "desc": "This planet has an unusually low density and therefore much lower gravity than most planets of comparable size.",
+   "static_modifier": "low_gravity",
+   "modifier": {
+    "planet_structures_cost_mult": -0.1,
+    "pop_environment_tolerance": -0.05
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_nuked\n}\nmodifier = {\n\tfactor = 2\n\tplanet_size < 14\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 2\n\tplanet_size < 12\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 2\n\tplanet_size < 7\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 0.5\n\tplanet_size > 19\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_low_gravity.dds",
+    "asset": "planet_modifiers/Pm_low_gravity.png"
+   }
+  },
+  {
+   "id": "pm_high_gravity",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "High Gravity",
+   "desc": "This planet is unusually dense and so has uncomfortably high gravity.",
+   "static_modifier": "high_gravity",
+   "modifier": {
+    "planet_structures_cost_mult": 0.1,
+    "pop_environment_tolerance": -0.05,
+    "planet_max_districts_add": 2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_relic\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = pc_nuked\n}\nmodifier = {\n\tfactor = 2\n\tplanet_size > 19\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 2\n\tplanet_size > 22\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 0.5\n\tplanet_size < 16\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 0\n\tplanet_size < 12\n\tOR = {\n\t\tis_planet_class = pc_desert\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_arctic\n\t\tis_planet_class = pc_tundra\n\t\tis_planet_class = pc_arid\n\t\tis_planet_class = pc_alpine\n\t\tis_planet_class = pc_savannah\n\t\tis_planet_class = pc_relic\n\t\tis_planet_class = pc_nuked\n\t\tis_planet_class = pc_volcanic\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_high_gravity.dds",
+    "asset": "planet_modifiers/Pm_high_gravity.png"
+   }
+  },
+  {
+   "id": "pm_mineral_rich",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "High Quality Minerals",
+   "desc": "An abundance of high quality minerals in this planet's crust makes mining here a lucrative business.",
+   "static_modifier": "mineral_rich",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": 0.15,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_nuked\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 4\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_mineral_rich.dds",
+    "asset": "planet_modifiers/Pm_mineral_rich.png"
+   }
+  },
+  {
+   "id": "pm_ultra_rich",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Exceptional Quality Minerals",
+   "desc": "The exceptional quality of the minerals in this planet's crust provides a truly staggering opportunity for mining.",
+   "static_modifier": "ultra_rich",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": 0.25,
+    "district_mining_max_add": 8
+   },
+   "spawn_chance": "modifier = {\n\tadd = 1\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tadd = 1\n\tis_planet_class = \"pc_nuked\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 8\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_ultra_rich.dds",
+    "asset": "planet_modifiers/Pm_ultra_rich.png"
+   }
+  },
+  {
+   "id": "pm_mineral_poor",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Poor Quality Minerals",
+   "desc": "It is unknown if this planet simply formed this way, or if some unknown race once stripped it of its more valuable resources. However, we do know that the minerals present on this planet are of unusually poor quality.",
+   "static_modifier": "mineral_poor",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": -0.25,
+    "district_mining_max_add": -3
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_molten\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren_cold\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_toxic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_frozen\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 4\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_carbon_world\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_chthonian_planet\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_mineral_poor.dds",
+    "asset": "planet_modifiers/Pm_mineral_poor.png"
+   }
+  },
+  {
+   "id": "pm_titanic_life",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Titanic Life",
+   "desc": "The lifeforms of this planet are built on a massive scale and can be incredibly dangerous even without meaning any harm.",
+   "static_modifier": "titanic_life",
+   "modifier": {
+    "planet_jobs_society_research_produces_mult": 0.25
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 8\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 0.5\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_titanic_life\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_dangerous_wildlife\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_titanic_life.dds",
+    "asset": "planet_modifiers/Pm_titanic_life.png"
+   }
+  },
+  {
+   "id": "pm_asteroid_belt",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Asteroid Belt",
+   "desc": "This planet has a belt of minor asteroids orbiting around it. Most likely caused by a tiny moon destroyed in a collision with another planetary body, the debris field provides ample but engineeringly complex mining opportunities.",
+   "static_modifier": "asteroid_belt",
+   "modifier": {
+    "planet_miners_engineering_research_produces_add": 1,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_molten\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_barren\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_barren_cold\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_toxic\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_frozen\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_asteroid_belt\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_subterranean_wildlife\"\n}\nmodifier = {\n\tfactor = 0\n\thas_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tis_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_asteroid_belt.dds",
+    "asset": "planet_modifiers/Pm_asteroid_belt.png"
+   }
+  },
+  {
+   "id": "pm_subterranean_wildlife",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Subterranean Wildlife",
+   "desc": "This planet has a thriving underground lithotrophic ecosystem. Herds of mild mineral-crunching subterranean creatures dig out large caverns, leaving them available for mining and colony use. The animals provide unique research opportunities for the miners who direct the packs to valuable mineral deposits.",
+   "static_modifier": "subterranean_wildlife",
+   "modifier": {
+    "planet_max_districts_add": 2,
+    "planet_structures_upkeep_mult": 0.2,
+    "planet_miners_society_research_produces_add": 1,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\tis_colonizable = no\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_asteroid_belt\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_subterranean_wildlife\"\n}\nmodifier = {\n\tfactor = 0\n\thas_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tis_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_hollow_planet.dds",
+    "asset": "planet_modifiers/Pm_hollow_planet.png"
+   }
+  },
+  {
+   "id": "pm_natural_beauty",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Natural Beauty",
+   "desc": "The scenery on this planet is simply beautiful, anyone living on this planet will be constantly finding new wonders to behold.",
+   "static_modifier": "natural_beauty",
+   "modifier": {
+    "pop_happiness": 0.05,
+    "planet_resettlement_unemployed_destination_mult": 0.25
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tadd = 30\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_natural_beauty\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_natural_beauty.dds",
+    "asset": "planet_modifiers/Pm_natural_beauty.png"
+   }
+  },
+  {
+   "id": "pm_atmospheric_aphrodisiac",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Atmospheric Aphrodisiac",
+   "desc": "Something in the air of this planet seems to put people in the mood to reproduce.",
+   "static_modifier": "atmospheric_aphrodisiac",
+   "modifier": {
+    "pop_environment_tolerance": 0.05,
+    "logistic_growth_mult": 0.1,
+    "pop_government_ethic_attraction": -0.2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_atmospheric_aphrodisiac\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_atmospheric_aphrodisiac.dds",
+    "asset": "planet_modifiers/Pm_atmospheric_aphrodisiac.png"
+   }
+  },
+  {
+   "id": "pm_atmospheric_hallucinogen",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Atmospheric Hallucinogen",
+   "desc": "The air of this planet contains a natural hallucinogen. While this does keep people happy, and indeed seems to aid the visualization of some of the more esoteric Physics problems, it also distracts people from other work.",
+   "static_modifier": "atmospheric_hallucinogen",
+   "modifier": {
+    "biological_pop_happiness": 0.05,
+    "lithoid_pop_happiness": 0.05,
+    "planet_jobs_physics_research_produces_mult": 0.1,
+    "planet_jobs_worker_produces_mult": -0.05
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_atmospheric_hallucinogen\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_atmospheric_hallucinogen.dds",
+    "asset": "planet_modifiers/Pm_atmospheric_hallucinogen.png"
+   }
+  },
+  {
+   "id": "pm_lush",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Lush",
+   "desc": "Life thrives here, the fauna is plentiful and the flora grows rapidly.",
+   "static_modifier": "lush_planet",
+   "modifier": {
+    "pop_environment_tolerance": 0.1,
+    "planet_jobs_food_produces_mult": 0.2,
+    "district_farming_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 30\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n\tOR = {\n\t\tis_planet_class = pc_tropical\n\t\tis_planet_class = pc_continental\n\t\tis_planet_class = pc_ocean\n\t\tis_planet_class = pc_gaia\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_bleak\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_rich_mircoflora\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_lush.dds",
+    "asset": "planet_modifiers/Pm_lush.png"
+   }
+  },
+  {
+   "id": "pm_bleak",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Bleak",
+   "desc": "Life struggles to survive here, and while some clings to a tenacious existence, it is frail and sickly. These issues will harm food production.",
+   "static_modifier": "bleak_planet",
+   "modifier": {
+    "pop_environment_tolerance": -0.1,
+    "planet_farmers_food_produces_add": -1,
+    "district_farming_max_add": -4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_bleak\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_rich_mircoflora\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_bleak.dds",
+    "asset": "planet_modifiers/Pm_bleak.png"
+   }
+  },
+  {
+   "id": "pm_rich_mircoflora",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Rich Microflora",
+   "desc": "The soil of this world is home to a robust and highly productive microflora ecosystem, allowing for rich farming and research opportunities.",
+   "static_modifier": "rich_mircoflora",
+   "modifier": {
+    "district_farming_max_add": 4,
+    "planet_farmers_society_research_produces_add": 1
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 5\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 30\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n\tOR = {\n\t\tis_wet = yes\n\t\tis_planet_class = pc_gaia\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_bleak\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_rich_mircoflora\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_microscopic_life.dds",
+    "asset": "planet_modifiers/Pm_microscopic_life.png"
+   }
+  },
+  {
+   "id": "pm_ancient_automation",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Ancient Automation",
+   "desc": "Ancient, yet helpful, machines aid our production on this planet.",
+   "static_modifier": "ancient_automation",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_robots.dds",
+    "asset": "planet_modifiers/Pm_robots.png"
+   }
+  },
+  {
+   "id": "pm_ancient_factory",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Ancient Factory",
+   "desc": "An ancient factory on this planet is still in operation condition.",
+   "static_modifier": "ancient_factory",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_factory.dds",
+    "asset": "planet_modifiers/Pm_factory.png"
+   }
+  },
+  {
+   "id": "pm_robot_workers",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Robot Workers",
+   "desc": "Robot workers from a forgotten civilization remain on this planet. With the proper precautions, they could be put to work for us.",
+   "static_modifier": "robot_workers",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_robots.dds",
+    "asset": "planet_modifiers/Pm_robots.png"
+   }
+  },
+  {
+   "id": "pm_ancient_forgeworld",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Ancient Forgeworld",
+   "desc": "This planet was once some kind of center of production for a forgotten civilization. Although only a shadow of its former capacity remains in working condition, it is still an impressive example of industry.",
+   "static_modifier": "ancient_forgeworld",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_factory.dds",
+    "asset": "planet_modifiers/Pm_factory.png"
+   }
+  },
+  {
+   "id": "pm_ancient_weapon",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Ancient Orbital Weapon",
+   "desc": "It seems that some long-forgotten race once build some kind of huge weapon in orbit above this world. While it doesn't work, indeed it doesn't appear to have been completed, we can likely learn a few things by studying it.",
+   "static_modifier": "ancient_weapon",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds",
+    "asset": "planet_modifiers/Pm_planet_from_space.png"
+   }
+  },
+  {
+   "id": "pm_payback_debris_field",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Debris Field",
+   "desc": "The orbiting debris from the wrecked Minamar ship frequently rains down upon the planet below. Any surface infrastructure will require more regular and intensive maintenance to repair the damage done.",
+   "static_modifier": "payback_debris_field",
+   "modifier": {
+    "pop_environment_tolerance": -0.3,
+    "planet_structures_cost_mult": 0.15,
+    "planet_structures_upkeep_mult": 0.5
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_asteroid_belt.dds",
+    "asset": "planet_modifiers/Pm_asteroid_belt.png"
+   }
+  },
+  {
+   "id": "pm_dyson_swarm_1",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Dyson Swarm: Array",
+   "desc": "An array of interlinked satellites, the §YDyson Swarm§! is designed to improve the output of stellar deposits.",
+   "static_modifier": "dyson_swarm_1_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 5,
+    "station_researchers_produces_mult": 5
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_dyson_swarm_2.dds",
+    "asset": "planet_modifiers/Pm_dyson_swarm_2.png"
+   }
+  },
+  {
+   "id": "pm_dyson_swarm_2",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Dyson Swarm: Constellation",
+   "desc": "An array of interlinked satellites, the §YDyson Swarm§! is designed to improve the output of stellar deposits.",
+   "static_modifier": "dyson_swarm_2_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 15,
+    "station_researchers_produces_mult": 15
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_dyson_swarm_3.dds",
+    "asset": "planet_modifiers/Pm_dyson_swarm_3.png"
+   }
+  },
+  {
+   "id": "pm_dyson_swarm_3",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Dyson Swarm",
+   "desc": "An array of interlinked satellites, the §YDyson Swarm§! is designed to improve the output of stellar deposits.",
+   "static_modifier": "dyson_swarm_3_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 30,
+    "station_researchers_produces_mult": 30
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_dyson_swarm_3.dds",
+    "asset": "planet_modifiers/Pm_dyson_swarm_3.png"
+   }
+  },
+  {
+   "id": "pm_arc_furnace_1",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Arc Furnace: Equatorial Band",
+   "desc": "Utilizing the raw power of a molten planet, the §YArc Furnace§! unlocks otherwise inaccessible minerals and improves system-wide mining operations.",
+   "static_modifier": "orbital_arc_furnace_1_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 0.25
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_arc_furnace.dds",
+    "asset": "planet_modifiers/Pm_arc_furnace.png"
+   }
+  },
+  {
+   "id": "pm_arc_furnace_2",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Arc Furnace: Borehole Pumps",
+   "desc": "Utilizing the raw power of a molten planet, the §YArc Furnace§! unlocks otherwise inaccessible minerals and improves system-wide mining operations.",
+   "static_modifier": "orbital_arc_furnace_2_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 0.5
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_arc_furnace.dds",
+    "asset": "planet_modifiers/Pm_arc_furnace.png"
+   }
+  },
+  {
+   "id": "pm_arc_furnace_3",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Arc Furnace: Mohole Extractors",
+   "desc": "Utilizing the raw power of a molten planet, the §YArc Furnace§! unlocks otherwise inaccessible minerals and improves system-wide mining operations.",
+   "static_modifier": "orbital_arc_furnace_3_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 0.75
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_arc_furnace.dds",
+    "asset": "planet_modifiers/Pm_arc_furnace.png"
+   }
+  },
+  {
+   "id": "pm_arc_furnace_4",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Arc Furnace",
+   "desc": "Utilizing the raw power of a molten planet, the §YArc Furnace§! unlocks otherwise inaccessible minerals and improves system-wide mining operations.",
+   "static_modifier": "orbital_arc_furnace_4_mod",
+   "modifier": {
+    "station_gatherers_produces_mult": 1.0
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_arc_furnace.dds",
+    "asset": "planet_modifiers/Pm_arc_furnace.png"
+   }
+  },
+  {
+   "id": "pm_obsessional_directive",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Spire of Commodities",
+   "desc": "This towering spire of commodities is stockpiled on the planet for future use.",
+   "static_modifier": "obsessional_directive_mod",
+   "modifier": {},
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_trash_rings.dds",
+    "asset": "planet_modifiers/Pm_trash_rings.png"
+   }
+  },
+  {
+   "id": "pm_stratovents",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Stratospheric Vents",
+   "desc": "Towering mineral structures that send gases billowing into the thermosphere.",
+   "static_modifier": "stratovents",
+   "modifier": {
+    "planet_jobs_society_research_produces_mult": 0.05,
+    "planet_jobs_engineering_research_produces_mult": 0.05
+   },
+   "spawn_chance": "modifier = {\n\tadd = 15\n\tis_planet_class = \"pc_desert\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tropical\"\n}\nmodifier = {\n\tadd = 15\n\tis_planet_class = \"pc_arid\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_continental\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_ocean\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_tundra\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_arctic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_alpine\"\n}\nmodifier = {\n\tadd = 15\n\tis_planet_class = \"pc_savannah\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tadd = 0\n\tis_planet_class = \"pc_relic\"\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 10\n\thas_planet_modifier = \"pm_low_gravity\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_seismological_disturbances.dds",
+    "asset": "planet_modifiers/Pm_seismological_disturbances.png"
+   }
+  },
+  {
+   "id": "pm_hyper_ecosystem",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hyper Ecosystem",
+   "desc": "This planet's soil contains uniquely high concentrations of nitrogen and phosphorus, reabsorbed from naturally formed minerals in the crust. This results in extraordinarily rapid plant growth; great for farming, but hampering any building projects.",
+   "static_modifier": "hyper_ecosystem",
+   "modifier": {
+    "planet_farmers_food_produces_add": 2,
+    "planet_pops_organics_food_upkeep_mult": -2,
+    "planet_building_build_speed_mult": -0.5,
+    "planet_jobs_minerals_produces_mult": -0.3
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_wet = yes\n}\nmodifier = {\n\tadd = 20\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_bleak\"\n}\nmodifier = {\n\tfactor = 0\n\thas_cosmic_storms_dlc = no\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_ecosphere_pheromones.dds",
+    "asset": "planet_modifiers/Pm_ecosphere_pheromones.png"
+   }
+  },
+  {
+   "id": "pm_docile_fauna",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Docile Fauna",
+   "desc": "This planet's wildlife and plant growth lacks many natural predators, making them unusually docile, and thus pleasant to live with. The population is checked by storm damage rather than survival of the fittest.",
+   "static_modifier": "docile_fauna",
+   "modifier": {
+    "pop_environment_tolerance": 0.1,
+    "pop_happiness": 0.05,
+    "planet_jobs_society_research_produces_mult": 0.25
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_wet = yes\n}\nmodifier = {\n\tadd = 10\n\tis_dry = yes\n}\nmodifier = {\n\tadd = 10\n\tis_cold = yes\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_gaia\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_lush\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_dangerous_wildlife\"\n}\nmodifier = {\n\tfactor = 0\n\thas_deposit = d_dangerous_wildlife_blocker\n}\nmodifier = {\n\tfactor = 0\n\thas_cosmic_storms_dlc = no\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_docile_fauna.dds",
+    "asset": "planet_modifiers/Pm_docile_fauna.png"
+   }
+  },
+  {
+   "id": "pm_obsidian_lakes",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Obsidian Lakes",
+   "desc": "Tectonic activity has caused magma lakes to cool into enormous sheets of obsidian, bringing valuable resources much closer to the surface.",
+   "static_modifier": "obsidian_lakes",
+   "modifier": {
+    "district_mining_max_add": 2,
+    "planet_miners_rare_crystals_produces_add": 0.2,
+    "planet_housing_mult": -0.1
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_dry = yes\n}\nmodifier = {\n\tadd = 10\n\tis_cold = yes\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren\"\n\tis_terraforming_candidate = yes\n}\nmodifier = {\n\tadd = 10\n\tis_planet_class = \"pc_barren_cold\"\n\tis_terraforming_candidate = yes\n}\nmodifier = {\n\tadd = 10\n\thas_planet_modifier = \"pm_high_gravity\"\n}\nmodifier = {\n\tfactor = 2\n\thas_deposit = d_active_volcano\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_cosmic_storms_dlc = no\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_obsidian_lakes.dds",
+    "asset": "planet_modifiers/Pm_obsidian_lakes.png"
+   }
+  },
+  {
+   "id": "pm_unplugged_battlefield",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Battlefield Recoveries",
+   "desc": "Countless cyborgs and machines lie dead across this world following a brutal attempt at extermination. Healthy individuals and walking wounded alike may scavenge their bodies for upgrades.",
+   "static_modifier": "unplugged_battlefield",
+   "modifier": {
+    "pop_amenities_usage_mult": -0.5
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_city_ruins.dds",
+    "asset": "planet_modifiers/Pm_city_ruins.png"
+   }
+  },
+  {
+   "id": "pm_geothermic_metallurgy",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Geothermic Metallurgy",
+   "desc": "Underground magma flows are reacting with ore deposits to produce harvestable alloys.",
+   "static_modifier": "geothermic_metallurgy",
+   "modifier": {
+    "planet_miners_alloys_produces_add": 1
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_molten_planet.dds",
+    "asset": "planet_modifiers/Pm_molten_planet.png"
+   }
+  },
+  {
+   "id": "pm_favorable_trine",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Favorable Trine",
+   "desc": "The favorable alignment of three nearby celestial bodies has a unifying effect on the inhabitants of this planet.",
+   "static_modifier": "favorable_trine",
+   "modifier": {
+    "planet_stability_mult": 0.13,
+    "planet_jobs_unity_produces_mult": 0.13
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds",
+    "asset": "planet_modifiers/Pm_planet_from_space.png"
+   }
+  },
+  {
+   "id": "pm_radiant_luminary",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Radiant Luminary",
+   "desc": "The primary luminary of this system shines with extraordinary luster.",
+   "static_modifier": "radiant_luminary",
+   "modifier": {
+    "planet_jobs_energy_produces_mult": 0.33
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_star.dds",
+    "asset": "planet_modifiers/Pm_star.png"
+   }
+  },
+  {
+   "id": "pm_hypertransmissible_virus",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hyper-transmissible Virus",
+   "desc": "This planet is in lockdown to restrict the transmission of a highly transmissible biological virus.",
+   "static_modifier": "hypertransmissible_virus",
+   "modifier": {
+    "planet_jobs_produces_mult": -0.13,
+    "logistic_growth_mult": -0.13,
+    "pop_happiness": -0.13,
+    "planet_resettlement_unemployed_destination_mult": -1,
+    "planet_resettlement_unemployed_mult": -1
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_microscopic_life.dds",
+    "asset": "planet_modifiers/Pm_microscopic_life.png"
+   }
+  },
+  {
+   "id": "pm_hypertransmissible_virus_gestalt",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hyper-transmissible Virus",
+   "desc": "This planet is in lockdown to restrict the transmission of a highly transmissible biological virus.",
+   "static_modifier": "hypertransmissible_virus_gestalt",
+   "modifier": {
+    "planet_jobs_produces_mult": -0.13,
+    "logistic_growth_mult": -0.13,
+    "planet_stability_add": -0.07,
+    "planet_resettlement_unemployed_destination_mult": -1,
+    "planet_resettlement_unemployed_mult": -1
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_microscopic_life.dds",
+    "asset": "planet_modifiers/Pm_microscopic_life.png"
+   }
+  },
+  {
+   "id": "pm_calamitous_quartile",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Calamitous Quartile",
+   "desc": "The unfortunate alignment of nearby celestial bodies has sown uncertainty among the inhabitants of this planet.",
+   "static_modifier": "calamitous_quartile",
+   "modifier": {
+    "planet_stability_mult": -0.13,
+    "planet_jobs_unity_produces_mult": -0.25
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_planet_from_space.dds",
+    "asset": "planet_modifiers/Pm_planet_from_space.png"
+   }
+  },
+  {
+   "id": "pm_waning_luminary",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Waning Luminary",
+   "desc": "The primary luminary in this system is duller than it once was.",
+   "static_modifier": "waning_luminary",
+   "modifier": {
+    "planet_jobs_energy_produces_mult": -0.33
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_star.dds",
+    "asset": "planet_modifiers/Pm_star.png"
+   }
+  },
+  {
+   "id": "pm_shroudfall",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Shroudfall",
+   "desc": "The Shroud has consumed a portion of this land. We are researching ways to restore the original conditions.",
+   "static_modifier": "shroudfall",
+   "modifier": {
+    "planet_jobs_society_research_produces_mult": -0.15,
+    "planet_researchers_upkeep_mult": 0.15
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_shroud_eaten_population.dds",
+    "asset": "planet_modifiers/Pm_shroud_eaten_population.png"
+   }
+  },
+  {
+   "id": "pm_shroud_portal",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Shroud Portal",
+   "desc": "Attempting to pierce the Shroud caused a rash of attacks by local wildlife. This is the price we pay for advancing our psionic development.",
+   "static_modifier": "shroud_portal",
+   "modifier": {
+    "pop_happiness": -0.1,
+    "logistic_growth_mult": -0.1,
+    "planet_jobs_worker_produces_mult": -0.1,
+    "planet_stability_add": -10
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_horror_trophy.dds",
+    "asset": "planet_modifiers/Pm_horror_trophy.png"
+   }
+  },
+  {
+   "id": "pm_shroud_portal_gestalt",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Shroud Portal",
+   "desc": "Attempting to pierce the Shroud caused a rash of attacks by local wildlife. This is the price we pay for advancing our psionic development.",
+   "static_modifier": "shroud_portal_gestalt",
+   "modifier": {
+    "planet_jobs_unity_produces_mult": -0.1,
+    "logistic_growth_mult": -0.1,
+    "planet_jobs_worker_produces_mult": -0.1,
+    "planet_stability_add": -10
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_horror_trophy.dds",
+    "asset": "planet_modifiers/Pm_horror_trophy.png"
+   }
+  },
+  {
+   "id": "pm_obsidian_lakes_volcanic",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Obsidian Lakes",
+   "desc": "Tectonic activity has caused magma lakes to cool into enormous sheets of obsidian, bringing valuable resources much closer to the surface.",
+   "static_modifier": "obsidian_lakes_volcanic",
+   "modifier": {
+    "district_mining_max_add": 2,
+    "planet_miners_rare_crystals_produces_add": 0.2,
+    "planet_housing_mult": -0.1
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_deposit = d_active_volcano\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_volcanic_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_obsidian_lakes_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_cosmic_storms_dlc = no\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_obsidian_lakes.dds",
+    "asset": "planet_modifiers/Pm_obsidian_lakes.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_critters",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Extremophile Lifeforms",
+   "desc": "Even in a world of extreme heat and deadly lava, life finds a way.",
+   "static_modifier": "volcanic_critters",
+   "modifier": {
+    "planet_jobs_society_research_produces_mult": 0.25
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_critters\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_volcanic_critters.dds",
+    "asset": "planet_modifiers/Pm_volcanic_critters.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_mineral_rich",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "High Quality Minerals",
+   "desc": "An abundance of high quality minerals in this planet's crust makes mining here a lucrative business.",
+   "static_modifier": "volcanic_mineral_rich",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": 0.15,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_poor\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_mineral_rich.dds",
+    "asset": "planet_modifiers/Pm_mineral_rich.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_ultra_rich",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Exceptional Quality Minerals",
+   "desc": "The exceptional quality of the minerals in this planet's crust provides a truly staggering opportunity for mining.",
+   "static_modifier": "volcanic_ultra_rich",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": 0.25,
+    "district_mining_max_add": 8
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_poor\"\n}\nmodifier = {\n\tfactor = 0\n\tnum_modifiers > 1\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_ultra_rich.dds",
+    "asset": "planet_modifiers/Pm_ultra_rich.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_mineral_poor",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Poor Quality Minerals",
+   "desc": "It is unknown if this planet simply formed this way, or if some unknown race once stripped it of its more valuable resources. However, we do know that the minerals present on this planet are of unusually poor quality.",
+   "static_modifier": "volcanic_mineral_poor",
+   "modifier": {
+    "planet_jobs_minerals_produces_mult": -0.25,
+    "district_mining_max_add": -3
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_ultra_rich\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_mineral_poor\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_mineral_poor.dds",
+    "asset": "planet_modifiers/Pm_mineral_poor.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_subterranean",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Subterranean Wildlife",
+   "desc": "This planet has a thriving underground lithotrophic ecosystem. Herds of mild mineral-crunching subterranean creatures dig out large caverns, leaving them available for mining and colony use. The animals provide unique research opportunities for the miners who direct the packs to valuable mineral deposits.",
+   "static_modifier": "volcanic_subterranean",
+   "modifier": {
+    "planet_max_districts_add": 2,
+    "planet_structures_upkeep_mult": 0.2,
+    "planet_miners_society_research_produces_add": 1,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_subterranean\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_hollow_planet.dds",
+    "asset": "planet_modifiers/Pm_hollow_planet.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_asteroid_impacts",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Asteroid Impacts",
+   "desc": "The orbital path this world takes around its star is littered with small asteroids, meteors, and comet swarms. Large impacts on the surface occur at an alarming frequency.",
+   "static_modifier": "volcanic_asteroid_impacts",
+   "modifier": {
+    "pop_environment_tolerance": -0.05,
+    "planet_jobs_minerals_produces_mult": 0.05,
+    "district_mining_max_add": 2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_asteroid_impacts\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_volcanic_asteroid_impacts.dds",
+    "asset": "planet_modifiers/Pm_volcanic_asteroid_impacts.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_asteroid_belt",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Asteroid Belt",
+   "desc": "This planet has a belt of minor asteroids orbiting around it. Most likely caused by a tiny moon destroyed in a collision with another planetary body, the debris field provides ample but engineeringly complex mining opportunities.",
+   "static_modifier": "volcanic_asteroid_belt",
+   "modifier": {
+    "planet_miners_engineering_research_produces_add": 1,
+    "district_mining_max_add": 4
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 2\n\thas_planet_modifier = \"pm_low_gravity\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_asteroid_belt\"\n}\nmodifier = {\n\tfactor = 0\n\thas_moon = yes\n}\nmodifier = {\n\tfactor = 0\n\tis_moon = yes\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_asteroid_belt.dds",
+    "asset": "planet_modifiers/Pm_asteroid_belt.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_crystal_lake",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Crystal Lake",
+   "desc": "Vast crystals thrumming with heat and warm light slowly rise from this pool of lava.",
+   "static_modifier": "volcanic_crystal_lake",
+   "modifier": {
+    "planet_jobs_rare_crystals_produces_mult": 0.2,
+    "planet_miners_rare_crystals_produces_add": 0.02
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_crystal_lake\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_volcanic_crystal_lake.dds",
+    "asset": "planet_modifiers/Pm_volcanic_crystal_lake.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_hollow_planet",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Hollow Planet",
+   "desc": "Beneath the surface, immense caverns remain, hollow echoes of a planet shaped by fire.",
+   "static_modifier": "volcanic_hollow_planet",
+   "modifier": {
+    "district_mining_max_add": 2,
+    "district_polytechnic_max_add": 2
+   },
+   "spawn_chance": "modifier = {\n\tadd = 5\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_hollow_planet\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_hollow_planet.dds",
+    "asset": "planet_modifiers/Pm_hollow_planet.png"
+   }
+  },
+  {
+   "id": "pm_volcanic_lavafall",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Lavafalls",
+   "desc": "Lava flows freely here, spilling over a steep incline in a natural pyrotechnic display.",
+   "static_modifier": "volcanic_lavafall",
+   "modifier": {
+    "planet_miners_alloys_produces_add": 0.2,
+    "district_mining_max_add": 1
+   },
+   "spawn_chance": "modifier = {\n\tadd = 10\n\tis_planet_class = \"pc_volcanic\"\n}\nmodifier = {\n\tfactor = 0\n\thas_planet_modifier = \"pm_volcanic_lavafall\"\n}",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_volcanic_lavafall.dds",
+    "asset": "planet_modifiers/Pm_volcanic_lavafall.png"
+   }
+  },
+  {
+   "id": "pm_mobile",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Mobile",
+   "desc": null,
+   "static_modifier": "mobile",
+   "modifier": {
+    "planet_jobs_unity_produces_mult": 0.75,
+    "planet_jobs_physics_research_produces_mult": 0.75,
+    "planet_jobs_society_research_produces_mult": 0.75,
+    "planet_jobs_engineering_research_produces_mult": 0.75,
+    "planet_jobs_energy_produces_mult": -0.75,
+    "planet_jobs_minerals_produces_mult": -0.75,
+    "planet_jobs_food_produces_mult": -0.75,
+    "planet_jobs_consumer_goods_produces_mult": -0.75,
+    "planet_jobs_alloys_produces_mult": -0.75,
+    "planet_jobs_trade_produces_mult": -0.75
+   },
+   "spawn_chance": null,
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_mobile.dds",
+    "asset": "planet_modifiers/Pm_mobile.png"
+   }
+  },
+  {
+   "id": "pm_stationary",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Stationary",
+   "desc": null,
+   "static_modifier": "stationary",
+   "modifier": {
+    "planet_jobs_energy_produces_mult": 0.75,
+    "planet_jobs_minerals_produces_mult": 0.75,
+    "planet_jobs_food_produces_mult": 0.75,
+    "planet_jobs_consumer_goods_produces_mult": 0.75,
+    "planet_jobs_alloys_produces_mult": 0.75,
+    "planet_jobs_trade_produces_mult": 0.75,
+    "planet_jobs_unity_produces_mult": -0.75,
+    "planet_jobs_physics_research_produces_mult": -0.75,
+    "planet_jobs_society_research_produces_mult": -0.75,
+    "planet_jobs_engineering_research_produces_mult": -0.75
+   },
+   "spawn_chance": null,
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_stationary.dds",
+    "asset": "planet_modifiers/Pm_stationary.png"
+   }
+  },
+  {
+   "id": "pm_harvested_resources_mining",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Resource Depletion",
+   "desc": "All easily reachable resources have been collected. It will take time to uncover new deposits and set up the infrastructure to harvest them.",
+   "static_modifier": "harvested_resources_mining",
+   "modifier": {
+    "station_gatherers_produces_mult": -0.75
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_arkship_harvested_resources.dds",
+    "asset": "planet_modifiers/Pm_arkship_harvested_resources.png"
+   }
+  },
+  {
+   "id": "pm_unaligned_shields",
+   "file": "common/planet_modifiers/00_planet_modifiers.txt",
+   "name": "Unaligned Shield Projectors",
+   "desc": "Temporarily disabling the shield grid will allow our engineering [Owner.GetCrew] to recalibrate the projector array.",
+   "static_modifier": "checklist_unaligned_shields",
+   "modifier": {
+    "ship_shield_mult": -0.5,
+    "ship_shield_regen_add_perc": -0.5
+   },
+   "spawn_chance": "",
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/planet_modifiers/pm_faith_in_science.dds",
+    "asset": "planet_modifiers/Pm_faith_in_science.png"
+   }
+  }
+ ],
+ "warnings": [
+  "common/static_modifiers/07_static_modifiers_distant_stars.txt: enigmatic_power redefined (first in common/static_modifiers/01_static_modifiers.txt)",
+  "common/static_modifiers/10_static_modifiers_ancient_relics.txt: artifact_irassian_research_completed redefined (first in common/static_modifiers/10_static_modifiers_ancient_relics.txt)",
+  "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt: fotd_secure_contact redefined (first in common/static_modifiers/18_static_modifiers_first_contact_dlc.txt)",
+  "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt: pre_ftl_research_outpost redefined (first in common/static_modifiers/18_static_modifiers_first_contact_dlc.txt)",
+  "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt: inadvertent_jailer redefined (first in common/static_modifiers/18_static_modifiers_first_contact_dlc.txt)",
+  "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt: divine_will redefined (first in common/static_modifiers/18_static_modifiers_first_contact_dlc.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: the_beholder_energy_small redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: the_beholder_energy_medium redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: the_beholder_energy_big redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: commanders_cost_mod redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: scientists_cost_mod redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/19_static_modifiers_paragon.txt: officials_cost_mod redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
+  "common/static_modifiers/22_static_modifiers_machine_age.txt: synth_tinkering_with_minds redefined (first in common/static_modifiers/22_static_modifiers_machine_age.txt)",
+  "common/static_modifiers/22_static_modifiers_machine_age.txt: synth_brightest_minds redefined (first in common/static_modifiers/22_static_modifiers_machine_age.txt)",
+  "common/static_modifiers/23_static_modifiers_biogenesis.txt: optimized_workforce redefined (first in common/static_modifiers/23_static_modifiers_biogenesis.txt)",
+  "common/scripted_triggers/08_scripted_triggers_shroud.txt:639: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop"
+ ]
+}

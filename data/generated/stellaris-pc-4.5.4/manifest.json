@@ -18,6 +18,11 @@
    "count": 281,
    "warnings": 1
   },
+  "deposits": {
+   "file": "deposits.json",
+   "count": 592,
+   "warnings": 24
+  },
   "designations": {
    "file": "designations.json",
    "count": 101,
@@ -47,6 +52,16 @@
    "file": "planet_classes.json",
    "count": 69,
    "warnings": 2
+  },
+  "planet_modifiers": {
+   "file": "planet_modifiers.json",
+   "count": 70,
+   "warnings": 16
+  },
+  "static_modifiers": {
+   "file": "static_modifiers.json",
+   "count": 3080,
+   "warnings": 0
   },
   "technologies": {
    "file": "technologies.json",

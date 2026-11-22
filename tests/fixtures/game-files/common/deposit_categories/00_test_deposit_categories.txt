@@ -1,0 +1,4 @@
+deposit_cat_minerals = { }
+deposit_cat_blockers = {
+	blocker = yes
+}

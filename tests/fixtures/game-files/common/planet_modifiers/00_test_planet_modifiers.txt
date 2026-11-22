@@ -1,0 +1,10 @@
+pm_null = {
+	is_null = yes
+}
+
+pm_test_weather = {
+	modifier = test_weather
+	spawn_chance = {
+		modifier = { add = 10 is_planet_class = pc_test }
+	}
+}
