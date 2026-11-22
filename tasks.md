@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **45 / 130 tareas (35%)**
+> Progreso: **46 / 130 tareas (35%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -130,7 +130,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `python tools/extract/extract_districts.py` and open `data/generated/stellaris-pc-4.5.4/`: `districts.json` (147, e.g. Generator District: 300 minerals, slot `slot_energy`), `zones.json` (146 district specializations with their jobs and icon) and `zone_slots.json` (33).
 - [x] **T2510** (P25.10) `extract_designations.py`: colony designations (`colony_types`)
   - Prueba manual: run `python tools/extract/extract_designations.py` and open `data/generated/stellaris-pc-4.5.4/designations.json`: 101 colony designations (e.g. `col_mining` Mining World, +15% miner workforce, with its conditional bonuses as text) and their icon from the `GFX_colony_type` sheet.
-- [ ] **T2511** (P25.11) `extract_civics.py`: civics and origins (with the in-game order of the origins for T2402)
+- [x] **T2511** (P25.11) `extract_civics.py`: civics and origins (with the in-game order of the origins for T2402)
+  - Prueba manual: run `python tools/extract/extract_civics.py` and open `data/generated/stellaris-pc-4.5.4/`: `civics.json` (281 civics with modifiers, requirements as text, DLC and icon) and `origins.json` (77 origins with `game_order`, icon and picture).
 - [ ] **T2512** (P25.12) `extract_authorities.py`: authorities
 - [ ] **T2513** (P25.13) `extract_ethics.py`: ethics and their axes
 - [ ] **T2514** (P25.14) `extract_planets.py`: planet classes and celestial bodies

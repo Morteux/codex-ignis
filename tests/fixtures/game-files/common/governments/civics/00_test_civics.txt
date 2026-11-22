@@ -1,0 +1,23 @@
+civic_test = {
+	description = civic_test_effects
+	potential = { ethics = { NOT = { value = ethic_gestalt_consciousness } } }
+	possible = { ethics = { value = ethic_materialist } }
+	playable = { host_has_dlc = "Test DLC" }
+	modifier = { country_unity_produces_mult = 0.1 }
+	swap_type = {
+		trigger = { has_test_dlc = yes }
+		modifier = { country_unity_produces_mult = 0.15 }
+	}
+}
+
+origin_second = {
+	is_origin = yes
+	icon = "gfx/interface/icons/origins/origins_second.dds"
+	picture = GFX_test_strip
+	playable = { always = yes }
+}
+
+origin_first = {
+	is_origin = yes
+	icon = "gfx/interface/icons/origins/origins_first.dds"
+}

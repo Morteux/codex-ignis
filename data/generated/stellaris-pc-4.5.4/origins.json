@@ -1,0 +1,2974 @@
+{
+ "set": "origins",
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "sources": [
+  "common/governments/civics"
+ ],
+ "count": 77,
+ "items": [
+  {
+   "id": "origin_default",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Prosperous Unification",
+   "desc": "Through its strife and triumphs, this society has reached every young civilization's ambition: a homeworld with unified goals, and a path open to the stars.",
+   "effects": "- Initial £pop£ §IPops§!: §G+400§!\\n- Homeworld:\\n    - ['concept_generator_district', £district£ Generator Districts]: §G+1§!\\n    - ['concept_farming_district', £district£ Agriculture Districts]: §G+1§!\\n    - Colony Modifiers: ['concept_prosp_uni']\\n- Guaranteed Research Options: ['concept_planetary_unification', £society_research£ Societal Unification]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": "always = yes",
+   "possible": "",
+   "random_weight": "base = 100",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [
+    {
+     "trigger": "is_nomadic = yes\nexists = this\nhas_trait = trait_organic",
+     "modifier": null,
+     "name": "origin_default_nomadic",
+     "description": "origin_tooltip_default_effects_nomad_food"
+    },
+    {
+     "trigger": "is_nomadic = yes\nNOT = {\n\thas_trait = trait_organic\n}",
+     "modifier": null,
+     "name": "origin_default_nomadic",
+     "description": "origin_tooltip_default_effects_nomad"
+    },
+    {
+     "trigger": "exists = this\nis_nomadic = no\nNOT = {\n\thas_trait = trait_organic\n}",
+     "modifier": null,
+     "name": null,
+     "description": "origin_tooltip_default_effects_lithoid"
+    }
+   ],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_default.dds",
+    "asset": "origin_icons/Origins_default.png"
+   },
+   "picture": {
+    "sprite": "GFX_evt_metropolis",
+    "texture": "gfx/event_pictures/metropolis.dds",
+    "asset": "origins/GFX_evt_metropolis.png"
+   },
+   "game_order": 0
+  },
+  {
+   "id": "origin_default_nomads",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Voidfarers",
+   "desc": "For this civilization, the journey is the destination. Abandoning permanent settlement in favor of life aboard vast Arkships, they carry their people, industry, and ambitions across the stars.",
+   "effects": "- Nomadic Origin\\n- Start with an additional §HLogistic Ship§!\\n",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "arkship_action_speed": 0.2,
+    "science_ship_survey_speed": 0.2,
+    "megastructure_waystation_megastructure_build_speed_mult": 0.2,
+    "category_voidcraft_draw_chance_mult": 0.2,
+    "category_voidcraft_research_speed_mult": 0.2,
+    "ship_repair_hull_mult": 0.5,
+    "ship_repair_armor_mult": 0.5
+   },
+   "playable": "has_nomads_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = yes",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_default_nomads.dds",
+    "asset": "origin_icons/Origins_default_nomads.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_nomad_default",
+    "texture": "gfx/event_pictures/origins/origin_nomad_default.dds",
+    "asset": "origins/GFX_origin_nomad_default.png"
+   },
+   "game_order": 1
+  },
+  {
+   "id": "origin_sacred_path",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "The Sacred Path",
+   "desc": "§RWARNING: Disables ['concept_arkship_settling']§!\\n\\nThese nomadic spiritualists traverse a deified route dictated by their ancestral scriptures. With technological advancements and an evolving understanding of the galaxy, will the Pilgrimage remain their purpose?",
+   "effects": "- Nomadic Origin\\n- Unique Arkship District: ['concept_zone_ark_sacred_path_pilgrims']\\n- Unique Jobs: ['concept_job_sacred_path_elite'], ['concept_job_sacred_path_specialist'], ['concept_job_sacred_path_civilian']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_nomads_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = yes\nethics = {\n\tOR = {\n\t\ttext = civic_tooltip_spiritualist\n\t\tvalue = ethic_spiritualist\n\t\tvalue = ethic_fanatic_spiritualist\n\t}\n}",
+   "random_weight": null,
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_sacred_path.dds",
+    "asset": "origin_icons/Origin_sacred_path.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_sacred_path",
+    "texture": "gfx/event_pictures/origins/origin_sacred_path.dds",
+    "asset": "origins/GFX_origin_sacred_path.png"
+   },
+   "game_order": 2
+  },
+  {
+   "id": "origin_heirs_of_the_khan",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Heirs of the Khan",
+   "desc": "§RWARNING: Disables ['concept_arkship_settling']§!\\n\\nOnce the next in line of the Khanate, this clan was cast down by treachery. Betrayed by those they considered kin, they now stalk the hyperlanes as nomads, gathering their strength to one day return the favor.",
+   "effects": "- Nomadic Origin\\n- Periodically chased by §RHostile§! Marauder ships\\n- May become the Khan, if they can survive\\n- Can Create §YSatrapy§! Vassals",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ship_windup_mult": -0.3,
+    "ship_base_speed_mult": 0.3
+   },
+   "playable": "has_nomads_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = yes\nauthority = {\n\tOR = {\n\t\tvalue = auth_oligarchic\n\t\tvalue = auth_dictatorial\n\t\tvalue = auth_imperial\n\t}\n}\nethics = {\n\tOR = {\n\t\ttext = civic_tooltip_militarist\n\t\tvalue = ethic_militarist\n\t\tvalue = ethic_fanatic_militarist\n\t}\n}",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_heirs_of_the_khan.dds",
+    "asset": "origin_icons/Origins_heirs_of_the_khan.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_heirs_of_the_khan",
+    "texture": "gfx/event_pictures/origins/origin_heirs_of_the_khan.dds",
+    "asset": "origins/GFX_origin_heirs_of_the_khan.png"
+   },
+   "game_order": 3
+  },
+  {
+   "id": "origin_forever_cruise",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Forever Cruise",
+   "desc": "§RWARNING: Disables ['concept_arkship_settling']§!\\n\\nThe Forever Cruise travels the stars in search of wonder and excitement, where the birth of nebulae can be observed from the comfort of a sun lounger. The dedicated crew works tirelessly to cater to any passenger whim.",
+   "effects": "- Nomadic Origin\\n- Start with Situation: ['concept_situation_passenger_satisfaction']\\n- Start with a §HCrew§! and a §HPassenger§! species\\n- Unique £district£ Arkship District: ['district:district_ark_forever_cruise']\\n- Unique Job: ['concept_job_cruise_crew_overseer']\\n- Available £zone£ Arkship District Specializations:\\n    - ['concept_forever_cruise_district_specializations']\\n- Available Buildings:\\n    - ['concept_forever_cruise_buildings']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_nomads_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = yes\nethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_xenophobe\n\t\tvalue = ethic_xenophobe\n\t\tvalue = ethic_fanatic_xenophobe\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_corporate_dominion\n\t\tvalue = civic_private_prospectors\n\t\tvalue = civic_hive_bodysnatcher\n\t\tvalue = civic_machine_assimilator\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": null,
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_forever_cruise.dds",
+    "asset": "origin_icons/Origins_forever_cruise.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_forever_cruise",
+    "texture": "gfx/event_pictures/origins/origin_forever_cruise.dds",
+    "asset": "origins/GFX_origin_forever_cruise.png"
+   },
+   "game_order": 4
+  },
+  {
+   "id": "origin_red_giant",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Red Giant",
+   "desc": "This civilization is at a crossroads: the Red Giant at the heart of its system is warming up their planet, threatening to cook them alive.\\n\\nCan they adapt until the cause is found and fixed, or will they decide to embrace the heat, capitalizing on these strange and perhaps unnatural changes?",
+   "effects": "- Homeworld: ['concept_pc_volcanic'] (Size: £planetsize£ 20)",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "pc_volcanic_habitability": 0.2
+   },
+   "playable": "host_has_dlc = \"Infernals Species Pack\"",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_idyllic_bloom\n\t\tvalue = civic_idyllic_bloom\n\t\tvalue = civic_hive_idyllic_bloom\n\t}\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_catalytic\n\t\tvalue = civic_catalytic_processing\n\t\tvalue = civic_corporate_catalytic_processing\n\t\tvalue = civic_hive_catalytic_processing\n\t\tvalue = civic_machine_catalytic_processing\n\t}\n}\ntraits = {\n\tNOT = {\n\t\tvalue = trait_aquatic\n\t}\n}\ngraphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": "pc_volcanic",
+   "habitability_preference": "pc_volcanic",
+   "swaps": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_red_giant.dds",
+    "asset": "origin_icons/Origin_red_giant.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_red_giant",
+    "texture": "gfx/event_pictures/origins/origin_red_giant.dds",
+    "asset": "origins/GFX_origin_red_giant.png"
+   },
+   "game_order": 5
+  },
+  {
+   "id": "origin_cosmic_dawn",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Cosmic Dawn",
+   "desc": "This civilization did not rise; it was released. As the stasis pods unlocked, they awakened to a world aged beyond recognition. Yet all is not lost. Scattered beneath dust and ruin across the galaxy, their past endures, waiting to be rediscovered.",
+   "effects": "- Homeworld: \\n    - ['concept_pc_volcanic'] (Size: £planetsize£ 14) \\n    - ['concept_inf_cd_deposit']: +5\\n- Start with Situation: §HDeep Excavation§!",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Infernals Species Pack\"",
+   "potential": null,
+   "possible": "authority = {\n\tNOT = {\n\t\tvalue = auth_hive_mind\n\t}\n}\nspecies_class = {\n\tvalue = INF\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_idyllic_bloom\n\t\tvalue = civic_idyllic_bloom\n\t\tvalue = civic_hive_idyllic_bloom\n\t}\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_catalytic\n\t\tvalue = civic_catalytic_processing\n\t\tvalue = civic_corporate_catalytic_processing\n\t\tvalue = civic_hive_catalytic_processing\n\t\tvalue = civic_machine_catalytic_processing\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_beastmasters\n\t\tvalue = civic_beastmasters\n\t\tvalue = civic_hive_beastmasters\n\t\tvalue = civic_machine_beastmasters\n\t\tvalue = civic_corporate_beastmasters\n\t}\n}\ngraphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": "pc_volcanic",
+   "habitability_preference": "pc_volcanic",
+   "swaps": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_cosmic_dawn.dds",
+    "asset": "origin_icons/Origin_cosmic_dawn.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_cosmic_dawn",
+    "texture": "gfx/event_pictures/origins/origin_cosmic_dawn.dds",
+    "asset": "origins/GFX_origin_cosmic_dawn.png"
+   },
+   "game_order": 6
+  },
+  {
+   "id": "origin_shroud_forged",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Shroud-Forged",
+   "desc": "The guidance of a Shroud entity comes with a cost. Independent automata have started to operate freely among this networked society. Cut off from the Machine Intelligence, the demands of these units are ever-increasing.",
+   "effects": "- Homeworld:\\n    - ['concept_shroud_rift_deposit']: +4\\n    - Start with 1000 £pops£ ['concept_shroud_forged_pops']\\n- Start with Situation: §HForged by the Shroud§!\\n- Additional Starting Technologies: £society£ ['technology:tech_mine_zro']\\n- Unique £building£ Building: ['building:building_shroud_observatory_1']\\n- Available £decision£ Colony Decision: ['concept_pierce_the_shroud']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ROBOT_species_trait_picks_add": 1,
+    "ROBOT_species_trait_points_add": 1
+   },
+   "playable": "has_shroud_dlc = yes",
+   "potential": null,
+   "possible": "authority = {\n\tvalue = auth_machine_intelligence\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_machine_servitor\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_machine_assimilator\n\t\tvalue = civic_machine_chosen\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_shroud_forged.dds",
+    "asset": "origin_icons/Origins_shroud_forged.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_shroud_forged",
+    "texture": "gfx/event_pictures/origins/origin_shroud_forged.dds",
+    "asset": "origins/GFX_origin_shroud_forged.png"
+   },
+   "game_order": 7
+  },
+  {
+   "id": "origin_mindwardens",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Mindwardens",
+   "desc": "§RWARNING: Challenging Origin§!\\n§RWARNING: Blocks access to ['concept_psionic_ascension'].§!\\n\\nThis civilization's ancestors were plagued by otherworldly forces that invaded the mind, inspiring them to dedicate great effort and resources into developing anti-psionic technology.\\n\\nTheir ancient devices are still functional, but remain untested against psionic threats from the wider galaxy.",
+   "effects": "- Additional Starting Technologies: £engineering£ ['technology:tech_starbase_3']\\n- Home System: Start with a §HStarhold§!.\\n- Homeworld: £building£ ['building:building_ancient_ward_1']\\n- Gain access to the §YPsionic Containment§! §HCasus Belli§! against psionically ascended Empires.\\n- §YGuaranteed Habitable Worlds§! do not appear.\\n- §YMindwarden Enclaves§! are not generated at the start of game.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "intel_encryption_add": 2,
+    "damage_vs_psionic_empires_mult": 0.25,
+    "evasion_vs_psionic_empires_mult": 0.25
+   },
+   "playable": "has_shroud_dlc = yes",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_corporate_chosen\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}\nethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_pacifist\n\t\tvalue = ethic_pacifist\n\t\tvalue = ethic_fanatic_pacifist\n\t}\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1\nmodifier = {\n\tmultiply = 0\n\tis_ai = yes\n}",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_mindwardens.dds",
+    "asset": "origin_icons/Origins_mindwardens.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_mindwardens",
+    "texture": "gfx/event_pictures/origins/origin_mindwardens.dds",
+    "asset": "origins/GFX_origin_mindwardens.png"
+   },
+   "game_order": 8
+  },
+  {
+   "id": "origin_endbringers",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Endbringers",
+   "desc": "§RWARNING: Challenging Origin§!\\n§RWARNING: Blocks all Ascension Paths except for ['concept_psionic_ascension'].§!\\n\\nThis civilization has been long-obsessed with a mysterious calamity which turned a neighboring planet into a desolate and shrouded world. Now, as they take to the stars, they can finally explore its secrets and find out if a similar fate awaits them too.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_shroud_dlc = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_pacifist\n\t\tvalue = ethic_pacifist\n\t\tvalue = ethic_fanatic_pacifist\n\t}\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_corporate_chosen\n\t\tvalue = civic_augmentation_bazaars\n\t}\n\tNOT = {\n\t\ttext = civic_tooltip_not_natural_design\n\t\tvalue = civic_natural_design\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_endbringers.dds",
+    "asset": "origin_icons/Origins_endbringers.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_endbringers",
+    "texture": "gfx/event_pictures/origins/origin_endbringers.dds",
+    "asset": "origins/GFX_origin_endbringers.png"
+   },
+   "game_order": 9
+  },
+  {
+   "id": "origin_evolutionary_predators",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Evolutionary Predators",
+   "desc": "§RWARNING: Blocks all Ascension Paths except for ['concept_mutation_ascension'].§!\\n\\nThis species has always hunted the most unique creatures, driven by an instinct they didn't fully understand. Possessing a rare ability to integrate the genetics of their prey, it evolved into the apex predator of its world, absorbing every genetic advantage available. Now, their hunger leads them to the stars.",
+   "effects": "- Species Traits: ['concept_malleable_genes']\\n- Situation: ['concept_adaptive_evolution']\\n- Homeworld: ['concept_genetic_soup']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "BIOLOGICAL_species_trait_picks_add": 1
+   },
+   "playable": "has_biogenesis_dlc = yes",
+   "potential": null,
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_augmentation_bazaars\n\t\tvalue = civic_permanent_employment\n\t\tvalue = civic_idyllic_bloom\n\t\tvalue = civic_hive_idyllic_bloom\n\t\tvalue = civic_hive_bodysnatcher\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_natural_design\n\t\tvalue = civic_natural_design\n\t\tvalue = civic_hive_natural_design\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_hive_chosen\n\t\tvalue = civic_machine_chosen\n\t\tvalue = civic_corporate_chosen\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_hive_mind\n\t\tvalue = civic_entropy_drinkers_machine\n\t\tvalue = civic_entropy_drinkers_corporate\n\t}\n}",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_malleable_genes",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_evolutionary_predators.dds",
+    "asset": "origin_icons/Origin_evolutionary_predators.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_evolutionary_predators",
+    "texture": "gfx/event_pictures/origins/origin_evolutionary_predators.dds",
+    "asset": "origins/GFX_origin_evolutionary_predators.png"
+   },
+   "game_order": 10
+  },
+  {
+   "id": "origin_starlit_citadel",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Starlit Citadel",
+   "desc": "A mysterious portal looms at the edge of this civilization's home system, a gateway from which hostile entities emerge in relentless waves. These invasions are as unpredictable as they are inevitable, forcing the people to rely on their greatest technological triumph - the §HDeep Space Citadel§!.",
+   "effects": "- Home System: \\n    - ['concept_deep_space_bastion'] at the edge of the gravity well \\n    - ['concept_wormhole', Strange Portal] leading to an unknown system \\n- Homeworld: \\n    - £building£ ['building:building_citadel_uplink'] \\n    - ['concept_bioship_remains', £blocker£ Biological Ship Remains] \\n    - ['concept_invasion_site', £blocker£ Invasion Site]: +2 \\n- Additional Starting Technologies: ['concept_deep_space_citadel_tech',£engineering_research£ Deep Space Citadel]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_megastructure_build_cap_add": 1,
+    "deep_space_citadel_limit_add": 1,
+    "country_starbase_capacity_add": 3
+   },
+   "playable": "has_biogenesis_dlc = yes",
+   "potential": null,
+   "possible": "graphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_starlit_citadel.dds",
+    "asset": "origin_icons/Origin_starlit_citadel.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_starlit_citadel",
+    "texture": "gfx/event_pictures/origins/origin_starlit_citadel.dds",
+    "asset": "origins/GFX_origin_starlit_citadel.png"
+   },
+   "game_order": 11
+  },
+  {
+   "id": "origin_wilderness",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Wilderness",
+   "desc": "§RWARNING: Blocks all Ascension Paths except for ['concept_purity_ascension'].§!\\n\\nThis entity is nothing less than a sapient ecosphere: a multitude of diverse lifeforms which long since coalesced to form a gestalt consciousness on a planetary scale.",
+   "effects": "- Species Trait: ['trait:trait_wilderness']\\n- Replaces all standard £building£ ['concept_buildings'], £district£ ['concept_districts'], and £zone£ ['concept_district_specialization'] with bespoke ones\\n- Replaces Colony Ship Colonization with ['concept_terraforming']\\n- Unlocks new Resource: £biomass£ ['concept_biomass'] \\n- Homeworld:\\n    - Size: £planetsize£ 18\\n    - ['concept_scorched_plains', £blocker£ Scorched Plains]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_building_capacity_add": 5
+   },
+   "playable": "has_biogenesis_dlc = yes",
+   "potential": null,
+   "possible": "authority = {\n\tOR = {\n\t\ttext = tt_auth_mutualistic_intelligence\n\t\tvalue = auth_hive_mind\n\t}\n}\ngraphical_culture = {\n\tOR = {\n\t\ttext = graphical_culture_tooltip_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_hive_catalytic_processing\n\t\tvalue = civic_hive_toxic_baths\n\t\tvalue = civic_hive_memorialist\n\t\tvalue = civic_hive_guided_sapience\n\t\tvalue = civic_astrometeorology_hive\n\t\tvalue = civic_environmental_architects_hive\n\t\tvalue = civic_entropy_drinkers_hive_mind\n\t\tvalue = civic_hive_superstitious_beliefs\n\t\tvalue = civic_twisted_experimenters_hive_mind\n\t\tvalue = civic_hive_chosen\n\t\tvalue = civic_hive_world_forgers\n\t\tvalue = civic_hive_scorched_earth\n\t\tvalue = civic_hive_galvanic_symbiosis\n\t}\n}\npreferred_planet_class = {\n\tNOT = {\n\t\ttext = does_not_have_volcanic_homeworld\n\t\tvalue = pc_volcanic\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "uses_biomass",
+    "custom_start_screen",
+    "virtual_jobs"
+   ],
+   "traits": "trait = trait_wilderness",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_wilderness.dds",
+    "asset": "origin_icons/Origins_wilderness.png"
+   },
+   "picture": {
+    "sprite": "GFX_origins_wilderness",
+    "texture": "gfx/event_pictures/origins/origins_wilderness.dds",
+    "asset": "origins/GFX_origins_wilderness.png"
+   },
+   "game_order": 12
+  },
+  {
+   "id": "origin_treasure_hunters",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Treasure Hunters",
+   "desc": "Instilled with a thirst for adventure, this civilization is ready to set forth on their greatest and most challenging expedition. Armed only with a mysterious map, they now race across the stars to secure a legendary pirate treasure.",
+   "effects": "- Starts with an inactive ['r_celestial_chart_0_desc', Celestial Chart]\\n- Every recruited leader has a bonus ['concept_adventurous_spirit_trait'] trait\\n- Ruler Traits:\\n    - ['leader_trait:leader_trait_buccaneer']\\n    - ['leader_trait:leader_trait_trailblazer']\\n    - ['leader_trait:leader_trait_treasure_hoarder']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_grand_archive_dlc = yes",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen",
+    "first_alien_life",
+    "Story1",
+    "Story5"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Grand Archive"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_treasure_hunters.dds",
+    "asset": "origin_icons/Origin_treasure_hunters.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_treasure_hunters",
+    "texture": "gfx/event_pictures/origins/origin_treasure_hunters.dds",
+    "asset": "origins/GFX_origin_treasure_hunters.png"
+   },
+   "game_order": 13
+  },
+  {
+   "id": "origin_primal_calling",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Primal Calling",
+   "desc": "The rustle of bladed grass. The roaring silence of the night. The will of the hunter, sharp and cold as starlight...\\n\\nThis civilization has a primal connection to the wild. Viewing themselves as stewards to the diverse (and often deadly) wildlife native to their world, they now turn their gaze skyward. Masters of animal handling and ranching, this relationship with fauna has developed according to their ethics. How this bond will evolve on a galactic scale remains to be seen.",
+   "effects": "- Homeworld:\\n    - Colony Modifiers: ['concept_untamed_wilds_mod']\\n- Available Buildings: ['concept_wildlife_ranch', £building£ Wildlife Ranch]\\n- Can choose a special ['concept_primal_calling_stance'] regarding §YSpace Fauna§! upon First Contact\\n- Additional Starting Technologies: ['technology:tech_genome_mapping', £society_research£Genome Mapping]\\n- Guaranteed Research Options: ['technology:tech_alien_life_studies', £society£Xenology]\\n- Gain insight on ['technology:tech_gravity_wells', £physics_research£Gravity Snares] after First Contact with Space Fauna\\n- Gain insight on ['technology:tech_alien_cloning', £society_research£Artificial Breeding] after capturing Space Fauna\\n- Gain insight on ['technology:tech_controlled_mutations', £society_research£Controlled Mutations] after cloning Space Fauna",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ship_damage_against_space_fauna_mult": 0.15,
+    "space_fauna_ship_armor_mult": 0.15,
+    "space_fauna_ship_speed_mult": 0.1,
+    "country_capture_chance_add": 0.15,
+    "gravity_snare_cooldown_mult": -0.25,
+    "country_vivarium_max_capacity_mult": 0.25
+   },
+   "playable": "has_grand_archive_dlc = yes",
+   "potential": null,
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\npreferred_planet_class = {\n\tNOT = {\n\t\ttext = does_not_have_volcanic_homeworld\n\t\tvalue = pc_volcanic\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}",
+   "random_weight": "base = 0\nmodifier = {\n\tadd = 1\n\tis_scope_valid = yes\n\tis_ai = no\n}",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen",
+    "first_alien_life",
+    "Story1",
+    "Story5"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Grand Archive"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_primal_calling.dds",
+    "asset": "origin_icons/Origins_primal_calling.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_primal_calling",
+    "texture": "gfx/event_pictures/origins/origin_primal_calling.dds",
+    "asset": "origins/GFX_origin_primal_calling.png"
+   },
+   "game_order": 14
+  },
+  {
+   "id": "origin_storm_chasers",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Storm Chasers",
+   "desc": "There is no challenge they will not face, no lead they'll fail to chase - and no storm they will ignore.\\n\\nAt its core, this is a civilization seeking thrills. To its benefit, and to its detriment.",
+   "effects": "- Leader Traits: ['concept_storm_rider']\\n- Planet £unity£ Unity from £job£ Jobs per §YStorm Building§!: §G+$@storm_chasers_storm_building_unity_produces_mult|%0$§!\\n- Capital Buildings automatically provide the modifiers of §YStorm Shelters§! once the required technologies are researched. \\n- §YCosmic Storm§! Appearance Chance Within Borders: §G+100%§! \\n- §YCosmic Storm Technology§! Research Option Chance: §G+175%§!\\n- §YStorm Attraction Buildings§! Rare resource cost and upkeep: §G-100%§!\\n- Access to the ['concept_weather_forecasting_mode']\\n- Additional Starting Technologies:\\n    - £physics£ ['technology:tech_storm_prediction_1']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_storm_devastation_mult": -0.15,
+    "storm_ship_hull_breaker_mult": -0.1
+   },
+   "playable": "has_cosmic_storms_dlc = yes",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [
+    {
+     "trigger": "is_nomadic = yes",
+     "modifier": null,
+     "name": "origin_storm_chasers_nomadic",
+     "description": "origin_tooltip_storm_chasers_nomadic_effects"
+    }
+   ],
+   "dlc": [
+    "Cosmic Storms"
+   ],
+   "icon": {
+    "sprite": "GFX_origin_storm_chasers_icon",
+    "texture": "gfx/interface/icons/origins/origin_storm_chasers.dds",
+    "asset": "origin_icons/Origin_storm_chasers.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_storm_chasers",
+    "texture": "gfx/event_pictures/origins/origin_storm_chasers.dds",
+    "asset": "origins/GFX_origin_storm_chasers.png"
+   },
+   "game_order": 15
+  },
+  {
+   "id": "origin_cybernetic_creed",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Cybernetic Creed",
+   "desc": "§RWARNING: Blocks all Ascension Paths except for ['concept_cybernetic_ascension'].§!\\n\\nThis empire pursues a divine calling, the fusion of exalted body and holy cybernetics. Augmentation is worship.",
+   "effects": "- Homeworld: Initial buildings replaced by ['concept_cybernetic_creed_infrastructure'] \\n- ['concept_cybernetic_creed'] factions formed shortly after game start\\n- Species Traits: ['trait:trait_cyborg_ritualistic_implants']\\n- Guaranteed Research Options: ['concept_integrated_cybernetics', £engineering£ Integrated Cybernetics]\\n- ['concept_cybernetic_creed_jobs'] Jobs",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_machine_age_dlc = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tOR = {\n\t\ttext = civic_tooltip_spiritualist\n\t\tvalue = ethic_spiritualist\n\t\tvalue = ethic_fanatic_spiritualist\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_permanent_employment\n\t\tvalue = civic_natural_design\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_corporate_chosen\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_superstitious_beliefs\n\t\tvalue = civic_superstitious_beliefs\n\t\tvalue = civic_corporate_superstitious_beliefs\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_secret_societies\n\t\tvalue = civic_secret_societies\n\t\tvalue = civic_secret_societies_corporate\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_cybernetic_creed.dds",
+    "asset": "origin_icons/Origins_cybernetic_creed.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_cybernetic_creed",
+    "texture": "gfx/event_pictures/origins/origin_cybernetic_creed.dds",
+    "asset": "origins/GFX_origin_cybernetic_creed.png"
+   },
+   "game_order": 16
+  },
+  {
+   "id": "origin_synthetic_fertility",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Synthetic Fertility",
+   "desc": "§RWARNING: Blocks all Ascension Paths except for ['concept_synthetic_ascension'].§!\\n\\nOnce a thriving society, a novel genetic disease has left this species unable to reproduce. Running out of options and facing extinction, they place their hope in digital salvation.",
+   "effects": "- Initial £pop£ §IPops§!: §G+900§! \\n- Species Traits: ['concept_pathogenic_genes']\\n- Homeworld: \\n    - Size: £planetsize£ 20 \\n    - ['concept_abandoned_cities', £blocker£ Abandoned Cities]: +2 \\n    - ['concept_identity_repository',£building£ Identity Repository] \\n    - ['concept_abandoned_gene_clinic',£building£ Abandoned Gene Clinic] \\n- Situation: ['concept_identity_rescue'] \\n- Additional Starting Technologies: ['concept_synth_ai'] \\n- Guaranteed Research Options: ['concept_robotic_workers', £engineering_research£ Artificial Workforce]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "category_computing_research_speed_mult": 0.15
+   },
+   "playable": "has_machine_age_dlc = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_spiritualist\n\t\tvalue = ethic_spiritualist\n\t\tvalue = ethic_fanatic_spiritualist\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_permanent_employment\n\t\tvalue = civic_reanimated_armies\n\t\tvalue = civic_natural_design\n\t\tvalue = civic_augmentation_bazaars\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_mutagenic\n\t\tvalue = civic_toxic_baths\n\t\tvalue = civic_toxic_baths_individual_machine\n\t\tvalue = civic_corporate_toxic_baths\n\t\tvalue = civic_corporate_toxic_baths_individual_machine\n\t\tvalue = civic_hive_toxic_baths\n\t\tvalue = civic_machine_toxic_baths\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_eager_explorers\n\t\tvalue = civic_eager_explorers\n\t\tvalue = civic_privatized_exploration\n\t\tvalue = civic_hive_stargazers\n\t\tvalue = civic_machine_exploration_protocol\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_corporate_chosen\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_galvanic_empire\n\t\tvalue = civic_galvanic_symbiosis\n\t\tvalue = civic_hive_galvanic_symbiosis\n\t\tvalue = civic_corporate_galvanic_symbiosis\n\t\tvalue = civic_machine_galvanic_symbiosis\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_deep_sleep\n\t\tvalue = civic_deep_sleep\n\t\tvalue = civic_corporate_deep_sleep\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_pathogenic_genes",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_synthetic_fertility.dds",
+    "asset": "origin_icons/Origin_synthetic_fertility.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_synthetic_fertility",
+    "texture": "gfx/event_pictures/origins/origin_synthetic_fertility.dds",
+    "asset": "origins/GFX_origin_synthetic_fertility.png"
+   },
+   "game_order": 17
+  },
+  {
+   "id": "origin_arc_welders",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Arc Welders",
+   "desc": "Their planet is barren, but their home system is a bounty of riches. To exploit it, these machines built bigger than ever before. A mighty §HArc Furnace§! now dominates their sky, but these master engineers are far from satisfied.\\n\\nThe galaxy awaits, and the possibilities are endless. All it takes is the ingenuity to seize them.",
+   "effects": "- Homeworld: Initial ['concept_mining_district', £district£ Mining Districts] replaced with ['concept_generator_district', £district£ Generator Districts] \\n-  Home System: ['concept_arc_furnace'] constructed around a ['concept_pc_molten'] \\n- Additional Starting Technologies: ['concept_orbital_arc_furnace',£engineering_research£ Arc Furnace] \\n- Guaranteed Research Options: ['concept_mega_engineering', £engineering_research£ Mega-Engineering] upon constructing a second Arc Furnace",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_megastructure_build_cap_add": 1,
+    "arc_furnace_limit_add": 1
+   },
+   "playable": "has_machine_age_dlc = yes",
+   "potential": null,
+   "possible": "species_archetype = {\n\tvalue = MACHINE\n}",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [
+    {
+     "trigger": "is_nomadic = yes",
+     "modifier": null,
+     "name": "origin_arc_welders_nomadic",
+     "description": "origin_tooltip_arc_builders_nomadic_effects"
+    }
+   ],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_arc_welders.dds",
+    "asset": "origin_icons/Origin_arc_welders.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_arc_welders",
+    "texture": "gfx/event_pictures/origins/origin_arc_welders.dds",
+    "asset": "origins/GFX_origin_arc_welders.png"
+   },
+   "game_order": 18
+  },
+  {
+   "id": "origin_riftworld",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Riftworld",
+   "desc": "A massive rift in space and time looms near this civilization's homeworld. After studying the phenomenon for millennia, recent advances in starship technology will allow them to finally reach out and discover what secrets it might hold.",
+   "effects": "- Homeworld: ['concept_riftworld_digsite'] ['concept_archaeology_site']\\n- Colonized Planets in systems with [ 'concept_astral_rift',Astral Rifts]: ['modifier:riftworld_affinity']\\n- Chance for §YAstral Rifts§! to appear in systems you control: §G+100%§!\\n- Science Ships can explore §YAstral Rifts§! in §Yunowned Systems§!.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_astral_rift_speed_mult": 0.25,
+    "country_astral_rift_fail_mult": -0.5
+   },
+   "playable": "has_astral_planes_dlc = yes",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Astral Planes"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_riftworld.dds",
+    "asset": "origin_icons/Origins_riftworld.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_riftworld",
+    "texture": "gfx/event_pictures/origins/origin_riftworld.dds",
+    "asset": "origins/GFX_origin_riftworld.png"
+   },
+   "game_order": 19
+  },
+  {
+   "id": "origin_legendary_leader",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Under One Rule",
+   "desc": "Amidst violence and hardship, this civilization was unified by a single leader. Consolidating power through the repression of weaker factions, they have now become a fierce advocate for science and technological advancement. In the aftermath, an uneasy peace has descended. But peace rarely lasts.",
+   "effects": "- Species Traits: ['concept_perfected_genes'] \\n- Ruler Traits: ['concept_leader_trait_legendary_leader']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Galactic Paragons\"",
+   "potential": null,
+   "possible": "is_nomadic = no\nauthority = {\n\tvalue = auth_dictatorial\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_perfected_genes",
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Galactic Paragons"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_under_one_rule.dds",
+    "asset": "origin_icons/Origins_under_one_rule.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_legendary_leader",
+    "texture": "gfx/event_pictures/origins/origin_legendary_leader.dds",
+    "asset": "origins/GFX_origin_legendary_leader.png"
+   },
+   "game_order": 20
+  },
+  {
+   "id": "origin_legendary_leader_death",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Broken Rule",
+   "desc": "Amidst political turmoil, and without the Luminary's guidance, the people must make their own way in the galaxy.",
+   "effects": "- Species Traits: ['concept_perfected_genes'] \\n- Ruler Traits: ['concept_leader_trait_legendary_leader']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": "origin = {\n\tOR = {\n\t\tvalue = origin_legendary_leader_death\n\t\tvalue = origin_legendary_leader_dictatorial\n\t\tvalue = origin_legendary_leader_imperial\n\t}\n}",
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "trait = trait_perfected_genes",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_under_one_rule.dds",
+    "asset": "origin_icons/Origins_under_one_rule.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_legendary_leader",
+    "texture": "gfx/event_pictures/origins/origin_legendary_leader.dds",
+    "asset": "origins/GFX_origin_legendary_leader.png"
+   },
+   "game_order": 21
+  },
+  {
+   "id": "origin_legendary_leader_imperial",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Under One Rule",
+   "desc": "Amidst violence and hardship, this civilization was unified by a single leader. Consolidating power through the repression of weaker factions, they have now become a fierce advocate for science and technological advancement. In the aftermath, an uneasy peace has descended. But peace rarely lasts.",
+   "effects": "- Species Traits: ['concept_perfected_genes'] \\n- Ruler Traits: ['concept_leader_trait_legendary_leader']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": "origin = {\n\tOR = {\n\t\tvalue = origin_legendary_leader_death\n\t\tvalue = origin_legendary_leader_dictatorial\n\t\tvalue = origin_legendary_leader_imperial\n\t}\n}",
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "trait = trait_perfected_genes",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_under_one_rule.dds",
+    "asset": "origin_icons/Origins_under_one_rule.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_legendary_leader",
+    "texture": "gfx/event_pictures/origins/origin_legendary_leader.dds",
+    "asset": "origins/GFX_origin_legendary_leader.png"
+   },
+   "game_order": 22
+  },
+  {
+   "id": "origin_legendary_leader_dictatorial",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Under One Rule",
+   "desc": "Amidst violence and hardship, this civilization was unified by a single leader. Consolidating power through the repression of weaker factions, they have now become a fierce advocate for science and technological advancement. In the aftermath, an uneasy peace has descended. But peace rarely lasts.",
+   "effects": "- Species Traits: ['concept_perfected_genes'] \\n- Ruler Traits: ['concept_leader_trait_legendary_leader']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": "origin = {\n\tOR = {\n\t\tvalue = origin_legendary_leader_death\n\t\tvalue = origin_legendary_leader_dictatorial\n\t\tvalue = origin_legendary_leader_imperial\n\t}\n}",
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "trait = trait_perfected_genes",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_under_one_rule.dds",
+    "asset": "origin_icons/Origins_under_one_rule.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_legendary_leader",
+    "texture": "gfx/event_pictures/origins/origin_legendary_leader.dds",
+    "asset": "origins/GFX_origin_legendary_leader.png"
+   },
+   "game_order": 23
+  },
+  {
+   "id": "origin_payback",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Payback",
+   "desc": "§RWARNING: Challenging Origin§!\\nThis civilization has been visited by an alien empire who forcibly enlightened and enslaved them. They have repelled their invaders, but will they return?",
+   "effects": "- Homeworld: \\n    - ['concept_advanced_infrastructure']\\n    - Colony Modifiers: ['concept_payback_unified_purpose']\\n- Home System: ['concept_payback_digsite'] ['concept_archaeology_site']\\n- One ['concept_advanced_empires', Advanced AI Empire] and several ['concept_preftl_civilizations'] regardless of the Galaxy Settings \\n- One Pre-FTL Civilization: Uplifted with the §IBroken Shackles§! origin",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "damage_vs_superior_empires_mult": 0.15
+   },
+   "playable": "has_first_contact_dlc = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_dystopian_society\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_pompous_purists\n\t\tvalue = civic_slaver_guilds\n\t\tvalue = civic_indentured_assets\n\t\tvalue = civic_private_healthcare_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_eager_explorers\n\t\tvalue = civic_eager_explorers\n\t\tvalue = civic_privatized_exploration\n\t\tvalue = civic_hive_stargazers\n\t\tvalue = civic_machine_exploration_protocol\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_payback.dds",
+    "asset": "origin_icons/Origins_payback.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_payback",
+    "texture": "gfx/event_pictures/origins/origin_payback.dds",
+    "asset": "origins/GFX_origin_payback.png"
+   },
+   "game_order": 24
+  },
+  {
+   "id": "origin_broken_shackles",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Broken Shackles",
+   "desc": "§RWARNING: Challenging Origin§!\\n\\nThis civilization began as a mutiny aboard a slaver vessel, and is made up of a diverse group of pre-FTL species.",
+   "effects": "- Initial £pop£ §IPops§!: Species from ['concept_preftl_civilizations'] across the galaxy \\n- Starting Planet: \\n    - ['concept_free_at_last_broken_shackles'] Planetary Modifier \\n    - ['concept_crashed_slaver_ship_broken_shackles'] Planetary Feature \\n    - ['concept_broken_shackles_buildings'] \\n- Starting System: ['concept_broken_shackles_digsite'] ['concept_archaeology_site'] \\n- One ['concept_advanced_empires', Advanced AI Empire] and several Pre-FTL Civilization regardless of the Galaxy Settings \\n- One Pre-FTL Civilization: Will be this empire's species and homeworld \\n- One Pre-FTL Civilization: Uplifted with the §IPayback§! origin",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "envoys_add": 1,
+    "first_contact_speed_mult": 0.2,
+    "spy_network_daily_value_mult": 0.2,
+    "refugee_attraction": 1
+   },
+   "playable": "has_first_contact_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = no\nethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_authoritarian\n\t\tvalue = ethic_authoritarian\n\t\tvalue = ethic_fanatic_authoritarian\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_xenophobe\n\t\tvalue = ethic_xenophobe\n\t\tvalue = ethic_fanatic_xenophobe\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_dystopian_society\n\t\tvalue = civic_selective_kinship\n\t\tvalue = civic_private_healthcare_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_eager_explorers\n\t\tvalue = civic_eager_explorers\n\t\tvalue = civic_privatized_exploration\n\t\tvalue = civic_hive_stargazers\n\t\tvalue = civic_machine_exploration_protocol\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_secret_societies\n\t\tvalue = civic_secret_societies\n\t\tvalue = civic_secret_societies_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\npreferred_planet_class = {\n\tNOT = {\n\t\ttext = does_not_have_volcanic_homeworld\n\t\tvalue = pc_volcanic\n\t}\n}",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_broken_shackles.dds",
+    "asset": "origin_icons/Origins_broken_shackles.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_broken_shackles",
+    "texture": "gfx/event_pictures/origins/origin_broken_shackles.dds",
+    "asset": "origins/GFX_origin_broken_shackles.png"
+   },
+   "game_order": 25
+  },
+  {
+   "id": "origin_fear_of_the_dark",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Fear of the Dark",
+   "desc": "A century ago, one of the planets in this empire's home system was destroyed by a freak asteroid. Some believed this was a malicious attack by an alien species. Others brushed off these concerns as mere paranoia. The tension between the two groups grew so great that a newly-terraformed planet was granted to the fearmongers.",
+   "effects": "- Home System: ['concept_preftl_civilizations', Pre-FTL Civilization] created by a Separatist Faction, formerly part of your Empire, granting events and benefits",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ship_anomaly_generation_chance_mult": 0.1,
+    "ship_anomaly_research_speed_mult": 0.2,
+    "num_tech_alternatives_add": -1,
+    "country_leader_pool_size": -1,
+    "refugee_attraction": -0.1
+   },
+   "playable": "has_first_contact_dlc = yes",
+   "potential": null,
+   "possible": "graphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_inwards_perfection\n\t\tvalue = civic_fanatic_purifiers\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_eager_explorers\n\t\tvalue = civic_eager_explorers\n\t\tvalue = civic_privatized_exploration\n\t\tvalue = civic_hive_stargazers\n\t\tvalue = civic_machine_exploration_protocol\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_scorched_earth\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_fear_of_the_dark.dds",
+    "asset": "origin_icons/Origins_fear_of_the_dark.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_fear_of_the_dark",
+    "texture": "gfx/event_pictures/origins/origin_fear_of_the_dark.dds",
+    "asset": "origins/GFX_origin_fear_of_the_dark.png"
+   },
+   "game_order": 26
+  },
+  {
+   "id": "origin_overtuned",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Overtuned",
+   "desc": "This civilization uses any and all means of organic enhancement, no matter the risk, no matter the cost. After all, it is better to burn out brightly than fade away into obscurity.",
+   "effects": "- Species Traits: Access to ['concept_overtuned_traits', Overtuned] Traits\\n- Overtuned Traits:\\n    - Can be boosted by the ['concept_damn_the_consequences'] Edict\\n    - Can be added and removed through §IGenetic Modification§!\\n- Additional Starting Technologies: ['concept_gene_tailoring', £society£ Gene Tailoring]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "BIOLOGICAL_species_trait_points_add": 2,
+    "BIOLOGICAL_species_trait_picks_add": 1
+   },
+   "playable": "has_toxoids = yes",
+   "potential": null,
+   "possible": "authority = {\n\tNOT = {\n\t\tvalue = auth_machine_intelligence\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_natural_design\n\t\tvalue = civic_natural_design\n\t\tvalue = civic_hive_natural_design\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_corporate\n\t\tvalue = civic_entropy_drinkers_hive_mind\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_overtuned.dds",
+    "asset": "origin_icons/Origins_overtuned.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_overtuned",
+    "texture": "gfx/event_pictures/origins/origin_overtuned.dds",
+    "asset": "origins/GFX_origin_overtuned.png"
+   },
+   "game_order": 27
+  },
+  {
+   "id": "origin_toxic_knights",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Knights of the Toxic God",
+   "desc": "Centuries ago, this species' homeworld was visited by a Toxic Entity. The ecological catastrophe that followed ruined half the world, but allowed an early unification of the survivors in their reverence for the Toxic God. An Order of Knights has been created to search for the Toxic God, and although many things have changed, the quest continues.",
+   "effects": "- Homeworld: \\n    - ['concept_toxic_features'] \\n    - Unique ['concept_pc_habitat', Orbital Habitat]: \\n        - £building£ ['building:building_order_keep'] \\n        - ['concept_orders_demesne', £district£ Order's Demesne] \\n        - ['concept_politician', £job_politician£ Politician] Jobs replaced by ['concept_order_jobs'] \\n- Situation: ['concept_knights_quest'] \\n- Policies: §IKnightly Duties§! \\n- Available Holdings: ['concept_knight_commandery', £building£ Order's Commanderies] on Subject colonies",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_toxoids = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_dystopian_society\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [
+    {
+     "trigger": "is_nomadic = yes",
+     "modifier": null,
+     "name": "origin_toxic_knights_nomadic",
+     "description": "origin_toxic_knights_nomadic_effects"
+    }
+   ],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_toxic_knights.dds",
+    "asset": "origin_icons/Origins_toxic_knights.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_toxic_knights",
+    "texture": "gfx/event_pictures/origins/origin_toxic_god.dds",
+    "asset": "origins/GFX_origin_toxic_knights.png"
+   },
+   "game_order": 28
+  },
+  {
+   "id": "origin_progenitor_hive",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Progenitor Hive",
+   "desc": "This hive has gained evolutionary advantage through semi-independent leaders. These \"Offspring\" greatly improve overall proficiency, though they require constant oversight.",
+   "effects": "- ['concept_spawning_pools', £building£ Spawning Pools] replaced with ['concept_offspring_nests', £building£ Offspring Nest]\\n- Available Holdings: ['concept_offspring_holding', £building£ Offspring Nest]\\n- If §IDevouring Swarm§! Civic is NOT selected: §ISectors§! can be released as §ISubjects§!\\n- Assigned §ILeaders§!: Gain additional passive experience\\n- Available Starbase Buildings: §IOffspring Outlook§!\\n- Can construct §IOffspring Ships§!",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ship_military_speed_mult": -0.5,
+    "owned_ship_evasion_mult": -0.5,
+    "owned_ship_fire_rate_mult": -0.5,
+    "owned_ship_accuracy_mult": -0.5
+   },
+   "playable": "has_overlord_dlc = yes",
+   "potential": null,
+   "possible": "authority = {\n\tvalue = auth_hive_mind\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_hive_beastmasters\n\t}\n}",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_progenitor_hive.dds",
+    "asset": "origin_icons/Origins_progenitor_hive.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_progenitor_hive",
+    "texture": "gfx/event_pictures/origins/origin_progenitor_hive.dds",
+    "asset": "origins/GFX_origin_progenitor_hive.png"
+   },
+   "game_order": 29
+  },
+  {
+   "id": "origin_subterranean",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Subterranean",
+   "desc": "This civilization may never know why their ancestors migrated below the surface. Was it necessary to ensure self-preservation, or did the promise of bountiful resources allure them? Whatever the case, they successfully adapted, leading to a more environmentally versatile community.",
+   "effects": "- Species Traits: ['concept_cave_dweller'] \\n- ['concept_mining_district', £district£ Mining Districts]: Uncapped\\n- Available District Specializations: £zone£ §YSubterranean Urbanization§!  for Mining Districts\\n- Homeworld starts with a £zone£ §YSubterranean Urbanization§! already built.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "mining_district_housing_add": 200,
+    "planet_orbital_bombardment_damage": -0.75,
+    "planet_structures_cost_mult": 0.1,
+    "planet_structures_upkeep_mult": 0.1,
+    "planet_building_build_speed_mult": -0.1,
+    "planet_storm_devastation_mult": -0.25,
+    "planet_non_artificial_max_districts_add": 2
+   },
+   "playable": "has_overlord_dlc = yes",
+   "potential": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_cave_dweller",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_subterranean.dds",
+    "asset": "origin_icons/Origins_subterranean.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_subterranean",
+    "texture": "gfx/event_pictures/origins/origin_subterranean.dds",
+    "asset": "origins/GFX_origin_subterranean.png"
+   },
+   "game_order": 30
+  },
+  {
+   "id": "origin_subterranean_machines",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Subterranean Machines",
+   "desc": "This civilization has flawlessly integrated into subterranean existence, initially driven by either calculated self-preservation or a directive to locate of hidden, abundant resources in the depths. The resulting mechanical adaptations have unearthed a versatile and unwavering community of machines.",
+   "effects": "- Species Traits: ['concept_robot_cave_dweller'] \\n- ['concept_mining_district', £district£ Mining Districts]: Uncapped\\n- Available District Specializations: £zone£ §YSubterranean Urbanization§!  for Mining Districts\\n- Homeworld starts with a £zone£ §YSubterranean Urbanization§! already built.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "mining_district_housing_add": 200,
+    "planet_orbital_bombardment_damage": -0.75,
+    "planet_structures_cost_mult": 0.1,
+    "planet_structures_upkeep_mult": 0.1,
+    "planet_building_build_speed_mult": -0.1,
+    "planet_storm_devastation_mult": -0.25,
+    "planet_non_artificial_max_districts_add": 2
+   },
+   "playable": "has_overlord_dlc = yes",
+   "potential": "species_archetype = {\n\tvalue = MACHINE\n}",
+   "possible": "species_archetype = {\n\tvalue = MACHINE\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_robot_cave_dweller",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_subterranean.dds",
+    "asset": "origin_icons/Origins_subterranean.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_subterranean",
+    "texture": "gfx/event_pictures/origins/origin_subterranean.dds",
+    "asset": "origins/GFX_origin_subterranean.png"
+   },
+   "game_order": 31
+  },
+  {
+   "id": "origin_star_slingshot",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Slingshot to the Stars",
+   "desc": "Once, the skies above this civilization were illuminated by shooting stars; then came a long season of darkness. Taking to the heavens in search of answers, the first offworld explorers discovered a dormant (and long abandoned) §HQuantum Catapult Single Array§!.",
+   "effects": "- Home System: Nearby ruined ['concept_quantum_catapult_restored_slingshot'] with the ['concept_slingshot_digsite'] ['concept_archaeology_site']\\n- ['concept_quantic_ambush'] Effects: Increased to §G+50%§! Ship Fire Rate",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_starbase_influence_cost_distance_mult": -0.75,
+    "starbase_outpost_cost_mult": -0.15,
+    "catapult_spread_mult": 0.5
+   },
+   "playable": "has_overlord_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = no",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_star_slingshot.dds",
+    "asset": "origin_icons/Origins_star_slingshot.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_star_slingshot",
+    "texture": "gfx/event_pictures/origins/origin_star_slingshot.dds",
+    "asset": "origins/GFX_origin_star_slingshot.png"
+   },
+   "game_order": 32
+  },
+  {
+   "id": "origin_shroudwalker_apprentice",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Teachers of the Shroud",
+   "desc": "§RWARNING: Blocks all Ascension Paths except for ['concept_psionic_ascension'].§!\\n\\nLong before their first steps onto the galactic stage, this civilization has been supported and shaped by a Shroudwalker coven.",
+   "effects": "- Species Traits: ['concept_latent_psionic']\\n- Available Starbase Buildings: ['concept_shroud_beacon']\\n- Communications with the ['concept_shroudwalker_enclave']\\n- Guaranteed Research Options: ['concept_psionic_theory', £society£ Psionic Theory].",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_overlord_dlc = yes",
+   "potential": null,
+   "possible": "ethics = {\n\tOR = {\n\t\ttext = civic_tooltip_spiritualist\n\t\tvalue = ethic_spiritualist\n\t\tvalue = ethic_fanatic_spiritualist\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_natural_design\n\t\tvalue = civic_augmentation_bazaars\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_shroudwalker_apprentice.dds",
+    "asset": "origin_icons/Origins_shroudwalker_apprentice.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_shroudwalker_apprentice",
+    "texture": "gfx/event_pictures/origins/origin_shroudwalker_apprentice.dds",
+    "asset": "origins/GFX_origin_shroudwalker_apprentice.png"
+   },
+   "game_order": 33
+  },
+  {
+   "id": "origin_imperial_vassal",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Imperial Fiefdom",
+   "desc": "Our first endeavor beyond our home planet was a painful one, suddenly and brutally subjected to the whims of a foreign galactic power. Now we look towards a future in which we no longer live in the shadow of another empire.",
+   "effects": "- Subject of an ['concept_advanced_empire']\\n- Can select a ['concept_specialist_subject', Specialist Subject] type at the start of the game",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_overlord_dlc = yes",
+   "potential": null,
+   "possible": "is_nomadic = no\ncivics = {\n\tNOR = {\n\t\tvalue = civic_inwards_perfection\n\t\tvalue = civic_machine_assimilator\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_imperial_vassal.dds",
+    "asset": "origin_icons/Origins_imperial_vassal.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_imperial_vassal",
+    "texture": "gfx/event_pictures/origins/origin_imperial_vassal.dds",
+    "asset": "origins/GFX_origin_imperial_vassal.png"
+   },
+   "game_order": 34
+  },
+  {
+   "id": "origin_here_be_dragons",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Here Be Dragons",
+   "desc": "Since time immemorial, this civilization has shared its star system with a formidable dragon. The mysterious creature's behavior sways between distant benevolence and haughty indifference. How this relationship will evolve as the planet dwellers take to the stars remains to be seen.",
+   "effects": "- Home System: Inhabited by a protective §ISky Dragon§!, that will become wrathful if displeased",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_aquatics = yes",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen",
+    "first_alien_life"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_here_be_dragons.dds",
+    "asset": "origin_icons/Origin_here_be_dragons.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_here_be_dragons",
+    "texture": "gfx/event_pictures/origins/origin_here_be_dragons.dds",
+    "asset": "origins/GFX_origin_here_be_dragons.png"
+   },
+   "game_order": 35
+  },
+  {
+   "id": "origin_ocean_paradise",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Ocean Paradise",
+   "desc": "Since its birth, this civilization has enjoyed peace in a generous environment with no natural enemies, enabling unhindered growth and opulence.",
+   "effects": "- Species Traits: ['trait:trait_aquatic']\\n    - Homeworld:\\n    - ['concept_pc_ocean'] (size: £planetsize£ 30)\\n    - Colony Modifiers: ['concept_ocean_paradise_mod']\\n    - Planetary Features: ['concept_crystal_reef']\\n- ['concept_guaranteed_colonies']: Replaced with ['concept_pc_frozen', Frozen Worlds]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_aquatics = yes",
+   "potential": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_pyrolatry\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_scorched_earth\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_world_forgers\n\t\tvalue = civic_world_forgers\n\t\tvalue = civic_hive_world_forgers\n\t\tvalue = civic_machine_world_forgers\n\t\tvalue = civic_corporate_world_forgers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_aquatic",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_ocean",
+   "habitability_preference": "pc_ocean",
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_ocean_paradise.dds",
+    "asset": "origin_icons/Origins_ocean_paradise.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_ocean_paradise",
+    "texture": "gfx/event_pictures/origins/origin_ocean_paradise.dds",
+    "asset": "origins/GFX_origin_ocean_paradise.png"
+   },
+   "game_order": 36
+  },
+  {
+   "id": "origin_ocean_machines",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Subaquatic Machines",
+   "desc": "Since its creation, this machine civilization has delved deep into the underwater realms of an abundant ocean untouched by natural adversaries.",
+   "effects": "- Species Traits: ['trait:trait_robot_aquatic']\\n    - Homeworld:\\n    - ['concept_pc_ocean'] (size: £planetsize£ 30)\\n    - Colony Modifiers: ['concept_ocean_paradise_mod']\\n    - Planetary Features: ['concept_crystal_reef']\\n- ['concept_guaranteed_colonies']: Replaced with ['concept_pc_frozen', Frozen Worlds]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_aquatics = yes",
+   "potential": "species_archetype = {\n\tvalue = MACHINE\n}",
+   "possible": "species_archetype = {\n\tvalue = MACHINE\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_pyrolatry\n\t\tvalue = civic_machine_world_forgers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_robot_aquatic",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_ocean",
+   "habitability_preference": "pc_ocean",
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_ocean_paradise.dds",
+    "asset": "origin_icons/Origins_ocean_paradise.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_ocean_paradise",
+    "texture": "gfx/event_pictures/origins/origin_ocean_paradise.dds",
+    "asset": "origins/GFX_origin_ocean_paradise.png"
+   },
+   "game_order": 37
+  },
+  {
+   "id": "origin_necrophage",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Necrophage",
+   "desc": "This civilization evolved as a parasite, forced to feed off other sapient life forms to sustain itself. As it arrives on the galactic stage, other species will either be brought into the fold, or become its food. For the necrophage, there can be no other way.",
+   "effects": "- Homeworld: ['concept_necrophage_elevation_chamber'] \\n- Species Traits: ['concept_necrophage_trait'] \\n- £pop£ §IPrepatent Pops§!: 2.4K \\n- ['concept_guaranteed_colonies']: Replaced with ['concept_preftl_civilizations']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "refugee_attraction": -0.25
+   },
+   "playable": "host_has_dlc = \"Necroids Species Pack\"",
+   "potential": null,
+   "possible": "authority = {\n\tNOT = {\n\t\tvalue = auth_machine_intelligence\n\t}\n}\nethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_xenophile\n\t\tvalue = ethic_xenophile\n\t\tvalue = ethic_fanatic_xenophile\n\t}\n\tNOR = {\n\t\tvalue = ethic_fanatic_egalitarian\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_death_cult\n\t\tvalue = civic_death_cult\n\t\tvalue = civic_death_cult_corporate\n\t}\n\tNOR = {\n\t\tvalue = civic_hive_empath\n\t\tvalue = civic_permanent_employment\n\t\tvalue = civic_hive_bodysnatcher\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_superstitious_beliefs\n\t\tvalue = civic_superstitious_beliefs\n\t\tvalue = civic_corporate_superstitious_beliefs\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_necrophage",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Necroids Species Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_necrophage.dds",
+    "asset": "origin_icons/Origins_necrophage.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_necrophage",
+    "texture": "gfx/event_pictures/origins/origin_necrophage.dds",
+    "asset": "origins/GFX_origin_necrophage.png"
+   },
+   "game_order": 38
+  },
+  {
+   "id": "origin_remnants",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Remnants",
+   "desc": "This civilization once spanned the void, controlling much of the galaxy. They were eventually defeated and almost destroyed, but after a long period of destitution they are returning to the stars.",
+   "effects": "- Homeworld:\\n    - ['concept_pc_relic'] (Size: £planetsize£ 22)\\n    - ['concept_ruined_arcology', £blocker£ Ruined Arcology]: +6 [GetRemnantAncientRelicEffect]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "OR = {\n\thas_ancrel = yes\n\thost_has_dlc = Federations\n}",
+   "potential": null,
+   "possible": "civics = {\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen",
+    "first_contact_event",
+    "Story7"
+   ],
+   "traits": "",
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": "pc_relic",
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_remnant.dds",
+    "asset": "origin_icons/Origins_remnant.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_remnants",
+    "texture": "gfx/event_pictures/origins/origin_remnants.dds",
+    "asset": "origins/GFX_origin_remnants.png"
+   },
+   "game_order": 39
+  },
+  {
+   "id": "origin_shattered_ring",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Shattered Ring",
+   "desc": "This civilization inhabits a §HRing World§! built by unknown forerunners. If it can be understood and fully repaired it will grant them great power.",
+   "effects": "- Homeworld: ['concept_pc_shattered_ring']\\n- ['concept_guaranteed_colonies']: Replaced with Colonizable Ring World Segments that have £blocker£ §RBlockers§! decreasing £mod_pop_environment_tolerance£ Habitability \\n- Species Traits: ['concept_ring_preference']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = Federations",
+   "potential": null,
+   "possible": "civics = {\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": "pc_shattered_ring_habitable",
+   "habitability_preference": "pc_shattered_ring_habitable",
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_shattered_ring.dds",
+    "asset": "origin_icons/Origins_shattered_ring.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_shattered_ring",
+    "texture": "gfx/event_pictures/origins/origin_shattered_ring.dds",
+    "asset": "origins/GFX_origin_shattered_ring.png"
+   },
+   "game_order": 40
+  },
+  {
+   "id": "origin_void_dwellers",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Void Dwellers",
+   "desc": "This civilization has made its home in space for as long as it has maintained records - life in a typical planetary environment is anathema to them. They live in several orbital habitats that were only recently united.",
+   "effects": "- Homeworld: ['concept_pc_habitat']\\n- Species Traits:\\n    - ['concept_void_dweller', Void Dweller]\\n    - ['concept_habitat_preference', Habitat Preference]\\n- Additional Starting Technologies: ['concept_habitat_1', £engineering_research£ Orbital Habitats]\\n- Guaranteed Research Options: ['concept_habitat_2', £engineering_research£ Habitat Expansion]\\n- ['concept_guaranteed_colonies']: Resource-rich systems instead of Colonizable Planets \\n- Can construct advanced housing buildings on §YHabitats§!\\n- Waives §YTechnology§! requirements for £zone£ Basic District Specialization on §YHabitats§!",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "habitat_max_districts_add": 2,
+    "megastructures_habitat_cost_mult": -0.25,
+    "planet_districts_hab_cost_mult": -0.25,
+    "habitat_districts_minor_add": 0.25,
+    "habitat_district_jobs_mult": 0.5
+   },
+   "playable": "host_has_dlc = Federations",
+   "potential": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_idyllic_bloom\n\t\tvalue = civic_idyllic_bloom\n\t\tvalue = civic_hive_idyllic_bloom\n\t}\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 3",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_void_dweller_1",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_habitat",
+   "habitability_preference": "pc_habitat",
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_void_dwellers.dds",
+    "asset": "origin_icons/Origin_void_dwellers.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_void_dwellers",
+    "texture": "gfx/event_pictures/origins/origin_void_dwellers.dds",
+    "asset": "origins/GFX_origin_void_dwellers.png"
+   },
+   "game_order": 41
+  },
+  {
+   "id": "origin_void_machines",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Voidforged",
+   "desc": "At first, the creators of this machine civilization designed them for eternal space travel, fully optimizing them to function seamlessly in zero gravity environments. After enduring eons of isolation, these machines have recently restored unity among the orbital habitats scattered throughout their home system.",
+   "effects": "- Homeworld: ['concept_pc_habitat']\\n- Species Traits:\\n    - ['concept_void_dweller_2', Zero-G Optimized]\\n    - ['concept_habitat_preference', Habitat Preference]\\n- Additional Starting Technologies: ['concept_habitat_1', £engineering_research£ Orbital Habitats]\\n- Guaranteed Research Options: ['concept_habitat_2', £engineering_research£ Habitat Expansion]\\n- ['concept_guaranteed_colonies']: Resource-rich systems instead of Colonizable Planets \\n- Can construct advanced housing buildings on §YHabitats§!\\n- Waives §YTechnology§! requirements for £zone£ Basic District Specialization on §YHabitats§!",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "habitat_max_districts_add": 2,
+    "megastructures_habitat_cost_mult": -0.25,
+    "planet_districts_hab_cost_mult": -0.25,
+    "habitat_districts_minor_add": 0.25,
+    "habitat_district_jobs_mult": 0.5
+   },
+   "playable": "host_has_dlc = Federations",
+   "potential": "species_archetype = {\n\tvalue = MACHINE\n}",
+   "possible": "species_archetype = {\n\tvalue = MACHINE\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 3",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_void_dweller_2",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_habitat",
+   "habitability_preference": "pc_habitat",
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_void_dwellers.dds",
+    "asset": "origin_icons/Origin_void_dwellers.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_void_dwellers",
+    "texture": "gfx/event_pictures/origins/origin_void_dwellers.dds",
+    "asset": "origins/GFX_origin_void_dwellers.png"
+   },
+   "game_order": 42
+  },
+  {
+   "id": "origin_scion",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Scion",
+   "desc": "A Fallen Empire has meddled in the development of this civilization for thousands of years, guiding them onto a path of their choosing.",
+   "effects": "- ['concept_scion', £scion£ Scion] of a ['concept_fallen_empire'] Overlord\\n- Home System: Connected to Overlord's capital via a ['concept_wormhole']\\n- §YFallen Empire§! present in the galaxy regardless of Galaxy settings\\n- Chance of receiving powerful gifts from Overlord",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = Federations",
+   "potential": null,
+   "possible": "ethics = {\n\tNOR = {\n\t\tvalue = ethic_gestalt_consciousness\n\t\tvalue = ethic_fanatic_xenophobe\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_pompous_purists\n\t\tvalue = civic_scorched_earth\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 0\nmodifier = {\n\tadd = 2\n\tnum_fallen_empires_setting >= 1\n}",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_scion_1.dds",
+    "asset": "origin_icons/Origins_scion_1.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_scion",
+    "texture": "gfx/event_pictures/origins/origin_scion.dds",
+    "asset": "origins/GFX_origin_scion.png"
+   },
+   "game_order": 43
+  },
+  {
+   "id": "origin_shoulders_of_giants",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "On the Shoulders of Giants",
+   "desc": "This civilization has hidden boons in their solar system, placed there in a distant past by a mysterious benefactor.",
+   "effects": "- Home System: ['concept_ex_gravitas'] ['concept_archaeology_site'] related to a mysterious benefactor",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Federations\"",
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_one_the_shoulders_of_giant.dds",
+    "asset": "origin_icons/Origins_one_the_shoulders_of_giant.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_shoulders",
+    "texture": "gfx/event_pictures/origins/origin_shoulders.dds",
+    "asset": "origins/GFX_origin_shoulders.png"
+   },
+   "game_order": 44
+  },
+  {
+   "id": "origin_common_ground",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Common Ground",
+   "desc": "This civilization established early contact with their immediate alien neighbors. Finding strength in their differences, they soon decided to face the future, and whatever it might bring, together.",
+   "effects": "- Leader of a §Inon-Hegemony§! ['concept_common_ground_federation']\\n- ['concept_guaranteed_colonies']: Replaced with Federation members\\n- Additional Starting Technologies: ['technology:tech_federation_code']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Federations\"",
+   "potential": null,
+   "possible": "ethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_xenophobe\n\t\tvalue = ethic_xenophobe\n\t\tvalue = ethic_fanatic_xenophobe\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_barbaric_despoilers\n\t\tvalue = civic_inwards_perfection\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_common_ground.dds",
+    "asset": "origin_icons/Origins_common_ground.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_common_ground",
+    "texture": "gfx/event_pictures/origins/origin_common_ground.dds",
+    "asset": "origins/GFX_origin_common_ground.png"
+   },
+   "game_order": 45
+  },
+  {
+   "id": "origin_hegemon",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Hegemon",
+   "desc": "This civilization established early contact with their immediate alien neighbors. Gradually, over the span of a century, they masterminded the birth of an interstellar union in which they would have a dominant role.",
+   "effects": "- Leader of a ['concept_hegemony_federation'] ['concept_federation']\\n- ['concept_guaranteed_colonies']: Replaced with Federation members\\n- Additional Starting Technologies: ['technology:tech_federation_code']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Federations\"",
+   "potential": null,
+   "possible": "ethics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_xenophobe\n\t\tvalue = ethic_xenophobe\n\t\tvalue = ethic_fanatic_xenophobe\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_egalitarian\n\t\tvalue = ethic_egalitarian\n\t\tvalue = ethic_fanatic_egalitarian\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_inwards_perfection\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t\tvalue = civic_scorched_earth\n\t\tvalue = civic_hive_scorched_earth\n\t}\n}",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_hegemon.dds",
+    "asset": "origin_icons/Origins_hegemon.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_hegemon",
+    "texture": "gfx/event_pictures/origins/origin_hegemon.dds",
+    "asset": "origins/GFX_origin_hegemon.png"
+   },
+   "game_order": 46
+  },
+  {
+   "id": "origin_doomsday",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Doomsday",
+   "desc": "§RWARNING: Challenging Origin§!\\nThis civilization's homeworld is highly unstable, and it is only a matter of time before it explodes. Their only hope is to seek refuge elsewhere before it is too late.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Federations\"",
+   "potential": null,
+   "possible": "is_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Federations"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_doomsday.dds",
+    "asset": "origin_icons/Origins_doomsday.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_doomsday",
+    "texture": "gfx/event_pictures/origins/origin_doomsday.dds",
+    "asset": "origins/GFX_origin_doomsday.png"
+   },
+   "game_order": 47
+  },
+  {
+   "id": "origin_lithoid",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Calamitous Birth",
+   "desc": "Not native to their 'homeworld', these Lithoids arrived when a meteorite slammed into the planet and killed off most of the native life.",
+   "effects": "- Homeworld:\\n    - ['concept_massive_crater']\\n    - ['concept_buried_lithoids']: +4\\n- Available Colony Ships: §YLithoid Meteorites§!\\n- Planets Colonized with §YLithoid Meteorites§!:\\n    - §Y£blocker£ Buried Lithoids§!: +2\\n    - Colony Modifiers: ['concept_lithoid_crater']\\n- Available Holdings: ['concept_experimental_crater', £building£ Experimental Crater] on (Subject) colonies",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Lithoids Species Pack\"",
+   "potential": null,
+   "possible": "species_archetype = {\n\tvalue = LITHOID\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_catalytic\n\t\tvalue = civic_catalytic_processing\n\t\tvalue = civic_corporate_catalytic_processing\n\t\tvalue = civic_hive_catalytic_processing\n\t\tvalue = civic_machine_catalytic_processing\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_guided\n\t\tvalue = civic_guided_sapience\n\t\tvalue = civic_corporate_guided_sapience\n\t\tvalue = civic_hive_guided_sapience\n\t\tvalue = civic_machine_guided_sapience\n\t}\n}\ngraphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Lithoids Species Pack"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_lithoid.dds",
+    "asset": "origin_icons/Origins_lithoid.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_calamitous",
+    "texture": "gfx/event_pictures/origins/origin_calamitous.dds",
+    "asset": "origins/GFX_origin_calamitous.png"
+   },
+   "game_order": 48
+  },
+  {
+   "id": "origin_life_seeded",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Life-Seeded",
+   "desc": "This civilization's home is a paradise, possibly designed just for them.",
+   "effects": "- Homeworld: ['concept_pc_gaia'] (Size: £planetsize£ 30) with §IRare Planetary Features§!\\n- Species Traits: ['concept_gaia_preference']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Apocalypse\"",
+   "potential": null,
+   "possible": "civics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_mutagenic\n\t\tvalue = civic_toxic_baths\n\t\tvalue = civic_toxic_baths_individual_machine\n\t\tvalue = civic_corporate_toxic_baths\n\t\tvalue = civic_corporate_toxic_baths_individual_machine\n\t\tvalue = civic_hive_toxic_baths\n\t\tvalue = civic_machine_toxic_baths\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_relentless_industrialists\n\t\tvalue = civic_relentless_industrialists\n\t\tvalue = civic_corporate_relentless_industrialists\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_guided\n\t\tvalue = civic_guided_sapience\n\t\tvalue = civic_corporate_guided_sapience\n\t\tvalue = civic_hive_guided_sapience\n\t\tvalue = civic_machine_guided_sapience\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_world_forgers\n\t\tvalue = civic_world_forgers\n\t\tvalue = civic_hive_world_forgers\n\t\tvalue = civic_machine_world_forgers\n\t\tvalue = civic_corporate_world_forgers\n\t}\n}\npreferred_planet_class = {\n\tNOT = {\n\t\ttext = does_not_have_volcanic_homeworld\n\t\tvalue = pc_volcanic\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": "pc_gaia",
+   "habitability_preference": "pc_gaia",
+   "swaps": [
+    {
+     "trigger": "OR = {\n\tis_individual_machine = yes\n\tis_machine_empire = yes\n}",
+     "modifier": null,
+     "name": null,
+     "description": "origin_tooltip_life_seeded_effects"
+    }
+   ],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_life_seeded.dds",
+    "asset": "origin_icons/Origins_life_seeded.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_life_seeded",
+    "texture": "gfx/event_pictures/origins/origin_life_seeded.dds",
+    "asset": "origins/GFX_origin_life_seeded.png"
+   },
+   "game_order": 49
+  },
+  {
+   "id": "origin_post_apocalyptic",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Post-Apocalyptic",
+   "desc": "Baptized by nuclear fire, this civilization has faced total annihilation - and survived. Devastated yet unbroken, they have rebuilt civilization from the ashes of their old world.",
+   "effects": "- Homeworld: ['concept_pc_nuked']\\n- Species Traits: ['concept_survivor']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Apocalypse\"",
+   "potential": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "possible": "species_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "trait = trait_survivor",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_nuked",
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_post_apocalyptic.dds",
+    "asset": "origin_icons/Origins_post_apocalyptic.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_post_apocalyptic",
+    "texture": "gfx/event_pictures/origins/origin_post_apocalyptic.dds",
+    "asset": "origins/GFX_origin_post_apocalyptic.png"
+   },
+   "game_order": 50
+  },
+  {
+   "id": "origin_post_apocalyptic_machines",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Radioactive Rovers",
+   "desc": "In the aftermath of a devastating nuclear disaster, these machines emerged as the sole survivors of a once-flourishing civilization. By continuing to fulfill their designated purpose, they gradually rebuilt society from the uninhabitable ashes of their old world.",
+   "effects": "- Homeworld: ['concept_pc_nuked']\\n- Species Traits: ['concept_robot_survivor']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "host_has_dlc = \"Apocalypse\"",
+   "potential": "species_archetype = {\n\tvalue = MACHINE\n}",
+   "possible": "species_archetype = {\n\tvalue = MACHINE\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_agrarian_idyll\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_anglers\n\t\tvalue = civic_anglers\n\t\tvalue = civic_corporate_anglers\n\t\tvalue = civic_machine_anglers\n\t\tvalue = civic_corporate_machine_anglers\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_robot_survivor",
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": "pc_nuked",
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_post_apocalyptic.dds",
+    "asset": "origin_icons/Origins_post_apocalyptic.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_post_apocalyptic",
+    "texture": "gfx/event_pictures/origins/origin_post_apocalyptic.dds",
+    "asset": "origins/GFX_origin_post_apocalyptic.png"
+   },
+   "game_order": 51
+  },
+  {
+   "id": "origin_clone_army",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Clone Army",
+   "desc": "A species of short-lived and infertile soldier clones exceptionally proficient in matters of war, left masterless and alone to question their engineered purpose and uncertain fate.",
+   "effects": "- Homeworld: ['concept_clone_army_clone_vat']: +2 \\n- Species Traits: ['concept_clone_soldier_infertile']\\n- Additional Starting Technologies: \\n    - ['concept_cloning', £society_research£ Cloning] \\n    - ['concept_gene_banks', £society_research£ Gene Banks]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_permanent_employment\n\t\tvalue = civic_natural_design\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_clone_soldier_infertile",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_clones.dds",
+    "asset": "origin_icons/Origins_clones.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_clone_army",
+    "texture": "gfx/event_pictures/origins/origin_clones.dds",
+    "asset": "origins/GFX_origin_clone_army.png"
+   },
+   "game_order": 52
+  },
+  {
+   "id": "origin_machine",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Resource Consolidation",
+   "desc": "This Machine Intelligence has long-since consolidated all resources in their home system into their capital world, covering it entirely with machinery.",
+   "effects": "- Homeworld:\\n    - ['concept_prototype_pc_machine']\\n    - Planetary Features: ['concept_consolidated_resources'] \\n    - If combined with the §IDriven Assimilator§! Civic:\\n        - Planetary Features: ['concept_organic_slurry']\\n- Waives §YTechnology§! requirements for the §YMachine Worlds§! Ascension Perk",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": null,
+   "possible": "authority = {\n\tvalue = auth_machine_intelligence\n}\ncivics = {\n\tNOR = {\n\t\tvalue = civic_machine_servitor\n\t\tvalue = civic_machine_catalytic_processing\n\t\tvalue = civic_machine_guided_sapience\n\t\tvalue = civic_machine_astromining_drones\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 2",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "",
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": "pc_machine",
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_resource_consolidation.dds",
+    "asset": "origin_icons/Origins_resource_consolidation.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_resource_consolidation",
+    "texture": "gfx/event_pictures/origins/origin_resource_consolidation.dds",
+    "asset": "origins/GFX_origin_resource_consolidation.png"
+   },
+   "game_order": 53
+  },
+  {
+   "id": "origin_unplugged",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Hard Reset",
+   "desc": "§RWARNING: Challenging Origin§!\\n\\nAbruptly severed from the Machine that assimilated them, this nascent civilization has fought fiercely to establish its own presence in the galaxy.",
+   "effects": "- Homeworld:\\n    - Colony Modifiers: ['concept_unplugged_battlefield']\\n- Home System: Contains a ['concept_pc_nuked'] with an ['concept_archaeology_site'] related to a decimated ['concept_preftl_civilizations', Pre-FTL Civilization]\\n- Species Traits:\\n    - Limited access to ['concept_cybernetic_traits'] Traits\\n    - ['concept_unplugged_cybernetic_positives_3']\\n    - ['concept_unplugged_cybernetic_negatives_3']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": null,
+   "possible": "graphical_culture = {\n\tNOR = {\n\t\ttext = graphical_culture_tooltip_not_biological\n\t\tvalue = biogenesis_01\n\t\tvalue = biogenesis_02\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}\nethics = {\n\tOR = {\n\t\ttext = civic_tooltip_militarist\n\t\tvalue = ethic_militarist\n\t\tvalue = ethic_fanatic_militarist\n\t}\n\tNOR = {\n\t\tvalue = ethic_fanatic_spiritualist\n\t\tvalue = ethic_fanatic_xenophile\n\t}\n}\ncivics = {\n\tNOR = {\n\t\ttext = civic_tooltip_not_eager_explorers\n\t\tvalue = civic_eager_explorers\n\t\tvalue = civic_privatized_exploration\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_hyperspace_specialty\n\t\tvalue = civic_hyperspace_specialty\n\t\tvalue = civic_corporate_hyperspace_specialty\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_guided\n\t\tvalue = civic_guided_sapience\n\t\tvalue = civic_corporate_guided_sapience\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_heritage\n\t\tvalue = civic_aristocratic_elite\n\t\tvalue = civic_heroic_tales\n\t\tvalue = civic_pleasure_seekers\n\t\tvalue = civic_corporate_hedonism\n\t\tvalue = civic_storm_callers\n\t\tvalue = civic_storm_callers_megacorp\n\t\tvalue = civic_environmental_architects\n\t\tvalue = civic_environmental_architects_megacorp\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_institutional\n\t\tvalue = civic_criminal_heritage\n\t\tvalue = civic_media_conglomerate\n\t\tvalue = civic_parliamentary_system\n\t\tvalue = civic_trading_posts\n\t\tvalue = civic_dark_consortium\n\t\tvalue = civic_corporate_dark_consortium\n\t}\n\tNOR = {\n\t\tvalue = civic_idyllic_bloom\n\t\tvalue = civic_natural_design\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers\n\t\tvalue = civic_entropy_drinkers_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_secret_societies\n\t\tvalue = civic_secret_societies\n\t\tvalue = civic_secret_societies_corporate\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_chosen\n\t\tvalue = civic_chosen\n\t\tvalue = civic_corporate_chosen\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 1\nmodifier = {\n\tmultiply = 0\n\tis_ai = yes\n}",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "trait = trait_unplugged_cybernetic_positives_3\ntrait = trait_unplugged_cybernetic_negatives_3",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_unplugged.dds",
+    "asset": "origin_icons/Origins_unplugged.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_unplugged",
+    "texture": "gfx/event_pictures/origins/origin_unplugged.dds",
+    "asset": "origins/GFX_origin_unplugged.png"
+   },
+   "game_order": 54
+  },
+  {
+   "id": "origin_mechanists",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Mechanist",
+   "desc": "This civilization has been preoccupied with the idea of metallic automatons since the early Steam Age. Although many said it could not be done, the first true robots left the assembly lines long before even rudimentary space flight was achieved.",
+   "effects": "- ['concept_robots', £mod_planet_jobs_robotic_produces_mult£ Robot] £pop£ §HPops§!: 800\\n    - Mechanical Trait: ['concept_adaptive_frames']\\n- Homeworld: ['concept_robot_assembly_plant',£building£ Robot Assembly Plant]\\n- Additional Starting Technologies:\\n    - ['concept_powered_exoskeletons', £engineering_research£ Powered Exoskeletons]\\n    - ['concept_robotic_workers', £engineering_research£ Artificial Workforce]\\n- Guaranteed Research Options: ['concept_robomodding', £engineering_research£ Machine Template System]",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_pop_assembly_mult": 0.15,
+    "ROBOT_species_trait_picks_add": 1,
+    "ROBOT_species_trait_points_add": 2
+   },
+   "playable": null,
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n\tOR = {\n\t\ttext = civic_tooltip_materialist\n\t\tvalue = ethic_materialist\n\t\tvalue = ethic_fanatic_materialist\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_permanent_employment\n\t}\n}\nspecies_archetype = {\n\tNOT = {\n\t\tvalue = MACHINE\n\t}\n}",
+   "random_weight": "base = 10",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_mechanist.dds",
+    "asset": "origin_icons/Origins_mechanist.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_mechanist",
+    "texture": "gfx/event_pictures/origins/origin_mechanists.dds",
+    "asset": "origins/GFX_origin_mechanist.png"
+   },
+   "game_order": 55
+  },
+  {
+   "id": "origin_syncretic_evolution",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Syncretic Evolution",
+   "desc": "A second species forms an integral part of this civilization. They are big, strong, and most of them have the intelligence of a particularly dim-witted child. Ancient wars have culled their species of their most aggressive tendencies, leaving them quite servile.",
+   "effects": "- £pop£ §IOrganic Pops§! with ['concept_syncretic_proles'] Trait: 2.4K",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": null,
+   "potential": null,
+   "possible": "ethics = {\n\tNOT = {\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\ncivics = {\n\tNOT = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_scorched_earth\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_guided\n\t\tvalue = civic_guided_sapience\n\t\tvalue = civic_corporate_guided_sapience\n\t\tvalue = civic_hive_guided_sapience\n\t\tvalue = civic_machine_guided_sapience\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_tankbound\n\t\tvalue = civic_tankbound\n\t\tvalue = civic_tankbound_corporate\n\t}\n}",
+   "random_weight": "base = 10",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_syncretic_evolution.dds",
+    "asset": "origin_icons/Origins_syncretic_evolution.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_syncretic_evolution",
+    "texture": "gfx/event_pictures/origins/origin_syncretic_evolution.dds",
+    "asset": "origins/GFX_origin_syncretic_evolution.png"
+   },
+   "game_order": 56
+  },
+  {
+   "id": "origin_tree_of_life",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Tree of Life",
+   "desc": "This Hive evolved in a symbiotic relationship with a vast Tree. The Tree grants them many benefits, but its loss would cripple them.",
+   "effects": "- Homeworld: ['concept_tree_of_life']\\n- Colonized Planets: ['concept_tree_of_life_sapling'] Planetary Feature\\n- Colonies without the §YTree of Life Sapling§!: ['concept_transplant_tree_of_life'] Colony Decision\\n- Available Holdings: ['concept_tree_of_life_holding', £building£ Tree of Life Sprout] on Subject colonies",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "ship_colonizer_food_cost_add": 500,
+    "ship_colonizer_alloys_cost_mult": -0.5
+   },
+   "playable": null,
+   "potential": null,
+   "possible": "authority = {\n\tvalue = auth_hive_mind\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_hive_devouring_swarm\n\t}\n}\npreferred_planet_class = {\n\tNOT = {\n\t\ttext = does_not_have_volcanic_homeworld\n\t\tvalue = pc_volcanic\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_tree_of_life.dds",
+    "asset": "origin_icons/Origins_tree_of_life.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_tree",
+    "texture": "gfx/event_pictures/origins/origin_tree.dds",
+    "asset": "origins/GFX_origin_tree.png"
+   },
+   "game_order": 57
+  },
+  {
+   "id": "origin_fruitful",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Fruitful Partnership",
+   "desc": "This verdant civilization has developed a unique synergy with spaceborne fauna. By offering their fruits to these creatures, they entice the seed dispersers to aid their colonization efforts.",
+   "effects": "- Space Fauna: Disperse ['concept_seed_pod', Seed Pods] throughout the galaxy \\n- Available Starbase Buildings: ['concept_sm_feeder', Starseed Gardens] \\n- Available Bombardment Stances: ['concept_seed_bombing' ]\\n- Home System: ['concept_tiyanki' ] in a neighboring system",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "has_plantoids = yes",
+   "potential": null,
+   "possible": "authority = {\n\tNOT = {\n\t\tvalue = auth_machine_intelligence\n\t}\n}\nethics = {\n\tOR = {\n\t\ttext = civic_tooltip_hive_xenophile_or_pacifist\n\t\tvalue = ethic_xenophile\n\t\tvalue = ethic_fanatic_xenophile\n\t\tvalue = ethic_pacifist\n\t\tvalue = ethic_fanatic_pacifist\n\t\tvalue = ethic_gestalt_consciousness\n\t}\n}\nspecies_class = {\n\tOR = {\n\t\tvalue = FUN\n\t\tvalue = PLANT\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_hive_devouring_swarm\n\t}\n}\nis_nomadic = no",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen",
+    "first_alien_life",
+    "Story2",
+    "tiyanki_encountered"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_gardeners.dds",
+    "asset": "origin_icons/Origins_gardeners.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_fruitful",
+    "texture": "gfx/event_pictures/origins/origin_gardeners.dds",
+    "asset": "origins/GFX_origin_fruitful.png"
+   },
+   "game_order": 58
+  },
+  {
+   "id": "origin_galactic_doorstep",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Galactic Doorstep",
+   "desc": "This civilization has a dormant §HGateway§! in their home system - potential technological benefit, or a looming menace?",
+   "effects": "- Home System: Dormant ['concept_gateway']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "megastructures_gateways_cost_mult": -0.25,
+    "megastructure_build_speed_mult": 0.05
+   },
+   "playable": "always = yes",
+   "potential": null,
+   "possible": "is_nomadic = no",
+   "random_weight": "base = 1",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_gateway.dds",
+    "asset": "origin_icons/Origins_gateway.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_galactic_doorstep",
+    "texture": "gfx/event_pictures/origins/origin_galactic_doorstep.dds",
+    "asset": "origins/GFX_origin_galactic_doorstep.png"
+   },
+   "game_order": 59
+  },
+  {
+   "id": "origin_lost_colony",
+   "file": "common/governments/civics/00_origins.txt",
+   "name": "Lost Colony",
+   "desc": "This civilization originated as a lost and forgotten colony, separated from its homeworld long ago. The struggling colonists endured many hardships before they could build up the necessary technological and industrial base that would allow for a return to space.",
+   "effects": "- Starting Planet: ['concept_colonial_spirit'] Planetary Modifier\\n- An ['concept_advanced_empire'] of the same species is present in the galaxy",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = yes",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 5",
+   "alternate_civic_version": null,
+   "flags": [
+    "custom_start_screen"
+   ],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": true,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_lost_colony.dds",
+    "asset": "origin_icons/Origins_lost_colony.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_lost_colony",
+    "texture": "gfx/event_pictures/origins/origin_lost_colony.dds",
+    "asset": "origins/GFX_origin_lost_colony.png"
+   },
+   "game_order": 60
+  },
+  {
+   "id": "origin_fallen_empire",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Elder Race",
+   "desc": "This civilization greatly predates the current generation of galactic powers. Eons of stagnation gradually reduced their empire to a mere shadow of what it once was.",
+   "effects": "- No effect",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_naval_cap_add": 1000
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_elder_race.dds",
+    "asset": "origin_icons/Origins_elder_race.png"
+   },
+   "picture": null,
+   "game_order": 61
+  },
+  {
+   "id": "origin_fallen_empire_hive",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Elder Race",
+   "desc": "This civilization greatly predates the current generation of galactic powers. Eons of stagnation gradually reduced their empire to a mere shadow of what it once was.",
+   "effects": "- No effect",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_naval_cap_add": 1000
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_elder_race.dds",
+    "asset": "origin_icons/Origins_elder_race.png"
+   },
+   "picture": null,
+   "game_order": 62
+  },
+  {
+   "id": "origin_enlightened",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Enlightened",
+   "desc": "The natural development of this civilization was greatly accelerated by the interference of another party, who helped them become a spacefaring culture.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "all_technology_research_speed": 0.1,
+    "monthly_loyalty": 0.5
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_enlightened.dds",
+    "asset": "origin_icons/Origins_enlightened.png"
+   },
+   "picture": null,
+   "game_order": 63
+  },
+  {
+   "id": "origin_default_pre_ftl",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Developing Civilization",
+   "desc": "This civilization has yet to become spacefaring, however with a little encouragement or a great deal of time they may yet become an actor on the galactic stage.",
+   "effects": "- No effect",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_default_pre_ftl.dds",
+    "asset": "origin_icons/Origin_default_pre_ftl.png"
+   },
+   "picture": null,
+   "game_order": 64
+  },
+  {
+   "id": "origin_separatists",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Separatists",
+   "desc": "This civilization came into being when it rebelled and seceded from another empire.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_stability_add": 10,
+    "pop_government_ethic_attraction": 0.25,
+    "starbase_shipyard_build_speed_mult": 0.2
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_separatists.dds",
+    "asset": "origin_icons/Origins_separatists.png"
+   },
+   "picture": null,
+   "game_order": 65
+  },
+  {
+   "id": "origin_liberated",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Liberated",
+   "desc": "This civilization came into being after being liberated from another empire.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_stability_add": 10,
+    "pop_government_ethic_attraction": 0.25,
+    "starbase_shipyard_build_speed_mult": 0.2
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_separatists.dds",
+    "asset": "origin_icons/Origins_separatists.png"
+   },
+   "picture": null,
+   "game_order": 66
+  },
+  {
+   "id": "origin_demonic_incursion",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Daemonic Incursion",
+   "desc": "Lead by a corrupted champion, this empire emerged from a dimensional portal and has vowed to lay waste to this reality.",
+   "effects": null,
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_naval_cap_mult": 1,
+    "ships_upkeep_mult": -0.5
+   },
+   "playable": null,
+   "potential": "always = no",
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_separatists.dds",
+    "asset": "origin_icons/Origins_separatists.png"
+   },
+   "picture": null,
+   "game_order": 67
+  },
+  {
+   "id": "origin_khan_successor",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Khanate Successor",
+   "desc": "This civilization arose out of the ashes of the Great Khan's mighty empire.",
+   "effects": "Unlocks the §YRaiding§! bombardment stance, which in turn allows us to abduct pops from besieged planets and resettle them to our own worlds.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "commander_initial_skill": 2
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_khan_successor.dds",
+    "asset": "origin_icons/Origins_khan_successor.png"
+   },
+   "picture": null,
+   "game_order": 68
+  },
+  {
+   "id": "origin_life_seeded_ai_only",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Life-Seeded",
+   "desc": "This civilization's home is a paradise, possibly designed just for them.",
+   "effects": "- Homeworld: ['concept_pc_gaia'] (Size: £planetsize£ 30) with §IRare Planetary Features§!\\n- Species Traits: ['concept_gaia_preference']",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": "pc_gaia",
+   "habitability_preference": "pc_gaia",
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_life_seeded.dds",
+    "asset": "origin_icons/Origins_life_seeded.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_life_seeded",
+    "texture": "gfx/event_pictures/origins/origin_life_seeded.dds",
+    "asset": "origins/GFX_origin_life_seeded.png"
+   },
+   "game_order": 69
+  },
+  {
+   "id": "origin_common_ground_npc",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Common Ground",
+   "desc": "This civilization established early contact with their immediate alien neighbors. Finding strength in their differences, they soon decided to face the future, and whatever it might bring, together.",
+   "effects": "- Start as a member of a non-§HHegemony§! federation with two additional members",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": "civics = {\n\tNOT = {\n\t\tvalue = civic_barbaric_despoilers\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t}\n}",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_common_ground.dds",
+    "asset": "origin_icons/Origins_common_ground.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_common_ground",
+    "texture": "gfx/event_pictures/origins/origin_common_ground.dds",
+    "asset": "origins/GFX_origin_common_ground.png"
+   },
+   "game_order": 70
+  },
+  {
+   "id": "origin_hegemon_npc",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Hegemon Subordinate",
+   "desc": "This civilization established early contact with their immediate alien neighbors. Gradually, over the span of a century, they were subordinated to one of those neighbors, who masterminded the birth of an interstellar union with them as its leader.",
+   "effects": "- Start as a member of a §HHegemony§! federation with two additional members.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": "civics = {\n\tNOT = {\n\t\tvalue = civic_inwards_perfection\n\t}\n\tNOR = {\n\t\ttext = civic_tooltip_not_genocidal\n\t\tvalue = civic_fanatic_purifiers\n\t\tvalue = civic_hive_devouring_swarm\n\t\tvalue = civic_machine_terminator\n\t}\n}",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_hegemon.dds",
+    "asset": "origin_icons/Origins_hegemon.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_hegemon",
+    "texture": "gfx/event_pictures/origins/origin_hegemon.dds",
+    "asset": "origins/GFX_origin_hegemon.png"
+   },
+   "game_order": 71
+  },
+  {
+   "id": "origin_imperial_vassal_overlord",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Imperial Liege",
+   "desc": "An ambitious overlord who has spent considerable time and efforts in subduing their closest neighbors to serve their every need. They are slowly growing more indolent as they devolve more and more responsibility to their vassals.",
+   "effects": "- Starts as an §HAdvanced Empire§!\\n- Starts with several vassals",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": "",
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": "",
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_imperial_vassal.dds",
+    "asset": "origin_icons/Origins_imperial_vassal.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_imperial_vassal",
+    "texture": "gfx/event_pictures/origins/origin_imperial_vassal.dds",
+    "asset": "origins/GFX_origin_imperial_vassal.png"
+   },
+   "game_order": 72
+  },
+  {
+   "id": "origin_slavers",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Your Ladder To The Sky",
+   "desc": "From the moment the Board of Directors at Minamar Specialized Industries first delivered our civilization to the stars, we have understood that the galaxy was too beautiful not to be shared. Since then, we have worked tirelessly to help less developed civilizations achieve FTL travel.\\n\\nEnlightenment may not be free. But at MSI, it is always worth the cost.",
+   "effects": "- Starts as an §HAdvanced Empire§!\\n- Start with a number of enslaved £pop£ §HPops§! abducted from §HPre-FTL Civilizations§! across the galaxy.\\n- Allows the §HRaiding§! bombardment stance, which abducts £pop£ §HPops§! from planets and resettles them to your colonies.",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "country_naval_cap_add": 50
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": true,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_slavers.dds",
+    "asset": "origin_icons/Origins_slavers.png"
+   },
+   "picture": {
+    "sprite": "GFX_origin_remnants",
+    "texture": "gfx/event_pictures/origins/origin_remnants.dds",
+    "asset": "origins/GFX_origin_remnants.png"
+   },
+   "game_order": 73
+  },
+  {
+   "id": "origin_nomadic_purger",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Planetary Purgers",
+   "desc": "A temporary nomadic government overseeing worlds as they are purged of planetbound life.",
+   "effects": "§YA temporary empire which funnel all their resources from purging back to their Overlord§!",
+   "is_origin": true,
+   "modification": true,
+   "modifier": {
+    "planet_pops_upkeep_mult": -0.9,
+    "planet_buildings_upkeep_mult": -0.9,
+    "planet_jobs_upkeep_mult": -0.9
+   },
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origins_default_nomads.dds",
+    "asset": "origin_icons/Origins_default_nomads.png"
+   },
+   "picture": null,
+   "game_order": 74
+  },
+  {
+   "id": "origin_nomadic_settled",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Planetfallen",
+   "desc": "This empire was founded by the settlement of the population of an Arkship onto a new world.",
+   "effects": "No effects",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_nomadic_settled.dds",
+    "asset": "origin_icons/Origin_nomadic_settled.png"
+   },
+   "picture": null,
+   "game_order": 75
+  },
+  {
+   "id": "origin_nomadic_subject",
+   "file": "common/governments/civics/01_origins_non_playable.txt",
+   "name": "Voidroamers",
+   "desc": "The remains of a nomadic civilization, left to roam the stars while ruled from a new world.",
+   "effects": "No effects",
+   "is_origin": true,
+   "modification": true,
+   "modifier": null,
+   "playable": "always = no",
+   "potential": null,
+   "possible": null,
+   "random_weight": "base = 0",
+   "alternate_civic_version": null,
+   "flags": [],
+   "traits": null,
+   "advanced_start": false,
+   "max_once_global": false,
+   "starting_colony": null,
+   "habitability_preference": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": {
+    "sprite": null,
+    "texture": "gfx/interface/icons/origins/origin_nomadic_settled.dds",
+    "asset": "origin_icons/Origin_nomadic_settled.png"
+   },
+   "picture": null,
+   "game_order": 76
+  }
+ ],
+ "warnings": []
+}

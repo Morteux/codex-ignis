@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.11 — Civics and origins extractor (2026-11-22)
+- [ ] **In-game order of the origins** (`game_order`, for T2402) = their definition order in `common/governments/civics` (`00_origins.txt`, then `01_origins_non_playable.txt`): the files have no sort key, and the empire creation screen lists them as loaded. To be checked in game.
+- [ ] **Two sets**: `civics.json` (281) and `origins.json` (77, `is_origin = yes`), from the same folder. Origin icons go to `origin_icons/` (game texture name, e.g. `Origins_default.png`) and the origin pictures (`picture = GFX_origin_x`) to `origins/`, named after the sprite as that folder already does; Prosperous Unification uses `GFX_evt_metropolis`, so its picture would be a new `GFX_evt_metropolis.png` next to the existing `GFX_origin_default.png`.
+
 ## P25.10 — Designations extractor (2026-11-22)
 - [ ] **Designation icons go to a new `designations/` folder** named after the sprite (`colony_type_mine.png`, 44 files: several designations share one icon, e.g. Nest World uses `colony_type_urban`). StellarisAssets only had `resources/Colony_type_habitat.png`, which the site does not use; it is left as it is.
 

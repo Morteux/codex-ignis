@@ -8,6 +8,11 @@
    "count": 498,
    "warnings": 1
   },
+  "civics": {
+   "file": "civics.json",
+   "count": 281,
+   "warnings": 1
+  },
   "designations": {
    "file": "designations.json",
    "count": 101,
@@ -21,6 +26,11 @@
   "jobs": {
    "file": "jobs.json",
    "count": 367,
+   "warnings": 0
+  },
+  "origins": {
+   "file": "origins.json",
+   "count": 77,
    "warnings": 0
   },
   "technologies": {
