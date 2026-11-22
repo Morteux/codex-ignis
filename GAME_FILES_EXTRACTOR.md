@@ -127,6 +127,14 @@ The exact folders of the "…" icon rows are confirmed by the task of each set (
 - `.dds` → `.png` with Pillow (DXT1/3/5, BC7 and uncompressed DDS). Multi-frame strips are cropped to the first frame (width / frames).
 - File name in StellarisAssets: if the target folder already has a file whose name matches case-insensitively (or after the folder's known prefix change, such as `ethic_authoritarian` → `Authoritarian`, `civic_x` → `Civic_x`, `d_x` → `D_x`), that exact name is reused and the file is replaced; otherwise the new file follows the folder's style (capitalised first letter if every file there has one). Replaced and new files are listed in the export report (for the commit message, T2524).
 
+## 6b. Difference report (T2522)
+
+`python tools/extract/report_differences.py [--data DIR] [--out DIR] [--simulator FILE]` compares the generated data with the simulator data and writes `reports/<rulesetId>/<set>.md`, `README.md` (summary table) and `summary.json`. The simulator data comes from `node tools/extract/dump_simulator_data.mjs` (every export of `js/*-data.js`, `js/bingo-items.js` and `js/civic-rules.js`, the policy groups and the English texts of the `js/i18n-*.js` areas); nothing in `js/` changes.
+
+- Matching: the simulator id in snake_case with the set's game prefix (`capacitySubsidies` → `capacity_subsidies`, `researchLab` → `building_research_lab`), then the English name, then the icon (only for items without a name, since icons are shared). The job swaps and authority variants are items of their own; the planet modifiers are also matched against the named static modifiers.
+- Compared: job outputs (produces minus upkeep, research as `physics` / `society` / `engineering`, job amenities divided by 100), building and district jobs, cost, build time, upkeep and housing, ethic cost, edict cost and upkeep, the name and the icon (same folder only). Game values under a condition are shown as `(conditional: ...)` and a simulator value equal to one of them is not a difference.
+- Sets the simulator does not model (`zones`, `zone_slots`, `static_modifiers`, `economic_categories`, `dlc`) only appear in the summary.
+
 ## 7. What stays unmodelled
 
 - Triggers and effects (`potential`, `allow`, `possible`, `destroy_trigger`, `on_built`, `triggered_*_modifier` conditions, `weight_modifier` / `ai_weight` modifiers, `convert_to`...): kept as Paradox text, never evaluated. The site keeps deciding what applies with its own rules.

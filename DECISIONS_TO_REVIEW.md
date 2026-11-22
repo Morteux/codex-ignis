@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.22 — Difference report against the simulator data (2026-11-23)
+- [ ] **Format**: one Markdown file per data set in `reports/stellaris-pc-4.5.4/` (differences table, simulator-only items, game-only items, matched items without differences), a `README.md` summary and `summary.json`; written by `tools/extract/report_differences.py`, committed so the owner can read them on GitHub.
+- [ ] **Matching** of simulator items to game items: simulator id in snake_case with the game prefix, then English name (from the `en` texts of `js/i18n-*.js`), then icon only for items without an English name. A wrong match by name is possible (e.g. 104 of the 153 buildings matched by name); the table shows how each pair was matched.
+- [ ] **What counts as a difference**: a simulator value equal to a game value under a condition (nomadic cost, gestalt or fallen empire jobs, triggered outputs) is not one; names that contain each other ("Continental" / "Continental World", "Anglers / Marine Machines" / "Anglers") are not one; icons are only compared within the same folder (the origins use other art in the simulator). Job amenities are divided by 100 (`planet_amenities_add` is per pop: politician 300 = 3 in the simulator).
+- [ ] **Job swaps** of the game have no outputs in the generated data, so a simulator job matched to a swap (e.g. `priest`) only compares name and icon.
+- [ ] **Simulator data sources**: the civics and origins lists are `PRINCIPLE_BINGO` / `ORIGIN_BINGO` of `js/bingo-items.js`; the technologies are the ones the simulator data refers to (3); the policy groups come from `getPolicyGroup()` of `js/policy-data.js` (they are not exported as a list).
+
 ## P25.20 — Localised names in every game language (2026-11-22)
 - [ ] **Names only**: `data/generated/stellaris-pc-4.5.4/localisation/<language>.json` holds `{set: {id: name}}` for the 10 game languages (about 0.4 MB each), including the swaps, options and categories inside the sets. Descriptions stay English-only in the set files (P15 only needs the names, T1502); they can be added the same way if the owner wants them.
 - [ ] **Missing translations stay `null`** (no English fallback), so P15 can tell an untranslated name from a translated one.
