@@ -20,8 +20,8 @@
 import { t } from "./i18n.js";
 import { RESOURCES } from "./planet-data.js";
 
-export const TIMELINE_MONTHS = [1, 12, 60, 120];
-export const NON_STOCKPILED = ["physics", "society", "engineering", "amenities", "trade"];
+const TIMELINE_MONTHS = [1, 12, 60, 120];
+const NON_STOCKPILED = ["physics", "society", "engineering", "amenities", "trade"];
 const EPSILON = 0.001;
 
 const startStockpiles = {};

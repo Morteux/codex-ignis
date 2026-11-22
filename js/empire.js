@@ -152,13 +152,8 @@ function renderEdicts() {
   });
 }
 
-/** Políticas elegidas ahora mismo (copia). */
-export function getSelectedPolicies() {
-  return { ...selectedPolicies };
-}
-
 /** Elige una opción de política desde la interfaz (P16.4). Devuelve false si el grupo no aplica o la opción no está disponible. */
-export function selectPolicy(groupId, optionId) {
+function selectPolicy(groupId, optionId) {
   const ctx = policyContext();
   const group = applicablePolicyGroups(ctx).find((entry) => entry.id === groupId);
   const option = getPolicyOption(groupId, optionId);

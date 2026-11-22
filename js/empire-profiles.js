@@ -66,7 +66,7 @@ function newId() {
 }
 
 /** Configuración canónica (ordenada) de un perfil o de la pestaña Imperio, para guardar y comparar. */
-export function normalizeConfig(config) {
+function normalizeConfig(config) {
   return {
     ethicIds: [...(config.ethicIds || [])].sort(),
     authorityId: config.authorityId || null,

@@ -16,7 +16,7 @@ const EFFECT_SCALE = 100; // pops and housing are displayed ×100 (100 = 1 pop),
 const EPSILON = 0.001;
 
 /** Planet values compared besides the resources; `higherIsBetter: false` = an increase is highlighted as worse. */
-export const COMPARED_CONDITIONS = [
+const COMPARED_CONDITIONS = [
   { id: "stability", i18nKey: "compareStability", higherIsBetter: true },
   { id: "happiness", i18nKey: "compareHappiness", higherIsBetter: true },
   { id: "crime", i18nKey: "compareCrime", higherIsBetter: false },
@@ -25,7 +25,7 @@ export const COMPARED_CONDITIONS = [
 ];
 
 /** Snapshot of the values compared: net resources of the planet and the planet conditions (null = not applicable). */
-export function snapshotTotals(totals, label) {
+function snapshotTotals(totals, label) {
   const conditions = totals.conditions || {};
   return {
     label: label || "",
@@ -66,11 +66,6 @@ export function compareSnapshots(a, b) {
 }
 
 let pinned = null;
-
-/** Current scenario A (null = none pinned). */
-export function getScenarioA() {
-  return pinned;
-}
 
 /**
  * Draws the comparison panel. `helpers`: { lang, totals, planetName, resourceIcon(id), formatAmount(amount, forceSign),

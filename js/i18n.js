@@ -26,7 +26,7 @@ export function addStrings(area) {
     for (const lang of SUPPORTED_LANGS) Object.assign(strings[lang], area[lang]);
 }
 
-export function getStoredLang() {
+function getStoredLang() {
     try {
         const stored = window.localStorage.getItem(STORAGE_KEY);
         if (stored && SUPPORTED_LANGS.includes(stored)) return stored;

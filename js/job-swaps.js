@@ -81,12 +81,12 @@ export function swapRuleMet(rule, ctx) {
   }
 }
 
-export function swapConditionsMet(swap, ctx) {
+function swapConditionsMet(swap, ctx) {
   return (swap.requires || []).every((rule) => swapRuleMet(rule, ctx));
 }
 
 /** The swap can apply in this empire and its conditions are met. */
-export function swapActive(swap, ctx) {
+function swapActive(swap, ctx) {
   return empireFits(swap, ctx) && swapConditionsMet(swap, ctx);
 }
 
@@ -162,7 +162,7 @@ export function swapGestaltUpkeep(jobId, ctx) {
 }
 
 /** Top-level conditions of a swap that are not met. */
-export function unmetSwapRules(swap, ctx) {
+function unmetSwapRules(swap, ctx) {
   return (swap.requires || []).filter((rule) => !swapRuleMet(rule, ctx));
 }
 

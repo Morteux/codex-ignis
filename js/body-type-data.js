@@ -19,13 +19,6 @@
  * Superstructures" are on no technology page: none of them is listed here.
  */
 
-/** Rules shared by the nine regular planets (and the default for any body without an entry in BODY_TYPE_RULES). */
-export const REGULAR_BODY_RULES = {
-  planetCapacity: 400,
-  districtLayout: "standard", // urban primary + generator/mining/agriculture (current model)
-  sizeRange: { min: 12, max: 25, moonMin: 10, moonMax: 15 }
-};
-
 /**
  * Overrides per celestial type id (ids from js/celestial-data.js).
  * - planetCapacity: per free district slot (info only; pop growth is out of scope).

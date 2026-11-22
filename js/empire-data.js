@@ -104,7 +104,7 @@ const FANATIC_OF = {
 };
 
 /** ¿La ética seleccionada `selectedEthicId` cumple el requisito `requiredEthicId`? (la fanática también cumple el requisito de su base). */
-export function ethicSatisfies(selectedEthicId, requiredEthicId) {
+function ethicSatisfies(selectedEthicId, requiredEthicId) {
   if (!selectedEthicId) return false;
   if (selectedEthicId === requiredEthicId) return true;
   return FANATIC_OF[selectedEthicId] === requiredEthicId;

@@ -57,7 +57,7 @@ const authority = (...ids) => ({ type: "authority", ids });
 const notAuthority = (...ids) => ({ type: "notAuthority", ids });
 const NOT_FEDERATION = { type: "notFederation" };
 
-export const POLICY_GROUPS = [
+const POLICY_GROUPS = [
   {
     id: "economic",
     i18nKey: "policyGroupEconomic",
@@ -131,7 +131,7 @@ export function isGestaltContext(ctx) {
 }
 
 /** ¿Se muestra este grupo de políticas para este tipo de imperio? */
-export function policyGroupApplies(group, ctx) {
+function policyGroupApplies(group, ctx) {
   if (group.appliesTo === "all") return true;
   return group.appliesTo === (isGestaltContext(ctx) ? "gestalt" : "individualist");
 }

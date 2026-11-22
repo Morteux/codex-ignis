@@ -18,7 +18,7 @@ function resourceName(lang, resourceId) {
 }
 
 /** Applied effect lines of an edict, in the wiki's wording. */
-export function edictEffectLines(lang, edict) {
+function edictEffectLines(lang, edict) {
   const effects = edict.effects || {};
   const jobName = (jobId) => t(lang, JOBS[jobId].i18nKey);
   const lines = [];

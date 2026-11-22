@@ -196,7 +196,7 @@ export function checkPlanetName(rawName, ignoreId) {
   return validateName(rawName, ignoreId);
 }
 
-export function isPlanetNameTaken(rawName, ignoreId) {
+function isPlanetNameTaken(rawName, ignoreId) {
   return validateName(rawName, ignoreId).error === "duplicate";
 }
 

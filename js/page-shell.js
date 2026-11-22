@@ -50,7 +50,7 @@ export function onLanguageChange(callback) {
   listeners.push(callback);
 }
 
-export function setLanguage(lang) {
+function setLanguage(lang) {
   currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
   storeLang(currentLang);
   applyPageTranslations();

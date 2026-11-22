@@ -48,7 +48,7 @@ export function divideEffect(rawAmount) {
  * - Tope real de 21 ranuras de edificios por colonia, venga de donde venga
  *   el resto de ranuras.
  */
-export const BUILDING_SLOT_RULES = {
+const BUILDING_SLOT_RULES = {
   base: 6,
   perExtraGroup: 3,
   max: 21

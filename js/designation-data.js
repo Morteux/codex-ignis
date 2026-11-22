@@ -82,7 +82,7 @@ const notSpecies = (...ids) => ({ type: "notSpecies", ids });
 // Requirement not modelled (origin, planet modifier, relic attunement): never blocks, shown next to the option.
 const unmodelled = (i18nKey) => ({ type: "unmodelled", i18nKey });
 
-import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
+import { buildingRequirementsMet } from "./building-requirements.js";
 
 export const DESIGNATION_CATEGORY_ORDER = [
   "unity",
@@ -174,11 +174,6 @@ const DESIGNATIONS_BY_ID = Object.fromEntries(DESIGNATIONS.map((d) => [d.id, d])
 /** ¿Se puede elegir esta designación con el contexto dado (ver requirementContext en planet-sim.js)? */
 export function designationAvailable(designation, ctx) {
   return buildingRequirementsMet(designation, ctx);
-}
-
-/** Reglas de requisito que NO se cumplen (para explicarle al usuario por qué está bloqueada). */
-export function designationUnmetRules(designation, ctx) {
-  return unmetRequirements(designation, ctx);
 }
 
 export function getDesignation(id) {

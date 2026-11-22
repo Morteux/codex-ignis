@@ -34,7 +34,7 @@ import { CURRENT_RULESET_ID } from "./data-version.js";
 
 const rule = (combine, floor, stacking, appliesTo, pool) => ({ combine, floor, stacking, appliesTo, ...(pool ? { pool } : {}) });
 
-export const STACKING_RULES = {
+const STACKING_RULES = {
   "stellaris-pc-4.5.2": {
     jobFlat: rule("add", null, "modifierStackJobFlat", "jobUnitOutput"),
     jobEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
@@ -53,7 +53,7 @@ export const STACKING_RULES = {
 };
 
 /** Orden en que computeTotals() aplica los pasos (claves i18n de la lista del panel). */
-export const CALCULATION_ORDER = {
+const CALCULATION_ORDER = {
   "stellaris-pc-4.5.2": ["modifierOrder1", "modifierOrder2", "modifierOrder3", "modifierOrder4", "modifierOrder4a", "modifierOrder4b", "modifierOrder5", "modifierOrder6", "modifierOrder7"]
 };
 

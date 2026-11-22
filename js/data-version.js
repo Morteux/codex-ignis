@@ -36,7 +36,7 @@
 
 export const SCHEMA_VERSION = 1;
 
-export const VERIFICATION = {
+const VERIFICATION = {
   UNVERIFIED: "unverified",
   WIKI_VERIFIED: "wiki-verified",
   GAME_DATA_VERIFIED: "game-data-verified",
@@ -72,7 +72,7 @@ export function getDataVersion(id) {
   return DATA_VERSIONS.find((version) => version.id === id) || null;
 }
 
-export function isSupportedRuleset(id) {
+function isSupportedRuleset(id) {
   return getDataVersion(id) !== null;
 }
 
@@ -174,10 +174,10 @@ export const DATA_COLLECTIONS = {
 };
 
 /** Correcciones por entrada: clave "coleccion:idEntrada" -> { verification?, sources? }. Vacío hasta que se verifique algo por separado. */
-export const PROVENANCE_OVERRIDES = {};
+const PROVENANCE_OVERRIDES = {};
 
 /** Procedencia de una entrada concreta: { rulesetId, collection, file, sources, verification }. null si la colección no existe. */
-export function getProvenance(collectionId, entryId) {
+function getProvenance(collectionId, entryId) {
   const collection = DATA_COLLECTIONS[collectionId];
   if (!collection) return null;
   const override = (entryId != null && PROVENANCE_OVERRIDES[`${collectionId}:${entryId}`]) || {};

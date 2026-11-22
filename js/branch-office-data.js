@@ -71,7 +71,7 @@ const trade = (jobs, amount, perCivic, civics) => ({ jobs, amount, perCivic, civ
 export const BRANCH_OFFICE_SLOTS_BY_TIER = { 1: 0, 2: 1, 3: 2, 4: 4, 5: 4 };
 
 /** Where a branch office can exist (host side). */
-export const BRANCH_OFFICE_HOST_RULES = {
+const BRANCH_OFFICE_HOST_RULES = {
   notCelestial: ["nanite", "synapticLathe"], // Nanite Worlds (Holdings); Synaptic Lathe "Cannot have branch offices" (Celestial object)
   notGestalt: true, // systems owned by a Gestalt Consciousness
   notCivic: ["civicFanaticPurifiers"], // ... or Fanatic Purifiers (fallen empires: out of scope)
@@ -270,9 +270,6 @@ export const BRANCH_OFFICE_BUILDINGS = [
     upkeep: { zro: 0.5 }, cost: cost(480, 25, 800, "rare_crystals", 80),
     requires: [tradition("branchReqPsiCorps"), ownerUnmodelled("branchReqNotEndbringers")] }
 ];
-
-/** Jobs the branch office buildings create that the simulator does not have yet (job data added in P19.3 from the 4.5.2 Jobs page). */
-export const BRANCH_OFFICE_NEW_JOBS = ["prosperity_preacher", "medical_worker", "augmentor", "orderly", "merchant", "roboticist", "empathic_marketer"];
 
 // ── Helpers (P19.2) ─────────────────────────────────────────────────────
 
