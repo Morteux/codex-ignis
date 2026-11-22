@@ -18,7 +18,10 @@ export const strings = {
         bingoTypeLabel: "Tipo de bingo",
         bingoTypeOrigins: "Orígenes",
         bingoTypePrinciples: "Principios",
-        bingoTypeEmpty: "Todavía no hay principios cargados. Vuelve pronto.",
+        bingoTypeEmpty: "Este bingo todavía no tiene casillas. Vuelve pronto.",
+        // Draft descriptions (P24.1), pending review
+        bingoOriginsDescription: "Marca los orígenes con los que ya has jugado una partida.",
+        bingoPrinciplesDescription: "Marca los principios que ya has usado en algún imperio.",
         a11yBingoGrid: "Casillas del bingo",
     },
     en: {
@@ -33,7 +36,10 @@ export const strings = {
         bingoTypeLabel: "Bingo type",
         bingoTypeOrigins: "Origins",
         bingoTypePrinciples: "Civics",
-        bingoTypeEmpty: "No civics loaded yet. Check back soon.",
+        bingoTypeEmpty: "This bingo has no tiles yet. Check back soon.",
+        // Draft descriptions (P24.1), pending review
+        bingoOriginsDescription: "Mark the origins you have already played a game with.",
+        bingoPrinciplesDescription: "Mark the civics you have already used in an empire.",
         a11yBingoGrid: "Bingo squares",
     },
     jp: {
@@ -48,7 +54,10 @@ export const strings = {
         bingoTypeLabel: "ビンゴの種類",
         bingoTypeOrigins: "起源",
         bingoTypePrinciples: "国是",
-        bingoTypeEmpty: "国是はまだ登録されていません。またお越しください。",
+        bingoTypeEmpty: "このビンゴにはまだマスがありません。またお越しください。",
+        // Draft descriptions (P24.1), pending review
+        bingoOriginsDescription: "これまでにプレイしたことのある起源をマークしましょう。",
+        bingoPrinciplesDescription: "これまでに帝国で使ったことのある国是をマークしましょう。",
         a11yBingoGrid: "ビンゴのマス",
     },
 };

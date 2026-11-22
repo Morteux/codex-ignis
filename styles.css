@@ -939,18 +939,31 @@ h1 {
     cursor: progress;
 }
 
+.bingo-description {
+    margin: .4rem 0 0;
+    color: var(--muted);
+    font: .75rem var(--mono);
+}
+
+/* --bingo-cell is the iconSize of the bingo (js/bingo-data.js), set by js/bingo.js. */
 .bingo-grid {
+    --bingo-cell: 110px;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(var(--bingo-cell), 1fr));
     gap: .6rem;
     padding: 2.2rem 0;
 }
 
-/* Las casillas de principios (civics) se ven mucho más pequeñas que las de
-   orígenes: no necesitan tanto tamaño como estos últimos. */
-.bingo-grid--principles {
-    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
+/* Bingos with small icons (the civics) get tighter gaps and padding. */
+.bingo-grid--compact {
     gap: .35rem;
+}
+
+/* "shape" layout: every cell at its own row and column (e.g. the ethics wheel). */
+.bingo-grid--shape {
+    grid-template-columns: repeat(var(--bingo-shape-columns), var(--bingo-cell));
+    grid-template-rows: repeat(var(--bingo-shape-rows), auto);
+    justify-content: center;
 }
 
 .bingo-card {
@@ -966,7 +979,7 @@ h1 {
     cursor: pointer;
 }
 
-.bingo-grid--principles .bingo-card {
+.bingo-grid--compact .bingo-card {
     padding: .3rem;
 }
 
@@ -974,7 +987,8 @@ h1 {
     border-color: var(--accent-dim);
 }
 
-.bingo-card img {
+.bingo-card img,
+.bingo-card-slot {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -1028,6 +1042,12 @@ h1 {
     filter: none;
 }
 
+/* Item without icon (img: null): an empty slot of the same size as an icon. */
+.bingo-card-slot {
+    display: block;
+    border-style: dashed;
+}
+
 /* Icon that did not load: keep the cell size and show the name instead. */
 .bingo-card.is-image-missing {
     position: relative;
@@ -1061,11 +1081,11 @@ h1 {
 /* Smaller cells on mobile; after the base rules so they win (same specificity). */
 @media (max-width: 700px) {
     .bingo-grid {
-        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(calc(var(--bingo-cell) * .8), 1fr));
     }
 
-    .bingo-grid--principles {
-        grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+    .bingo-grid--shape {
+        grid-template-columns: repeat(var(--bingo-shape-columns), minmax(0, calc(var(--bingo-cell) * .8)));
     }
 }
 

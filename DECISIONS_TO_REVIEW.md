@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P24.1 — Generic bingo engine (2026-11-22)
+- [ ] **Data split**: `BINGOS` (the bingos) is in `js/bingo-data.js`; the origin and civic item lists moved to the new `js/bingo-items.js`, because the simulator (`empire.js`, `planet-library-ui.js`) imports them and must not load the bingo page texts (the i18n audit requires it).
+- [ ] **Layouts**: `grid` keeps the array order, fills the screen with as many columns as fit (as before) and uses `columns` (9) only in the PNG; `ordered` follows `order` (list of i18n keys; unlisted items go last) and otherwise works like `grid`; `shape` puts each cell at `cells[key] = [row, col]` on screen and in the PNG, and hides items without a position. Origins use `ordered` with the current list order (assumed to be the in-game order); civics use `grid`.
+- [ ] **`iconSize`** is the minimum cell width in px (110 origins, 58 civics); on mobile it is 80% of it (88 and 46.4 px; it was 46). Below 80 px the board also gets the tighter gaps and padding the civics had.
+- [ ] **Description**: each bingo has a one-line description under the controls (new, small and muted; the only visible change). The texts are drafts in es/en/jp to review (`bingoOriginsDescription`, `bingoPrinciplesDescription`). `bingoTypeEmpty` now says "this bingo has no tiles yet" instead of naming the civics.
+- [ ] **Tags and DLC**: civics get a tag from their icon name (`corporate`, `hive`, `machine`); no DLC is filled in yet (it needs the game data). Both are written on the card as `data-tags` / `data-dlc`, unused for now.
+- [ ] **Selector**: the options are built from `BINGOS`, so the browser no longer restores the last selected bingo after a reload (it opens on the first one); the marks are now kept per i18n key instead of per position.
+
 ## P23.10 — Shared modal helper (2026-11-22)
 - [ ] **New module `js/modal.js`** (`openModal(overlay, { focusables, initialFocus, onCancel, onKeyDown, onClose })`, returns `close()`), used by `confirmChoice()` and `promptText()` (`js/confirm-dialog.js`) and the wiki image lightbox (`js/app.js`). The dialogs are still built on the fly and removed on close; the lightbox stays in `index.html` and only its `hidden` flag changes.
 - [ ] **Unified details** (no visible change): the Tab trap always moves the focus itself (the confirmation dialog only did it at the first and last button; inside it the result is the same); the focus goes back to the opener only if it is still in the page (as the lightbox did); the lightbox now handles Escape in the capture phase and stops it, like the dialogs, and its keydown listener only exists while it is open.

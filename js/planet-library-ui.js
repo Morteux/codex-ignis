@@ -28,7 +28,7 @@ import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet
 import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { AUTHORITIES, ETHIC_ICONS, ETHIC_OPTIONS } from "./empire-data.js";
-import { PRINCIPLE_BINGO } from "./bingo-data.js";
+import { PRINCIPLE_BINGO } from "./bingo-items.js";
 import { resolvePolicies, getPolicyGroup, getPolicyOption } from "./policy-data.js";
 import { STELLARIS_ASSETS_BASE } from "./asset-config.js";
 import { SCHEMA_VERSION, checkRuleset } from "./data-version.js";

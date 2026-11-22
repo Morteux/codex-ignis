@@ -25,7 +25,7 @@ import "./i18n-simulator.js";
 import "./i18n-empire-names.js";
 import { getLang, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
-import { PRINCIPLE_BINGO } from "./bingo-data.js";
+import { PRINCIPLE_BINGO } from "./bingo-items.js";
 import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset, emitEdictsRemoved } from "./planet-state.js";
 import { resolveEdicts } from "./edict-data.js";
 import { renderEdictsList } from "./edicts-ui.js";

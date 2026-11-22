@@ -1,20 +1,17 @@
 /**
- * Bingo de Stellaris (orígenes y principios).
+ * Stellaris bingos (bingo.html), generic engine (P24.1).
  *
- * La rejilla se genera en JS a partir de js/bingo-data.js según el tipo de
- * bingo elegido en el desplegable. Cada casilla es un botón: por defecto se
- * muestra en escala de grises; al pulsarla se marca como conseguida y se ve
- * a color (y se vuelve a pulsar para desmarcarla). El estado marcado se
- * mantiene al cambiar de idioma o al volver a un tipo de bingo ya visitado
- * durante la misma visita, pero no se guarda entre recargas de página.
+ * Every bingo is one entry of BINGOS (js/bingo-data.js): the selector lists them all and the
+ * board is built from the entry's layout ("grid", "ordered" or "shape"), icon size and items.
+ * Each cell is a button: greyscale by default, in colour once clicked (click again to unmark).
+ * The marks survive language changes and switching bingos during the visit, but not a reload.
  *
- * El botón de descarga genera una imagen PNG con el estado actual del
- * bingo que esté visible en ese momento (orígenes o principios), en una
- * rejilla fija de 9 columnas independiente de cómo se vea en pantalla.
+ * The download button draws a PNG of the visible bingo with its current marks: "grid" and
+ * "ordered" bingos in a fixed number of columns (layout.columns), "shape" bingos with their
+ * own cell positions, whatever the screen width.
  *
- * El idioma y las traducciones del marcado estático (data-i18n /
- * data-i18n-attr) los lleva el shell compartido (js/page-shell.js); este
- * módulo solo vuelve a pintar la rejilla al cambiar de idioma.
+ * The language and the translations of the static markup (data-i18n / data-i18n-attr) are
+ * handled by the shared shell (js/page-shell.js); this module only repaints the bingo.
  */
 
 import { t } from "./i18n.js";
@@ -22,105 +19,149 @@ import "./i18n-bingo.js";
 import "./i18n-empire-names.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
-import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
+import { BINGOS } from "./bingo-data.js";
 
-const BINGO_SETS = {
-    origins: { data: ORIGIN_BINGO, fileSlug: "origenes", titleKey: "bingoTypeOrigins" },
-    principles: { data: PRINCIPLE_BINGO, fileSlug: "principios", titleKey: "bingoTypePrinciples" }
-};
+const DEFAULT_COLUMNS = 9;
 
 const typeSelect = document.querySelector("#bingo-type");
+const descriptionEl = document.querySelector("#bingo-description");
 const grid = document.querySelector("#bingo-grid");
 const emptyMessage = document.querySelector("#bingo-empty");
 const downloadButton = document.querySelector("#bingo-download");
 const downloadStatus = document.querySelector("#bingo-download-status");
 
 let currentLang = getLang();
-// The browser may restore the select after a reload, so start from its value.
-let currentType = typeSelect && typeSelect.value in BINGO_SETS ? typeSelect.value : "origins";
-// Recuerda qué casillas están marcadas por tipo, mientras dure la visita.
+let currentBingo = BINGOS[0];
+// Marked cells per bingo, for the whole visit ("<bingo id>:<i18nKey>").
 const markedState = new Map();
 
-function cardKey(type, index) {
-    return `${type}:${index}`;
+function cardKey(bingo, item) {
+    return `${bingo.id}:${item.i18nKey}`;
 }
 
 /**
- * Construye una casilla de bingo (botón con imagen) para una entrada de
- * datos.
- *
- * En orígenes el nombre se muestra siempre como texto visible bajo la
- * imagen (clase ".bingo-card-title--visible"). En principios el nombre NO
- * se muestra como texto: solo aparece como tooltip nativo al pasar el
- * ratón por encima (atributo "title"), y como "aria-label" para que siga
- * siendo accesible con lector de pantalla. En ambos casos el texto sigue
- * existiendo dentro de ".bingo-card-title" porque buildBingoCanvas() lo
- * usa para escribirlo en la imagen descargada.
+ * Cells of a bingo in display order, each one with its 1-based [row, col] (null = let the
+ * screen grid place it; the PNG then uses `columns`).
  */
-function buildCard(entry, index) {
+function layoutCells(bingo) {
+    const layout = bingo.layout || { type: "grid" };
+    if (layout.type === "shape") {
+        return bingo.items
+            .filter((item) => layout.cells[item.i18nKey])
+            .map((item) => ({ item, position: layout.cells[item.i18nKey] }));
+    }
+    let items = bingo.items;
+    if (layout.type === "ordered") {
+        const rank = new Map(layout.order.map((key, index) => [key, index]));
+        items = [...items].sort((a, b) => (rank.get(a.i18nKey) ?? Infinity) - (rank.get(b.i18nKey) ?? Infinity));
+    }
+    return items.map((item) => ({ item, position: null }));
+}
+
+/**
+ * Builds one bingo cell (button with its icon). With `showNames` the name is visible under the
+ * icon; otherwise it is only the native tooltip ("title") and the "aria-label". In both cases
+ * the text stays in ".bingo-card-title", which buildBingoCanvas() writes on the PNG. An item
+ * without image (img: null) keeps an empty slot of the same size.
+ */
+function buildCard(bingo, item, position) {
     const card = document.createElement("button");
     card.type = "button";
     card.className = "bingo-card";
+    if (position) {
+        card.style.gridRow = String(position[0]);
+        card.style.gridColumn = String(position[1]);
+    }
+    if (item.tags?.length) card.dataset.tags = item.tags.join(" ");
+    if (item.dlc) card.dataset.dlc = item.dlc;
 
-    const isMarked = markedState.get(cardKey(currentType, index)) || false;
+    const key = cardKey(bingo, item);
+    const isMarked = markedState.get(key) || false;
     card.classList.toggle("is-marked", isMarked);
     card.setAttribute("aria-pressed", String(isMarked));
 
-    const name = t(currentLang, entry.i18nKey);
+    const name = t(currentLang, item.i18nKey);
     card.title = name;
     card.setAttribute("aria-label", name);
 
-    const img = document.createElement("img");
-    // CORS request, so the remote icons do not taint the canvas of the PNG download.
-    img.crossOrigin = "anonymous";
-    img.addEventListener("error", () => card.classList.add("is-image-missing"));
-    img.src = `${IMAGE_BASE}${entry.img}`;
-    img.alt = "";
-    img.loading = "lazy";
+    let icon;
+    if (item.img) {
+        icon = document.createElement("img");
+        // CORS request, so the remote icons do not taint the canvas of the PNG download.
+        icon.crossOrigin = "anonymous";
+        icon.addEventListener("error", () => card.classList.add("is-image-missing"));
+        icon.src = `${IMAGE_BASE}${item.img}`;
+        icon.alt = "";
+        icon.loading = "lazy";
+    } else {
+        icon = document.createElement("span");
+        icon.className = "bingo-card-slot";
+        card.classList.add("is-image-missing");
+    }
 
     const title = document.createElement("span");
-    title.className = currentType === "origins" ? "bingo-card-title bingo-card-title--visible" : "bingo-card-title";
+    title.className = bingo.showNames ? "bingo-card-title bingo-card-title--visible" : "bingo-card-title";
     title.textContent = name;
 
-    card.append(img, title);
+    card.append(icon, title);
 
     card.addEventListener("click", () => {
         const nowMarked = card.classList.toggle("is-marked");
         card.setAttribute("aria-pressed", String(nowMarked));
-        markedState.set(cardKey(currentType, index), nowMarked);
+        markedState.set(key, nowMarked);
     });
 
     return card;
 }
 
-/** Vuelve a pintar la rejilla completa para el tipo de bingo actualmente seleccionado. */
+/** Fills the selector with every bingo of BINGOS, in the current language. */
+function renderSelector() {
+    if (!typeSelect) return;
+    typeSelect.replaceChildren(...BINGOS.map((bingo) => {
+        const option = document.createElement("option");
+        option.value = bingo.id;
+        option.textContent = t(currentLang, bingo.titleKey);
+        return option;
+    }));
+    typeSelect.value = currentBingo.id;
+}
+
+/** Repaints the whole board of the selected bingo. */
 function renderGrid() {
     if (!grid) return;
-    const entries = BINGO_SETS[currentType].data;
+    const bingo = currentBingo;
+    const layout = bingo.layout || { type: "grid" };
+    const cells = layoutCells(bingo);
 
-    // Clase según el tipo activo: permite que las casillas de principios se
-    // vean mucho más pequeñas que las de orígenes (ver styles.css).
-    grid.classList.remove("bingo-grid--origins", "bingo-grid--principles");
-    grid.classList.add(`bingo-grid--${currentType}`);
+    grid.className = `bingo-grid bingo-grid--${bingo.id} bingo-grid--${layout.type}`;
+    // Small icons also get tighter padding and gaps (the civics board).
+    grid.classList.toggle("bingo-grid--compact", bingo.iconSize < 80);
+    grid.style.setProperty("--bingo-cell", `${bingo.iconSize}px`);
+    if (layout.type === "shape") {
+        grid.style.setProperty("--bingo-shape-columns", String(layout.columns));
+        grid.style.setProperty("--bingo-shape-rows", String(layout.rows));
+    } else {
+        grid.style.removeProperty("--bingo-shape-columns");
+        grid.style.removeProperty("--bingo-shape-rows");
+    }
+    grid.dataset.bingo = bingo.id;
+
+    if (descriptionEl) descriptionEl.textContent = bingo.descriptionKey ? t(currentLang, bingo.descriptionKey) : "";
 
     grid.replaceChildren();
 
-    const hasEntries = entries.length > 0;
+    const hasEntries = cells.length > 0;
     grid.hidden = !hasEntries;
     if (emptyMessage) emptyMessage.hidden = hasEntries;
     if (downloadButton) downloadButton.disabled = !hasEntries;
 
-    if (!hasEntries) return;
-
-    entries.forEach((entry, index) => {
-        grid.append(buildCard(entry, index));
-    });
+    cells.forEach(({ item, position }) => grid.append(buildCard(bingo, item, position)));
 }
 
-/** Espera a que una imagen esté cargada, forzando la carga si era "lazy". */
+/** Waits for an image to load, forcing the load if it was "lazy". */
 function waitForImage(img) {
     // "complete" is also true for an icon that already failed: do not wait for it forever.
-    if (img.complete) return Promise.resolve();
+    if (!img || img.complete) return Promise.resolve();
     return new Promise((resolve) => {
         img.loading = "eager";
         img.addEventListener("load", () => resolve(), { once: true });
@@ -128,13 +169,13 @@ function waitForImage(img) {
     });
 }
 
-/** Lee una variable CSS del tema actual, con un valor de respaldo por si no existiera. */
+/** Reads a CSS variable of the current theme, with a fallback. */
 function readThemeColor(name, fallback) {
     const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     return value || fallback;
 }
 
-/** Reparte un texto en líneas que quepan en un ancho máximo dentro del canvas. */
+/** Splits a text into lines that fit a maximum width inside the canvas. */
 function wrapText(ctx, text, maxWidth) {
     const words = text.split(/\s+/);
     const lines = [];
@@ -152,11 +193,23 @@ function wrapText(ctx, text, maxWidth) {
     return lines;
 }
 
-/** Genera un <canvas> con todas las casillas del tipo activo, respetando cuáles están marcadas ahora mismo. */
+/** [row, col] (0-based) of every card on the PNG, and the size of the board in cells. */
+function canvasPositions(bingo, count) {
+    const layout = bingo.layout || { type: "grid" };
+    if (layout.type === "shape") {
+        const cells = layoutCells(bingo);
+        return { cols: layout.columns, rows: layout.rows, positions: cells.map(({ position }) => [position[0] - 1, position[1] - 1]) };
+    }
+    const cols = layout.columns || DEFAULT_COLUMNS;
+    const positions = Array.from({ length: count }, (_, index) => [Math.floor(index / cols), index % cols]);
+    return { cols, rows: Math.ceil(count / cols), positions };
+}
+
+/** Draws a <canvas> with every cell of the visible bingo and its current marks. */
 async function buildBingoCanvas() {
+    const bingo = currentBingo;
     const cards = grid.querySelectorAll(".bingo-card");
-    const cols = 9;
-    const rows = Math.ceil(cards.length / cols);
+    const { cols, rows, positions } = canvasPositions(bingo, cards.length);
     const cellImage = 130;
     const cellPadding = 10;
     const titleLines = 2;
@@ -165,11 +218,8 @@ async function buildBingoCanvas() {
     const cellHeight = cellImage + cellPadding + titleLines * lineHeight + cellPadding;
     const headerHeight = 78;
     const outerPadding = 24;
-    // Factor de sobremuestreo: el canvas se dibuja internamente al doble de
-    // resolución (todas las coordenadas de abajo siguen en píxeles "lógicos"
-    // gracias a ctx.scale) y luego se exporta tal cual. El resultado es un
-    // PNG más nítido -texto, bordes e iconos ampliados sin verse pixelados-
-    // sin tener que tocar ningún otro número de este archivo.
+    // Oversampling: the canvas is drawn at twice the resolution (the coordinates below stay in
+    // logical pixels thanks to ctx.scale) for a sharper PNG.
     const SCALE = 2;
 
     const background = readThemeColor("--background", "#07110c");
@@ -193,7 +243,7 @@ async function buildBingoCanvas() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const canvasTitle = t(currentLang, "bingoHeading").toUpperCase();
-    const canvasSubtitle = `Codex Ignis · ${t(currentLang, BINGO_SETS[currentType].titleKey)}`;
+    const canvasSubtitle = `Codex Ignis · ${t(currentLang, bingo.titleKey)}`;
 
     ctx.textBaseline = "top";
     ctx.fillStyle = text;
@@ -204,8 +254,7 @@ async function buildBingoCanvas() {
     ctx.fillText(canvasSubtitle, outerPadding, outerPadding + 32);
 
     cards.forEach((card, index) => {
-        const col = index % cols;
-        const row = Math.floor(index / cols);
+        const [row, col] = positions[index];
         const x = outerPadding + col * cellWidth;
         const y = outerPadding + headerHeight + row * cellHeight;
         const isMarked = card.classList.contains("is-marked");
@@ -220,7 +269,7 @@ async function buildBingoCanvas() {
 
         ctx.save();
         ctx.filter = isMarked ? "none" : "grayscale(100%)";
-        if (img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
+        if (img && img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
         ctx.restore();
 
         ctx.fillStyle = isMarked ? accent : muted;
@@ -239,34 +288,36 @@ async function buildBingoCanvas() {
 
 if (downloadButton) {
     downloadButton.addEventListener("click", async () => {
-        if (!BINGO_SETS[currentType].data.length) return;
+        if (!grid.querySelector(".bingo-card")) return;
         downloadButton.disabled = true;
         if (downloadStatus) downloadStatus.textContent = "";
         try {
             const canvas = await buildBingoCanvas();
             const link = document.createElement("a");
-            link.download = `bingo-${BINGO_SETS[currentType].fileSlug}-stellaris.png`;
+            link.download = `bingo-${currentBingo.fileSlug}-stellaris.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
         } catch (error) {
             if (downloadStatus) downloadStatus.textContent = t(currentLang, "bingoDownloadError");
         } finally {
-            downloadButton.disabled = BINGO_SETS[currentType].data.length === 0;
+            downloadButton.disabled = !grid.querySelector(".bingo-card");
         }
     });
 }
 
 if (typeSelect) {
     typeSelect.addEventListener("change", () => {
-        currentType = typeSelect.value in BINGO_SETS ? typeSelect.value : "origins";
+        currentBingo = BINGOS.find((bingo) => bingo.id === typeSelect.value) || BINGOS[0];
         renderGrid();
     });
 }
 
 onLanguageChange((lang) => {
     currentLang = lang;
+    renderSelector();
     renderGrid();
 });
 
 applyPageTranslations();
+renderSelector();
 renderGrid();

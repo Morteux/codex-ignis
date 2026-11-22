@@ -42,13 +42,12 @@
           <p class="intro-copy" data-i18n="bingoInstructions">Haz clic en una casilla para marcarla como conseguida.</p>
           <div class="bingo-controls">
             <label class="bingo-type-label" for="bingo-type" data-i18n="bingoTypeLabel">Tipo de bingo</label>
-            <select id="bingo-type" class="bingo-type-select">
-              <option value="origins" data-i18n="bingoTypeOrigins">Orígenes</option>
-              <option value="principles" data-i18n="bingoTypePrinciples">Principios</option>
-            </select>
+            <!-- Options built by js/bingo.js from BINGOS (js/bingo-data.js). -->
+            <select id="bingo-type" class="bingo-type-select"></select>
             <button type="button" id="bingo-download" class="bingo-download-btn" data-i18n="bingoDownloadButton">Descargar como imagen</button>
           </div>
         </div>
+        <p class="bingo-description" id="bingo-description"></p>
         <p class="bingo-download-status" id="bingo-download-status" role="status"></p>
       </section>
 
