@@ -10,6 +10,9 @@
  * título; solo se revela cuando el texto buscado coincide (total o
  * parcialmente) con alguno de los triggers. Si alguien conoce la URL exacta
  * (#/slug), también puede abrirla directamente.
+ * A translation (i18n.<lang>) may add its own `triggers`; they are added to
+ * the original ones, whatever the selected language. A query shorter than
+ * 3 characters only reveals an easter egg if it contains a whole trigger.
  *
  * ── Formato dentro del texto ──────────────────────────────────────────────
  * En cualquier campo "text" (de paragraph, heading, note, quote) o dentro de
@@ -593,7 +596,7 @@ export const knowledgeBase = [
         ],
         i18n: {
             en: {
-                title: "About titans and their auras",
+                title: "Mechanical Fleet Design",
                 blocks: [
                     { type: "heading", text: "Early Game" },
 
@@ -674,7 +677,7 @@ export const knowledgeBase = [
                 ]
             },
             jp: {
-                title: "タイタンとそのオーラについて",
+                title: "機械艦隊の設計",
                 icon: "✦",
                 blocks: [
                     { type: "heading", text: "ゲーム開始時" },
@@ -2824,17 +2827,17 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "Stellarisの情報を調べる際に利用または推奨している外部ページをまとめています。" },
                     {
                         type: "links", items: [
-                            { label: "📖Stellaris公式Wiki", url: "[https://stellaris.paradoxwikis.com/](https://stellaris.paradoxwikis.com/)", description: "Stellarisのゲームシステム、テクノロジー、コンポーネントなどを網羅した情報Wiki。" },
-                            { label: "💻Paradox公式フォーラム", url: "[https://forum.paradoxplaza.com/forum/tags/stellaris.10/](https://forum.paradoxplaza.com/forum/tags/stellaris.10/)", description: "公式発表、パッチノート、開発者との議論などを確認できます。" },
-                            { label: "🔬テクノロジーツリー", url: "[https://bloodstainedcrow.github.io/stellaris-tech-tree/](https://bloodstainedcrow.github.io/stellaris-tech-tree/)", description: "ゲーム内のテクノロジーツリーをインタラクティブに確認できます。[旧バージョン]\([https://turanar.github.io/stellaris-tech-tree/index.html](https://turanar.github.io/stellaris-tech-tree/index.html)。" },
-                            { label: "🌌公式アルバム", url: "[https://imgur.com/a/stellaris-wallpapers-Ao8zhxE](https://imgur.com/a/stellaris-wallpapers-Ao8zhxE)", description: "Stellaris公式壁紙のアルバム。" },
-                            { label: "🖥️Stellaris Assets", url: "[https://tuttu.github.io/StellarisAssets/](https://tuttu.github.io/StellarisAssets/)", description: "Stellaris向けのリソースやアセットをまとめたリポジトリ。" },
-                            { label: "📰Xenonion", url: "[https://xenonion.com/](https://xenonion.com/)", description: "信頼と実績の銀河ニュースチャンネル。" },
-                            { label: "🧮地区資源計算機", url: "[https://www.desmos.com/calculator/wgmehijwu3?lang=es](https://www.desmos.com/calculator/wgmehijwu3?lang=es)", description: "Stellarisにおける各種地区から生産される資源量を見積もるための計算機。" },
-                            { label: "👷‍♂️Community Builds", url: "[https://stellaris-build.com/](https://stellaris-build.com/)", description: "コミュニティによって作成された帝国設計。" },
-                            { label: "🌏RedditのStellarisコミュニティ", url: "[https://www.reddit.com/r/Stellaris/](https://www.reddit.com/r/Stellaris/)", description: "質問、ミーム、プレイ記録の共有などが行われている活発なコミュニティ。" },
-                            { label: "🎮Steam版Stellaris", url: "[https://store.steampowered.com/app/281990/Stellaris/](https://store.steampowered.com/app/281990/Stellaris/)", description: "SteamのStellaris本体およびDLCのストアページ。" },
-                            { label: "🕹️@IgnisStellarisのDiscord", url: "[https://discord.com/invite/PE2vGqxZpz](https://discord.com/invite/PE2vGqxZpz)", description: "[@IgnisStellaris]\([https://www.youtube.com/@IgnisStellaris](https://www.youtube.com/@IgnisStellaris))のコミュニティDiscordサーバー。" }
+                            { label: "📖Stellaris公式Wiki", url: "https://stellaris.paradoxwikis.com/", description: "Stellarisのゲームシステム、テクノロジー、コンポーネントなどを網羅した情報Wiki。" },
+                            { label: "💻Paradox公式フォーラム", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "公式発表、パッチノート、開発者との議論などを確認できます。" },
+                            { label: "🔬テクノロジーツリー", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "ゲーム内のテクノロジーツリーをインタラクティブに確認できます。[旧バージョン](https://turanar.github.io/stellaris-tech-tree/index.html)。" },
+                            { label: "🌌公式アルバム", url: "https://imgur.com/a/stellaris-wallpapers-Ao8zhxE", description: "Stellaris公式壁紙のアルバム。" },
+                            { label: "🖥️Stellaris Assets", url: "https://tuttu.github.io/StellarisAssets/", description: "Stellaris向けのリソースやアセットをまとめたリポジトリ。" },
+                            { label: "📰Xenonion", url: "https://xenonion.com/", description: "信頼と実績の銀河ニュースチャンネル。" },
+                            { label: "🧮地区資源計算機", url: "https://www.desmos.com/calculator/wgmehijwu3?lang=es", description: "Stellarisにおける各種地区から生産される資源量を見積もるための計算機。" },
+                            { label: "👷‍♂️Community Builds", url: "https://stellaris-build.com/", description: "コミュニティによって作成された帝国設計。" },
+                            { label: "🌏RedditのStellarisコミュニティ", url: "https://www.reddit.com/r/Stellaris/", description: "質問、ミーム、プレイ記録の共有などが行われている活発なコミュニティ。" },
+                            { label: "🎮Steam版Stellaris", url: "https://store.steampowered.com/app/281990/Stellaris/", description: "SteamのStellaris本体およびDLCのストアページ。" },
+                            { label: "🕹️@IgnisStellarisのDiscord", url: "https://discord.com/invite/PE2vGqxZpz", description: "[@IgnisStellaris](https://www.youtube.com/@IgnisStellaris)のコミュニティDiscordサーバー。" }
                         ]
                     },
 
@@ -3062,7 +3065,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
 
                     { type: "divider" },
-                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen" }
+                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen", portrait: "img/citas/Alien_Swarmprethoryn.png", portraitAlt: "Prethoryn Queen" }
                 ]
             },
             jp: {
@@ -3078,7 +3081,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "HAK HAK HAK? HAK HAK HAK" },
 
                     { type: "divider" },
-                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen" }
+                    { type: "quote", text: "MUGANI?", cite: "Prethoryn Queen", portrait: "img/citas/Alien_Swarmprethoryn.png", portraitAlt: "Prethoryn Queen" }
                 ]
             }
         }
@@ -3146,13 +3149,11 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "Eleventh hypothesis regarding the Class 30 Singularity: **the self-fulfilling prophecy hypothesis.** The Contingency, after fulfilling its purpose of eliminating a Class 30 Singularity, entered a millennia-long slumber, which ultimately caused its own protocol to fall into disrepair. It logically inferred that the best way to prevent another Class 30 Singularity was to sterilize the galaxy of sentient life. In doing so, it became the Class 30 Singularity itself." },
 
                     { type: "divider" },
-                    { type: "quote", text: "Class 30 Singularity", cite: "[REDACTED]" }
+                    { type: "quote", text: "Class 30 Singularity", cite: "[REDACTED]", portrait: "img/citas/Ignis Stellaris Contingency.png", portraitAlt: "Contingency" }
                 ]
             },
             jp: {
                 title: "クラス30特異点",
-                icon: "☣",
-                hidden: true,
                 triggers: ["特異点", "30", "singularidad", "クラス30"],
                 blocks: [
                     { type: "paragraph", text: "ここでは、コンティンジェンシーのプロトコルによれば、理論上、宇宙全体の構造を不安定化させる可能性がある「クラス30特異点」が、どのような脅威によって引き起こされうるのかを検討します。現在までに判明しているのは、技術的に最も進んだ帝国が利用しているクラス3およびクラス4特異点によって、安全かつ安定したエネルギー生産が可能であるということです。理論上、その26倍にも及ぶ特異点であれば、宇宙の構造そのものを引き裂き、それを成形、破壊、あるいは未知の方法で再起動することすら可能になるでしょう。" },
@@ -3180,7 +3181,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "クラス30特異点に関する第十一の仮説：\*\*自己成就予言仮説。\*\* コンティンジェンシーは、クラス30特異点を排除するという本来の目的を達成した後、数千年にわたる休眠状態へ入りました。その結果、自らのプロトコルそのものが変質していきました。そして論理的に導き出したのです。新たなクラス30特異点の出現を防ぐ最も確実な方法は、知的生命体を銀河から一掃することだ、と。こうしてコンティンジェンシー自身が、クラス30特異点そのものへと変貌してしまったのです。" },
 
                     { type: "divider" },
-                    { type: "quote", text: "クラス30特異点", cite: "[検閲済み]" }
+                    { type: "quote", text: "クラス30特異点", cite: "[検閲済み]", portrait: "img/citas/Ignis Stellaris Contingency.png", portraitAlt: "コンティンジェンシー" }
                 ]
             }
         }

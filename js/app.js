@@ -78,7 +78,7 @@ const diacriticGroups = {
 
 /** Convierte una palabra en un patrón regex que acepta variantes con y sin tilde. */
 function toDiacriticInsensitivePattern(word) {
-  return [...word]
+  return [...stripDiacritics(word)]
     .map((ch) => {
       const group = diacriticGroups[ch.toLowerCase()];
       return group ? `[${group}]` : escapeRegExp(ch);
@@ -98,32 +98,40 @@ const highlightWordsPattern = highlightWordsByLowerCase.size
     )
   : null;
 
+/**
+ * Applies a replacement only to the text of an HTML string, never inside tags
+ * (attributes such as href or style) nor inside entities such as &amp;.
+ */
+function replaceInText(html, pattern, replacer) {
+  return html
+    .split(/(<[^>]*>|&#?\w+;)/)
+    .map((part, index) => (index % 2 ? part : part.replace(pattern, replacer)))
+    .join("");
+}
+
 /** Colorea automáticamente las palabras definidas en js/highlight-config.js. */
 function applyWordHighlights(html) {
   if (!highlightWordsPattern) return html;
-  return html.replace(highlightWordsPattern, (match) => {
+  return replaceInText(html, highlightWordsPattern, (match) => {
     const color = highlightWordsByLowerCase.get(stripDiacritics(match).toLowerCase());
     return `<span class="hl-word" style="color: ${color}">${match}</span>`;
   });
 }
 
-/** Escapa el texto, colorea palabras clave, convierte **negrita** en <strong> y [texto](url) en enlaces. */
+/** Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces, y colorea palabras clave. */
 function formatText(text) {
   let html = escapeHtml(text);
-  html = applyWordHighlights(html);
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
-  return html;
+  return applyWordHighlights(html);
 }
 
-/** Resalta, como si estuviera pintado con un marcador, las palabras de la búsqueda. */
+/** Resalta, como si estuviera pintado con un marcador, las palabras de la búsqueda (con o sin tilde). */
 function highlightMatches(html, rawQuery) {
-  const query = rawQuery.trim();
-  if (!query) return html;
-  const words = query.split(/\s+/).filter(Boolean).map(escapeRegExp);
+  const words = rawQuery.trim().split(/\s+/).filter(Boolean).map((word) => toDiacriticInsensitivePattern(escapeHtml(word)));
   if (!words.length) return html;
-  const pattern = new RegExp(`(${words.join("|")})`, "gi");
-  return html.replace(pattern, '<mark class="hl-marker">$1</mark>');
+  const pattern = new RegExp(`(${words.join("|")})`, "giu");
+  return replaceInText(html, pattern, '<mark class="hl-marker">$1</mark>');
 }
 
 /** Abre la imagen en grande, centrada y a su resolución original (limitada al viewport). */
@@ -212,6 +220,13 @@ function renderBlock(block, query) {
       if (block.src) {
         img.addEventListener("click", () => openLightbox(block.src, block.alt || ""));
       }
+      // A missing image is replaced by a visible notice instead of a broken icon.
+      img.addEventListener("error", () => {
+        const missing = document.createElement("p");
+        missing.className = "entry-image-missing";
+        missing.textContent = t(currentLang, "imageMissing")(block.alt || block.src || "");
+        img.replaceWith(missing);
+      });
       figure.append(img);
       if (block.caption) {
         const caption = document.createElement("figcaption");
@@ -253,6 +268,7 @@ function renderBlock(block, query) {
         portrait.alt = block.portraitAlt || block.cite || "";
         portrait.loading = "lazy";
         portrait.addEventListener("click", () => openLightbox(block.portrait, block.portraitAlt || block.cite || ""));
+        portrait.addEventListener("error", () => portrait.remove());
         quote.append(portrait);
       }
 
@@ -325,7 +341,9 @@ function renderEntry(entry) {
  * antes de comparar contra los slugs "en crudo" de content.js.
  */
 function getSlugFromHash() {
-  const raw = window.location.hash.replace(/^#\//, "");
+  // Only "#/slug" names an entry; other hashes (the skip link's "#archivo") are in-page anchors.
+  if (!window.location.hash.startsWith("#/")) return null;
+  const raw = window.location.hash.slice(2);
   if (!raw) return "";
   try {
     return decodeURIComponent(raw);
@@ -345,18 +363,24 @@ function findEntryFromHash() {
 function openEntry(entry) {
   // encodeURIComponent asegura que slugs con "ñ" u otros caracteres no ASCII
   // queden codificados de forma consistente y puedan decodificarse después.
-  window.location.hash = `/${encodeURIComponent(entry.slug)}`;
+  const hash = `#/${encodeURIComponent(entry.slug)}`;
   currentEntry = entry;
-  refresh();
+  if (window.location.hash === hash) refresh();
+  else window.location.hash = hash; // the hashchange listener renders it
 }
+
+// Shorter queries only reveal an easter egg when they contain a whole trigger,
+// so typing a single letter does not list every secret entry.
+const MIN_PARTIAL_TRIGGER_QUERY = 3;
 
 /** Un easter egg solo aparece si el texto buscado coincide (total o parcialmente) con algún trigger. */
 function matchesEasterEgg(entry, normalizedQuery) {
   if (!normalizedQuery) return false;
-  const triggers = entry.triggers || [];
+  const triggers = [entry.triggers, ...Object.values(entry.i18n || {}).map((tr) => tr.triggers)].flat().filter(Boolean);
   return triggers.some((trigger) => {
     const normalizedTrigger = normalize(trigger);
-    return normalizedQuery.includes(normalizedTrigger) || normalizedTrigger.includes(normalizedQuery);
+    return normalizedQuery.includes(normalizedTrigger) ||
+      ([...normalizedQuery].length >= MIN_PARTIAL_TRIGGER_QUERY && normalizedTrigger.includes(normalizedQuery));
   });
 }
 
@@ -485,6 +509,7 @@ langButtons.forEach((btn) => {
 // Si el hash cambia (botones atrás/adelante del navegador, o alguien edita
 // la URL a mano estando ya en la página), se actualiza la entrada mostrada.
 window.addEventListener("hashchange", () => {
+  if (getSlugFromHash() === null) return; // in-page anchor: keep the open entry
   currentEntry = findEntryFromHash();
   refresh();
 });

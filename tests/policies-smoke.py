@@ -9,6 +9,7 @@ BLOCK_REMOTE=1 skips the remote asset images (much faster without network).
 import asyncio, json, os, sys, tempfile
 from playwright.async_api import async_playwright
 
+sys.stdout.reconfigure(encoding="utf-8")  # check names may hold JP text (Windows consoles default to cp1252)
 ROOT = os.getcwd()
 URL = "file://" + ROOT + "/planet-sim.html"
 failures = []
@@ -1084,6 +1085,102 @@ async def main():
             await other.click(".lang-btn[data-lang=en]")
             check("aria-labels translated: " + page_name, en_labels and not any(w in l for l in en_labels for w in spanish) and en_labels != es_labels and "Proyectos del archivo" in es_labels, (en_labels, es_labels))
         await other.close()
+        # P22.1: wiki QA — navigation, hashes, search, easter eggs, block types, languages, images
+        wiki = await ctx.new_page()
+        wiki_errors, wiki_missing = [], []
+        wiki.on("pageerror", lambda e: wiki_errors.append(str(e)))
+        wiki.on("requestfailed", lambda r: r.url.startswith("file:") and wiki_missing.append(r.url))
+        await wiki.goto("file://" + ROOT + "/index.html")
+        await wiki.wait_for_timeout(400)
+        await wiki.click(".lang-btn[data-lang=en]")
+        title_js = "()=>document.querySelector('#reader-title')?.textContent||''"
+        buttons_js = "()=>[...document.querySelectorAll('#index-empty .entry-button')].map(b=>b.textContent)"
+        kb = await wiki.evaluate("async()=>(await import('./js/content.js')).knowledgeBase.map(e=>({slug:e.slug,hidden:!!e.hidden}))")
+        listed = await wiki.evaluate(buttons_js)
+        count = await wiki.evaluate("()=>document.querySelector('#entry-count').textContent")
+        visible_n = len([e for e in kb if not e["hidden"]])
+        check("wiki: index lists every non-hidden entry and the count matches", len(listed) == visible_n and count == str(visible_n).zfill(2), (len(listed), count, visible_n))
+        await wiki.click("#index-empty .entry-button >> nth=1")
+        await wiki.wait_for_timeout(100)
+        first = (await wiki.evaluate("()=>[location.hash,document.querySelector('#reader-title').textContent]"))
+        check("wiki: clicking an entry opens it and sets #/slug", first[0] == "#/" + await wiki.evaluate("()=>encodeURIComponent('diseño-flotas-mecnicas')") and "Mechanical Fleet Design" in first[1], first)
+        await wiki.click("#index-empty .entry-button >> nth=2")
+        await wiki.wait_for_timeout(100)
+        await wiki.go_back()
+        await wiki.wait_for_timeout(150)
+        check("wiki: browser back returns to the previous entry", "Mechanical Fleet Design" in await wiki.evaluate(title_js), await wiki.evaluate(title_js))
+        await wiki.evaluate("()=>{location.hash='#archivo'}")
+        await wiki.wait_for_timeout(100)
+        check("wiki: the skip link anchor (#archivo) keeps the open entry", "Mechanical Fleet Design" in await wiki.evaluate(title_js), await wiki.evaluate(title_js))
+        await wiki.evaluate("()=>{location.hash='#/no-such-entry'}")
+        await wiki.wait_for_timeout(100)
+        check("wiki: an unknown #/slug shows the empty reader", await wiki.evaluate("()=>!!document.querySelector('#reader-body .empty-state')"))
+        await wiki.goto("file://" + ROOT + "/index.html#/MUGANI")
+        await wiki.wait_for_timeout(300)
+        check("wiki: a hidden entry opens from its URL", "MUGANI?" in await wiki.evaluate(title_js), await wiki.evaluate(title_js))
+
+        async def search(q):
+            await wiki.fill("#knowledge-search", q)
+            await wiki.wait_for_timeout(80)
+            return await wiki.evaluate(buttons_js)
+        eggs = ("Wishlist", "Lista de deseos", "MUGANI", "Singularity", "特異点")
+        short = [b for q in ("a", "s", "3", "mu") for b in await search(q) if any(x in b for x in eggs)]
+        check("wiki: one/two-letter searches reveal no easter egg", not short, short)
+        found = [await search("mugan"), await search("wishlist"), await search("clase 30")]
+        check("wiki: easter eggs found by (partial) trigger", any("MUGANI" in b for b in found[0]) and any("Lista de deseos" in b for b in found[1]) and any("Singularity" in b for b in found[2]), found)
+        await wiki.click(".lang-btn[data-lang=jp]")
+        jp_egg = await search("特異点")
+        await wiki.click(".lang-btn[data-lang=en]")
+        check("wiki: a trigger of a translation (JP 特異点) reveals its entry", any("特異点" in b for b in jp_egg), jp_egg)
+        await search("")
+        await wiki.goto("file://" + ROOT + "/index.html#/" + "enlaces-utiles")
+        await wiki.wait_for_timeout(300)
+        bad_markup_js = "()=>[...document.querySelectorAll('#reader-body [href],#reader-body [style]')].filter(e=>/[<>]|mark|hl-/.test((e.getAttribute('href')||'')+(e.getAttribute('style')||''))).map(e=>e.outerHTML.slice(0,120))"
+        for lang in ("es", "en", "jp"):
+            await wiki.click(".lang-btn[data-lang=" + lang + "]")
+            for q in ("https", "stellaris", "color", "amp"):
+                await search(q)
+                bad = await wiki.evaluate(bad_markup_js)
+                hrefs = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body a')].map(a=>a.getAttribute('href')).filter(h=>!/^https:\\/\\/[^\\s<>\\[\\]]+$/.test(h))")
+                check("wiki links (" + lang + ", search " + q + "): hrefs are clean URLs, no markup inside attributes", not bad and not hrefs, (bad, hrefs))
+        await wiki.click(".lang-btn[data-lang=es]")
+        await wiki.goto("file://" + ROOT + "/index.html#/" + "diseño-flotas-biologicas")
+        await wiki.wait_for_timeout(300)
+        await search("dano")
+        marks = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body mark.hl-marker')].map(m=>m.textContent.toLowerCase())")
+        check("wiki: search marker ignores accents (dano marks daño)", "daño" in marks, marks[:5])
+        await search("")
+        # every entry in every language: block types rendered, no raw markdown, no "undefined"
+        seen, raw = set(), []
+        for lang in ("es", "en", "jp"):
+            await wiki.click(".lang-btn[data-lang=" + lang + "]")
+            check("wiki: <html lang> follows the language (" + lang + ")", await wiki.evaluate("()=>document.documentElement.lang") == lang)
+            for e in kb:
+                await wiki.evaluate("(s)=>{location.hash='#/'+encodeURIComponent(s)}", e["slug"])
+                await wiki.wait_for_timeout(40)
+                r = await wiki.evaluate("""()=>{const b=document.querySelector('#reader-body');const sel={heading:'h3.entry-heading,h4,h5',list:'ul.entry-list',links:'ul.entry-links',image:'figure.entry-image',columns:'.entry-columns',note:'.entry-note',quote:'blockquote.entry-quote',divider:'hr',paragraph:'.entry-content > p'};
+                    return {types:Object.entries(sel).filter(([k,s])=>b.querySelector(s)).map(([k])=>k),title:document.querySelector('#reader-title').textContent,text:b.innerText}}""")
+                seen.update(r["types"])
+                if "undefined" in r["text"] or "**" in r["text"] or "](" in r["text"] or not r["title"].strip():
+                    raw.append(lang + "/" + e["slug"])
+        check("wiki: every block type of content.js renders", seen >= {"heading", "list", "links", "image", "columns", "note", "quote", "divider", "paragraph"}, seen)
+        check("wiki: no raw markdown, 'undefined' or empty titles in any entry/language", not raw, raw)
+        local_imgs = await wiki.evaluate("""async()=>{const kb=(await import('./js/content.js')).knowledgeBase;const s=new Set();
+            const walk=(bl)=>(bl||[]).forEach(x=>{if(x.src)s.add(x.src);if(x.portrait)s.add(x.portrait);if(x.columns)x.columns.forEach(walk)});
+            kb.forEach(e=>{walk(e.blocks);Object.values(e.i18n||{}).forEach(t=>walk(t.blocks))});
+            const missing=[];for(const src of s){if(/^https?:/.test(src))continue;try{const r=await fetch(src);if(!r.ok)missing.push(src)}catch(err){missing.push(src)}}return {n:s.size,missing}}""")
+        known_missing = {"img/naves/Base estelar artillada.png", "img/naves/Base estelar portahangares.png"}  # T2210: screenshots pending
+        check("wiki: every local image of content.js exists (except the pending T2210 ones)", local_imgs["n"] > 100 and set(local_imgs["missing"]) <= known_missing, local_imgs)
+        await wiki.click(".lang-btn[data-lang=en]")
+        await wiki.evaluate("()=>{location.hash='#/'+encodeURIComponent('diseño-naves-mecnicas')}")
+        await wiki.wait_for_timeout(100)
+        notice = await wiki.evaluate("()=>{const i=document.querySelector('#reader-body figure.entry-image img');const alt=i.alt,f=i.closest('figure');i.dispatchEvent(new Event('error'));const p=f.querySelector('.entry-image-missing');return [alt,p&&!f.querySelector('img')&&p.textContent]}")
+        check("wiki: a missing image shows a notice with its alt text", notice[1] and notice[0] in notice[1] and "Image not available" in notice[1], notice)
+        mug = await wiki.evaluate("async()=>{location.hash='#/MUGANI';await new Promise(r=>setTimeout(r,60));return !!document.querySelector('#reader-body .entry-quote-portrait')}")
+        check("wiki: translated quotes keep their portrait", mug)
+        check("wiki: no page errors", not wiki_errors, wiki_errors)
+        check("wiki: no local resource failed to load", not [u for u in wiki_missing if "Base%20estelar" not in u], wiki_missing)
+        await wiki.close()
         await browser.close()
 
 asyncio.run(main())

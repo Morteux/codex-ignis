@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.1 — Wiki QA (2026-11-22)
+- [ ] **Easter eggs need 3+ characters for partial matches**: a query revealed an easter egg if any trigger *contained* it, so typing "a", "s" or "3" listed every secret entry. Now a query shorter than 3 characters only reveals one when it contains a whole trigger (e.g. "30"); "mugan", "wishlist" or "clase 30" still work.
+- [ ] **Triggers of a translation count**: the JP translation of "Singularidad de clase 30" had its own `triggers` (特異点, クラス30) that were ignored; triggers in `i18n.<lang>` are now added to the original ones (in every language). Its stray `hidden`/`icon` fields in the JP translation were removed (unused).
+- [ ] **Fixed EN/JP title of "Diseño de flotas mecánicas"**: it was a copy of the titans article title ("About titans and their auras"). Proposed: EN "Mechanical Fleet Design", JP "機械艦隊の設計" (same pattern as 生体艦隊の設計). The article text was already the right one.
+- [ ] **Translated quotes get the portrait of the Spanish one** (MUGANI, Class 30 Singularity), with EN/JP `portraitAlt` "Prethoryn Queen" / "Contingency" / "コンティンジェンシー".
+- [ ] **Missing images show a notice** ("Image not available: <alt>", new key `imageMissing`) instead of a broken image; a missing quote portrait is just hidden.
+- [ ] **Hashes**: only `#/slug` opens an entry; other hashes (the skip link's `#archivo`) no longer close the open article.
+- [ ] **Search marker** ignores accents like the search itself ("dano" marks "daño") and, like the word colours, never touches tags, attributes or entities (searching "color" or "https" used to break the coloured words and links).
+- [ ] **Renamed `img/bionaves/Tejedor de apoyo con evasion y dano de largo alcance..png`** (double dot) so the article finds it.
+
 ## P13.9 — Landmark aria-labels of the other pages translated (2026-11-21)
 - [ ] **Also `404.html` and `tech-tree.html`**: they use the same `js/legal.js` and had the same hard-coded Spanish labels, so they were included.
 - [ ] **New keys** `a11yOnlineStatus`, `a11yArchiveExplorer`, `a11yKnowledgeNav`, `a11yEntryCount`, `a11yAdSlot`, `a11yLegalNav`, `a11yCloseImage`, `a11yBingoGrid`, with proposed EN/JP translations (e.g. JP "ビンゴのマス", "広告用の予約スペース"); the header, home link, projects nav and language switch reuse the P13.4 keys.

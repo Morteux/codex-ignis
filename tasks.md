@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **12 / 69 tareas (17%)**
+> Progreso: **13 / 70 tareas (19%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -64,7 +64,8 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 
 ## 22 · Site-wide QA (all pages)
 Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo, planet simulator, tech tree page, legal pages and 404. Every bug found is fixed in its task (or added as a new task if large) and gets a smoke test.
-- [ ] **T2201** (P22.1) QA of the wiki: navigation between articles, URL hashes, search, easter eggs, every block type of `content.js`, language switch, local images that do not exist, console errors
+- [x] **T2201** (P22.1) QA of the wiki: navigation between articles, URL hashes, search, easter eggs, every block type of `content.js`, language switch, local images that do not exist, console errors
+  - Prueba manual: open `index.html`, type "a" in the search (no secret entry appears), then "mugan" (MUGANI? appears); open "Enlaces útiles" in JP and click a link (it opens the real site); open "Diseño de naves mecánicas": the two starbase images show "Imagen no disponible: …".
 - [ ] **T2202** (P22.2) QA of the bingo: both bingos (origins, principles), marking, PNG download, language switch, missing icons, console errors
 - [ ] **T2203** (P22.3) QA of the legal pages, 404 and the tech tree placeholder: links, language switch, ads/consent stay disabled (`js/ads-config.js`), `vercel.json` routing of the 404
 - [ ] **T2204** (P22.4) Smoke test that opens every page in es/en/jp and fails on console errors or local resources that do not load (404)
@@ -75,6 +76,9 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
 - [ ] **T2208** (P22.8) Page metadata of every page: `<title>`, description, favicon, Open Graph, canonical, `lang`; consistent between pages
   - Modelo: sonnet
 - [ ] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23
+- [ ] **T2210** (P22.10) Add the two missing starbase screenshots of the "Diseño de naves mecánicas" article (`img/naves/Base estelar artillada.png`, `img/naves/Base estelar portahangares.png`) and drop them from `known_missing` in the smoke test
+  - ❓ Bloqueada: the owner has to provide the two in-game screenshots (artillery and carrier starbase designs); they are not in the repository.
+
 
 ## 23 · Refactoring (whole site)
 No behaviour change: every task keeps all smoke tests passing without changing what they check (only how they are organised, in T2306). Runs before the tech tree, which reuses the shared shell.
