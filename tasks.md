@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **32 / 129 tareas (25%)**
+> Progreso: **33 / 129 tareas (26%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -97,7 +97,8 @@ No behaviour change: every task keeps all smoke tests passing without changing w
   - Prueba manual: run `node tests/load-budget.mjs .`: planet-sim.html shows "fetch rounds 4 (2 with 15 modulepreload)" and ends with "problems 0"; open any page with the Network panel open: the font requested is `Orbitron-VariableFont_wght.woff2` and the titles still use Orbitron.
 - [x] **T2309** (P23.9) Shared simulator text helpers: `sign` / `num` / `pct`, `resourceName()` and `jobName()` (including the job key built from a swap id, also `swapJobI18nKey()` in `job-swaps.js`) are written again in `planet-sim.js`, `edicts-ui.js` and `branch-offices-ui.js`; move them to one module and import it
   - Prueba manual: open `planet-sim.html` and look at the Edicts tab (effect lines such as "+10% …" and resource names), the Sucursales tab (owner effects and job names) and a job swap condition in the jobs list: the texts are the same as before, in ES, EN and JP.
-- [ ] **T2310** (P23.10) Shared modal helper (overlay, Escape, click outside, focus trap, focus back to the opener) used by `confirmChoice()` and `promptText()` in `js/confirm-dialog.js` and by the wiki image lightbox in `app.js`, which repeat that code three times
+- [x] **T2310** (P23.10) Shared modal helper (overlay, Escape, click outside, focus trap, focus back to the opener) used by `confirmChoice()` and `promptText()` in `js/confirm-dialog.js` and by the wiki image lightbox in `app.js`, which repeat that code three times
+  - Prueba manual: open `index.html#/MUGANI` and click the portrait: the image opens; click the dark background and it closes with the focus back on the portrait. In `planet-sim.html` → Biblioteca, rename a planet: Tab cycles field → OK → Cancel and Escape closes the dialog.
 
 ## 24 · Generic bingo and new bingos
 - [ ] **T2401** (P24.1) Generic bingo engine: every bingo is one entry of `js/bingo-data.js` (id, title/description keys, items with image path or `null`, i18n key, tags, DLC), with its own `iconSize` and `layout`: `grid` (default, number of columns), `ordered` (explicit order, e.g. origins as in the game) or `shape` (custom cell positions, e.g. the ethics wheel). Missing images keep a reserved, fixed-size empty slot. Selector, marking and PNG download work with every layout. Origins and principles migrated with no visible change; smoke tests

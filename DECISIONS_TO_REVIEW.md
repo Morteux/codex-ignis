@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P23.10 — Shared modal helper (2026-11-22)
+- [ ] **New module `js/modal.js`** (`openModal(overlay, { focusables, initialFocus, onCancel, onKeyDown, onClose })`, returns `close()`), used by `confirmChoice()` and `promptText()` (`js/confirm-dialog.js`) and the wiki image lightbox (`js/app.js`). The dialogs are still built on the fly and removed on close; the lightbox stays in `index.html` and only its `hidden` flag changes.
+- [ ] **Unified details** (no visible change): the Tab trap always moves the focus itself (the confirmation dialog only did it at the first and last button; inside it the result is the same); the focus goes back to the opener only if it is still in the page (as the lightbox did); the lightbox now handles Escape in the capture phase and stops it, like the dialogs, and its keydown listener only exists while it is open.
+- [ ] **New smoke checks**: Tab / Shift+Tab wrap, Escape and click outside in both dialogs, the validation message of `promptText()`, and closing the lightbox by clicking outside the image or on ×.
+
 ## P23.9 — Shared simulator text helpers (2026-11-22)
 - [ ] **New module `js/sim-text-helpers.js`** (`sign`, `num`, `pct`, `swapJobI18nKey`, `resourceName(lang, id)`, `jobName(lang, id)`), imported by `edicts-ui.js`, `branch-offices-ui.js`, `job-swaps.js` and `planet-sim-text.js` (where `planet-sim.js`'s copies went in P23.3; it keeps `jobName(id)` / `resourceName(id)` in the page language as one-line wrappers). It only imports `i18n.js` and `planet-data.js`, so the Edicts tab does not pull in the simulator.
 - [ ] **Unified fallbacks**: a job without a JOBS entry is named by its built key everywhere (before, only the Sucursales tab and the job swap conditions did; the other places would have thrown); a non-resource id is shown as is (the Sucursales tab keeps its "naval capacity" / "all research" names for its two owner effects). No text shown today changes.

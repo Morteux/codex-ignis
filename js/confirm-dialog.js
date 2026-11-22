@@ -1,3 +1,5 @@
+import { openModal } from "./modal.js";
+
 /**
  * Diálogo modal de confirmación con varios botones (P5.7: Guardar / No
  * guardar / Cancelar). Se construye al vuelo, no necesita HTML previo.
@@ -7,11 +9,10 @@
  * del cuadro devuelven `cancelId` (por defecto "cancel"). `variant`:
  * "primary" | "danger" (opcional, solo estilo). El foco inicial va al botón
  * de cancelar para que Intro no ejecute por error una acción destructiva.
+ * Overlay, Escape, click outside, focus trap and focus back: js/modal.js (P23.10).
  */
 export function confirmChoice({ title, message, buttons, cancelId = "cancel" }) {
   return new Promise((resolve) => {
-    const previouslyFocused = document.activeElement;
-
     const overlay = document.createElement("div");
     overlay.className = "confirm-overlay";
 
@@ -40,7 +41,7 @@ export function confirmChoice({ title, message, buttons, cancelId = "cancel" }) 
       el.type = "button";
       el.className = `confirm-btn${button.variant ? ` is-${button.variant}` : ""}`;
       el.textContent = button.label;
-      el.addEventListener("click", () => close(button.id));
+      el.addEventListener("click", () => finish(button.id));
       actions.append(el);
       return el;
     });
@@ -48,40 +49,17 @@ export function confirmChoice({ title, message, buttons, cancelId = "cancel" }) 
     dialog.append(titleEl, messageEl, actions);
     overlay.append(dialog);
 
-    function close(result) {
-      document.removeEventListener("keydown", onKeyDown, true);
-      overlay.remove();
-      if (previouslyFocused && typeof previouslyFocused.focus === "function") previouslyFocused.focus();
+    const cancelIndex = buttons.findIndex((button) => button.id === cancelId);
+    const close = openModal(overlay, {
+      focusables: buttonEls,
+      initialFocus: buttonEls[cancelIndex] || buttonEls[0],
+      onCancel: () => finish(cancelId)
+    });
+
+    function finish(result) {
+      close();
       resolve(result);
     }
-
-    function onKeyDown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopPropagation();
-        close(cancelId);
-      } else if (event.key === "Tab" && buttonEls.length) {
-        // Mantiene el foco dentro del cuadro mientras está abierto.
-        const first = buttonEls[0];
-        const last = buttonEls[buttonEls.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
-      }
-    }
-
-    overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) close(cancelId);
-    });
-    document.addEventListener("keydown", onKeyDown, true);
-    document.body.append(overlay);
-
-    const cancelIndex = buttons.findIndex((button) => button.id === cancelId);
-    (buttonEls[cancelIndex] || buttonEls[0]).focus();
   });
 }
 
@@ -97,8 +75,6 @@ export function confirmChoice({ title, message, buttons, cancelId = "cancel" }) 
  */
 export function promptText({ title, message, value = "", acceptLabel, cancelLabel, maxLength = 60, validate }) {
   return new Promise((resolve) => {
-    const previouslyFocused = document.activeElement;
-
     const overlay = document.createElement("div");
     overlay.className = "confirm-overlay";
 
@@ -147,10 +123,8 @@ export function promptText({ title, message, value = "", acceptLabel, cancelLabe
     dialog.append(titleEl, messageEl, input, errorEl, actions);
     overlay.append(dialog);
 
-    function close(result) {
-      document.removeEventListener("keydown", onKeyDown, true);
-      overlay.remove();
-      if (previouslyFocused && typeof previouslyFocused.focus === "function") previouslyFocused.focus();
+    function finish(result) {
+      close();
       resolve(result);
     }
 
@@ -161,37 +135,22 @@ export function promptText({ title, message, value = "", acceptLabel, cancelLabe
         input.focus();
         return;
       }
-      close(input.value.trim());
-    }
-
-    function onKeyDown(event) {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        event.stopPropagation();
-        close(null);
-      } else if (event.key === "Enter" && document.activeElement === input) {
-        event.preventDefault();
-        accept();
-      } else if (event.key === "Tab") {
-        // Mantiene el foco dentro del cuadro mientras está abierto.
-        const order = [input, acceptBtn, cancelBtn];
-        const index = order.indexOf(document.activeElement);
-        const next = event.shiftKey ? (index <= 0 ? order.length - 1 : index - 1) : (index === order.length - 1 ? 0 : index + 1);
-        event.preventDefault();
-        order[next].focus();
-      }
+      finish(input.value.trim());
     }
 
     acceptBtn.addEventListener("click", accept);
-    cancelBtn.addEventListener("click", () => close(null));
+    cancelBtn.addEventListener("click", () => finish(null));
     input.addEventListener("input", () => { errorEl.textContent = ""; });
-    overlay.addEventListener("click", (event) => {
-      if (event.target === overlay) close(null);
+    const close = openModal(overlay, {
+      focusables: [input, acceptBtn, cancelBtn],
+      onCancel: () => finish(null),
+      onKeyDown: (event) => {
+        if (event.key === "Enter" && document.activeElement === input) {
+          event.preventDefault();
+          accept();
+        }
+      }
     });
-    document.addEventListener("keydown", onKeyDown, true);
-    document.body.append(overlay);
-
-    input.focus();
     input.select();
   });
 }

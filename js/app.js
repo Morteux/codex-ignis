@@ -5,6 +5,7 @@ import "./i18n-wiki.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
+import { openModal } from "./modal.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
@@ -126,42 +127,28 @@ function highlightMatches(html, rawQuery) {
   return replaceInText(html, pattern, '<mark class="hl-marker">$1</mark>');
 }
 
-/** Abre la imagen en grande, centrada y a su resolución original (limitada al viewport). */
-let lightboxOpener = null; // element focused before opening, focused again on close
+/**
+ * Abre la imagen en grande, centrada y a su resolución original (limitada al viewport).
+ * Modal (js/modal.js): the close button is its only control, so Tab stays on it; Escape or a
+ * click on the dark background (outside the image) closes it and the focus goes back to the opener.
+ */
+let closeLightbox = null; // set while the lightbox is open
 
 function openLightbox(src, alt) {
-  if (!lightbox || !lightboxImage || !src) return;
-  lightboxOpener = document.activeElement;
+  if (!lightbox || !lightboxImage || !lightboxClose || !src || closeLightbox) return;
   lightboxImage.src = resolveAssetUrl(src);
   lightboxImage.alt = alt || "";
-  lightbox.hidden = false;
-  lightboxClose?.focus();
-}
-
-function closeLightbox() {
-  if (!lightbox || !lightboxImage) return;
-  lightbox.hidden = true;
-  lightboxImage.src = "";
-  if (lightboxOpener && document.contains(lightboxOpener)) lightboxOpener.focus();
-  lightboxOpener = null;
-}
-
-if (lightbox && lightboxImage && lightboxClose) {
-  lightboxClose.addEventListener("click", closeLightbox);
-  // Cerrar al pulsar fuera de la imagen (sobre el fondo oscurecido).
-  lightbox.addEventListener("click", (event) => {
-    if (event.target === lightbox) closeLightbox();
-  });
-  document.addEventListener("keydown", (event) => {
-    if (lightbox.hidden) return;
-    if (event.key === "Escape") closeLightbox();
-    // Modal dialog: the close button is its only control, so Tab stays on it.
-    if (event.key === "Tab") {
-      event.preventDefault();
-      lightboxClose.focus();
+  closeLightbox = openModal(lightbox, {
+    focusables: [lightboxClose],
+    onCancel: () => closeLightbox(),
+    onClose: () => {
+      lightboxImage.src = "";
+      closeLightbox = null;
     }
   });
 }
+
+lightboxClose?.addEventListener("click", () => closeLightbox?.());
 
 /** Wraps a zoomable image in a button, so the lightbox also opens with the keyboard. */
 function zoomButton(img, className, src, alt) {

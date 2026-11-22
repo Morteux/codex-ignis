@@ -59,6 +59,31 @@ async def run(t):
     await pg.reload(); await pg.wait_for_timeout(500)
     check("empire switch: last empire kept after a reload", await pg.input_value("#planet-summary-empire") == ids["Alpha"])
 
+    # P23.10: both dialogs share js/modal.js — focus starts on Cancel / the text field, Tab and Shift+Tab wrap, Escape and a click outside cancel, focus goes back to the opener
+    await pg.evaluate("()=>{const b=document.createElement('button');b.id='modal-opener';b.textContent='opener';document.body.append(b);b.focus();window.__modal=import('./js/confirm-dialog.js')}")
+    await pg.evaluate("async()=>{const m=await window.__modal;window.__res=m.confirmChoice({title:'T',message:'M',buttons:[{id:'save',label:'Save'},{id:'drop',label:'Drop'},{id:'cancel',label:'Cancel'}]})}")
+    steps = [await pg.evaluate("()=>document.activeElement.textContent")]
+    for key in ("Tab", "Shift+Tab", "Shift+Tab"):
+        await pg.keyboard.press(key); steps.append(await pg.evaluate("()=>document.activeElement.textContent"))
+    await pg.keyboard.press("Escape")
+    confirm_out = await pg.evaluate("async()=>[await window.__res,document.activeElement.id,document.querySelectorAll('.confirm-overlay').length]")
+    await pg.evaluate("()=>document.querySelector('#modal-opener').focus()")
+    await pg.evaluate("async()=>{const m=await window.__modal;window.__res=m.promptText({title:'T',value:'Old',acceptLabel:'OK',cancelLabel:'No',validate:(v)=>v.trim()?null:'empty'})}")
+    prompt_steps = [await pg.evaluate("()=>[document.activeElement.tagName,document.activeElement.selectionEnd]")]
+    for key in ("Shift+Tab", "Tab"):
+        await pg.keyboard.press(key); prompt_steps.append(await pg.evaluate("()=>[document.activeElement.tagName,document.activeElement.textContent]"))
+    await pg.fill(".confirm-dialog-input", " "); await pg.keyboard.press("Enter")
+    prompt_steps.append(await pg.evaluate("()=>[document.querySelector('.confirm-dialog-error').textContent,document.querySelectorAll('.confirm-overlay').length]"))
+    await pg.fill(".confirm-dialog-input", " New "); await pg.keyboard.press("Enter")
+    prompt_out = await pg.evaluate("async()=>[await window.__res,document.activeElement.id]")
+    await pg.evaluate("async()=>{const m=await window.__modal;window.__res=m.promptText({title:'T',acceptLabel:'OK',cancelLabel:'No'})}")
+    await pg.mouse.click(5, 5)
+    outside = await pg.evaluate("async()=>{const r=[await window.__res,document.activeElement.id,document.querySelectorAll('.confirm-overlay').length];document.querySelector('#modal-opener').remove();return r}")
+    check("dialogs: shared modal focus trap, Escape / click outside cancel, focus back to the opener",
+          steps == ["Cancel", "Save", "Cancel", "Drop"] and confirm_out == ["cancel", "modal-opener", 0]
+          and prompt_steps == [["INPUT", 3], ["BUTTON", "No"], ["INPUT", ""], ["empty", 1]] and prompt_out == ["New", "modal-opener"] and outside == [None, "modal-opener", 0],
+          (steps, confirm_out, prompt_steps, prompt_out, outside))
+
     # P13.4: accessibility — ARIA tabs with arrow keys, and every visible control has an accessible name
     await tab("planet")
     aria = await pg.evaluate("()=>[...document.querySelectorAll('[role=tablist]')].map(l=>[...l.querySelectorAll('[role=tab]')].map(b=>[b.getAttribute('aria-selected'),b.tabIndex,!!document.getElementById(b.getAttribute('aria-controls'))&&document.getElementById(b.getAttribute('aria-controls')).getAttribute('role')==='tabpanel']))")

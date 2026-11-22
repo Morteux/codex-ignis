@@ -153,6 +153,16 @@ async def run(t):
     await a11y.keyboard.press("Escape")
     back = await a11y.evaluate("()=>[document.querySelector('#image-lightbox').hidden,document.activeElement.className]")
     check("a11y: wiki image zoom opens with Enter, focus on close, Tab stays, Escape returns focus", lb == [True, "lightbox-close", "dialog", "true"] and trapped == "lightbox-close" and back == [True, "entry-quote-zoom"], (lb, trapped, back))
+    # P23.10: the lightbox uses js/modal.js too — a click on the dark background or on × closes it, and it opens again
+    closes = []
+    for how in ("background", "button"):
+        await a11y.click("#reader-body .entry-quote-zoom")
+        await a11y.wait_for_timeout(100)
+        opened = await a11y.evaluate("()=>!document.querySelector('#image-lightbox').hidden&&!!document.querySelector('#lightbox-image').getAttribute('src')")
+        if how == "background": await a11y.mouse.click(3, 3)
+        else: await a11y.click("#lightbox-close")
+        closes.append(await a11y.evaluate("()=>[document.querySelector('#image-lightbox').hidden,document.querySelector('#lightbox-image').getAttribute('src'),document.activeElement.className]") + [opened])
+    check("wiki image zoom: a click outside the image or on × closes it, the focus goes back and it opens again", closes == [[True, "", "entry-quote-zoom", True]] * 2, closes)
     jp_lang = await a11y.evaluate("async()=>{const m=await import('./js/i18n.js');return m.htmlLangCode('jp')+','+m.htmlLangCode('es')}")
     check("a11y: <html lang> uses the BCP 47 tag ja for Japanese", jp_lang == "ja,es", jp_lang)
     await a11y.close()
