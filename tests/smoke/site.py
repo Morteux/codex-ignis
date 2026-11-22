@@ -13,6 +13,21 @@ async def run(t):
     hidden_imgs = [m.group(0) for p in hidden_panels for m in re.finditer(r"<img[^>]*>", p)]
     hidden_eager = [i[:80] for i in hidden_imgs if 'loading="lazy"' not in i]
     check("load budget: images of the simulator tabs hidden at start are lazy-loaded", len(hidden_panels) == 5 and len(hidden_imgs) >= 12 and not hidden_eager, hidden_eager[:3])
+    # P23.8: every <link rel="modulepreload"> of the simulator is in its import graph and shortens it; the font is WOFF2 with the TTF as fallback
+    preloads = re.findall(r'<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"', sim_html)
+    rounds = re.search(r"planet-sim\.html:[^\n]*\n(?:[^\n]*\n)*?  fetch rounds (\d+) \((\d+) with (\d+) modulepreload\)", budget.stdout)
+    check("load budget: every simulator modulepreload is in the page's graph and cuts the fetch rounds",
+          preloads and "PRELOAD NOT IN GRAPH" not in budget.stdout and rounds and int(rounds.group(3)) == len(preloads) and int(rounds.group(2)) < int(rounds.group(1)), (len(preloads), rounds and rounds.groups()))
+    ppg = await ctx.new_page()
+    requested = []
+    ppg.on("requestfinished", lambda r: requested.append(r.url))
+    await ppg.goto("file://" + ROOT + "/planet-sim.html")
+    await ppg.wait_for_timeout(500)
+    font_ok = await ppg.evaluate("()=>document.fonts.check('16px Orbitron')")
+    not_used = [p for p in preloads if not any(u.endswith("/" + p) for u in requested)]
+    fonts = [u.rsplit("/", 1)[-1] for u in requested if "/fonts/" in u]
+    check("load budget: the browser loads every preloaded module and the WOFF2 font (not the TTF)", not not_used and fonts == ["Orbitron-VariableFont_wght.woff2"] and font_ok, (not_used, fonts, font_ok))
+    await ppg.close()
     # P22.4: every page in es/en/jp — no page/console errors, no local resource that fails to load
     site_pages = ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html", "cookies.html", "404.html")
     for lang in ("es", "en", "jp"):

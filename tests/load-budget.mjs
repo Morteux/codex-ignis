@@ -1,10 +1,14 @@
 // Load budget report (P22.9): what every page downloads before it is usable.
 // Follows the static `import` graph of each page's module scripts and adds the
-// stylesheet, the fonts it declares and the local images written in the HTML.
+// stylesheet, the font each `@font-face` downloads (its first `src`, WOFF2 since
+// P23.8; the TTF after it is only a fallback) and the local images written in the HTML.
 // Images created by scripts (wiki articles, bingo, simulator icons) are not
 // counted: they are lazy-loaded and depend on what the user opens.
+// `<link rel="modulepreload">` (P23.8): every preloaded module must be in the
+// page's graph; "fetch rounds" is how many import levels the browser discovers
+// one after another, with and without the preloads.
 // Usage: node tests/load-budget.mjs [root]   (sizes in KB, raw / gzip)
-import { readFileSync, existsSync, statSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { join, dirname, normalize } from "node:path";
 import { gzipSync } from "node:zlib";
 
@@ -21,24 +25,38 @@ function sizeOf(path) {
   return sizes.get(path);
 }
 
-function moduleGraph(entry, seen = new Set()) {
-  if (seen.has(entry)) return seen;
-  seen.add(entry);
-  const source = readFileSync(join(root, entry), "utf8");
-  for (const match of source.matchAll(/^\s*(?:import|export)\s[^;]*?from\s+["'](\.[^"']+)["']/gms)) {
-    moduleGraph(normalize(join(dirname(entry), match[1])).replace(/\\/g, "/"), seen);
+const importsOf = new Map();
+function imports(file) {
+  if (!importsOf.has(file)) {
+    const source = existsSync(join(root, file)) ? readFileSync(join(root, file), "utf8") : "";
+    const pattern = /^\s*(?:import|export)\s[^;]*?from\s+["'](\.[^"']+)["']|^\s*import\s+["'](\.[^"']+)["']/gms;
+    importsOf.set(file, [...source.matchAll(pattern)].map((m) => normalize(join(dirname(file), m[1] || m[2])).replace(/\\/g, "/")));
   }
-  return seen;
+  return importsOf.get(file);
+}
+
+// Breadth-first: round 1 are the roots, round n the modules first found by round n − 1.
+function fetchRounds(roots) {
+  const round = new Map(roots.map((file) => [file, 1]));
+  let queue = [...round.keys()];
+  while (queue.length) {
+    const next = [];
+    for (const file of queue) for (const dep of imports(file)) if (!round.has(dep)) { round.set(dep, round.get(file) + 1); next.push(dep); }
+    queue = next;
+  }
+  return round;
 }
 
 const css = readFileSync(join(root, "styles.css"), "utf8");
-const fonts = [...css.matchAll(/url\(["']?([^"')]+\.(?:ttf|woff2?|otf))["']?\)/g)].map((m) => m[1]);
+const fonts = [...css.matchAll(/@font-face\s*{[^}]*?url\(["']?([^"')]+)["']?\)/g)].map((m) => m[1]);
 
 let problems = 0;
 for (const page of PAGES) {
   const html = readFileSync(join(root, page), "utf8");
-  const modules = new Set();
-  for (const match of html.matchAll(/<script[^>]*\bsrc="([^"]+)"/g)) moduleGraph(match[1], modules);
+  const scripts = [...html.matchAll(/<script[^>]*\bsrc="([^"]+)"/g)].map((m) => m[1]);
+  const preloads = [...html.matchAll(/<link[^>]*rel="modulepreload"[^>]*href="([^"]+)"/g)].map((m) => m[1]);
+  const graph = fetchRounds(scripts);
+  const modules = new Set(graph.keys());
   const images = [...html.matchAll(/<img[^>]*\bsrc="([^"]+)"/g)].map((m) => m[1]).filter((src) => src && !/^(https?:)?\/\//.test(src));
   const icons = [...html.matchAll(/<link[^>]*rel="icon"[^>]*href="([^"]+)"/g)].map((m) => m[1]);
   const usesCss = /href="styles\.css"/.test(html);
@@ -52,6 +70,13 @@ for (const page of PAGES) {
   rows.sort((a, b) => (b[1]?.raw || 0) - (a[1]?.raw || 0)).slice(0, 8).forEach(([file, s]) => {
     console.log(s ? `  ${kb(s.raw).padStart(7)} / ${kb(s.gzip).padStart(6)}  ${file}` : `  MISSING  ${file}`);
   });
+  if (modules.size) {
+    const depth = (map) => Math.max(...[...map.entries()].filter(([file]) => modules.has(file)).map(([, n]) => n));
+    const outside = preloads.filter((file) => !modules.has(file));
+    problems += outside.length;
+    console.log(`  fetch rounds ${depth(graph)}` + (preloads.length ? ` (${depth(fetchRounds([...scripts, ...preloads]))} with ${preloads.length} modulepreload)` : ""));
+    outside.forEach((file) => console.log(`  PRELOAD NOT IN GRAPH  ${file}`));
+  }
 }
 console.log(`\nproblems ${problems}`);
 process.exit(problems ? 1 : 0);

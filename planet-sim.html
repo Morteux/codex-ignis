@@ -6,6 +6,22 @@
     <meta name="description" content="Simulador de plantillas planetarias de Stellaris: elige edificios y comprueba sus empleos y recursos." data-i18n-attr="content:planetSimMetaDescription" />
     <title data-i18n="planetSimPageTitle">Planet_Sim · Codex Ignis</title>
     <link rel="stylesheet" href="styles.css" />
+    <!-- Modules the browser would only find after two levels of imports (P23.8); tests/load-budget.mjs checks they are in the page's graph -->
+    <link rel="modulepreload" href="js/building-requirements.js" />
+    <link rel="modulepreload" href="js/civic-rules.js" />
+    <link rel="modulepreload" href="js/branch-office-data.js" />
+    <link rel="modulepreload" href="js/branch-offices-ui.js" />
+    <link rel="modulepreload" href="js/i18n-common.js" />
+    <link rel="modulepreload" href="js/job-swaps.js" />
+    <link rel="modulepreload" href="js/job-swap-data.js" />
+    <link rel="modulepreload" href="js/planet-modifier-data.js" />
+    <link rel="modulepreload" href="js/planetary-features-data.js" />
+    <link rel="modulepreload" href="js/planet-sim-catalog-ui.js" />
+    <link rel="modulepreload" href="js/planet-sim-jobs-ui.js" />
+    <link rel="modulepreload" href="js/planet-sim-text.js" />
+    <link rel="modulepreload" href="js/scenario-compare.js" />
+    <link rel="modulepreload" href="js/stacking-rules.js" />
+    <link rel="modulepreload" href="js/stockpile-timeline.js" />
     <link rel="icon" type="image/png" href="img/Ignis Stellaris icon.png" />
     <meta name="theme-color" content="#07110c" />
     <link rel="canonical" href="planet-sim" />
