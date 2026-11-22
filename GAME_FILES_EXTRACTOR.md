@@ -75,7 +75,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 | `jobs` | `extract_jobs.py` | `common/pop_jobs`, `common/pop_categories` | `gfx/interface/icons/jobs` → `jobs/` |
 | `buildings` | `extract_buildings.py` | `common/buildings` | `gfx/interface/icons/buildings` → `buildings/` |
 | `districts`, `zones` (the district specializations), `zone_slots` | `extract_districts.py` | `common/districts`, `common/zones`, `common/zone_slots` | `gfx/interface/icons/districts` → `districs/` (sic, the existing folder); zones (sprite `GFX_district_specialization_*`) → `districts_specialization/`, named after the sprite |
-| `designations` | `extract_designations.py` | `common/colony_types` | `gfx/interface/icons/planet_designations`… → `designations/` (new) |
+| `designations` | `extract_designations.py` | `common/colony_types` | frames of the `GFX_colony_type` sheet (`gfx/interface/planetview/colony_type.dds`) → `designations/` (new), named after the sprite (`colony_type_mine.png`) |
 | `civics`, `origins` | `extract_civics.py` | `common/governments/civics` | `gfx/interface/icons/governments/civics` → `civics/`; `gfx/interface/icons/origins` → `origin_icons/` |
 | `authorities` | `extract_authorities.py` | `common/governments/authorities` | `gfx/interface/icons/governments/authorities` → `authorities/` |
 | `ethics` | `extract_ethics.py` | `common/ethics`, `common/ethic_categories` | `gfx/interface/icons/ethics` → `ethics/` |
@@ -122,7 +122,7 @@ The exact folders of the "…" icon rows are confirmed by the task of each set (
 
 ## 6. Icon exporter
 
-- Every `interface/**/*.gfx` is parsed; each `spriteType` (also `frameAnimatedSpriteType`, `corneredTileSpriteType`) gives `name` → `texturefile` (+ `noOfFrames`).
+- Every `interface/**/*.gfx` is parsed; each `spriteType` (also `frameAnimatedSpriteType`, `corneredTileSpriteType`) gives `name` → `texturefile` (+ `noOfFrames`). A sprite of a sprite sheet (`sprite_sheet_sprite_type = "GFX_sheet"`, `default_frame = n`, 1-based) uses frame `n` of the sheet's texture.
 - An item's icon is found by its sprite (`GFX_...`) when the game script names one, otherwise by the kind's convention (for example `gfx/interface/icons/jobs/job_<id>.dds`). Case and `\` / `/` are normalised.
 - `.dds` → `.png` with Pillow (DXT1/3/5, BC7 and uncompressed DDS). Multi-frame strips are cropped to the first frame (width / frames).
 - File name in StellarisAssets: if the target folder already has a file whose name matches case-insensitively (or after the folder's known prefix change, such as `ethic_authoritarian` → `Authoritarian`, `civic_x` → `Civic_x`, `d_x` → `D_x`), that exact name is reused and the file is replaced; otherwise the new file follows the folder's style (capitalised first letter if every file there has one). Replaced and new files are listed in the export report (for the commit message, T2524).

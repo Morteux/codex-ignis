@@ -1,0 +1,2882 @@
+{
+ "set": "designations",
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "sources": [
+  "common/colony_types"
+ ],
+ "count": 101,
+ "items": [
+  {
+   "id": "col_city",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Urban World",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = city_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_city\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_mining",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Mining World",
+   "desc": "Specializes in the production of £minerals£ §SMinerals§!.",
+   "planet_modifier": {
+    "miner_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "miner_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = city_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_mining\n}\nmodifier = {\n\tplanet_size > 13\n\tadd = -20\n}\nmodifier = {\n\thas_any_mining_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_mining\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_melting\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_mining\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_melting\n\t}\n\tmode = add\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = asteroid_belt\n\t\thas_modifier = mineral_rich\n\t\thas_modifier = ultra_rich\n\t\thas_modifier = extensive_moon_system\n\t\thas_modifier = asteroid_impacts\n\t\thas_modifier = carbon_world\n\t\thas_modifier = volcanic_mineral_rich\n\t\thas_modifier = volcanic_ultra_rich\n\t\thas_modifier = volcanic_subterranean\n\t\thas_modifier = volcanic_asteroid_impacts\n\t\thas_modifier = volcanic_hollow_planet\n\t\thas_modifier = volcanic_lavafall\n\t}\n}\nmodifier = {\n\tadd = -10\n\thas_modifier = mineral_poor\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_mine",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_mine.png"
+   }
+  },
+  {
+   "id": "col_farming",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Agri-World",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "farmer_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "farmer_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_food = yes\n}\nowner_or_space_owner = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = city_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = machine_world\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_farming\n}\nmodifier = {\n\tplanet_size > 13\n\tadd = -20\n}\nmodifier = {\n\thas_any_agriculture_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_farming\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_farming\n\t}\n\tmode = add\n}\nmodifier = {\n\tadd = 5\n\thas_modifier = lush_planet\n}\nmodifier = {\n\tadd = -10\n\tOR = {\n\t\thas_modifier = bleak_planet\n\t\thas_modifier = unbalanced_ecosystem\n\t\thas_modifier = irradiated_planet\n\t}\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_farm",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_farm.png"
+   }
+  },
+  {
+   "id": "col_generator",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Generator World",
+   "desc": "Specializes in the production of £energy£ §SEnergy§!.",
+   "planet_modifier": {
+    "technician_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "technician_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = city_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_generator\n}\nmodifier = {\n\tplanet_size > 13\n\tadd = -20\n}\nmodifier = {\n\thas_any_generator_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_generator\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_geothermal\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_generator\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_geothermal\n\t}\n\tmode = add\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = hazardous_weather\n\t\thas_modifier = strong_magnetic_field\n\t}\n}\nmodifier = {\n\tadd = -10\n\thas_modifier = energy_poor\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_generator",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_generator.png"
+   }
+  },
+  {
+   "id": "col_hive",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Nest World",
+   "desc": "Modestly increases £trade£ §HTrade§!.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nowner_or_space_owner? = {\n\tis_hive_empire = yes\n}\nowner_or_space_owner = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_hive\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n\tmult = 2\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_nexus",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Machine Nexus",
+   "desc": "Boosts £trade£ §STrade§!.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = machine_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nowner_or_space_owner? = {\n\tis_machine_empire = yes\n\tis_nomadic = no\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nexus\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n\tmult = 2\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_industrial",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Industrial World",
+   "desc": "Splits the focus of this colony between £consumer_goods£ §SConsumer Goods§! and £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = city_world\n\tuses_district_set = habitat\n\tuses_district_set = machine_world\n\tuses_district_set = hive_world\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_industrial\n}\nmodifier = {\n\tOR = {\n\t\thas_mixed_industrial_zone = yes\n\t\tAND = {\n\t\t\thas_any_foundry_zone = yes\n\t\t\thas_any_factory_zone = yes\n\t\t}\n\t}\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_industrial",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_industrial.png"
+   }
+  },
+  {
+   "id": "col_foundry",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Forge World",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = city_world\n\tuses_district_set = habitat\n\tuses_district_set = machine_world\n\tuses_district_set = hive_world\n\tuses_district_set = cosmogenesis_world\n}\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_foundry\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\thas_any_factory_zone = no\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_factory",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Factory World",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = city_world\n\tuses_district_set = habitat\n\tuses_district_set = machine_world\n\tuses_district_set = hive_world\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_factory\n}\nmodifier = {\n\thas_any_foundry_zone = no\n\thas_any_factory_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_factory.png"
+   }
+  },
+  {
+   "id": "col_bureau",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Unification Center",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tis_spiritualist = no\n\thas_make_spiritualist_perk = no\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_bureau\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_bureau_spiritualist",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Ecclesiastical Center",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tOR = {\n\t\tis_spiritualist = yes\n\t\thas_make_spiritualist_perk = yes\n\t}\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_bureau_spiritualist\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_spiritualist\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_temple\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_holotemple\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacred_nexus\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_1\n\t}\n\tmode = add\n\tmult = 1\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_2\n\t}\n\tmode = add\n\tmult = 4\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_the_sanctum_of_augmentation\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 10\n\thas_building = building_the_united_sanctum_of_augmentation\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_bureau_hive",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Unification Center",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_hive_empire = yes\n}\nowner_or_space_owner = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_bureau_hive\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_cluster\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_confluence\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_bureau_machine",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Unification Center",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_machine_empire = yes\n\tNOT = {\n\t\thas_valid_civic = civic_machine_servitor\n\t}\n\tis_nomadic = no\n}\nNOR = {\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_bureau_machine\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_uplink_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_network_junction\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_system_conflux\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_trade_machine",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Machine Nexus",
+   "desc": "Boosts £trade£ §STrade§!.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = machine_world\nexists = owner_or_space_owner\nowner_or_space_owner = {\n\tis_country_type = default\n\tis_machine_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_trade_machine\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n\tmult = 2\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_research",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Tech-World",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "researcher_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = city_world\n\tuses_district_set = ring_world\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nis_capital = no\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_research\n}\nmodifier = {\n\thas_any_research_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_building = building_supercomputer\n\t\thas_building = building_institute\n\t}\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_portal_research_zone\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_space_time_anomaly\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_weapon_extraction_facility\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = wild_storms\n\t\thas_modifier = titanic_life\n\t\thas_modifier = atmospheric_hallucinogen\n\t\thas_modifier = liquid_sands\n\t\thas_modifier = dangerous_wildlife\n\t\thas_modifier = unstable_tectonics\n\t\thas_modifier = society_animal_life\n\t\thas_modifier = tamed_nanite_swarm_modifier\n\t\thas_deposit = d_central_spire\n\t}\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\nmodifier = {\n\tadd = 4\n\thas_building = building_master_archive\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 2\n\thas_building = building_amphitheater_of_the_mind\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_polytechnic\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_polytechnic\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_research.png"
+   }
+  },
+  {
+   "id": "col_fortress",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Fortress World",
+   "desc": "Boosts £stability£ §SStability§! and £defense_army£ §SDefense§!.",
+   "planet_modifier": {
+    "planet_army_build_speed_mult": 0.25,
+    "planet_orbital_bombardment_damage": -0.1,
+    "army_defense_damage_mult": 0.2,
+    "soldier_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "soldier_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "has_building = building_order_keep",
+     "modifier": {
+      "pop_knight_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "NOR = {\n\tuses_district_set = habitat\n\tuses_district_set = cosmogenesis_world\n}\nis_special_colony_type = no\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n\tis_nomadic = no\n}\nNOT = {\n\tis_planet_class = pc_nanotech\n}\nOR = {\n\thas_building = building_order_keep\n\tAND = {\n\t\tNOR = {\n\t\t\tuses_district_set = city_world\n\t\t\tuses_district_set = ring_world\n\t\t}\n\t\tis_capital = no\n\t}\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_fortress\n}\nmodifier = {\n\tadd = 1000\n\thas_building = building_order_keep\n}\nmodifier = {\n\thas_any_fortress_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_stronghold\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fortress\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_fortress",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_fortress.png"
+   }
+  },
+  {
+   "id": "col_capital",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Empire Capital",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_amenities_add": 1000,
+    "planet_housing_add": 1000,
+    "pop_government_ethic_attraction": 1,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "pop_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "pop_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nNAND = {\n\tFROM? = {\n\t\tOR = {\n\t\t\tNOT = {\n\t\t\t\tis_country_type = default\n\t\t\t}\n\t\t\tis_gestalt = yes\n\t\t}\n\t}\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_capital_foundry",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Forge Capital",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "pop_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tAND = {\n\t\tis_country_type = default\n\t\tOR = {\n\t\t\tis_ai = no\n\t\t\tAND = {\n\t\t\t\tyears_passed > 25\n\t\t\t\tnum_owned_planets >= 5\n\t\t\t}\n\t\t}\n\t}\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_foundry.png"
+   }
+  },
+  {
+   "id": "col_capital_factory",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Factory Capital",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tAND = {\n\t\tis_country_type = default\n\t\tcountry_uses_consumer_goods = yes\n\t\tOR = {\n\t\t\tis_ai = no\n\t\t\tAND = {\n\t\t\t\tyears_passed > 25\n\t\t\t\tnum_owned_planets >= 5\n\t\t\t}\n\t\t}\n\t}\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_factory.png"
+   }
+  },
+  {
+   "id": "col_capital_trade",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Trade Capital",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_amenities_add": 1000,
+    "planet_housing_add": 1000,
+    "pop_government_ethic_attraction": 1,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tAND = {\n\t\tis_country_type = default\n\t\tis_gestalt = no\n\t\tOR = {\n\t\t\tis_ai = no\n\t\t\tAND = {\n\t\t\t\tyears_passed > 25\n\t\t\t\tnum_owned_planets >= 5\n\t\t\t}\n\t\t}\n\t}\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_trade",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_trade.png"
+   }
+  },
+  {
+   "id": "col_capital_extraction",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Capital Extraction World",
+   "desc": "Specializes in the production of £minerals£ §SMinerals§!, £energy£ §SEnergy§!, and £food£ §SFood§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "worker_and_simple_drone_cat_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_country_type = default\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tAND = {\n\t\tis_country_type = default\n\t\tOR = {\n\t\t\tis_ai = no\n\t\t\tAND = {\n\t\t\t\tyears_passed > 25\n\t\t\t\tnum_owned_planets >= 5\n\t\t\t}\n\t\t}\n\t}\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_extraction",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_extraction.png"
+   }
+  },
+  {
+   "id": "col_capital_hive",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Hive Capital",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_amenities_no_happiness_add": 1000,
+    "planet_housing_add": 1000,
+    "planet_crime_no_happiness_add": -20,
+    "pop_bonus_workforce_mult": 0.1,
+    "planet_resettlement_unemployed_destination_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "pop_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tis_country_type = default\n\tis_hive_empire = yes\n\tis_wilderness_empire = no\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_capital_machine",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Machine Capital",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_amenities_no_happiness_add": 1000,
+    "planet_housing_add": 1000,
+    "planet_crime_no_happiness_add": -20,
+    "pop_bonus_workforce_mult": 0.1,
+    "planet_resettlement_unemployed_destination_mult": 0.1
+   },
+   "triggered_planet_modifier": [],
+   "potential": "OR = {\n\tis_capital = yes\n\tcan_be_nomadic_capital_trigger = yes\n}\nFROM? = {\n\tis_country_type = default\n\tis_machine_empire = yes\n}\ncarrier_is_type = planet",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_trophy_machine",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Sanctuary World",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency for Bio-Trophies§! and £mod_logistic_growth_mult£ §HPop Growth Speed§!.",
+   "planet_modifier": {
+    "pop_bio_trophy_bonus_workforce_mult": 0.15,
+    "logistic_growth_mult": 0.1
+   },
+   "triggered_planet_modifier": [],
+   "potential": "owner_or_space_owner? = {\n\thas_valid_civic = civic_machine_servitor\n}\nNOT = {\n\tuses_district_set = habitat\n}\nis_special_colony_type = no\nis_capital = no\nNOT = {\n\tis_planet_class = pc_nanotech\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_trophy_machine\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_organic_housing\n\t}\n\tmode = add\n\tmult = 15\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_organic_sanctuary\n\t}\n\tmode = add\n\tmult = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_organic_paradise\n\t}\n\tmode = add\n\tmult = 20\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_sky_dome\n\t}\n\tmode = add\n\tmult = 20\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_dome\n\t}\n\tmode = add\n\tmult = 50\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_resort",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Resort World",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency for Influential jobs§!.",
+   "planet_modifier": {
+    "influential_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "influential_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "has_modifier = resort_colony\nOR = {\n\tNOT = {\n\t\texists = owner\n\t}\n\towner = {\n\t\thas_unlocked_pleasure_worlds = no\n\t}\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_resort",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_resort.png"
+   }
+  },
+  {
+   "id": "col_pleasure",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Pleasure World",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency for Influential jobs§!.",
+   "planet_modifier": {
+    "influential_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "influential_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "has_modifier = resort_colony\nhas_shroud_dlc = yes\nowner? = {\n\thas_unlocked_pleasure_worlds = yes\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": "GFX_colony_type_resort",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_resort.png"
+   }
+  },
+  {
+   "id": "col_penal",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Penal Colony",
+   "desc": "Increases resource output from £job£ §SWorkers§!.",
+   "planet_modifier": {
+    "worker_and_simple_drone_cat_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tNOT = {\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}",
+     "modifier": {
+      "job_enforcer_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\thas_valid_civic = civic_dystopian_society\n}",
+     "modifier": {
+      "job_dystopian_enforcer_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner\nowner_or_space_owner = {\n\thas_tradition = tr_adaptability_finish\n\tNOT = {\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.05,
+      "job_enforcer_add": 200
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n\thas_valid_civic = civic_dystopian_society\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.05,
+      "job_dystopian_enforcer_add": 200
+     }
+    }
+   ],
+   "potential": "has_modifier = penal_colony",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_penal",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_penal.png"
+   }
+  },
+  {
+   "id": "col_slave",
+   "file": "common/colony_types/00_colony_types.txt",
+   "name": "Thrall-World",
+   "desc": "Increases resource output from £slavery£ §SSlaves§! and boosts £stability£ §SStability§!.",
+   "planet_modifier": {
+    "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1,
+    "army_starting_experience_add": 200,
+    "planet_army_build_time_mult": -0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": -0.1
+     }
+    }
+   ],
+   "potential": "has_modifier = slave_colony",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_workers",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_workers.png"
+   }
+  },
+  {
+   "id": "col_habitat_energy",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Generator Station",
+   "desc": "Specializes in the production of £energy£ §SEnergy§!.",
+   "planet_modifier": {
+    "technician_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "technician_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nexists = owner_or_space_owner\ncheck_modifier_value = {\n\tmodifier = district_hab_energy_max_add\n\tvalue > 0\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_energy\n}\nmodifier = {\n\thas_any_generator_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_energy\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_hab_energy\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_energy",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_energy.png"
+   }
+  },
+  {
+   "id": "col_habitat_trade",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Trade Station",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nowner_or_space_owner? = {\n\tis_gestalt = no\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_trade\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_assigned_jobs\n\tparameters = {\n\t\tjob = merchant\n\t}\n\tmode = add\n\tmult = 0.02\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_assigned_jobs\n\tparameters = {\n\t\tjob = trader\n\t}\n\tmode = add\n\tmult = 0.01\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_assigned_jobs\n\tparameters = {\n\t\tjob = numistic_priest\n\t}\n\tmode = add\n\tmult = 0.01\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_trade",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_trade.png"
+   }
+  },
+  {
+   "id": "col_habitat_research",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Research Station",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "researcher_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nexists = owner_or_space_owner\ncheck_modifier_value = {\n\tmodifier = district_hab_science_max_add\n\tvalue > 0\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_research\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_science\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_hab_science\n\t}\n\tmode = add\n}\nmodifier = {\n\tadd = 10\n\thas_deposit = d_payback_habitat_research\n}\nmodifier = {\n\thas_any_research_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_building = building_supercomputer\n\t\thas_building = building_institute\n\t}\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_portal_research_zone\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_space_time_anomaly\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_weapon_extraction_facility\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = wild_storms\n\t\thas_modifier = titanic_life\n\t\thas_modifier = atmospheric_hallucinogen\n\t\thas_modifier = liquid_sands\n\t\thas_modifier = dangerous_wildlife\n\t\thas_modifier = unstable_tectonics\n\t\thas_modifier = society_animal_life\n\t\thas_modifier = tamed_nanite_swarm_modifier\n\t\thas_deposit = d_central_spire\n\t}\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\nmodifier = {\n\tadd = 4\n\thas_building = building_master_archive\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 2\n\thas_building = building_amphitheater_of_the_mind\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_research.png"
+   }
+  },
+  {
+   "id": "col_habitat_mining",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Mining Station",
+   "desc": "Specializes in the production of £minerals£ §SMinerals§!.",
+   "planet_modifier": {
+    "miner_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "miner_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\ncheck_modifier_value = {\n\tmodifier = district_hab_mining_max_add\n\tvalue > 0\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_mining\n}\nmodifier = {\n\thas_any_mining_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_mining\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_free_districts\n\tparameters = {\n\t\ttype = district_hab_mining\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_mining",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_mining.png"
+   }
+  },
+  {
+   "id": "col_habitat_farming",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Hydroponics Station",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "farmer_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "farmer_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nowner_or_space_owner? = {\n\tis_gestalt = no\n}\nis_capital = no",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_farming",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_farming.png"
+   }
+  },
+  {
+   "id": "col_habitat_gestalt_farming",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Hydroponics Station",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "farmer_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "farmer_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nowner_or_space_owner? = {\n\tis_gestalt = yes\n}\nis_capital = no",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_farming",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_farming.png"
+   }
+  },
+  {
+   "id": "col_habitat_fortress",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Fortress Station",
+   "desc": "Boosts £stability£ §SStability§! and £defense_army£ §SDefense§!.",
+   "planet_modifier": {
+    "planet_army_build_speed_mult": 0.25,
+    "planet_orbital_bombardment_damage": -0.1,
+    "army_defense_damage_mult": 0.2,
+    "soldier_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "exists = owner_or_space_owner\nowner_or_space_owner = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "soldier_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "OR = {\n\thas_building = building_order_keep\n\thas_building = building_order_castle\n}",
+     "modifier": {
+      "pop_knight_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_fortress\n}\nmodifier = {\n\tadd = 1000\n\tOR = {\n\t\thas_building = building_order_keep\n\t\thas_building = building_order_castle\n\t}\n}\nmodifier = {\n\thas_any_fortress_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_stronghold\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fortress\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_fortress",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_fortress.png"
+   }
+  },
+  {
+   "id": "col_habitat_industrial",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Industrial Station",
+   "desc": "Splits the focus of this colony between £consumer_goods£ §SConsumer Goods§! and £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n}\nuses_district_set = habitat\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_industrial\n}\nmodifier = {\n\tOR = {\n\t\thas_mixed_industrial_zone = yes\n\t\tAND = {\n\t\t\thas_any_foundry_zone = yes\n\t\t\thas_any_factory_zone = yes\n\t\t}\n\t}\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_hab_industrial",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_hab_industrial.png"
+   }
+  },
+  {
+   "id": "col_habitat_foundry",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Foundry Station",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_foundry\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\thas_any_factory_zone = no\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_foundry.png"
+   }
+  },
+  {
+   "id": "col_habitat_factory",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Factory Station",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = habitat\nowner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_factory\n}\nmodifier = {\n\thas_any_factory_zone = yes\n\thas_any_foundry_zone = no\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_habitat_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_habitat_factory.png"
+   }
+  },
+  {
+   "id": "col_habitat_bureau",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Unification Station",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tis_spiritualist = no\n\thas_make_spiritualist_perk = no\n}\nuses_district_set = habitat\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_bureau\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_hab_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_hab_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_habitat_bureau_spiritualist",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Ecclesiastical Station",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tOR = {\n\t\tis_spiritualist = yes\n\t\thas_make_spiritualist_perk = yes\n\t}\n}\nuses_district_set = habitat\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_bureau_spiritualist\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_spiritualist\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_temple\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_holotemple\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacred_nexus\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_1\n\t}\n\tmode = add\n\tmult = 1\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_2\n\t}\n\tmode = add\n\tmult = 4\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_the_sanctum_of_augmentation\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 10\n\thas_building = building_the_united_sanctum_of_augmentation\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_hab_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_hab_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_habitat_bureau_hive",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Unification Station",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_hive_empire = yes\n}\nuses_district_set = habitat\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_habitat_bureau_hive\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_cluster\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_confluence\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_hab_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_hab_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_habitat_bureau_machine",
+   "file": "common/colony_types/01_habitat_colony_types.txt",
+   "name": "Unification Station",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_machine_empire = yes\n}\nuses_district_set = habitat\nis_special_colony_type = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_bureau_machine\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_uplink_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_network_junction\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_system_conflux\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hab_housing\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_hab_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_hab_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_ring_research",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Research Ring World",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "researcher_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = ring_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ring_research\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_rw_science\n\t}\n\tmode = add\n\tmult = 10\n}\nmodifier = {\n\thas_any_research_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_building = building_supercomputer\n\t\thas_building = building_institute\n\t}\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_portal_research_zone\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_space_time_anomaly\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_weapon_extraction_facility\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = wild_storms\n\t\thas_modifier = titanic_life\n\t\thas_modifier = atmospheric_hallucinogen\n\t\thas_modifier = liquid_sands\n\t\thas_modifier = dangerous_wildlife\n\t\thas_modifier = unstable_tectonics\n\t\thas_modifier = society_animal_life\n\t\thas_modifier = tamed_nanite_swarm_modifier\n\t\thas_deposit = d_central_spire\n\t}\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\nmodifier = {\n\tadd = 4\n\thas_building = building_master_archive\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 2\n\thas_building = building_amphitheater_of_the_mind\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_research.png"
+   }
+  },
+  {
+   "id": "col_ring_farming",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Agriculture Ring World",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "farmer_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "farmer_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = ring_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ring_farming\n}\nmodifier = {\n\thas_any_agriculture_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_rw_farming\n\t}\n\tmode = add\n\tmult = 10\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_farm",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_farm.png"
+   }
+  },
+  {
+   "id": "col_ring_trade",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Commercial Ring World",
+   "desc": "Optimizes and generates £trade£ §STrade§! output",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = ring_world\nowner_or_space_owner? = {\n\tis_gestalt = no\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_ring_trade\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_rw_commercial\n\t}\n\tmode = add\n\tmult = 10\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_ring_generator",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Generator Ring World",
+   "desc": "Specializes in the production of £energy£ §SEnergy§!.",
+   "planet_modifier": {
+    "technician_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "technician_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "uses_district_set = ring_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ring_generator\n}\nmodifier = {\n\thas_any_generator_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_rw_generator\n\t}\n\tmode = add\n\tmult = 10\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_generator",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_generator.png"
+   }
+  },
+  {
+   "id": "col_ecu_mix",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Trade Ecumenopolis",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = city_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_ecu_mix\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_ecu_industrial",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Industrial Ecumenopolis",
+   "desc": "Splits the focus of this colony between £consumer_goods£ §SConsumer Goods§! and £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n}\nuses_district_set = city_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ecu_industrial\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_civilian_industry\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_arms_industry\n\t}\n\tmode = add\n\tmult = 6\n}\nmodifier = {\n\tOR = {\n\t\thas_mixed_industrial_zone = yes\n\t\tAND = {\n\t\t\thas_any_foundry_zone = yes\n\t\t\thas_any_factory_zone = yes\n\t\t}\n\t}\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_industrial",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_industrial.png"
+   }
+  },
+  {
+   "id": "col_ecu_foundry",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Foundry Ecumenopolis",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = city_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ecu_foundry\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_arms_industry\n\t}\n\tmode = add\n\tmult = 8\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_civilian_industry\n\t}\n\tmode = add\n\tmult = -3\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\thas_any_factory_zone = no\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_ecu_factory",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Factory Ecumenopolis",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = city_world\nowner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ecu_factory\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_civilian_industry\n\t}\n\tmode = add\n\tmult = 8\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_arms_industry\n\t}\n\tmode = add\n\tmult = -3\n}\nmodifier = {\n\thas_any_foundry_zone = no\n\thas_any_factory_zone = yes\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_factory.png"
+   }
+  },
+  {
+   "id": "col_ecu_research",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Research Ecumenopolis",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "researcher_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = city_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_ecu_research\n}\nmodifier = {\n\thas_any_research_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_building = building_supercomputer\n\t\thas_building = building_institute\n\t}\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_portal_research_zone\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_space_time_anomaly\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_weapon_extraction_facility\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = wild_storms\n\t\thas_modifier = titanic_life\n\t\thas_modifier = atmospheric_hallucinogen\n\t\thas_modifier = liquid_sands\n\t\thas_modifier = dangerous_wildlife\n\t\thas_modifier = unstable_tectonics\n\t\thas_modifier = society_animal_life\n\t\thas_modifier = tamed_nanite_swarm_modifier\n\t\thas_deposit = d_central_spire\n\t}\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\nmodifier = {\n\tadd = 4\n\thas_building = building_master_archive\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 2\n\thas_building = building_amphitheater_of_the_mind\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_research.png"
+   }
+  },
+  {
+   "id": "col_mac_foundry",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Machine World Foundry",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = machine_world\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_mac_foundry\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_mac_factory",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Machine World Factory",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = machine_world\nowner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_mac_factory\n}\nmodifier = {\n\thas_any_foundry_zone = no\n\thas_any_factory_zone = yes\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_factory.png"
+   }
+  },
+  {
+   "id": "col_hiv",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Hive World",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency for Menial Drones§!.",
+   "planet_modifier": {
+    "planet_district_mining_build_speed_mult": 0.25,
+    "planet_district_farming_build_speed_mult": 0.25,
+    "planet_district_generator_build_speed_mult": 0.25,
+    "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "uses_district_set = hive_world\nis_capital = no\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n}",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_hiv\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_hiv_foundry",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Hive World Foundry",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = hive_world\nis_capital = no\nowner_or_space_owner? = {\n\tis_wilderness_empire = no\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_hiv_foundry\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\tadd = 100\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_cosmogenesis_world",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Synaptic Lathe",
+   "desc": "Boosts §HResources from £job£ Jobs§!.",
+   "planet_modifier": {
+    "planet_jobs_produces_mult": 0.15,
+    "planet_jobs_upkeep_mult": -0.05,
+    "pop_purge_speed": -0.05,
+    "pop_housing_usage_mult": -0.1
+   },
+   "triggered_planet_modifier": [],
+   "potential": "is_planet_class = pc_cosmogenesis_world",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_synaptic_lathe_colony",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_synaptic_lathe_colony.png"
+   }
+  },
+  {
+   "id": "col_nanotech_world",
+   "file": "common/colony_types/02_special_planet_colony_types.txt",
+   "name": "Nanotech World",
+   "desc": "Boosts £mod_planet_buildings_produces_mult£ §HBuilding Production§!.",
+   "planet_modifier": {
+    "planet_buildings_produces_mult": 0.15,
+    "planet_buildings_upkeep_mult": 0.1,
+    "planet_farmers_food_produces_mult": -0.25,
+    "planet_farmers_nanites_produces_mult": 0.35,
+    "planet_miners_minerals_produces_mult": -0.25,
+    "planet_miners_nanites_produces_mult": 0.35,
+    "planet_jobs_worker_produces_mult": 0.05
+   },
+   "triggered_planet_modifier": [],
+   "potential": "is_planet_class = pc_nanotech\nowner? = {\n\thas_active_tradition = tr_nanotech_3\n}",
+   "weight_modifier": "base = 10000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_fringe",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_fringe.png"
+   }
+  },
+  {
+   "id": "col_wilderness_capital",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Heart World",
+   "desc": "Boosts £mod_planet_jobs_produces_mult£ §HResources from £job£ Jobs§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_crime_no_happiness_add": -20,
+    "planet_jobs_produces_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_jobs_produces_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_capital = yes",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_wilderness_generator",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Photosynthesis World",
+   "desc": "Specializes in the production of £energy£ §SEnergy§!.",
+   "planet_modifier": {
+    "planet_district_photosynthesis_fields_build_speed_mult": 0.25,
+    "planet_technician_produces_mult": 0.25
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_technician_produces_mult": 0.1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n\tis_gestalt = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "planet_jobs_simple_drone_produces_mult": 0.1
+     }
+    }
+   ],
+   "potential": "is_special_colony_type = no\nis_capital = no\nowner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_generator\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_generator",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_generator.png"
+   }
+  },
+  {
+   "id": "col_wilderness_mining",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Lithic World",
+   "desc": "Specializes in the production of £minerals£ §SMinerals§!.",
+   "planet_modifier": {
+    "planet_district_hollow_mountains_build_speed_mult": 0.25,
+    "planet_miners_produces_mult": 0.25
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_miners_produces_mult": 0.1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n\tis_gestalt = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "planet_jobs_simple_drone_produces_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_mining\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_mine",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_mine.png"
+   }
+  },
+  {
+   "id": "col_wilderness_farming",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Pollinating World",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "planet_district_orchard_forests_build_speed_mult": 0.25,
+    "planet_farmers_produces_mult": 0.25
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_farmers_produces_mult": 0.1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n\tis_gestalt = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "planet_jobs_simple_drone_produces_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_farming\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_farm",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_farm.png"
+   }
+  },
+  {
+   "id": "col_wilderness_fortress",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Hunter World",
+   "desc": "Boosts £stability£ §SStability§! and £defense_army£ §SDefense§!.",
+   "planet_modifier": {
+    "planet_building_planetary_carapace_build_speed_mult": 0.25,
+    "planet_orbital_bombardment_damage": -0.1,
+    "army_defense_damage_mult": 0.2
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_orbital_bombardment_damage": -0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_fortress\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_fortress",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_fortress.png"
+   }
+  },
+  {
+   "id": "col_wilderness_tech",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Cogitation World",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "planet_building_brain_node_1_build_speed_mult": 0.25,
+    "planet_researchers_produces_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_researchers_produces_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_tech\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_research.png"
+   }
+  },
+  {
+   "id": "col_wilderness_nest",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Weaver World",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "planet_district_craglands_build_speed_mult": 0.25,
+    "planet_jobs_trade_produces_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_jobs_trade_produces_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_nest\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_rural",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_rural.png"
+   }
+  },
+  {
+   "id": "col_wilderness_refinery",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Refining World",
+   "desc": "Specializes in the production of £exotic_gases£ §HExotic Gases§! and other £strategic_resource£ §HStrategic Resources§!.",
+   "planet_modifier": {
+    "planet_refiners_produces_mult": 0.15,
+    "planet_translucers_produces_mult": 0.15,
+    "planet_chemists_produces_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_refiners_produces_mult": 0.1,
+      "planet_translucers_produces_mult": 0.1,
+      "planet_chemists_produces_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_refinery\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_refinery",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_refinery.png"
+   }
+  },
+  {
+   "id": "col_wilderness_forge",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Crucible World",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "planet_metallurgists_produces_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_metallurgists_produces_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "planet_metallurgists_produces_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_forge\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_wilderness_unification",
+   "file": "common/colony_types/03_wilderness_colony_types.txt",
+   "name": "Tranquil World",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "planet_bureaucrats_produces_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "planet_bureaucrats_produces_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_wilderness_empire = yes\n}\nis_special_colony_type = no\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_wilderness_unification\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_fe_capital",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Fallen Empire Capital",
+   "desc": "Boosts £stability£ §SStability§! and provides £housing£ §SHousing§!.",
+   "planet_modifier": {
+    "planet_stability_add": 10,
+    "planet_housing_add": 1000
+   },
+   "triggered_planet_modifier": [],
+   "potential": "is_capital = yes\nowner_or_space_owner? = {\n\tis_fallen_empire = yes\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_fe_colony",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Fallen Empire Colony",
+   "desc": "Boosts £stability£ §SStability§! and provides £housing£ §SHousing§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5
+   },
+   "triggered_planet_modifier": [],
+   "potential": "is_capital = no\nowner_or_space_owner? = {\n\tis_fallen_empire = yes\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_normal_colony",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_normal_colony.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_atomic",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Atomic Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = atomic_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_atomic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_atomic.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_stone",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Stone Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = stone_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_stone",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_stone.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_bronze",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Bronze Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = bronze_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_bronze",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_bronze.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_early_space",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Early Space Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = early_space_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_space",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_space.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_industrial",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Industrial Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = industrial_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_industrial",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_industrial.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_iron",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Iron Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = iron_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_iron",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_iron.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_machine",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Machine Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = machine_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_machine",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_machine.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_medieval",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Late Medieval Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = late_medieval_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_medieval",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_medieval.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_renaissance",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Renaissance Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = renaissance_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_renaissance",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_renaissance.png"
+   }
+  },
+  {
+   "id": "col_pre_ftl_steam",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Steam Age",
+   "desc": "This planet is home to a developing pre-FTL civilization.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = primitive\n\thas_pre_ftl_age = steam_age\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_pre_ftl_steam",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_pre_ftl_steam.png"
+   }
+  },
+  {
+   "id": "col_infested",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Infested World",
+   "desc": "This planet has been infested by the Prethoryn Scourge.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "is_capital = no\nowner? = {\n\tis_country_type = swarm\n}",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_dying",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_dying.png"
+   }
+  },
+  {
+   "id": "col_contingency",
+   "file": "common/colony_types/04_nonplayable_colony_types.txt",
+   "name": "Contingency World",
+   "desc": "This planet has been taken over by the Contingency.",
+   "planet_modifier": null,
+   "triggered_planet_modifier": [],
+   "potential": "owner? = {\n\tis_country_type = ai_empire\n}\nis_capital = no",
+   "weight_modifier": "base = 1000",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_dying",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_dying.png"
+   }
+  },
+  {
+   "id": "col_nomad_city",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Urban Arkship",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner? = {\n\tis_nomadic = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_nomad_city\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_nomad_farming",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Farming Arkship",
+   "desc": "Specializes in the production of £food£ §SFood§!.",
+   "planet_modifier": {
+    "farmer_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "farmer_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_food = yes\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_farming\n}\nmodifier = {\n\thas_any_agriculture_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_basic\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_farm",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_farm.png"
+   }
+  },
+  {
+   "id": "col_nomad_generator",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Generator Arkship",
+   "desc": "Specializes in the production of £energy£ §SEnergy§!.",
+   "planet_modifier": {
+    "technician_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "technician_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "owner? = {\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_generator\n}\nmodifier = {\n\thas_any_generator_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_generator\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_generator",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_generator.png"
+   }
+  },
+  {
+   "id": "col_nomad_hive",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Hive Arkship",
+   "desc": "Modestly increases £trade£ §HTrade§!.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_hive_empire = yes\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_nomad_hive\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_nomad_nexus",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Nexus Arkship",
+   "desc": "Boosts £trade£ §STrade§!.",
+   "planet_modifier": {
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_machine_empire = yes\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 3\n\thas_designation = col_nomad_nexus\n}\nmodifier = {\n\thas_any_trade_zone = yes\n\tadd = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_urban",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_urban.png"
+   }
+  },
+  {
+   "id": "col_nomad_industrial",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Industrial Arkship",
+   "desc": "Splits the focus of this colony between £consumer_goods£ §SConsumer Goods§! and £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.025,
+      "foundry_jobs_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tcountry_uses_consumer_goods = yes\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_industrial\n}\nmodifier = {\n\tship? = {\n\t\tis_civilian_arkship = yes\n\t}\n\towner? = {\n\t\tcountry_uses_consumer_goods = yes\n\t}\n\tadd = 10\n}\nmodifier = {\n\tOR = {\n\t\thas_mixed_industrial_zone = yes\n\t\tAND = {\n\t\t\thas_any_foundry_zone = yes\n\t\t\thas_any_factory_zone = yes\n\t\t}\n\t}\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_industrial",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_industrial.png"
+   }
+  },
+  {
+   "id": "col_nomad_foundry",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Foundry Arkship",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "foundry_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner? = {\n\tis_nomadic = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_foundry\n}\nmodifier = {\n\tship? = {\n\t\tis_civilian_arkship = yes\n\t}\n\towner? = {\n\t\tcountry_uses_consumer_goods = no\n\t}\n\tadd = 10\n}\nmodifier = {\n\thas_any_foundry_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_foundry.png"
+   }
+  },
+  {
+   "id": "col_nomad_factory",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Factory Arkship",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_galactic_community_member = yes\n}\nOR = {\n\tis_active_resolution = \"resolution_industry_environmental_ordinance_waivers\"\n\tis_active_resolution = \"resolution_industry_project_cornucopia\"\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner? = {\n\tis_nomadic = yes\n\tcountry_uses_consumer_goods = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_factory\n}\nmodifier = {\n\thas_any_factory_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_factory.png"
+   }
+  },
+  {
+   "id": "col_nomad_bureau",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Unification Arkship",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner? = {\n\tis_nomadic = yes\n\tis_regular_empire = yes\n\tis_spiritualist = no\n\thas_make_spiritualist_perk = no\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_bureau\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_bureaucratic_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_2\n\t}\n\tmode = add\n\tmult = 4\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_nomad_bureau_spiritualist",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Ecclesiastical Arkship",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = yes\n}",
+     "modifier": {
+      "job_bureaucrat_add": 200
+     }
+    },
+    {
+     "potential": "exists = owner_or_space_owner.federation\nowner_or_space_owner.federation = {\n\thas_federation_perk = all_the_priests_1\n}\nowner? = {\n\tis_regular_empire = no\n}",
+     "modifier": {
+      "job_coordinator_add": 200
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_regular_empire = yes\n\tOR = {\n\t\tis_spiritualist = yes\n\t\thas_make_spiritualist_perk = yes\n\t}\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_bureau_spiritualist\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_spiritualist\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_temple\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_holotemple\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacred_nexus\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_1\n\t}\n\tmode = add\n\tmult = 1\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_sacrificial_temple_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_temple_2\n\t}\n\tmode = add\n\tmult = 4\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_the_sanctum_of_augmentation\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_battlement_of_steel\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_sanctuary_of_toil\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_forge_of_the_fellowship\n}\nmodifier = {\n\tadd = 10\n\thas_building = building_the_united_sanctum_of_augmentation\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_nomad_bureau_machine",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Unification Arkship",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner_or_space_owner? = {\n\tis_machine_empire = yes\n\tNOT = {\n\t\thas_valid_civic = civic_machine_servitor\n\t}\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_bureau_machine\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_administrative\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_uplink_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_network_junction\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_system_conflux\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_machine_2\n\t}\n\tmode = add\n\tmult = 4\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_nomad_bureau_hive",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Unification Arkship",
+   "desc": "Boosts £unity£ §SUnity§! output.",
+   "planet_modifier": {
+    "bureaucrat_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "bureaucrat_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner_or_space_owner? = {\n\tis_hive_empire = yes\n\tis_nomadic = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_bureau_hive\n}\nmodifier = {\n\thas_any_unity_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\thas_building = building_league_offices\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_node\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_cluster\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_hive_confluence\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_administration_hive_2\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_nomad_research",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Research Arkship",
+   "desc": "Improves £research£ §HResearcher Efficiency§!.",
+   "planet_modifier": {
+    "researcher_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = no\nowner? = {\n\tis_nomadic = yes\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_research\n}\nmodifier = {\n\tship? = {\n\t\tis_science_arkship = yes\n\t}\n\tadd = 10\n}\nmodifier = {\n\thas_any_research_zone = yes\n\tadd = 100\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_building = building_supercomputer\n\t\thas_building = building_institute\n\t}\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_portal_research_zone\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_space_time_anomaly\n}\nmodifier = {\n\tadd = 2\n\thas_deposit = d_weapon_extraction_facility\n}\nmodifier = {\n\tadd = 5\n\tOR = {\n\t\thas_modifier = wild_storms\n\t\thas_modifier = titanic_life\n\t\thas_modifier = atmospheric_hallucinogen\n\t\thas_modifier = liquid_sands\n\t\thas_modifier = dangerous_wildlife\n\t\thas_modifier = unstable_tectonics\n\t\thas_modifier = society_animal_life\n\t\thas_modifier = tamed_nanite_swarm_modifier\n\t\thas_deposit = d_central_spire\n\t}\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_research_lab_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_1\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_2\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_astral_siphon_3\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_1\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_lab_2\n\t}\n\tmode = add\n\tmult = 2\n}\nmodifier = {\n\tadd = 4\n\thas_building = building_master_archive\n}\nmodifier = {\n\tadd = 1\n\thas_building = building_amphitheater_of_the_mind\n}\nmodifier = {\n\tadd = 2\n\thas_building = building_amphitheater_of_the_mind\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_research",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_research.png"
+   }
+  },
+  {
+   "id": "col_nomad_fortress",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Fortress Arkship",
+   "desc": "Boosts £stability£ §SStability§! and £defense_army£ §SDefense§!.",
+   "planet_modifier": {
+    "planet_army_build_speed_mult": 0.25,
+    "ship_shield_mult": 0.05,
+    "ship_armor_mult": 0.05,
+    "soldier_jobs_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "soldier_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "owner? = {\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_fortress\n}\nmodifier = {\n\tship? = {\n\t\tis_military_arkship = yes\n\t}\n\tadd = 10\n}\nmodifier = {\n\thas_any_fortress_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_stronghold\n\t}\n\tmode = add\n\tmult = 2\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fortress\n\t}\n\tmode = add\n\tmult = 4\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_city\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_hive\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_nexus\n\t}\n\tmode = add\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_fortress",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_fortress.png"
+   }
+  },
+  {
+   "id": "col_capital_nomad",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Capital Arkship",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "pop_bonus_workforce_mult": 0.1
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "pop_bonus_workforce_mult": 0.025
+     }
+    }
+   ],
+   "potential": "is_capital = yes\ncarrier_is_type = ship",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital.png"
+   }
+  },
+  {
+   "id": "col_capital_nomad_foundry",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Forge Arkship",
+   "desc": "Specializes in the production of £alloys£ §SAlloys§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "foundry_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "pop_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = yes\ncarrier_is_type = ship",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_foundry",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_foundry.png"
+   }
+  },
+  {
+   "id": "col_capital_nomad_factory",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Factory Arkship",
+   "desc": "Specializes in the production of £consumer_goods£ §SConsumer Goods§!.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "artisan_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "artisan_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = yes\ncarrier_is_type = ship\nowner? = {\n\tcountry_uses_consumer_goods = yes\n}",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_factory",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_factory.png"
+   }
+  },
+  {
+   "id": "col_capital_nomad_trade",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Trade Arkship",
+   "desc": "Boosts £trade£§STrade§! output.",
+   "planet_modifier": {
+    "planet_stability_add": 5,
+    "planet_housing_add": 1000,
+    "planet_resettlement_unemployed_destination_mult": 0.1,
+    "trader_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = no\n}",
+     "modifier": {
+      "planet_amenities_add": 1000,
+      "pop_government_ethic_attraction": 1
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\tis_gestalt = yes\n}",
+     "modifier": {
+      "planet_amenities_no_happiness_add": 1000,
+      "planet_crime_no_happiness_add": -20
+     }
+    },
+    {
+     "potential": "owner_or_space_owner? = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "trader_jobs_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "is_capital = yes\ncarrier_is_type = ship\nowner? = {\n\tis_gestalt = no\n}",
+   "weight_modifier": "base = 0",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_capital_trade",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_capital_trade.png"
+   }
+  },
+  {
+   "id": "col_nomad_trophy_machine",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Sanctuary Arkship",
+   "desc": "Boosts £mod_pop_bonus_workforce_mult£ §HJob Efficiency for Bio-Trophies§! and £mod_logistic_growth_mult£ §HPop Growth Speed§!.",
+   "planet_modifier": {
+    "pop_bio_trophy_bonus_workforce_mult": 0.1,
+    "logistic_growth_mult": 0.1
+   },
+   "triggered_planet_modifier": [],
+   "potential": "owner_or_space_owner? = {\n\thas_valid_civic = civic_machine_servitor\n\tis_nomadic = yes\n}\nis_capital = no",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_nomad_trophy_machine\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_arcology_organic_housing\n\t}\n\tmode = add\n\tmult = 15\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_organic_sanctuary\n\t}\n\tmode = add\n\tmult = 10\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_organic_paradise\n\t}\n\tmode = add\n\tmult = 20\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_sky_dome\n\t}\n\tmode = add\n\tmult = 20\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fe_dome\n\t}\n\tmode = add\n\tmult = 50\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_bureaucratic",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_bureaucratic.png"
+   }
+  },
+  {
+   "id": "col_arkship_fortress_knights",
+   "file": "common/colony_types/05_nomad_colony_types.txt",
+   "name": "Order's Arkship",
+   "desc": "Boosts £defense_army£ §SDefense§! and the §Sworkforce§! of the Order's Knights, fortifying the Arkship into a mobile stronghold.",
+   "planet_modifier": {
+    "planet_army_build_speed_mult": 0.25,
+    "ship_armor_mult": 0.05,
+    "ship_fire_rate_mult": 0.05,
+    "soldier_jobs_bonus_workforce_mult": 0.15
+   },
+   "triggered_planet_modifier": [
+    {
+     "potential": "exists = owner_or_space_owner\nowner_or_space_owner = {\n\thas_tradition = tr_adaptability_finish\n}",
+     "modifier": {
+      "soldier_jobs_bonus_workforce_mult": 0.05
+     }
+    },
+    {
+     "potential": "OR = {\n\thas_building = building_order_keep\n\thas_building = building_order_castle\n}",
+     "modifier": {
+      "pop_knight_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "uses_district_set = nomad\nowner = {\n\thas_origin = origin_toxic_knights\n}\nOR = {\n\thas_building = building_order_keep\n\thas_building = building_order_castle\n}",
+   "weight_modifier": "modifier = {\n\tadd = 10\n\thas_designation = col_arkship_fortress_knights\n}\nmodifier = {\n\tadd = 1000\n\tOR = {\n\t\thas_building = building_order_keep\n\t\thas_building = building_order_castle\n\t}\n}\nmodifier = {\n\thas_any_fortress_zone = yes\n\tadd = 100\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_stronghold\n\t}\n\tmode = add\n\tmult = 3\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_buildings\n\tparameters = {\n\t\ttype = building_fortress\n\t}\n\tmode = add\n\tmult = 6\n}\ncomplex_trigger_modifier = {\n\ttrigger = num_districts\n\tparameters = {\n\t\ttype = district_ark_city\n\t}\n\tmode = add\n}",
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_colony_type_fortress",
+    "texture": "gfx/interface/planetview/colony_type.dds",
+    "asset": "designations/colony_type_fortress.png"
+   }
+  }
+ ],
+ "warnings": [
+  "common/scripted_triggers/08_scripted_triggers_shroud.txt:639: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop"
+ ]
+}

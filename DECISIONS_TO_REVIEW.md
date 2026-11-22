@@ -2,6 +2,9 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.10 — Designations extractor (2026-11-22)
+- [ ] **Designation icons go to a new `designations/` folder** named after the sprite (`colony_type_mine.png`, 44 files: several designations share one icon, e.g. Nest World uses `colony_type_urban`). StellarisAssets only had `resources/Colony_type_habitat.png`, which the site does not use; it is left as it is.
+
 ## P25.8 — Buildings extractor (2026-11-22)
 - [ ] **`cost` / `upkeep` / `produces` summaries** (buildings, jobs and the next sets) are the amounts of a regular empire: unconditional entries plus the ones whose only condition is `is_nomadic = no` (the `nomadic_cost_switcher` inline script puts every building cost behind it). All entries, with their conditions as text, stay in `resources`.
 - [ ] **Jobs of a building** are read from the `job_<id>_add` statements of `planet_modifier` (`jobs`) and of each `triggered_planet_modifier` (`jobs_conditional`, with the condition as text). The amounts are the game numbers as written (e.g. `foundry = 200`), not divided into jobs.

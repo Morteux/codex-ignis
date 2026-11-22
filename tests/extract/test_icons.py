@@ -37,7 +37,8 @@ class IconExport(unittest.TestCase):
         self.assertEqual(sprites.get("gfx_job_test").texture, "gfx/interface/icons/jobs/job_test.dds")
         self.assertEqual(sprites.get("GFX_test_strip").frames, 2)
         self.assertEqual(sprites.get("GFX_animated").frames, 4)
-        self.assertEqual(sprites.find("GFX_test_strip")[1:], ("gfx/interface/icons/test/Strip.dds", 2))
+        self.assertEqual(sprites.find("GFX_test_strip")[1:], ("gfx/interface/icons/test/Strip.dds", 2, 0))
+        self.assertEqual(sprites.find("GFX_strip_second")[1:], ("gfx/interface/icons/test/Strip.dds", 2, 1))  # sprite sheet frame
         self.assertIsNone(sprites.find("GFX_missing_texture"))
         self.assertEqual(sprites.find(None, ["gfx/interface/icons/jobs/nope.dds", "gfx/interface/icons/JOBS/JOB_TEST.dds"])[0], "GFX_job_test")
 
@@ -49,6 +50,7 @@ class IconExport(unittest.TestCase):
         img = dds_to_image(self.game.path("gfx/interface/icons/test/Strip.dds"), frames=2)
         self.assertEqual(img.size, (4, 4))
         self.assertEqual(img.getpixel((1, 1)), (0, 255, 0, 128))
+        self.assertEqual(dds_to_image(self.game.path("gfx/interface/icons/test/Strip.dds"), frames=2, frame=1).getpixel((1, 1)), (0, 0, 255, 255))
 
     def test_asset_file_names(self):
         self.assertEqual(AssetFolder(os.path.join(self.assets, "jobs")).file_name("job_test"), "Job_test.png")

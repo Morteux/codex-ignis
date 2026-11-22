@@ -219,7 +219,20 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
+     "jobs": {
+      "transference_volunteer": 1500
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "transference_drone": 1500
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -239,37 +252,38 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_transference_volunteer_add = 1500\n}"
+      "job_transference_volunteer_add": 1500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 1000\n\tjob_transference_drone_add = 1500\n}"
+      "planet_housing_add": 1000,
+      "job_transference_drone_add": 1500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -500\n}"
+      "planet_housing_add": -500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     }
    ],
@@ -336,7 +350,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -349,31 +370,31 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -434,6 +455,24 @@
      "jobs": {
       "broken_shackles_scavenger": 100
      }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_country_flag = origin_broken_shackles_crashed_slaver_ship_depleted\n\tis_tankbound_empire = no\n}",
+     "jobs": {
+      "clerk": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_country_flag = origin_broken_shackles_crashed_slaver_ship_depleted\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
     }
    ],
    "zone_slots": [
@@ -452,43 +491,43 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_country_flag = origin_broken_shackles_crashed_slaver_ship_depleted\n\tis_tankbound_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_clerk_add = 100\n}"
+      "job_clerk_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_country_flag = origin_broken_shackles_crashed_slaver_ship_depleted\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -552,7 +591,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
+     "jobs": {
+      "resort_worker": 300
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
+     "jobs": {
+      "resort_worker": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_resort_01",
@@ -565,43 +623,43 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_resort_worker_add = 300\n}"
+      "job_resort_worker_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_resort_worker_add = 100\n}"
+      "job_resort_worker_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -671,19 +729,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -743,19 +801,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -815,19 +873,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -888,6 +946,12 @@
      "jobs": {
       "dystopian_enforcer": 100
      }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
     }
    ],
    "zone_slots": [
@@ -902,25 +966,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
@@ -938,7 +1002,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -993,7 +1057,20 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "slave_overseer": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -1006,37 +1083,37 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_slave_overseer_add = 100\n}"
+      "job_slave_overseer_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -1091,7 +1168,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -1104,31 +1188,31 @@
     {
      "potential": "is_planet_class = pc_hive",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 600\n}"
+      "planet_housing_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -1196,25 +1280,25 @@
     {
      "potential": "is_planet_class = pc_hive",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 600\n}"
+      "planet_housing_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -1279,25 +1363,25 @@
     {
      "potential": "is_planet_class = pc_hive",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 600\n}"
+      "planet_housing_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -1363,25 +1447,25 @@
     {
      "potential": "is_planet_class = pc_hive",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 600\n}"
+      "planet_housing_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -1435,7 +1519,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -1448,25 +1539,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_optimized_nexus\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -1540,19 +1631,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_optimized_nexus\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     }
    ],
@@ -1623,19 +1714,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_optimized_nexus\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     }
    ],
@@ -1707,19 +1798,19 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_optimized_nexus\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     }
    ],
@@ -1773,7 +1864,74 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tOR = {\n\t\tis_regular_empire = yes\n\t\thas_origin = origin_fear_of_the_dark\n\t}\n\tis_crafter_empire = no\n}",
+     "jobs": {
+      "artisan_prison_worker": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_crafter_empire = yes\n}",
+     "jobs": {
+      "artificer_prison_worker": 100
+     }
+    },
+    {
+     "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = no\n}",
+     "jobs": {
+      "artisan_prison_worker": -100
+     }
+    },
+    {
+     "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = yes\n}",
+     "jobs": {
+      "artificer_prison_worker": -100
+     }
+    },
+    {
+     "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = no\n}",
+     "jobs": {
+      "artisan_prison_worker": 100
+     }
+    },
+    {
+     "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = yes\n}",
+     "jobs": {
+      "artificer_prison_worker": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tOR = {\n\t\tis_regular_empire = yes\n\t\thas_origin = origin_fear_of_the_dark\n\t}\n\tis_catalytic_empire = no\n}",
+     "jobs": {
+      "foundry_prison_worker": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
+     "jobs": {
+      "catalytic_technician_prison_worker": 100
+     }
+    },
+    {
+     "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = no\n}",
+     "jobs": {
+      "foundry_prison_worker": 100
+     }
+    },
+    {
+     "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
+     "jobs": {
+      "catalytic_technician_prison_worker": 100
+     }
+    },
+    {
+     "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
+     "jobs": {
+      "catalytic_technician_prison_worker": -100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -1786,67 +1944,67 @@
     {
      "potential": "exists = owner\nowner = {\n\tOR = {\n\t\tis_regular_empire = yes\n\t\thas_origin = origin_fear_of_the_dark\n\t}\n\tis_crafter_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artisan_prison_worker_add = 100\n}"
+      "job_artisan_prison_worker_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_crafter_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artificer_prison_worker_add = 100\n}"
+      "job_artificer_prison_worker_add": 100
      }
     },
     {
      "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artisan_prison_worker_add = -100\n}"
+      "job_artisan_prison_worker_add": -100
      }
     },
     {
      "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artificer_prison_worker_add = -100\n}"
+      "job_artificer_prison_worker_add": -100
      }
     },
     {
      "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artisan_prison_worker_add = 100\n}"
+      "job_artisan_prison_worker_add": 100
      }
     },
     {
      "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_crafter_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_artificer_prison_worker_add = 100\n}"
+      "job_artificer_prison_worker_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tOR = {\n\t\tis_regular_empire = yes\n\t\thas_origin = origin_fear_of_the_dark\n\t}\n\tis_catalytic_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_foundry_prison_worker_add = 100\n}"
+      "job_foundry_prison_worker_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_catalytic_technician_prison_worker_add = 100\n}"
+      "job_catalytic_technician_prison_worker_add": 100
      }
     },
     {
      "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_foundry_prison_worker_add = 100\n}"
+      "job_foundry_prison_worker_add": 100
      }
     },
     {
      "potential": "has_foundry_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_catalytic_technician_prison_worker_add = 100\n}"
+      "job_catalytic_technician_prison_worker_add": 100
      }
     },
     {
      "potential": "has_factory_designation = yes\nexists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_catalytic_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_catalytic_technician_prison_worker_add = -100\n}"
+      "job_catalytic_technician_prison_worker_add": -100
      }
     }
    ],
@@ -1900,7 +2058,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "battle_thrall": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -1913,7 +2078,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_battle_thrall_add = 100\n}"
+      "job_battle_thrall_add": 100
      }
     }
    ],
@@ -1966,9 +2131,27 @@
    "jobs": {},
    "jobs_conditional": [
     {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "trader": 100
+     }
+    },
+    {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "jobs": {
       "artisan": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "bureaucrat": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_mercantile_commercial_enterprise\n}",
+     "jobs": {
+      "trader": 100
      }
     }
    ],
@@ -1982,7 +2165,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_trader_add = 100\n}"
+      "job_trader_add": 100
      }
     },
     {
@@ -1994,13 +2177,13 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_bureaucrat_add = 100\n}"
+      "job_bureaucrat_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_mercantile_commercial_enterprise\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_trader_add = 100\n}"
+      "job_trader_add": 100
      }
     }
    ],
@@ -2051,7 +2234,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -2064,25 +2254,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -2143,6 +2333,12 @@
    "jobs": {},
    "jobs_conditional": [
     {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    },
+    {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "jobs": {
       "entertainer": 600
@@ -2173,7 +2369,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     },
     {
@@ -2249,7 +2445,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_arcology_urban_01"
    ],
@@ -2260,25 +2463,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -2332,7 +2535,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_arcology_urban_02"
    ],
@@ -2343,25 +2553,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -2415,7 +2625,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_arcology_urban_03"
    ],
@@ -2426,25 +2643,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -2499,7 +2716,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "technician": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_generator": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "technician_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_energy"
    ],
@@ -2510,31 +2746,31 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_add = 200\n}"
+      "job_technician_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_generator_add = 200\n}"
+      "job_fe_acolyte_generator_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_drone_add = 200\n}"
+      "job_technician_drone_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -2591,7 +2827,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "miner": 200
+     }
+    },
+    {
+     "potential": "NOT = {\n\tis_planet_class = pc_shattered_ring_habitable\n}\nexists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_mine": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "mining_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_minerals"
    ],
@@ -2602,19 +2857,19 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_miner_add = 200\n}"
+      "job_miner_add": 200
      }
     },
     {
      "potential": "NOT = {\n\tis_planet_class = pc_shattered_ring_habitable\n}\nexists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_mine_add = 200\n}"
+      "job_fe_acolyte_mine_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_mining_drone_add = 200\n}"
+      "job_mining_drone_add": 200
      }
     },
     {
@@ -2698,7 +2953,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n\tis_gestalt = no\n}",
+     "jobs": {
+      "farmer": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_farm": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "agri_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_food"
    ],
@@ -2707,43 +2981,43 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n\tis_gestalt = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_farmer_add = 200\n}"
+      "job_farmer_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_farm_add = 200\n}"
+      "job_fe_acolyte_farm_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_agri_drone_add = 200\n}"
+      "job_agri_drone_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_wilderness_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 400\n}"
+      "planet_housing_add": 400
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_agrarian_idyll\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -2799,7 +3073,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "technician": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_generator": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "technician_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_energy"
    ],
@@ -2810,31 +3103,31 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_add = 200\n}"
+      "job_technician_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_generator_add = 200\n}"
+      "job_fe_acolyte_generator_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_drone_add = 200\n}"
+      "job_technician_drone_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -2891,7 +3184,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "miner": 200
+     }
+    },
+    {
+     "potential": "NOT = {\n\tis_planet_class = pc_shattered_ring_habitable\n}\nexists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_mine": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "mining_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_minerals"
    ],
@@ -2902,25 +3214,25 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_miner_add = 200\n}"
+      "job_miner_add": 200
      }
     },
     {
      "potential": "NOT = {\n\tis_planet_class = pc_shattered_ring_habitable\n}\nexists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_mine_add = 200\n}"
+      "job_fe_acolyte_mine_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_mining_drone_add = 200\n}"
+      "job_mining_drone_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
@@ -2933,7 +3245,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -2991,7 +3303,20 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n}",
+     "jobs": {
+      "polytechnic_mentor": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "polytechnic_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_polytechnic"
    ],
@@ -3002,13 +3327,13 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_polytechnic_mentor_add = 200\n}"
+      "job_polytechnic_mentor_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_polytechnic_drone_add = 200\n}"
+      "job_polytechnic_drone_add": 200
      }
     }
    ],
@@ -3065,7 +3390,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_habitat_01",
@@ -3078,13 +3410,14 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_void_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}\nmult = owner.value:hab_void_dweller_jobs"
+      "job_production_overseer_add": 100,
+      "_text": "mult = owner.value:hab_void_dweller_jobs"
      }
     }
    ],
@@ -3466,6 +3799,36 @@
      "jobs": {
       "dystopian_enforcer": 100
      }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\tis_tankbound_empire = no\n}",
+     "jobs": {
+      "clerk": 300
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 300
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = no\n}",
+     "jobs": {
+      "clerk": 600
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 600
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
     }
    ],
    "zone_slots": [
@@ -3492,55 +3855,55 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -500\n}"
+      "planet_housing_add": -500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\tis_tankbound_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_clerk_add = 300\n}"
+      "job_clerk_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 300\n}"
+      "job_production_overseer_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_clerk_add = 600\n}"
+      "job_clerk_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire = no\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 600\n}"
+      "job_production_overseer_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -3594,7 +3957,20 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner",
+     "jobs": {
+      "coordinator": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -3607,31 +3983,31 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner",
      "modifier": {
-      "_text": "modifier = {\n\tjob_coordinator_add = 100\n}"
+      "job_coordinator_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_extended_hives\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -3687,7 +4063,14 @@
    "jobs": {
     "technician_drone": 100
    },
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 100
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_city_01",
@@ -3701,25 +4084,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_optimized_nexus\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 100\n}"
+      "job_production_overseer_add": 100
      }
     }
    ],
@@ -3789,6 +4172,18 @@
      "jobs": {
       "technician_drone": 1500
      }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "technician": 1000
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_generator": 1000
+     }
     }
    ],
    "zone_slots": [
@@ -3818,13 +4213,13 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_add = 1000\n}"
+      "job_technician_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_generator_add = 1000\n}"
+      "job_fe_acolyte_generator_add": 1000
      }
     }
    ],
@@ -3886,6 +4281,36 @@
      "jobs": {
       "trader": 100
      }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = no\n}",
+     "jobs": {
+      "clerk": 600
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 600
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_mercantile_commercial_enterprise\n}",
+     "jobs": {
+      "trader": 100
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = no\n}",
+     "jobs": {
+      "clerk": 600
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 600
+     }
     }
    ],
    "zone_slots": [
@@ -3903,31 +4328,31 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_clerk_add = 600\n}"
+      "job_clerk_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 600\n}"
+      "job_production_overseer_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_mercantile_commercial_enterprise\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_trader_add = 100\n}"
+      "job_trader_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_clerk_add = 600\n}"
+      "job_clerk_add": 600
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_virtuality_4\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 600\n}"
+      "job_production_overseer_add": 600
      }
     }
    ],
@@ -3985,6 +4410,30 @@
    "jobs": {},
    "jobs_conditional": [
     {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
+     "jobs": {
+      "physicist": 1000,
+      "biologist": 1000,
+      "engineer": 1000
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_hive_empire = yes\n}",
+     "jobs": {
+      "calculator_physicist": 1000,
+      "calculator_biologist": 1000,
+      "calculator_engineer": 1000
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_machine_empire = yes\n}",
+     "jobs": {
+      "calculator_physicist": 1000,
+      "calculator_biologist": 1000,
+      "calculator_engineer": 1000
+     }
+    },
+    {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\thas_active_tradition = tr_virtuality_4\n}",
      "jobs": {
       "physicist": 500,
@@ -4015,19 +4464,25 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_physicist_add = 1000\n\tjob_biologist_add = 1000\n\tjob_engineer_add = 1000\n}"
+      "job_physicist_add": 1000,
+      "job_biologist_add": 1000,
+      "job_engineer_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_hive_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_calculator_physicist_add = 1000\n\tjob_calculator_biologist_add = 1000\n\tjob_calculator_engineer_add = 1000\n}"
+      "job_calculator_physicist_add": 1000,
+      "job_calculator_biologist_add": 1000,
+      "job_calculator_engineer_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_machine_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_calculator_physicist_add = 1000\n\tjob_calculator_biologist_add = 1000\n\tjob_calculator_engineer_add = 1000\n}"
+      "job_calculator_physicist_add": 1000,
+      "job_calculator_biologist_add": 1000,
+      "job_calculator_engineer_add": 1000
      }
     },
     {
@@ -4098,7 +4553,32 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_hive_empire = yes\n}",
+     "jobs": {
+      "agri_drone": 1500
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_machine_empire = yes\n}",
+     "jobs": {
+      "agri_drone": 1000
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "farmer": 1000
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_farm": 1000
+     }
+    }
+   ],
    "zone_slots": [
     "slot_food"
    ],
@@ -4107,43 +4587,44 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 1000\n}"
+      "planet_housing_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_hive_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n\tjob_agri_drone_add = 1500\n}"
+      "planet_housing_add": 500,
+      "job_agri_drone_add": 1500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_machine_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_agri_drone_add = 1000\n}"
+      "job_agri_drone_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = no\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_farmer_add = 1000\n}"
+      "job_farmer_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_farm_add = 1000\n}"
+      "job_fe_acolyte_farm_add": 1000
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_agrarian_idyll\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     }
    ],
@@ -4212,25 +4693,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -500\n}"
+      "planet_housing_add": -500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
@@ -4305,25 +4786,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -500\n}"
+      "planet_housing_add": -500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
@@ -4399,25 +4880,25 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -500\n}"
+      "planet_housing_add": -500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 500\n}"
+      "planet_housing_add": 500
      }
     },
     {
@@ -7943,7 +8424,14 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
+     "jobs": {
+      "production_overseer": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_city_government",
     "slot_ark_city_01",
@@ -7956,31 +8444,31 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = -200\n}"
+      "planet_housing_add": -200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_prosperity_public_works_nomads\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 250\n}"
+      "planet_housing_add": 250
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_1\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_2\n\tNOT = {\n\t\thas_valid_civic = civic_agrarian_idyll\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_tankbound_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_production_overseer_add = 200\n}"
+      "job_production_overseer_add": 200
      }
     }
    ],
@@ -8039,7 +8527,26 @@
     ]
    },
    "jobs": {},
-   "jobs_conditional": [],
+   "jobs_conditional": [
+    {
+     "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
+     "jobs": {
+      "technician": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
+     "jobs": {
+      "fe_acolyte_generator": 200
+     }
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
+     "jobs": {
+      "technician_drone": 200
+     }
+    }
+   ],
    "zone_slots": [
     "slot_ark_reactor"
    ],
@@ -8050,31 +8557,31 @@
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 300\n}"
+      "planet_housing_add": 300
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_regular_empire = yes\n\tis_fallen_empire_spiritualist = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_add = 200\n}"
+      "job_technician_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_fallen_empire_spiritualist = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_fe_acolyte_generator_add = 200\n}"
+      "job_fe_acolyte_generator_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tjob_technician_drone_add = 200\n}"
+      "job_technician_drone_add": 200
      }
     }
    ],
@@ -8146,25 +8653,25 @@
     {
      "potential": "exists = owner",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 400\n}"
+      "planet_housing_add": 400
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\thas_technology = tech_housing_agrarian_idyll\n\thas_valid_civic = civic_agrarian_idyll\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -8255,7 +8762,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_wilderness_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
@@ -8286,7 +8793,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],
@@ -8386,7 +8893,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_wilderness_empire = no\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 200\n}"
+      "planet_housing_add": 200
      }
     },
     {
@@ -8423,7 +8930,7 @@
     {
      "potential": "exists = owner\nowner = {\n\tis_gestalt = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_housing_add = 100\n}"
+      "planet_housing_add": 100
      }
     }
    ],

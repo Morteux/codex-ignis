@@ -22,11 +22,11 @@ class DataSet:
         self.extra = extra or {}
 
     def icons(self):
-        """(texture, asset, frames) of every icon of the items (also the icons of swaps and options)."""
+        """(texture, asset, frames, frame) of every icon of the items (also the icons of swaps and options)."""
         def walk(value):
             if isinstance(value, dict):
                 if value.get("texture") and value.get("asset"):
-                    yield value["texture"], value["asset"], value.get("_frames", 1)
+                    yield value["texture"], value["asset"], value.get("_frames", 1), value.get("_frame", 0)
                 for v in value.values():
                     yield from walk(v)
             elif isinstance(value, list):
@@ -69,11 +69,11 @@ def write_set(game, out_dir, ds):
 def export_icons(exporter, ds):
     statuses = {}
     seen = set()
-    for texture, asset, frames in ds.icons():
+    for texture, asset, frames, frame in ds.icons():
         if asset in seen:
             continue
         seen.add(asset)
-        s = exporter.export(texture, asset, frames)
+        s = exporter.export(texture, asset, frames, frame)
         statuses[s] = statuses.get(s, 0) + 1
     return statuses
 

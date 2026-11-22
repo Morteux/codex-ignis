@@ -9,6 +9,11 @@ spriteTypes = {
 		texturefile = "gfx\interface\icons\test\Strip.dds"
 		noOfFrames = 2
 	}
+	spriteType = {
+		name = "GFX_strip_second"
+		sprite_sheet_sprite_type = "GFX_test_strip"
+		default_frame = 2
+	}
 	frameAnimatedSpriteType = {
 		name = "GFX_animated"
 		textureFile = "gfx/interface/icons/test/animated.dds"

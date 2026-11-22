@@ -50,13 +50,19 @@ def modifier(block):
 
 
 def triggered_modifiers(item, key):
-    """`triggered_*_modifier = { potential = {...} modifiers... }` blocks of an item."""
+    """`triggered_*_modifier = { potential = {...} modifiers... }` blocks of an item (the modifiers
+    may also be inside a nested `modifier = { ... }`)."""
     out = []
     for b in item.get_all(key):
         if not isinstance(b, Block):
             continue
         entry = {"potential": cond(b.get("potential"))}
-        mods = Block([e for e in b if e[0] not in ("potential", "key", "icon")])
+        mods = Block()
+        for e in b:
+            if e[0] == "modifier" and isinstance(e[2], Block):
+                mods.entries.extend(e[2].entries)
+            elif e[0] not in ("potential", "key", "icon"):
+                mods.entries.append(e)
         entry["modifier"] = modifier(mods)
         if b.get("key") is not None:
             entry["key"] = str(b.get("key"))
@@ -146,7 +152,7 @@ def icon(game, folder, sprite=None, textures=(), aliases=()):
     found = game.sprites.find(sprite, [t for t in textures if t])
     if not found:
         return None
-    name, texture, frames = found
+    name, texture, frames, frame = found
     assets_dir = getattr(game, "assets_dir", None) or DEFAULT_ASSETS_DIR
     key = (assets_dir, folder)
     if key not in _asset_folders:
@@ -154,7 +160,7 @@ def icon(game, folder, sprite=None, textures=(), aliases=()):
     stem = os.path.splitext(os.path.basename(texture))[0]
     out = {"sprite": name, "texture": texture, "asset": folder + "/" + _asset_folders[key].file_name(stem, tuple(aliases))}
     if frames and frames > 1:
-        out["_frames"] = frames
+        out["_frames"], out["_frame"] = frames, frame
     return out
 
 

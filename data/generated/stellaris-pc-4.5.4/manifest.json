@@ -8,6 +8,11 @@
    "count": 498,
    "warnings": 1
   },
+  "designations": {
+   "file": "designations.json",
+   "count": 101,
+   "warnings": 1
+  },
   "districts": {
    "file": "districts.json",
    "count": 147,

@@ -1,0 +1,14 @@
+col_test = {
+	icon = GFX_strip_second
+	potential = { exists = owner }
+	planet_modifier = {
+		miner_jobs_bonus_workforce_mult = 0.15
+	}
+	triggered_planet_modifier = {
+		potential = { owner = { has_tradition = tr_test } }
+		modifier = {
+			miner_jobs_bonus_workforce_mult = 0.05
+		}
+	}
+	weight_modifier = { base = 1 }
+}

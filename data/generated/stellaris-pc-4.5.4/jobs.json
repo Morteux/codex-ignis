@@ -7075,7 +7075,8 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 1\n}\nmult = colony.modifier:job_soldier_stability_add"
+      "planet_stability_add": 1,
+      "_text": "mult = colony.modifier:job_soldier_stability_add"
      }
     },
     {
@@ -7225,7 +7226,8 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 1\n}\nmult = colony.modifier:job_soldier_stability_add"
+      "planet_stability_add": 1,
+      "_text": "mult = colony.modifier:job_soldier_stability_add"
      }
     },
     {
@@ -8115,7 +8117,8 @@
     {
      "potential": "owner? = {\n\tany_owned_leader = {\n\t\tis_councilor = yes\n\t\thas_trait = leader_trait_bellicose\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_defense_armies_add = 0.5\n}\nmult = value:bellicose_naval_cap"
+      "planet_defense_armies_add": 0.5,
+      "_text": "mult = value:bellicose_naval_cap"
      }
     }
    ],
@@ -8123,13 +8126,14 @@
     {
      "potential": "owner? = {\n\thas_technology = \"tech_ground_defense_planning\"\n}",
      "modifier": {
-      "_text": "modifier = {\n\tcountry_naval_cap_add = 1\n}"
+      "country_naval_cap_add": 1
      }
     },
     {
      "potential": "owner? = {\n\tany_owned_leader = {\n\t\tis_councilor = yes\n\t\thas_trait = leader_trait_bellicose\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tcountry_naval_cap_add = 0.5\n}\nmult = value:bellicose_naval_cap"
+      "country_naval_cap_add": 0.5,
+      "_text": "mult = value:bellicose_naval_cap"
      }
     }
    ],
@@ -8467,13 +8471,13 @@
     {
      "potential": "owner? = {\n\thas_origin = origin_necrophage\n}\nexists = colony.growing_species\ncolony.growing_species = {\n\tNOT = {\n\t\thas_trait = trait_hive_mind\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tlogistic_growth_mult = 0.1\n}"
+      "logistic_growth_mult": 0.1
      }
     },
     {
      "potential": "spawning_drone_is_offspring_drone_trigger = yes",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_jobs_simple_drone_produces_mult = 0.1\n}"
+      "planet_jobs_simple_drone_produces_mult": 0.1
      }
     },
     {
@@ -8850,7 +8854,7 @@
     {
      "potential": "owner? = {\n\tis_memorialist_empire = yes\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 0.2\n}"
+      "planet_stability_add": 0.2
      }
     },
     {
@@ -8863,7 +8867,8 @@
     {
      "potential": "OR = {\n\thas_modifier = planet_artifact_relays_machine\n\thas_modifier = planet_artifact_relays_hivemind\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 2\n\tplanet_jobs_simple_drone_produces_mult = 0.01\n}"
+      "planet_stability_add": 2,
+      "planet_jobs_simple_drone_produces_mult": 0.01
      }
     },
     {
@@ -10943,7 +10948,8 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 1\n}\nmult = colony.modifier:job_soldier_stability_add"
+      "planet_stability_add": 1,
+      "_text": "mult = colony.modifier:job_soldier_stability_add"
      }
     },
     {
@@ -13946,7 +13952,7 @@
     {
      "potential": "colony? = {\n\thas_deposit = d_spore_vents\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_jobs_exotic_gases_produces_mult = 0.05\n}"
+      "planet_jobs_exotic_gases_produces_mult": 0.05
      }
     }
    ],
@@ -14002,7 +14008,7 @@
     {
      "potential": "colony? = {\n\thas_deposit = d_spore_vents\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_jobs_exotic_gases_produces_mult = 0.05\n}"
+      "planet_jobs_exotic_gases_produces_mult": 0.05
      }
     }
    ],
@@ -14087,7 +14093,7 @@
     {
      "potential": "colony? = {\n\thas_deposit = d_cave_shroom_veins\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_jobs_minerals_produces_mult = 0.1\n}"
+      "planet_jobs_minerals_produces_mult": 0.1
      }
     }
    ],
@@ -14305,7 +14311,7 @@
     {
      "potential": "always = yes",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_jobs_complex_and_simple_drone_produces_mult = 0.05\n}"
+      "planet_jobs_complex_and_simple_drone_produces_mult": 0.05
      }
     }
    ],
@@ -18189,7 +18195,7 @@
     {
      "potential": "owner? = {\n\thas_origin = origin_necrophage\n}\ncolony.growing_species? = {\n\tNOT = {\n\t\thas_trait = trait_hive_mind\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tlogistic_growth_mult = 0.1\n}"
+      "logistic_growth_mult": 0.1
      }
     }
    ],
@@ -18248,7 +18254,7 @@
     {
      "potential": "owner? = {\n\thas_origin = origin_necrophage\n}\ncolony.growing_species? = {\n\tNOT = {\n\t\thas_trait = trait_hive_mind\n\t}\n}",
      "modifier": {
-      "_text": "modifier = {\n\tlogistic_growth_mult = 0.1\n}"
+      "logistic_growth_mult": 0.1
      }
     }
    ],
@@ -21030,7 +21036,8 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 1\n}\nmult = colony.modifier:job_soldier_stability_add"
+      "planet_stability_add": 1,
+      "_text": "mult = colony.modifier:job_soldier_stability_add"
      }
     },
     {
@@ -21165,7 +21172,8 @@
     {
      "potential": null,
      "modifier": {
-      "_text": "modifier = {\n\tplanet_stability_add = 1\n}\nmult = colony.modifier:job_soldier_stability_add"
+      "planet_stability_add": 1,
+      "_text": "mult = colony.modifier:job_soldier_stability_add"
      }
     },
     {
@@ -22213,7 +22221,7 @@
     {
      "potential": "owner? = {\n\thas_active_tradition = tr_synchronicity_integrated_preservation\n}",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_crime_no_happiness_add = -3\n}"
+      "planet_crime_no_happiness_add": -3
      }
     },
     {
@@ -22433,7 +22441,8 @@
     {
      "potential": "exists = colony",
      "modifier": {
-      "_text": "modifier = {\n\tcountry_naval_cap_add = 1\n}\nmult = colony.modifier:job_researcher_naval_cap_add"
+      "country_naval_cap_add": 1,
+      "_text": "mult = colony.modifier:job_researcher_naval_cap_add"
      }
     },
     {
@@ -22514,7 +22523,8 @@
     {
      "potential": "exists = colony",
      "modifier": {
-      "_text": "modifier = {\n\tcountry_naval_cap_add = 1\n}\nmult = colony.modifier:job_researcher_naval_cap_add"
+      "country_naval_cap_add": 1,
+      "_text": "mult = colony.modifier:job_researcher_naval_cap_add"
      }
     },
     {

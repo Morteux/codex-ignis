@@ -1,7 +1,7 @@
 """Icon exporter (GAME_FILES_EXTRACTOR.md §6): sprites of interface/*.gfx and DDS → PNG.
 
 Sprites: every spriteType of interface/**/*.gfx gives name → texture file (+ number of frames).
-Export: the texture is converted with Pillow (first frame of a multi-frame strip) into a folder
+Export: the texture is converted with Pillow (one frame of a multi-frame strip or sprite sheet) into a folder
 of the StellarisAssets repository, reusing the file name that folder already has for it.
 """
 import os
@@ -12,8 +12,14 @@ SPRITE_KINDS = ("spriteType", "frameAnimatedSpriteType", "corneredTileSpriteType
 
 
 class Sprite:
-    def __init__(self, name, texture, frames=1, source=None):
+    """A sprite: its texture, number of frames and the frame it shows (0-based).
+
+    A sprite of a sprite sheet (`sprite_sheet_sprite_type = "GFX_x"`, `default_frame = n`) has no
+    texture of its own: `sheet` names the sprite whose texture it uses."""
+
+    def __init__(self, name, texture, frames=1, source=None, frame=0, sheet=None):
         self.name, self.texture, self.frames, self.source = name, texture, frames, source
+        self.frame, self.sheet = frame, sheet
 
     def __repr__(self):
         return f"Sprite({self.name!r}, {self.texture!r}, frames={self.frames})"
@@ -39,9 +45,13 @@ def read_sprites(text, source="<gfx>", warnings=None):
                 continue
             if k in SPRITE_KINDS and v.get("name") is not None:
                 tex = v.get("texturefile") or v.get("textureFile") or v.get("texturefile1")
+                frames = v.get("noOfFrames") or v.get("noOfframes") or 1
+                frames = int(frames) if isinstance(frames, (int, float)) else 1
                 if tex:
-                    frames = v.get("noOfFrames") or v.get("noOfframes") or 1
-                    out.append(Sprite(str(v.get("name")), str(tex).replace("\\", "/"), int(frames) if isinstance(frames, (int, float)) else 1, source))
+                    out.append(Sprite(str(v.get("name")), str(tex).replace("\\", "/"), frames, source))
+                elif v.get("sprite_sheet_sprite_type"):
+                    frame = v.get("default_frame") or 1  # 1-based in the game files
+                    out.append(Sprite(str(v.get("name")), None, 1, source, int(frame) - 1, str(v.get("sprite_sheet_sprite_type"))))
             else:
                 walk(v)
     walk(block)
@@ -59,7 +69,12 @@ class Sprites:
             with open(f, encoding="utf-8-sig", errors="replace") as fh:
                 for s in read_sprites(fh.read(), game.rel(f), game.warnings):
                     self.by_name.setdefault(s.name.lower(), s)
-                    self.by_texture.setdefault(norm(s.texture), s)
+                    if s.texture:
+                        self.by_texture.setdefault(norm(s.texture), s)
+        for s in self.by_name.values():
+            parent = self.by_name.get(s.sheet.lower()) if s.sheet else None
+            if parent and parent.texture:
+                s.texture, s.frames = parent.texture, parent.frames
 
     def get(self, name):
         return self.by_name.get(str(name).lower()) if name else None
@@ -77,14 +92,14 @@ class Sprites:
         return None
 
     def find(self, sprite=None, textures=()):
-        """(sprite name or None, texture relative path) of the first sprite / texture that exists."""
+        """(sprite name or None, texture path, frames, frame) of the first sprite / texture that exists."""
         s = self.get(sprite)
-        if s and self.texture_path(s.texture):
-            return s.name, s.texture, s.frames
+        if s and s.texture and self.texture_path(s.texture):
+            return s.name, s.texture, s.frames, s.frame
         for t in textures:
             if self.texture_path(t):
                 known = self.by_texture.get(norm(t))
-                return (known.name if known else None), t, (known.frames if known else 1)
+                return (known.name if known else None), t, (known.frames if known else 1), 0
         return None
 
 
@@ -145,14 +160,14 @@ class IconExporter:
         """Path inside StellarisAssets (`folder/File.png`) the icon goes to."""
         return folder + "/" + self.folder(folder).file_name(stem, aliases)
 
-    def export(self, texture, asset, frames=1):
+    def export(self, texture, asset, frames=1, frame=0):
         """Convert a game texture to StellarisAssets/<asset>. Returns the status."""
         from PIL import ImageChops
         src = self.game.sprites.texture_path(texture) if texture else None
         if not src:
             self.report["missing"].append(asset)
             return "missing"
-        img = dds_to_image(src, frames)
+        img = dds_to_image(src, frames, frame)
         dest = os.path.join(self.dir, asset)
         status = "new"
         if os.path.isfile(dest):

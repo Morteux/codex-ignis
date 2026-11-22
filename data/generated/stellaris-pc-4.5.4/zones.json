@@ -48362,13 +48362,13 @@
     {
      "potential": "industrial_jobs_are_catalytic_trigger = no",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_metallurgists_minerals_upkeep_add = 1.5\n}"
+      "planet_metallurgists_minerals_upkeep_add": 1.5
      }
     },
     {
      "potential": "industrial_jobs_are_catalytic_trigger = yes",
      "modifier": {
-      "_text": "modifier = {\n\tplanet_metallurgists_food_upkeep_add = 2.25\n}"
+      "planet_metallurgists_food_upkeep_add": 2.25
      }
     }
    ],
