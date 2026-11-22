@@ -1,7 +1,7 @@
 """Access to an installed game folder: version, scripted variables, inline scripts and parsed folders."""
-import json, os
+import json, os, re
 from .localisation import Localisation
-from .parser import Parser
+from .parser import Parser, to_text
 
 DEFAULT_GAME_DIR = "D:/Program Files (x86)/Steam/steamapps/common/Stellaris"
 
@@ -77,6 +77,17 @@ class GameFiles:
             from .icons import Sprites
             self._sprites = Sprites(self)
         return self._sprites
+
+    @property
+    def dlc_triggers(self):
+        """Scripted triggers such as has_machine_age_dlc → the DLC names of their host_has_dlc."""
+        if getattr(self, "_dlc_triggers", None) is None:
+            self._dlc_triggers = {}
+            for _, key, value in self.folder("common/scripted_triggers"):
+                if re.fullmatch(r"has_\w+_dlc", key):
+                    names = re.findall(r'host_has_dlc\s*=\s*"?([^"\n}]+?)"?\s*(?:\n|}|$)', to_text(value) if hasattr(value, "entries") else str(value))
+                    self._dlc_triggers[key] = [n.strip() for n in names]
+        return self._dlc_triggers
 
     # -- scripted variables and inline scripts
     @property

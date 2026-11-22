@@ -63,7 +63,8 @@ class IconExport(unittest.TestCase):
         strip_target = ex.target("technologies", "strip")
         self.assertEqual(strip_target, "technologies/strip.png")
         self.assertEqual(ex.export("gfx/interface/icons/test/Strip.dds", strip_target, frames=2), "new")
-        self.assertEqual(Image.open(os.path.join(self.assets, strip_target)).size, (4, 4))
+        with Image.open(os.path.join(self.assets, strip_target)) as im:
+            self.assertEqual(im.size, (4, 4))
         self.assertEqual(ex.export("gfx/interface/icons/test/missing.dds", "jobs/missing.png"), "missing")
         solid((10, 10), (1, 2, 3, 255)).save(os.path.join(self.assets, "jobs", "Job_big.png"))
         self.assertEqual(ex.export("gfx/interface/icons/jobs/job_test.dds", ex.target("jobs", "job_big")), "kept_larger")

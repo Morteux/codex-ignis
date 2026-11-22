@@ -1,6 +1,7 @@
 ﻿l_english:
  # comment line
  tech_test:0 "Test Technology"
+ tech_test_swap:0 "Wild Test Technology"
  tech_test_desc:1 "Unlocks the $building_test$ and gives £energy£ §Y+5§! Energy."
  building_test:0 "Test Building"
  job_test:0 "Tester"

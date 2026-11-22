@@ -1,0 +1,3 @@
+has_test_dlc = {
+	host_has_dlc = "Second Test DLC"
+}

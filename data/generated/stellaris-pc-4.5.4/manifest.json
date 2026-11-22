@@ -1,0 +1,12 @@
+{
+ "rulesetId": "stellaris-pc-4.5.4",
+ "gameVersion": "Cygnus v4.5.4 (1b4f)",
+ "date": "2026-11-22",
+ "sets": {
+  "technologies": {
+   "file": "technologies.json",
+   "count": 679,
+   "warnings": 2
+  }
+ }
+}

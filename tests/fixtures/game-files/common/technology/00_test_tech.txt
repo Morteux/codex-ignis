@@ -1,0 +1,56 @@
+tech_test = {
+	cost = @tier1cost1
+	area = physics
+	tier = 1
+	category = { computing }
+	prerequisites = { "tech_start" }
+	weight = @tier1weight1
+	is_rare = yes
+	icon = tech_test_icon
+	potential = {
+		host_has_dlc = "Test DLC"
+		has_test_dlc = yes
+	}
+	weight_modifier = {
+		modifier = {
+			factor = 2
+			has_ethic = ethic_materialist
+		}
+	}
+	modifier = {
+		planet_jobs_produces_mult = 0.05
+	}
+	technology_swap = {
+		name = tech_test_swap
+		inherit_icon = no
+		trigger = { is_wilderness_empire = yes }
+	}
+}
+
+tech_start = {
+	cost = 0
+	area = physics
+	tier = 0
+	category = { computing }
+	start_tech = yes
+}
+
+tech_event = {
+	cost = { factor = 2500 modifier = { factor = 0.5 is_ai = yes } }
+	area = society
+	tier = 2
+	category = { biology }
+	weight = 0
+	is_dangerous = yes
+}
+
+tech_repeatable_test = {
+	cost = 10000
+	cost_per_level = 5000
+	levels = -1
+	area = engineering
+	tier = 5
+	category = { industry }
+	prerequisites = { "tech_missing" }
+	weight = 10
+}
