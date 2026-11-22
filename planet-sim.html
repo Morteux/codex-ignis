@@ -18,7 +18,7 @@
     <meta name="twitter:card" content="summary" />
   </head>
   <body>
-    <main class="terminal-shell">
+    <div class="terminal-shell">
       <header class="topbar" aria-label="Cabecera del archivo" data-i18n-attr="aria-label:a11yTopbarLabel">
         <div class="topbar-left">
           <a class="brand" href="./" aria-label="Codex Ignis: inicio" data-i18n-attr="aria-label:a11yHomeLink"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
@@ -35,6 +35,7 @@
         </div>
       </header>
 
+      <main>
       <section class="terminal-intro">
         <h1 data-i18n="planetSimHeading">Simulador de Planetas</h1>
         <p class="intro-copy" data-i18n="planetSimIntroText">Primera versión: elige edificios para tu colonia y comprueba los empleos y recursos que aportan, respetando el límite real de ranuras de edificios del juego.</p>
@@ -296,11 +297,12 @@
           <div id="branch-offices"></div>
         </div>
       </section>
+      </main>
 
       <footer class="footer">
         <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
       </footer>
-    </main>
+    </div>
     <script type="module" src="js/planet-sim.js"></script>
     <script type="module" src="js/empire.js"></script>
     <script type="module" src="js/celestial.js"></script>

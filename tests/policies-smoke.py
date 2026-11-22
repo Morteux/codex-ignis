@@ -1298,6 +1298,26 @@ async def main():
             nf = await simple.evaluate("()=>[document.querySelector('h1').textContent,[...document.styleSheets].reduce((n,x)=>n+x.cssRules.length,0),[...document.querySelectorAll('a[href]')].map(a=>a.href)]")
             check("404 at " + path + ": status 404, styled, translated, links from the site root", resp.status == 404 and nf[0] != "Registro no encontrado." and nf[1] > 50 and all(h.startswith(base_url + "/") and "/a/b" not in h for h in nf[2]) and not simple_missing, (resp.status, nf, simple_missing))
         server.shutdown()
+        # P23.2: one page shell — same header markup everywhere, one language listener, no own translation code
+        shell_js = """()=>{const h=document.querySelector('body > * > header, body > header');const b=[...document.querySelectorAll('.lang-btn')];
+            return [!!h&&!h.closest('main'),!document.querySelector('main footer'),
+              b.map(x=>x.dataset.lang+':'+x.getAttribute('lang')+':'+!!x.getAttribute('aria-label')).join(','),
+              !!document.querySelector('.brand[aria-label][data-i18n-attr]'),document.documentElement.lang,
+              b.map(x=>x.getAttribute('aria-pressed')).join(',')]}"""
+        for page_name in ("index.html", "bingo.html", "planet-sim.html", "privacy.html", "cookies.html", "404.html", "tech-tree.html"):
+            await simple.goto("file://" + ROOT + "/" + page_name)
+            await simple.wait_for_timeout(250)
+            await simple.click(".lang-btn[data-lang=jp]")
+            sh = await simple.evaluate(shell_js)
+            check("page shell: " + page_name + " header and footer outside <main>, labelled language buttons and brand, JP applied", sh[:4] == [True, True, "es:es:true,en:en:true,jp:ja:true", True] and sh[4] == "ja" and sh[5] == "false,false,true", sh)
+        await simple.click(".lang-btn[data-lang=es]")
+        own_i18n = []
+        for f in os.listdir(os.path.join(ROOT, "js")):
+            if f.endswith(".js") and f not in ("page-shell.js", "i18n.js"):
+                code = "".join(l for l in open(os.path.join(ROOT, "js", f), encoding="utf-8") if not l.lstrip().startswith("*"))
+                if any(s in code for s in ("lang-btn", 'querySelectorAll("[data-i18n', "storeLang(")):
+                    own_i18n.append(f)
+        check("page shell: only js/page-shell.js listens to .lang-btn and applies data-i18n", not own_i18n, own_i18n)
         check("simple pages: no page errors", not simple_errors, simple_errors)
         check("simple pages: no local resource failed to load", not simple_missing, simple_missing)
         await simple.close()

@@ -38,7 +38,8 @@
  * Ver js/planet-data.js para el origen de todos los números.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import {
   BUILDINGS,
   JOBS,
@@ -89,7 +90,6 @@ import { DESIGNATIONS, DESIGNATION_CATEGORY_ORDER, DESIGNATION_CATEGORY_I18N_KEY
 // P21.2: swapped jobs join JOBS / JOB_OUTPUTS / JOB_EFFECTS / JOB_CATEGORIES (js/job-swaps.js).
 registerSwapJobs();
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
 const statHousing = document.querySelector("#planet-stat-housing");
 const statAmenities = document.querySelector("#planet-stat-amenities");
@@ -116,7 +116,6 @@ const capitalDowngradeBtn = document.querySelector("#planet-capital-downgrade");
 const designationSelect = document.querySelector("#planet-designation-select");
 const planetSizeInput = document.querySelector("#planet-size-input");
 const districtsUsedLabel = document.querySelector("#planet-districts-used-label");
-const metaDescription = document.querySelector('meta[name="description"]');
 const mainTabButtons = document.querySelectorAll(".planet-main-tab[data-main-tab]");
 const mainTabPanels = {
   library: document.querySelector("#planet-tab-panel-library"),
@@ -132,7 +131,7 @@ const mainTabPanels = {
 if (statHousingIcon) statHousingIcon.src = "img/ui/Housing.png";
 if (statAmenitiesIcon) statAmenitiesIcon.src = `${IMAGE_BASE}${HEADER_ICONS.amenities}`;
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 let activeTab = "buildings";
 let districtFilter = null; // null = todas, o "urban"/"generator"/"mining"/"agriculture"
 
@@ -1971,30 +1970,6 @@ if (designationSelect) {
     selectedDesignationId = designationSelect.value;
     updatePlanetState({ designationId: selectedDesignationId || null });
     refresh();
-  });
-}
-
-function applyTranslations() {
-  document.documentElement.lang = htmlLangCode(currentLang);
-
-  renderDesignationSelect();
-
-  document.querySelectorAll("[data-i18n]").forEach((el) => {
-    el.innerHTML = t(currentLang, el.dataset.i18n);
-  });
-
-  // "attr:key" pairs, several separated by ";" (e.g. a placeholder and its aria-label).
-  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-    el.dataset.i18nAttr.split(";").forEach((pair) => {
-      const [attr, key] = pair.split(":");
-      el.setAttribute(attr, t(currentLang, key));
-    });
-  });
-
-  syncSocialMeta(currentLang);
-
-  langButtons.forEach((btn) => {
-    btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
   });
 }
 
@@ -4205,20 +4180,11 @@ function refresh() {
   updatePlanetState({ planetSize });
 }
 
-function setLanguage(lang) {
-  currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
-  storeLang(currentLang);
-  applyTranslations();
+onLanguageChange((lang) => {
+  currentLang = lang;
+  renderDesignationSelect();
   refresh();
-}
-
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
 });
-
-if (metaDescription && !metaDescription.dataset.i18nAttr) {
-  metaDescription.setAttribute("content", t(currentLang, "planetSimMetaDescription"));
-}
 
 // Reacciona a lo que otros módulos escriben en el estado compartido: tipo de
 // cuerpo celeste (filtra las designaciones), éticas/autoridad (bonos) y
@@ -4415,7 +4381,8 @@ onPlanetStateChange((state) => {
   refresh();
 });
 
-applyTranslations();
+renderDesignationSelect();
+applyPageTranslations();
 setActiveTab("buildings");
 setMainTab("planet");
 refresh();

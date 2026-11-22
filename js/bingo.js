@@ -12,12 +12,13 @@
  * bingo que esté visible en ese momento (orígenes o principios), en una
  * rejilla fija de 9 columnas independiente de cómo se vea en pantalla.
  *
- * Esta página no usa js/legal.js: al construir la rejilla dinámicamente,
- * este módulo se encarga también de aplicar las traducciones (mismo
- * mecanismo de data-i18n / data-i18n-attr) para mantener todo sincronizado.
+ * El idioma y las traducciones del marcado estático (data-i18n /
+ * data-i18n-attr) los lleva el shell compartido (js/page-shell.js); este
+ * módulo solo vuelve a pintar la rejilla al cambiar de idioma.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
 
@@ -26,15 +27,13 @@ const BINGO_SETS = {
     principles: { data: PRINCIPLE_BINGO, fileSlug: "principios", titleKey: "bingoTypePrinciples" }
 };
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const typeSelect = document.querySelector("#bingo-type");
 const grid = document.querySelector("#bingo-grid");
 const emptyMessage = document.querySelector("#bingo-empty");
 const downloadButton = document.querySelector("#bingo-download");
 const downloadStatus = document.querySelector("#bingo-download-status");
-const metaDescription = document.querySelector('meta[name="description"]');
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 // The browser may restore the select after a reload, so start from its value.
 let currentType = typeSelect && typeSelect.value in BINGO_SETS ? typeSelect.value : "origins";
 // Recuerda qué casillas están marcadas por tipo, mientras dure la visita.
@@ -42,25 +41,6 @@ const markedState = new Map();
 
 function cardKey(type, index) {
     return `${type}:${index}`;
-}
-
-function applyTranslations() {
-    document.documentElement.lang = htmlLangCode(currentLang);
-
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-        el.innerHTML = t(currentLang, el.dataset.i18n);
-    });
-
-    document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-        const [attr, key] = el.dataset.i18nAttr.split(":");
-        el.setAttribute(attr, t(currentLang, key));
-    });
-
-    syncSocialMeta(currentLang);
-
-    langButtons.forEach((btn) => {
-        btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
-    });
 }
 
 /**
@@ -281,20 +261,10 @@ if (typeSelect) {
     });
 }
 
-langButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
-        storeLang(currentLang);
-        applyTranslations();
-        renderGrid();
-    });
+onLanguageChange((lang) => {
+    currentLang = lang;
+    renderGrid();
 });
 
-if (metaDescription && !metaDescription.dataset.i18nAttr) {
-    // La meta description ya trae su propio data-i18n-attr en el HTML; este
-    // bloque queda como salvaguarda si algún día se elimina ese atributo.
-    metaDescription.setAttribute("content", t(currentLang, "bingoMetaDescription"));
-}
-
-applyTranslations();
+applyPageTranslations();
 renderGrid();

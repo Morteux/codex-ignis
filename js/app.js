@@ -1,32 +1,21 @@
 import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
 const entryCount = document.querySelector("#entry-count");
-const entryCountLabel = document.querySelector("#entry-count-label");
 const entryList = document.querySelector("#index-empty");
 const readerMeta = document.querySelector("#reader-meta");
 const readerBody = document.querySelector("#reader-body");
-const skipLink = document.querySelector("#skip-link");
-const connectionStatus = document.querySelector("#connection-status");
-const introPromptText = document.querySelector("#intro-prompt-text");
-const introCopy = document.querySelector("#intro-copy");
-const indexHeading = document.querySelector("#index-heading");
-const searchLabel = document.querySelector("#search-label");
-const footerText = document.querySelector("#footer-text");
-const privacyLink = document.querySelector("#privacy-link");
-const cookiesLink = document.querySelector("#cookies-link");
-const langButtons = document.querySelectorAll(".lang-btn");
-const metaDescription = document.querySelector('meta[name="description"]');
 const lightbox = document.querySelector("#image-lightbox");
 const lightboxImage = document.querySelector("#lightbox-image");
 const lightboxClose = document.querySelector("#lightbox-close");
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 let currentQuery = "";
 let currentEntry = null; // entrada base (sin localizar) actualmente abierta, o null
 let scrollToReader = false; // set by an index click on mobile, used by the next render
@@ -497,45 +486,14 @@ function refresh() {
   }
 }
 
-function applyStaticStrings() {
-  document.documentElement.lang = htmlLangCode(currentLang);
-  document.title = t(currentLang, "pageTitle");
-  if (metaDescription) metaDescription.setAttribute("content", t(currentLang, "documentDescription"));
-  if (skipLink) skipLink.textContent = t(currentLang, "skipLink");
-  if (connectionStatus) connectionStatus.textContent = t(currentLang, "onlineStatus");
-  if (entryCountLabel) entryCountLabel.textContent = `${t(currentLang, "a11yEntryCount")}: `;
-  if (introPromptText) introPromptText.innerHTML = t(currentLang, "introPrompt");
-  if (introCopy) introCopy.innerHTML = t(currentLang, "introCopy");
-  if (indexHeading) indexHeading.textContent = t(currentLang, "indexHeading");
-  if (searchLabel) searchLabel.textContent = t(currentLang, "searchLabel");
-  if (searchInput) searchInput.setAttribute("placeholder", t(currentLang, "searchPlaceholder"));
-  if (footerText) footerText.textContent = t(currentLang, "footerText");
-  if (privacyLink) privacyLink.textContent = t(currentLang, "privacyLink");
-  if (cookiesLink) cookiesLink.textContent = t(currentLang, "cookiesLink");
-  document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-    const [attr, key] = el.dataset.i18nAttr.split(":");
-    el.setAttribute(attr, t(currentLang, key));
-  });
-  syncSocialMeta(currentLang);
-  langButtons.forEach((btn) => {
-    btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
-  });
-}
-
-function setLanguage(lang) {
-  currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
-  storeLang(currentLang);
-  applyStaticStrings();
-  refresh();
-}
-
 searchInput.addEventListener("input", () => {
   currentQuery = searchInput.value.trim();
   refresh();
 });
 
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+onLanguageChange((lang) => {
+  currentLang = lang;
+  refresh();
 });
 
 // Si el hash cambia (botones atrás/adelante del navegador, o alguien edita
@@ -551,5 +509,6 @@ window.addEventListener("hashchange", () => {
 currentEntry = findEntryFromHash();
 
 updateEntryCount();
-setLanguage(currentLang);
+applyPageTranslations();
+refresh();
 initializeAds();

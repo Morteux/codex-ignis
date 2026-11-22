@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <a class="skip-link" id="skip-link" href="#archivo">Saltar al archivo</a>
+    <a class="skip-link" id="skip-link" href="#archivo" data-i18n="skipLink">Saltar al archivo</a>
     <div class="terminal-shell">
         <header class="topbar" aria-label="Cabecera del archivo" data-i18n-attr="aria-label:a11yTopbarLabel">
             <div class="topbar-left">
@@ -37,12 +37,12 @@
             <div class="topbar-status">
                 <div class="connection" role="status" aria-label="Sistema en línea" data-i18n-attr="aria-label:a11yOnlineStatus">
                     <span class="status-dot" aria-hidden="true"></span>
-                    <span id="connection-status">EN LÍNEA</span>
+                    <span id="connection-status" data-i18n="onlineStatus">EN LÍNEA</span>
                 </div>
                 <div class="lang-switch" id="lang-switch" role="group" aria-label="Selector de idioma" data-i18n-attr="aria-label:a11yLangSwitch">
-                    <button type="button" class="lang-btn" data-lang="es" aria-pressed="true">ES</button>
-                    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
-                    <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false">JP</button>
+                    <button type="button" class="lang-btn" data-lang="es" aria-pressed="true" aria-label="Español" lang="es">ES</button>
+                    <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" aria-label="English" lang="en">EN</button>
+                    <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false" aria-label="日本語" lang="ja">JP</button>
                 </div>
             </div>
         </header>
@@ -50,7 +50,7 @@
         <main>
         <section class="terminal-intro" aria-labelledby="page-title">
             <h1 id="page-title">Codex Ignis</h1>
-            <p class="intro-copy" id="intro-copy">Archivo de combate de Stellaris para el canal de YouTube
+            <p class="intro-copy" id="intro-copy" data-i18n="introCopy">Archivo de combate de Stellaris para el canal de YouTube
                 <a href="https://www.youtube.com/@IgnisStellaris" target="_blank"
                     rel="noopener noreferrer">@IgnisStellaris</a>
             </p>
@@ -59,14 +59,14 @@
         <section class="workspace" id="archivo" aria-label="Explorador del archivo" data-i18n-attr="aria-label:a11yArchiveExplorer">
             <aside class="navigator" aria-label="Navegación de conocimiento" data-i18n-attr="aria-label:a11yKnowledgeNav">
                 <div class="panel-heading">
-                    <span id="index-heading">ÍNDICE</span>
-                    <span><span class="visually-hidden" id="entry-count-label">Número de entradas: </span><span id="entry-count">00</span></span>
+                    <span id="index-heading" data-i18n="indexHeading">ÍNDICE</span>
+                    <span><span class="visually-hidden" id="entry-count-label" data-i18n="a11yEntryCount">Número de entradas</span><span class="visually-hidden">: </span><span id="entry-count">00</span></span>
                 </div>
 
-                <label class="search-label" id="search-label" for="knowledge-search">Buscar registros</label>
+                <label class="search-label" id="search-label" for="knowledge-search" data-i18n="searchLabel">Buscar registros</label>
                 <div class="search-control">
                     <span aria-hidden="true">/</span>
-                    <input id="knowledge-search" type="search" placeholder="Buscar…" autocomplete="off" />
+                    <input id="knowledge-search" type="search" placeholder="Buscar…" autocomplete="off" data-i18n-attr="placeholder:searchPlaceholder" />
                 </div>
                 <p id="search-status" class="search-status" aria-live="polite">Esperando registros del archivo.</p>
 
@@ -89,10 +89,10 @@
         </main>
 
         <footer class="footer">
-            <p id="footer-text">CODEX_IGNIS <span aria-hidden="true">·</span> volcando base de conocimiento</p>
+            <p id="footer-text" data-i18n="footerText">CODEX_IGNIS · volcando base de conocimiento</p>
             <nav aria-label="Información legal" data-i18n-attr="aria-label:a11yLegalNav">
-                <a href="privacy.html" id="privacy-link">Privacidad</a>
-                <a href="cookies.html" id="cookies-link">Cookies</a>
+                <a href="privacy.html" id="privacy-link" data-i18n="privacyLink">Privacidad</a>
+                <a href="cookies.html" id="cookies-link" data-i18n="cookiesLink">Cookies</a>
             </nav>
         </footer>
     </div>

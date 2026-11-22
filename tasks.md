@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **23 / 128 tareas (18%)**
+> Progreso: **24 / 128 tareas (19%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -74,8 +74,9 @@ No behaviour change: every task keeps all smoke tests passing without changing w
 - [x] **T2301** (P23.1) Refactoring audit of the whole site: duplicated code (header, language selector, applying `data-i18n`, footer, dialogs) between `app.js`, `bingo.js`, `legal.js`, `planet-sim.js`; oversized modules; dead code. Add each concrete refactor found as a new task of this section
   - Findings in `DECISIONS_TO_REVIEW.md` (P23.1); the ones already covered are noted under T2302, T2303, T2304 and T2307, the new ones are T2309 and T2310.
   - Prueba manual: abrir `DECISIONS_TO_REVIEW.md`, sección P23.1, y `tasks.md`, sección 23: cada hallazgo aparece como nota de una tarea existente o como tarea nueva (T2309, T2310).
-- [ ] **T2302** (P23.2) Shared page shell module (header, language selector, applying `data-i18n` / `data-i18n-attr`, footer) used by every page
+- [x] **T2302** (P23.2) Shared page shell module (header, language selector, applying `data-i18n` / `data-i18n-attr`, footer) used by every page
   - Audit (T2301): the same `applyTranslations()` lives in `legal.js`, `bingo.js` and `planet-sim.js` (only the latter accepts several `attr:key` pairs separated by `;`), `app.js` translates the index by element id (`applyStaticStrings()`) instead of `data-i18n`; five simulator modules (`planet-sim.js`, `empire.js`, `celestial.js`, `planet-summary.js`, `planet-library-ui.js`) each add their own click listeners to `.lang-btn` and store the language; the header markup differs per page (language buttons have `aria-label`/`lang` only in the simulator, the brand link of the legal pages has no `aria-label`, the simulator header and footer are still inside `<main>`); `bingo.js` and `planet-sim.js` keep a dead meta-description fallback.
+  - Prueba manual: abrir index.html, bingo.html, planet-sim.html y privacy.html y pulsar EN y JP en cada una: todo el texto, el título y las etiquetas cambian de idioma, el botón pulsado queda marcado y al pasar a otra página se mantiene el idioma elegido.
 - [ ] **T2303** (P23.3) Split `js/planet-sim.js` (~235 KB) into modules by responsibility (economy engine, one renderer per tab, events, state) without changing behaviour; update `README.md` and GDD §3
   - Audit (T2301): `computeTotals()` alone is ~850 lines (lines 890–1735), the economy engine; the rest are district/slot rules (~140–890), renderers (~1800–4140) and the refresh/config glue.
 - [ ] **T2304** (P23.4) Split `js/i18n.js` (~430 KB) by area (common, wiki, bingo, simulator, tech tree) so every page loads only what it uses; adapt the parity checks

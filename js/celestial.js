@@ -3,21 +3,21 @@
  * planeta (natural/artificial). Los modificadores y características
  * planetarias quedan para una futura iteración (ver js/celestial-data.js).
  *
- * Mismo patrón que js/empire.js: módulo independiente con su propio idioma
- * y sus propios listeners sobre los .lang-btn compartidos de la página.
+ * Mismo patrón que js/empire.js: lee el idioma del shell compartido
+ * (js/page-shell.js) y se repinta en onLanguageChange().
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PLANET_TYPES } from "./celestial-data.js";
 import { BODY_TYPE_RULES } from "./body-type-data.js";
 import { updatePlanetState } from "./planet-state.js";
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const naturalListEl = document.querySelector("#celestial-natural-list");
 const artificialListEl = document.querySelector("#celestial-artificial-list");
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 
 // Por defecto se elige al azar uno de los 9 planetas normales (a petición de Morteux),
 // en vez de dejar el resumen del planeta vacío hasta que el usuario entre
@@ -72,12 +72,9 @@ function refresh() {
   renderGroup(artificialListEl, "artificial");
 }
 
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
-    storeLang(currentLang);
-    refresh();
-  });
+onLanguageChange((lang) => {
+  currentLang = lang;
+  refresh();
 });
 
 refresh();

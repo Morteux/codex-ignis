@@ -7,9 +7,9 @@
  * (imperios); capturar y aplicar un planeta en el simulador lo hacen
  * capturePlanetConfig()/applyPlanetConfig() de js/planet-sim.js.
  *
- * Igual que empire.js, este módulo mantiene su propio idioma y sus listeners sobre
- * los .lang-btn compartidos: las etiquetas estáticas (data-i18n) las traduce el
- * barrido genérico de planet-sim.js, y aquí solo se repinta lo generado dinámicamente.
+ * Igual que empire.js, lee el idioma del shell compartido (js/page-shell.js), que
+ * traduce las etiquetas estáticas (data-i18n); aquí solo se repinta lo generado
+ * dinámicamente.
  *
  * Reglas de nombre (planetas e imperios): recortado, no vacío, único sin distinguir
  * mayúsculas. Renombrar un planeta y editar el nombre en la barra de resumen es lo
@@ -20,7 +20,8 @@
  * preguntar (solo se pide confirmación por los cambios sin guardar del IMPERIO).
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, onLanguageChange } from "./page-shell.js";
 import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet-state.js";
 import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
@@ -64,7 +65,6 @@ import { capturePlanetConfig, applyPlanetConfig, showNotice } from "./planet-sim
 import { loadPlanetEmpire, resolveUnsavedEmpireChanges } from "./empire.js";
 import { setCelestialType } from "./celestial.js";
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const planetsEl = document.querySelector("#library-planets");
 const empiresEl = document.querySelector("#library-empires");
 const currentEl = document.querySelector("#library-current");
@@ -78,7 +78,7 @@ const summaryNameInput = document.querySelector("#planet-summary-name");
 const libraryTabBtn = document.querySelector('.planet-main-tab[data-main-tab="library"]');
 const planetTabBtn = document.querySelector('.planet-main-tab[data-main-tab="planet"]');
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 
 /* ── Utilidades ──────────────────────────────────────────────────────── */
 
@@ -606,12 +606,9 @@ onPlanetStateChange(() => {
   });
 });
 
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
-    storeLang(currentLang);
-    render();
-  });
+onLanguageChange((lang) => {
+  currentLang = lang;
+  render();
 });
 
 render();

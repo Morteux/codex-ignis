@@ -3,12 +3,10 @@
  * de éticas del juego), autoridades (según tus éticas) y principios
  * (según tus éticas y autoridad).
  *
- * Igual que bingo.js o legal.js, este módulo mantiene su propio idioma y
- * sus propios listeners sobre los botones .lang-btn (compartidos con
- * planet-sim.js en esta misma página): las etiquetas estáticas con
- * data-i18n de este panel ya las traduce el barrido genérico de
- * planet-sim.js, así que aquí solo hace falta volver a pintar el
- * contenido generado dinámicamente cuando cambia el idioma o la selección.
+ * El idioma lo lleva el shell compartido (js/page-shell.js), que también
+ * traduce las etiquetas estáticas con data-i18n de este panel; aquí solo
+ * hace falta volver a pintar el contenido generado dinámicamente cuando
+ * cambia el idioma (onLanguageChange) o la selección.
  *
  * Las éticas y la autoridad elegidas se publican en el estado compartido
  * (js/planet-state.js) para que planet-sim.js les aplique sus bonos a los
@@ -22,7 +20,8 @@
  * Ver js/empire-data.js para el origen de los datos y las simplificaciones.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";
 import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset, emitEdictsRemoved } from "./planet-state.js";
@@ -50,7 +49,6 @@ import {
   civicAvailable
 } from "./empire-data.js";
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const pointsLabelEl = document.querySelector("#empire-points-label");
 const wheelEl = document.querySelector("#empire-ethics-wheel");
 const ethicsEffectsEl = document.querySelector("#empire-ethics-effects");
@@ -69,7 +67,7 @@ const profileDeleteBtn = document.querySelector("#empire-profile-delete");
 const profileStateEl = document.querySelector("#empire-profile-state");
 const profileMessageEl = document.querySelector("#empire-profile-message");
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 
 // Una opción elegida (o null) por cada eje de ETHIC_AXES.
 const axisSelection = new Map(ETHIC_AXES.map((axis) => [axis.id, null]));
@@ -812,12 +810,9 @@ onEmpiresChange(() => {
   refresh();
 });
 
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
-    storeLang(currentLang);
-    refresh();
-  });
+onLanguageChange((lang) => {
+  currentLang = lang;
+  refresh();
 });
 
 // P13.7: al recargar se restaura el último imperio seleccionado si sigue existiendo.

@@ -14,7 +14,8 @@
  * panel posee y escribe (campo de texto editable).
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { t } from "./i18n.js";
+import { getLang, onLanguageChange } from "./page-shell.js";
 import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet-state.js";
 import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
@@ -23,7 +24,6 @@ import { listEmpires, onEmpiresChange } from "./empire-profiles.js";
 import { requestSwitchEmpire } from "./empire.js";
 import { DATA_VERSIONS, VERIFICATION_I18N_KEYS, getDataVersion, verificationSummary } from "./data-version.js";
 
-const langButtons = document.querySelectorAll(".lang-btn");
 const typeIconEl = document.querySelector("#planet-summary-type-icon");
 const designationIconEl = document.querySelector("#planet-summary-designation-icon");
 const nameInput = document.querySelector("#planet-summary-name");
@@ -32,7 +32,7 @@ const populationEl = document.querySelector("#planet-summary-population");
 const empireSelect = document.querySelector("#planet-summary-empire");
 const dataVersionSelect = document.querySelector("#planet-summary-data-version");
 
-let currentLang = detectInitialLang();
+let currentLang = getLang();
 
 /** Selector de versión de datos (P4.3): alimentado por el registro de data-version.js; hoy solo tiene una opción. */
 function renderDataVersion(state) {
@@ -142,12 +142,9 @@ if (empireSelect) {
 onEmpiresChange(render);
 onPlanetStateChange(render);
 
-langButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    currentLang = SUPPORTED_LANGS.includes(btn.dataset.lang) ? btn.dataset.lang : DEFAULT_LANG;
-    storeLang(currentLang);
-    render();
-  });
+onLanguageChange((lang) => {
+  currentLang = lang;
+  render();
 });
 
 render();
