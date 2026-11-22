@@ -17,7 +17,7 @@
  * mecanismo de data-i18n / data-i18n-attr) para mantener todo sincronizado.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
 
@@ -45,7 +45,7 @@ function cardKey(type, index) {
 }
 
 function applyTranslations() {
-    document.documentElement.lang = currentLang;
+    document.documentElement.lang = htmlLangCode(currentLang);
 
     document.querySelectorAll("[data-i18n]").forEach((el) => {
         el.innerHTML = t(currentLang, el.dataset.i18n);

@@ -1,12 +1,13 @@
 import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
 const entryCount = document.querySelector("#entry-count");
+const entryCountLabel = document.querySelector("#entry-count-label");
 const entryList = document.querySelector("#index-empty");
 const readerMeta = document.querySelector("#reader-meta");
 const readerBody = document.querySelector("#reader-body");
@@ -136,17 +137,23 @@ function highlightMatches(html, rawQuery) {
 }
 
 /** Abre la imagen en grande, centrada y a su resolución original (limitada al viewport). */
+let lightboxOpener = null; // element focused before opening, focused again on close
+
 function openLightbox(src, alt) {
   if (!lightbox || !lightboxImage || !src) return;
+  lightboxOpener = document.activeElement;
   lightboxImage.src = resolveAssetUrl(src);
   lightboxImage.alt = alt || "";
   lightbox.hidden = false;
+  lightboxClose?.focus();
 }
 
 function closeLightbox() {
   if (!lightbox || !lightboxImage) return;
   lightbox.hidden = true;
   lightboxImage.src = "";
+  if (lightboxOpener && document.contains(lightboxOpener)) lightboxOpener.focus();
+  lightboxOpener = null;
 }
 
 if (lightbox && lightboxImage && lightboxClose) {
@@ -156,8 +163,24 @@ if (lightbox && lightboxImage && lightboxClose) {
     if (event.target === lightbox) closeLightbox();
   });
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !lightbox.hidden) closeLightbox();
+    if (lightbox.hidden) return;
+    if (event.key === "Escape") closeLightbox();
+    // Modal dialog: the close button is its only control, so Tab stays on it.
+    if (event.key === "Tab") {
+      event.preventDefault();
+      lightboxClose.focus();
+    }
   });
+}
+
+/** Wraps a zoomable image in a button, so the lightbox also opens with the keyboard. */
+function zoomButton(img, className, src, alt) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = className;
+  button.addEventListener("click", () => openLightbox(src, alt));
+  button.append(img);
+  return button;
 }
 
 /** Nivel de un bloque "heading": 1 = subtítulo, 2 = sub-subtítulo, 3 = sub-sub-subtítulo. */
@@ -218,17 +241,16 @@ function renderBlock(block, query) {
       img.src = resolveAssetUrl(block.src);
       img.alt = block.alt || "";
       img.loading = "lazy";
-      if (block.src) {
-        img.addEventListener("click", () => openLightbox(block.src, block.alt || ""));
-      }
+      const zoom = block.src ? zoomButton(img, "entry-image-zoom", block.src, block.alt || "") : img;
+      if (zoom !== img && !img.alt) zoom.setAttribute("aria-label", t(currentLang, "a11yZoomImage"));
       // A missing image is replaced by a visible notice instead of a broken icon.
       img.addEventListener("error", () => {
         const missing = document.createElement("p");
         missing.className = "entry-image-missing";
         missing.textContent = t(currentLang, "imageMissing")(block.alt || block.src || "");
-        img.replaceWith(missing);
+        zoom.replaceWith(missing);
       });
-      figure.append(img);
+      figure.append(zoom);
       if (block.caption) {
         const caption = document.createElement("figcaption");
         caption.innerHTML = highlightMatches(formatText(block.caption), query);
@@ -268,9 +290,10 @@ function renderBlock(block, query) {
         portrait.src = resolveAssetUrl(block.portrait);
         portrait.alt = block.portraitAlt || block.cite || "";
         portrait.loading = "lazy";
-        portrait.addEventListener("click", () => openLightbox(block.portrait, block.portraitAlt || block.cite || ""));
-        portrait.addEventListener("error", () => portrait.remove());
-        quote.append(portrait);
+        const zoom = zoomButton(portrait, "entry-quote-zoom", block.portrait, portrait.alt);
+        if (!portrait.alt) zoom.setAttribute("aria-label", t(currentLang, "a11yZoomImage"));
+        portrait.addEventListener("error", () => zoom.remove());
+        quote.append(zoom);
       }
 
       const content = document.createElement("div");
@@ -475,11 +498,12 @@ function refresh() {
 }
 
 function applyStaticStrings() {
-  document.documentElement.lang = currentLang;
+  document.documentElement.lang = htmlLangCode(currentLang);
   document.title = t(currentLang, "pageTitle");
   if (metaDescription) metaDescription.setAttribute("content", t(currentLang, "documentDescription"));
   if (skipLink) skipLink.textContent = t(currentLang, "skipLink");
   if (connectionStatus) connectionStatus.textContent = t(currentLang, "onlineStatus");
+  if (entryCountLabel) entryCountLabel.textContent = `${t(currentLang, "a11yEntryCount")}: `;
   if (introPromptText) introPromptText.innerHTML = t(currentLang, "introPrompt");
   if (introCopy) introCopy.innerHTML = t(currentLang, "introCopy");
   if (indexHeading) indexHeading.textContent = t(currentLang, "indexHeading");

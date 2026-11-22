@@ -13,6 +13,7 @@ sys.stdout.reconfigure(encoding="utf-8")  # check names may hold JP text (Window
 ROOT = os.getcwd()
 URL = "file://" + ROOT + "/planet-sim.html"
 failures = []
+HTML_LANG = {"es": "es", "en": "en", "jp": "ja"}  # <html lang> uses the BCP 47 tag "ja" for the site's "jp"
 
 
 def check(name, cond, extra=""):
@@ -1154,7 +1155,7 @@ async def main():
         seen, raw = set(), []
         for lang in ("es", "en", "jp"):
             await wiki.click(".lang-btn[data-lang=" + lang + "]")
-            check("wiki: <html lang> follows the language (" + lang + ")", await wiki.evaluate("()=>document.documentElement.lang") == lang)
+            check("wiki: <html lang> follows the language (" + lang + ")", await wiki.evaluate("()=>document.documentElement.lang") == HTML_LANG[lang])
             for e in kb:
                 await wiki.evaluate("(s)=>{location.hash='#/'+encodeURIComponent(s)}", e["slug"])
                 await wiki.wait_for_timeout(40)
@@ -1214,7 +1215,7 @@ async def main():
         await bingo.click(".lang-btn[data-lang=jp]")
         jp_cards = await bingo.evaluate(cards_js)
         check("bingo: marks survive type and language switches", [i for i, c in enumerate(jp_cards) if c[2]] == [1] and jp_cards[1][1] == "true", [i for i, c in enumerate(jp_cards) if c[2]])
-        check("bingo: names and <html lang> follow the language", await bingo.evaluate("()=>document.documentElement.lang") == "jp" and jp_cards[1][0] != origins[1][0] and await bingo.evaluate("()=>document.querySelector('#bingo-download').textContent") == "画像としてダウンロード", (jp_cards[1][0], origins[1][0]))
+        check("bingo: names and <html lang> follow the language", await bingo.evaluate("()=>document.documentElement.lang") == "ja" and jp_cards[1][0] != origins[1][0] and await bingo.evaluate("()=>document.querySelector('#bingo-download').textContent") == "画像としてダウンロード", (jp_cards[1][0], origins[1][0]))
         await bingo.click(".lang-btn[data-lang=en]")
         await bingo.wait_for_timeout(300)
         missing_icon = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card.is-image-missing')].map(c=>c.getAttribute('aria-label'))")
@@ -1256,7 +1257,7 @@ async def main():
                 pages_texts[(page_name, lang)] = await simple.evaluate("()=>[document.documentElement.lang,document.title,document.querySelector('h1').textContent,document.querySelector('meta[name=description]')?.content||'',document.body.innerText]")
             en, jp, es = (pages_texts[(page_name, l)] for l in ("en", "jp", "es"))
             raw_keys = [x for x in (en, jp, es) if "undefined" in x[4] or "undefined" in x[1]]
-            check("simple pages: " + page_name + " title, heading and text follow es/en/jp", [en[0], jp[0], es[0]] == ["en", "jp", "es"] and en[4] != es[4] and jp[4] != es[4] and not raw_keys and (page_name == "404.html" or (en[3] and en[3] != jp[3])), [en[:4], jp[:4], es[:4]])
+            check("simple pages: " + page_name + " title, heading and text follow es/en/jp", [en[0], jp[0], es[0]] == ["en", "ja", "es"] and en[4] != es[4] and jp[4] != es[4] and not raw_keys and (page_name == "404.html" or (en[3] and en[3] != jp[3])), [en[:4], jp[:4], es[:4]])
         await simple.goto("file://" + ROOT + "/privacy.html")
         await simple.click(".lang-btn[data-lang=en]")
         await simple.goto("file://" + ROOT + "/cookies.html")
@@ -1318,13 +1319,13 @@ async def main():
                 await lpg.evaluate("async()=>{for(let y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(r=>setTimeout(r,20))}scrollTo(0,0)}")  # lazy images too
                 await lpg.wait_for_timeout(200)
                 state = await lpg.evaluate("()=>[document.documentElement.lang,/\\bundefined\\b|\\[object /.test(document.body.innerText)]")
-                check("all pages (" + lang + "): " + page_name + " loads with <html lang>, no errors, no missing local files", state == [lang, False] and not problems, (state, problems[:5]))
+                check("all pages (" + lang + "): " + page_name + " loads with <html lang>, no errors, no missing local files", state == [HTML_LANG[lang], False] and not problems, (state, problems[:5]))
                 await lpg.close()
             await lctx.close()
         # P22.5: mobile layout of the other pages at 320 and 375 px — no sideways scroll, usable controls
         mobile_js = """()=>{const w=document.documentElement.clientWidth;const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};
             const over=[...document.querySelectorAll('body *')].filter(e=>out(e)&&![...e.children].some(out)&&!e.closest('.entry-columns figure,.lightbox')).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+(e.textContent||'').trim().slice(0,30));
-            const small=[...document.querySelectorAll('a,button,input,select')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.height&&(r.height<24||r.width<24)&&!e.closest('.reader-body p,.reader-body li,.legal-content p,.intro-copy,.skip-link')}).slice(0,6).map(e=>e.tagName+' '+(e.textContent||e.id).trim().slice(0,20)+' '+Math.round(e.getBoundingClientRect().width)+'x'+Math.round(e.getBoundingClientRect().height));
+            const small=[...document.querySelectorAll('a,button,input,select')].filter(e=>{const r=e.getBoundingClientRect();const img=e.querySelector('img');return r.width&&r.height&&(r.height<24||r.width<24)&&!(img&&!img.naturalWidth)&&!e.closest('.reader-body p,.reader-body li,.legal-content p,.intro-copy,.skip-link')}).slice(0,6).map(e=>e.tagName+' '+(e.textContent||e.id).trim().slice(0,20)+' '+Math.round(e.getBoundingClientRect().width)+'x'+Math.round(e.getBoundingClientRect().height));
             return {sw:document.documentElement.scrollWidth,w,over,small}}"""
         mctx = await browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)
         if os.environ.get("BLOCK_REMOTE"): await mctx.route("https://**/*", lambda r: r.abort())
@@ -1349,6 +1350,65 @@ async def main():
         top = await mpg.evaluate("()=>[document.querySelector('#reader-body').getBoundingClientRect().top,innerHeight,scrollY]")
         check("mobile: choosing an entry scrolls the article into view", 0 <= top[0] < top[1] / 2 and top[2] > 0, top)
         await mctx.close()
+        # P22.6: accessibility of the other pages — landmarks, alt texts, keyboard focus, contrast, lightbox
+        a11y = await ctx.new_page()
+        structure_js = """()=>{const main=document.querySelectorAll('main');const bad=[];
+            if(main.length!==1)bad.push('main x'+main.length);
+            document.querySelectorAll('header,footer').forEach(e=>{if(e.closest('main,article,section,aside,nav'))bad.push(e.tagName+' inside '+e.parentElement.closest('main,article,section,aside,nav').tagName)});
+            if(!document.querySelector('body > * header, body > header'))bad.push('no header');
+            document.querySelectorAll('[aria-label]').forEach(e=>{if(/^(DIV|SPAN|P)$/.test(e.tagName)&&!e.getAttribute('role'))bad.push('aria-label on generic '+e.tagName+'#'+e.id+'.'+e.className)});
+            document.querySelectorAll('img').forEach(i=>{if(!i.hasAttribute('alt'))bad.push('img without alt '+i.getAttribute('src'))});
+            document.querySelectorAll('button,a[href]').forEach(b=>{if(b.offsetParent&&!(b.getAttribute('aria-label')||b.innerText.trim()||[...b.querySelectorAll('img')].some(i=>i.alt)))bad.push('unnamed '+b.tagName+'.'+b.className)});
+            return bad}"""
+        contrast_js = """()=>{const lum=(c)=>{const m=c.match(/[\\d.]+/g).map(Number);const f=(v)=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return [.2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2]),m[3]===undefined?1:m[3]]};
+            const bgOf=(e)=>{for(let x=e;x;x=x.parentElement){const b=getComputedStyle(x).backgroundColor;const a=b.match(/[\\d.]+/g).map(Number);if(a.length<4||a[3]>.5)return b}return 'rgb(7,17,12)'};
+            const ratio=(a,b)=>{const x=lum(a)[0],y=lum(b)[0];return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};const out=[];
+            const els=[...document.querySelectorAll('body *')].filter(e=>e.offsetParent&&[...e.childNodes].some(n=>n.nodeType===3&&n.textContent.trim())&&!e.closest('.hl-word,[aria-hidden=true]'));
+            for(const e of els){const s=getComputedStyle(e);const big=parseFloat(s.fontSize)>=24||(parseFloat(s.fontSize)>=18.66&&+s.fontWeight>=700);const r=ratio(s.color,bgOf(e));if(r<(big?3:4.5))out.push(e.tagName+'.'+e.className+' '+e.textContent.trim().slice(0,20)+' '+r.toFixed(2))}
+            const inp=document.querySelector('input[placeholder]');if(inp){const r=ratio(getComputedStyle(inp,'::placeholder').color,bgOf(inp));if(r<4.5)out.push('placeholder '+r.toFixed(2))}
+            return [...new Set(out)].slice(0,10)}"""
+        focus_js = """()=>{const e=document.activeElement;if(!e||e===document.body)return null;const s=getComputedStyle(e);const r=e.getBoundingClientRect();
+            const ring=(x)=>{const t=getComputedStyle(x);return (t.outlineStyle!=='none'&&parseFloat(t.outlineWidth)>=1)||t.boxShadow!=='none'};
+            return [e.tagName+'.'+e.className+' '+(e.textContent||e.id).trim().slice(0,16),ring(e)||(e.closest('.search-control')&&ring(e.closest('.search-control'))),r.width>0&&r.height>0&&r.bottom>0&&r.top<innerHeight+2000]}"""
+        for page_name in ("index.html#/MUGANI", "bingo.html", "privacy.html", "cookies.html", "404.html", "tech-tree.html"):
+            await a11y.goto("file://" + ROOT + "/" + page_name)
+            await a11y.wait_for_timeout(300)
+            await a11y.click(".lang-btn[data-lang=en]")
+            await a11y.evaluate("()=>document.activeElement.blur()")
+            bad = await a11y.evaluate(structure_js)
+            check("a11y: " + page_name + " one <main>, banner/footer outside it, named controls, alt on every image", not bad, bad)
+            low = await a11y.evaluate(contrast_js)
+            check("a11y: " + page_name + " text contrast >= 4.5:1 (3:1 large)", not low, low)
+            no_ring, seen_focus = [], []
+            await a11y.evaluate("()=>{document.activeElement&&document.activeElement.blur();window.scrollTo(0,0)}")
+            for _ in range(40 if "bingo" not in page_name else 12):
+                await a11y.keyboard.press("Tab")
+                f = await a11y.evaluate(focus_js)
+                if not f:
+                    continue
+                seen_focus.append(f[0])
+                if not (f[1] and f[2]):
+                    no_ring.append(f)
+            check("a11y: " + page_name + " every Tab stop shows a visible focus ring", seen_focus and not no_ring, (no_ring[:5], seen_focus[:5]))
+        await a11y.goto("file://" + ROOT + "/index.html#/MUGANI")
+        await a11y.wait_for_timeout(300)
+        await a11y.focus("#reader-body .entry-quote-zoom")
+        await a11y.keyboard.press("Enter")
+        lb = await a11y.evaluate("()=>[!document.querySelector('#image-lightbox').hidden,document.activeElement.id,document.querySelector('#image-lightbox').getAttribute('role'),document.querySelector('#image-lightbox').getAttribute('aria-modal')]")
+        await a11y.keyboard.press("Tab")
+        trapped = await a11y.evaluate("()=>document.activeElement.id")
+        await a11y.keyboard.press("Escape")
+        back = await a11y.evaluate("()=>[document.querySelector('#image-lightbox').hidden,document.activeElement.className]")
+        check("a11y: wiki image zoom opens with Enter, focus on close, Tab stays, Escape returns focus", lb == [True, "lightbox-close", "dialog", "true"] and trapped == "lightbox-close" and back == [True, "entry-quote-zoom"], (lb, trapped, back))
+        jp_lang = await a11y.evaluate("async()=>{const m=await import('./js/i18n.js');return m.htmlLangCode('jp')+','+m.htmlLangCode('es')}")
+        check("a11y: <html lang> uses the BCP 47 tag ja for Japanese", jp_lang == "ja,es", jp_lang)
+        await a11y.close()
+        jctx = await browser.new_context(locale="ja-JP")
+        jpg = await jctx.new_page()
+        await jpg.goto("file://" + ROOT + "/privacy.html")
+        await jpg.wait_for_timeout(200)
+        check("i18n: a Japanese browser (ja-JP) opens the site in JP", await jpg.evaluate("()=>document.documentElement.lang") == "ja")
+        await jctx.close()
         await browser.close()
 
 asyncio.run(main())

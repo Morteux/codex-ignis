@@ -944,6 +944,8 @@ const strings = {
         a11yAdSlot: "Espacio publicitario reservado",
         a11yLegalNav: "Información legal",
         a11yCloseImage: "Cerrar imagen",
+        a11yImageViewer: "Visor de imágenes",
+        a11yZoomImage: "Ampliar imagen",
         a11yBingoGrid: "Casillas del bingo",
         a11yPlanetSummary: "Resumen del planeta",
         a11yColonyState: "Estado de la colonia",
@@ -3028,6 +3030,8 @@ const strings = {
         a11yAdSlot: "Reserved advertising space",
         a11yLegalNav: "Legal information",
         a11yCloseImage: "Close image",
+        a11yImageViewer: "Image viewer",
+        a11yZoomImage: "Enlarge image",
         a11yBingoGrid: "Bingo squares",
         a11yPlanetSummary: "Planet summary",
         a11yColonyState: "Colony status",
@@ -5112,6 +5116,8 @@ const strings = {
         a11yAdSlot: "広告用の予約スペース",
         a11yLegalNav: "法的情報",
         a11yCloseImage: "画像を閉じる",
+        a11yImageViewer: "画像ビューアー",
+        a11yZoomImage: "画像を拡大",
         a11yBingoGrid: "ビンゴのマス",
         a11yPlanetSummary: "惑星の概要",
         a11yColonyState: "植民地の状態",
@@ -6286,8 +6292,14 @@ export function storeLang(lang) {
 export function detectInitialLang() {
     const stored = getStoredLang();
     if (stored) return stored;
-    const browserLang = (navigator.language || "").slice(0, 2).toLowerCase();
+    let browserLang = (navigator.language || "").slice(0, 2).toLowerCase();
+    if (browserLang === "ja") browserLang = "jp"; // the site's code for Japanese
     return SUPPORTED_LANGS.includes(browserLang) ? browserLang : DEFAULT_LANG;
+}
+
+/** BCP 47 tag for <html lang>: the site calls Japanese "jp", but its language tag is "ja". */
+export function htmlLangCode(lang) {
+    return lang === "jp" ? "ja" : lang;
 }
 
 export function t(lang, key) {

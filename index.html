@@ -14,7 +14,7 @@
 
 <body>
     <a class="skip-link" id="skip-link" href="#archivo">Saltar al archivo</a>
-    <main class="terminal-shell">
+    <div class="terminal-shell">
         <header class="topbar" aria-label="Cabecera del archivo" data-i18n-attr="aria-label:a11yTopbarLabel">
             <div class="topbar-left">
                 <a class="brand" href="./" aria-label="Codex Ignis: inicio" data-i18n-attr="aria-label:a11yHomeLink" aria-current="page">
@@ -28,7 +28,7 @@
                 </nav>
             </div>
             <div class="topbar-status">
-                <div class="connection" aria-label="Sistema en línea" data-i18n-attr="aria-label:a11yOnlineStatus">
+                <div class="connection" role="status" aria-label="Sistema en línea" data-i18n-attr="aria-label:a11yOnlineStatus">
                     <span class="status-dot" aria-hidden="true"></span>
                     <span id="connection-status">EN LÍNEA</span>
                 </div>
@@ -40,6 +40,7 @@
             </div>
         </header>
 
+        <main>
         <section class="terminal-intro" aria-labelledby="page-title">
             <h1 id="page-title">Codex Ignis</h1>
             <p class="intro-copy" id="intro-copy">Archivo de combate de Stellaris para el canal de YouTube
@@ -52,7 +53,7 @@
             <aside class="navigator" aria-label="Navegación de conocimiento" data-i18n-attr="aria-label:a11yKnowledgeNav">
                 <div class="panel-heading">
                     <span id="index-heading">ÍNDICE</span>
-                    <span id="entry-count" aria-label="Número de entradas" data-i18n-attr="aria-label:a11yEntryCount">00</span>
+                    <span><span class="visually-hidden" id="entry-count-label">Número de entradas: </span><span id="entry-count">00</span></span>
                 </div>
 
                 <label class="search-label" id="search-label" for="knowledge-search">Buscar registros</label>
@@ -71,13 +72,14 @@
             <article class="reader" aria-labelledby="reader-title">
                 <div class="reader-meta" id="reader-meta"></div>
                 <div class="reader-body" id="reader-body"></div>
-                <div class="ad-slot" data-ad-slot="article-inline" id="article-ad-slot"
-                    aria-label="Espacio publicitario reservado" data-i18n-attr="aria-label:a11yAdSlot" hidden></div>
+                <aside class="ad-slot" data-ad-slot="article-inline" id="article-ad-slot"
+                    aria-label="Espacio publicitario reservado" data-i18n-attr="aria-label:a11yAdSlot" hidden></aside>
             </article>
         </section>
 
         <section class="ad-slot" data-ad-slot="index-footer" aria-label="Espacio publicitario reservado" data-i18n-attr="aria-label:a11yAdSlot" hidden>
         </section>
+        </main>
 
         <footer class="footer">
             <p id="footer-text">CODEX_IGNIS <span aria-hidden="true">·</span> volcando base de conocimiento</p>
@@ -86,9 +88,9 @@
                 <a href="cookies.html" id="cookies-link">Cookies</a>
             </nav>
         </footer>
-    </main>
+    </div>
 
-    <div class="lightbox" id="image-lightbox" hidden>
+    <div class="lightbox" id="image-lightbox" role="dialog" aria-modal="true" aria-label="Visor de imágenes" data-i18n-attr="aria-label:a11yImageViewer" hidden>
         <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Cerrar imagen" data-i18n-attr="aria-label:a11yCloseImage">×</button>
         <img class="lightbox-image" id="lightbox-image" src="" alt="" />
     </div>

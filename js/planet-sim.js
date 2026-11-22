@@ -38,7 +38,7 @@
  * Ver js/planet-data.js para el origen de todos los números.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
 import {
   BUILDINGS,
   JOBS,
@@ -1975,7 +1975,7 @@ if (designationSelect) {
 }
 
 function applyTranslations() {
-  document.documentElement.lang = currentLang;
+  document.documentElement.lang = htmlLangCode(currentLang);
 
   renderDesignationSelect();
 

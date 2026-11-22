@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.6 — Accessibility pass of the other pages (2026-11-22)
+- [ ] **`<html lang="ja">` for Japanese** (new `htmlLangCode()` in `js/i18n.js`): the site's own code stays `jp` (buttons, storage, `strings.jp`), but "jp" is not a language tag, so screen readers did not switch to Japanese. Applied to the simulator too, for consistency.
+- [ ] **A Japanese browser (`ja-JP`) now opens the site in JP**: `detectInitialLang()` compared "ja" with "jp" and fell back to Spanish.
+- [ ] **Landmarks**: `<main>` used to wrap the whole page (header and footer included). The page wrapper is now a `<div>` (same classes), the header and footer are outside `<main>`; on the legal pages and the 404 the language bar is the `<header>` and the eyebrow + title moved into `<main>` (class `legal-heading`, same look).
+- [ ] **Wiki images and quote portraits are buttons** (`entry-image-zoom`, `entry-quote-zoom`) so the lightbox opens with the keyboard; the lightbox is a modal dialog (new key `a11yImageViewer`), focus goes to Close, Tab stays on it and closing returns focus. Images without alt text get "Enlarge image" (new key `a11yZoomImage`).
+- [ ] **ARIA fixes**: the "online" indicator gets `role="status"`; the entry count uses a hidden text label instead of `aria-label` on a `<span>`; the inline ad slot is an `<aside>`.
+- [ ] **Contrast**: the search placeholder goes from #5c7765 (3.8:1) to #6f8c78 (5:1); everything else passed. The highlight colours of `js/highlight-config.js` were left alone (owner's palette, new task T2211).
+- [ ] **Visible focus on the wiki search**: the search box shows the focus ring on its frame (the input itself has no outline).
+- [ ] **Brand link at least 24 px tall** on mobile (with `lang="ja"` it measured 23 px).
+
 ## P22.5 — Mobile layout of the other pages (2026-11-22)
 - [ ] **No page overflowed sideways** at 320/375 px in es/en/jp; the only issue was **tap targets under 24 px** (WCAG 2.5.8): header nav links (13 px tall), footer links and the wiki search box. Under 700 px they now get at least 24 px of height (desktop unchanged).
 - [ ] **Wiki on mobile scrolls to the article** after tapping an index entry (the article is below the whole index in the one-column layout). Only for index taps under 700 px; opening by URL or the back button does not scroll.

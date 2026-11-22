@@ -9,9 +9,8 @@
     <link rel="icon" type="image/x-icon" href="img/Ignis Stellaris icon.png" />
   </head>
   <body>
-    <main class="legal-page">
-      <header>
-        <div class="legal-topbar">
+    <div class="legal-page">
+      <header class="legal-topbar">
           <div class="topbar-left">
             <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
             <nav class="primary-nav" aria-label="Proyectos del archivo" data-i18n-attr="aria-label:a11yProjectsNav">
@@ -25,10 +24,12 @@
             <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
             <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false">JP</button>
           </div>
-        </div>
+      </header>
+      <main>
+      <div class="legal-heading">
         <p class="eyebrow" data-i18n="informationalDocLabel">Documento informativo</p>
         <h1 data-i18n="cookiesHeading">Cookies</h1>
-      </header>
+      </div>
       <article class="legal-content">
         <p><strong data-i18n="lastUpdatedNotice">Última actualización: 6 de septiembre de 2026.</strong></p>
         <h2 data-i18n="currentStateHeading">Estado actual</h2>
@@ -38,11 +39,12 @@
         <h2 data-i18n="cookiesMoreInfoHeading">Más información</h2>
         <p data-i18n="cookiesMoreInfoText">Puedes consultar cómo Google utiliza los datos cuando usas sitios o aplicaciones de sus socios en <a href="https://business.safety.google/privacy/" rel="noopener noreferrer">la información de privacidad de Google</a>.</p>
       </article>
+      </main>
       <footer class="footer">
         <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
         <a href="privacy.html" data-i18n="privacyLink">Privacidad</a>
       </footer>
-    </main>
+    </div>
     <script type="module" src="js/legal.js"></script>
   </body>
 </html>

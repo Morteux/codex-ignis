@@ -7,13 +7,13 @@
  * js/i18n.js. Así estas páginas no necesitan lógica propia de traducción.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 let currentLang = detectInitialLang();
 
 function applyTranslations() {
-  document.documentElement.lang = currentLang;
+  document.documentElement.lang = htmlLangCode(currentLang);
 
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     el.innerHTML = t(currentLang, el.dataset.i18n);
