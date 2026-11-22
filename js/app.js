@@ -1,6 +1,6 @@
 import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
 
@@ -516,6 +516,7 @@ function applyStaticStrings() {
     const [attr, key] = el.dataset.i18nAttr.split(":");
     el.setAttribute(attr, t(currentLang, key));
   });
+  syncSocialMeta(currentLang);
   langButtons.forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
   });

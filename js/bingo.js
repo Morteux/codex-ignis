@@ -17,7 +17,7 @@
  * mecanismo de data-i18n / data-i18n-attr) para mantener todo sincronizado.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";
 
@@ -55,6 +55,8 @@ function applyTranslations() {
         const [attr, key] = el.dataset.i18nAttr.split(":");
         el.setAttribute(attr, t(currentLang, key));
     });
+
+    syncSocialMeta(currentLang);
 
     langButtons.forEach((btn) => {
         btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));

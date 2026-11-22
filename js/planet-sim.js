@@ -38,7 +38,7 @@
  * Ver js/planet-data.js para el origen de todos los números.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
 import {
   BUILDINGS,
   JOBS,
@@ -1990,6 +1990,8 @@ function applyTranslations() {
       el.setAttribute(attr, t(currentLang, key));
     });
   });
+
+  syncSocialMeta(currentLang);
 
   langButtons.forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));

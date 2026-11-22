@@ -1320,6 +1320,19 @@ async def main():
                 await lpg.wait_for_timeout(200)
                 state = await lpg.evaluate("()=>[document.documentElement.lang,/\\bundefined\\b|\\[object /.test(document.body.innerText)]")
                 check("all pages (" + lang + "): " + page_name + " loads with <html lang>, no errors, no missing local files", state == [HTML_LANG[lang], False] and not problems, (state, problems[:5]))
+                # P22.8: page metadata — title, description, favicon, Open Graph following title/description/language, canonical
+                meta = await lpg.evaluate("""()=>{const m=(s,a='content')=>document.querySelector(s)?.getAttribute(a)||'';
+                    return {title:document.title,desc:m('meta[name=description]'),icon:m('link[rel=icon]','href'),canonical:m('link[rel=canonical]','href'),theme:m('meta[name=theme-color]'),
+                        ogTitle:m('meta[property="og:title"]'),ogDesc:m('meta[property="og:description"]'),ogLocale:m('meta[property="og:locale"]'),ogImage:m('meta[property="og:image"]'),
+                        ogType:m('meta[property="og:type"]'),ogSite:m('meta[property="og:site_name"]'),twitter:m('meta[name="twitter:card"]'),viewport:m('meta[name=viewport]')}}""")
+                og_locale = {"es": "es_ES", "en": "en_US", "jp": "ja_JP"}[lang]
+                meta_ok = (meta["title"].strip() != "" and "Codex Ignis" in meta["title"] and meta["desc"].strip() != ""
+                           and meta["ogTitle"] == meta["title"] and meta["ogDesc"] == meta["desc"] and meta["ogLocale"] == og_locale
+                           and meta["ogType"] == "website" and meta["ogSite"] == "Codex Ignis" and meta["twitter"] and meta["theme"] and meta["viewport"]
+                           and os.path.exists(os.path.join(ROOT, meta["icon"])))
+                if page_name != "404.html":
+                    meta_ok = meta_ok and os.path.exists(os.path.join(ROOT, meta["ogImage"])) and meta["canonical"] != ""
+                check("page metadata (" + lang + "): " + page_name + " title, description, favicon, Open Graph and canonical", meta_ok, meta)
                 await lpg.close()
             await lctx.close()
         # P22.5: mobile layout of the other pages at 320 and 375 px — no sideways scroll, usable controls

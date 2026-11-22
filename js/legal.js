@@ -7,7 +7,7 @@
  * js/i18n.js. Así estas páginas no necesitan lógica propia de traducción.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
 
 const langButtons = document.querySelectorAll(".lang-btn");
 let currentLang = detectInitialLang();
@@ -23,6 +23,8 @@ function applyTranslations() {
     const [attr, key] = el.dataset.i18nAttr.split(":");
     el.setAttribute(attr, t(currentLang, key));
   });
+
+  syncSocialMeta(currentLang);
 
   langButtons.forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));

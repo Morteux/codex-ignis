@@ -340,6 +340,7 @@ const strings = {
         notFoundPageTitle: "Registro no encontrado · Codex Ignis",
         notFoundHeading: "Registro no encontrado.",
         notFoundText: "La coordenada solicitada no existe en este codex.",
+        notFoundMetaDescription: "La coordenada solicitada no existe en este codex.",
         notFoundBackLink: "Volver al inicio",
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Árbol de tecnología de Stellaris.",
@@ -2426,6 +2427,7 @@ const strings = {
         notFoundPageTitle: "Record not found · Codex Ignis",
         notFoundHeading: "Record not found.",
         notFoundText: "The requested coordinate does not exist in this codex.",
+        notFoundMetaDescription: "The requested coordinate does not exist in this codex.",
         notFoundBackLink: "Back to home",
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Stellaris technology tree.",
@@ -4512,6 +4514,7 @@ const strings = {
         notFoundPageTitle: "記録が見つかりません · Codex Ignis",
         notFoundHeading: "記録が見つかりません。",
         notFoundText: "指定された座標はこのコデックスに存在しません。",
+        notFoundMetaDescription: "指定された座標はこのコデックスに存在しません。",
         notFoundBackLink: "ホームに戻る",
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Stellarisの技術ツリー。",
@@ -6300,6 +6303,23 @@ export function detectInitialLang() {
 /** BCP 47 tag for <html lang>: the site calls Japanese "jp", but its language tag is "ja". */
 export function htmlLangCode(lang) {
     return lang === "jp" ? "ja" : lang;
+}
+
+const OG_LOCALES = { es: "es_ES", en: "en_US", jp: "ja_JP" };
+
+/**
+ * Keeps the Open Graph tags in step with the page: og:title follows <title>,
+ * og:description follows the meta description and og:locale the language.
+ * Call it after the title and the description have been translated.
+ */
+export function syncSocialMeta(lang) {
+    const set = (selector, value) => {
+        const el = document.querySelector(selector);
+        if (el && value) el.setAttribute("content", value);
+    };
+    set('meta[property="og:title"]', document.title);
+    set('meta[property="og:description"]', document.querySelector('meta[name="description"]')?.getAttribute("content"));
+    set('meta[property="og:locale"]', OG_LOCALES[lang] || OG_LOCALES[DEFAULT_LANG]);
 }
 
 export function t(lang, key) {

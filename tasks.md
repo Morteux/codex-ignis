@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **19 / 123 tareas (15%)**
+> Progreso: **20 / 123 tareas (16%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -79,8 +79,10 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
 - [x] **T2207** (P22.7) i18n review of the wiki, bingo and legal pages: no hard-coded interface text, keys used exist in es/en/jp, articles of `content.js` with a missing language listed (never machine-translate: list them in `DECISIONS_TO_REVIEW.md`)
   - Modelo: sonnet
   - Prueba manual: run `node tests/i18n-audit.mjs .`: it ends with "problems 0" and lists the three articles (`diseño-flotas-fauna-espacial`, `flotas-contra-crisis`, `lista-de-deseos-ignis`) whose en/jp are empty; open one of them in EN and it shows in Spanish.
-- [ ] **T2208** (P22.8) Page metadata of every page: `<title>`, description, favicon, Open Graph, canonical, `lang`; consistent between pages
+- [x] **T2208** (P22.8) Page metadata of every page: `<title>`, description, favicon, Open Graph, canonical, `lang`; consistent between pages
   - Modelo: sonnet
+  - Prueba manual: open `bingo.html` and view the page source: title, description, favicon, `og:*`, `twitter:card` and canonical are in the head; click EN and inspect the head: `og:title`, `og:description` and `og:locale` (en_US) follow the language.
+  - ❓ Bloqueada (solo canonical y `og:image` absolutos): what is the production domain? Canonical and `og:image` are relative until it is known (see `DECISIONS_TO_REVIEW.md`, P22.8).
 - [ ] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23
 - [ ] **T2210** (P22.10) Add the two missing starbase screenshots of the "Diseño de naves mecánicas" article (`img/naves/Base estelar artillada.png`, `img/naves/Base estelar portahangares.png`) and drop them from `known_missing` in the smoke test
   - ❓ Bloqueada: the owner has to provide the two in-game screenshots (artillery and carrier starbase designs); they are not in the repository.
