@@ -1300,6 +1300,27 @@ async def main():
         check("simple pages: no page errors", not simple_errors, simple_errors)
         check("simple pages: no local resource failed to load", not simple_missing, simple_missing)
         await simple.close()
+        # P22.4: every page in es/en/jp — no page/console errors, no local resource that fails to load
+        site_pages = ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html", "cookies.html", "404.html")
+        for lang in ("es", "en", "jp"):
+            lctx = await browser.new_context(locale={"es": "es-ES", "en": "en-US", "jp": "ja-JP"}[lang])
+            if os.environ.get("BLOCK_REMOTE"): await lctx.route("https://**/*", lambda r: r.abort())
+            await lctx.add_init_script("localStorage.setItem('codex-ignis-lang', %s)" % json.dumps(lang))
+            for page_name in site_pages:
+                lpg = await lctx.new_page()  # one page each, so listeners do not pile up
+                problems = []
+                lpg.on("pageerror", lambda e, p=problems: p.append("pageerror: " + str(e)))
+                # remote assets (blocked with BLOCK_REMOTE, or offline) are not local failures
+                lpg.on("console", lambda m, p=problems: m.type == "error" and not (m.location or {}).get("url", "").startswith("https:") and not ("Failed to load resource" in m.text and "https:" in m.text) and p.append("console: " + m.text))
+                lpg.on("requestfailed", lambda r, p=problems: r.url.startswith("file:") and p.append("missing: " + r.url))
+                await lpg.goto("file://" + ROOT + "/" + page_name)
+                await lpg.wait_for_timeout(500)
+                await lpg.evaluate("async()=>{for(let y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(r=>setTimeout(r,20))}scrollTo(0,0)}")  # lazy images too
+                await lpg.wait_for_timeout(200)
+                state = await lpg.evaluate("()=>[document.documentElement.lang,/\\bundefined\\b|\\[object /.test(document.body.innerText)]")
+                check("all pages (" + lang + "): " + page_name + " loads with <html lang>, no errors, no missing local files", state == [lang, False] and not problems, (state, problems[:5]))
+                await lpg.close()
+            await lctx.close()
         await browser.close()
 
 asyncio.run(main())
