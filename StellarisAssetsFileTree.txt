@@ -2930,6 +2930,7 @@ StellarisAssets/
 │   ├── Trait_pc_volcanic_preference.png
 │   └── Trait_pc_wet_preference.png
 ├── resources/
+│   ├── Advanced_logic.png
 │   ├── Alloys.png
 │   ├── Amenities.png
 │   ├── Astral_threads.png

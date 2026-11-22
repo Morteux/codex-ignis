@@ -527,8 +527,8 @@ export const RESOURCES = {
   exotic_gases: { i18nKey: "resourceExoticGases", img: "resources/Exotic_gases.png" },
   minor_artifacts: { i18nKey: "resourceMinorArtifacts", img: "resources/Minor_artifacts.png" },
   astral_threads: { i18nKey: "resourceAstralThreads", img: "resources/Astral_threads.png" },
-  // P10.5: Neural Chips and Synaptic Lathe districts (no resource icon in the assets repository: modifier icon).
-  advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "modifiers/mod_advanced_logic_produces_add.png" },
+  // P10.5: Neural Chips and Synaptic Lathe districts. Icon exported from the game (advanced_logic_large.dds, T2525).
+  advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "resources/Advanced_logic.png" },
   // P10.8: produced by selectable blockers (Nanite Harvest Basin, Shroudstone, Ruined Sanctum of the Dreamer).
   nanites: { i18nKey: "resourceNanites", img: "resources/Nanites.png" },
   zro: { i18nKey: "resourceZro", img: "resources/Zro.png" }

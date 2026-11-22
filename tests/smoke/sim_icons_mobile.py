@@ -1,4 +1,5 @@
 """Planet simulator: UI icons, empire-level tab marks and mobile layout; translated landmark labels of the other pages (P12.2, P12.3, P13.1, P13.9)."""
+import os
 from smoke.common import check, ROOT
 
 
@@ -9,6 +10,18 @@ async def run(t):
     loose = [s for s in icons["all"] if any(n in s for n in ("Faction_support", "Colony_type_automated", "Focus_core", "Menu_icon_traditions", "Menu_icon_leaders", "Job_clerk"))]
     check("icons: no loose first-pass placements left", not loose, loose)
     check("icons: branch offices / empire / species / ethics / jobs by meaning", icons["branches"].endswith("modifiers/mod_branch_office_value_mult.png") and icons["empire"].endswith("modifiers/mod_cat_government.png") and icons["species"] == "img/ui/Icon_pop.png" and icons["ethics"].endswith("modifiers/mod_ethic_attraction_mult.png") and icons["jobs"] == "img/ui/Pop_job.png", icons)
+    # T2525: every resource icon is a file of StellarisAssets; Advanced Logic has its own resources/ icon
+    resource_imgs = await pg.evaluate("async()=>Object.fromEntries(Object.entries((await import('./js/planet-data.js')).RESOURCES).map(([k,r])=>[k,r.img]))")
+    tree = set()
+    folder = ""
+    for line in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8"):
+        name = line.rstrip("\n").lstrip(" │├└─")
+        if line.startswith(("├── ", "└── ")):
+            folder = name
+        elif folder.endswith("/"):
+            tree.add(folder + name)
+    missing = {k: v for k, v in resource_imgs.items() if v not in tree}
+    check("icons: every resource icon exists in StellarisAssets, Advanced Logic from resources/", not missing and resource_imgs["advanced_logic"] == "resources/Advanced_logic.png", (missing, resource_imgs.get("advanced_logic")))
     # P12.3: empire-level tabs (Imperio, Edicts) marked as saved with the empire profile
     marked = await pg.evaluate("()=>[...document.querySelectorAll('.planet-main-tab')].filter(b=>b.classList.contains('is-empire-saved')).map(b=>[b.dataset.mainTab,b.title,getComputedStyle(b,'::before').backgroundImage.includes('mod_cat_government'),getComputedStyle(b).boxShadow!=='none'])")
     check("empire tabs: only Imperio and Edicts, tooltip, empire icon background, accent line", marked == [["empire", "Saved with the empire profile", True, True], ["edicts", "Saved with the empire profile", True, True]], marked)

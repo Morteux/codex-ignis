@@ -2,6 +2,9 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P25.25 — Advanced Logic resource icon (2026-11-23)
+- [ ] **`resources/Advanced_logic.png`** is the game's `gfx/interface/icons/resources/advanced_logic_large.dds` (32 px, like the other resource icons; the small `advanced_logic.dds` is 20 px), committed in StellarisAssets (not pushed: until the owner pushes, the published site shows the icon as missing). `RESOURCES.advanced_logic` uses it instead of the modifier icon `modifiers/mod_advanced_logic_produces_add.png`.
+
 ## P25.24 — Icon export into StellarisAssets (2026-11-23)
 - [ ] **Full export committed in StellarisAssets** (not pushed): 1069 new files (812 in the new `technologies/`, 50 in the new `dlc/`, 44 in `designations/` and 2 in the new `edicts/`, plus new icons in the existing folders), 102 replaced with the game version (all with the same size as before: authorities, the science buildings, 18 origin icons, 14 planets, 8 planet modifiers...), 210 kept because the existing file is larger (civics and ethics from the wiki). The replaced list is in the StellarisAssets commit message and in `reports/stellaris-pc-4.5.4/icon_export.json`.
 - [ ] **`edicts/` is a new folder** (the edicts had no folder; only 2 edicts have an icon file of their own in the game).
