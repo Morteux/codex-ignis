@@ -1301,6 +1301,15 @@ async def main():
         check("simple pages: no page errors", not simple_errors, simple_errors)
         check("simple pages: no local resource failed to load", not simple_missing, simple_missing)
         await simple.close()
+        # P22.9: load budget — every local file a page needs exists; static icons of the tabs hidden at start are lazy
+        import re, subprocess
+        budget = subprocess.run(["node", os.path.join(ROOT, "tests", "load-budget.mjs"), ROOT], capture_output=True, text=True)
+        check("load budget: report runs and finds every local file of every page", budget.returncode == 0 and budget.stdout.rstrip().endswith("problems 0"), budget.stdout[-300:] + budget.stderr[-300:])
+        sim_html = open(os.path.join(ROOT, "planet-sim.html"), encoding="utf-8").read()
+        hidden_panels = [p for p in sim_html.split('id="planet-tab-panel-')[1:] if not p.startswith('planet"')]
+        hidden_imgs = [m.group(0) for p in hidden_panels for m in re.finditer(r"<img[^>]*>", p)]
+        hidden_eager = [i[:80] for i in hidden_imgs if 'loading="lazy"' not in i]
+        check("load budget: images of the simulator tabs hidden at start are lazy-loaded", len(hidden_panels) == 5 and len(hidden_imgs) >= 12 and not hidden_eager, hidden_eager[:3])
         # P22.4: every page in es/en/jp — no page/console errors, no local resource that fails to load
         site_pages = ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html", "cookies.html", "404.html")
         for lang in ("es", "en", "jp"):

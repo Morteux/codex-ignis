@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.9 — Load performance (2026-11-22)
+- [ ] **Measured with `tests/load-budget.mjs`** (static import graph + stylesheet + font + local images in the HTML; raw / gzip): wiki 845 / 227 KB, bingo 571 / 165 KB, simulator 1346 / 363 KB (33 modules), tech tree and legal pages ~533 / 156 KB, 404 3 / 1 KB. `js/i18n.js` (424 / 119 KB) is ~75% of every page except the simulator and the wiki, where `content.js` (280 / 61 KB) and `planet-sim.js` (229 / 58 KB) follow. Splitting `i18n.js` per page is already T2304.
+- [ ] **Only lazy-loading was added**: the 12 static heading icons of the simulator tabs hidden at start (Library, Empire, Celestial body, Edicts, Branch offices) and the ethics/authority icons of the Empire tab. Every other script-created image was already lazy; the bingo keeps `eager` where the PNG download needs the images.
+- [ ] **No module was removed from any page**: every module in each graph is used by that page. `ads.js` + `ads-config.js` (~2 KB) stay on the wiki so ads can be turned on by config alone.
+- [ ] **Not done, proposed as T2308**: the Orbitron font as WOFF2 (needs the `brotli` Python package, not installed) and `<link rel="modulepreload">` for the simulator's five-level import chain.
+
 ## P22.8 — Page metadata of every page (2026-11-22)
 - [ ] **Same metadata on every page**: `<title>`, description, PNG favicon (it was declared `image/x-icon` but the file is a PNG), `theme-color`, Open Graph (`og:type`, `og:site_name`, `og:title`, `og:description`, `og:locale`, `og:image`), `twitter:card` and `rel="canonical"`. The 404 page gets a description (new key `notFoundMetaDescription`), `theme-color`, Open Graph and `noindex`, but no canonical or `og:image`. The index title and description are now also marked with `data-i18n` / `data-i18n-attr`.
 - [ ] **`og:title`, `og:description` and `og:locale` follow the language** through `syncSocialMeta()` in `js/i18n.js` (es_ES / en_US / ja_JP), called by `app.js`, `bingo.js`, `planet-sim.js` and `legal.js`. Crawlers that do not run JavaScript see the Spanish text.

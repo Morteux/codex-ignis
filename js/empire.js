@@ -272,6 +272,7 @@ function renderWheel() {
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${ETHIC_ICONS[optionId]}`;
     img.alt = "";
+    img.loading = "lazy";
     btn.append(img);
     btn.addEventListener("click", () => selectEthic(optionId));
     wheelEl.append(btn);
@@ -287,6 +288,7 @@ function renderEthicsEffects() {
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${ETHIC_ICONS[id]}`;
     img.alt = "";
+    img.loading = "lazy";
     const body = document.createElement("div");
     const title = document.createElement("strong");
     title.textContent = t(currentLang, ETHIC_OPTIONS[id].i18nKey);
@@ -324,6 +326,7 @@ function renderAuthorityList() {
     const img = document.createElement("img");
     img.src = `${IMAGE_BASE}${authority.img}`;
     img.alt = "";
+    img.loading = "lazy";
     const title = document.createElement("strong");
     title.textContent = t(currentLang, authority.i18nKey);
     header.append(img, title);

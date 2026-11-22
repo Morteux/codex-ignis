@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **21 / 125 tareas (17%)**
+> Progreso: **22 / 126 tareas (17%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -70,7 +70,8 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
   - Modelo: sonnet
   - Prueba manual: open `bingo.html` and view the page source: title, description, favicon, `og:*`, `twitter:card` and canonical are in the head; click EN and inspect the head: `og:title`, `og:description` and `og:locale` (en_US) follow the language.
   - ❓ Bloqueada (solo canonical y `og:image` absolutos): what is the production domain? Canonical and `og:image` are relative until it is known (see `DECISIONS_TO_REVIEW.md`, P22.8).
-- [ ] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23
+- [x] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23
+  - Prueba manual: run `node tests/load-budget.mjs .`: it lists each page's size (`i18n.js` is the biggest file everywhere) and ends with "problems 0"; open `planet-sim.html` with the Network panel open: the Empire-tab icons are only requested when you open that tab.
 - [ ] **T2210** (P22.10) Add the two missing starbase screenshots of the "Diseño de naves mecánicas" article (`img/naves/Base estelar artillada.png`, `img/naves/Base estelar portahangares.png`) and drop them from `known_missing` in the smoke test
   - ❓ Bloqueada: the owner has to provide the two in-game screenshots (artillery and carrier starbase designs); they are not in the repository.
 - [ ] **T2211** (P22.11) Contrast of the word highlight colours of `js/highlight-config.js` on the dark background: #375cff (cruiser, herald, 3.8:1), #2c33ff (energy, shield, 2.8:1), #332cff (unbidden, 2.7:1), #ad208c (hardening, 3.1:1), #8900af (dark matter, psionic, 2.5:1) are under 4.5:1; lighten them keeping their hue, or keep them
@@ -87,6 +88,7 @@ No behaviour change: every task keeps all smoke tests passing without changing w
 - [ ] **T2305** (P23.5) Organise `styles.css` by page/component with shared colour tokens and remove unused selectors
 - [ ] **T2306** (P23.6) Split `tests/policies-smoke.py` (~110 KB) into one file per area with shared helpers and a single runner; update `README.md`
 - [ ] **T2307** (P23.7) Remove dead code: unused exports, functions, i18n keys and CSS. Unused files in `img/` are only listed in `DECISIONS_TO_REVIEW.md`, never deleted
+- [ ] **T2308** (P23.8) Load performance follow-ups from P22.9: serve `fonts/Orbitron-VariableFont_wght.ttf` as WOFF2 (keep the TTF as fallback in `@font-face`) and add `<link rel="modulepreload">` for the simulator's deep import chain (`policy-data.js` → `building-requirements.js` → `empire-data.js` → `civic-rules.js`), with a smoke check that every preloaded module is in the page's graph; compare before/after with `node tests/load-budget.mjs .`
 
 ## 24 · Generic bingo and new bingos
 - [ ] **T2401** (P24.1) Generic bingo engine: every bingo is one entry of `js/bingo-data.js` (id, title/description keys, items with image path or `null`, i18n key, tags, DLC), with its own `iconSize` and `layout`: `grid` (default, number of columns), `ordered` (explicit order, e.g. origins as in the game) or `shape` (custom cell positions, e.g. the ethics wheel). Missing images keep a reserved, fixed-size empty slot. Selector, marking and PNG download work with every layout. Origins and principles migrated with no visible change; smoke tests
