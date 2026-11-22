@@ -1,0 +1,12 @@
+test_subsidies = {
+	length = -1
+	icon = "GFX_test_strip"
+	resources = {
+		category = edicts
+		cost = { unity = 30 multiplier = value:edict_size_effect }
+		upkeep = { unity = 30 multiplier = value:edict_size_effect }
+	}
+	modifier = { researcher_jobs_bonus_workforce_mult = 0.1 }
+	potential = { host_has_dlc = "Test DLC" }
+	prerequisites = { "tech_test" }
+}

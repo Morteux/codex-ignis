@@ -17,6 +17,7 @@
  test_weather:0 "Test Weather"
  test_weather_desc:0 "Storms for testing."
  d_test_blocker:0 "£blocker£ Test Blocker"
+ edict_test_subsidies:0 "Test Subsidies"
  ethic_test:0 "Testist"
  ethic_fanatic_test:0 "Fanatic Testist"
  job_test_desc:0 "A "quoted" word inside the text."

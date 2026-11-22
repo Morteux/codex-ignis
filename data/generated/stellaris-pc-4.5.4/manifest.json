@@ -33,6 +33,11 @@
    "count": 147,
    "warnings": 0
   },
+  "edicts": {
+   "file": "edicts.json",
+   "count": 171,
+   "warnings": 1
+  },
   "ethics": {
    "file": "ethics.json",
    "count": 17,
@@ -57,6 +62,11 @@
    "file": "planet_modifiers.json",
    "count": 70,
    "warnings": 16
+  },
+  "policies": {
+   "file": "policies.json",
+   "count": 60,
+   "warnings": 1
   },
   "static_modifiers": {
    "file": "static_modifiers.json",
