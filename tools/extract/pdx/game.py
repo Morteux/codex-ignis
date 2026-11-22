@@ -70,6 +70,14 @@ class GameFiles:
             self._localisation = Localisation(self.root)
         return self._localisation
 
+    # -- sprites of interface/*.gfx
+    @property
+    def sprites(self):
+        if self._sprites is None:
+            from .icons import Sprites
+            self._sprites = Sprites(self)
+        return self._sprites
+
     # -- scripted variables and inline scripts
     @property
     def variables(self):

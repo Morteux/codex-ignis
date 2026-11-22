@@ -1,0 +1,21 @@
+spriteTypes = {
+	# A plain icon and a two-frame strip, as in interface/*.gfx of the game
+	spriteType = {
+		name = "GFX_job_test"
+		texturefile = "gfx/interface/icons/jobs/job_test.dds"
+	}
+	spriteType = {
+		name = "GFX_test_strip"
+		texturefile = "gfx\interface\icons\test\Strip.dds"
+		noOfFrames = 2
+	}
+	frameAnimatedSpriteType = {
+		name = "GFX_animated"
+		textureFile = "gfx/interface/icons/test/animated.dds"
+		noOfFrames = 4
+	}
+	spriteType = {
+		name = "GFX_missing_texture"
+		texturefile = "gfx/interface/icons/test/missing.dds"
+	}
+}
