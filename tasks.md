@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **14 / 70 tareas (20%)**
+> Progreso: **15 / 70 tareas (21%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -68,7 +68,8 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
   - Prueba manual: open `index.html`, type "a" in the search (no secret entry appears), then "mugan" (MUGANI? appears); open "Enlaces útiles" in JP and click a link (it opens the real site); open "Diseño de naves mecánicas": the two starbase images show "Imagen no disponible: …".
 - [x] **T2202** (P22.2) QA of the bingo: both bingos (origins, principles), marking, PNG download, language switch, missing icons, console errors
   - Prueba manual: open `bingo.html`, mark two origins, switch to Principles and back and to EN (the marks stay), then click "Download as image": a PNG with the icons in colour for the marked cells is downloaded.
-- [ ] **T2203** (P22.3) QA of the legal pages, 404 and the tech tree placeholder: links, language switch, ads/consent stay disabled (`js/ads-config.js`), `vercel.json` routing of the 404
+- [x] **T2203** (P22.3) QA of the legal pages, 404 and the tech tree placeholder: links, language switch, ads/consent stay disabled (`js/ads-config.js`), `vercel.json` routing of the 404
+  - Prueba manual: open `tech-tree.html` and click EN (the "under construction" line and the tab title change); after deploying, open `/a/b/missing` on the Vercel site: the 404 page appears styled and its links go to the site root.
 - [ ] **T2204** (P22.4) Smoke test that opens every page in es/en/jp and fails on console errors or local resources that do not load (404)
 - [ ] **T2205** (P22.5) Mobile layout review at 320–375 px of every page other than the simulator (like T1301)
 - [ ] **T2206** (P22.6) Accessibility pass of every page other than the simulator: keyboard, visible focus, contrast, `alt` texts, landmarks, `lang` attribute following the language (like T1304)

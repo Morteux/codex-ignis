@@ -341,6 +341,10 @@ const strings = {
         notFoundHeading: "Registro no encontrado.",
         notFoundText: "La coordenada solicitada no existe en este codex.",
         notFoundBackLink: "Volver al inicio",
+        techTreePageTitle: "Tech Tree · Codex Ignis",
+        techTreeMetaDescription: "Árbol de tecnología de Stellaris.",
+        techTreeHeading: "Tech Tree",
+        techTreeComingSoon: "En construcción: el árbol de tecnología interactivo llegará pronto.",
 
         // bingo.html
         bingoPageTitle: "Bingo · Codex Ignis",
@@ -2421,6 +2425,10 @@ const strings = {
         notFoundHeading: "Record not found.",
         notFoundText: "The requested coordinate does not exist in this codex.",
         notFoundBackLink: "Back to home",
+        techTreePageTitle: "Tech Tree · Codex Ignis",
+        techTreeMetaDescription: "Stellaris technology tree.",
+        techTreeHeading: "Tech Tree",
+        techTreeComingSoon: "Under construction: the interactive technology tree is coming soon.",
 
         // bingo.html
         bingoPageTitle: "Bingo · Codex Ignis",
@@ -4501,6 +4509,10 @@ const strings = {
         notFoundHeading: "記録が見つかりません。",
         notFoundText: "指定された座標はこのコデックスに存在しません。",
         notFoundBackLink: "ホームに戻る",
+        techTreePageTitle: "Tech Tree · Codex Ignis",
+        techTreeMetaDescription: "Stellarisの技術ツリー。",
+        techTreeHeading: "Tech Tree",
+        techTreeComingSoon: "準備中：インタラクティブな技術ツリーは近日公開予定です。",
 
         // bingo.html
         bingoPageTitle: "ビンゴ · Codex Ignis",

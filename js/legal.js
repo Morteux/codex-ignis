@@ -1,5 +1,5 @@
 /**
- * Script de traducción para páginas simples (privacy.html, cookies.html, 404.html).
+ * Script de traducción para páginas simples (privacy.html, cookies.html, 404.html, tech-tree.html).
  *
  * Funciona leyendo atributos `data-i18n` (contenido interno, admite HTML) y
  * `data-i18n-attr` (formato "atributo:clave", para cosas como el meta

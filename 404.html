@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title data-i18n="notFoundPageTitle">Registro no encontrado · Codex Ignis</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" type="image/x-icon" href="img/Ignis Stellaris icon.png" />
+    <script>
+      // Vercel serves this page for any missing path, also nested ones (/a/b), so its relative
+      // links must resolve from the site root; opened from disk (file://) they stay relative.
+      // The stylesheet, icon and script are added here, after the <base>, so the browser never
+      // requests them at the nested path.
+      if (location.protocol !== "file:") document.head.append(Object.assign(document.createElement("base"), { href: "/" }));
+      document.head.append(
+        Object.assign(document.createElement("link"), { rel: "stylesheet", href: "styles.css" }),
+        Object.assign(document.createElement("link"), { rel: "icon", type: "image/x-icon", href: "img/Ignis Stellaris icon.png" })
+      );
+      // An injected module runs as soon as it loads: wait for the page markup first.
+      document.addEventListener("DOMContentLoaded", () =>
+        document.head.append(Object.assign(document.createElement("script"), { type: "module", src: "js/legal.js" })));
+    </script>
   </head>
   <body>
     <main class="legal-page">
@@ -33,6 +45,5 @@
         <p><a href="./" data-i18n="notFoundBackLink">Volver al inicio</a></p>
       </article>
     </main>
-    <script type="module" src="js/legal.js"></script>
   </body>
 </html>

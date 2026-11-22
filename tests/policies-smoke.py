@@ -1237,6 +1237,69 @@ async def main():
         check("bingo: no page errors", not bingo_errors, bingo_errors)
         check("bingo: no local resource failed to load", not bingo_missing, bingo_missing)
         await bingo.close()
+        # P22.3: legal pages, 404 and tech tree placeholder — links, languages, ads off, Vercel 404
+        simple = await ctx.new_page()
+        simple_errors, simple_missing, ad_requests = [], [], []
+        simple.on("pageerror", lambda e: simple_errors.append(str(e)))
+        simple.on("requestfailed", lambda r: r.url.startswith(("file:", "http://127.")) and simple_missing.append(r.url))
+        simple.on("response", lambda r: r.status >= 400 and r.request.resource_type != "document" and r.url.startswith(("file:", "http://127.")) and simple_missing.append(r.url))
+        simple.on("request", lambda r: any(h in r.url for h in ("googlesyndication", "doubleclick", "adservice", "googletagmanager")) and ad_requests.append(r.url))
+        pages_texts = {}
+        for page_name in ("privacy.html", "cookies.html", "404.html", "tech-tree.html"):
+            await simple.goto("file://" + ROOT + "/" + page_name)
+            await simple.wait_for_timeout(200)
+            local_links = await simple.evaluate("()=>[...document.querySelectorAll('a[href]')].map(a=>a.getAttribute('href')).filter(h=>!/^(https?:|mailto:|#)/.test(h))")
+            broken = [h for h in local_links if h not in ("./", "/") and not os.path.isfile(os.path.join(ROOT, h.split("#")[0]))]
+            check("simple pages: " + page_name + " local links point to existing pages", local_links and not broken, (local_links, broken))
+            for lang in ("en", "jp", "es"):
+                await simple.click(".lang-btn[data-lang=" + lang + "]")
+                pages_texts[(page_name, lang)] = await simple.evaluate("()=>[document.documentElement.lang,document.title,document.querySelector('h1').textContent,document.querySelector('meta[name=description]')?.content||'',document.body.innerText]")
+            en, jp, es = (pages_texts[(page_name, l)] for l in ("en", "jp", "es"))
+            raw_keys = [x for x in (en, jp, es) if "undefined" in x[4] or "undefined" in x[1]]
+            check("simple pages: " + page_name + " title, heading and text follow es/en/jp", [en[0], jp[0], es[0]] == ["en", "jp", "es"] and en[4] != es[4] and jp[4] != es[4] and not raw_keys and (page_name == "404.html" or (en[3] and en[3] != jp[3])), [en[:4], jp[:4], es[:4]])
+        await simple.goto("file://" + ROOT + "/privacy.html")
+        await simple.click(".lang-btn[data-lang=en]")
+        await simple.goto("file://" + ROOT + "/cookies.html")
+        await simple.wait_for_timeout(150)
+        check("simple pages: the language chosen on one page is kept on the next", await simple.evaluate("()=>document.documentElement.lang") == "en")
+        await simple.goto("file://" + ROOT + "/index.html")
+        await simple.wait_for_timeout(300)
+        ads = await simple.evaluate("async()=>{const c=(await import('./js/ads-config.js')).adsConfig;return [c.enabled,c.publisherId,[...document.querySelectorAll('[data-ad-slot]')].map(s=>s.hidden),document.querySelectorAll('ins.adsbygoogle,script[src*=googlesyndication]').length]}")
+        check("ads: disabled in js/ads-config.js, slots hidden, no ad script or request", ads[0] is False and ads[1] == "" and ads[2] and all(ads[2]) and ads[3] == 0 and not ad_requests, (ads, ad_requests))
+        consent = await simple.evaluate("async()=>(await (await fetch('js/ads.js')).text()).match(/function hasAdConsent\\(\\)\\s*\\{\\s*return (\\w+)/)?.[1]")
+        check("ads: no consent without a CMP (hasAdConsent returns false)", consent == "false", consent)
+        vercel = json.load(open(os.path.join(ROOT, "vercel.json"), encoding="utf-8"))
+        check("vercel.json: clean URLs and no rewrite/route that would hide the 404 page", vercel.get("cleanUrls") is True and not vercel.get("rewrites") and not vercel.get("routes") and os.path.isfile(os.path.join(ROOT, "404.html")), vercel)
+        # Vercel serves 404.html (keeping the URL) for any missing path: emulate it over http
+        import http.server, threading, functools
+
+        class Vercel404(http.server.SimpleHTTPRequestHandler):
+            def send_error(self, code, message=None, explain=None):
+                if code != 404:
+                    return super().send_error(code, message, explain)
+                body = open(os.path.join(ROOT, "404.html"), "rb").read()
+                self.send_response(404)
+                self.send_header("Content-Type", "text/html; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+
+            def log_message(self, *args):
+                pass
+        server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Vercel404, directory=ROOT))
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        base_url = "http://127.0.0.1:%d" % server.server_address[1]
+        for path in ("/missing-page", "/a/b/c/missing"):
+            simple_missing.clear()
+            resp = await simple.goto(base_url + path)
+            await simple.wait_for_timeout(300)
+            await simple.click(".lang-btn[data-lang=en]")
+            nf = await simple.evaluate("()=>[document.querySelector('h1').textContent,[...document.styleSheets].reduce((n,x)=>n+x.cssRules.length,0),[...document.querySelectorAll('a[href]')].map(a=>a.href)]")
+            check("404 at " + path + ": status 404, styled, translated, links from the site root", resp.status == 404 and nf[0] != "Registro no encontrado." and nf[1] > 50 and all(h.startswith(base_url + "/") and "/a/b" not in h for h in nf[2]) and not simple_missing, (resp.status, nf, simple_missing))
+        server.shutdown()
+        check("simple pages: no page errors", not simple_errors, simple_errors)
+        check("simple pages: no local resource failed to load", not simple_missing, simple_missing)
+        await simple.close()
         await browser.close()
 
 asyncio.run(main())
