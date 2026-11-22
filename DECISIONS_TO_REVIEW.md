@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.5 — Mobile layout of the other pages (2026-11-22)
+- [ ] **No page overflowed sideways** at 320/375 px in es/en/jp; the only issue was **tap targets under 24 px** (WCAG 2.5.8): header nav links (13 px tall), footer links and the wiki search box. Under 700 px they now get at least 24 px of height (desktop unchanged).
+- [ ] **Wiki on mobile scrolls to the article** after tapping an index entry (the article is below the whole index in the one-column layout). Only for index taps under 700 px; opening by URL or the back button does not scroll.
+
 ## P22.3 — Legal pages, 404 and tech tree placeholder QA (2026-11-22)
 - [ ] **404 at nested paths**: Vercel serves `404.html` for any missing URL keeping the path, so at `/a/b/missing` its relative `styles.css` and `js/legal.js` resolved to `/a/b/…` and the page showed unstyled and untranslated. It now adds `<base href="/">` (only over http/https, so it still works from disk) and injects the stylesheet, icon and script after it. Without JavaScript the 404 page is unstyled.
 - [ ] **`hasAdConsent()` returns false** (was true) until a CMP is integrated: setting `adsConfig.enabled = true` alone no longer loads AdSense without consent. Activating ads now needs the CMP check too.

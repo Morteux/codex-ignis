@@ -1321,6 +1321,34 @@ async def main():
                 check("all pages (" + lang + "): " + page_name + " loads with <html lang>, no errors, no missing local files", state == [lang, False] and not problems, (state, problems[:5]))
                 await lpg.close()
             await lctx.close()
+        # P22.5: mobile layout of the other pages at 320 and 375 px — no sideways scroll, usable controls
+        mobile_js = """()=>{const w=document.documentElement.clientWidth;const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};
+            const over=[...document.querySelectorAll('body *')].filter(e=>out(e)&&![...e.children].some(out)&&!e.closest('.entry-columns figure,.lightbox')).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+(e.textContent||'').trim().slice(0,30));
+            const small=[...document.querySelectorAll('a,button,input,select')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.height&&(r.height<24||r.width<24)&&!e.closest('.reader-body p,.reader-body li,.legal-content p,.intro-copy,.skip-link')}).slice(0,6).map(e=>e.tagName+' '+(e.textContent||e.id).trim().slice(0,20)+' '+Math.round(e.getBoundingClientRect().width)+'x'+Math.round(e.getBoundingClientRect().height));
+            return {sw:document.documentElement.scrollWidth,w,over,small}}"""
+        mctx = await browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)
+        if os.environ.get("BLOCK_REMOTE"): await mctx.route("https://**/*", lambda r: r.abort())
+        mpg = await mctx.new_page()
+        for width in (320, 375):
+            await mpg.set_viewport_size({"width": width, "height": 700})
+            for lang in ("es", "en", "jp"):
+                for page_name, setup in (("index.html", None), ("index.html#/" + "diseño-naves-mecnicas", None), ("index.html#/enlaces-utiles", None), ("index.html#/singularidad-clase-30", None),
+                                         ("bingo.html", None), ("bingo.html", "principles"), ("privacy.html", None), ("cookies.html", None), ("404.html", None), ("tech-tree.html", None)):
+                    await mpg.goto("file://" + ROOT + "/" + page_name)
+                    await mpg.wait_for_timeout(250)
+                    await mpg.click(".lang-btn[data-lang=" + lang + "]")
+                    if setup:
+                        await mpg.select_option("#bingo-type", setup)
+                    await mpg.wait_for_timeout(100)
+                    m = await mpg.evaluate(mobile_js)
+                    check("mobile %dpx (%s): %s%s has no horizontal overflow and no tiny controls" % (width, lang, page_name, " " + setup if setup else ""), m["sw"] <= m["w"] and not m["over"] and not m["small"], m)
+        await mpg.goto("file://" + ROOT + "/index.html")
+        await mpg.wait_for_timeout(250)
+        await mpg.tap("#index-empty .entry-button >> nth=5")
+        await mpg.wait_for_timeout(300)
+        top = await mpg.evaluate("()=>[document.querySelector('#reader-body').getBoundingClientRect().top,innerHeight,scrollY]")
+        check("mobile: choosing an entry scrolls the article into view", 0 <= top[0] < top[1] / 2 and top[2] > 0, top)
+        await mctx.close()
         await browser.close()
 
 asyncio.run(main())

@@ -757,6 +757,22 @@ h1 {
         flex-direction: column;
     }
 
+    /* Touch targets of at least 24 px (WCAG 2.5.8) for the small mono links and the search box. */
+    .primary-nav a {
+        display: inline-flex;
+        align-items: center;
+        min-height: 24px;
+    }
+
+    .footer a {
+        display: inline-block;
+        padding: .35rem 0;
+    }
+
+    .search-control input {
+        min-height: 24px;
+    }
+
     .entry-columns {
         grid-template-columns: 1fr;
         gap: 1.2rem;

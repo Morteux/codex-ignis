@@ -28,6 +28,7 @@ const lightboxClose = document.querySelector("#lightbox-close");
 let currentLang = detectInitialLang();
 let currentQuery = "";
 let currentEntry = null; // entrada base (sin localizar) actualmente abierta, o null
+let scrollToReader = false; // set by an index click on mobile, used by the next render
 
 /** Quita diacríticos y pasa a minúsculas para comparar texto sin acentos. */
 function normalize(str) {
@@ -453,7 +454,11 @@ function renderIndexList() {
     button.className = "entry-button";
     button.type = "button";
     button.textContent = `${localized.icon || "·"} ${localized.title}`;
-    button.addEventListener("click", () => openEntry(entry));
+    button.addEventListener("click", () => {
+      // On one-column (mobile) layouts the article is below the whole index: bring it into view once rendered.
+      scrollToReader = window.matchMedia("(max-width: 700px)").matches;
+      openEntry(entry);
+    });
     entryList.append(button);
   });
 }
@@ -462,6 +467,8 @@ function refresh() {
   renderIndexList();
   if (currentEntry) {
     renderEntry(currentEntry);
+    if (scrollToReader) readerMeta.scrollIntoView({ block: "start" });
+    scrollToReader = false;
   } else {
     renderEmptyReader();
   }

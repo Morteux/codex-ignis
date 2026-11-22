@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **16 / 70 tareas (23%)**
+> Progreso: **17 / 70 tareas (24%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -72,7 +72,8 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
   - Prueba manual: open `tech-tree.html` and click EN (the "under construction" line and the tab title change); after deploying, open `/a/b/missing` on the Vercel site: the 404 page appears styled and its links go to the site root.
 - [x] **T2204** (P22.4) Smoke test that opens every page in es/en/jp and fails on console errors or local resources that do not load (404)
   - Prueba manual: run `BLOCK_REMOTE=1 python tests/policies-smoke.py`: the 21 "all pages (es/en/jp): …" lines end in PASS.
-- [ ] **T2205** (P22.5) Mobile layout review at 320–375 px of every page other than the simulator (like T1301)
+- [x] **T2205** (P22.5) Mobile layout review at 320–375 px of every page other than the simulator (like T1301)
+  - Prueba manual: open `index.html` with the browser at 320 px wide (device mode), tap an article of the index: the page scrolls down to the article, nothing scrolls sideways and the header links are easy to tap.
 - [ ] **T2206** (P22.6) Accessibility pass of every page other than the simulator: keyboard, visible focus, contrast, `alt` texts, landmarks, `lang` attribute following the language (like T1304)
 - [ ] **T2207** (P22.7) i18n review of the wiki, bingo and legal pages: no hard-coded interface text, keys used exist in es/en/jp, articles of `content.js` with a missing language listed (never machine-translate: list them in `DECISIONS_TO_REVIEW.md`)
   - Modelo: sonnet
