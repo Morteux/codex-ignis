@@ -6,7 +6,7 @@ Uses the English UI (browser locale en-US) and file:// URLs.
 PLAYWRIGHT_CHROME=/path/to/chrome uses an installed Chrome instead of Playwright's Chromium.
 BLOCK_REMOTE=1 skips the remote asset images (much faster without network).
 """
-import asyncio, json, os, sys, tempfile
+import asyncio, json, os, re, subprocess, sys, tempfile
 from playwright.async_api import async_playwright
 
 sys.stdout.reconfigure(encoding="utf-8")  # check names may hold JP text (Windows consoles default to cp1252)
@@ -988,17 +988,19 @@ async def main():
         await tab("planet")
 
         # P17.6: i18n key parity (es/en/jp) and every "i" button: has its panel, toggles with Enter and Space, aria-expanded in sync
-        parity = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
-            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
-            const m=await import(url);const k=(l)=>new Set(Object.keys(m.strings[l]));const es=k('es'),en=k('en'),jp=k('jp');
-            const diff=(a,b)=>[...a].filter(x=>!b.has(x));return {enNotEs:diff(en,es),esNotEn:diff(es,en),enNotJp:diff(en,jp),jpNotEn:diff(jp,en)}}""")
+        # P23.4: the texts are split by area (js/i18n-<area>.js); parity is checked per area file
+        i18n_areas = sorted(f for f in os.listdir(os.path.join(ROOT, "js")) if f.startswith("i18n-") and f.endswith(".js"))
+        parity = await pg.evaluate("""async(areas)=>{const out={enNotEs:[],esNotEn:[],enNotJp:[],jpNotEn:[],twoAreas:[]};const owner={};
+            for(const f of areas){const m=await import('./js/'+f);const k=(l)=>new Set(Object.keys(m.strings[l]));const es=k('es'),en=k('en'),jp=k('jp');
+              const diff=(a,b)=>[...a].filter(x=>!b.has(x)).map(x=>f+':'+x);
+              out.enNotEs.push(...diff(en,es));out.esNotEn.push(...diff(es,en));out.enNotJp.push(...diff(en,jp));out.jpNotEn.push(...diff(jp,en));
+              for(const x of es){if(owner[x])out.twoAreas.push(x+' '+owner[x]+' '+f);owner[x]=f}}
+            return out}""", i18n_areas)
         check("i18n key parity es/en/jp", not any(parity.values()), parity)
         # P13.2: same value type/arity and no empty text per language, and every key used by data-i18n* / t('key') exists
         sim_modules = sorted("js/" + f for f in os.listdir(os.path.join(ROOT, "js")) if f.startswith("planet-sim-") and f.endswith(".js"))
-        deep = await pg.evaluate("""async(simModules)=>{const get=async(f)=>(await fetch(f)).text();
-            const src=await get('js/i18n.js');
-            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
-            const s=(await import(url)).strings;const bad=[];
+        deep = await pg.evaluate("""async([simModules,areas])=>{
+            const s={es:{},en:{},jp:{}};for(const f of areas){const m=await import('./js/'+f);for(const l in s)Object.assign(s[l],m.strings[l])};const bad=[];
             for(const l of ['es','jp'])for(const k of Object.keys(s.en)){const a=s.en[k],b=s[l][k];
                 if(typeof a!==typeof b)bad.push('type '+l+' '+k);
                 else if(typeof b==='string'&&!b.trim())bad.push('empty '+l+' '+k);
@@ -1007,12 +1009,25 @@ async def main():
             for(const f of files){const r=await fetch(f);if(!r.ok)continue;const t=await r.text();
                 for(const x of t.matchAll(/data-i18n(?:-[a-z]+)?="([\\w.]+)"/g))if(!(x[1] in s.en))bad.push('missing '+x[1]+' @'+f);
                 for(const x of t.matchAll(/\\bt\\(\\s*["'`](\\w+)["'`]/g))if(!(x[1] in s.en))bad.push('missing '+x[1]+' @'+f)}
-            return bad}""", sim_modules)
+            return bad}""", [sim_modules, i18n_areas])
         check("i18n values: same type/arity, none empty, used keys exist", not deep, deep)
+        audit = subprocess.run(["node", os.path.join(ROOT, "tests", "i18n-audit.mjs"), ROOT], capture_output=True, text=True)
+        check("i18n audit: parity per area, no key in two areas, every page loads the areas of the keys it uses", audit.returncode == 0, audit.stdout[-600:] + audit.stderr[-300:])
+        loaded = {}
+        for page_name in ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html"):
+            area_page = await ctx.new_page()
+            area_files = []
+            area_page.on("request", lambda r: "/js/i18n-" in r.url and area_files.append(r.url.rsplit("/js/", 1)[1]))
+            await area_page.goto("file://" + ROOT + "/" + page_name)
+            await area_page.wait_for_timeout(300)
+            loaded[page_name] = sorted(set(area_files))
+            await area_page.close()
+        expected = {"index.html": ["i18n-common.js", "i18n-wiki.js"], "bingo.html": ["i18n-bingo.js", "i18n-common.js", "i18n-empire-names.js"],
+                    "planet-sim.html": ["i18n-common.js", "i18n-empire-names.js", "i18n-simulator.js"], "tech-tree.html": ["i18n-common.js", "i18n-tech-tree.js"],
+                    "privacy.html": ["i18n-common.js", "i18n-legal.js"]}
+        check("i18n: every page downloads only the text areas it uses", loaded == expected, loaded)
         # P13.8: data files keep i18n keys, never shown text; every key they name exists in es/en/jp
-        datakeys = await pg.evaluate("""async()=>{const src=await (await fetch('js/i18n.js')).text();
-            const url=URL.createObjectURL(new Blob([src.replace('const strings =','export const strings =')],{type:'text/javascript'}));
-            const s=(await import(url)).strings;const bad=[];let n=0;
+        datakeys = await pg.evaluate("""async(areas)=>{const s={es:{},en:{},jp:{}};for(const f of areas){const m=await import('./js/'+f);for(const l in s)Object.assign(s[l],m.strings[l])};const bad=[];let n=0;
             const mods=['planet-modifier-data','body-type-data','job-swap-data'];
             const keyField=/^(i18nKey|sourceKey|notModelledKeys|infoOnlyKeys)$/;
             const walk=(v,path)=>{if(Array.isArray(v))v.forEach((x,i)=>walk(x,path+'['+i+']'));else if(v&&typeof v==='object')for(const [k,x] of Object.entries(v)){
@@ -1022,7 +1037,7 @@ async def main():
             for(const f of mods){const m=await import('./js/'+f+'.js');for(const [k,v] of Object.entries(m))walk(v,f+':'+k)}
             const swaps=(await import('./js/job-swap-data.js')).JOB_SWAPS;
             for(const w of swaps){n++;const key='job'+w.id.split('_').map(p=>p[0].toUpperCase()+p.slice(1)).join('');if(!(key in s.en)||!(key in s.es)||!(key in s.jp))bad.push('missing swap name '+key)}
-            return {n,bad}}""")
+            return {n,bad}}""", i18n_areas)
         check("data texts: i18n keys only, all present in es/en/jp", datakeys["n"] > 300 and not datakeys["bad"], datakeys)
         await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
         await tab("body")
@@ -1323,7 +1338,6 @@ async def main():
         check("simple pages: no local resource failed to load", not simple_missing, simple_missing)
         await simple.close()
         # P22.9: load budget — every local file a page needs exists; static icons of the tabs hidden at start are lazy
-        import re, subprocess
         budget = subprocess.run(["node", os.path.join(ROOT, "tests", "load-budget.mjs"), ROOT], capture_output=True, text=True)
         check("load budget: report runs and finds every local file of every page", budget.returncode == 0 and budget.stdout.rstrip().endswith("problems 0"), budget.stdout[-300:] + budget.stderr[-300:])
         sim_html = open(os.path.join(ROOT, "planet-sim.html"), encoding="utf-8").read()

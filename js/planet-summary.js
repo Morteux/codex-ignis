@@ -15,6 +15,8 @@
  */
 
 import { t } from "./i18n.js";
+import "./i18n-simulator.js";
+import "./i18n-empire-names.js";
 import { getLang, onLanguageChange } from "./page-shell.js";
 import { getPlanetState, onPlanetStateChange, updatePlanetState } from "./planet-state.js";
 import { PLANET_TYPES } from "./celestial-data.js";

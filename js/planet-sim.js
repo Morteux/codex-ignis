@@ -45,6 +45,8 @@
  * eventos (events). Ver PLANET_SIM_GDD.md §3.
  */
 
+import "./i18n-simulator.js";
+import "./i18n-empire-names.js";
 import "./planet-sim-state.js";
 import { applyPageTranslations } from "./page-shell.js";
 import { updatePlanetState } from "./planet-state.js";

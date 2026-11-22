@@ -18,6 +18,8 @@
  */
 
 import { t } from "./i18n.js";
+import "./i18n-bingo.js";
+import "./i18n-empire-names.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-data.js";

@@ -21,6 +21,8 @@
  */
 
 import { t } from "./i18n.js";
+import "./i18n-simulator.js";
+import "./i18n-empire-names.js";
 import { getLang, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { PRINCIPLE_BINGO } from "./bingo-data.js";

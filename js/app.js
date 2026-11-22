@@ -1,6 +1,7 @@
 import { knowledgeBase, localizeEntry } from "./content.js";
 import { initializeAds } from "./ads.js";
 import { t } from "./i18n.js";
+import "./i18n-wiki.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
