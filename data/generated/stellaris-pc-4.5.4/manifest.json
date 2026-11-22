@@ -3,6 +3,11 @@
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
  "date": "2026-11-22",
  "sets": {
+  "authorities": {
+   "file": "authorities.json",
+   "count": 8,
+   "warnings": 0
+  },
   "buildings": {
    "file": "buildings.json",
    "count": 498,
@@ -21,6 +26,11 @@
   "districts": {
    "file": "districts.json",
    "count": 147,
+   "warnings": 0
+  },
+  "ethics": {
+   "file": "ethics.json",
+   "count": 17,
    "warnings": 0
   },
   "jobs": {
