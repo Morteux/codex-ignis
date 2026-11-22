@@ -84,7 +84,8 @@ export const BODY_TYPE_RULES = {
     specializationJobMultiplier: 3,
     secondaryHousingPenaltyMultiplier: 3,
     secondarySpecializations: ["energyGeneration", "mineralExtraction", "agriculturalFocus"],
-    // Wiki: the Hive Cluster is not available with the Wilderness origin (red cross); origins are not modelled.
+    // Wiki: the Hive Cluster is not available with the Wilderness origin (red cross); P10.6 keeps the body's districts for a
+    // Wilderness empire (its districts only replace the standard district set).
     // "+600 Housing from districts" is already the hiveWorldHousing of the Hive Cluster (planet-data.js).
     infoOnlyKeys: ["bodyInfoHive1", "bodyInfoHive2"]
   },

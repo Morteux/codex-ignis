@@ -200,6 +200,7 @@ async function saveCurrentPlanet({ asNew = false } = {}) {
       name: empire ? empire.name : null,
       ethicIds: state.ethicIds || [],
       authorityId: state.authorityId,
+      originId: state.originId || null,
       civicIds: state.civicIds || [],
       speciesType: state.speciesType,
       policyIds: state.policyIds || {},

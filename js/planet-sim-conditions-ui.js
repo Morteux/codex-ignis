@@ -13,7 +13,7 @@ import { getPlanetState } from "./planet-state.js";
 import { getEdict } from "./edict-data.js";
 import { getPolicyOption } from "./policy-data.js";
 import { createInfoPanel, syncInfoButtons } from "./info-panels.js";
-import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES } from "./empire-data.js";
+import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, MUTUALISTIC_INTELLIGENCE } from "./empire-data.js";
 import { PLANET_TYPES } from "./celestial-data.js";
 import { getDesignation } from "./designation-data.js";
 import { refreshEconomyOnly } from "./planet-sim-production-ui.js";
@@ -53,7 +53,7 @@ export function modifierSourceName(source) {
     const [groupId, optionId] = source.id.split(":");
     return t(getLang(), getPolicyOption(groupId, optionId).i18nKey);
   }
-  if (source.kind === "authority") return t(getLang(), AUTHORITIES.find((entry) => entry.id === source.id).i18nKey);
+  if (source.kind === "authority") return t(getLang(), [...AUTHORITIES, MUTUALISTIC_INTELLIGENCE].find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(getLang(), "conditionsStability");
   if (source.kind === "edict") return t(getLang(), getEdict(source.id).i18nKey);
   if (source.kind === "planetModifier") { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === source.id); return modifier ? t(getLang(), modifier.i18nKey) : source.id; }

@@ -11,7 +11,7 @@ import { getStackingRules, combineFraction, stackFactor } from "./stacking-rules
 import { getPlanetState } from "./planet-state.js";
 import { getEdict } from "./edict-data.js";
 import { getPolicyOption } from "./policy-data.js";
-import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_EFFECTS, AUTHORITY_EFFECTS } from "./empire-data.js";
+import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_EFFECTS, AUTHORITY_EFFECTS, authorityVariant } from "./empire-data.js";
 import { buildingRequirementsMet } from "./building-requirements.js";
 import { BRANCH_OFFICE_VALUE, ILLEGAL_BRANCH_RULES, branchBuildingVariant, branchBuildingJobs, branchJobTrade, isIllegalVariant } from "./branch-office-data.js";
 import { getDesignation } from "./designation-data.js";
@@ -367,7 +367,9 @@ export function computeTotals() {
       Object.entries(policyEffects.tradeConversion).forEach(([resourceId, rate]) => pushModifier(source, "tradeConversion", { resource: resourceId }, rate));
     }
   });
-  noteEmpireEffects("authority", empireModifierState.authorityId, AUTHORITY_EFFECTS[empireModifierState.authorityId]);
+  // P10.6: a Wilderness Hive Mind has the Mutualistic Intelligence effects instead.
+  const authorityShown = authorityVariant(empireModifierState.authorityId, empireModifierState.originId)?.id || empireModifierState.authorityId;
+  noteEmpireEffects("authority", authorityShown, AUTHORITY_EFFECTS[authorityShown]);
   // P18.4: edictos activos del imperio (js/edict-data.js). Eficacia, mantenimiento y % mensual van a las categorías de siempre;
   // los recursos por empleo y por civil se suman aparte (línea propia del desglose) y los puntos de felicidad, estabilidad y
   // delincuencia entran en las condiciones (categoría conditionFlat).

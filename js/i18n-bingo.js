@@ -27,7 +27,6 @@ export const strings = {
         bingoEthicsDescription: "Marca las éticas que ya has tenido en un imperio, sobre la rueda de éticas del juego.",
         bingoAuthoritiesDescription: "Marca las autoridades que ya has usado, también sus variantes tras cada ascensión.",
         // Draft names of the authorities bingo (P24.4) from the icon file names, pending the official localisation
-        authorityMutualisticIntelligence: "Inteligencia mutualista",
         authorityMemoryAggregator: "Agregador de memoria",
         authorityNeuralChorus: "Coro neuronal",
         authorityVariantBioCloning: "Biológica: clonación",
@@ -66,7 +65,6 @@ export const strings = {
         bingoEthicsDescription: "Mark the ethics you have already had in an empire, on the in-game ethics wheel.",
         bingoAuthoritiesDescription: "Mark the authorities you have already used, also their variants after each ascension.",
         // Draft names of the authorities bingo (P24.4) from the icon file names, pending the official localisation
-        authorityMutualisticIntelligence: "Mutualistic Intelligence",
         authorityMemoryAggregator: "Memory Aggregator",
         authorityNeuralChorus: "Neural Chorus",
         authorityVariantBioCloning: "Biological: cloning",
@@ -105,7 +103,6 @@ export const strings = {
         bingoEthicsDescription: "ゲーム内の倫理観ホイール上で、これまでに帝国で採用したことのある倫理観をマークしましょう。",
         bingoAuthoritiesDescription: "これまでに使ったことのある統治形態を、各アセンション後の派生形も含めてマークしましょう。",
         // Draft names of the authorities bingo (P24.4) from the icon file names, pending the official localisation
-        authorityMutualisticIntelligence: "相利共生知性",
         authorityMemoryAggregator: "記憶集積体",
         authorityNeuralChorus: "ニューラル・コーラス",
         authorityVariantBioCloning: "生物: クローン",

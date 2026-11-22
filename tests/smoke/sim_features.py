@@ -146,7 +146,7 @@ async def run(t):
         const b=(id)=>d.BUILDINGS.find(x=>x.id===id);const ok=(id,ctx)=>r.buildingRequirementsMet(b(id),ctx);
         return [ok('experimentation_chambers',{ethicIds:['materialist'],civicIds:[]}),ok('experimentation_chambers',{ethicIds:['authoritarian'],civicIds:['civicTwistedExperimenters']}),
           ok('uplink_node',{ethicIds:['gestaltConsciousness'],authorityId:'machineIntelligence',civicIds:['civicMachineServitor']}),ok('uplink_node',{ethicIds:['gestaltConsciousness'],authorityId:'machineIntelligence',civicIds:[]}),
-          r.unmodelledRequirements(b('stronghold')).map(x=>x.i18nKey)]}""")
+          r.unmodelledRequirements(b('stronghold')).map(x=>x.i18nKey),(b('stronghold').requires||[]).filter(x=>x.type==='notOrigin').map(x=>x.ids.join())]}""")
     check("Experimentation Chambers: needs Experimental Sentencing, not Materialist", breq[0] is False and breq[1] is True, breq)
     check("Uplink Node: not with Rogue Servitor", breq[2] is False and breq[3] is True, breq)
-    check("Stronghold: not-Wilderness shown as unmodelled", breq[4] == ["reqNotWildernessOrigin"], breq)
+    check("Stronghold: not Wilderness origin, now modelled (P10.6)", breq[4] == [] and breq[5] == ["wilderness"], breq)

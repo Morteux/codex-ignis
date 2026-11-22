@@ -11,10 +11,10 @@
  * ── Simplificaciones deliberadas (para no inventar mecánicas no dadas) ──
  * - Autoridades: solo se modelan las autoridades base (Democrática,
  *   Oligárquica, Dictatorial, Imperial, Corporativa, Inteligencia de
- *   Máquina, Mente Colmena). Se omiten Inteligencia Mutualista (exige el
- *   origen Naturaleza Salvaje, no modelado en este simulador) y todas las
- *   autoridades de ascensión (exigen completar una situación de ascensión,
- *   tampoco modelada).
+ *   Máquina, Mente Colmena). P10.6: la Inteligencia Mutualista es la Mente
+ *   Colmena con el origen Wilderness (ORIGINS, MUTUALISTIC_INTELLIGENCE). Se
+ *   omiten las autoridades de ascensión (exigen completar una situación de
+ *   ascensión, no modelada).
  * - Principios: un requisito de principio que hace referencia a un origen,
  *   a otro principio/DLC concreto NO se aplica aquí (no hay datos de
  *   orígenes ni de dependencias entre principios en este simulador); solo
@@ -141,6 +141,56 @@ export const AUTHORITIES = [
   { id: "machineIntelligence", i18nKey: "authorityMachineIntelligence", blurbI18nKey: "authorityMachineIntelligenceBlurb", img: "authorities/Auth_machine_intelligence.png", gestalt: true, excludesEthics: [] },
   { id: "hiveMind", i18nKey: "authorityHiveMind", blurbI18nKey: "authorityHiveMindBlurb", img: "authorities/Auth_hive_mind.png", gestalt: true, excludesEthics: [] }
 ];
+
+/**
+ * P10.6: origins (game files 4.5.4, common/governments/civics/00_origins.txt). Only Wilderness is modelled; every
+ * other origin is "no modelled origin" (originId null). Wilderness `possible`: Hive Mind authority and none of these
+ * civics (graphical culture and "no Volcanic homeworld" are not modelled). Its authority shows as the Mutualistic
+ * Intelligence (MUTUALISTIC_INTELLIGENCE below).
+ */
+export const ORIGINS = [
+  {
+    id: "wilderness",
+    i18nKey: "originWilderness",
+    blurbI18nKey: "originWildernessBlurb",
+    img: "origin_icons/Origins_wilderness.png",
+    authorities: ["hiveMind"],
+    excludedCivics: [
+      "civicHiveCatalyticProcessing", "civicHiveToxicBaths", "civicHiveMemorialist", "civicHiveGuidedSapience",
+      "civicHiveAstrometeorology", "civicHivePlanetscapers", "civicHiveEntropyDrinkers",
+      "civicHiveSuperstitiousBeliefs", "civicHiveTwistedExperimenters", "civicHiveChosen", "civicHiveWorldForgers",
+      "civicHiveScorchedEarth", "civicHiveGalvanicSymbiosis"
+    ]
+  }
+];
+
+/** Is the origin available with this authority and these civics? */
+export function originAvailable(origin, authorityId, civicIds = []) {
+  if (!origin) return true;
+  return origin.authorities.includes(authorityId) && !origin.excludedCivics.some((key) => civicIds.includes(key));
+}
+
+/** Is the civic excluded by the chosen origin? */
+export function civicExcludedByOrigin(civicKey, originId) {
+  return (ORIGINS.find((origin) => origin.id === originId)?.excludedCivics || []).includes(civicKey);
+}
+
+/**
+ * P10.6: Mutualistic Intelligence (authorities.json auth_mutualistic_intelligence, trigger is_wilderness_empire):
+ * the Hive Mind authority of a Wilderness empire. inherit_effects = no, so its effects replace the Hive Mind ones.
+ */
+export const MUTUALISTIC_INTELLIGENCE = {
+  id: "mutualisticIntelligence",
+  i18nKey: "authorityMutualisticIntelligence",
+  blurbI18nKey: "authorityMutualisticIntelligenceBlurb",
+  img: "authorities/Auth_mutualistic_intelligence.png"
+};
+
+/** Authority shown and applied for this authority and origin (the Mutualistic Intelligence variant or the authority itself). */
+export function authorityVariant(authorityId, originId) {
+  if (authorityId === "hiveMind" && originId === "wilderness") return MUTUALISTIC_INTELLIGENCE;
+  return AUTHORITIES.find((authority) => authority.id === authorityId) || null;
+}
 
 /** ¿Hay un conjunto de éticas válido? La página de Éticas exige gastar los 3 puntos (3 moderadas, 1 fanática + 1 moderada, o gestalt). */
 export function ethicsComplete(selectedEthicIds) {
@@ -270,15 +320,18 @@ export const AUTHORITY_EFFECTS = {
   imperial: [pct("capitalSystemResources", 0.1), flat("recruitableLeaders", -1)],
   corporate: [flat("availableEnvoys", 1), pct("tradeFromJobsAndContracts", 0.1, TRADE_MULT), pct("empireSizeFromPlanets", 0.5)],
   machineIntelligence: [pct("colonyDevelopmentSpeed", 0.25), pct("miningStationResources", 0.1), flat("mechanicalPopAssembly", 1)],
-  hiveMind: [pct("popGrowthSpeed", 0.25), pct("empireSizeEffect", -0.25)]
+  hiveMind: [pct("popGrowthSpeed", 0.25), pct("empireSizeEffect", -0.25)],
+  // P10.6: authorities.json auth_mutualistic_intelligence modifier (empire size and diplomatic weight: info only).
+  mutualisticIntelligence: [pct("empireSizeEffect", -0.25), pct("empireSizeFromDistricts", 2), pct("empireSizeFromPlanets", 1), pct("diplomaticWeightEconomy", 1)]
 };
 
 /** Efectos aplicables a los cálculos: devuelve { resourceMult: {recurso: fracción}, resourceFlat: {recurso: cantidad}, stratumEfficiency: {estrato: fracción} } para las éticas y la autoridad dadas. */
-export function collectAppliedEffects(selectedEthicIds, authorityId) {
+export function collectAppliedEffects(selectedEthicIds, authorityId, originId = null) {
   const resourceMult = {};
   const resourceFlat = {};
   const stratumEfficiency = {};
-  const effectLists = [...selectedEthicIds.map((id) => ETHIC_EFFECTS[id] || []), AUTHORITY_EFFECTS[authorityId] || []];
+  const authorityKey = authorityVariant(authorityId, originId)?.id || authorityId;
+  const effectLists = [...selectedEthicIds.map((id) => ETHIC_EFFECTS[id] || []), AUTHORITY_EFFECTS[authorityKey] || []];
   effectLists.forEach((list) => list.forEach((effect) => {
     if (!effect.apply) return;
     const { type, resource, stratum } = effect.apply;

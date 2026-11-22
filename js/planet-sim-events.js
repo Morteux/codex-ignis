@@ -60,7 +60,7 @@ onEdictsRemoved(({ removed }) => {
 // bucle con las propias escrituras de este módulo (tamaño/población).
 let lastRelevantKey = "";
 onPlanetStateChange((state) => {
-  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${(state.civicIds || []).join(",")}|${state.speciesType}|${JSON.stringify(state.policyIds || {})}|${(state.edictIds || []).join(",")}`;
+  const key = `${state.celestialTypeId}|${(state.ethicIds || []).join(",")}|${state.authorityId}|${state.originId}|${(state.civicIds || []).join(",")}|${state.speciesType}|${JSON.stringify(state.policyIds || {})}|${(state.edictIds || []).join(",")}`;
   if (key === lastRelevantKey) return;
   lastRelevantKey = key;
   renderDesignationSelect();

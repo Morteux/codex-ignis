@@ -6,7 +6,7 @@
 
 import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
-import { calculateBuildingSlots, capitalSetForAuthority, DISTRICTS, RESOURCE_DISTRICT_ORDER } from "./planet-data.js";
+import { calculateBuildingSlots, capitalSetForAuthority, DISTRICTS, WILDERNESS_DISTRICTS, RESOURCE_DISTRICT_ORDER } from "./planet-data.js";
 import { BODY_TYPE_RULES, SPECIAL_DISTRICTS, SPECIAL_CAPITAL_SETS } from "./body-type-data.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, STRATEGIC_DEPOSITS, JOB_CATEGORIES, BLOCKERS } from "./planetary-features-data.js";
@@ -49,7 +49,16 @@ export function currentCapitalSet() {
   if (bodyRules()?.capitalSet === "habitat") {
     return habitatCapitalSet(state.authorityId, ethicsSatisfy(state.ethicIds || [], GESTALT_CONSCIOUSNESS.id));
   }
-  return capitalSetForAuthority(state.authorityId);
+  return capitalSetForAuthority(state.authorityId, state.originId);
+}
+
+/**
+ * P10.6: a Wilderness empire (Hive Mind authority + Wilderness origin) replaces the districts of the standard district
+ * set (bodies with no own district layout: regular planets, Gaia, Tomb, Relic) with its own (WILDERNESS_DISTRICTS).
+ */
+export function usesWildernessDistricts() {
+  const state = getPlanetState();
+  return state.originId === "wilderness" && state.authorityId === "hiveMind" && !bodyRules()?.districtLayout;
 }
 
 /** Al cambiar de autoridad cambia el conjunto de capitales: se conserva el nivel (I-V) o el más alto que no lo supere. */
@@ -119,7 +128,7 @@ export function primaryDistrictDef() {
     ? rules.primaryDistrictByAuthority[getPlanetState().authorityId] || rules.primaryDistrictByAuthority.default
     : rules?.primaryDistrict;
   const special = SPECIAL_DISTRICTS[rules?.districtLayout === "lathe" ? rules.latheDistricts[0] : primaryId] || null;
-  if (!special) return DISTRICTS.urban;
+  if (!special) return usesWildernessDistricts() ? WILDERNESS_DISTRICTS.urban : DISTRICTS.urban;
   if (rules.districtLayout === "lathe") {
     return {
       i18nKey: special.i18nKey, img: special.img, jobs: {}, housing: special.housing, upkeep: special.upkeep,
@@ -170,13 +179,13 @@ export function secondaryDistrictDef(cat) {
     if (!special) return { unavailable: true, i18nKey: DISTRICTS[cat].i18nKey, img: DISTRICTS[cat].img, jobs: {}, housing: 0, upkeep: {}, slotsPerSpecialization: 0, specializationOptions: [] };
     return { latheDistrict: true, i18nKey: special.i18nKey, img: special.img, jobs: {}, housing: special.housing, upkeep: special.upkeep, lockedTooltipKey: "planetSimNoSpecializationTooltip", slotsPerSpecialization: 0, specializationOptions: [] };
   }
-  if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return DISTRICTS[cat];
+  if (rules?.districtLayout !== "urbanSecondary" || !rules.secondaryDistrict) return usesWildernessDistricts() ? WILDERNESS_DISTRICTS[cat] : DISTRICTS[cat];
   const special = SPECIAL_DISTRICTS[rules.secondaryDistrict];
   // Secondary district specializations (wiki: "Effects per district" −200 Housing, like the urban ones).
   const resourceOptions = RESOURCE_DISTRICT_ORDER.flatMap((resourceCat) => DISTRICTS[resourceCat].specializationOptions)
     .filter((option) => (rules.secondarySpecializations || []).includes(option.id))
     // The secondary specialization table lists no origin requirement: the resource-district "not Wilderness" note is dropped.
-    .map((option) => ({ ...option, housing: -200, requires: (option.requires || []).filter((rule) => rule.type !== "unmodelled") }));
+    .map((option) => ({ ...option, housing: -200, requires: (option.requires || []).filter((rule) => rule.type !== "unmodelled" && rule.type !== "notOrigin") }));
   return {
     secondaryUrban: true,
     setIndex: RESOURCE_DISTRICT_ORDER.indexOf(cat) + 1,
@@ -534,6 +543,7 @@ export function requirementContext() {
   return {
     ethicIds: state.ethicIds || [],
     authorityId: state.authorityId,
+    originId: state.originId || null,
     civicIds: state.civicIds || [],
     designationId: sim.selectedDesignationId,
     celestialTypeId: state.celestialTypeId,
@@ -691,7 +701,7 @@ export function sanitizeCivilians(raw) {
 export function pruneInvalidSpecializations() {
   const ctx = requirementContext();
   const reset = [];
-  const allOptions = [...DISTRICTS.urban.specializationOptions, ...RESOURCE_DISTRICT_ORDER.flatMap((cat) => DISTRICTS[cat].specializationOptions)];
+  const allOptions = [DISTRICTS, WILDERNESS_DISTRICTS].flatMap((set) => ["urban", ...RESOURCE_DISTRICT_ORDER].flatMap((cat) => set[cat].specializationOptions));
   const optionName = (optionId) => { const option = allOptions.find((entry) => entry.id === optionId); return option ? t(getLang(), option.i18nKey) : optionId; };
   districtState.urban.slots.forEach((optionId, slotIndex) => {
     if (!optionId) return;

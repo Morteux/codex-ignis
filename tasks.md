@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **59 / 131 tareas (45%)**
+> Progreso: **60 / 132 tareas (45%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -163,7 +163,9 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
 
 ## 10 · Special planets
 Source: the 4.5.4 game files through the extractor (section 25); runs after it.
-- [ ] **T1006** (P10.6) Wilderness origin, modelled from the extractor output (owner, 2026-11-22; update GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
+- [x] **T1006** (P10.6) Wilderness origin, modelled from the extractor output (owner, 2026-11-22; update GDD §10). Needs the Wilderness origin, Mutualistic Intelligence authority, Biomass resource, Communal Biome / Photosynthesis Field / Hollow Mountain / Orchard Forest districts, symbiont job swaps (Photosymbiont, Grubsymbiont, Pollinosymbiont) and the wilderness specializations (Solar Mycolungs, Orespine...).
+  - Prueba manual: in `planet-sim.html`, Imperio tab, pick Gestalt Consciousness and Hive Mind, then the Wilderness card of the new «Origin» panel: the authority reads «Mutualistic Intelligence»; on the Planet tab the districts are Communal Biome, Photosynthesis Field, Hollow Mountain and Orchard Forest (tooltip «Cost: 300 Minerals, 50 Biomass»), the capital is Planetary Tendrils, and a Photosynthesis Field adds Photosymbiont jobs instead of Technicians.
+- [ ] **T1011** (P10.11) Rest of the Wilderness origin from the extractor output: its buildings (`common/buildings/21_wilderness_buildings.txt`: Tendril Cradle, Research Growth, Commensal Clearing, Lithic Bore, Smelting Pool, Avatar Cradle... and their building sets), the effects of the Wilderness designations (`col_wilderness_*`), the other symbiont job swaps (Choirsymbiont, Spindlesymbiont, Immunosymbiont, Evosymbionts, Forgesymbiont, Tamersymbiont, Broodsymbiont...), Pliable Biomass, Biomass production and the Wilderness deposits (`d_wilderness_*`).
 
 ## 19 · Branch offices (Sucursales tab)
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.

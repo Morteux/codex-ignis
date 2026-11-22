@@ -17,7 +17,7 @@ import { showNotice } from "./planet-sim-dom.js";
 import { requirementContext, currentCapital, currentCapitalSet, inactiveReason, isLimited, removeBuildingAt, unlockedKeys, isLatheLayout, secondaryDistrictDef, primaryDistrictDef, primaryMinCount, canAddDistrict, primaryOption, secondaryOption, districtDisplayName, canAddResourceDistrict, fixedPlanetSize } from "./planet-sim-rules.js";
 import { builtMap, buildingsById, districtState, sim } from "./planet-sim-state.js";
 import { openDistrictsTab } from "./planet-sim-tabs.js";
-import { requirementOptionLabel, buildingDisplayName, zoneIcon } from "./planet-sim-text.js";
+import { requirementOptionLabel, buildingDisplayName, zoneIcon, formatPlainCost } from "./planet-sim-text.js";
 
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
 
@@ -95,7 +95,7 @@ function renderCapital() {
   if (capitalNameEl) {
     capitalNameEl.textContent = t(getLang(), capital.i18nKey);
     const note = requirementNote(capital);
-    capitalNameEl.title = note;
+    capitalNameEl.title = [note, formatPlainCost(capital.cost)].filter(Boolean).join("\n");
     if (note) {
       const badge = document.createElement("span");
       badge.className = "planet-capital-requirement";
@@ -191,7 +191,8 @@ function renderCapitalCell() {
   const capital = currentCapital();
   const cell = document.createElement("span");
   cell.className = "planet-slot is-filled is-capital";
-  cell.title = `${buildingDisplayName(capital)} — ${t(getLang(), "planetSimCapitalCannotRemove")}`;
+  const costText = formatPlainCost(capital.cost);
+  cell.title = `${buildingDisplayName(capital)} — ${t(getLang(), "planetSimCapitalCannotRemove")}${costText ? `\n${costText}` : ""}`;
   const img = document.createElement("img");
   img.src = `${IMAGE_BASE}${capital.img}`;
   img.alt = buildingDisplayName(capital);

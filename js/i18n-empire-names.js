@@ -318,6 +318,7 @@ export const strings = {
         authorityImperial: "Imperial",
         authorityCorporate: "Corporativa",
         authorityMachineIntelligence: "Inteligencia de Máquina",
+        authorityMutualisticIntelligence: "Inteligencia mutualista",
         authorityHiveMind: "Mente Colmena",
     },
     en: {
@@ -632,6 +633,7 @@ export const strings = {
         authorityImperial: "Imperial",
         authorityCorporate: "Corporate",
         authorityMachineIntelligence: "Machine Intelligence",
+        authorityMutualisticIntelligence: "Mutualistic Intelligence",
         authorityHiveMind: "Hive Mind",
     },
     jp: {
@@ -946,6 +948,7 @@ export const strings = {
         authorityImperial: "帝政",
         authorityCorporate: "企業制",
         authorityMachineIntelligence: "機械知性",
+        authorityMutualisticIntelligence: "相利共生知性",
         authorityHiveMind: "ハイブマインド",
     },
 };

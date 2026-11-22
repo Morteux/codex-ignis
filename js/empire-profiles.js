@@ -7,7 +7,7 @@
  * es js/planet-summary.js.
  *
  * Formato de cada perfil (ver PLANET_SIM_GDD.md §8): { schemaVersion,
- * rulesetId, id, name, ethicIds, authorityId, civicIds, speciesType,
+ * rulesetId, id, name, ethicIds, authorityId, originId, civicIds, speciesType,
  * policyIds, edictIds }.
  *
  * Decisiones (documentadas, no son reglas del juego):
@@ -70,6 +70,8 @@ function normalizeConfig(config) {
   return {
     ethicIds: [...(config.ethicIds || [])].sort(),
     authorityId: config.authorityId || null,
+    // P10.6: origin (null = no modelled origin); optional, so older profiles compare as equal.
+    originId: config.originId || null,
     civicIds: [...(config.civicIds || [])].sort(),
     speciesType: config.speciesType || "organic",
     // Políticas (P16): lo que falte (perfiles guardados antes de P16) o no sea válido para ese imperio se sustituye por el valor por defecto, así dos configuraciones equivalentes se comparan como iguales.
@@ -192,6 +194,7 @@ export function sanitizeEmpireConfig(raw) {
   return normalizeConfig({
     ethicIds,
     authorityId: typeof raw.authorityId === "string" ? raw.authorityId : null,
+    originId: typeof raw.originId === "string" ? raw.originId : null,
     civicIds,
     speciesType: typeof raw.speciesType === "string" ? raw.speciesType : "organic",
     // Solo se aceptan textos { grupo: idOpcion }; lo desconocido lo sustituye por el valor por defecto normalizeConfig (nunca se inventa).

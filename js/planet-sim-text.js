@@ -80,6 +80,7 @@ export function describeUnmetRule(rule) {
     case "celestial": return t(getLang(), "requirementCelestial") + names(rule.ids.map((id) => t(getLang(), PLANET_TYPES.find((type) => type.id === id).i18nKey)));
     case "notCelestial": return t(getLang(), "requirementNotCelestial") + names(rule.ids.map((id) => t(getLang(), PLANET_TYPES.find((type) => type.id === id).i18nKey)));
     case "notSpecies": return t(getLang(), "requirementBiologicalSpecies");
+    case "origin": case "notOrigin": return t(getLang(), rule.i18nKey);
     case "districtBuildable": return t(getLang(), "requirementDistrictBuildable") + districtDisplayName(rule.district);
     case "deposit": return t(getLang(), "requirementDeposit");
     case "notAll": return t(getLang(), "requirementNotAll") + rule.rules.map(ruleSubjects).join(" + ");
@@ -148,6 +149,13 @@ export function formatBuildingCost(building) {
   let line = `${t(getLang(), "planetSimCostLabel")}: ${text(now)} · ${t(getLang(), "planetSimCostDays")(cost.time)}`;
   if (nomadic.length) line += ` (${t(getLang(), "planetSimCostNomadic")}: ${text(nomadic)})`;
   return line;
+}
+
+/** P10.6: plain cost { resource: amount } of a district or capital (Wilderness: minerals / food and Biomass), "" if none. */
+export function formatPlainCost(cost) {
+  const items = Object.entries(cost || {});
+  if (!items.length) return "";
+  return `${t(getLang(), "planetSimCostLabel")}: ${items.map(([resource, amount]) => `${formatAmount(amount)} ${resourceName(resource)}`).join(", ")}`;
 }
 
 export function buildingDisplayName(building) {

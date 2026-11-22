@@ -48,13 +48,18 @@ import {
   blockingEthics,
   ethicsComplete,
   MAX_CIVICS,
-  civicAvailable
+  civicAvailable,
+  ORIGINS,
+  originAvailable,
+  civicExcludedByOrigin,
+  authorityVariant
 } from "./empire-data.js";
 
 const pointsLabelEl = document.querySelector("#empire-points-label");
 const wheelEl = document.querySelector("#empire-ethics-wheel");
 const ethicsEffectsEl = document.querySelector("#empire-ethics-effects");
 const authorityListEl = document.querySelector("#empire-authority-list");
+const originListEl = document.querySelector("#empire-origin-list");
 const speciesSelectEl = document.querySelector("#empire-species-select");
 const civicsLabelEl = document.querySelector("#empire-civics-label");
 const civicsListEl = document.querySelector("#empire-civics-list");
@@ -76,6 +81,7 @@ const axisSelection = new Map(ETHIC_AXES.map((axis) => [axis.id, null]));
 const axisOfOption = new Map(ETHIC_AXES.flatMap((axis) => axis.options.map((option) => [option.id, axis.id])));
 let gestaltActive = false;
 let selectedAuthorityId = null;
+let selectedOriginId = null; // P10.6: ORIGINS id or null (no modelled origin)
 const selectedCivics = new Set();
 let selectedSpeciesType = "organic";
 let selectedEmpireId = null; // imperio guardado seleccionado (null = borrador sin guardar)
@@ -101,7 +107,7 @@ function pointsUsed() {
 }
 
 function policyContext() {
-  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType };
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType };
 }
 
 /**
@@ -198,10 +204,19 @@ function selectAuthority(authorityId) {
 }
 
 function pruneUnavailableCivics() {
+  // P10.6: an origin the authority no longer allows is dropped; the civics the origin excludes cannot be chosen while it is set.
+  const origin = ORIGINS.find((entry) => entry.id === selectedOriginId);
+  if (origin && !origin.authorities.includes(selectedAuthorityId)) selectedOriginId = null;
   const ethics = currentEthicIds();
   [...selectedCivics].forEach((key) => {
-    if (!civicAvailable(key, ethics, selectedAuthorityId, [...selectedCivics])) selectedCivics.delete(key);
+    if (!civicAvailable(key, ethics, selectedAuthorityId, [...selectedCivics]) || civicExcludedByOrigin(key, selectedOriginId)) selectedCivics.delete(key);
   });
+}
+
+function selectOrigin(originId) {
+  selectedOriginId = selectedOriginId === originId ? null : originId;
+  pruneUnavailableCivics();
+  refresh();
 }
 
 function toggleCivic(i18nKey) {
@@ -316,20 +331,23 @@ function renderAuthorityList() {
     card.classList.toggle("is-selected", isSelected);
     card.disabled = !available;
 
+    // P10.6: a Wilderness Hive Mind is shown as the Mutualistic Intelligence (name, icon, text and effects).
+    const shown = isSelected ? authorityVariant(authority.id, selectedOriginId) : authority;
+    card.dataset.authorityId = authority.id;
     const header = document.createElement("div");
     header.className = "empire-authority-header";
     const img = document.createElement("img");
-    img.src = `${IMAGE_BASE}${authority.img}`;
+    img.src = `${IMAGE_BASE}${shown.img}`;
     img.alt = "";
     img.loading = "lazy";
     const title = document.createElement("strong");
-    title.textContent = t(currentLang, authority.i18nKey);
+    title.textContent = t(currentLang, shown.i18nKey);
     header.append(img, title);
     card.append(header);
 
     const blurb = document.createElement("span");
     blurb.className = "empire-authority-blurb";
-    blurb.textContent = t(currentLang, authority.blurbI18nKey);
+    blurb.textContent = t(currentLang, shown.blurbI18nKey);
     card.append(blurb);
 
     if (!available) {
@@ -338,11 +356,51 @@ function renderAuthorityList() {
       lock.textContent = lockReason(authority, ethics);
       card.append(lock);
     } else if (isSelected) {
-      card.append(renderEffectList(AUTHORITY_EFFECTS[authority.id] || []));
+      card.append(renderEffectList(AUTHORITY_EFFECTS[shown.id] || []));
     }
 
     card.addEventListener("click", () => { if (available) selectAuthority(authority.id); });
     authorityListEl.append(card);
+  });
+}
+
+/** P10.6: origin cards (only the modelled origins; none chosen = no modelled origin). */
+function renderOriginList() {
+  if (!originListEl) return;
+  originListEl.replaceChildren();
+  ORIGINS.forEach((origin) => {
+    const available = originAvailable(origin, selectedAuthorityId, [...selectedCivics]);
+    const isSelected = selectedOriginId === origin.id;
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "empire-authority-card";
+    card.dataset.originId = origin.id;
+    card.classList.toggle("is-selected", isSelected);
+    card.disabled = !available && !isSelected;
+    const header = document.createElement("div");
+    header.className = "empire-authority-header";
+    const img = document.createElement("img");
+    img.src = `${IMAGE_BASE}${origin.img}`;
+    img.alt = "";
+    img.loading = "lazy";
+    const title = document.createElement("strong");
+    title.textContent = t(currentLang, origin.i18nKey);
+    header.append(img, title);
+    const blurb = document.createElement("span");
+    blurb.className = "empire-authority-blurb";
+    blurb.textContent = t(currentLang, origin.blurbI18nKey);
+    card.append(header, blurb);
+    if (!available && !isSelected) {
+      const lock = document.createElement("em");
+      lock.className = "empire-authority-lock";
+      const blocking = origin.excludedCivics.filter((key) => selectedCivics.has(key)).map((key) => t(currentLang, key));
+      lock.textContent = !origin.authorities.includes(selectedAuthorityId)
+        ? t(currentLang, "empireOriginRequiresAuthority") + origin.authorities.map((id) => t(currentLang, AUTHORITIES.find((a) => a.id === id).i18nKey)).join(", ")
+        : t(currentLang, "empireBlockedBy") + blocking.join(", ");
+      card.append(lock);
+    }
+    card.addEventListener("click", () => { if (available || isSelected) selectOrigin(origin.id); });
+    originListEl.append(card);
   });
 }
 
@@ -496,7 +554,7 @@ function renderCivicsList() {
 
   const ethics = currentEthicIds();
   const chosen = [...selectedCivics];
-  const available = PRINCIPLE_BINGO.filter((entry) => civicAvailable(entry.i18nKey, ethics, selectedAuthorityId, chosen));
+  const available = PRINCIPLE_BINGO.filter((entry) => civicAvailable(entry.i18nKey, ethics, selectedAuthorityId, chosen) && !civicExcludedByOrigin(entry.i18nKey, selectedOriginId));
   if (!available.length) return note("empireCivicsEmpty");
 
   const atLimit = selectedCivics.size >= MAX_CIVICS;
@@ -549,11 +607,11 @@ function publishSelection() {
   const civicIds = [...selectedCivics];
   const modified = isModified();
   const policyKey = Object.entries(selectedPolicies).sort().map(([group, option]) => `${group}:${option}`).join(",");
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}|${selectedEdicts.join(",")}`;
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${selectedOriginId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}|${selectedEdicts.join(",")}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
   storeLastEmpire(selectedEmpireId);
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], empireId: selectedEmpireId, empireModified: modified });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], empireId: selectedEmpireId, empireModified: modified });
 }
 
 /** P17.5: paneles "i" de la pestaña Imperio (efectos aplicados/informativos, límites de principios, políticas y conversión de comercio). */
@@ -571,7 +629,7 @@ function renderEmpireInfo() {
     const applied = [];
     currentEthicIds().forEach((id) => (ETHIC_EFFECTS[id] || []).filter((e) => e.apply)
       .forEach((e) => applied.push(`${formatEffectValue(e)} ${t(currentLang, `effect_${e.label}`)} (${t(currentLang, ETHIC_OPTIONS[id].i18nKey)})`)));
-    const authority = AUTHORITIES.find((a) => a.id === selectedAuthorityId);
+    const authority = authorityVariant(selectedAuthorityId, selectedOriginId);
     if (authority) (AUTHORITY_EFFECTS[authority.id] || []).filter((e) => e.apply)
       .forEach((e) => applied.push(`${formatEffectValue(e)} ${t(currentLang, `effect_${e.label}`)} (${t(currentLang, authority.i18nKey)})`));
     addInfoLine(panel, applied.length ? t(currentLang, "empireInfoNowApplied")(applied.join(" · ")) : t(currentLang, "empireInfoNowAppliedNone"), true);
@@ -598,6 +656,7 @@ function refresh() {
   renderWheel();
   renderEthicsEffects();
   renderAuthorityList();
+  renderOriginList();
   renderSpeciesSelect();
   renderCivicsList();
   renderPoliciesList();
@@ -610,7 +669,7 @@ function refresh() {
 
 /** Configuración actual de la pestaña Imperio, con la misma forma que un perfil guardado. */
 function currentConfig() {
-  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts] };
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts] };
 }
 
 /** ¿Hay un imperio guardado seleccionado y la pestaña ya no coincide con lo guardado? (sin imperio seleccionado no hay "cambios sin guardar": es un borrador) */
@@ -640,10 +699,13 @@ function applyConfig(config) {
   }
   const authority = AUTHORITIES.find((entry) => entry.id === config.authorityId);
   selectedAuthorityId = authority && authorityAvailable(authority, currentEthicIds()) ? authority.id : null;
+  // P10.6: an unknown origin or one the authority does not allow is dropped (older profiles: none).
+  const origin = ORIGINS.find((entry) => entry.id === config.originId);
+  selectedOriginId = origin && origin.authorities.includes(selectedAuthorityId) ? origin.id : null;
   selectedCivics.clear();
   (config.civicIds || []).forEach((key) => {
     if (selectedCivics.size >= MAX_CIVICS) return;
-    if (civicAvailable(key, currentEthicIds(), selectedAuthorityId, [...selectedCivics, key])) selectedCivics.add(key);
+    if (civicAvailable(key, currentEthicIds(), selectedAuthorityId, [...selectedCivics, key]) && !civicExcludedByOrigin(key, selectedOriginId)) selectedCivics.add(key);
   });
   pruneUnavailableCivics();
   selectedSpeciesType = SPECIES_TYPES.some((type) => type.id === config.speciesType) ? config.speciesType : "organic";

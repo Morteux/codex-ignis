@@ -29,13 +29,16 @@
  *   { type: "capitalTier", min: n }          nivel del edificio capital en números (I = 1 ... V = 5)
  *   { type: "branch", value: "legal"|"illegal" }  P19: branch office legality (ctx.branchLegality)
  *   { type: "anyOf", rules: [...] }          P19: one of the rules is met (an unmodelled one counts as met)
+ *   { type: "origin", ids, i18nKey } / { type: "notOrigin", ids, i18nKey }   P10.6: the empire origin is (not) one of
+ *                                            those (ctx.originId; only Wilderness is modelled, see ORIGINS)
  *
  * Simplificaciones deliberadas (documentadas, no inventadas):
  *  - Los requisitos de tecnología, población y tradiciones se ignoran: este
  *    simulador asume toda la investigación desbloqueada.
- *  - Los requisitos de origen (Naturaleza salvaje, Moradores del vacío,
- *    Grilletes rotos...), de federación ("A Union of Faith") y de
- *    capital especial (Command Center) no se aplican: no se modelan aquí.
+ *  - Los requisitos de origen (Moradores del vacío, Grilletes rotos...), de
+ *    federación ("A Union of Faith") y de capital especial (Command Center)
+ *    no se aplican: no se modelan aquí. P10.6: el origen Wilderness sí
+ *    (reglas "origin" / "notOrigin").
  *    P10.10: los que la wiki marca (no Naturaleza salvaje, no Command Center,
  *    acción astral, trato con los Caravaneros, "Empire uses food") se
  *    muestran como `{ type: "unmodelled" }`, sin bloquear.
@@ -68,6 +71,8 @@ function ruleMet(rule, ctx) {
     case "notCelestial": return !rule.ids.includes(ctx.celestialTypeId);
     case "celestial": return rule.ids.includes(ctx.celestialTypeId);
     case "notSpecies": return !rule.ids.includes(ctx.speciesType);
+    case "origin": return rule.ids.includes(ctx.originId);
+    case "notOrigin": return !rule.ids.includes(ctx.originId);
     case "notAll": return !rule.rules.every((inner) => ruleMet(inner, ctx)); // P10.10: blocked only when every inner rule is met
     case "capitalTier": return (ctx.capitalTierNumber || 1) >= rule.min;
     case "branch": return ctx.branchLegality === rule.value; // P19: legal / illegal branch office
@@ -104,6 +109,7 @@ export function requirementContextKey(ctx) {
   return [
     (ctx.ethicIds || []).join(","),
     ctx.authorityId,
+    ctx.originId,
     [...(ctx.civicIds || [])].sort().join(","),
     ctx.designationId,
     ctx.celestialTypeId,

@@ -97,11 +97,22 @@ export const CAPITAL_SETS = {
   { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, defenseArmies: 8, upkeep: { energy: -5 } },
   { id: "primary_nexus", img: "buildings/building_machine_system_capital.png", i18nKey: "buildingPrimaryNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { replicator: 200, hunter_seeker_drone: 300, logistic_drone: 500, coordinator: 400 }, defenseArmies: 16, upkeep: { energy: -10 } },
   { id: "machine_imperial_center", img: "buildings/building_imperial_machine_capital.png", i18nKey: "buildingMachineImperialCenter", tier: 5, housing: 3000, amenities: 3000, jobs: { replicator: 400, hunter_seeker_drone: 500, logistic_drone: 600, coordinator: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
+  ],
+  // P10.6: Wilderness capitals (game files 4.5.4, common/buildings/21_wilderness_buildings.txt). Game jobs of a hive:
+  // coordinator = Synapse Drone, logistics_drone = Logistic Drone, patrol_drone = Hunter-Seeker Drone (as in the Hive
+  // Core). Costs (food, biomass) are shown in the capital tooltip; the tier V cost is the Imperial Complex one.
+  wilderness: [
+  { id: "colony_shelter_wilderness", img: "buildings/capital_wilderness_1.png", i18nKey: "buildingPlanetaryTendrils", tier: 1, housing: 300, amenities: 300, jobs: { hunter_seeker_drone: 100, logistic_drone: 200 }, upkeep: { energy: -1, food: -1 } },
+  { id: "capital_wilderness", img: "buildings/capital_wilderness_2.png", i18nKey: "buildingPlanetaryRootBundle", tier: 2, housing: 1000, amenities: 1000, jobs: { synapse_drone: 100, logistic_drone: 300, hunter_seeker_drone: 100 }, defenseArmies: 4, upkeep: { food: -5 }, cost: { food: 400, biomass: 100 } },
+  { id: "major_capital_wilderness", img: "buildings/capital_wilderness_3.png", i18nKey: "buildingPlanetaryRootComplex", tier: 3, housing: 1500, amenities: 1500, jobs: { synapse_drone: 200, logistic_drone: 400, hunter_seeker_drone: 200 }, defenseArmies: 8, upkeep: { food: -8 }, cost: { food: 600, biomass: 200 } },
+  { id: "system_capital_wilderness", img: "buildings/capital_wilderness_4.png", i18nKey: "buildingPlanetaryRootNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { synapse_drone: 300, logistic_drone: 500, hunter_seeker_drone: 300 }, defenseArmies: 16, upkeep: { food: -10 }, cost: { food: 800, biomass: 400 } },
+  { id: "imperial_capital_wilderness", img: "buildings/capital_wilderness_4.png", i18nKey: "buildingHiveImperialComplex", tier: 5, housing: 3000, amenities: 3000, jobs: { hunter_seeker_drone: 400, logistic_drone: 700 }, defenseArmies: 16, upkeep: { food: -10 }, cost: { food: 2000, biomass: 800 } }
   ]
 };
 
 /** Conjunto de capitales que corresponde a la autoridad elegida (Mente Colmena, Inteligencia de Máquina o el estándar para el resto). */
-export function capitalSetForAuthority(authorityId) {
+export function capitalSetForAuthority(authorityId, originId = null) {
+  if (authorityId === "hiveMind" && originId === "wilderness") return CAPITAL_SETS.wilderness;
   if (authorityId === "hiveMind") return CAPITAL_SETS.hive;
   if (authorityId === "machineIntelligence") return CAPITAL_SETS.machine;
   return CAPITAL_SETS.standard;
@@ -127,6 +138,9 @@ export function capitalSetForAuthority(authorityId) {
  */
 export const ANGLERS_WET_CLIMATE = [{ type: "civic", keys: ["civicAnglers", "civicCorporateAnglers"] }, { type: "celestial", ids: ["ocean", "continental", "tropical"] }];
 const ANGLERS_WET_CLIMATE_BLOCK = { type: "notAll", rules: ANGLERS_WET_CLIMATE };
+/** P10.6: origin rules (js/building-requirements.js); the game writes them as is_wilderness_empire = yes / no. */
+export const WILDERNESS_ORIGIN = { type: "origin", ids: ["wilderness"], i18nKey: "reqWildernessOrigin" };
+export const NOT_WILDERNESS_ORIGIN = { type: "notOrigin", ids: ["wilderness"], i18nKey: "reqNotWildernessOrigin" };
 
 export const DISTRICTS = {
   /**
@@ -360,7 +374,7 @@ export const DISTRICTS = {
         id: "energyGeneration",
         i18nKey: "specializationEnergyGeneration",
         img: "districts_specialization/District_specialization_energy.png",
-        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }],
+        requires: [NOT_WILDERNESS_ORIGIN],
         jobs: { technician: 100 },
         permittedSets: ["energy"]
       },
@@ -401,7 +415,7 @@ export const DISTRICTS = {
         id: "mineralExtraction",
         i18nKey: "specializationMineralExtraction",
         img: "districts_specialization/District_specialization_minerals.png",
-        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }],
+        requires: [NOT_WILDERNESS_ORIGIN],
         jobs: { miner: 100 },
         permittedSets: ["minerals"]
       },
@@ -462,7 +476,7 @@ export const DISTRICTS = {
         id: "agriculturalFocus",
         i18nKey: "specializationAgriculturalFocus",
         img: "districts_specialization/District_specialization_food.png",
-        requires: [{ type: "unmodelled", i18nKey: "reqNotWildernessOrigin" }, ANGLERS_WET_CLIMATE_BLOCK],
+        requires: [NOT_WILDERNESS_ORIGIN, ANGLERS_WET_CLIMATE_BLOCK],
         jobs: { farmer: 100 },
         permittedSets: ["food"]
       },
@@ -505,6 +519,74 @@ export const DISTRICTS = {
 
 export const RESOURCE_DISTRICT_ORDER = ["generator", "mining", "agriculture"];
 
+/**
+ * P10.6: Wilderness districts and specializations (game files 4.5.4: common/districts/05_wilderness_districts.txt,
+ * common/zones/03_wilderness_zones.txt). They replace the regular districts on bodies that use the standard district
+ * set (regular planets, Gaia, Tomb and Relic Worlds); other bodies keep their own districts. Housing and jobs ×100 per
+ * copy; costs (minerals, biomass) are shown in the district tooltip. Specialization jobs are the gestalt ones (hive
+ * ids of the simulator: Fabricator = Metallurgist, calculators = researchers, Coordinator = the Administrator job of
+ * the authority, Logistics Drone = Trader, Warrior Drone = Soldier); no Wilderness specialization changes housing.
+ * permittedSets follow the regular specialization with the same building set (game included / excluded sets).
+ * The resource districts also offer the regular strategic specializations (deposit rule), whose zones do not exclude
+ * Wilderness.
+ */
+const wildernessZone = (id, i18nKey, icon, extra) => ({ id, i18nKey, img: `districts_specialization/District_specialization_wilderness_${icon}.png`, housing: 0, ...extra });
+const strategicOptions = (cat) => DISTRICTS[cat].specializationOptions.filter((option) => (option.requires || []).some((rule) => rule.type === "deposit"));
+export const WILDERNESS_DISTRICTS = {
+  urban: {
+    i18nKey: "districtCommunalBiome",
+    img: "districs/district_craglands.png",
+    jobs: {},
+    housing: 100,
+    upkeep: { energy: -2 },
+    cost: { minerals: 500, biomass: 50 },
+    specializationSlots: 2,
+    slotsPerSpecialization: 3,
+    specializationOptions: [
+      wildernessZone("heartgrove", "specializationHeartgrove", "urban", { excludedSets: ["energy", "minerals", "food"] }),
+      wildernessZone("moltgut", "specializationMoltgut", "foundry", { jobs: { metallurgist: 100 }, permittedSets: ["foundry"] }),
+      wildernessZone("thinkstem", "specializationThinkstem", "research", { jobs: { physicist: 30, biologist: 30, engineer: 30 }, permittedSets: ["research", "origin"] }),
+      wildernessZone("singingCliffs", "specializationSingingCliffs", "unity", { administratorJobs: 100, permittedSets: ["unity", "origin"] }),
+      wildernessZone("harmonicCore", "specializationHarmonicCore", "spawning", { jobs: { physicist: 20, biologist: 20, engineer: 20 }, administratorJobs: 40, permittedSets: ["research", "unity", "origin"] }),
+      wildernessZone("threadway", "specializationThreadway", "trade", { jobs: { trader: 100 }, permittedSets: ["trade"] }),
+      wildernessZone("commandBulb", "specializationCommandBulb", "fortress", { jobs: { soldier: 100 }, permittedSets: ["fortress"] })
+    ]
+  },
+  generator: {
+    i18nKey: "districtPhotosynthesisField",
+    img: "districs/district_photosynthesis_fields.png",
+    jobs: { technician: 200 },
+    housing: 100,
+    upkeep: { energy: -1 },
+    cost: { minerals: 300, biomass: 50 },
+    lockedTooltipKey: DISTRICTS.generator.lockedTooltipKey,
+    slotsPerSpecialization: 3,
+    specializationOptions: [wildernessZone("solarMycolungs", "specializationSolarMycolungs", "energy", { jobs: { technician: 100 }, permittedSets: ["energy"] }), ...strategicOptions("generator")]
+  },
+  mining: {
+    i18nKey: "districtHollowMountain",
+    img: "districs/district_hollow_mountains.png",
+    jobs: { miner: 200 },
+    housing: 100,
+    upkeep: { food: -1 },
+    cost: { minerals: 300, biomass: 50 },
+    lockedTooltipKey: DISTRICTS.mining.lockedTooltipKey,
+    slotsPerSpecialization: 3,
+    specializationOptions: [wildernessZone("orespine", "specializationOrespine", "minerals", { jobs: { miner: 100 }, permittedSets: ["minerals"] }), ...strategicOptions("mining")]
+  },
+  agriculture: {
+    i18nKey: "districtOrchardForest",
+    img: "districs/district_orchard_forests.png",
+    jobs: { farmer: 200 },
+    housing: 100,
+    upkeep: { energy: -1 },
+    cost: { minerals: 300, biomass: 50 },
+    lockedTooltipKey: DISTRICTS.agriculture.lockedTooltipKey,
+    slotsPerSpecialization: 3,
+    specializationOptions: [wildernessZone("bloomloom", "specializationBloomloom", "food", { jobs: { farmer: 100 }, permittedSets: ["food"] }), ...strategicOptions("agriculture")]
+  }
+};
+
 /** Diccionario de recursos: id -> { i18nKey, img (dentro de resources/) }. */
 export const RESOURCES = {
   energy: { i18nKey: "resourceEnergy", img: "resources/Energy.png" },
@@ -531,7 +613,9 @@ export const RESOURCES = {
   advanced_logic: { i18nKey: "resourceAdvancedLogic", img: "resources/Advanced_logic.png" },
   // P10.8: produced by selectable blockers (Nanite Harvest Basin, Shroudstone, Ruined Sanctum of the Dreamer).
   nanites: { i18nKey: "resourceNanites", img: "resources/Nanites.png" },
-  zro: { i18nKey: "resourceZro", img: "resources/Zro.png" }
+  zro: { i18nKey: "resourceZro", img: "resources/Zro.png" },
+  // P10.6: Wilderness origin; only a cost here (districts, capitals): no modelled job or building produces it.
+  biomass: { i18nKey: "resourceBiomass", img: "resources/Biomass.png" }
 };
 
 /**
@@ -813,7 +897,7 @@ const ethic = (...ids) => ({ type: "ethic", ids });
 const authority = (...ids) => ({ type: "authority", ids });
 /** P10.10: requirement the simulator does not model (origin, capital, astral action...): shown, never blocks. */
 const unmodelled = (i18nKey) => ({ type: "unmodelled", i18nKey });
-const NOT_WILDERNESS = unmodelled("reqNotWildernessOrigin");
+const NOT_WILDERNESS = NOT_WILDERNESS_ORIGIN;
 const NOT_COMMAND_CENTER = unmodelled("reqNotCommandCenter");
 const EXPERIMENTAL_SENTENCING = civic("civicTwistedExperimenters", "civicCorporateTwistedExperimenters", "civicHiveTwistedExperimenters");
 
@@ -2260,6 +2344,27 @@ export const BUILDINGS = [
     requires: [LATHE_TECH("reqTechSynapticCogitator")], jobResourcePct: { all: -35 }, amenities: -5000, infoKeys: ["latheInfoCogitator"]
   })
 ];
+
+/**
+ * P10.6: buildings whose game potential / allow has is_wilderness_empire = no (game files 4.5.4, matched to the game
+ * buildings as in tools/extract/report_differences.py): not available to a Wilderness empire. Its own buildings
+ * (common/buildings/21_wilderness_buildings.txt) are not modelled yet (T1011).
+ */
+const WILDERNESS_EXCLUDED_BUILDINGS = [
+  "voltaic_yard", "quarry_depot", "hydroponics_farm", "energy_grid", "energy_nexus", "mineral_purification_plants",
+  "mineral_purification_hubs", "food_processing_facilities", "food_processing_centers", "alloy_foundries", "alloy_mega_forges",
+  "alloy_nano_plants", "alloy_reclamation_plant", "metallurgical_research_lab", "research_labs", "research_complexes",
+  "advanced_research_complexes", "stronghold", "fortress", "hive_warren", "expanded_warren", "synaptic_nodes", "synaptic_clusters",
+  "confluence_of_thought", "exotic_gas_refineries", "chemical_plants", "synthetic_crystal_plants", "resource_processing_center",
+  "field_dynamics_center", "xenobiological_lab", "neurogenetics_institute", "materials_workshop", "research_supply_depot",
+  "data_driven_theorem_facility", "planetary_supercomputer", "bio_reactor", "advanced_bio_reactor", "auto_curating_vault",
+  "sensorium_site", "sensorium_center", "sensorium_complex"
+];
+BUILDINGS.forEach((building) => {
+  if (!WILDERNESS_EXCLUDED_BUILDINGS.includes(building.id)) return;
+  const requires = building.requires || [];
+  if (!requires.includes(NOT_WILDERNESS_ORIGIN)) building.requires = [...requires, NOT_WILDERNESS_ORIGIN];
+});
 
 export const CATEGORY_ORDER = [
   "resource",

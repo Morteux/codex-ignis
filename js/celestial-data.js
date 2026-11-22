@@ -54,11 +54,8 @@ export function allowedDesignationCategories(typeId) {
     case "ringworld":
     case "shatteredRingworld": return ["ringWorld"];
     case "synapticLathe": return ["synapticLathe"];
-    default: {
-      const type = PLANET_TYPES.find((entry) => entry.id === typeId);
-      if (!type) return NORMAL_DESIGNATION_CATEGORIES;
-      // Volcánico/Gaia/Tumba/Reliquia: también admiten las del origen Naturaleza salvaje.
-      return type.standard ? NORMAL_DESIGNATION_CATEGORIES : [...NORMAL_DESIGNATION_CATEGORIES, "wilderness"];
-    }
+    // P10.6: the Wilderness designations (game potential: Wilderness empire, not a special colony type) are offered on
+    // every natural body; their origin requirement locks them for other empires.
+    default: return [...NORMAL_DESIGNATION_CATEGORIES, "wilderness"];
   }
 }

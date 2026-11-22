@@ -14,7 +14,7 @@ import { renderJobsMini } from "./planet-sim-jobs-ui.js";
 import { renderDesignationSelect } from "./planet-sim-planet-ui.js";
 import { chainBuildingCount, slotAcceptsBuilding, resolveSelectedSlot, requirementContext, isBuildingAvailable, buildingCount, isLimited, slotSpecInfo, secondaryDistrictDef, primaryDistrictDef, districtBaseJobs, primaryMinCount, canAddDistrict, primaryOption, firstSpecializationLocked, scaleJobs, specializationJobs, specializationJobMultiplier, specializationNotes, secondaryOption, districtDisplayName, canAddResourceDistrict, districtHasNoFeature, districtCap } from "./planet-sim-rules.js";
 import { districtState, builtMap, sim } from "./planet-sim-state.js";
-import { buildingDisplayName, formatBuildingCost, formatAmount, requirementOptionLabel } from "./planet-sim-text.js";
+import { buildingDisplayName, formatBuildingCost, formatPlainCost, formatAmount, requirementOptionLabel } from "./planet-sim-text.js";
 
 /** ¿Este edificio no se puede construir ahora mismo (límite de colonia, sin ranuras libres, o incompatible con la ranura objetivo)? Se usa tanto para desactivar el botón como para decidir si su categoría sale desplegada. */
 function isBuildingDisabled(building, slotsFull, targetKey) {
@@ -201,6 +201,7 @@ function renderUrbanDistrictCard() {
   const name = document.createElement("span");
   name.textContent = `${t(getLang(), def.i18nKey)} ${t(getLang(), "planetSimDistrictCount")(districtState.urban.count)}`;
   header.append(icon, name);
+  header.title = formatPlainCost(def.cost);
   card.append(header);
 
   const note = document.createElement("p");
@@ -322,6 +323,7 @@ function renderResourceDistrictCard(cat) {
   const name = document.createElement("span");
   name.textContent = districtDisplayName(cat);
   header.append(icon, name);
+  header.title = formatPlainCost(def.cost);
   card.append(header);
 
   card.append(renderJobsMini(districtBaseJobs(def)));

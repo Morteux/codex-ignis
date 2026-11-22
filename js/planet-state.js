@@ -15,6 +15,7 @@ const state = {
   designationId: null,
   ethicIds: [],
   authorityId: null,
+  originId: null, // P10.6: origin of the empire (js/empire-data.js ORIGINS; null = no modelled origin)
   civicIds: [],
   policyIds: {}, // políticas del imperio { grupo: idOpcion } (js/policy-data.js, P16); solo los grupos que aplican al tipo de imperio
   edictIds: [], // edictos activos del imperio (js/edict-data.js, P18)

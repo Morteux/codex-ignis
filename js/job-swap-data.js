@@ -44,6 +44,7 @@
  *      { type: "planetModifier", ids }  one of these planet modifiers active
  *      { type: "branchBuilding", ids }  P19 branch office building active on the planet
  *      { type: "swap", id }             the conditions of that swap are met ("X conditions AND")
+ *      { type: "origin", ids, i18nKey }  P10.6: the empire origin (only Wilderness is modelled)
  *      { type: "unmodelled", kind, i18nKey }  condition the simulator cannot evaluate (text in js/i18n.js)
  *        (kind: origin, authority, building, zone, feature, planetModifier,
  *        habitability); for job swaps it is NEVER met (otherwise every
@@ -60,7 +61,7 @@
  *    computed (P13.8: English until P15).
  */
 
-import { ANGLERS_WET_CLIMATE } from "./planet-data.js";
+import { ANGLERS_WET_CLIMATE, WILDERNESS_ORIGIN } from "./planet-data.js";
 
 const civ = (...keys) => ({ type: "civic", keys });
 const noCiv = (...keys) => ({ type: "notCivic", keys });
@@ -270,24 +271,24 @@ export const JOB_SWAPS = [
   // ── Workers ──────────────────────────────────────────────────────────
   { id: "mote_harvester", img: "jobs/job_mote_harvester.png", base: "technician", weight: { individualist: 20, gestalt: 5 }, empire: "any", output: { energy: 3, volatile_motes: 0.5 },
     requires: [zone("volatileMotesHarvesting")], notModelledKeys: ["swapNotModelledRoboticFounderSpecies2Energy"] },
-  { id: "photosymbiont", img: "jobs/job_photosymbiont.png", base: "technician", weight: 10, output: { energy: 6 },
-    requires: [um("origin", "swapReqWilderness")], notModelledKeys: ["swapNotModelledExoticGasCapture3Energy0"] },
+  { id: "photosymbiont", img: "jobs/job_photosymbiont.png", base: "technician", empire: "gestalt", weight: 10, output: { energy: 6 },
+    requires: [WILDERNESS_ORIGIN], notModelledKeys: ["swapNotModelledExoticGasCapture3Energy0"] },
   { id: "scrap_miner", img: "jobs/job_miner.png", base: "miner", weight: { individualist: 5, gestalt: 2 }, empire: "any", output: { minerals: 2, alloys: 1 },
     requires: [anyOf({ type: "celestial", ids: ["shatteredRingworld"] }, um("feature", "swapReqCrashedShips"), um("feature", "swapReqFallenShipyard"))] },
   { id: "crystal_miner", img: "jobs/job_crystal_miner.png", base: "miner", weight: { individualist: 20, gestalt: 5 }, empire: "any", output: { minerals: 2, rare_crystals: 0.5 },
     requires: [zone("rareCrystalExtraction")] },
   { id: "thermoforger", img: "jobs/job_miner.png", base: "miner", weight: { individualist: 35, gestalt: 15 }, empire: "any", output: { minerals: 5, alloys: 0.5, energy: -1 },
     requires: [{ type: "celestial", ids: ["volcanic"] }] },
-  { id: "grubsymbiont", img: "jobs/job_grubsymbiont.png", base: "miner", weight: 10, output: { minerals: 4 },
-    requires: [um("origin", "swapReqWilderness")], notModelledKeys: ["swapNotModelledRareCrystalExtraction2Minerals0"] },
+  { id: "grubsymbiont", img: "jobs/job_grubsymbiont.png", base: "miner", empire: "gestalt", weight: 10, output: { minerals: 4 },
+    requires: [WILDERNESS_ORIGIN], notModelledKeys: ["swapNotModelledRareCrystalExtraction2Minerals0"] },
   { id: "gas_extractor", img: "jobs/job_gas_extractor.png", base: "farmer", weight: 20, empire: "any", output: { food: 3, exotic_gases: 0.5 },
     requires: [zone("exoticGasCapture")], notModelledKeys: ["swapNotModelledRoboticFounderSpecies1Food"] },
   // The Empire column says Individualist, but the condition lists the machine variants (Marine Machines, Maritime
   // Robotics): "any" (kept from P10.10).
   { id: "angler", img: "jobs/job_angler.png", base: "farmer", weight: 50, empire: "any", output: { food: 6, trade: 2 },
     requires: [...ANGLERS_WET_CLIMATE], withZone: { zone: "exoticGasCapture", output: { food: -3, exotic_gases: 0.5 } }, notModelledKeys: ["swapNotModelledRoboticFounderSpecies1Food"] },
-  { id: "pollinosymbiont", img: "jobs/job_pollinosymbiont.png", base: "farmer", weight: 100, output: { food: 6 },
-    requires: [um("origin", "swapReqWilderness")], notModelledKeys: ["swapNotModelledExoticGasCapture3Food0"] },
+  { id: "pollinosymbiont", img: "jobs/job_pollinosymbiont.png", base: "farmer", empire: "gestalt", weight: 100, output: { food: 6 },
+    requires: [WILDERNESS_ORIGIN], notModelledKeys: ["swapNotModelledExoticGasCapture3Food0"] },
 
   // ── Civilians ────────────────────────────────────────────────────────
   { id: "hedonist", img: "jobs/job_fe_hedonist.png", base: "civilian", weight: 5, output: { trade: 1 }, requires: [civ(...PLEASURE)] },
