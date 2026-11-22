@@ -6,7 +6,10 @@
     "Bash(node --check*)",
     "Bash(BLOCK_REMOTE=1 python*)",
     "Bash(python tests/*)",
-    "Bash(python3 tests/*)"
+    "Bash(python3 tests/*)",
+    "Bash(node *)",
+    "Bash(python *)",
+    "Bash(python3 *)"
   ],
   "commitTrailer": "Co-Authored-By: Claude <noreply@anthropic.com>",
   "rules": [
