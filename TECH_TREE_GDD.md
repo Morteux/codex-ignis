@@ -2,7 +2,7 @@
 
 Design rules and decisions of the tech tree. Pending work lives in `tasks.md` (sections 30–34); finished tasks are in git. Replaces the old Spanish plan `tech_tree.md` (same content, phases moved to `tasks.md`).
 
-- **Ruleset:** Stellaris PC 4.5.2 "Cygnus" (`stellaris-pc-4.5.2`), the same as the planet simulator. Data stays `unverified` until the final data review (T1406).
+- **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files (owner, 2026-11-22). Data stays `unverified` until the final data review (T1406).
 - **Scope:** only `tech-tree.html` and its modules. The planet simulator has its own GDD (`PLANET_SIM_GDD.md`).
 - **Rule #1 (as in the simulator):** never invent rules, numbers or names. Everything comes from the wiki pages; missing or ambiguous data → the task is marked blocked with the question.
 - **Status:** not started. `tech-tree.html` is a placeholder page. The owner decided on 2026-11-22 to start it now (the simulator only has tasks waiting for the owner left).

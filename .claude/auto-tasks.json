@@ -13,15 +13,24 @@
     "Bash(pip install Pillow*)",
     "Bash(python -m pip install Pillow*)",
     "Read(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)",
-    "Grep(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)"
+    "Grep(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)",
+    "Read(//d/Program Files (x86)/Steam/steamapps/common/Stellaris/**)",
+    "Grep(//d/Program Files (x86)/Steam/steamapps/common/Stellaris/**)",
+    "Glob(//d/Program Files (x86)/Steam/steamapps/common/Stellaris/**)",
+    "Read(//c/Users/ignis/OneDrive/Documentos/StellarisAssets/**)",
+    "Write(//c/Users/ignis/OneDrive/Documentos/StellarisAssets/**)",
+    "Edit(//c/Users/ignis/OneDrive/Documentos/StellarisAssets/**)",
+    "Bash(git -C*)"
   ],
   "commitTrailer": "Co-Authored-By: Claude <noreply@anthropic.com>",
   "rules": [
     "Código, comentarios, mensajes de commit y documentación del proyecto en inglés; solo `README.md` va en español.",
     "Diseño y decisiones del simulador: `PLANET_SIM_GDD.md` (es grande: lee solo las secciones que necesites). Toda decisión que tomes sin el dueño va a `DECISIONS_TO_REVIEW.md`, en una sección con el ID de la tarea, la más reciente arriba.",
-    "Datos del juego: versión 4.5.2. Nunca inventes cifras; si falta un dato de la wiki, marca la tarea como bloqueada.",
+    "Datos del juego: versión 4.5.4 (`stellaris-pc-4.5.4`), instalada en `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`: léela con el extractor (sección 25), nunca la modifiques. Los datos actuales del simulador vienen de la wiki 4.5.2 hasta que se cambien (T2523). Nunca inventes cifras; si falta un dato, marca la tarea como bloqueada.",
     "Todo texto nuevo de la interfaz va en `js/i18n.js` con las mismas claves en es, en y jp.",
     "Si cambias la estructura, los archivos o lo que cubren las pruebas, actualiza `README.md`.",
-    "La sección 14 (verificación final de datos) va siempre la última."
+    "La sección 14 (verificación final de datos) va siempre la última.",
+    "StellarisAssets es otro repositorio git en `C:/Users/ignis/OneDrive/Documentos/StellarisAssets` (publicado en `STELLARIS_ASSETS_BASE`): los iconos exportados van ahí, en la carpeta que ya use ese tipo; haz commit ahí con `git -C \"C:/Users/ignis/OneDrive/Documentos/StellarisAssets\"` (nunca push: el dueño hace el push) y regenera `StellarisAssetsFileTree.txt` en este proyecto.",
+    "Una tarea que depende de otra anterior del mismo archivo no se bloquea por eso: el orden del archivo ya la respeta. Bloquea solo lo que necesita al dueño."
   ]
 }

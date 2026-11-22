@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **20 / 123 tareas (16%)**
+> Progreso: **21 / 125 tareas (17%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -16,17 +16,6 @@ Models another empire placing branch office buildings on this planet; any branch
 - [ ] **T1905** (P19.5) Owner marks which branch office buildings are limited to one per colony (`maxPerColony`); until then all are repeatable
   - ❓ Bloqueada: Which branch office buildings are limited to one per colony?
 
-## 20 · Pop upkeep and living standards
-Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task starts).
-- [ ] **T2001** (P20.1) Audit living standards: pop upkeep per standard and stratum/species type, effects (happiness, political power...), availability by ethics/authority/civics
-  - ❓ Bloqueada: Owner must provide the 4.5.2 *Living standards* wiki page.
-- [ ] **T2002** (P20.2) Living standard saved with the empire profile (optional field), selectable in the Imperio tab
-  - ❓ Bloqueada: Waits for P20.1 (Living standards wiki page).
-- [ ] **T2003** (P20.3) Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
-  - ❓ Bloqueada: Waits for P20.1 (Living standards wiki page).
-- [ ] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
-  - ❓ Bloqueada: Waits for P20.1 (Living standards wiki page).
-
 ## 11 · Comparison & timeline
 - [x] **T1101** (P11.1) Scenario A/B comparison with marginal-change highlighting
   - Prueba manual: abre `planet-sim.html`, pulsa «Pin the current planet as scenario A» en el panel «Scenario A/B comparison» y construye un edificio (p. ej. Commercial Zones): las filas que cambian (Trade value, Consumer goods…) salen arriba resaltadas con su cambio B − A en verde o rojo.
@@ -39,8 +28,6 @@ Needs the 4.5.2 *Living standards* wiki page (owner provides it when this task s
 - [x] **T1202** (P12.2) Review the StellarisAssets repository and re-apply every available icon by its real in-game meaning (replaces the loose placements of the first pass, e.g. `Faction_support`, `Colony_type_automated`; `Menu_icon_technology` unused). No policy icons exist: policies stay text-only. Advanced Logic has no resource icon yet (uses `modifiers/mod_advanced_logic_produces_add.png`): add a proper one (moved to T1204).
   - Nota: the StellarisAssets repository is outside the project; use `StellarisAssetsFileTree.txt` (its file tree) to find the icons.
   - Prueba manual: abre `planet-sim.html`: la pestaña Sucursales lleva el icono de valor de sucursal, Imperio el de gobierno y, en Imperio, «Tipo de especie» el icono de pop y «Éticas» el de atracción ética; «Resumen de empleos totales» lleva el icono genérico de empleo.
-- [ ] **T1204** (P12.4) Proper Advanced Logic resource icon (replaces `modifiers/mod_advanced_logic_produces_add.png` in `RESOURCES.advanced_logic` of `js/planet-data.js`)
-  - ❓ Bloqueada: StellarisAssets has no `resources/Advanced_logic.png` and the wiki image could not be downloaded from here; can the owner add the in-game resource icon to `StellarisAssets/resources/`?
 - [x] **T1203** (P12.3) Mark the empire-level tabs (Imperio, Edicts) as saved with the empire profile. Proposal: semi-transparent empire icon as tab background, shared accent line, tooltip "Saved with the empire profile".
   - Prueba manual: abre `planet-sim.html`: las pestañas Imperio y Edicts llevan de fondo el icono de gobierno semitransparente y una línea dorada abajo; al pasar el ratón sale «Se guarda con el perfil de imperio» (cambia con el idioma).
 
@@ -103,54 +90,45 @@ No behaviour change: every task keeps all smoke tests passing without changing w
 
 ## 24 · Generic bingo and new bingos
 - [ ] **T2401** (P24.1) Generic bingo engine: every bingo is one entry of `js/bingo-data.js` (id, title/description keys, items with image path or `null`, i18n key, tags, DLC), with its own `iconSize` and `layout`: `grid` (default, number of columns), `ordered` (explicit order, e.g. origins as in the game) or `shape` (custom cell positions, e.g. the ethics wheel). Missing images keep a reserved, fixed-size empty slot. Selector, marking and PNG download work with every layout. Origins and principles migrated with no visible change; smoke tests
-- [ ] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout)
-  - ❓ Bloqueada: Waits for T2511 (origin order from the game files).
 - [ ] **T2403** (P24.3) Ethics bingo with the in-game ethics wheel shape (four axes, fanatic ethics on the outer ring, gestalt in the centre; reuse the simulator's ethics wheel drawing). Icons from `ethics/`, names already in `js/i18n.js`
 - [ ] **T2404** (P24.4) Authorities bingo from `authorities/` (75 icons): decide which variants are separate cells from the file names and record it in `DECISIONS_TO_REVIEW.md`; names already in `js/i18n.js`
 
 ## 25 · Game files extractor
 Replaces the wiki as data source (the wiki cannot be scraped automatically). Python, one script per data set plus `extract_all.py`, so any part can be extracted on its own. Design: `GAME_FILES_EXTRACTOR.md` (T2501). Game files are never committed; the game folder is a parameter.
-- [ ] **T2501** (P25.1) Write `GAME_FILES_EXTRACTOR.md`: folder layout (`tools/extract/`: shared library, one `extract_<set>.py` per data set, `extract_all.py`), input (game folder by argument or `STELLARIS_GAME_DIR`, version as `rulesetId`), outputs (`data/generated/<rulesetId>/<set>.json`, icons as PNG for StellarisAssets, a manifest with counts and warnings), mapping of every data set to its game folder (`common/technology`, `pop_jobs`, `buildings`, `districts`, zones and specializations, `colony_types`, `governments/civics`, `governments/authorities`, `ethics`, `planet_classes`, `planet_modifiers`, `static_modifiers`, `deposits`, `edicts`, `policies`, `economic_categories`, `scripted_variables`, `inline_scripts`, `localisation/`, `interface/*.gfx`, `gfx/`, `dlc/`), and what stays unmodelled (complex triggers kept as text)
+- [ ] **T2501** (P25.1) Write `GAME_FILES_EXTRACTOR.md`: folder layout (`tools/extract/`: shared library, one `extract_<set>.py` per data set, `extract_all.py`), input (game folder by argument or `STELLARIS_GAME_DIR`, default `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`; version read from `launcher-settings.json` as `rulesetId`, today `stellaris-pc-4.5.4`), outputs (`data/generated/<rulesetId>/<set>.json`, icons as PNG written into the StellarisAssets repository `C:/Users/ignis/OneDrive/Documentos/StellarisAssets` (the loop commits there, the owner pushes), a manifest with counts and warnings), mapping of every data set to its game folder (`common/technology`, `pop_jobs`, `buildings`, `districts`, zones and specializations, `colony_types`, `governments/civics`, `governments/authorities`, `ethics`, `planet_classes`, `planet_modifiers`, `static_modifiers`, `deposits`, `edicts`, `policies`, `economic_categories`, `scripted_variables`, `inline_scripts`, `localisation/`, `interface/*.gfx`, `gfx/`, `dlc/`), and what stays unmodelled (complex triggers kept as text)
 - [ ] **T2502** (P25.2) Paradox script parser (shared library) with tests on small hand-written samples under `tests/fixtures/game-files/`: key = value, nested blocks, comparison operators, lists, quoted strings, comments, repeated keys, `yes`/`no`, colours, `@variables` (local and `common/scripted_variables`), `@[ ... ]` inline maths, `inline_script` expansion
 - [ ] **T2503** (P25.3) Localisation reader: `localisation/<language>/*_l_<language>.yml` (BOM, `key:0 "text"`), `replace/` overrides, `$key$` references, colour codes and `£icon£` markers; every language; tests on samples
 - [ ] **T2504** (P25.4) Icon exporter: sprite names from `interface/*.gfx` (`spriteType` name → texture file, frames), `.dds` → `.png` with Pillow, folders named like StellarisAssets; tests with a DDS generated by the test
-- [ ] **T2505** (P25.5) Game files of version 4.5.2 available to the extractor
-  - ❓ Bloqueada: Where is the Stellaris 4.5.2 installation (e.g. `...\steamapps\common\Stellaris`)? Alternatively copy its `common/`, `localisation/`, `interface/`, `gfx/` and `dlc/` folders to `../Stellaris Game Files/4.5.2/`. The loop also needs read permission for that folder in `.claude/auto-tasks.json`.
+- [x] **T2505** (P25.5) Game files available to the extractor
+  - Nota: owner, 2026-11-22: the installed game is **4.5.4** at `D:/Program Files (x86)/Steam/steamapps/common/Stellaris` (`launcher-settings.json`: "Cygnus v4.5.4"); the whole project moves to 4.5.4 (`stellaris-pc-4.5.4`). Default game folder of the extractor; read permission given in `.claude/auto-tasks.json`.
 - [ ] **T2506** (P25.6) `extract_technologies.py`: every technology (id, area, category, tier, cost from tier variables, prerequisites, weight and modifiers, start / rare / dangerous / event / repeatable flags, `potential` conditions as text, DLC from `host_has_dlc`, icon), names and descriptions from localisation, icons exported
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2507** (P25.7) `extract_jobs.py`: jobs, outputs, upkeep, categories and job swaps
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2508** (P25.8) `extract_buildings.py`: buildings, cost, upkeep, jobs, effects, requirements as text, upgrades
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2509** (P25.9) `extract_districts.py`: districts, zones and district specializations
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2510** (P25.10) `extract_designations.py`: colony designations (`colony_types`)
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2511** (P25.11) `extract_civics.py`: civics and origins (with the in-game order of the origins for T2402)
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2512** (P25.12) `extract_authorities.py`: authorities
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2513** (P25.13) `extract_ethics.py`: ethics and their axes
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2514** (P25.14) `extract_planets.py`: planet classes and celestial bodies
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2515** (P25.15) `extract_planet_features.py`: planet modifiers, static modifiers, deposits and blockers
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2516** (P25.16) `extract_edicts.py`: edicts
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2517** (P25.17) `extract_policies.py`: policies and their options
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2518** (P25.18) `extract_economic_categories.py`: economic categories (what each modifier applies to)
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2519** (P25.19) `extract_dlc.py`: DLC list, names and icons (for T3502)
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2520** (P25.20) Localised names of every data set in every game language (extracted only: not used until P15 is unblocked)
-  - ❓ Bloqueada: Waits for T2505 (game files).
 - [ ] **T2521** (P25.21) `extract_all.py`: runs every extractor or a chosen subset (`--only technologies,jobs`), writes the manifest; documented in `README.md`
 - [ ] **T2522** (P25.22) Difference report per data set between the generated data and the current simulator data (`js/*-data.js`) in `reports/<rulesetId>/`; the simulator is not changed
-  - ❓ Bloqueada: Waits for T2505 (game files).
+- [ ] **T2524** (P25.24) Icon export of every data set into the StellarisAssets repository (`C:/Users/ignis/OneDrive/Documentos/StellarisAssets`), same folder and file names it already uses (`buildings/`, `jobs/`, `civics/`…); new folders only for new kinds (`technologies/`, `dlc/`); commit there with `git -C`, never push; regenerate `StellarisAssetsFileTree.txt`; list replaced files in the commit message
+- [ ] **T2525** (P25.25) Advanced Logic resource icon (old T1204): export it from the game files into `resources/` of StellarisAssets and use it in `RESOURCES.advanced_logic` of `js/planet-data.js`
 - [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
   - ❓ Bloqueada: The owner has to review the T2522 reports first.
+
+## 20 · Pop upkeep and living standards
+Source: the 4.5.4 game files through the extractor (species rights / living standards in `common/`); runs after section 25.
+- [ ] **T2001** (P20.1) Extract (new `extract_living_standards.py`) and audit living standards: pop upkeep per standard and stratum/species type, effects (happiness, political power...), availability by ethics/authority/civics
+- [ ] **T2002** (P20.2) Living standard saved with the empire profile (optional field), selectable in the Imperio tab
+- [ ] **T2003** (P20.3) Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
+- [ ] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
 
 ## 30 · Tech tree: data
 Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506); the saved wiki pages are only a cross-check. Until the real data exists, sections 31–34 are built and tested with the fixture version (T3001).
@@ -158,15 +136,10 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506); th
 - [ ] **T3002** (P30.2) Data validations module and tests: every prerequisite exists, no cycles, unique ids, area / category / tier present (run on the fixture now, on the real data later)
 - [ ] **T3003** (P30.3) Reserved icon slot: every record has its `icon` path (`technologies/<id>.png`, as exported by T2506); nodes and the detail card keep a fixed-size empty frame, images load lazily and a missing file leaves the frame empty with no layout shift
 - [ ] **T3004** (P30.4) Confirm the data model of GDD §4.2 against the extractor output (ids, kinds, tier gating, event and repeatable techs, DLC) and write it as GDD §4.3
-  - ❓ Bloqueada: Waits for T2506 (technologies extractor).
-- [ ] **T3005** (P30.5) Data file of 4.5.2 generated from the extractor output, every technology including event and repeatable ones; counts cross-checked with the wiki tables
-  - ❓ Bloqueada: Waits for T2506 (technologies extractor).
+- [ ] **T3005** (P30.5) Data file of 4.5.4 generated from the extractor output, every technology including event and repeatable ones; counts cross-checked with the 4.5.2 wiki tables (differences between versions listed, not treated as errors)
 - [ ] **T3006** (P30.6) Register the collection in `js/data-version.js` with status `unverified`
-  - ❓ Bloqueada: Waits for T3005.
 - [ ] **T3007** (P30.7) Link unlocks to simulator ids (buildings, jobs, districts) through the game ids
-  - ❓ Bloqueada: Waits for T3005.
-- [ ] **T3008** (P30.8) Technology icons visible: the owner uploads the PNGs exported by T2506 to StellarisAssets; check they show in nodes and cards
-  - ❓ Bloqueada: Waits for T2506 and the owner's upload.
+- [ ] **T3008** (P30.8) Technology icons: write the PNGs exported by T2506 into the StellarisAssets repository (`technologies/`), commit them there (never push: the owner pushes), regenerate `StellarisAssetsFileTree.txt`, and check with a local file server that nodes and cards show them
 
 ## 31 · Tech tree: page and drawing
 - [ ] **T3101** (P31.1) `tech-tree.html` layout with the shared shell: three areas (tabs on mobile), credits section and footer mention (GDD §2), data version visible
@@ -196,18 +169,18 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506); th
   - Modelo: sonnet
 
 ## 35 · Bingos from game data
+- [ ] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout), order taken from the T2511 output
 - [ ] **T3501** (P35.1) Rare and dangerous technologies bingo (purple = rare, red = dangerous) from the tech data, with reserved icon slots until T3008
-  - ❓ Bloqueada: Waits for T3005 (tech data).
 - [ ] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots
-  - ❓ Bloqueada: Waits for T2519 (DLC extractor).
 
 ## 40 · Testellaris: design
 Quiz game: consecutive questions of increasing difficulty by tiers, 3 lives, lifelines (50 % and others), shared top 10 "hall of fame" without accounts (MongoDB Atlas behind a Vercel function, decided by the owner on 2026-11-22). Questions in es/en/jp, each tagged with tier and DLC and citing its source; never invented.
 - [ ] **T4001** (P40.1) Write `TESTELLARIS_GDD.md`: rules (tiers and how the game advances through them, lives, lifelines: 50 % plus proposals, scoring, end of game), DLC filter, question format, sources, languages, hall of fame (top 10, name of at most 10 characters), anti-abuse; proposals recorded in `DECISIONS_TO_REVIEW.md`
 
 ## 41 · Testellaris: questions
-Sources: the saved 4.5.2 wiki pages (`../Codex Ignis Wiki/markdown/v4-5-2/`) and, once available, the extractor output. Each batch aims at about 150 questions spread across all tiers.
+Sources: the extractor output (4.5.4 game files) and the saved 4.5.2 wiki pages (`../Codex Ignis Wiki/markdown/v4-5-2/`; a wiki fact that the 4.5.4 data contradicts is dropped). Game names inside the questions use the **official es/en/jp names from the game localisation** (owner, 2026-11-22; only Testellaris, the rest of the site keeps English until P15). Each batch aims at about 150 questions spread across all tiers.
 - [ ] **T4101** (P41.1) Question bank format and validator in the tests: id, tier, topic, DLC list, source (page and section or game file), text, four answers and a short explanation in es/en/jp, correct answer; unique ids, four distinct answers, every language present, source present, tier in range
+- [ ] **T4111** (P41.11) Question generator from the extractor data (`tools/`): templates in es/en/jp with the official names (which tier is X, what does Y require, which technology unlocks Z, base cost of W, which ethics a civic needs…), tier by how obscure the fact is (rules in the GDD), DLC from the data, source = game file; output into the question bank, validated; re-runnable for new versions
 - [ ] **T4102** (P41.2) Questions: origins and civics (*Origin*, *Civics*, corporate, hive mind and machine civics)
   - Modelo: sonnet
 - [ ] **T4103** (P41.3) Questions: ethics, government, authorities, council and leaders
@@ -252,16 +225,10 @@ Sources: the saved 4.5.2 wiki pages (`../Codex Ignis Wiki/markdown/v4-5-2/`) and
 - [ ] **T1504** (P15.4) Review the civics with English placeholder names and the keys that group several civics under one icon
   - ❓ Bloqueada: Waits for P15.1 (localisation files).
 
-## 14 · Final 4.5.2 data verification (last)
-- [ ] **T1401** (P14.1) Updated source for the final review: the game files through the extractor (T2505, T2522) or the re-uploaded wiki files
-  - ❓ Bloqueada: Waits for T2505 (game files) or the owner's re-upload of the wiki files.
+## 14 · Final 4.5.4 data verification (last)
+- [ ] **T1401** (P14.1) Run `extract_all.py` on the installed game (check its version first) and use its output and the T2522 reports as the source of the final review
 - [ ] **T1402** (P14.2) Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources, policies, edicts, branch offices) against them
-  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
-- [ ] **T1403** (P14.3) Update `verification` statuses (`unverified` → `wiki-verified`)
-  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
+- [ ] **T1403** (P14.3) Update `verification` statuses (`unverified` → verified against the game files; add that status to `js/data-version.js` if missing)
 - [ ] **T1404** (P14.4) Review GDD §9 (assumptions and stacking rules)
-  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
 - [ ] **T1405** (P14.5) Deliver the final data files
-  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
-- [ ] **T1406** (P14.6) Review the tech tree data against the updated wiki technology pages and set its `verification` status
-  - ❓ Bloqueada: Waits for P14.1 (updated wiki files).
+- [ ] **T1406** (P14.6) Review the tech tree data against the extractor output and set its `verification` status
