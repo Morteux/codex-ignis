@@ -10,6 +10,8 @@
     "Bash(node *)",
     "Bash(python *)",
     "Bash(python3 *)",
+    "Bash(pip install Pillow*)",
+    "Bash(python -m pip install Pillow*)",
     "Read(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)",
     "Grep(//c/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki/**)"
   ],
