@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.2 — Bingo QA (2026-11-22)
+- [ ] **Icons requested with CORS** (`crossOrigin="anonymous"`): without it the remote icons tainted the canvas and the PNG download failed silently. This relies on the asset API (GitHub Pages) sending `Access-Control-Allow-Origin: *`; if a future host does not, the icons would stop showing (could not be checked from here: no network access).
+- [ ] **The download no longer hangs on a missing icon** (it waited forever for an image that had already failed); the missing cell is drawn empty in the PNG.
+- [ ] **A missing icon shows the name on its card** (class `is-image-missing`) instead of a broken image.
+- [ ] **Download error message** (new key `bingoDownloadError`, shown under the controls in a `role=status` line) if the PNG cannot be generated.
+- [ ] **PNG title from `bingoHeading`** (upper case) instead of a hard-coded es/en/jp map; same text as before.
+- [ ] **The grid starts from the select value**, so a browser that restores the select after a reload no longer shows origins under "Principles".
+
 ## P22.1 — Wiki QA (2026-11-22)
 - [ ] **Easter eggs need 3+ characters for partial matches**: a query revealed an easter egg if any trigger *contained* it, so typing "a", "s" or "3" listed every secret entry. Now a query shorter than 3 characters only reveals one when it contains a whole trigger (e.g. "30"); "mugan", "wishlist" or "clase 30" still work.
 - [ ] **Triggers of a translation count**: the JP translation of "Singularidad de clase 30" had its own `triggers` (特異点, クラス30) that were ignored; triggers in `i18n.<lang>` are now added to the original ones (in every language). Its stray `hidden`/`icon` fields in the JP translation were removed (unused).

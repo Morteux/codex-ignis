@@ -935,6 +935,36 @@ h1 {
     filter: none;
 }
 
+/* Icon that did not load: keep the cell size and show the name instead. */
+.bingo-card.is-image-missing {
+    position: relative;
+}
+
+.bingo-card.is-image-missing img {
+    visibility: hidden;
+}
+
+.bingo-card.is-image-missing .bingo-card-title:not(.bingo-card-title--visible) {
+    position: absolute;
+    inset: .3rem;
+    width: auto;
+    height: auto;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    clip: auto;
+    white-space: normal;
+    text-align: center;
+    font-size: .6rem;
+}
+
+.bingo-download-status {
+    color: var(--focus);
+    font: .75rem var(--mono);
+}
+
 /* ── Simulador de planetas de Stellaris (planet-sim.html) ──────────────── */
 
 /* Pestañas de nivel de planeta (Planeta/Gestión/Economía/Ejércitos/

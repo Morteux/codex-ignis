@@ -31,10 +31,12 @@ const typeSelect = document.querySelector("#bingo-type");
 const grid = document.querySelector("#bingo-grid");
 const emptyMessage = document.querySelector("#bingo-empty");
 const downloadButton = document.querySelector("#bingo-download");
+const downloadStatus = document.querySelector("#bingo-download-status");
 const metaDescription = document.querySelector('meta[name="description"]');
 
 let currentLang = detectInitialLang();
-let currentType = "origins";
+// The browser may restore the select after a reload, so start from its value.
+let currentType = typeSelect && typeSelect.value in BINGO_SETS ? typeSelect.value : "origins";
 // Recuerda qué casillas están marcadas por tipo, mientras dure la visita.
 const markedState = new Map();
 
@@ -85,6 +87,9 @@ function buildCard(entry, index) {
     card.setAttribute("aria-label", name);
 
     const img = document.createElement("img");
+    // CORS request, so the remote icons do not taint the canvas of the PNG download.
+    img.crossOrigin = "anonymous";
+    img.addEventListener("error", () => card.classList.add("is-image-missing"));
     img.src = `${IMAGE_BASE}${entry.img}`;
     img.alt = "";
     img.loading = "lazy";
@@ -130,7 +135,8 @@ function renderGrid() {
 
 /** Espera a que una imagen esté cargada, forzando la carga si era "lazy". */
 function waitForImage(img) {
-    if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+    // "complete" is also true for an icon that already failed: do not wait for it forever.
+    if (img.complete) return Promise.resolve();
     return new Promise((resolve) => {
         img.loading = "eager";
         img.addEventListener("load", () => resolve(), { once: true });
@@ -202,8 +208,7 @@ async function buildBingoCanvas() {
     ctx.fillStyle = background;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const titleByLang = { es: "BINGO", en: "BINGO", jp: "ビンゴ" };
-    const canvasTitle = titleByLang[currentLang] || "BINGO";
+    const canvasTitle = t(currentLang, "bingoHeading").toUpperCase();
     const canvasSubtitle = `Codex Ignis · ${t(currentLang, BINGO_SETS[currentType].titleKey)}`;
 
     ctx.textBaseline = "top";
@@ -231,7 +236,7 @@ async function buildBingoCanvas() {
 
         ctx.save();
         ctx.filter = isMarked ? "none" : "grayscale(100%)";
-        ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
+        if (img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
         ctx.restore();
 
         ctx.fillStyle = isMarked ? accent : muted;
@@ -252,12 +257,15 @@ if (downloadButton) {
     downloadButton.addEventListener("click", async () => {
         if (!BINGO_SETS[currentType].data.length) return;
         downloadButton.disabled = true;
+        if (downloadStatus) downloadStatus.textContent = "";
         try {
             const canvas = await buildBingoCanvas();
             const link = document.createElement("a");
             link.download = `bingo-${BINGO_SETS[currentType].fileSlug}-stellaris.png`;
             link.href = canvas.toDataURL("image/png");
             link.click();
+        } catch (error) {
+            if (downloadStatus) downloadStatus.textContent = t(currentLang, "bingoDownloadError");
         } finally {
             downloadButton.disabled = BINGO_SETS[currentType].data.length === 0;
         }
