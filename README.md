@@ -14,7 +14,7 @@ El sitio no requiere compilación: abre `index.html` o sírvelo con cualquier se
 | Bingo | `bingo.html`, `js/bingo.js`, `js/bingo-data.js` |
 | Simulador de planetas | `planet-sim.html`, `js/planet-sim.js`, `empire.js`, `planetary-features-data.js`, `planet-modifier-data.js`, `edicts-ui.js`, `branch-offices-ui.js`, `info-panels.js`, `celestial.js`, `planet-summary.js`, `planet-library*.js`, `stacking-rules.js`, `job-swaps.js` (cambios de empleo), `scenario-compare.js` (comparación de escenarios A/B), `stockpile-timeline.js` (reservas mes a mes), datos en `*-data.js` y `civic-rules.js` |
 | Árbol de tecnologías | `tech-tree.html` (marcador; diseño en `TECH_TREE_GDD.md`) |
-| Pruebas | `tests/policies-smoke.py` (navegador, ver más abajo) |
+| Pruebas | `tests/policies-smoke.py` (navegador, ver más abajo); `tests/i18n-audit.mjs` (claves es/en/jp y artículos sin traducir: `node tests/i18n-audit.mjs .`) |
 | Comunes | `js/i18n.js` (es/en/jp), `js/asset-config.js`, `js/data-version.js`, `styles.css` |
 | Legal | `privacy.html`, `cookies.html`, `404.html`, `js/legal.js` |
 

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **18 / 123 tareas (15%)**
+> Progreso: **19 / 123 tareas (15%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Translations on hold:** official localisation (P15) stays blocked. No task adds languages or hand-translates game names for the simulator or the tech tree; new interface texts get es/en/jp keys in `js/i18n.js` (game names in English). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -76,8 +76,9 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
   - Prueba manual: open `index.html` with the browser at 320 px wide (device mode), tap an article of the index: the page scrolls down to the article, nothing scrolls sideways and the header links are easy to tap.
 - [x] **T2206** (P22.6) Accessibility pass of every page other than the simulator: keyboard, visible focus, contrast, `alt` texts, landmarks, `lang` attribute following the language (like T1304)
   - Prueba manual: open `index.html#/MUGANI`, press Tab until the portrait of the quote is focused and press Enter: the image opens, Escape closes it and the focus goes back to the portrait; switch to JP and inspect `<html>`: `lang="ja"`.
-- [ ] **T2207** (P22.7) i18n review of the wiki, bingo and legal pages: no hard-coded interface text, keys used exist in es/en/jp, articles of `content.js` with a missing language listed (never machine-translate: list them in `DECISIONS_TO_REVIEW.md`)
+- [x] **T2207** (P22.7) i18n review of the wiki, bingo and legal pages: no hard-coded interface text, keys used exist in es/en/jp, articles of `content.js` with a missing language listed (never machine-translate: list them in `DECISIONS_TO_REVIEW.md`)
   - Modelo: sonnet
+  - Prueba manual: run `node tests/i18n-audit.mjs .`: it ends with "problems 0" and lists the three articles (`diseño-flotas-fauna-espacial`, `flotas-contra-crisis`, `lista-de-deseos-ignis`) whose en/jp are empty; open one of them in EN and it shows in Spanish.
 - [ ] **T2208** (P22.8) Page metadata of every page: `<title>`, description, favicon, Open Graph, canonical, `lang`; consistent between pages
   - Modelo: sonnet
 - [ ] **T2209** (P22.9) Load performance: measure what each page downloads (`i18n.js`, `content.js`, images, fonts), lazy-load images, avoid loading modules a page does not use; no behaviour change. Larger changes go as new tasks in section 23

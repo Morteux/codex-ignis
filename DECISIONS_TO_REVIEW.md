@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P22.7 — i18n review of the wiki, bingo and legal pages (2026-11-22)
+- [ ] **Audit tool** `tests/i18n-audit.mjs` (`node tests/i18n-audit.mjs .`): checks that es/en/jp of `js/i18n.js` have the same 2048 keys, that every key used by `data-i18n*`, `t(...)` and the bingo data exists in the three languages, and lists the articles of `js/content.js` without a translation. No hard-coded interface text was found in the wiki, bingo, legal, 404 and tech tree pages (the Spanish text in the HTML is the default that `applyStaticStrings()` / `js/legal.js` replace), so no code changed.
+- [ ] **Articles of `content.js` without an English and a Japanese translation** (their `i18n` has empty `en: {}` / `jp: {}` placeholders, so they show in Spanish in every language; not machine-translated, they need a human translation): `diseño-flotas-fauna-espacial` (39 blocks), `flotas-contra-crisis` (43 blocks), `lista-de-deseos-ignis` (hidden easter egg, 4 blocks). The other 12 articles have en and jp with the same number of blocks as the Spanish one.
+
 ## P22.6 — Accessibility pass of the other pages (2026-11-22)
 - [ ] **`<html lang="ja">` for Japanese** (new `htmlLangCode()` in `js/i18n.js`): the site's own code stays `jp` (buttons, storage, `strings.jp`), but "jp" is not a language tag, so screen readers did not switch to Japanese. Applied to the simulator too, for consistency.
 - [ ] **A Japanese browser (`ja-JP`) now opens the site in JP**: `detectInitialLang()` compared "ja" with "jp" and fell back to Spanish.
