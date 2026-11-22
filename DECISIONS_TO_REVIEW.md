@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## P23.5 — styles.css organised by page and component (2026-11-22)
+- [ ] **One file, nine numbered sections** with a table of contents at the top (base and tokens, page shell, wiki, legal pages, shared mobile layout, bingo, simulator, simulator mobile layout, reduced motion). Rules were not reordered beyond moving the footer into the shell section: in CSS a later rule with the same specificity wins, so moving blocks can change the look; the computed style of every element of every page (desktop and 375 px, every simulator tab) was compared before and after and is the same.
+- [ ] **New colour tokens** in `:root` for the colours used more than once: `--danger`, `--warning`, `--caution`, `--muted-dim`, `--panel-shade`, `--accent-tint`, `--accent-faint`, `--grid-line`, `--shadow-modal`. Colours used once stay literal.
+- [ ] **No unused selector found**: every class and id of `styles.css` is named in an HTML or JS file (also the ones built as `is-${...}`). Found instead: the mobile rules of the bingo grid never apply (overridden by later base rules); kept as they are and added as T2212, since fixing them changes the mobile look.
+
 ## P23.4 — Split of js/i18n.js by area (2026-11-22)
 - [ ] **Areas decided by usage**: a key belongs to the only page area whose sources name it (wiki, bingo, simulator, tech tree, legal pages); keys named by several pages go to `i18n-common.js` (7 header/footer keys), except the 280 origin and civic names used by both the bingo and the simulator, which got their own area `i18n-empire-names.js` so the wiki and legal pages do not load them. The 152 keys no source names literally (built at run time: job swap names, effect and modifier source labels...) went to the simulator; T2307 checks which are really dead.
 - [ ] **Legal pages are an area of their own** (`i18n-legal.js`, privacy, cookies and 404) although the task listed five areas, and the tech tree got its own page script `js/tech-tree.js` (it used `legal.js`) so it loads only its texts.
