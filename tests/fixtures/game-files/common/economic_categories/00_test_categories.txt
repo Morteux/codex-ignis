@@ -1,0 +1,20 @@
+planet_jobs = {
+	generate_mult_modifiers = { produces upkeep }
+	modifier_category = colony
+}
+
+planet_miners = {
+	parent = planet_jobs
+	icon = "job_miner"
+	generate_mult_modifiers = { produces }
+	generate_add_modifiers = { produces upkeep }
+	triggered_produces_modifier = {
+		key = test_bio
+		modifier_types = { mult }
+		potential = { is_robotic = no }
+	}
+}
+
+planet_buildings = {
+	parent = planet_structures
+}

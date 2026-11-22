@@ -33,6 +33,11 @@
    "count": 147,
    "warnings": 0
   },
+  "economic_categories": {
+   "file": "economic_categories.json",
+   "count": 270,
+   "warnings": 0
+  },
   "edicts": {
    "file": "edicts.json",
    "count": 171,
