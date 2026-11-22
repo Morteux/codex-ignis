@@ -5,7 +5,7 @@
  *      language selector, intro and footer
  *   3. Wiki (index.html): index, reader, article blocks, ad slots, image lightbox
  *   4. Legal pages and 404 (privacy.html, cookies.html, 404.html)
- *   5. Mobile layout (≤ 700 px) of the shell, wiki, legal pages and bingo
+ *   5. Mobile layout (≤ 700 px) of the shell, wiki, legal pages (bingo: end of 6)
  *   6. Bingo (bingo.html)
  *   7. Planet simulator (planet-sim.html), by tab and panel; its confirm
  *      dialog and "i" info panels are simulator components
@@ -790,7 +790,7 @@ h1 {
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   5. Mobile layout (≤ 700 px) of the shell, wiki, legal pages and bingo
+   5. Mobile layout (≤ 700 px) of the shell, wiki, legal pages (bingo: end of 6)
    ════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 700px) {
@@ -863,15 +863,6 @@ h1 {
     .entry-quote-portrait {
         width: 2.6rem;
         height: 2.6rem;
-    }
-
-    /* Overridden by the later base rules of section 6 (same specificity): T2212. */
-    .bingo-grid {
-        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
-    }
-
-    .bingo-grid--principles {
-        grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
     }
 
     .intro-row {
@@ -1064,6 +1055,17 @@ h1 {
 .bingo-download-status {
     color: var(--focus);
     font: .75rem var(--mono);
+}
+
+/* Smaller cells on mobile; after the base rules so they win (same specificity). */
+@media (max-width: 700px) {
+    .bingo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+    }
+
+    .bingo-grid--principles {
+        grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+    }
 }
 
 /* ════════════════════════════════════════════════════════════════════

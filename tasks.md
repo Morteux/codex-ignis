@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **29 / 129 tareas (22%)**
+> Progreso: **30 / 129 tareas (23%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -67,7 +67,8 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
 - [ ] **T2211** (P22.11) Contrast of the word highlight colours of `js/highlight-config.js` on the dark background: #375cff (cruiser, herald, 3.8:1), #2c33ff (energy, shield, 2.8:1), #332cff (unbidden, 2.7:1), #ad208c (hardening, 3.1:1), #8900af (dark matter, psionic, 2.5:1) are under 4.5:1; lighten them keeping their hue, or keep them
   - Modelo: sonnet
   - ❓ Bloqueada: the owner chose these colours (in-game class colours); lighten them for readability or keep them as they are?
-- [ ] **T2212** (P22.12) Bingo on mobile: the `≤ 700 px` rules of `styles.css` for `.bingo-grid` and `.bingo-grid--principles` (smaller cells, 88 / 46 px) never apply because the base rules of the bingo section come later with the same specificity; move them after the base rules and check the mobile smoke tests (found in T2305)
+- [x] **T2212** (P22.12) Bingo on mobile: the `≤ 700 px` rules of `styles.css` for `.bingo-grid` and `.bingo-grid--principles` (smaller cells, 88 / 46 px) never apply because the base rules of the bingo section come later with the same specificity; move them after the base rules and check the mobile smoke tests (found in T2305)
+  - Prueba manual: open `bingo.html` in device mode at 320 px wide: Origins shows 3 cells per row (2 before) and Principles 5 (4 before), with no sideways scroll.
 
 
 ## 23 · Refactoring (whole site)

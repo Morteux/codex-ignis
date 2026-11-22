@@ -68,6 +68,19 @@ async def run(t):
                 await mpg.wait_for_timeout(100)
                 m = await mpg.evaluate(mobile_js)
                 check("mobile %dpx (%s): %s%s has no horizontal overflow and no tiny controls" % (width, lang, page_name, " " + setup if setup else ""), m["sw"] <= m["w"] and not m["over"] and not m["small"], m)
+    # P22.12: the ≤ 700 px bingo rules win over the base rules (smaller cells: 88 / 46 px minimum)
+    for width in (320, 375):
+        await mpg.set_viewport_size({"width": width, "height": 700})
+        for bingo_type, min_px, base_px in (("origins", 88, 110), ("principles", 46, 58)):
+            await mpg.goto("file://" + ROOT + "/bingo.html")
+            await mpg.wait_for_timeout(250)
+            await mpg.select_option("#bingo-type", bingo_type)
+            await mpg.wait_for_timeout(100)
+            cols = await mpg.evaluate("()=>{const g=document.querySelector('.bingo-grid');const s=getComputedStyle(g);const cells=[...g.querySelectorAll('.bingo-card')].map(c=>c.getBoundingClientRect().width);return [s.gridTemplateColumns.split(' ').length,g.clientWidth,parseFloat(s.columnGap),Math.min(...cells)]}")
+            expected = int((cols[1] + cols[2]) // (min_px + cols[2]))
+            desktop = int((cols[1] + cols[2]) // (base_px + cols[2]))
+            check("mobile %dpx: bingo %s uses the %d px mobile cells (%d columns, %d with the desktop rule)" % (width, bingo_type, min_px, expected, desktop),
+                  cols[0] == expected and cols[3] >= min_px - 1, cols + [desktop])
     await mpg.goto("file://" + ROOT + "/index.html")
     await mpg.wait_for_timeout(250)
     await mpg.tap("#index-empty .entry-button >> nth=5")
