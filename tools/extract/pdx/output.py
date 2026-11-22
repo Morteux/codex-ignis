@@ -146,7 +146,7 @@ def run_sets(game, extract_fns, out_dir=None, icons_dir=None, log=print):
 
 
 def write_manifest(game, out_dir, entries, exporter=None):
-    path = os.path.join(out_dir, "manifest.json")
+    path = os.path.join(out_dir, "manifest.json").replace("\\", "/")
     old = {}
     if os.path.isfile(path):
         with open(path, encoding="utf-8") as f:

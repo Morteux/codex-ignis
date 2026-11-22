@@ -1226,7 +1226,6 @@
   "common/static_modifiers/19_static_modifiers_paragon.txt: officials_cost_mod redefined (first in common/static_modifiers/16_static_modifiers_paragon.txt)",
   "common/static_modifiers/22_static_modifiers_machine_age.txt: synth_tinkering_with_minds redefined (first in common/static_modifiers/22_static_modifiers_machine_age.txt)",
   "common/static_modifiers/22_static_modifiers_machine_age.txt: synth_brightest_minds redefined (first in common/static_modifiers/22_static_modifiers_machine_age.txt)",
-  "common/static_modifiers/23_static_modifiers_biogenesis.txt: optimized_workforce redefined (first in common/static_modifiers/23_static_modifiers_biogenesis.txt)",
-  "common/scripted_triggers/08_scripted_triggers_shroud.txt:639: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop"
+  "common/static_modifiers/23_static_modifiers_biogenesis.txt: optimized_workforce redefined (first in common/static_modifiers/23_static_modifiers_biogenesis.txt)"
  ]
 }

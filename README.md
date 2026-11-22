@@ -50,6 +50,21 @@ Hay dos orígenes, ambos definidos en `js/asset-config.js`:
 - **Imágenes de los artículos** (`content.js`): rutas locales de `img/` o URLs absolutas; `ASSET_BASE` queda vacío y solo completa rutas relativas.
 - **Imágenes de Stellaris del bingo y del simulador** (orígenes, principios, edificios, empleos, planetas...): siempre desde el repositorio de assets (`STELLARIS_ASSETS_BASE`, GitHub Pages). Si esa URL cambia, solo hay que editar esa constante.
 
+## Extractor de datos del juego
+
+Los datos del juego se leen de la instalación de Stellaris con `tools/extract/` (Python 3.10+ y Pillow; diseño en `GAME_FILES_EXTRACTOR.md`). Los archivos del juego solo se leen y nunca se suben al repositorio.
+
+```
+python tools/extract/extract_all.py                               # todos los conjuntos
+python tools/extract/extract_all.py --only technologies,jobs      # solo algunos (extractor o conjunto: zones → districts)
+python tools/extract/extract_all.py --icons                       # y exporta los iconos a StellarisAssets
+python tools/extract/extract_jobs.py                              # un solo extractor
+```
+
+- **Carpeta del juego**: `--game CARPETA`, si no la variable `STELLARIS_GAME_DIR`, si no `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`. La versión sale de `launcher-settings.json` (`rulesetId`, hoy `stellaris-pc-4.5.4`).
+- **Salida**: `data/generated/<rulesetId>/<conjunto>.json` (o `--out CARPETA`): tecnologías, empleos, edificios, distritos, zonas (especializaciones) y ranuras, designaciones, principios, orígenes, autoridades, éticas, clases de planeta, modificadores planetarios y estáticos, depósitos, edictos, políticas, categorías económicas y DLC. Cada archivo lleva `rulesetId`, las carpetas de origen, `count`, los elementos (id, archivo, nombre y descripción en inglés, cifras, condiciones como texto, DLC, icono) y los avisos. `manifest.json` resume cada conjunto (archivo, elementos, avisos e iconos exportados) y `localisation/<idioma>.json` tiene los nombres en los 10 idiomas del juego.
+- **Iconos**: con `--icons [CARPETA]` (por defecto el repositorio StellarisAssets, `C:/Users/ignis/OneDrive/Documentos/StellarisAssets`) cada icono se convierte de `.dds` a `.png` en la carpeta que ese tipo ya usa, con el nombre de archivo que ya tenía; nunca sustituye un icono por otro más pequeño. Después hay que hacer commit en StellarisAssets y regenerar `StellarisAssetsFileTree.txt`.
+
 ## Google AdSense
 
 La integración está desactivada en `js/ads-config.js`. Solo debe activarse con contenido suficiente, aprobación del sitio, un ID de editor `ca-pub-…`, unidades publicitarias y el consentimiento configurado cuando corresponda. Añade `ads.txt` en la raíz únicamente con el valor oficial de Google.

@@ -60524,7 +60524,5 @@
    }
   }
  ],
- "warnings": [
-  "common/scripted_triggers/08_scripted_triggers_shroud.txt:639: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop"
- ]
+ "warnings": []
 }
