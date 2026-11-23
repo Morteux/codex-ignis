@@ -30,6 +30,7 @@ NO_SIMULATOR_DATA = {
     "static_modifiers": "not modelled (only the planet modifiers, which have their own report)",
     "economic_categories": "not modelled (the simulator applies modifiers by job and resource)",
     "dlc": "the simulator has no DLC data yet (T3502)",
+    "living_standards": "audited in PLANET_SIM_GDD.md §5.3; the simulator data comes with P20",
 }
 
 

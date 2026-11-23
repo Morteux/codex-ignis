@@ -1,3 +1,10 @@
 worker = {
 	rank = 2
+	resources = {
+		category = pop_category_workers
+		produces = {
+			trigger = { has_living_standard = { type = living_standard_test } }
+			trade = 0.25
+		}
+	}
 }

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2001 — Living standards audit (2026-11-23)
+- [ ] **Founder species only**: the simulator models one species with full citizenship, so only the standards that species can take are offered (GDD §5.3): Decent Conditions, Social Welfare, Utopian Abundance, Academic Privilege, Stratified Economy, Decadent Lifestyle, Chemical Bliss, the three civic standards and Drone for gestalt. Basic Subsistence (slaves / limited citizenship / displacement only), slavery, purge, assimilation, robot servitude and origin standards are left out.
+- [ ] **Units**: the game values are per pop group of 100 pops, read as per simulator pop (the simulator's pops are ×100, like jobs); happiness `0.1` read as +10 points, as for edicts.
+- [ ] **Default**: Decent Conditions (individualist), Drone (gestalt), the civic's own standard with Shared Burdens, Worker Cooperative or Dystopian Society (the game's starting standard is not read from the files).
+
 ## T1905 — Branch office building limits (2026-11-23)
 - [ ] **`base_cap_amount = 1`** (Experimentation Offices, Living Metal Enhancement Clinic: no `planet_limit` in `14_branch_office_buildings.txt`) read as one per colony too; no `building_*_max` modifier in `common/` raises it. The extractor now exports `base_cap_amount` in `buildings.json`.
 - [ ] **Duplicates**: a slot cannot pick a building already chosen in another slot (the option is disabled with «limit: 1 per colony»); a duplicate restored from an older save stays in its slot but inactive, the first slot keeping the effects.

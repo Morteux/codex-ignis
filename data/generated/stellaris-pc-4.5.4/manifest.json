@@ -98,6 +98,11 @@
     "new": 9
    }
   },
+  "living_standards": {
+   "file": "living_standards.json",
+   "count": 35,
+   "warnings": 1
+  },
   "origins": {
    "file": "origins.json",
    "count": 77,

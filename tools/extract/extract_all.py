@@ -23,6 +23,7 @@ EXTRACTORS = {
     "policies": ["policies"],
     "economic_categories": ["economic_categories"],
     "dlc": ["dlc"],
+    "living_standards": ["living_standards"],
 }
 
 

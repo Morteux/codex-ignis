@@ -1,0 +1,13 @@
+trait_organic = {
+	allowed_archetypes = { BIOLOGICAL }
+	resources = {
+		category = planet_pops_traits
+		upkeep = {
+			trigger = { is_sapient = yes }
+			food = 1
+		}
+	}
+}
+trait_not_species = {
+	cost = 1
+}

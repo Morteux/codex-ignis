@@ -11,13 +11,13 @@
       "game_only": 73
     },
     "buildings": {
-      "simulator": 157,
+      "simulator": 201,
       "game": 498,
-      "matched": 153,
-      "differing": 89,
-      "differences": 222,
-      "simulator_only": 4,
-      "game_only": 345
+      "matched": 198,
+      "differing": 107,
+      "differences": 291,
+      "simulator_only": 3,
+      "game_only": 300
     },
     "civics": {
       "simulator": 226,
@@ -82,13 +82,17 @@
       "game_only": 0
     },
     "jobs": {
-      "simulator": 137,
+      "simulator": 154,
       "game": 511,
-      "matched": 114,
+      "matched": 131,
       "differing": 46,
       "differences": 126,
       "simulator_only": 23,
-      "game_only": 397
+      "game_only": 380
+    },
+    "living_standards": {
+      "game": 35,
+      "note": "audited in PLANET_SIM_GDD.md \u00a75.3; the simulator data comes with P20"
     },
     "origins": {
       "simulator": 54,

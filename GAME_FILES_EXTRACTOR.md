@@ -83,6 +83,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 | `planet_modifiers`, `static_modifiers`, `deposits` | `extract_planet_features.py` | `common/planet_modifiers`, `common/static_modifiers`, `common/deposits`, `common/deposit_categories` | `gfx/interface/icons/planet_modifiers` → `planet_modifiers/`; `gfx/interface/icons/deposits` → `planetary_features/` |
 | `edicts` | `extract_edicts.py` | `common/edicts` | `gfx/interface/icons/edicts` → `edicts/` (new) |
 | `policies` | `extract_policies.py` | `common/policies` | → `policies/` (new) |
+| `living_standards` (+ `species_upkeep`) | `extract_living_standards.py` | `common/species_rights/living_standards`, `common/pop_categories` (trade per living standard), `common/traits` (species type upkeep) | none |
 | `economic_categories` | `extract_economic_categories.py` | `common/economic_categories` | none |
 | `dlc` | `extract_dlc.py` | `dlc/*/*.dlc`, `interface/dlc_icons.gfx` | `gfx/interface/icons/dlc` → `dlc/` (new) |
 | `resources` (icons only, T2525) | `extract_economic_categories.py` | `common/strategic_resources` | `gfx/interface/icons/resources` → `resources/` |
