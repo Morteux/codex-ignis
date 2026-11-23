@@ -119,11 +119,11 @@ export const DESIGNATIONS = [
   { id: "unificationCenter", i18nKey: "designationUnificationCenter", category: "unity", img: "jobs/job_bureaucrat.png", requires: [NOT_WILDERNESS, notEthic("spiritualist"), notCivic("civicMachineServitor")], jobEfficiency: { bureaucrat: 0.15 }, flat: {} },
   { id: "ecclesiasticalCenter", i18nKey: "designationEcclesiasticalCenter", category: "unity", img: "jobs/job_priest.png", requires: [ethic("spiritualist")], jobEfficiency: { priest: 0.15 }, flat: {} },
   { id: "sanctuaryWorld", i18nKey: "designationSanctuaryWorld", category: "unity", img: "resources/Amenities.png", requires: [civic("civicMachineServitor")], jobEfficiency: {}, flat: {} },
-  { id: "tranquilWorld", i18nKey: "designationTranquilWorld", category: "unity", img: "resources/Amenities.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
+  { id: "tranquilWorld", i18nKey: "designationTranquilWorld", category: "unity", img: "resources/Amenities.png", requires: [WILDERNESS], jobEfficiency: { synapse_drone: 0.1 }, flat: {} },
   { id: "urbanWorld", i18nKey: "designationUrbanWorld", category: "urban", img: "jobs/job_trader.png", requires: [NOT_GESTALT], jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "nestWorld", i18nKey: "designationNestWorld", category: "urban", img: "planets/Planet_hive.png", requires: [NOT_WILDERNESS, authority("hiveMind")], jobEfficiency: {}, flat: {} },
   { id: "machineNexus", i18nKey: "designationMachineNexus", category: "urban", img: "planets/Planet_machine.png", requires: [authority("machineIntelligence"), notCelestial("machine")], jobEfficiency: {}, flat: {} },
-  { id: "weaverWorld", i18nKey: "designationWeaverWorld", category: "urban", img: "jobs/job_livestock.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
+  { id: "weaverWorld", i18nKey: "designationWeaverWorld", category: "urban", img: "jobs/job_livestock.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {}, jobResourcePct: { trade: 10 } },
   { id: "fortressWorld", i18nKey: "designationFortressWorld", category: "standard", img: "jobs/job_soldier.png", jobEfficiency: { soldier: 0.15 }, flat: {} },
   { id: "techWorld", i18nKey: "designationTechWorld", category: "standard", img: "jobs/job_biologist.png", jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "generatorWorld", i18nKey: "designationGeneratorWorld", category: "standard", img: "jobs/job_technician.png", jobEfficiency: { technician: 0.15 }, flat: {} },
@@ -141,13 +141,13 @@ export const DESIGNATIONS = [
   { id: "machineWorldFoundry", i18nKey: "designationMachineWorldFoundry", category: "machineWorld", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
   { id: "machineWorldFactory", i18nKey: "designationMachineWorldFactory", category: "machineWorld", img: "jobs/job_artisan.png", requires: [USES_CONSUMER_GOODS], jobEfficiency: { artisan: 0.15 }, flat: {} },
   { id: "nanotechWorld", i18nKey: "designationNanotechWorld", category: "machineWorld", img: "planets/Planet_nanite.png", requires: [celestial("nanite")], jobEfficiency: {}, flat: {} },
-  { id: "photosynthesisWorld", i18nKey: "designationPhotosynthesisWorld", category: "wilderness", img: "jobs/job_technician.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
-  { id: "lithicWorld", i18nKey: "designationLithicWorld", category: "wilderness", img: "jobs/job_miner.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
-  { id: "pollinatingWorld", i18nKey: "designationPollinatingWorld", category: "wilderness", img: "jobs/job_farmer.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
-  { id: "cogitationWorld", i18nKey: "designationCogitationWorld", category: "wilderness", img: "jobs/job_researcher.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
-  { id: "crucibleWorld", i18nKey: "designationCrucibleWorld", category: "wilderness", img: "jobs/job_foundry.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
+  { id: "photosynthesisWorld", i18nKey: "designationPhotosynthesisWorld", category: "wilderness", img: "jobs/job_technician.png", requires: [WILDERNESS], jobEfficiency: { technician: 0.25 }, flat: {} },
+  { id: "lithicWorld", i18nKey: "designationLithicWorld", category: "wilderness", img: "jobs/job_miner.png", requires: [WILDERNESS], jobEfficiency: { miner: 0.25 }, flat: {} },
+  { id: "pollinatingWorld", i18nKey: "designationPollinatingWorld", category: "wilderness", img: "jobs/job_farmer.png", requires: [WILDERNESS], jobEfficiency: { farmer: 0.25 }, flat: {} },
+  { id: "cogitationWorld", i18nKey: "designationCogitationWorld", category: "wilderness", img: "jobs/job_researcher.png", requires: [WILDERNESS], jobEfficiency: { physicist: 0.1, biologist: 0.1, engineer: 0.1 }, flat: {} },
+  { id: "crucibleWorld", i18nKey: "designationCrucibleWorld", category: "wilderness", img: "jobs/job_foundry.png", requires: [WILDERNESS], jobEfficiency: { metallurgist: 0.1 }, flat: {} },
   { id: "hunterWorld", i18nKey: "designationHunterWorld", category: "wilderness", img: "jobs/job_soldier.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
-  { id: "refiningWorld", i18nKey: "designationRefiningWorld", category: "wilderness", img: "jobs/job_gas_refiner.png", requires: [WILDERNESS], jobEfficiency: {}, flat: {} },
+  { id: "refiningWorld", i18nKey: "designationRefiningWorld", category: "wilderness", img: "jobs/job_gas_refiner_drone.png", requires: [WILDERNESS], jobEfficiency: { chemist_drone: 0.15, translucer_drone: 0.15, gas_refiner_drone: 0.15 }, flat: {} },
   { id: "ecumenopolis", i18nKey: "designationEcumenopolis", category: "ecumenopolis", img: "jobs/job_trader.png", jobEfficiency: { trader: 0.15 }, flat: {} },
   { id: "ecumenopolisResearch", i18nKey: "designationEcumenopolisResearch", category: "ecumenopolis", img: "jobs/job_biologist.png", jobEfficiency: { biologist: 0.15, engineer: 0.15, physicist: 0.15 }, flat: {} },
   { id: "ecumenopolisFoundry", i18nKey: "designationEcumenopolisFoundry", category: "ecumenopolis", img: "jobs/job_foundry.png", jobEfficiency: { metallurgist: 0.15 }, flat: {} },
@@ -173,7 +173,10 @@ export const DESIGNATIONS = [
 ];
 
 // P10.6: designations whose game potential has is_wilderness_empire = no (designations.json 4.5.4); the Wilderness ones
-// replace them (their effects are not modelled yet, T1011).
+// replace them. T1011: their effects from designations.json 4.5.4 (base planet_modifier only, as the other designations):
+// planet_<job>_produces_mult = job efficiency (Tranquil World: bureaucrats = Synapse Drones; Refining World: the refinery
+// drones of the Wilderness buildings), Weaver World planet_jobs_trade_produces_mult = +10 % trade from jobs. Hunter World
+// (orbital bombardment, army damage) and the build speed bonuses are not modelled; Heart World is a capital designation.
 ["fortressWorld", "techWorld", "generatorWorld", "miningWorld", "agriWorld", "forgeWorld", "hiveWorld", "hiveWorldFoundry"].forEach((id) => {
   const designation = DESIGNATIONS.find((entry) => entry.id === id);
   designation.requires = [...(designation.requires || []), NOT_WILDERNESS];

@@ -290,6 +290,30 @@ export const JOB_SWAPS = [
   { id: "pollinosymbiont", img: "jobs/job_pollinosymbiont.png", base: "farmer", empire: "gestalt", weight: 100, output: { food: 6 },
     requires: [WILDERNESS_ORIGIN], notModelledKeys: ["swapNotModelledExoticGasCapture3Food0"] },
 
+  // ── T1011: the other Wilderness symbiont swaps (game files 4.5.4, common/pop_jobs/04_gestalt_jobs.txt, trigger
+  // is_wilderness_empire = yes). In the game they only rename the base job: output = the base job's (JOB_OUTPUTS), gestalt
+  // upkeep inherited. Bases in the simulator's ids (Coordinator of a hive = Synapse Drone, research drones = Physicist /
+  // Biologist / Engineer, Fabricator = Metallurgist, Patrol Drone = Hunter-Seeker Drone, Warrior Drone = Soldier). The
+  // Neurosymbiont's base (Transference Drone) is not in the simulator: info only. Not added: the Motesymbiont /
+  // Crystalsymbiont / Gaseosymbiont swaps of the Mote Harvesting / Crystal Mining / Gas Extraction Drones (swaps of swaps;
+  // the Photosymbiont / Grubsymbiont / Pollinosymbiont outweigh them, as in the game).
+  { id: "choirsymbiont", img: "jobs/job_choirsymbiont.png", base: "synapse_drone", empire: "gestalt", weight: 10, output: { unity: 3 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "evosymbiont_physicist", img: "jobs/job_brain_drone_physicist.png", base: "physicist", empire: "gestalt", weight: 100, output: { physics: 3, consumer_goods: -1.5 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "evosymbiont_biologist", img: "jobs/job_brain_drone_biologist.png", base: "biologist", empire: "gestalt", weight: 10, output: { society: 3, consumer_goods: -1.5 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "evosymbiont_engineer", img: "jobs/job_brain_drone_engineer.png", base: "engineer", empire: "gestalt", weight: 10, output: { engineering: 3, consumer_goods: -1.5 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "forgesymbiont", img: "jobs/job_forgesymbiont.png", base: "metallurgist", empire: "gestalt", weight: 10, output: { alloys: 3, minerals: -6 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "immunosymbiont", img: "jobs/job_patrol_drone.png", base: "hunter_seeker_drone", empire: "gestalt", weight: 10, output: { unity: 0.5 }, effects: { crime: -20, defenseArmies: 1 },
+    requires: [WILDERNESS_ORIGIN] },
+  { id: "spindlesymbiont", img: "jobs/job_spindlesymbiont.png", base: "logistic_drone", empire: "gestalt", weight: 10, output: { trade: 6, amenities: 5 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "tamersymbiont", img: "jobs/job_warrior_drone.png", base: "soldier", empire: "gestalt", weight: 10, output: { alloys: -1 }, effects: { navalCapacity: 4, stability: 0.15, defenseArmies: 1 },
+    requires: [WILDERNESS_ORIGIN] },
+  { id: "broodsymbiont", img: "jobs/job_spawning_drone.png", base: "spawning_drone", empire: "gestalt", weight: 100, output: {}, requires: [WILDERNESS_ORIGIN] },
+  { id: "neurosymbiont", img: "jobs/job_transference_drone.png", base: "transference_drone", empire: "gestalt", weight: 10, output: { unity: 1.5, food: -5 }, effects: { stability: 0.75 },
+    requires: [WILDERNESS_ORIGIN] },
+  { id: "motesymbiote", img: "jobs/job_chemist_drone.png", base: "chemist_drone", empire: "gestalt", weight: 10, output: { volatile_motes: 2, minerals: -10 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "crystalsymbiote", img: "jobs/job_translucer_drone.png", base: "translucer_drone", empire: "gestalt", weight: 10, output: { rare_crystals: 2, minerals: -10 }, requires: [WILDERNESS_ORIGIN] },
+  { id: "gaseosymbiote", img: "jobs/job_gas_refiner_drone.png", base: "gas_refiner_drone", empire: "gestalt", weight: 10, output: { exotic_gases: 2, minerals: -10 }, requires: [WILDERNESS_ORIGIN] },
+
   // ── Civilians ────────────────────────────────────────────────────────
   { id: "hedonist", img: "jobs/job_fe_hedonist.png", base: "civilian", weight: 5, output: { trade: 1 }, requires: [civ(...PLEASURE)] },
   { id: "tourist", img: "jobs/job_trader.png", base: "civilian", weight: 6, output: { trade: 2 }, requires: [{ type: "designation", ids: ["resortWorld"] }] },

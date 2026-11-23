@@ -4,7 +4,7 @@
  * syncJobAssignments() keeps the staffing within the job capacities.
  */
 
-import { JOBS, JOB_OUTPUTS, CIVILIAN_OUTPUTS, JOB_EFFECTS, divideEffect, GESTALT_JOB_UPKEEP, JOB_WORKFORCE_SCALING, SPECIES_TYPES, allowedSpeciesTypes, RESOURCE_DISTRICT_ORDER, JOB_RESOURCE_MULT } from "./planet-data.js";
+import { JOBS, JOB_OUTPUTS, CIVILIAN_OUTPUTS, civilianOutputKind, JOB_EFFECTS, divideEffect, GESTALT_JOB_UPKEEP, JOB_WORKFORCE_SCALING, SPECIES_TYPES, allowedSpeciesTypes, RESOURCE_DISTRICT_ORDER, JOB_RESOURCE_MULT } from "./planet-data.js";
 import { resolveJobSwaps, swapMap, stackedSwapChanges, swapGestaltUpkeep, SWAP_BASES } from "./job-swaps.js";
 import { SPECIAL_DISTRICTS, SPECIAL_BODY_JOBS } from "./body-type-data.js";
 import { getStackingRules, combineFraction, stackFactor } from "./stacking-rules.js";
@@ -468,6 +468,10 @@ export function computeTotals() {
       // P10.6: gestalt upkeep in a fixed resource whatever the species (Pyroclastic Drone: −7 minerals).
       delete unit.consumer_goods;
       Object.entries(gestaltUpkeep.fixed).forEach(([resourceId, amount]) => { unit[resourceId] = (unit[resourceId] || 0) - amount; });
+    } else if (gestaltUpkeep?.bySpecies) {
+      // T1011: upkeep set per species (Spawning Drone: 5 food / 5 minerals / 2 alloys).
+      delete unit.consumer_goods;
+      Object.entries(gestaltUpkeep.bySpecies[speciesType.id] || {}).forEach(([resourceId, amount]) => { unit[resourceId] = (unit[resourceId] || 0) - amount; });
     } else if (gestaltUpkeep) {
       delete unit.consumer_goods;
       const isMachine = speciesType.id === "machine";
@@ -637,7 +641,9 @@ export function computeTotals() {
   // P16.12: civiles (pops sin empleo, entrada manual ×100). Producen servicios y comercio (CIVILIAN_OUTPUTS) como un empleo
   // más: su comercio entra en el efecto de la estabilidad y en la conversión de comercio; no reciben eficacia de estrato
   // ni el % de los empleos de edificios y políticas.
-  const civilianDef = CIVILIAN_OUTPUTS[gestaltEmpire ? "gestalt" : "individualist"];
+  // T1011: Pliable Biomass (Wilderness) produces nothing and is not a Maintenance Drone (no edict bonus per drone).
+  const civilianKind = civilianOutputKind(gestaltEmpire, empireState.originId);
+  const civilianDef = CIVILIAN_OUTPUTS[civilianKind];
   const civilianPops = isLatheLayout() ? 0 : divideEffect(sim.civiliansRaw); // P10.5: every Lathe pop is a Neural Chip
   if (civilianPops > 0) {
     Object.entries(civilianDef.output).forEach(([resourceId, perPop]) => {
@@ -646,7 +652,7 @@ export function computeTotals() {
       jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
     });
     // P18.4: edictos con recursos por civil (Refuerzo sináptico / Mantenimiento industrial: +1 comercio por dron de mantenimiento).
-    Object.entries(edictCivilianFlat).forEach(([resourceId, perPop]) => {
+    if (civilianKind !== "wilderness") Object.entries(edictCivilianFlat).forEach(([resourceId, perPop]) => {
       const amount = perPop * civilianPops;
       addSignedResource(resourceId, amount, "edictJobFlat");
       if (amount > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;

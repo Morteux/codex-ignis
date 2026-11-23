@@ -5,7 +5,7 @@
 
 import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
-import { JOBS, CIVILIAN_OUTPUTS, STRATUM_I18N_KEYS, RESOURCES, EFFECT_SCALE } from "./planet-data.js";
+import { JOBS, CIVILIAN_OUTPUTS, civilianOutputKind, STRATUM_I18N_KEYS, RESOURCES, EFFECT_SCALE } from "./planet-data.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { STRATEGIC_DEPOSITS, BLOCKERS } from "./planetary-features-data.js";
 import { getStackingRules, getCalculationOrder } from "./stacking-rules.js";
@@ -70,7 +70,7 @@ export function modifierSourceName(source) {
 function modifierTargetName(modifier) {
   const parts = [];
   if (modifier.job === "all") parts.push(t(getLang(), "modifierTargetAllJobs"));
-  else if (modifier.job === "civilian") parts.push(t(getLang(), CIVILIAN_OUTPUTS[ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id) ? "gestalt" : "individualist"].i18nKey));
+  else if (modifier.job === "civilian") parts.push(t(getLang(), CIVILIAN_OUTPUTS[civilianOutputKind(ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id), getPlanetState().originId)].i18nKey));
   else if (modifier.job) parts.push(jobName(modifier.job));
   if (modifier.stratum) parts.push(t(getLang(), STRATUM_I18N_KEYS[modifier.stratum]));
   if (modifier.resource) parts.push(resourceName(modifier.resource));
@@ -173,6 +173,11 @@ export function renderConditions(totals) {
   const signed = (n) => (n < 0 ? `− ${formatAmount(-n, false)}` : `+ ${formatAmount(n, false)}`);
   infoLine(t(getLang(), "conditionsInfoPops"));
   infoLine(t(getLang(), "conditionsInfoNowPops")(x100(c.pops - c.civilians), x100(c.civilians), x100(c.pops)), true);
+  // T1011: Biomass is not produced: the game sets the stock of a Wilderness empire to its pops every month.
+  if (getPlanetState().originId === "wilderness") {
+    infoLine(t(getLang(), "conditionsInfoBiomass"));
+    infoLine(t(getLang(), "conditionsInfoNowBiomass")(x100(c.pops)), true);
+  }
   infoLine(t(getLang(), "conditionsInfoHousing"));
   infoLine(t(getLang(), "conditionsInfoNowHousing")(x100(c.housingProvided), x100(c.pops), x100(c.housingMissing)), true);
   infoLine(t(getLang(), "conditionsInfoAmenities"));

@@ -614,7 +614,8 @@ export const RESOURCES = {
   // P10.8: produced by selectable blockers (Nanite Harvest Basin, Shroudstone, Ruined Sanctum of the Dreamer).
   nanites: { i18nKey: "resourceNanites", img: "resources/Nanites.png" },
   zro: { i18nKey: "resourceZro", img: "resources/Zro.png" },
-  // P10.6: Wilderness origin; only a cost here (districts, capitals): no modelled job or building produces it.
+  // P10.6: Wilderness origin; only a cost (districts, capitals, buildings). T1011: no job or building produces it: the
+  // game sets the empire stock to its Wilderness pops every month (on_biomass_monthly), shown in the conditions panel.
   biomass: { i18nKey: "resourceBiomass", img: "resources/Biomass.png" }
 };
 
@@ -679,6 +680,13 @@ export const JOBS = {
   logistic_drone: { i18nKey: "jobLogisticDrone", img: "jobs/job_trader.png", stratum: "specialist" },
   hunter_seeker_drone: { i18nKey: "jobHunterSeekerDrone", img: "jobs/job_patrol_drone.png", stratum: "specialist" },
   replicator: { i18nKey: "jobReplicator", img: "jobs/job_replicator.png", stratum: "specialist" },
+  // T1011: gestalt jobs created only by Wilderness buildings (game files 4.5.4, common/pop_jobs/04_gestalt_jobs.txt):
+  // Cradle of Rebirth (Spawning Drone), Chemical Digester, Crystal Bed and Exotic Gas Filters. A Wilderness empire swaps
+  // them for the Broodsymbiont, Motesymbiont, Crystalsymbiont and Gaseosymbiont (js/job-swap-data.js).
+  spawning_drone: { i18nKey: "jobSpawningDrone", img: "jobs/job_spawning_drone.png", stratum: "specialist" },
+  chemist_drone: { i18nKey: "jobChemDrone", img: "jobs/job_chemist_drone.png", stratum: "specialist" },
+  translucer_drone: { i18nKey: "jobLensingDrone", img: "jobs/job_translucer_drone.png", stratum: "specialist" },
+  gas_refiner_drone: { i18nKey: "jobRefineryDrone", img: "jobs/job_gas_refiner_drone.png", stratum: "specialist" },
   // Especiales
   colonist: { i18nKey: "jobColonist", img: "jobs/job_colonist.png", stratum: "special" },
   civilian: { i18nKey: "jobCivilian", img: "jobs/job_civilian.png", stratum: "special" },
@@ -759,6 +767,12 @@ export const JOB_OUTPUTS = {
   hunter_seeker_drone: { unity: 0.5 },
   // La wiki también da +1 de ensamblaje de población mecánica (no modelado).
   replicator: { alloys: -1 },
+  // T1011 (game files 4.5.4): the Spawning Drone only has upkeep (GESTALT_JOB_UPKEEP; its pop growth is not modelled);
+  // the refinery drones of a non-catalytic empire.
+  spawning_drone: {},
+  chemist_drone: { volatile_motes: 2, minerals: -10 },
+  translucer_drone: { rare_crystals: 2, minerals: -10 },
+  gas_refiner_drone: { exotic_gases: 2, minerals: -10 },
   // Élite
   politician: { unity: 5, amenities: 3, consumer_goods: -3 },
   // Especiales (wiki: Special jobs, Subversive jobs y Slave jobs)
@@ -799,8 +813,17 @@ export const JOB_OUTPUTS = {
  */
 export const CIVILIAN_OUTPUTS = {
   individualist: { i18nKey: "jobCivilian", output: { amenities: 0.5, trade: 1 } },
-  gestalt: { i18nKey: "jobMaintenanceDrone", output: { amenities: 4, trade: 1 } }
+  gestalt: { i18nKey: "jobMaintenanceDrone", output: { amenities: 4, trade: 1 } },
+  // T1011: a Wilderness empire has Pliable Biomass instead of Maintenance Drones (game files 4.5.4,
+  // wilderness_maintenance_drone): no output.
+  wilderness: { i18nKey: "jobPliableBiomass", output: {} }
 };
+
+/** T1011: key of CIVILIAN_OUTPUTS for the empire. */
+export function civilianOutputKind(gestalt, originId) {
+  if (originId === "wilderness") return "wilderness";
+  return gestalt ? "gestalt" : "individualist";
+}
 
 /** P10.2: "+X% <resource> from jobs" granted per staffed job (wiki 4.5.2 "Jobs"): fraction per job, step 4 of the calculation. */
 export const JOB_RESOURCE_MULT = {
@@ -864,7 +887,9 @@ export const GESTALT_JOB_UPKEEP = {
   coordinator: { machine: 4, hive: 4 },
   logistic_drone: { machine: 2, hive: 2 },
   // P10.6: Pyroclastic Drone (gestalt Thermotechnic Mentor): the wiki gives −7 minerals for every gestalt empire.
-  thermotechnic_mentor: { fixed: { minerals: 7 } }
+  thermotechnic_mentor: { fixed: { minerals: 7 } },
+  // T1011: Spawning Drone (game files 4.5.4): 5 food (organic), 5 minerals (lithoid) or 2 alloys (infernal) per job.
+  spawning_drone: { bySpecies: { organic: { food: 5 }, lithoid: { minerals: 5 }, infernal: { alloys: 2 } } }
 };
 
 /** Estadística de JOB_EFFECTS -> { i18nKey, icono (carpeta "modifiers/" de la API de assets; nombres verificados contra StellarisAssetsTree.txt) }. */
@@ -927,6 +952,163 @@ function latheBuilding(id, img, i18nKey, strategic, extra) {
     ...extra
   };
 }
+
+/**
+ * T1011: a Wilderness building (game files 4.5.4, common/buildings/21_wilderness_buildings.txt). Needs the Wilderness
+ * origin and, for upgrades, the capital tier of its allow (has_upgraded_capital = II, major = III, fully = IV). Game jobs
+ * in the simulator's ids (Logistic Drone, research drones = Physicist / Biologist / Engineer, Coordinator = Synapse Drone
+ * as in the Hive Core, Agri / Tech / Mining Drone = Farmer / Technician / Miner, Fabricator = Metallurgist, Warrior Drone
+ * = Soldier); the Fallen Empire jobs of their tables are left out. Building sets: government = "origin", farming /
+ * generator / mining = food / energy / minerals. Technology prerequisites are not modelled, as for the other buildings.
+ * cost: [[resource, amount]...], game time in days.
+ */
+function wildernessBuilding(id, img, i18nKey, category, { tier, upgradesFrom, capital, cost, time, ...extra }) {
+  const requires = [WILDERNESS_ORIGIN];
+  if (capital) requires.push({ type: "capitalTier", min: capital });
+  return {
+    id,
+    requires,
+    img: `buildings/${img}`,
+    i18nKey,
+    category,
+    ...(tier ? { tier } : {}),
+    ...(upgradesFrom ? { upgradesFrom } : {}),
+    jobs: {},
+    colonyLimit: "none",
+    cost: { time, items: cost.map(([resource, amount]) => ({ resource, amount })) },
+    ...extra
+  };
+}
+
+/** T1011: "+X per job" bonus of a whole Wilderness chain level on several jobs (planet_<category>_<resource>_produces_add). */
+const perJob = (jobIds, resource, amount) => Object.fromEntries(jobIds.map((jobId, index) => [jobId, { [Array.isArray(resource) ? resource[index] : resource]: amount }]));
+const RESEARCH_JOBS = ["physicist", "biologist", "engineer"];
+const RESEARCH_OUTPUTS = ["physics", "society", "engineering"];
+const each = (jobIds, value) => Object.fromEntries(jobIds.map((jobId) => [jobId, value]));
+
+/**
+ * T1011: the Wilderness building catalogue. Left out: Subterranean Cache (storage, not modelled, GDD §10) and Planetary
+ * Shield Canopy (orbital bombardment and storm damage only, like the Planetary Shield Generator the simulator does not
+ * have). Avatar Cradle: its extra amenities while an Avatar Chamber / Forest / Cortex stands on the planet are not
+ * modelled (infoKeys). planet_bureaucrats_produces_mult / pop_<job>_bonus_workforce_mult = job efficiency;
+ * planet_pops_trade_produces_mult = "% trade from jobs" (jobResourceMult).
+ */
+const WILDERNESS_BUILDINGS = [
+  wildernessBuilding("cradle_of_rebirth", "seed_cradle_2.png", "buildingCradleOfRebirth", "other", {
+    jobs: { spawning_drone: 100 }, upkeep: { food: -2 }, cost: [["food", 400], ["biomass", 400]], time: 360, sets: ["origin"], infoKeys: ["wildernessInfoSpawning"]
+  }),
+  wildernessBuilding("tendril_cradle_1", "tendril_cradle_building_1.png", "buildingTendrilCradle", "other", {
+    tier: 1, jobs: { logistic_drone: 100 }, upkeep: { minerals: -2 }, cost: [["minerals", 400], ["biomass", 100]], time: 360, sets: ["origin", "trade"]
+  }),
+  wildernessBuilding("tendril_cradle_2", "tendril_cradle_building_2.png", "buildingThreadedSpan", "other", {
+    tier: 2, upgradesFrom: "tendril_cradle_1", capital: 2, jobs: { logistic_drone: 200 }, upkeep: { minerals: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 480, sets: ["origin", "trade"]
+  }),
+  wildernessBuilding("tendril_cradle_3", "tendril_cradle_building_3.png", "buildingConveyrootNest", "other", {
+    tier: 3, upgradesFrom: "tendril_cradle_2", capital: 3, colonyLimit: 1, jobs: { logistic_drone: 400 }, jobResourceMult: { trade: 0.1 },
+    upkeep: { minerals: -8, rare_crystals: -1 }, cost: [["minerals", 800], ["biomass", 400], ["rare_crystals", 50]], time: 600, sets: ["origin", "trade"]
+  }),
+  wildernessBuilding("tendril_cradle_4", "tendril_cradle_building_4.png", "buildingPlanetaryThreadheart", "other", {
+    tier: 4, upgradesFrom: "tendril_cradle_3", capital: 4, colonyLimit: 1, jobs: { logistic_drone: 400 }, jobResourceMult: { trade: 0.15 },
+    upkeep: { minerals: -10, rare_crystals: -2 }, cost: [["minerals", 2000], ["biomass", 800], ["rare_crystals", 100]], time: 720, sets: ["origin", "trade"]
+  }),
+  wildernessBuilding("brain_node_1", "brain_node_1.png", "buildingResearchGrowth", "research", {
+    tier: 1, jobs: each(RESEARCH_JOBS, 30), upkeep: { energy: -2 }, cost: [["minerals", 400], ["biomass", 100]], time: 240, sets: ["origin", "research"]
+  }),
+  wildernessBuilding("brain_node_2", "brain_node_2.png", "buildingResearchGrove", "research", {
+    tier: 2, upgradesFrom: "brain_node_1", capital: 2, jobs: each(RESEARCH_JOBS, 60), upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 360, sets: ["origin", "research"]
+  }),
+  wildernessBuilding("brain_node_3", "brain_node_3.png", "buildingExoticResearchEnclosure", "research", {
+    tier: 3, upgradesFrom: "brain_node_2", capital: 3, colonyLimit: 1, jobs: each(RESEARCH_JOBS, 120), jobModifiers: perJob(RESEARCH_JOBS, RESEARCH_OUTPUTS, 0.25),
+    upkeep: { energy: -8, exotic_gases: -1 }, cost: [["minerals", 800], ["biomass", 400], ["exotic_gases", 50]], time: 480, sets: ["origin", "research"]
+  }),
+  wildernessBuilding("brain_node_4", "brain_node_4.png", "buildingAdvancedResearchEnclosure", "research", {
+    tier: 4, upgradesFrom: "brain_node_3", capital: 4, colonyLimit: 1, jobs: each(RESEARCH_JOBS, 120), jobModifiers: perJob(RESEARCH_JOBS, RESEARCH_OUTPUTS, 0.25),
+    jobEfficiency: each(RESEARCH_JOBS, 0.05), upkeep: { energy: -10, exotic_gases: -2 }, cost: [["minerals", 2000], ["biomass", 800], ["exotic_gases", 100]], time: 600, sets: ["origin", "research"]
+  }),
+  wildernessBuilding("commensal_clearing_1", "building_commensal_clearing_1.png", "buildingCommensalClearing", "unity", {
+    tier: 1, jobs: { synapse_drone: 100 }, upkeep: { energy: -1 }, cost: [["minerals", 200], ["biomass", 100]], time: 240, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("commensal_clearing_2", "building_commensal_clearing_2.png", "buildingCommensalGrove", "unity", {
+    tier: 2, upgradesFrom: "commensal_clearing_1", capital: 2, jobs: { synapse_drone: 200 }, upkeep: { energy: -2 }, cost: [["minerals", 400], ["biomass", 200]], time: 360, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("commensal_clearing_3", "building_commensal_clearing_3.png", "buildingCommensalValley", "unity", {
+    tier: 3, upgradesFrom: "commensal_clearing_2", capital: 3, colonyLimit: 1, jobs: { synapse_drone: 400 }, jobModifiers: { synapse_drone: { unity: 0.25 } },
+    upkeep: { energy: -5, rare_crystals: -1 }, cost: [["minerals", 600], ["biomass", 400], ["rare_crystals", 50]], time: 480, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("commensal_clearing_4", "building_commensal_clearing_4.png", "buildingCommensalBiome", "unity", {
+    tier: 4, upgradesFrom: "commensal_clearing_3", capital: 4, colonyLimit: 1, jobs: { synapse_drone: 400 }, jobModifiers: { synapse_drone: { unity: 0.25 } },
+    jobEfficiency: { synapse_drone: 0.05 }, upkeep: { energy: -8, rare_crystals: -2 }, cost: [["minerals", 800], ["biomass", 800], ["rare_crystals", 100]], time: 600, sets: ["origin", "unity"]
+  }),
+  ...[
+    ["massive_growth", "massive_growth_", "farmer", "food", "food", "exotic_gases", ["buildingNutritiousDell", "buildingNutritiousUndergrowth", "buildingContourMegaplantation", "buildingSylviculturePlantation"]],
+    ["bioelectric_stimulator", "bio_electric_stimulator_", "technician", "energy", "energy", "rare_crystals", ["buildingChloroplasticAcclimator", "buildingChloroplasticAccelerator", "buildingChloroplasticLensArray", "buildingChloroplasticCyst"]],
+    ["churning_tunnels", "churning_tunnels_", "miner", "minerals", "minerals", "volatile_motes", ["buildingLithicBore", "buildingLithicFilters", "buildingLithicMacerator", "buildingLithicBaths"]]
+  ].flatMap(([stem, icon, job, output, set, strategic, keys]) => [
+    wildernessBuilding(`${stem}_1`, `${icon}1.png`, keys[0], "resource", {
+      tier: 1, jobs: { [job]: 100 }, upkeep: { minerals: -2 }, cost: [["minerals", 400], ["biomass", 100]], time: 180, sets: [set]
+    }),
+    wildernessBuilding(`${stem}_2`, `${icon}2.png`, keys[1], "resource", {
+      tier: 2, upgradesFrom: `${stem}_1`, capital: 2, jobs: { [job]: 200 }, upkeep: { minerals: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 240, sets: [set]
+    }),
+    wildernessBuilding(`${stem}_3`, `${icon}3.png`, keys[2], "resource", {
+      tier: 3, upgradesFrom: `${stem}_2`, capital: 3, colonyLimit: 1, jobs: { [job]: 400 }, jobModifiers: { [job]: { [output]: 0.5 } },
+      upkeep: { minerals: -8, [strategic]: -1 }, cost: [["minerals", 800], ["biomass", 400], [strategic, 50]], time: 360, sets: [set]
+    }),
+    wildernessBuilding(`${stem}_4`, `${icon}4.png`, keys[3], "resource", {
+      tier: 4, upgradesFrom: `${stem}_3`, capital: 4, colonyLimit: 1, jobs: { [job]: 400 }, jobModifiers: { [job]: { [output]: 0.5 } }, jobEfficiency: { [job]: 0.05 },
+      upkeep: { minerals: -10, [strategic]: -2 }, cost: [["minerals", 2000], ["biomass", 800], [strategic, 100]], time: 480, sets: [set]
+    })
+  ]),
+  wildernessBuilding("natural_furnace_0", "natural_furnace_1.png", "buildingSmeltingPool", "foundry", {
+    tier: 1, jobs: { metallurgist: 100 }, upkeep: { energy: -2 }, cost: [["minerals", 400], ["biomass", 100]], time: 180, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("natural_furnace_1", "natural_furnace_2.png", "buildingSmeltingKiln", "foundry", {
+    tier: 2, upgradesFrom: "natural_furnace_0", capital: 3, jobs: { metallurgist: 200 }, upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 240, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("natural_furnace_2", "natural_furnace_3.png", "buildingSolidLightSmelter", "foundry", {
+    tier: 3, upgradesFrom: "natural_furnace_1", capital: 3, colonyLimit: 1, jobs: { metallurgist: 400 }, jobModifiers: { metallurgist: { alloys: 0.5, minerals: -2 } },
+    upkeep: { energy: -8, volatile_motes: -1 }, cost: [["minerals", 800], ["biomass", 400], ["volatile_motes", 50]], time: 360, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("natural_furnace_3", "natural_furnace_4.png", "buildingNanoSmelter", "foundry", {
+    tier: 4, upgradesFrom: "natural_furnace_2", capital: 4, colonyLimit: 1, jobs: { metallurgist: 400 }, jobModifiers: { metallurgist: { alloys: 0.5, minerals: -2 } },
+    jobEfficiency: { metallurgist: 0.05 }, upkeep: { energy: -10, volatile_motes: -2 }, cost: [["minerals", 2000], ["biomass", 800], ["volatile_motes", 100]], time: 480, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("avatar_chamber_1", "avatar_chamber_1.png", "buildingAvatarCradle", "housing", {
+    tier: 1, housing: 300, amenities: 400, upkeep: { food: -2 }, cost: [["minerals", 400], ["biomass", 100]], time: 360, sets: ["origin", "unity"], infoKeys: ["wildernessInfoAvatarCradle"]
+  }),
+  // The game allows one Avatar Chamber per planet (its potential excludes a planet that already has one): colonyLimit 1.
+  wildernessBuilding("avatar_chamber_2", "avatar_chamber_2.png", "buildingAvatarChamber", "housing", {
+    tier: 2, upgradesFrom: "avatar_chamber_1", capital: 2, colonyLimit: 1, housing: 300, amenities: 600, jobEfficiency: { synapse_drone: 0.05 },
+    upkeep: { food: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 360, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("avatar_chamber_3", "avatar_chamber_3.png", "buildingAvatarForest", "housing", {
+    tier: 3, upgradesFrom: "avatar_chamber_2", capital: 3, colonyLimit: 1, housing: 300, amenities: 800, jobEfficiency: { synapse_drone: 0.1 },
+    upkeep: { food: -8, volatile_motes: -1 }, cost: [["minerals", 800], ["biomass", 400], ["volatile_motes", 50]], time: 480, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("avatar_chamber_4", "avatar_chamber_4.png", "buildingAvatarCortex", "housing", {
+    tier: 4, upgradesFrom: "avatar_chamber_3", capital: 4, colonyLimit: 1, housing: 300, amenities: 1200, jobEfficiency: { synapse_drone: 0.2 },
+    upkeep: { food: -10, volatile_motes: -2 }, cost: [["minerals", 2000], ["biomass", 800], ["volatile_motes", 100]], time: 600, sets: ["origin", "unity"]
+  }),
+  wildernessBuilding("mote_aggravator", "mote_aggravator.png", "buildingChemicalDigester", "industryOutput", {
+    jobs: { chemist_drone: 200 }, upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 400]], time: 480, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("churning_stomach", "churning_stomach.png", "buildingExoticGasFilters", "industryOutput", {
+    jobs: { gas_refiner_drone: 200 }, upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 400]], time: 480, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("crystal_growth", "crystal_growth.png", "buildingCrystalBed", "industryOutput", {
+    jobs: { translucer_drone: 200 }, upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 400]], time: 480, sets: ["origin", "foundry"]
+  }),
+  wildernessBuilding("planetary_carapace", "planetary_carapace_1.png", "buildingBoneGarrison", "military", {
+    tier: 1, jobs: { soldier: 100 }, upkeep: { minerals: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 240, sets: ["origin", "fortress"]
+  }),
+  wildernessBuilding("planetary_carapace_2", "planetary_carapace_2.png", "buildingBoneFortress", "military", {
+    tier: 2, upgradesFrom: "planetary_carapace", capital: 2, jobs: { soldier: 200 }, upkeep: { minerals: -8, volatile_motes: -1 },
+    cost: [["minerals", 800], ["biomass", 400], ["volatile_motes", 50]], time: 360, sets: ["origin", "fortress"]
+  }),
+  wildernessBuilding("wilderness_storm_relief", "building_wilderness_storm_relief.png", "buildingStormReliefCenter", "other", {
+    colonyLimit: 1, amenities: 800, upkeep: { energy: -5 }, cost: [["minerals", 600], ["biomass", 200]], time: 360, sets: ["origin"], infoKeys: ["wildernessInfoStormRelief"]
+  })
+];
 
 /**
  * Catálogo de edificios.
@@ -2342,13 +2524,16 @@ export const BUILDINGS = [
   }),
   latheBuilding("lathe_cogitator", "building_lathe_cogitator.png", "buildingLatheCogitator", "volatile_motes", {
     requires: [LATHE_TECH("reqTechSynapticCogitator")], jobResourcePct: { all: -35 }, amenities: -5000, infoKeys: ["latheInfoCogitator"]
-  })
+  }),
+
+  // ══ T1011: Wilderness origin buildings (see WILDERNESS_BUILDINGS above) ══
+  ...WILDERNESS_BUILDINGS
 ];
 
 /**
  * P10.6: buildings whose game potential / allow has is_wilderness_empire = no (game files 4.5.4, matched to the game
- * buildings as in tools/extract/report_differences.py): not available to a Wilderness empire. Its own buildings
- * (common/buildings/21_wilderness_buildings.txt) are not modelled yet (T1011).
+ * buildings as in tools/extract/report_differences.py): not available to a Wilderness empire. Its own buildings are
+ * WILDERNESS_BUILDINGS (T1011).
  */
 const WILDERNESS_EXCLUDED_BUILDINGS = [
   "voltaic_yard", "quarry_depot", "hydroponics_farm", "energy_grid", "energy_nexus", "mineral_purification_plants",

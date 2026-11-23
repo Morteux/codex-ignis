@@ -1,4 +1,5 @@
-"""Planet simulator: Wilderness origin (P10.6): origin card, Mutualistic Intelligence, districts, specializations, capitals, symbiont swaps."""
+"""Planet simulator: Wilderness origin (P10.6, T1011): origin card, Mutualistic Intelligence, districts, specializations, capitals,
+buildings, symbiont swaps, designation effects, Pliable Biomass and Biomass."""
 from smoke.common import check
 
 
@@ -50,9 +51,35 @@ async def run(t):
     des = dict(await pg.evaluate("()=>[...document.querySelectorAll('#planet-designation-select option')].map(o=>[o.value,o.disabled])"))
     check("Wilderness designations available, not-Wilderness ones locked", des.get("photosynthesisWorld") is False and des.get("nestWorld") is True, des)
 
+    # T1011: Wilderness buildings, the other symbiont swaps, designation effects, Pliable Biomass and Biomass.
+    await pg.click("#planet-tab-buildings")
+    catalog = await pg.evaluate("()=>[...document.querySelectorAll('.planet-catalog-item .planet-catalog-name')].map(e=>e.innerText)")
+    check("Wilderness buildings in the catalog", any(n.startswith("Research Growth") for n in catalog) and any(n.startswith("Commensal Clearing") for n in catalog)
+          and not any(n.startswith("Research Labs") for n in catalog), catalog[:12])
+    built = await pg.evaluate("()=>{const b=[...document.querySelectorAll('.planet-catalog-item')].find(x=>x.querySelector('.planet-catalog-name').innerText.startsWith('Research Growth'));if(!b||b.disabled)return false;b.click();return true}")
+    check("build Research Growth", built)
+    text = await pg.inner_text("body")
+    check("Research Growth: Physicists become Physics Evosymbionts", "Physics Evosymbiont" in text and "Engineering Evosymbiont" in text, "")
+    n0 = await t.net()
+    phys = lambda n: next((v for k, v in n.items() if k.startswith("Physics")), 0)
+    await pg.evaluate("()=>{const s=document.querySelector('#planet-designation-select');s.value='cogitationWorld';s.dispatchEvent(new Event('change'))}")
+    n1 = await t.net()
+    check("Cogitation World: +10 % research job efficiency", phys(n1) > phys(n0) > 0, (phys(n0), phys(n1)))
+    swaps = await pg.evaluate("""async()=>{const s=await import('./js/job-swaps.js');s.registerSwapJobs();
+        const w={ethicIds:['gestaltConsciousness'],authorityId:'hiveMind',originId:'wilderness',civicIds:[],gestalt:true};
+        const m=s.swapMap(s.resolveJobSwaps(w));const h=s.swapMap(s.resolveJobSwaps({...w,originId:null}));
+        return [m.synapse_drone,m.logistic_drone,m.soldier,m.metallurgist,m.spawning_drone,m.chemist_drone,h.synapse_drone||null]}""")
+    check("symbiont swaps: Choirsymbiont, Spindlesymbiont, Tamersymbiont, Forgesymbiont, Broodsymbiont, Motesymbiont (not without the origin)",
+          swaps == ["choirsymbiont", "spindlesymbiont", "tamersymbiont", "forgesymbiont", "broodsymbiont", "motesymbiote", None], swaps)
+    civ = await pg.evaluate("""async()=>{const d=await import('./js/planet-data.js');return [d.civilianOutputKind(true,'wilderness'),d.civilianOutputKind(true,null),Object.keys(d.CIVILIAN_OUTPUTS.wilderness.output).length]}""")
+    check("Pliable Biomass replaces the Maintenance Drone and produces nothing", civ == ["wilderness", "gestalt", 0], civ)
+    biomass = await pg.evaluate("()=>document.body.textContent.includes('Biomass to the empire stock')")
+    check("conditions info: Biomass stock from the pops", biomass)
+
     await tab("empire")
     await pg.evaluate(f"()=>document.querySelector('{card}').click()")
     await tab("planet")
+    await pg.click("#planet-tab-districts")
     names = await pg.evaluate("()=>[...document.querySelectorAll('.planet-district-card-header span')].map(e=>e.innerText)")
     cap = await pg.evaluate("()=>document.querySelector('#planet-capital-name').innerText")
     notice = await pg.evaluate("()=>document.querySelector('#planet-sim-notice')?.innerText||''")
