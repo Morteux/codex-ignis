@@ -204,7 +204,8 @@ async function saveCurrentPlanet({ asNew = false } = {}) {
       civicIds: state.civicIds || [],
       speciesType: state.speciesType,
       policyIds: state.policyIds || {},
-      edictIds: state.edictIds || []
+      edictIds: state.edictIds || [],
+      livingStandardId: state.livingStandardId || null
     }
   };
 

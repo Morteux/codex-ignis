@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **63 / 132 tareas (48%)**
+> Progreso: **64 / 132 tareas (48%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -177,7 +177,8 @@ Models another empire placing branch office buildings on this planet; any branch
 Source: the 4.5.4 game files through the extractor (species rights / living standards in `common/`); runs after section 25.
 - [x] **T2001** (P20.1) Extract (new `extract_living_standards.py`) and audit living standards: pop upkeep per standard and stratum/species type, effects (happiness, political power...), availability by ethics/authority/civics
   - Prueba manual: run `python tools/extract/extract_living_standards.py` and open `data/generated/stellaris-pc-4.5.4/living_standards.json`: Decent Conditions lists `pop_upkeep` 1 / 0.5 / 0.25 / 0.25 consumer goods for rulers / specialists / workers / civilians, matching the table of `PLANET_SIM_GDD.md` §5.3.
-- [ ] **T2002** (P20.2) Living standard saved with the empire profile (optional field), selectable in the Imperio tab
+- [x] **T2002** (P20.2) Living standard saved with the empire profile (optional field), selectable in the Imperio tab
+  - Prueba manual: in `planet-sim.html`, Imperio tab, panel "Living standard": Decent Conditions is selected by default and Utopian Abundance is locked until you pick Egalitarian; choose it, save the empire and reload: Utopian Abundance is still selected.
 - [ ] **T2003** (P20.3) Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
 - [ ] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
 

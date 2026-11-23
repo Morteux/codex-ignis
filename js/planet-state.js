@@ -19,6 +19,7 @@ const state = {
   civicIds: [],
   policyIds: {}, // políticas del imperio { grupo: idOpcion } (js/policy-data.js, P16); solo los grupos que aplican al tipo de imperio
   edictIds: [], // edictos activos del imperio (js/edict-data.js, P18)
+  livingStandardId: "decentConditions", // P20: living standard of the empire (js/living-standard-data.js)
   speciesType: "organic",
   empireId: null,
   empireModified: false,

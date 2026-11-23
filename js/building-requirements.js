@@ -7,6 +7,7 @@
  * de planet-data.js puede traer `requires: [regla, ...]`; el edificio solo
  * está disponible si se cumplen TODAS. Las reglas disponibles:
  *   { type: "notGestalt" }                   no con Consciencia gestalt
+ *   { type: "gestalt" }                      solo con Consciencia gestalt (P20)
  *   { type: "usesPriestJobs", value: bool }  "Uses Priest jobs" de la wiki:
  *                                            individualista y espiritualista
  *   { type: "usesConsumerGoods" }            "Empire uses Consumer Goods": no gestalt
@@ -59,6 +60,7 @@ function usesPriestJobs(ctx) {
 function ruleMet(rule, ctx) {
   switch (rule.type) {
     case "notGestalt": return !isGestalt(ctx);
+    case "gestalt": return isGestalt(ctx); // P20: only with Gestalt Consciousness (Drone living standard)
     case "usesPriestJobs": return usesPriestJobs(ctx) === (rule.value !== false);
     case "usesConsumerGoods": return !isGestalt(ctx);
     case "ethic": return rule.ids.some((id) => ethicsSatisfy(ctx.ethicIds || [], id));

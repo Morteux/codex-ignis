@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2002 — Living standard in the Imperio tab (2026-11-23)
+- [ ] **Panel**: a "Living standard" panel after Civics with one card per standard (`js/living-standard-data.js`), locked cards explain the missing requirement; the default gets the "Default" badge. Names in es / jp from the game localisation 4.5.4.
+- [ ] **Silent fallback**: a standard the empire loses after an edit (e.g. Utopian Abundance after dropping Egalitarian) becomes the default without a notice (policies and edicts show one); the selected card makes the change visible.
+- [ ] **Machine species in an individualist empire** counts as individual machines (Utopian Abundance, Academic Privilege, Social Welfare allowed); Chemical Bliss stays locked for machine species, as in the game.
+- [ ] **Subdermal Stimulation** (Chemical Bliss) assumed researched, like every technology.
+
 ## T2001 — Living standards audit (2026-11-23)
 - [ ] **Founder species only**: the simulator models one species with full citizenship, so only the standards that species can take are offered (GDD §5.3): Decent Conditions, Social Welfare, Utopian Abundance, Academic Privilege, Stratified Economy, Decadent Lifestyle, Chemical Bliss, the three civic standards and Drone for gestalt. Basic Subsistence (slaves / limited citizenship / displacement only), slavery, purge, assimilation, robot servitude and origin standards are left out.
 - [ ] **Units**: the game values are per pop group of 100 pops, read as per simulator pop (the simulator's pops are ×100, like jobs); happiness `0.1` read as +10 points, as for edicts.

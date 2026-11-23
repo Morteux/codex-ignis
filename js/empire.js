@@ -29,6 +29,7 @@ import { PRINCIPLE_BINGO } from "./bingo-items.js";
 import { updatePlanetState, emitEmpireSwitched, emitPoliciesReset, emitEdictsRemoved } from "./planet-state.js";
 import { resolveEdicts } from "./edict-data.js";
 import { renderEdictsList } from "./edicts-ui.js";
+import { LIVING_STANDARDS, getLivingStandard, livingStandardAvailable, livingStandardUnmetRules, livingStandardDefault, resolveLivingStandard } from "./living-standard-data.js";
 import { resolvePolicies, getPolicyOption, applicablePolicyGroups, policyAvailable, policyUnmetRules, policyDefaults, isGestaltContext } from "./policy-data.js";
 import { getEmpire, createEmpire, updateEmpireConfig, renameEmpire, deleteEmpire, onEmpiresChange, configsEqual } from "./empire-profiles.js";
 import { confirmChoice } from "./confirm-dialog.js";
@@ -66,6 +67,7 @@ const civicsListEl = document.querySelector("#empire-civics-list");
 const policiesListEl = document.querySelector("#empire-policies-list");
 const edictsListEl = document.querySelector("#empire-edicts-list");
 const edictsCountEl = document.querySelector("#empire-edicts-count");
+const livingStandardListEl = document.querySelector("#empire-living-standard-list");
 const profileNameEl = document.querySelector("#empire-profile-name");
 const profileSaveNewBtn = document.querySelector("#empire-profile-save-new");
 const profileSaveBtn = document.querySelector("#empire-profile-save");
@@ -91,6 +93,8 @@ let selectedPolicies = {};
 let lastGestalt = false;
 // Edictos activos (P18): ids en el orden del catálogo, siempre disponibles para el imperio (syncEdicts los normaliza).
 let selectedEdicts = [];
+// Living standard (P20): always available for the empire (syncLivingStandard replaces it with the default otherwise).
+let selectedLivingStandard = "decentConditions";
 
 function currentEthicIds() {
   if (gestaltActive) return [GESTALT_CONSCIOUSNESS.id];
@@ -139,6 +143,19 @@ function syncEdicts() {
   const { edictIds, removed } = resolveEdicts(selectedEdicts, policyContext());
   selectedEdicts = edictIds;
   if (removed.length) emitEdictsRemoved({ removed });
+}
+
+/** P20: a living standard the empire can no longer take (ethics, authority or civics changed) becomes the empire's default. */
+function syncLivingStandard() {
+  selectedLivingStandard = resolveLivingStandard(selectedLivingStandard, policyContext()).livingStandardId;
+}
+
+function selectLivingStandard(id) {
+  const standard = getLivingStandard(id);
+  if (!standard || !livingStandardAvailable(standard, policyContext())) return false;
+  selectedLivingStandard = id;
+  refresh();
+  return true;
 }
 
 function toggleEdict(edictId) {
@@ -437,6 +454,8 @@ function describePolicyRule(rule) {
   switch (rule.type) {
     case "federation": return t(currentLang, "requirementFederation");
     case "notGestalt": return t(currentLang, "requirementNotGestalt");
+    case "gestalt": return t(currentLang, "requirementGestalt");
+    case "notSpecies": return t(currentLang, "requirementNotSpecies") + names(rule.ids.map((id) => t(currentLang, SPECIES_TYPES.find((type) => type.id === id).i18nKey)));
     case "usesConsumerGoods": return t(currentLang, "requirementUsesConsumerGoods");
     case "ethic": return t(currentLang, "requirementEthic") + names(rule.ids.map((id) => t(currentLang, ETHIC_OPTIONS[id].i18nKey)));
     case "authority": return t(currentLang, "requirementAuthority") + names(authorityNames(rule.ids));
@@ -538,6 +557,82 @@ function renderPoliciesList() {
   });
 }
 
+const amountText = (value) => `${Math.round(value * 1000) / 1000}`;
+const signedText = (value) => `${value < 0 ? "−" : "+"}${amountText(Math.abs(value))}`;
+const STANDARD_STRATA = ["ruler", "specialist", "worker", "civilian"];
+const stratumLabel = (stratum) => t(currentLang, stratum === "civilian" ? "livingStandardStratumCivilian" : STRATUM_I18N_KEYS[stratum]);
+/** "Ruler 1 · Specialist 0.5 ..." of a { stratum: value } map, in stratum order. */
+const strataText = (values, format = amountText) => STANDARD_STRATA.filter((stratum) => values[stratum] !== undefined)
+  .map((stratum) => `${stratumLabel(stratum)} ${format(values[stratum])}`).join(" · ");
+
+/** Effect lines of a living standard card (P20.2): computed lines first, then the info ones. */
+function livingStandardLines(standard) {
+  const lines = [];
+  const goods = Object.fromEntries(Object.entries(standard.upkeep).map(([stratum, upkeep]) => [stratum, upkeep.consumer_goods || 0]));
+  if (Object.keys(goods).length) lines.push({ text: t(currentLang, "livingStandardEffectUpkeep")(resourceLabel("consumer_goods"), strataText(goods)) });
+  else lines.push({ text: t(currentLang, "livingStandardEffectNoUpkeep") });
+  if (Object.keys(standard.trade).length) lines.push({ text: t(currentLang, "livingStandardEffectTrade")(strataText(standard.trade)) });
+  if (standard.happiness) lines.push({ text: t(currentLang, "livingStandardEffectHappiness")(signedText(standard.happiness)) });
+  const civilian = Object.entries(standard.civilianOutput).map(([resourceId, amount]) => `${signedText(amount)} ${resourceLabel(resourceId)}`).join(" · ");
+  if (civilian) lines.push({ text: t(currentLang, "livingStandardEffectCivilian")(civilian) });
+  if (standard.researcherEfficiency) lines.push({ text: t(currentLang, "livingStandardEffectResearchers")(signedPercentText(standard.researcherEfficiency)) });
+  if (standard.jobEfficiency) lines.push({ text: t(currentLang, "livingStandardEffectJobs")(signedPercentText(standard.jobEfficiency)) });
+  if (Object.keys(standard.strataHappiness).length) lines.push({ text: t(currentLang, "livingStandardEffectStrataHappiness")(strataText(standard.strataHappiness, signedText)), info: true });
+  if (Object.keys(standard.politicalPower).length) lines.push({ text: t(currentLang, "livingStandardEffectPoliticalPower")(strataText(standard.politicalPower)), info: true });
+  standard.info.forEach((key) => lines.push({ text: t(currentLang, key), info: true }));
+  return lines;
+}
+
+/** Panel "Living standard" (P20.2): one standard for the founder species, saved with the empire. */
+function renderLivingStandardList() {
+  if (!livingStandardListEl) return;
+  livingStandardListEl.replaceChildren();
+  const ctx = policyContext();
+  const defaultId = livingStandardDefault(ctx);
+  const grid = document.createElement("div");
+  grid.className = "empire-policy-grid";
+  LIVING_STANDARDS.forEach((standard) => {
+    const available = livingStandardAvailable(standard, ctx);
+    const isSelected = selectedLivingStandard === standard.id;
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "empire-authority-card empire-policy-card living-standard-card";
+    card.dataset.livingStandard = standard.id;
+    card.classList.toggle("is-selected", isSelected);
+    card.disabled = !available;
+    card.setAttribute("aria-pressed", String(isSelected));
+    const header = document.createElement("div");
+    header.className = "empire-authority-header";
+    const name = document.createElement("strong");
+    name.textContent = t(currentLang, standard.i18nKey);
+    header.append(name);
+    if (defaultId === standard.id) {
+      const badge = document.createElement("span");
+      badge.className = "library-badge";
+      badge.textContent = t(currentLang, "policyDefaultBadge");
+      header.append(badge);
+    }
+    const effects = document.createElement("ul");
+    effects.className = "empire-effect-list";
+    livingStandardLines(standard).forEach((line) => {
+      const item = document.createElement("li");
+      item.className = line.info ? "is-info" : "is-applied";
+      item.textContent = line.text;
+      effects.append(item);
+    });
+    card.append(header, effects);
+    if (!available) {
+      const lock = document.createElement("em");
+      lock.className = "empire-authority-lock";
+      lock.textContent = livingStandardUnmetRules(standard, ctx).map(describePolicyRule).filter(Boolean).join("; ");
+      card.append(lock);
+    }
+    card.addEventListener("click", () => { if (available) selectLivingStandard(standard.id); });
+    grid.append(card);
+  });
+  livingStandardListEl.append(grid);
+}
+
 function renderCivicsList() {
   if (civicsLabelEl) civicsLabelEl.textContent = t(currentLang, "empireCivicsSlotsLabel")(selectedCivics.size, MAX_CIVICS);
   if (!civicsListEl) return;
@@ -607,11 +702,11 @@ function publishSelection() {
   const civicIds = [...selectedCivics];
   const modified = isModified();
   const policyKey = Object.entries(selectedPolicies).sort().map(([group, option]) => `${group}:${option}`).join(",");
-  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${selectedOriginId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}|${selectedEdicts.join(",")}`;
+  const key = `${ethicIds.join(",")}|${selectedAuthorityId}|${selectedOriginId}|${[...civicIds].sort().join(",")}|${selectedSpeciesType}|${selectedEmpireId}|${modified}|${policyKey}|${selectedEdicts.join(",")}|${selectedLivingStandard}`;
   if (key === lastPublishedKey) return;
   lastPublishedKey = key;
   storeLastEmpire(selectedEmpireId);
-  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], empireId: selectedEmpireId, empireModified: modified });
+  updatePlanetState({ ethicIds, authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds, speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], livingStandardId: selectedLivingStandard, empireId: selectedEmpireId, empireModified: modified });
 }
 
 /** P17.5: paneles "i" de la pestaña Imperio (efectos aplicados/informativos, límites de principios, políticas y conversión de comercio). */
@@ -651,6 +746,7 @@ function renderEmpireInfo() {
 function refresh() {
   syncPolicies();
   syncEdicts();
+  syncLivingStandard();
   renderEmpireInfo();
   if (pointsLabelEl) pointsLabelEl.textContent = t(currentLang, "empirePointsLabel")(pointsUsed(), ETHICS_MAX_POINTS);
   renderWheel();
@@ -659,6 +755,7 @@ function refresh() {
   renderOriginList();
   renderSpeciesSelect();
   renderCivicsList();
+  renderLivingStandardList();
   renderPoliciesList();
   renderEdicts();
   renderProfilePanel();
@@ -669,7 +766,7 @@ function refresh() {
 
 /** Configuración actual de la pestaña Imperio, con la misma forma que un perfil guardado. */
 function currentConfig() {
-  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts] };
+  return { ethicIds: currentEthicIds(), authorityId: selectedAuthorityId, originId: selectedOriginId, civicIds: [...selectedCivics], speciesType: selectedSpeciesType, policyIds: { ...selectedPolicies }, edictIds: [...selectedEdicts], livingStandardId: selectedLivingStandard };
 }
 
 /** ¿Hay un imperio guardado seleccionado y la pestaña ya no coincide con lo guardado? (sin imperio seleccionado no hay "cambios sin guardar": es un borrador) */
@@ -715,6 +812,8 @@ function applyConfig(config) {
   lastGestalt = isGestaltContext(appliedContext);
   // Edictos del perfil (P18.3): lo desconocido o no disponible se descarta sin aviso (perfiles anteriores a P18: ninguno).
   selectedEdicts = resolveEdicts(config.edictIds, appliedContext).edictIds;
+  // Living standard of the profile (P20.2): missing (older profiles) or unavailable → the empire's default, without notice.
+  selectedLivingStandard = resolveLivingStandard(config.livingStandardId, appliedContext).livingStandardId;
 }
 
 let messageTimer = null;
