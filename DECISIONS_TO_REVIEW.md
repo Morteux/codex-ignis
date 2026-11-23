@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1905 — Branch office building limits (2026-11-23)
+- [ ] **`base_cap_amount = 1`** (Experimentation Offices, Living Metal Enhancement Clinic: no `planet_limit` in `14_branch_office_buildings.txt`) read as one per colony too; no `building_*_max` modifier in `common/` raises it. The extractor now exports `base_cap_amount` in `buildings.json`.
+- [ ] **Duplicates**: a slot cannot pick a building already chosen in another slot (the option is disabled with «limit: 1 per colony»); a duplicate restored from an older save stays in its slot but inactive, the first slot keeping the effects.
+
 ## T1011 — Rest of the Wilderness origin (2026-11-23)
 - [ ] **Buildings** (`WILDERNESS_BUILDINGS` in `js/planet-data.js`, game files 4.5.4 `21_wilderness_buildings.txt`): costs, upkeep, jobs, limits and modifiers as in the game; jobs in the simulator's ids (Coordinator = Synapse Drone, research drones = Physicist / Biologist / Engineer, Agri / Tech / Mining Drone = Farmer / Technician / Miner, Fabricator = Metallurgist, Warrior Drone = Soldier, Logistics Drone = Logistic Drone); the Fallen Empire jobs of the same tables (`fe_acolyte_*`) left out. Upgrades follow the chains of the game with the capital tier of their `allow` (upgraded = II, major = III, fully = IV); technology prerequisites not modelled, as for every other building. Game modifiers read as: `planet_<category>_<resource>_produces_add` = per-job bonus (`jobModifiers`), `pop_<job>_bonus_workforce_mult` and `planet_bureaucrats_produces_mult` = job efficiency, `planet_pops_trade_produces_mult` = % trade from jobs. Building sets: government = base slots ("origin"), farming / generator / mining = their extraction specialization only.
 - [ ] **Avatar Chamber** limited to one per planet (its game `potential` refuses a planet that already has one); the extra amenities of each Avatar Cradle while an Avatar Chamber / Forest / Cortex stands are not modelled (shown in its tooltip).

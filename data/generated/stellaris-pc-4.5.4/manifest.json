@@ -16,7 +16,7 @@
   "buildings": {
    "file": "buildings.json",
    "count": 498,
-   "warnings": 0,
+   "warnings": 1,
    "icons": {
     "unchanged": 403,
     "replaced": 9,

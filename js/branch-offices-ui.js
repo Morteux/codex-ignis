@@ -17,7 +17,8 @@ import { civicsConflict, MAX_CIVICS } from "./empire-data.js";
 import { unmodelledRequirements } from "./building-requirements.js";
 import {
   BRANCH_OFFICE_BUILDINGS, BRANCH_OFFICE_SLOTS_BY_TIER, BRANCH_OWNER_CIVICS, ILLEGAL_BRANCH_RULES,
-  branchBuildingVariant, branchBuildingUnmet, getBranchBuilding, branchBuildingJobs, branchJobTrade, isIllegalVariant
+  branchBuildingVariant, branchBuildingUnmet, getBranchBuilding, branchBuildingJobs, branchJobTrade, isIllegalVariant,
+  branchBuildingLimitReached
 } from "./branch-office-data.js";
 
 const MAX_SLOTS = Math.max(...Object.values(BRANCH_OFFICE_SLOTS_BY_TIER));
@@ -186,8 +187,10 @@ function renderSlot(lang, index, { branch, slotCount, ownerCtx, hostCtx, describ
       const option = document.createElement("option");
       option.value = building.id;
       const reasons = unmet.map((entry) => describeBranchRule(lang, entry, describeRule)).filter(Boolean);
+      const overLimit = branchBuildingLimitReached(building, branch.slots, index);
+      if (overLimit) reasons.push(t(lang, "branchLimitReached")(building.maxPerColony));
       option.textContent = reasons.length ? `${buildingLabel(lang, building, branch.illegal)} — ${reasons.join("; ")}` : buildingLabel(lang, building, branch.illegal);
-      option.disabled = unmet.length > 0 && building.id !== selectedId;
+      option.disabled = (unmet.length > 0 || overLimit) && building.id !== selectedId;
       group.append(option);
     });
     select.append(group);
@@ -212,6 +215,7 @@ function renderSlot(lang, index, { branch, slotCount, ownerCtx, hostCtx, describ
   const unmet = branchBuildingUnmet(selected, ownerCtx, hostCtx);
   const inactiveReasons = [
     ...(unlocked ? [] : [t(lang, "branchSlotLockedShort")]),
+    ...(branchBuildingLimitReached(selected, branch.slots.slice(0, index + 1), index) ? [t(lang, "branchLimitReached")(selected.maxPerColony)] : []),
     ...unmet.map((entry) => describeBranchRule(lang, entry, describeRule)).filter(Boolean)
   ];
   if (inactiveReasons.length) {

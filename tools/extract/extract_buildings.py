@@ -51,6 +51,7 @@ def extract(game):
             "convert_to": strings(b.get("convert_to")),
             "building_sets": strings(b.get("building_sets")),
             "planet_limit": b.get("planet_limit"),
+            "base_cap_amount": b.get("base_cap_amount"),
             "empire_limit": b.get("empire_limit"),
             "capital": b.get("capital") is True,
             "capital_tier": b.get("capital_tier"),

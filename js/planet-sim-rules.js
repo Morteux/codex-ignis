@@ -13,7 +13,7 @@ import { DEPOSIT_FEATURES, DEPOSIT_FEATURE_BODIES, UNCAPPED_DISTRICTS, STRATEGIC
 import { getPlanetState } from "./planet-state.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
 import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
-import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OFFICE_BUILDINGS, branchBuildingAvailable } from "./branch-office-data.js";
+import { branchSlotCount, branchHostBlockReason, branchOwnerContext, getBranchBuilding, BRANCH_OFFICE_BUILDINGS, branchBuildingAvailable, branchSlotsWithinLimits } from "./branch-office-data.js";
 import { showNotice } from "./planet-sim-dom.js";
 import { URBAN_MIN_COUNT, districtState, selectedBlockers, selectedPlanetModifiers, strategicDepositChoice, branchOffice, buildingsById, builtMap, sim } from "./planet-sim-state.js";
 import { describeUnmetRule } from "./planet-sim-text.js";
@@ -527,7 +527,7 @@ export function activeBranchBuildings() {
   const ownerCtx = branchOwnerContext(branchOffice);
   const hostCtx = requirementContext();
   const slots = branchSlotCount(currentCapital().tier);
-  return branchOffice.slots.slice(0, slots).map((id) => getBranchBuilding(id)).filter((building) => building && branchBuildingAvailable(building, ownerCtx, hostCtx));
+  return branchSlotsWithinLimits(branchOffice.slots.slice(0, slots)).map((id) => getBranchBuilding(id)).filter((building) => building && branchBuildingAvailable(building, ownerCtx, hostCtx));
 }
 
 /** Name of a branch office building (legal id or illegal twin id) for the modifier panel. */

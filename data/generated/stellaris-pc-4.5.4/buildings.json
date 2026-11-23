@@ -163,6 +163,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 1,
@@ -663,6 +664,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -1165,6 +1167,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -1668,6 +1671,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 4,
@@ -2127,6 +2131,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 1,
@@ -2573,6 +2578,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -3022,6 +3028,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -3484,6 +3491,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 4,
@@ -3931,6 +3939,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -4352,6 +4361,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -4808,6 +4818,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -5364,6 +5375,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -5927,6 +5939,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 4,
@@ -6444,6 +6457,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -6907,6 +6921,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -7347,6 +7362,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -7787,6 +7803,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -8256,6 +8273,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -8760,6 +8778,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -9229,6 +9248,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -9612,6 +9632,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -9756,6 +9777,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -9894,6 +9916,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10001,6 +10024,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10100,6 +10124,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10205,6 +10230,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10300,6 +10326,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10397,6 +10424,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10515,6 +10543,7 @@
     "urban"
    ],
    "planet_limit": "base = 1\nmodifier = {\n\texists = owner\n\towner = {\n\t\thas_tradition = tr_cloning_finish\n\t}\n\thas_upgraded_capital = yes\n\tadd = 1\n}\nmodifier = {\n\texists = owner\n\towner = {\n\t\thas_tradition = tr_cloning_finish\n\t}\n\thas_major_upgraded_capital = yes\n\tadd = 1\n}\nmodifier = {\n\texists = owner\n\towner = {\n\t\thas_tradition = tr_cloning_finish\n\t}\n\thas_fully_upgraded_capital = yes\n\tadd = 1\n}",
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10641,6 +10670,7 @@
     "origin"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 5",
    "capital": false,
    "capital_tier": null,
@@ -10779,6 +10809,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10849,6 +10880,7 @@
     "generator_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10918,6 +10950,7 @@
     "generator_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -10989,6 +11022,7 @@
     "mining_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11058,6 +11092,7 @@
     "mining_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11129,6 +11164,7 @@
     "farming_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11198,6 +11234,7 @@
     "farming_automation"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11269,6 +11306,7 @@
     "automation"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11341,6 +11379,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11421,6 +11460,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11504,6 +11544,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11592,6 +11633,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11693,6 +11735,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11790,6 +11833,7 @@
     "urban"
    ],
    "planet_limit": 3,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11896,6 +11940,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -11983,6 +12028,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12087,6 +12133,7 @@
     "knights"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -12192,6 +12239,7 @@
     "knights"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12286,6 +12334,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12402,6 +12451,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12504,6 +12554,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12587,6 +12638,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12667,6 +12719,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12748,6 +12801,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12826,6 +12880,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12902,6 +12957,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -12986,6 +13042,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13077,6 +13134,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13175,6 +13233,7 @@
     "hydroponics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13262,6 +13321,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13350,6 +13410,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13427,6 +13488,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13503,6 +13565,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13579,6 +13642,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13653,6 +13717,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13749,6 +13814,7 @@
     "factory"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13890,6 +13956,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -13991,6 +14058,7 @@
     "harvest"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14110,6 +14178,7 @@
     "harvest"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14210,6 +14279,7 @@
     "mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14286,6 +14356,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14362,6 +14433,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14436,6 +14508,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14523,6 +14596,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14610,6 +14684,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14698,6 +14773,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14775,6 +14851,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14851,6 +14928,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -14927,6 +15005,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15001,6 +15080,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15073,6 +15153,7 @@
     "harvest"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15168,6 +15249,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15237,6 +15319,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15323,6 +15406,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15424,6 +15508,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15523,6 +15608,7 @@
     "industrial"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15618,6 +15704,7 @@
     "factory"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15719,6 +15806,7 @@
     "industrial"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15818,6 +15906,7 @@
     "industrial"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15899,6 +15988,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -15984,6 +16074,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16071,6 +16162,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16166,6 +16258,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16253,6 +16346,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16357,6 +16451,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16447,6 +16542,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16560,6 +16656,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16667,6 +16764,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16770,6 +16868,7 @@
     "industrial"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16859,6 +16958,7 @@
     "industrial"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -16934,6 +17034,7 @@
     "industrial"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17023,6 +17124,7 @@
     "industrial"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17104,6 +17206,7 @@
     "industrial"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17216,6 +17319,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17352,6 +17456,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17486,6 +17591,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17598,6 +17704,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17701,6 +17808,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17809,6 +17917,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -17915,6 +18024,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18023,6 +18133,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18135,6 +18246,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -18295,6 +18407,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18423,6 +18536,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18538,6 +18652,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18652,6 +18767,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18763,6 +18879,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18878,6 +18995,7 @@
     "society"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -18992,6 +19110,7 @@
     "society"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19103,6 +19222,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19218,6 +19338,7 @@
     "engineering"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19332,6 +19453,7 @@
     "engineering"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19435,6 +19557,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19543,6 +19666,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19617,6 +19741,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19721,6 +19846,7 @@
     "trade"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19845,6 +19971,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -19977,6 +20104,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20106,6 +20234,7 @@
     "trade"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20206,6 +20335,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20289,6 +20419,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20365,6 +20496,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20447,6 +20579,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20521,6 +20654,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20601,6 +20735,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20675,6 +20810,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20755,6 +20891,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20847,6 +20984,7 @@
     "entertainment"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -20960,6 +21098,7 @@
     "entertainment"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21059,6 +21198,7 @@
     "medical"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21163,6 +21303,7 @@
     "medical"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21280,6 +21421,7 @@
     "medical"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21385,6 +21527,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21481,6 +21624,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21608,6 +21752,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21738,6 +21883,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21848,6 +21994,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -21931,6 +22078,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22012,6 +22160,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22099,6 +22248,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22188,6 +22338,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22273,6 +22424,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22377,6 +22529,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22480,6 +22633,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22559,6 +22713,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22645,6 +22800,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22735,6 +22891,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22813,6 +22970,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -22903,6 +23061,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23004,6 +23163,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23092,6 +23252,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23182,6 +23343,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23287,6 +23449,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23381,6 +23544,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23473,6 +23637,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23592,6 +23757,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23709,6 +23875,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23818,6 +23985,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23901,6 +24069,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -23982,6 +24151,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24065,6 +24235,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24147,6 +24318,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24227,6 +24399,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24310,6 +24483,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24394,6 +24568,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24472,6 +24647,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24568,6 +24744,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24711,6 +24888,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24850,6 +25028,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -24984,6 +25163,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25102,6 +25282,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25183,6 +25364,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25262,6 +25444,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25370,6 +25553,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -25500,6 +25684,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -25653,6 +25838,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25777,6 +25963,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25901,6 +26088,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -25994,6 +26182,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26075,6 +26264,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26143,6 +26333,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26211,6 +26402,7 @@
     "mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26302,6 +26494,7 @@
     "betharian"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26460,6 +26653,7 @@
     "zoo"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26563,6 +26757,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -26609,6 +26804,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26665,6 +26861,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -26728,6 +26925,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26790,6 +26988,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26854,6 +27053,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26920,6 +27120,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -26973,6 +27174,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27021,6 +27223,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27092,6 +27295,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -27161,6 +27365,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27218,6 +27423,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27273,6 +27479,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -27319,6 +27526,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27375,6 +27583,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -27427,6 +27636,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27480,6 +27690,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27533,6 +27744,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27581,6 +27793,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27651,6 +27864,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 0,
@@ -27718,6 +27932,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27769,6 +27984,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27825,6 +28041,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27900,6 +28117,7 @@
     "pre_ftl"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -27962,6 +28180,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28030,6 +28249,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28098,6 +28318,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28167,6 +28388,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28219,6 +28441,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 1,
@@ -28298,6 +28521,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28351,6 +28575,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28404,6 +28629,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -28487,6 +28713,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28581,6 +28808,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28662,6 +28890,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28764,6 +28993,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -28877,6 +29107,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -29003,6 +29234,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -29117,6 +29349,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -29243,6 +29476,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -29340,6 +29574,7 @@
     "fallen_empire"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -29425,6 +29660,7 @@
     "fallen_empire"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -29522,6 +29758,7 @@
     "fallen_empire"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -29610,6 +29847,7 @@
     "fallen_empire"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -29702,6 +29940,7 @@
     "fallen_empire"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -29841,6 +30080,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30005,6 +30245,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30112,6 +30353,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30207,6 +30449,7 @@
     "factory"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30329,6 +30572,7 @@
     "factory"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30460,6 +30704,7 @@
     "fallen_empire_farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30599,6 +30844,7 @@
     "fallen_empire_farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30725,6 +30971,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30819,6 +31066,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -30922,6 +31170,7 @@
     "fallen_empire_generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31059,6 +31308,7 @@
     "fallen_empire_generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31188,6 +31438,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31310,6 +31561,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31431,6 +31683,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31539,6 +31792,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31659,6 +31913,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31798,6 +32053,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -31933,6 +32189,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32058,6 +32315,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32180,6 +32438,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32305,6 +32564,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32427,6 +32687,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32552,6 +32813,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32686,6 +32948,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32835,6 +33098,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -32965,6 +33229,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33104,6 +33369,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33245,6 +33511,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33385,6 +33652,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33541,6 +33809,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33667,6 +33936,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33809,6 +34079,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -33949,6 +34220,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34077,6 +34349,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34164,6 +34437,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34272,6 +34546,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34399,6 +34674,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34545,6 +34821,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34733,6 +35010,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -34910,6 +35188,7 @@
     "fallen_empire_mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35056,6 +35335,7 @@
     "fallen_empire_mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35200,6 +35480,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35355,6 +35636,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35528,6 +35810,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35683,6 +35966,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -35842,6 +36126,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36054,6 +36339,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36212,6 +36498,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36389,6 +36676,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36569,6 +36857,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36735,6 +37024,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -36910,6 +37200,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37085,6 +37376,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37257,6 +37549,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37391,6 +37684,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37548,6 +37842,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37716,6 +38011,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -37888,6 +38184,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38084,6 +38381,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38229,6 +38527,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38407,6 +38706,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38568,6 +38868,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38713,6 +39014,7 @@
    ],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38870,6 +39172,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -38977,6 +39280,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39087,6 +39391,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39265,6 +39570,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39411,6 +39717,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39529,6 +39836,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39686,6 +39994,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39836,6 +40145,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -39953,6 +40263,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40046,6 +40357,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40157,6 +40469,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40248,6 +40561,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40360,6 +40674,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40424,6 +40739,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40516,6 +40832,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40595,6 +40912,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40685,6 +41003,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40777,6 +41096,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40877,6 +41197,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -40956,6 +41277,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41024,6 +41346,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41092,6 +41415,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41178,6 +41502,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41270,6 +41595,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41362,6 +41688,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41470,6 +41797,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41580,6 +41908,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -41676,6 +42005,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -41745,6 +42075,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41835,6 +42166,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -41910,6 +42242,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42012,6 +42345,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42102,6 +42436,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42196,6 +42531,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42297,6 +42633,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42372,6 +42709,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42453,6 +42791,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42530,6 +42869,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42608,6 +42948,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42724,6 +43065,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42818,6 +43160,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -42917,6 +43260,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -43016,6 +43360,7 @@
    "convert_to": [],
    "building_sets": [],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -43107,6 +43452,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -43177,6 +43523,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -43239,6 +43586,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -43301,6 +43649,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -43365,6 +43714,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": true,
    "capital_tier": 1,
@@ -43442,6 +43792,7 @@
     "pre_ftl"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -43519,6 +43870,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -43619,6 +43971,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -43703,6 +44056,7 @@
     "society"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -43774,6 +44128,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -43876,6 +44231,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -43976,6 +44332,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44103,6 +44460,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44224,6 +44582,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44345,6 +44704,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44464,6 +44824,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44585,6 +44946,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44723,6 +45085,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44868,6 +45231,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -44991,6 +45355,7 @@
     "physics"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45102,6 +45467,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45224,6 +45590,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45344,6 +45711,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45455,6 +45823,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45551,6 +45920,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45646,6 +46016,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -45783,6 +46154,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tmult = -1\n\thas_country_flag = cybernetic_creed_research\n}",
    "capital": false,
    "capital_tier": null,
@@ -45952,6 +46324,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -46119,6 +46492,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tmult = -1\n\thas_country_flag = cybernetic_creed_war\n}",
    "capital": false,
    "capital_tier": null,
@@ -46274,6 +46648,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -46412,6 +46787,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tmult = -1\n\thas_country_flag = cybernetic_creed_labor\n}",
    "capital": false,
    "capital_tier": null,
@@ -46522,6 +46898,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -46661,6 +47038,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tmult = -1\n\thas_country_flag = cybernetic_creed_construction\n}",
    "capital": false,
    "capital_tier": null,
@@ -46818,6 +47196,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -46965,6 +47344,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tmult = -1\n\thas_country_flag = cybernetic_creed_general\n}",
    "capital": false,
    "capital_tier": null,
@@ -47081,6 +47461,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47216,6 +47597,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47266,6 +47648,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47321,6 +47704,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -47394,6 +47778,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -47472,6 +47857,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 4,
@@ -47562,6 +47948,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47640,6 +48027,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47713,6 +48101,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47790,6 +48179,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47854,6 +48244,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47924,6 +48315,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -47993,6 +48385,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48071,6 +48464,7 @@
     "cosmogenesis_world"
    ],
    "planet_limit": 2,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48173,6 +48567,7 @@
     "engineering"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48321,6 +48716,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48405,6 +48801,7 @@
     "physics"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -48501,6 +48898,7 @@
     "engineering"
    ],
    "planet_limit": 6,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48612,6 +49010,7 @@
     "engineering"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48702,6 +49101,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -48810,6 +49210,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -48987,6 +49388,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -49164,6 +49566,7 @@
     "resort"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -49318,6 +49721,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49418,6 +49822,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49516,6 +49921,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49615,6 +50021,7 @@
     "hunting_zone"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49716,6 +50123,7 @@
     "hunting_zone"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49815,6 +50223,7 @@
     "hunting_zone"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -49913,6 +50322,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50013,6 +50423,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50111,6 +50522,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50209,6 +50621,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50309,6 +50722,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50407,6 +50821,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50505,6 +50920,7 @@
     "urban"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50605,6 +51021,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50703,6 +51120,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -50856,6 +51274,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 1,
@@ -51280,6 +51699,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 2,
@@ -51706,6 +52126,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 3,
@@ -52131,6 +52552,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 4,
@@ -52551,6 +52973,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": true,
    "capital_tier": 5,
@@ -52893,6 +53316,7 @@
     "government"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -52972,6 +53396,7 @@
     "trade"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53047,6 +53472,7 @@
     "trade"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53126,6 +53552,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53204,6 +53631,7 @@
     "trade"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53313,6 +53741,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53449,6 +53878,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53591,6 +54021,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53736,6 +54167,7 @@
     "research"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53857,6 +54289,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -53960,6 +54393,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54067,6 +54501,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54174,6 +54609,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54278,6 +54714,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54385,6 +54822,7 @@
     "farming"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54498,6 +54936,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54611,6 +55050,7 @@
     "farming"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54721,6 +55161,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54828,6 +55269,7 @@
     "generator"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -54941,6 +55383,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55054,6 +55497,7 @@
     "generator"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55164,6 +55608,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55271,6 +55716,7 @@
     "mining"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55384,6 +55830,7 @@
     "mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55497,6 +55944,7 @@
     "mining"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55602,6 +56050,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55700,6 +56149,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55802,6 +56252,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -55905,6 +56356,7 @@
     "foundry"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56000,6 +56452,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56107,6 +56560,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56201,6 +56655,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56293,6 +56748,7 @@
     "unity"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56370,6 +56826,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56445,6 +56902,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56520,6 +56978,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56620,6 +57079,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56745,6 +57205,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56841,6 +57302,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -56923,6 +57385,7 @@
     "government"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57020,6 +57483,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57117,6 +57581,7 @@
     "fortress"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57211,6 +57676,7 @@
     "society"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57370,6 +57836,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": 1,
    "capital": false,
    "capital_tier": null,
@@ -57457,6 +57924,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57554,6 +58022,7 @@
     "foundry"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57652,6 +58121,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57741,6 +58211,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57828,6 +58299,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -57918,6 +58390,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58030,6 +58503,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58140,6 +58614,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58248,6 +58723,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58360,6 +58836,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58470,6 +58947,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58573,6 +59051,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58662,6 +59141,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58749,6 +59229,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58849,6 +59330,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -58983,6 +59465,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59117,6 +59600,7 @@
     "research"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59240,6 +59724,7 @@
     "unity"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -59344,6 +59829,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59429,6 +59915,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1",
    "capital": false,
    "capital_tier": null,
@@ -59527,6 +60014,7 @@
     "fortress"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59656,6 +60144,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": "base = 1\nmodifier = {\n\tadd = materiality_engine_available\n\tcheck_variable = {\n\t\twhich = materiality_engine_available\n\t\tvalue > 0\n\t}\n}",
    "capital": false,
    "capital_tier": null,
@@ -59763,6 +60252,7 @@
     "urban"
    ],
    "planet_limit": null,
+   "base_cap_amount": 1,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59874,6 +60364,7 @@
     "ark_forever_cruise_passengers"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -59965,6 +60456,7 @@
     "ark_forever_cruise_passengers"
    ],
    "planet_limit": null,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60044,6 +60536,7 @@
     "ark_forever_cruise_passengers"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60120,6 +60613,7 @@
     "ark_forever_cruise_passengers"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60197,6 +60691,7 @@
     "ark_forever_cruise_passengers"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60285,6 +60780,7 @@
     "ark_forever_cruise_crew"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60385,6 +60881,7 @@
     "ark_forever_cruise_crew"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60486,6 +60983,7 @@
     "ark_forever_cruise_crew"
    ],
    "planet_limit": 1,
+   "base_cap_amount": null,
    "empire_limit": null,
    "capital": false,
    "capital_tier": null,
@@ -60524,5 +61022,7 @@
    }
   }
  ],
- "warnings": []
+ "warnings": [
+  "common/scripted_triggers/08_scripted_triggers_shroud.txt:639: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop"
+ ]
 }
