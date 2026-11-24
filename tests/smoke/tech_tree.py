@@ -1,5 +1,5 @@
 """Tech tree data (section 30): the test fixture, the data validations and the data files."""
-import glob, json, os, subprocess
+import glob, json, os, subprocess, sys, tempfile
 from smoke.common import check, ROOT
 
 FIXTURE = "tests/fixtures/tech-tree/tech-data-fixture.js"
@@ -34,6 +34,26 @@ async def run(t):
     data_check = subprocess.run(["node", os.path.join(ROOT, "tests", "tech-data-check.mjs"), ROOT], capture_output=True, text=True)
     check("tech tree data: unique ids, area / field / tier / kind, known prerequisites and no cycles; self-tests catch broken data",
           data_check.returncode == 0 and data_check.stdout.rstrip().endswith("problems 0"), data_check.stdout[-600:] + data_check.stderr[-300:])
+
+    # T3005: the 4.5.4 data file is the current build of the extractor output, with every technology
+    real = "js/tech-data/stellaris-pc-4.5.4.js"
+    with tempfile.TemporaryDirectory() as tmp:
+        fresh = os.path.join(tmp, "tech.js")
+        build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_tech_data.py"),
+                                "--data", os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4"), "--out", fresh], capture_output=True, text=True)
+        # text mode reads CRLF and LF alike (git may check the file out with CRLF)
+        same = build.returncode == 0 and open(fresh, encoding="utf-8").read() == open(os.path.join(ROOT, real), encoding="utf-8").read()
+    check("tech tree data 4.5.4: the data file matches a fresh build of the extractor output", same, build.stdout[-200:] + build.stderr[-300:])
+    with open(os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4", "technologies.json"), encoding="utf-8") as f:
+        extracted = json.load(f)["items"]
+    rd = node_json("import {TECH_DATA as d} from './%s'; const T=d.technologies; const k=(n)=>T.filter(x=>x.kind===n).length;"
+                   "console.log(JSON.stringify({n:T.length,ids:T.map(x=>x.id),event:T.filter(x=>x.flags.includes('event')).length,"
+                   "repeatable:k('repeatable'),rep:T.filter(x=>x.repeatable).length,starter:k('starter'),rule:d.rulesetId}))" % real)
+    check("tech tree data 4.5.4: every extracted technology, event and repeatable ones included",
+          rd.get("rule") == "stellaris-pc-4.5.4" and rd.get("ids") == [x["id"] for x in extracted]
+          and rd.get("event") == sum(1 for x in extracted if x["flags"]["event"]) > 0
+          and rd.get("repeatable") == rd.get("rep") == sum(1 for x in extracted if x["flags"]["repeatable"]) > 0 and rd.get("starter", 0) > 0,
+          {k: v for k, v in rd.items() if k != "ids"})
 
     # T3003: reserved icon slot — fixed-size frame, lazy image, a missing file leaves it empty with no layout shift
     pg = await t.ctx.new_page()
