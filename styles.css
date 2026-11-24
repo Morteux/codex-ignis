@@ -3498,6 +3498,22 @@ h1 {
     font: .6rem var(--mono);
 }
 
+/* T3103: prerequisite lines (js/tech-tree-lines.js), one SVG under the nodes of each grid. */
+.tech-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.tech-line {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1.5;
+}
+
 @media (max-width: 700px) {
     .tech-area-tabs {
         display: flex;

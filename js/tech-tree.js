@@ -4,7 +4,8 @@
  * The static markup (shell, area panels, credits, footer) is translated by the shared page shell
  * (js/page-shell.js). This script adds the dynamic parts: the data version line, the area tabs
  * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
- * grid of nodes of every area (js/tech-tree-layout.js).
+ * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
+ * (js/tech-tree-lines.js).
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
@@ -12,6 +13,7 @@ import { t } from "./i18n.js";
 import { DATA_COLLECTIONS } from "./data-version.js";
 import { TECH_DATA } from "./tech-data/stellaris-pc-4.5.4.js";
 import { renderAreaGrid, relabelGrids } from "./tech-tree-layout.js";
+import { watchLines } from "./tech-tree-lines.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -75,7 +77,10 @@ applyPageTranslations();
 setupAreaTabs();
 renderDataVersion(getLang());
 renderTree(getLang());
+const redrawLines = watchLines(document.querySelector(".tech-areas"), TECH_DATA);
 onLanguageChange((lang) => {
   renderDataVersion(lang);
   relabelGrids(document.querySelector(".tech-areas"), TECH_DATA, lang);
+  redrawLines();
 });
+document.addEventListener("tech-area-change", redrawLines);

@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3103 — Prerequisite lines (2026-11-25)
+- [ ] **No lines across areas**: 74 of the 568 prerequisites of 4.5.4 link two areas; with the areas in separate panels (tabs on mobile) they cannot be drawn, so they will only be listed in the detail card (T3201).
+- [ ] **Line shape**: a curve from the right edge of the prerequisite to the left edge of the technology; same-tier prerequisites (139) loop on the right side, and the 9 prerequisites of a higher tier go from the left edge back.
+
 ## T3102 — Tech tree grid and nodes (2026-11-25)
 - [ ] **Nodes sorted by English name** inside each field × tier cell (no game order exists for display).
 - [ ] **Kind names translated** as interface labels (es: Inicial, Rara, Peligrosa, Repetible, De evento, Adquisición; jp: 初期, レア, 危険, 繰り返し, イベント, 獲得); "Tier" is "Nivel" in Spanish and "ティア" in Japanese. Field and technology names stay in English.

@@ -234,5 +234,44 @@ async def page_checks(t):
     check("tech tree nodes: tier and kind follow the language, the technology name stays in English",
           es_meta == ["Nivel 2 · Rara", "Nivel 0", "Red Lasers"], es_meta)
 
+    # T3103: SVG prerequisite lines between nodes of the same area, ends on the node edges, redrawn on resize
+    lines_js = """async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      const byId=new Map(d.technologies.map(x=>[x.id,x]));
+      const expected=d.technologies.reduce((n,x)=>n+x.prerequisites.filter(p=>byId.get(p).area===x.area).length,0);
+      const cross=d.technologies.reduce((n,x)=>n+x.prerequisites.filter(p=>byId.get(p).area!==x.area).length,0);
+      const out={expected,cross,grids:[]};
+      document.querySelectorAll('.tech-grid').forEach(g=>{const svg=g.querySelector(':scope > svg.tech-lines');if(!g.offsetWidth){out.grids.push({area:g.dataset.area,hidden:true});return}
+        const node=(id)=>g.querySelector('.tech-node[data-tech-id="'+id+'"]');const bad=[];
+        const onEdge=(n,x,y)=>{const l=n.offsetLeft,r=l+n.offsetWidth,m=n.offsetTop+n.offsetHeight/2;return (Math.abs(x-l)<1||Math.abs(x-r)<1)&&Math.abs(y-m)<1};
+        const paths=svg?[...svg.querySelectorAll('path.tech-line')]:[];
+        paths.forEach(p=>{const nums=p.getAttribute('d').match(/-?[\\d.]+/g).map(Number);const a=node(p.dataset.from),b=node(p.dataset.to);
+          if(!a||!b||!byId.get(p.dataset.to).prerequisites.includes(p.dataset.from)||!onEdge(a,nums[0],nums[1])||!onEdge(b,nums[nums.length-2],nums[nums.length-1]))bad.push(p.dataset.from+'>'+p.dataset.to)});
+        out.grids.push({area:g.dataset.area,n:paths.length,bad:bad.slice(0,5),size:svg?[+svg.getAttribute('width'),+svg.getAttribute('height')]:null,grid:[g.offsetWidth,g.offsetHeight],
+          under:svg&&getComputedStyle(svg).zIndex==='0'&&getComputedStyle(g.querySelector('.tech-node')).zIndex==='1'&&svg.getAttribute('aria-hidden')==='true'})});
+      return out}"""
+    ln = await pg.evaluate(lines_js)
+    visible = [g for g in ln["grids"] if not g.get("hidden")]
+    check("tech tree lines: one SVG curve per prerequisite inside an area (cross-area ones left to the card), ends on the node edges, under the nodes",
+          len(visible) == 3 and sum(g["n"] for g in visible) == ln["expected"] > 400 and ln["cross"] > 0
+          and all(not g["bad"] and g["size"] == g["grid"] and g["under"] for g in visible), ln)
+    await pg.evaluate("()=>document.querySelector('.tech-grid[data-area=physics]').style.setProperty('--tech-node-width','15rem')")
+    await pg.set_viewport_size({"width": 1100, "height": 900})
+    await pg.wait_for_timeout(200)
+    ln2 = await pg.evaluate(lines_js)
+    phys = next(g for g in ln2["grids"] if g["area"] == "physics")
+    check("tech tree lines: redrawn when the grid or window changes size (wider physics nodes, narrower window)",
+          not phys["bad"] and phys["size"] == phys["grid"] and phys["grid"][0] > visible[0]["grid"][0], (phys, visible[0]["grid"]))
+    await pg.evaluate("()=>document.querySelector('.tech-grid[data-area=physics]').style.removeProperty('--tech-node-width')")
+    await pg.set_viewport_size({"width": 375, "height": 760})
+    await pg.click("#tech-tab-engineering")
+    ln3 = await pg.evaluate(lines_js)
+    eng = next(g for g in ln3["grids"] if g["area"] == "engineering")
+    check("tech tree lines: a mobile tab shown again gets its lines drawn at the mobile size",
+          [g["area"] for g in ln3["grids"] if not g.get("hidden")] == ["engineering"] and eng["n"] > 100 and not eng["bad"] and eng["size"] == eng["grid"], eng)
+    await pg.click("#tech-tab-physics")
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.wait_for_timeout(100)
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
