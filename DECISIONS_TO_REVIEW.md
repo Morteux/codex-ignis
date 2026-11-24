@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3404 — Documentation of the finished tech tree (2026-11-25)
+- [ ] **README**: a new section "Árbol de tecnologías" (features, links, data sources, versions, tests); the module list stays in the structure table, and the tech tree checks got their own subsection under "Pruebas" (same text).
+- [ ] **"The GDD" is `TECH_TREE_GDD.md`**: marked finished, the wiki removed as its source (owner's decision of 2026-11-22), page behaviour detailed in §6 and a new §8 on code and tests. `PLANET_SIM_GDD.md` only gets one sentence in §3 about the "Researched with" links.
+
 ## T3403 — Accessibility of the tech tree (2026-11-25)
 - [ ] **One Tab stop per area (roving tabindex)**: Tab enters each area at its last focused node (at first, the first node; after a selection, the selected one) and the next Tab leaves the area, instead of crossing every node. The panel keeps its own Tab stop for panning with the arrows (T3204).
 - [ ] **Arrow keys on a node**: → / ← go to the nearest node (vertically) of the next / previous non-empty tier column, ↓ / ↑ to the next / previous node of the same tier column across fields, Home / End to the first / last node of the area; Enter or Space selects. There is no key to jump along prerequisite lines (the card's prerequisite and "leads to" buttons do that).

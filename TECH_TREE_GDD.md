@@ -4,25 +4,25 @@ Design rules and decisions of the tech tree. Pending work lives in `tasks.md` (s
 
 - **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files (owner, 2026-11-22). Data stays `unverified` until the final data review (T1406).
 - **Scope:** only `tech-tree.html` and its modules. The planet simulator has its own GDD (`PLANET_SIM_GDD.md`).
-- **Rule #1 (as in the simulator):** never invent rules, numbers or names. Everything comes from the wiki pages; missing or ambiguous data → the task is marked blocked with the question.
-- **Status:** in progress. Data of 4.5.4 done (section 30); the page is being built (section 31). The owner decided on 2026-11-22 to start it now (the simulator only has tasks waiting for the owner left).
+- **Rule #1 (as in the simulator):** never invent rules, numbers or names. Data comes from the game files (§4.1); missing or ambiguous data → the task is marked blocked with the question.
+- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: deep link from the card into the simulator (T3405), data verification (T1406), official localisation of game names (P15) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
 
 ## 1. Goal
-Turn the Stellaris wiki technology pages into an **explorable tech tree** inside Codex Ignis: see the technologies by area, field and tier, follow prerequisites and what each one unlocks, search and filter, and consult **previous versions** of the tree as the game is updated.
+Turn the technology data of the game into an **explorable tech tree** inside Codex Ignis: see the technologies by area, field and tier, follow prerequisites and what each one unlocks, search and filter, and consult **previous versions** of the tree as the game is updated.
 
 ## 2. Credits and inspiration
 Inspired by the *Stellaris Tech Tree* of **BloodStainedCrow** (https://bloodstainedcrow.github.io/stellaris-tech-tree/) and its older, outdated version by *turanar* (https://turanar.github.io/stellaris-tech-tree/index.html), already linked in "Enlaces útiles" of `js/content.js`.
 
-- **No code or data is reused** from those projects: the tree is written from scratch and fed by the wiki. Only the idea is taken (layout by area and tier, prerequisite lines, explore on click).
-- Credits are visible: a "Credits" section in `tech-tree.html` (links to both projects), a mention in `README.md` and in the page footer.
-- Game data and names belong to Paradox Interactive (legal notice already in `privacy.html`). Data comes from the Stellaris wiki (`WIKI_URLS.md`), whose terms allow its use (confirmed by the owner on 2026-11-19); it is cited as the source.
+- **No code or data is reused** from those projects: the tree is written from scratch and fed by our own game files extractor. Only the idea is taken (layout by area and tier, prerequisite lines, explore on click).
+- Credits are visible: a "Credits" section in `tech-tree.html` (links to both projects), a mention in `README.md` and in the page footer. "Enlaces útiles" lists our tree first and BloodStainedCrow's as its inspiration.
+- Game data and names belong to Paradox Interactive (legal notice already in `privacy.html`). Data is read from the installed game files (§4.1); the Stellaris wiki is no longer a source.
 
 ## 3. Principles (inherited from the simulator)
 - **Data-driven and versioned:** data lives in its own files, one per game version, never inside the drawing logic. Reuses the `js/data-version.js` registry (`DATA_VERSIONS`, `rulesetId`, verification statuses `unverified` → `wiki-verified`).
 - **Honest:** whatever is not modelled is shown as such; nothing is filled in by eye.
 - **No build step**, ES modules, the same terminal look and the shared page shell of the rest of the site.
 - **Languages:** interface texts in `js/i18n-tech-tree.js` (the tech tree area of `js/i18n.js`, P23.4) with es/en/jp keys. Game names (technologies, buildings, components…) stay in **English** in every language until official localisation (P15) is unblocked; no hand translations.
-- **Icons** from the assets repository (`STELLARIS_ASSETS_BASE`, `js/asset-config.js`; file list in `StellarisAssetsFileTree.txt`). The repository has **no technology icons** today; the extractor exports them (T2506) and the owner uploads them (T3008). Until then every node and card keeps a **reserved, fixed-size empty icon slot** (never a made-up placeholder): each record already carries its `icon` path (`technologies/<id>.png`), images load lazily, and a missing file leaves the frame empty without moving anything, so the icons appear on their own once uploaded.
+- **Icons** from the assets repository (`STELLARIS_ASSETS_BASE`, `js/asset-config.js`; file list in `StellarisAssetsFileTree.txt`). Technology icons are in `technologies/`, exported by the extractor (T2524, T3008). Every node and card keeps a **fixed-size icon slot** (never a made-up placeholder): each record carries its `icon` path (§4.3), images load lazily, and a missing file leaves the frame empty without moving anything.
 - **No code or data from other tech tree projects** (owner, 2026-11-22): the data comes from our own game files extractor (`GAME_FILES_EXTRACTOR.md`).
 - **Testable:** every task ends with browser checks in the smoke tests (load the page, open a node, search, switch version), like the simulator.
 
@@ -92,14 +92,25 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
   6. Run the smoke tests and update `README.md` if the structure changed.
 
 ## 6. Page
-- Shared page shell (header, language selector, footer) of the rest of the site.
-- Three areas side by side (tabs on mobile); inside each area, columns by tier and rows grouped by field.
-- Nodes: name, tier and kind; prerequisite lines in SVG.
-- States: normal, selected, prerequisite of the selected, unlocked by the selected, and kind colours (rare, dangerous, starter, repeatable, event).
-- Detail card: base cost, tier, kind, description, prerequisites and requirements, unlocks, draw weight, DLC, version.
-- Exploration: highlight the whole prerequisite chain and everything that depends on the selected tech; accent-insensitive search; filters (area, field, tier, kind, DLC); zoom and pan; deep link by URL hash.
+- Shared page shell (header, language selector, footer) of the rest of the site. The intro holds the version selector, the shown data version with its verification status, the legend of kind colours and states, and the selection status.
+- Three areas side by side (tabs below 700 px); inside each area, columns by tier (0–5) and one row per field. On phones, field names are vertical, nodes narrower and the tree scrolls sideways inside its panel, never the page.
+- Nodes: icon slot, name, tier and kind. Prerequisite lines are SVG curves between nodes of the same area, redrawn on resize; prerequisites in other areas have no line.
+- States: normal, selected, prerequisite of the selected, unlocked by the selected (whole chain in both directions and across areas, direct neighbours highlighted, the rest dimmed), and kind colours (starter, rare, dangerous, repeatable, event). A second click or Escape clears the selection.
+- Detail card: base cost, tier, kind, area and field, description, variants, prerequisites and "leads to" (buttons that select that technology), other requirements, unlocks (linked to the simulator where T3007 linked them; the link opens `planet-sim.html`), effects, draw weight as information, repeatable levels, DLC, version. Own column on desktop, bottom sheet on phones.
+- Search: by name, accent- and case-insensitive, all words; filters by area, field, tier, kind and DLC (base game included). Non-matches are dimmed and up to 30 results are listed as buttons.
+- Zoom and pan: buttons, Ctrl + wheel, two-finger pinch and + − 0 keys; drag the background or use the arrows on a focused panel.
+- Deep link: `tech-tree.html#<tech id>` selects the technology, opens its card and scrolls to it; the selection rewrites the hash without adding history entries; an unknown id shows a notice.
+- Languages and accessibility: interface in es/en/jp, game names in English marked `lang="en"`; one Tab stop per area, arrows / Home / End between nodes, each node described by its field and state; text contrast 4.5:1 also on dimmed nodes.
+- Links into the tree: wiki articles (`[text](tech-tree.html#<tech id>)`, "Enlaces útiles") and the "Researched with" line of the simulator's building catalogue (new tab), fed by `js/tech-unlock-links.js`.
 
 ## 7. Not modelled / ideas for later
 - Mark techs as researched and compute what is left to reach a goal; save/export a research path (JSON, like the simulator's planets).
 - Let the planet simulator hide buildings not unlocked yet (today it assumes all research done).
-- Research draw simulation (weights, alternatives): out of scope, weights are shown as information only.
+- Research draw simulation (weights, alternatives) and tier gating: out of scope; weights are shown as information only.
+- Unlocks from sets the extractor does not link yet (e.g. ship components); simulator links for edicts and deposits; `starting_potential` (who starts with a technology).
+- Deep link from the card to one building or district of the simulator (T3405).
+
+## 8. Code and tests
+- Modules: listed in the structure table of `README.md`. The page loads only the data file of the chosen version.
+- Generated files, never edited by hand: `js/tech-data/<rulesetId>.js` (`tools/extract/build_tech_data.py`) and then `js/tech-unlock-links.js` (`tools/build-tech-links.mjs`); the browser tests fail if either is stale.
+- Tests: `tests/smoke/tech_tree.py` (part of `tests/policies-smoke.py`) and `tests/tech-data-check.mjs`, with the two fake data versions of `tests/fixtures/tech-tree/`.
