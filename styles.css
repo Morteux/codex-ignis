@@ -1651,6 +1651,25 @@ h1 {
     cursor: pointer;
 }
 
+.planet-catalog-entry {
+    display: grid;
+    gap: .15rem;
+}
+
+.planet-catalog-tech {
+    margin: 0;
+    padding-left: .6rem;
+    color: var(--muted);
+    font-size: .68rem;
+    line-height: 1.4;
+}
+
+.planet-catalog-tech-link {
+    display: inline-block;
+    min-height: 24px;
+    color: var(--accent);
+}
+
 .planet-catalog-item.is-limited {
     border-left-color: var(--slot-limited);
 }

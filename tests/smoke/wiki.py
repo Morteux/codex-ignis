@@ -60,8 +60,8 @@ async def run(t):
         for q in ("https", "stellaris", "color", "amp"):
             await search(q)
             bad = await wiki.evaluate(bad_markup_js)
-            hrefs = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body a')].map(a=>a.getAttribute('href')).filter(h=>!/^https:\\/\\/[^\\s<>\\[\\]]+$/.test(h))")
-            check("wiki links (" + lang + ", search " + q + "): hrefs are clean URLs, no markup inside attributes", not bad and not hrefs, (bad, hrefs))
+            hrefs = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body a')].map(a=>a.getAttribute('href')).filter(h=>!/^https:\\/\\/[^\\s<>\\[\\]]+$/.test(h)&&!/^tech-tree\\.html(#tech_\\w+)?$/.test(h))")
+            check("wiki links (" + lang + ", search " + q + "): hrefs are clean URLs (or the tech tree page, T3402), no markup inside attributes", not bad and not hrefs, (bad, hrefs))
     await wiki.click(".lang-btn[data-lang=es]")
     await wiki.goto("file://" + ROOT + "/index.html#/" + "diseño-flotas-biologicas")
     await wiki.wait_for_timeout(300)

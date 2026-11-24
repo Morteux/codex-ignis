@@ -155,6 +155,7 @@ async def run(t):
     await deeplink_checks(t)
     await version_checks(t)
     await i18n_checks(t)
+    await link_checks(t)
 
 
 async def page_checks(t):
@@ -982,4 +983,44 @@ async def i18n_checks(t):
           en["gameNames"] > 50 and all(s["unmarked"] == 0 and s["names"] == en["names"] for s in scans.values()) and en["unmarked"] == 0,
           {k: (v["unmarked"], v["gameNames"]) for k, v in scans.items()})
     check("tech tree i18n (T3401): no page errors", not errors, errors)
+    await pg.close()
+
+
+async def link_checks(t):
+    """T3402: links to the tech tree from the wiki (tech mentions, Useful links) and from the simulator catalogue."""
+    data = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.5.4.js';import {TECH_UNLOCK_LINKS as l} from './js/tech-unlock-links.js';"
+                     "console.log(JSON.stringify({ids:d.technologies.map(x=>x.id),links:l}))")
+    printed = subprocess.run(["node", "tools/build-tech-links.mjs", "--print"], capture_output=True, text=True, encoding="utf-8", cwd=ROOT).stdout
+    stored = open(os.path.join(ROOT, "js", "tech-unlock-links.js"), encoding="utf-8").read().replace("\r\n", "\n")
+    ids = set(data.get("ids", []))
+    links = data.get("links", {"buildings": {}, "districts": {}})
+    # building ids are the simulator ids of the data file (checked with the unlocks, T3007); capitals and branch office buildings are not in the catalogue
+    bad = [x["id"] for v in links["buildings"].values() for x in v if x["id"] not in ids]
+    check("tech links (T3402): js/tech-unlock-links.js is the output of tools/build-tech-links.mjs and its technologies exist in the tree",
+          printed and printed == stored and len(links["buildings"]) > 100 and not bad, (len(printed), len(stored), bad[:5], data.get("error")))
+    content = open(os.path.join(ROOT, "js", "content.js"), encoding="utf-8").read()
+    wiki = re.findall(r"tech-tree\.html#([\w-]+)", content)
+    useful = re.findall(r'url: "tech-tree\.html"', content)
+    check("tech links (T3402): the wiki links its technology mentions to existing tree nodes (es/en/jp) and Useful links lists the tree in every language",
+          len(wiki) >= 15 and all(x in ids for x in wiki) and len(useful) == 3, ([x for x in wiki if x not in ids], len(wiki), len(useful)))
+
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto("file://" + ROOT + "/planet-sim.html")
+    await pg.wait_for_timeout(600)
+    await pg.click(".lang-btn[data-lang=en]")
+    sim_js = r"""()=>{const a=[...document.querySelectorAll('.planet-catalog-entry .planet-catalog-tech-link')];
+      return {n:a.length,entries:document.querySelectorAll('.planet-catalog-entry').length,items:document.querySelectorAll('.planet-catalog-item').length,
+        bad:a.filter(x=>!/^tech-tree\.html#tech_\w+$/.test(x.getAttribute('href'))||x.target!=='_blank'||x.lang!=='en').length,
+        label:a[0]?.parentElement.firstChild.textContent||'',title:a[0]?.title||'',ids:a.map(x=>x.dataset.techId)}}"""
+    s_en = await pg.evaluate(sim_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    s_es = await pg.evaluate(sim_js)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech links (T3402): simulator catalogue entries show the technologies that unlock them, linked to the tree in a new tab, label translated",
+          s_en["n"] > 20 and s_en["entries"] == s_en["items"] and not s_en["bad"] and all(x in ids for x in s_en["ids"])
+          and "Researched with" in s_en["label"] and "tech tree" in s_en["title"] and "Se investiga con" in s_es["label"] and s_es["n"] == s_en["n"],
+          ({k: s_en[k] for k in ("n", "entries", "items", "bad", "label", "title")}, s_es["label"]))
+    check("tech links (T3402): no page errors", not errors, errors)
     await pg.close()

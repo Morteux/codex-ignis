@@ -11,6 +11,7 @@ import { requirementContextKey, unmodelledRequirements } from "./building-requir
 import { refresh } from "./planet-sim.js";
 import { catalogEl, districtsCatalogEl } from "./planet-sim-dom.js";
 import { renderJobsMini } from "./planet-sim-jobs-ui.js";
+import { TECH_UNLOCK_LINKS } from "./tech-unlock-links.js";
 import { renderDesignationSelect } from "./planet-sim-planet-ui.js";
 import { chainBuildingCount, slotAcceptsBuilding, resolveSelectedSlot, requirementContext, isBuildingAvailable, buildingCount, isLimited, slotSpecInfo, secondaryDistrictDef, primaryDistrictDef, districtBaseJobs, primaryMinCount, canAddDistrict, primaryOption, firstSpecializationLocked, scaleJobs, specializationJobs, specializationJobMultiplier, specializationNotes, secondaryOption, districtDisplayName, canAddResourceDistrict, districtHasNoFeature, districtCap } from "./planet-sim-rules.js";
 import { districtState, builtMap, sim } from "./planet-sim-state.js";
@@ -162,7 +163,41 @@ function renderCatalogItem(building, slotsFull, targetKey) {
     refresh();
   });
 
-  return item;
+  const entry = document.createElement("div");
+  entry.className = "planet-catalog-entry";
+  entry.append(item);
+  const techLinks = renderTechLinks(TECH_UNLOCK_LINKS.buildings[building.id]);
+  if (techLinks) entry.append(techLinks);
+  return entry;
+}
+
+/** Page of the tech tree; `#<tech id>` opens that technology (T3205). */
+const TECH_TREE_URL = "tech-tree.html";
+
+/**
+ * T3402: "Researched with: <technology>" under a catalogue entry, one link per technology that
+ * unlocks it (js/tech-unlock-links.js, made from the tech tree data). Opens the tech tree in a new
+ * tab so the planet being edited stays open. Technology names are game names: English (lang=en).
+ */
+function renderTechLinks(techs) {
+  if (!techs || !techs.length) return null;
+  const line = document.createElement("p");
+  line.className = "planet-catalog-tech";
+  line.append(t(getLang(), "planetSimTechLinkLabel") + " ");
+  techs.forEach((tech, index) => {
+    const link = document.createElement("a");
+    link.className = "planet-catalog-tech-link";
+    link.href = `${TECH_TREE_URL}#${tech.id}`;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.lang = "en";
+    link.dataset.techId = tech.id;
+    link.textContent = tech.name;
+    link.title = t(getLang(), "planetSimTechLinkTitle").replace("{tech}", tech.name);
+    link.setAttribute("aria-label", link.title); // says that it opens a new tab
+    line.append(index ? ", " : "", link);
+  });
+  return line;
 }
 
 /* ── Catálogo de distritos ───────────────────────────────────────────── */

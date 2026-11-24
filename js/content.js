@@ -1174,7 +1174,7 @@ export const knowledgeBase = [
             { type: "paragraph", text: "No obstante, debemos tener cuidado porque tendremos muy poca movilidad en comparación con las corbetas tradicionales. Estos maceros serán nuestra línea de combate principal, pero también una gran fuente de daño a corta distancia. El problema es que tiene poca velocidad sublumínica y poca evasión en comparación con las corbetas, por tanto sufrirán muchas bajas antes de alcanzar a naves más grandes en la retaguardia enemiga." },
 
             { type: "heading", text: "Heraldos y tejedores", level: 2 },
-            { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de protones/neutrones desde ahora." },
+            { type: "paragraph", text: "Si has conseguido las armas G de largo alcance, puedes hacer flotas solo de heraldos con hangares y lanzadores de [protones](tech-tree.html#tech_energy_torpedoes_1)/[neutrones](tech-tree.html#tech_energy_torpedoes_2) desde ahora." },
             { type: "paragraph", text: "Los heraldos ya se pueden beneficiar de los tejedores usando el arma de apoyo que aumenta la velocidad sublumínica y la evasión (Dardos de evasión) y el arma que protege y recupera blindaje (Lanzador de esporas adaptativas inteligente)." },
             { type: "paragraph", text: "La proporción será de cada una de estas armas de apoyo por heraldo." },
             { type: "divider" },
@@ -1253,7 +1253,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "However, we must be careful because they have very poor mobility compared to traditional corvettes. These Mauler will be our main combat line, but they are also a major source of close-range damage. The problem is that they have low sublight speed and low evasion compared to corvettes, so they will suffer heavy casualties before reaching larger ships in the enemy rear line." },
 
                     { type: "heading", text: "Harbingers and Weavers", level: 2 },
-                    { type: "paragraph", text: "If you have obtained the long-range G weapons, you can start making fleets consisting only of Harbingers with hangars and Proton/Neutron Launchers." },
+                    { type: "paragraph", text: "If you have obtained the long-range G weapons, you can start making fleets consisting only of Harbingers with hangars and [Proton](tech-tree.html#tech_energy_torpedoes_1)/[Neutron Launchers](tech-tree.html#tech_energy_torpedoes_2)." },
                     { type: "paragraph", text: "Harbingers can already benefit from Weavers by using the support weapon that increases sublight speed and evasion (Evasion Darts), as well as the weapon that protects and regenerates armor (Intelligent Adaptive Spore Launcher)." },
                     { type: "paragraph", text: "The ratio should be one of each of these support weapons per Harbinger." },
                     { type: "divider" },
@@ -1332,7 +1332,7 @@ export const knowledgeBase = [
                     { type: "paragraph", text: "ただし、通常のコルベットと比べて機動力が非常に低いため、注意が必要です。これらのクラッシャーは主力の戦闘ラインとなるだけでなく、近距離での大きなダメージ源にもなります。しかし、コルベットと比べて低い亜光速速度と低い回避率のため、敵後衛の大型艦に接近するまでに大きな損害を受けることになります。" },
 
                     { type: "heading", text: "ヘラルドとウィーバー", level: 2 },
-                    { type: "paragraph", text: "長距離G兵器を入手しているなら、この時点から格納庫とプロトン／ニュートロン・ランチャーを搭載したヘラルドのみの艦隊を編成できます。" },
+                    { type: "paragraph", text: "長距離G兵器を入手しているなら、この時点から格納庫と[プロトン](tech-tree.html#tech_energy_torpedoes_1)／[ニュートロン・ランチャー](tech-tree.html#tech_energy_torpedoes_2)を搭載したヘラルドのみの艦隊を編成できます。" },
                     { type: "paragraph", text: "ヘラルドは、亜光速速度と回避率を上昇させる支援兵器（回避ダーツ）や、装甲を保護・再生する兵器（インテリジェント適応型胞子ランチャー）によって、ウィーバーの恩恵を受けられるようになります。" },
                     { type: "paragraph", text: "これらの支援兵器は、それぞれヘラルド1隻につき1基という比率にします。" },
                     { type: "divider" },
@@ -1447,7 +1447,7 @@ export const knowledgeBase = [
 
             { type: "divider" },
             { type: "heading", text: "Con un base estelar", level: 2 },
-            { type: "paragraph", text: "Si incluimos una base estelar con el edificio Cámara de crecimiento y atracamos nuestras flotas, aumentaremos en +2 la velocidad de crecimiento mensual." },
+            { type: "paragraph", text: "Si incluimos una base estelar con el edificio [Cámara de crecimiento](tech-tree.html#tech_growth_chamber_1) y atracamos nuestras flotas, aumentaremos en +2 la velocidad de crecimiento mensual." },
             {
                 type: "columns",
                 columns: [
@@ -1563,7 +1563,7 @@ export const knowledgeBase = [
 
                     { type: "divider" },
                     { type: "heading", text: "With a Starbase", level: 2 },
-                    { type: "paragraph", text: "If we include a Starbase with the Growth Chamber building and dock our fleets there, we will increase monthly growth speed by +2." },
+                    { type: "paragraph", text: "If we include a Starbase with the [Growth Chamber](tech-tree.html#tech_growth_chamber_1) building and dock our fleets there, we will increase monthly growth speed by +2." },
                     {
                         type: "columns",
                         columns: [
@@ -1679,7 +1679,7 @@ export const knowledgeBase = [
 
                     { type: "divider" },
                     { type: "heading", text: "星系基地がある場合", level: 2 },
-                    { type: "paragraph", text: "成長室の建造物を設置した星系基地を用意し、そこに艦隊を停泊させることで、毎月の成長速度を+2上昇させることができます。" },
+                    { type: "paragraph", text: "[成長室](tech-tree.html#tech_growth_chamber_1)の建造物を設置した星系基地を用意し、そこに艦隊を停泊させることで、毎月の成長速度を+2上昇させることができます。" },
                     {
                         type: "columns",
                         columns: [
@@ -2163,7 +2163,7 @@ export const knowledgeBase = [
                 ]
             },
             { type: "paragraph", text: "Las corbetas amenazantes no tienen costes añadidos según el tipo de componente, el mantenimiento es mucho menor que el de una corbeta normal, el coste de construcción siempre es fijo en minerales, se construyen más rápido, tienen bonus al daño de armas de la nave, las estadísticas base son superiores a las de una corbeta normal y tienen un espacio de componente auxiliar extra. Todo esto hace que sean extremadamente superiores a las corbetas normales, dejándolas en un segundo plano." },
-            { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los lanzadores de nubes de nanomisiles antiguos son una versión mejorada de los disruptores, a cambio de necesitar un espacio S por fuerza." },
+            { type: "paragraph", text: "La clave de estas corbetas reside en que su coste de construcción es fijo en minerales, esto permite por ejemplo ponerle componentes de materia oscura, zro o nanorrobots sin ningún coste de recursos raros añadido. Ocurre igual con los componentes de arqueotecnologías. Concretamente, los [lanzadores de nubes de nanomisiles antiguos](tech-tree.html#tech_archaeo_missiles) son una versión mejorada de los [disruptores](tech-tree.html#tech_disruptors_1), a cambio de necesitar un espacio S por fuerza." },
 
             { type: "heading", text: "Devorador de estrellas", level: 2 },
             {
@@ -2319,7 +2319,7 @@ export const knowledgeBase = [
                         ]
                     },
                     { type: "paragraph", text: "Threatening corvettes have no additional costs based on the type of components installed. Their upkeep is much lower than that of a normal corvette, their construction cost is always fixed in minerals, they are built faster, they gain a bonus to ship weapon damage, their base stats are superior to those of a normal corvette, and they have an extra auxiliary component slot. All of this makes them vastly superior to normal corvettes, leaving the latter largely obsolete." },
-                    { type: "paragraph", text: "The key to these corvettes lies in their construction cost being fixed in minerals. This allows you, for example, to equip them with dark matter, Zro, or nanite components without any additional rare resource cost. The same applies to Archaeotech components. In particular, Ancient Nanomissile Cloud Launchers are an improved version of Disruptors, at the cost of requiring one S slot per weapon." },
+                    { type: "paragraph", text: "The key to these corvettes lies in their construction cost being fixed in minerals. This allows you, for example, to equip them with dark matter, Zro, or nanite components without any additional rare resource cost. The same applies to Archaeotech components. In particular, [Ancient Nanomissile Cloud Launchers](tech-tree.html#tech_archaeo_missiles) are an improved version of [Disruptors](tech-tree.html#tech_disruptors_1), at the cost of requiring one S slot per weapon." },
 
                     { type: "heading", text: "Star Eater", level: 2 },
                     {
@@ -2475,7 +2475,7 @@ export const knowledgeBase = [
                         ]
                     },
                     { type: "paragraph", text: "脅威のコルベットは、搭載するコンポーネントの種類による追加コストがなく、維持費も通常のコルベットよりはるかに低い。建造コストは常に鉱物で固定され、建造時間も短く、艦船兵器ダメージへのボーナスを持つ。さらに、基礎性能は通常のコルベットを上回り、補助コンポーネント・スロットも1つ多い。これらすべてを合わせると通常のコルベットを圧倒的に上回る性能となり、通常型はほぼ出番を失う。" },
-                    { type: "paragraph", text: "これらのコルベットの最大の強みは、建造コストが鉱物で固定されていることにある。たとえばダークマター、ズロ、ナノマシン系コンポーネントを搭載しても、希少資源の追加コストは一切発生しない。考古学技術コンポーネントについても同様である。特に古代ナノミサイル雲発射機はディスラプターの強化版ともいえる兵器であり、その代わりに1門につきSスロットを1つ必要とする。" },
+                    { type: "paragraph", text: "これらのコルベットの最大の強みは、建造コストが鉱物で固定されていることにある。たとえばダークマター、ズロ、ナノマシン系コンポーネントを搭載しても、希少資源の追加コストは一切発生しない。考古学技術コンポーネントについても同様である。特に[古代ナノミサイル雲発射機](tech-tree.html#tech_archaeo_missiles)は[ディスラプター](tech-tree.html#tech_disruptors_1)の強化版ともいえる兵器であり、その代わりに1門につきSスロットを1つ必要とする。" },
 
                     { type: "heading", text: "星喰らい", level: 2 },
                     {
@@ -2780,7 +2780,8 @@ export const knowledgeBase = [
                 type: "links", items: [
                     { label: "📖Stellaris Wiki oficial", url: "https://stellaris.paradoxwikis.com/", description: "Wiki de referencia con todas las mecánicas, tecnologías y componentes del juego." },
                     { label: "💻Foro oficial de Paradox", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "Anuncios oficiales, notas de parche y discusión con desarrolladores." },
-                    { label: "🔬Árbol de tecnología", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "Visualización interactiva del árbol de tecnología del juego. [Versión desactualizada](https://turanar.github.io/stellaris-tech-tree/index.html)." },
+                    { label: "🔬Árbol de tecnología de Codex Ignis", url: "tech-tree.html", description: "El árbol de tecnología de esta web: todas las tecnologías leídas de los archivos del juego, con sus prerrequisitos, costes y desbloqueos, y enlaces al simulador de planetas." },
+                    { label: "🔬Stellaris Tech Tree de BloodStainedCrow", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "Visualización interactiva del árbol de tecnología del juego, inspiración del nuestro. [Versión desactualizada](https://turanar.github.io/stellaris-tech-tree/index.html)." },
                     { label: "🌌Álbum oficial", url: "https://imgur.com/a/stellaris-wallpapers-Ao8zhxE", description: "Álbum de fondos de pantalla oficiales de Stellaris." },
                     { label: "🖥️Stellaris Assets", url: "https://tuttu.github.io/StellarisAssets/", description: "Repositorio de recursos y assets para Stellaris." },
                     { label: "📰Xenonion", url: "https://xenonion.com/", description: "Tu noticiero galáctico de confianza." },
@@ -2804,7 +2805,8 @@ export const knowledgeBase = [
                         type: "links", items: [
                             { label: "📖Official Stellaris Wiki", url: "https://stellaris.paradoxwikis.com/", description: "Reference wiki containing all the game's mechanics, technologies, and components." },
                             { label: "💻Official Paradox Forum", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "Official announcements, patch notes, and discussions with developers." },
-                            { label: "🔬Technology Tree", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "Interactive visualization of the game's technology tree. [Outdated version](https://turanar.github.io/stellaris-tech-tree/index.html)." },
+                            { label: "🔬Codex Ignis Tech Tree", url: "tech-tree.html", description: "This site's technology tree: every technology read from the game files, with its prerequisites, costs and unlocks, and links to the planet simulator." },
+                            { label: "🔬BloodStainedCrow's Stellaris Tech Tree", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "Interactive visualization of the game's technology tree, the inspiration for ours. [Outdated version](https://turanar.github.io/stellaris-tech-tree/index.html)." },
                             { label: "🌌Official Album", url: "https://imgur.com/a/stellaris-wallpapers-Ao8zhxE", description: "Album of official Stellaris wallpapers." },
                             { label: "🖥️Stellaris Assets", url: "https://tuttu.github.io/StellarisAssets/", description: "Repository of resources and assets for Stellaris." },
                             { label: "📰Xenonion", url: "https://xenonion.com/", description: "Your trusted galactic news network." },
@@ -2829,7 +2831,8 @@ export const knowledgeBase = [
                         type: "links", items: [
                             { label: "📖Stellaris公式Wiki", url: "https://stellaris.paradoxwikis.com/", description: "Stellarisのゲームシステム、テクノロジー、コンポーネントなどを網羅した情報Wiki。" },
                             { label: "💻Paradox公式フォーラム", url: "https://forum.paradoxplaza.com/forum/tags/stellaris.10/", description: "公式発表、パッチノート、開発者との議論などを確認できます。" },
-                            { label: "🔬テクノロジーツリー", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "ゲーム内のテクノロジーツリーをインタラクティブに確認できます。[旧バージョン](https://turanar.github.io/stellaris-tech-tree/index.html)。" },
+                            { label: "🔬Codex Ignisのテクノロジーツリー", url: "tech-tree.html", description: "このサイトのテクノロジーツリー。ゲームファイルから読み込んだすべてのテクノロジーを、前提条件・コスト・解禁要素、惑星シミュレーターへのリンクとともに確認できます。" },
+                            { label: "🔬BloodStainedCrowのStellaris Tech Tree", url: "https://bloodstainedcrow.github.io/stellaris-tech-tree/", description: "ゲーム内のテクノロジーツリーをインタラクティブに確認できます（当サイトのツリーの着想元）。[旧バージョン](https://turanar.github.io/stellaris-tech-tree/index.html)。" },
                             { label: "🌌公式アルバム", url: "https://imgur.com/a/stellaris-wallpapers-Ao8zhxE", description: "Stellaris公式壁紙のアルバム。" },
                             { label: "🖥️Stellaris Assets", url: "https://tuttu.github.io/StellarisAssets/", description: "Stellaris向けのリソースやアセットをまとめたリポジトリ。" },
                             { label: "📰Xenonion", url: "https://xenonion.com/", description: "信頼と実績の銀河ニュースチャンネル。" },
