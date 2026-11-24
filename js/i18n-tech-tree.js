@@ -1,28 +1,65 @@
 /**
  * Interface texts of the tech tree (tech-tree.html), es/en/jp.
  * Imported by the page scripts that need it; importing it registers the texts in js/i18n.js.
+ * Game names (areas, fields, technologies) are not here: they stay in English in every language.
  */
 
 import { addStrings } from "./i18n.js";
+
+const BSC = '<a href="https://bloodstainedcrow.github.io/stellaris-tech-tree/" rel="noopener">Stellaris Tech Tree</a>';
+const TURANAR = '<a href="https://turanar.github.io/stellaris-tech-tree/index.html" rel="noopener">turanar</a>';
 
 export const strings = {
     es: {
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Árbol de tecnología de Stellaris.",
         techTreeHeading: "Tech Tree",
-        techTreeComingSoon: "En construcción: el árbol de tecnología interactivo llegará pronto.",
+        techTreeIntro: "Árbol de tecnología de Stellaris por área, campo y nivel, leído de los archivos del juego.",
+        techTreeBoardHeading: "Áreas de investigación",
+        techTreeDataVersion: "Versión de datos: {label} · {game} · {status}",
+        techTreeVerificationUnverified: "sin verificar (archivos del juego, pendiente de la revisión final)",
+        techTreeVerificationWikiVerified: "verificado con la wiki",
+        techTreeVerificationGameDataVerified: "verificado con los archivos del juego",
+        techTreeCreditsHeading: "Créditos",
+        techTreeCreditsInspiration: `Inspirado en el ${BSC} de <strong>BloodStainedCrow</strong> y en su versión anterior, ya desactualizada, de ${TURANAR}.`,
+        techTreeCreditsNoReuse: "No reutiliza código ni datos de esos proyectos: el árbol está escrito desde cero y sus datos salen de nuestro propio extractor de los archivos del juego.",
+        techTreeCreditsGame: 'Los datos y nombres del juego pertenecen a Paradox Interactive (ver el <a href="privacy.html">aviso legal</a>).',
+        techTreeFooterCredit: `Inspirado en el ${BSC} de BloodStainedCrow.`,
+        techTreeFooterNav: "Enlaces del pie",
     },
     en: {
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Stellaris technology tree.",
         techTreeHeading: "Tech Tree",
-        techTreeComingSoon: "Under construction: the interactive technology tree is coming soon.",
+        techTreeIntro: "Stellaris technology tree by area, field and tier, read from the game files.",
+        techTreeBoardHeading: "Research areas",
+        techTreeDataVersion: "Data version: {label} · {game} · {status}",
+        techTreeVerificationUnverified: "unverified (game files, pending the final review)",
+        techTreeVerificationWikiVerified: "verified against the wiki",
+        techTreeVerificationGameDataVerified: "verified against the game files",
+        techTreeCreditsHeading: "Credits",
+        techTreeCreditsInspiration: `Inspired by the ${BSC} of <strong>BloodStainedCrow</strong> and its older, outdated version by ${TURANAR}.`,
+        techTreeCreditsNoReuse: "No code or data is reused from those projects: the tree is written from scratch and its data comes from our own game files extractor.",
+        techTreeCreditsGame: 'Game data and names belong to Paradox Interactive (see the <a href="privacy.html">legal notice</a>).',
+        techTreeFooterCredit: `Inspired by the ${BSC} of BloodStainedCrow.`,
+        techTreeFooterNav: "Footer links",
     },
     jp: {
         techTreePageTitle: "Tech Tree · Codex Ignis",
         techTreeMetaDescription: "Stellarisの技術ツリー。",
         techTreeHeading: "Tech Tree",
-        techTreeComingSoon: "準備中：インタラクティブな技術ツリーは近日公開予定です。",
+        techTreeIntro: "ゲームファイルから読み込んだ、分野・カテゴリー・ティア別のStellaris技術ツリーです。",
+        techTreeBoardHeading: "研究分野",
+        techTreeDataVersion: "データバージョン：{label} · {game} · {status}",
+        techTreeVerificationUnverified: "未検証（ゲームファイル、最終確認待ち）",
+        techTreeVerificationWikiVerified: "Wikiで検証済み",
+        techTreeVerificationGameDataVerified: "ゲームファイルで検証済み",
+        techTreeCreditsHeading: "クレジット",
+        techTreeCreditsInspiration: `<strong>BloodStainedCrow</strong>の${BSC}と、${TURANAR}による旧バージョン（更新終了）から着想を得ています。`,
+        techTreeCreditsNoReuse: "これらのプロジェクトのコードやデータは使用していません。ツリーは一から作成し、データは独自のゲームファイル抽出ツールから取得しています。",
+        techTreeCreditsGame: 'ゲームのデータと名称はParadox Interactiveに帰属します（<a href="privacy.html">法的通知</a>を参照）。',
+        techTreeFooterCredit: `BloodStainedCrowの${BSC}から着想を得ています。`,
+        techTreeFooterNav: "フッターのリンク",
     },
 };
 

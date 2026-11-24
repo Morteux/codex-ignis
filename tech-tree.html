@@ -38,12 +38,47 @@
       <main>
       <section class="terminal-intro">
         <h1 data-i18n="techTreeHeading">Tech Tree</h1>
-        <p class="intro-copy" data-i18n="techTreeComingSoon">En construcción: el árbol de tecnología interactivo llegará pronto.</p>
+        <p class="intro-copy" data-i18n="techTreeIntro">Árbol de tecnología de Stellaris por área, campo y nivel, leído de los archivos del juego.</p>
+        <p class="tech-data-version" id="tech-data-version"></p>
+      </section>
+
+      <section class="tech-board" aria-labelledby="tech-board-heading">
+        <h2 class="visually-hidden" id="tech-board-heading" data-i18n="techTreeBoardHeading">Áreas de investigación</h2>
+        <div class="tech-area-tabs" role="tablist" aria-label="Áreas de investigación" data-i18n-attr="aria-label:techTreeBoardHeading">
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-physics" data-area="physics" aria-controls="tech-area-physics" aria-selected="true">Physics</button>
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-society" data-area="society" aria-controls="tech-area-society" aria-selected="false" tabindex="-1">Society</button>
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-engineering" data-area="engineering" aria-controls="tech-area-engineering" aria-selected="false" tabindex="-1">Engineering</button>
+        </div>
+        <div class="tech-areas">
+          <section class="tech-area tech-area--physics is-active" id="tech-area-physics" data-area="physics" role="tabpanel" aria-labelledby="tech-tab-physics">
+            <h3 class="tech-area-heading">Physics</h3>
+            <div class="tech-area-scroll"></div>
+          </section>
+          <section class="tech-area tech-area--society" id="tech-area-society" data-area="society" role="tabpanel" aria-labelledby="tech-tab-society">
+            <h3 class="tech-area-heading">Society</h3>
+            <div class="tech-area-scroll"></div>
+          </section>
+          <section class="tech-area tech-area--engineering" id="tech-area-engineering" data-area="engineering" role="tabpanel" aria-labelledby="tech-tab-engineering">
+            <h3 class="tech-area-heading">Engineering</h3>
+            <div class="tech-area-scroll"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="tech-credits" id="tech-credits" aria-labelledby="tech-credits-heading">
+        <h2 class="panel-heading" id="tech-credits-heading" data-i18n="techTreeCreditsHeading">Créditos</h2>
+        <p data-i18n="techTreeCreditsInspiration"></p>
+        <p data-i18n="techTreeCreditsNoReuse"></p>
+        <p data-i18n="techTreeCreditsGame"></p>
       </section>
       </main>
 
       <footer class="footer">
-        <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
+        <p data-i18n="techTreeFooterCredit"></p>
+        <nav aria-label="Enlaces del pie" data-i18n-attr="aria-label:techTreeFooterNav">
+          <a href="#tech-credits" data-i18n="techTreeCreditsHeading">Créditos</a>
+          <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
+        </nav>
       </footer>
     </div>
     <script type="module" src="js/tech-tree.js"></script>

@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3101 — Tech tree page layout (2026-11-25)
+- [ ] **Three areas side by side inside the 1180 px shell**, each one a panel with its own scroll (max 75 % of the screen height): the full tier grid of an area does not fit in a third of the page, and breaking out of the shell width would overflow on some screens. Zoom and pan (T3204) will make it easier to move around.
+- [ ] **Area names stay in English** (Physics, Society, Engineering) in every language, as game names; the tabs and the rest of the interface are translated.
+- [ ] **Data version line** shows the data file's `rulesetId`, the game version string of the files and the collection's verification status (there is no version selector yet: section 33).
+- [ ] **Credits texts** (es / en / jp) written by Claude: inspiration links, "no code or data reused" and the Paradox notice linking `privacy.html`.
+
 ## T3007 — Tech unlocks linked to simulator ids (2026-11-25)
 - [ ] **Matcher of the difference report** (`report_differences.py`: game id with prefix, then English name, then icon) decides the links; a wrong name match there is also a wrong link here.
 - [ ] **Jobs linked through the unlocked buildings and districts** (`jobs: [{id, sim?}]`, conditional jobs included): no game job names a technology as prerequisite, so a tech never unlocks a job directly.

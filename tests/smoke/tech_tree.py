@@ -151,3 +151,57 @@ async def run(t):
     else:
         print("SKIP tech tree icons: StellarisAssets is not at " + ASSETS_DIR)
     await pg.close()
+    await page_checks(t)
+
+
+async def page_checks(t):
+    """Section 31: the tech tree page (layout, nodes, lines, states, mobile)."""
+    url = "file://" + ROOT + "/tech-tree.html"
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.goto(url)
+    await pg.wait_for_timeout(400)
+    await pg.click(".lang-btn[data-lang=en]")  # earlier areas may leave another stored language
+
+    # T3101: shared shell, three areas side by side (tabs hidden), credits section, footer mention, data version
+    shell = await pg.evaluate("""()=>{const box=(e)=>{const r=e.getBoundingClientRect();return [Math.round(r.left),Math.round(r.top),Math.round(r.width)]};
+      const areas=[...document.querySelectorAll('.tech-area')];
+      const links=(s)=>[...document.querySelectorAll(s+' a')].map(a=>a.href);
+      return {shell:!!document.querySelector('.terminal-shell > .topbar .lang-switch')&&!!document.querySelector('.terminal-shell > footer.footer'),
+        current:document.querySelector('.primary-nav a[aria-current=page]')?.getAttribute('href'),
+        areas:areas.map(a=>a.dataset.area),boxes:areas.map(box),tabsShown:getComputedStyle(document.querySelector('.tech-area-tabs')).display!=='none',
+        version:document.getElementById('tech-data-version').textContent,credits:links('#tech-credits'),footer:links('footer.footer p'),
+        footerCredits:!!document.querySelector('footer.footer a[href="#tech-credits"]')}}""")
+    b = shell["boxes"]
+    check("tech tree page: shared shell, three areas side by side on desktop (Physics, Society, Engineering), tabs hidden",
+          shell["shell"] and shell["current"] == "tech-tree.html" and shell["areas"] == ["physics", "society", "engineering"]
+          and len({x[1] for x in b}) == 1 and b[0][0] < b[1][0] < b[2][0] and min(x[2] for x in b) > 250 and not shell["tabsShown"], shell)
+    check("tech tree page: data version visible (4.5.4, game version, unverified)",
+          "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "unverified" in shell["version"], shell["version"])
+    bsc, tur = "https://bloodstainedcrow.github.io/stellaris-tech-tree/", "https://turanar.github.io/stellaris-tech-tree/index.html"
+    check("tech tree page: credits section links both inspirations; the footer mentions BloodStainedCrow and links the credits",
+          bsc in shell["credits"] and tur in shell["credits"] and bsc in shell["footer"] and shell["footerCredits"], shell)
+    await pg.click(".lang-btn[data-lang=es]")
+    es_version = await pg.evaluate("()=>document.getElementById('tech-data-version').textContent")
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree page: the data version line follows the language", es_version.startswith("Versión de datos") and "stellaris-pc-4.5.4" in es_version, es_version)
+    await pg.set_viewport_size({"width": 375, "height": 760})
+    await pg.wait_for_timeout(150)
+    visible = "()=>[...document.querySelectorAll('.tech-area')].filter(a=>a.offsetParent).map(a=>a.dataset.area)"
+    first = await pg.evaluate(visible)
+    await pg.click("#tech-tab-society")
+    second = await pg.evaluate(visible)
+    await pg.focus("#tech-tab-society")
+    await pg.keyboard.press("ArrowRight")
+    third = await pg.evaluate("()=>[[...document.querySelectorAll('.tech-area')].filter(a=>a.offsetParent).map(a=>a.dataset.area)[0],document.activeElement.id,document.querySelector('#tech-tab-engineering').getAttribute('aria-selected')]")
+    tabs_shown = await pg.evaluate("()=>getComputedStyle(document.querySelector('.tech-area-tabs')).display!=='none'")
+    check("tech tree page: on mobile the areas are tabs (one visible panel, click and arrow keys switch it)",
+          tabs_shown and first == ["physics"] and second == ["society"] and third == ["engineering", "tech-tab-engineering", "true"], (first, second, third))
+    await pg.click("#tech-tab-physics")
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.wait_for_timeout(150)
+
+    check("tech tree page: no page errors", not errors, errors[:3])
+    await pg.close()
