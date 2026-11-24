@@ -20,6 +20,19 @@ export const KIND_KEYS = {
   event: "techTreeKindEvent",
 };
 
+/**
+ * Span holding a game name (technology, field, unlock…): game names stay in English in every
+ * language until the official localisation (P15), so they are marked `lang="en"` for screen
+ * readers and hyphenation (T3401).
+ */
+export function gameNameSpan(text, className = "") {
+  const span = document.createElement("span");
+  if (className) span.className = className;
+  span.lang = "en";
+  span.textContent = text;
+  return span;
+}
+
 /** "Tier 2 · Rare" in the current language. */
 export function nodeMetaText(tech, lang) {
   return t(lang, "techTreeTier").replace("{tier}", tech.tier) + " · " + t(lang, KIND_KEYS[tech.kind] || KIND_KEYS.normal);
@@ -35,9 +48,7 @@ function createNode(tech, lang) {
   node.setAttribute("aria-pressed", "false");
   const text = document.createElement("span");
   text.className = "tech-node-text";
-  const name = document.createElement("span");
-  name.className = "tech-node-name";
-  name.textContent = tech.name;
+  const name = gameNameSpan(tech.name, "tech-node-name");
   const meta = document.createElement("span");
   meta.className = "tech-node-meta";
   meta.textContent = nodeMetaText(tech, lang);
@@ -78,6 +89,7 @@ export function renderAreaGrid(container, data, area, lang) {
     label.className = "tech-field-label";
     label.dataset.field = field.id;
     label.style.gridRow = row + 2;
+    label.lang = "en";
     label.textContent = field.name;
     grid.append(label);
     tiers.forEach((tier, column) => {

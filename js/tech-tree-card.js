@@ -11,7 +11,7 @@
  */
 import { t } from "./i18n.js";
 import { createTechIconSlot } from "./tech-tree-icons.js";
-import { KIND_KEYS } from "./tech-tree-layout.js";
+import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
 
 /** Page of the planet simulator, target of the unlock links. */
 export const SIMULATOR_URL = "planet-sim.html";
@@ -68,7 +68,7 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     const button = el("button", "tech-card-link tech-node--" + (tech ? tech.kind : "normal"));
     button.type = "button";
     button.dataset.techId = id;
-    button.textContent = tech ? tech.name : id;
+    button.append(gameNameSpan(tech ? tech.name : id));
     if (tech) {
       const where = tech.area !== from.area ? " · " + areaName(tech.area) : "";
       button.append(el("span", "tech-card-link-meta", t(lang, "techTreeTier").replace("{tier}", tech.tier) + where));
@@ -99,13 +99,14 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     item.append(el("span", "tech-card-unlock-type", t(lang, UNLOCK_TYPE_KEYS[unlock.type] || "techTreeUnlockOther") + ": "));
     if (unlock.sim) {
       const link = el("a", "tech-card-sim-link", unlock.name);
+      link.lang = "en";
       link.href = SIMULATOR_URL;
       link.dataset.simCollection = unlock.sim.collection;
       link.dataset.simId = unlock.sim.id;
       link.title = t(lang, "techTreeOpenInSimulator");
       item.append(link, el("span", "tech-card-sim-badge", t(lang, "techTreeInSimulator")));
     } else {
-      item.append(el("span", "", unlock.name));
+      item.append(gameNameSpan(unlock.name));
     }
     if (unlock.jobs && unlock.jobs.length) {
       const jobs = el("span", "tech-card-jobs", " · " + t(lang, "techTreeUnlockJobs") + ": ");
@@ -134,15 +135,15 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     const titles = el("div", "tech-card-titles");
     const title = el("h3", "tech-card-name", tech.name);
     title.id = "tech-card-title";
+    title.lang = "en";
     titles.append(
       title,
       el("code", "tech-card-id", tech.id),
-      el("p", "tech-card-meta", [
-        t(lang, "techTreeTier").replace("{tier}", tech.tier),
-        t(lang, KIND_KEYS[tech.kind] || KIND_KEYS.normal),
-        areaName(tech.area),
-        fieldName.get(tech.field) || tech.field,
-      ].join(" · ")),
+      el("p", "tech-card-meta"),
+    );
+    titles.lastChild.append(
+      [t(lang, "techTreeTier").replace("{tier}", tech.tier), t(lang, KIND_KEYS[tech.kind] || KIND_KEYS.normal)].join(" · ") + " · ",
+      gameNameSpan(areaName(tech.area) + " · " + (fieldName.get(tech.field) || tech.field)),
     );
     // T3205: permanent link to this technology (copy it from the browser's link menu)
     const permalink = el("a", "tech-card-permalink", t(lang, "techTreePermalink"));
@@ -172,12 +173,16 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     fact("techTreeVersion", data.rulesetId + " · " + data.gameVersion, "version");
 
     const blocks = [];
-    if (tech.description) blocks.push(el("p", "tech-card-description", tech.description));
+    if (tech.description) {
+      const description = el("p", "tech-card-description", tech.description);
+      description.lang = "en";
+      blocks.push(description);
+    }
     blocks.push(el("p", "tech-card-note", t(lang, "techTreeBaseCostNote")));
     if (tech.variants.length) {
       blocks.push(section("techTreeVariants", "variants", list(tech.variants.map((variant) => {
         const item = document.createDocumentFragment();
-        item.append(el("span", "", variant.name + " "), el("code", "", variant.condition));
+        item.append(gameNameSpan(variant.name + " "), el("code", "", variant.condition));
         return item;
       }))));
     }

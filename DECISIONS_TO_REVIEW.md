@@ -2,7 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
-## T3303 — Comparison between two versions (2026-11-25)
+## T3401 — Interface texts of the tech tree in es/en/jp (2026-11-25)
+- [ ] **The interface texts were already all in `js/i18n-tech-tree.js`** (es/en/jp, parity checked by the i18n audit); this task adds no new key. It adds a page check: in es and jp no English interface text and no raw key is visible (text, `aria-label`, `title`, `placeholder`).
+- [ ] **Game names are marked `lang="en"`** (node names, field labels, area tabs and headings, the card title, description, area · field line, prerequisite/leads-to buttons, unlock names, variant names, search results, compare links and the area/field/DLC filter options) so screen readers read them with English pronunciation while the page is in es or jp. Area names mixed into translated sentences (zoom panel label) are not marked.
+- [ ] **The Spanish search placeholder keeps "(en inglés)"** and the Japanese one "（英語）", since the names you can search are English until P15.
+
+ — Comparison between two versions (2026-11-25)
 - [ ] **A section of `tech-tree.html` below the tree** ("Compare versions"), not a separate page: two selectors (from, to; default from the version just older than the shown one to the shown one) and a Compare button. The other data file is downloaded only when Compare is pressed.
 - [ ] **Only base cost, tier and prerequisites count as a change** (as the task says); name, description, kind, requirements, unlocks, effects or DLC changes are not reported. A technology whose id changes appears as removed + added.
 - [ ] **Every technology links to its node** in the version where it exists (`?version=<id>#<tech id>`): removed ones to the old version, added and changed ones to the new one.

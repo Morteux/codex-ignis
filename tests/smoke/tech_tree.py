@@ -154,6 +154,7 @@ async def run(t):
     await page_checks(t)
     await deeplink_checks(t)
     await version_checks(t)
+    await i18n_checks(t)
 
 
 async def page_checks(t):
@@ -937,3 +938,48 @@ async def compare_checks(t, base, registry, errors):
               not small["wide"] and small["summary"] and all(h >= 44 for h in sizes), (small["wide"], sizes))
     finally:
         await ctx.close()
+
+
+# T3401: visible interface text of the page in es and jp (outside the game names, which stay English)
+I18N_SCAN_JS = r"""async()=>{const m=await import('./js/i18n-tech-tree.js');const S=m.strings;
+  const skip=(n)=>n.closest('[lang=en],code,script,style,[hidden],.tech-legend-swatch');
+  const texts=[];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+  while(w.nextNode()){const n=w.currentNode;if(n.textContent.trim()&&!skip(n.parentElement))texts.push(n.textContent.trim())}
+  const attrs=[...document.querySelectorAll('[aria-label],[title],[placeholder]')].filter(e=>!skip(e))
+    .flatMap(e=>['aria-label','title','placeholder'].map(a=>e.getAttribute(a)).filter(Boolean));
+  const all=texts.concat(attrs).join('\n');const lang=document.documentElement.lang==='ja'?'jp':document.documentElement.lang;
+  const esc=(x)=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const english=Object.keys(S.en).filter(k=>!/[{<]/.test(S.en[k])&&S.en[k]!==S[lang][k]&&S.en[k].length>3)
+    .filter(k=>new RegExp('(^|[^A-Za-z])'+esc(S.en[k])+'([^A-Za-z]|$)').test(all));
+  const gameNames=[...document.querySelectorAll('.tech-node-name,.tech-field-label,#tech-card-title,.tech-area-tab,.tech-area-heading,.tech-card-description')];
+  return {lang,keys:(all.match(/\btechTree[A-Z]\w+/g)||[]),english:english.map(k=>k+'='+S.en[k]),
+    unmarked:gameNames.filter(e=>!e.closest('[lang=en]')).length,gameNames:gameNames.length,
+    names:[...document.querySelectorAll('.tech-node-name')].slice(0,40).map(e=>e.textContent).join('|')}}"""
+
+
+async def i18n_checks(t):
+    url = "file://" + ROOT + "/tech-tree.html"
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.goto(url)
+    await pg.wait_for_timeout(400)
+    await pg.click(".lang-btn[data-lang=en]")
+    await pg.click(".tech-node[data-kind=repeatable]")  # card open, with prerequisites and unlocks
+    await pg.fill("#tech-search-box input[type=search]", "a")
+    await pg.wait_for_timeout(200)
+    en = await pg.evaluate(I18N_SCAN_JS)
+    scans = {}
+    for lang in ("es", "jp"):
+        await pg.click(".lang-btn[data-lang=" + lang + "]")
+        await pg.wait_for_timeout(150)
+        scans[lang] = await pg.evaluate(I18N_SCAN_JS)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree i18n (T3401): in es and jp no English interface text and no raw i18n key is visible (text, aria-label, title, placeholder)",
+          all(not s["keys"] and not s["english"] for s in scans.values()) and not en["keys"], {k: (v["keys"], v["english"]) for k, v in scans.items()})
+    check("tech tree i18n (T3401): game names (nodes, fields, areas, card title and description) are English in every language and marked lang=en",
+          en["gameNames"] > 50 and all(s["unmarked"] == 0 and s["names"] == en["names"] for s in scans.values()) and en["unmarked"] == 0,
+          {k: (v["unmarked"], v["gameNames"]) for k, v in scans.items()})
+    check("tech tree i18n (T3401): no page errors", not errors, errors)
+    await pg.close()

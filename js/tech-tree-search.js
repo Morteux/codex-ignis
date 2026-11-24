@@ -10,7 +10,7 @@
  * short list of matches (buttons) selects and shows one.
  */
 import { t } from "./i18n.js";
-import { KIND_KEYS } from "./tech-tree-layout.js";
+import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
 import { areaName } from "./tech-tree-card.js";
 
 /** Matches listed under the filters (the tree shows all of them). */
@@ -100,22 +100,23 @@ export function createSearch(container, root, data, getLang, { onPick, onAreaFil
   form.append(row, count, results);
   container.replaceChildren(form);
 
-  function option(value, text) {
+  function option(value, text, gameName = false) {
     const node = document.createElement("option");
     node.value = value;
     node.textContent = text;
+    if (gameName) node.lang = "en";
     return node;
   }
 
   function fillOptions(lang) {
     const all = t(lang, "techTreeFilterAll");
-    selects.area.replaceChildren(option("", all), ...data.areas.map((area) => option(area, areaName(area))));
+    selects.area.replaceChildren(option("", all), ...data.areas.map((area) => option(area, areaName(area), true)));
     const fields = data.fields.filter((entry) => !state.area || entry.area === state.area);
     if (state.field && !fields.some((entry) => entry.id === state.field)) state.field = "";
-    selects.field.replaceChildren(option("", all), ...fields.map((entry) => option(entry.id, entry.name)));
+    selects.field.replaceChildren(option("", all), ...fields.map((entry) => option(entry.id, entry.name, true)));
     selects.tier.replaceChildren(option("", all), ...tiers.map((tier) => option(String(tier), t(lang, "techTreeTier").replace("{tier}", tier))));
     selects.kind.replaceChildren(option("", all), ...kinds.map((kind) => option(kind, t(lang, KIND_KEYS[kind]))));
-    selects.dlc.replaceChildren(option("", all), option("base", t(lang, "techTreeBaseGame")), ...dlcs.map((dlc) => option(dlc, dlc)));
+    selects.dlc.replaceChildren(option("", all), option("base", t(lang, "techTreeBaseGame")), ...dlcs.map((dlc) => option(dlc, dlc, true)));
     Object.entries(selects).forEach(([name, select]) => { select.value = state[name]; });
   }
 
@@ -165,7 +166,7 @@ export function createSearch(container, root, data, getLang, { onPick, onAreaFil
       button.type = "button";
       button.className = "tech-card-link tech-node--" + tech.kind;
       button.dataset.techId = tech.id;
-      button.textContent = tech.name;
+      button.append(gameNameSpan(tech.name));
       const meta = document.createElement("span");
       meta.className = "tech-card-link-meta";
       meta.textContent = t(lang, "techTreeTier").replace("{tier}", tech.tier) + " · " + areaName(tech.area);

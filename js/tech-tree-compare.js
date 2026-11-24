@@ -50,6 +50,7 @@ function techLink(versionId, id, name) {
   const url = new URL(versionUrl(window.location.href, versionId));
   url.hash = id;
   const link = el("a", "tech-compare-link", name);
+  link.lang = "en";
   link.href = url.href;
   link.dataset.techId = id;
   link.dataset.version = versionId;
