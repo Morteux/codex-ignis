@@ -14,7 +14,7 @@ import { t } from "./i18n.js";
 
 const STATE_CLASSES = ["is-selected", "is-prerequisite", "is-unlocked"];
 
-export function createSelection(root, data, status, getLang) {
+export function createSelection(root, data, status, getLang, onChange = () => {}) {
   const byId = new Map(data.technologies.map((tech) => [tech.id, tech]));
   const dependents = new Map();
   data.technologies.forEach((tech) => tech.prerequisites.forEach((id) => {
@@ -59,6 +59,7 @@ export function createSelection(root, data, status, getLang) {
     }
     paintLines();
     announce();
+    onChange(selected);
   }
 
   root.addEventListener("click", (event) => {

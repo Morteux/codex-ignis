@@ -5,7 +5,8 @@
  * (js/page-shell.js). This script adds the dynamic parts: the data version line, the area tabs
  * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
  * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
- * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend.
+ * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
+ * detail card of the selected technology (js/tech-tree-card.js).
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
@@ -15,6 +16,7 @@ import { TECH_DATA } from "./tech-data/stellaris-pc-4.5.4.js";
 import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
 import { createSelection } from "./tech-tree-states.js";
+import { createDetailCard } from "./tech-tree-card.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -109,8 +111,26 @@ onLanguageChange((lang) => {
 });
 document.addEventListener("tech-area-change", redrawLines);
 renderLegend(getLang());
-const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang);
+/** Shows the node of `id`: opens its area tab (mobile) and scrolls it into its panel. */
+function revealNode(id) {
+  const node = document.querySelector(`.tech-node[data-tech-id="${id}"]`);
+  if (!node) return;
+  const panel = node.closest(".tech-area");
+  if (!panel.classList.contains("is-active")) document.getElementById("tech-tab-" + panel.dataset.area).click();
+  node.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
+
+const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, getLang, {
+  onSelect: (id) => {
+    selection.select(id);
+    revealNode(id);
+  },
+  onClose: () => selection.select(null),
+});
+const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang,
+  (id) => card.show(id));
 onLanguageChange((lang) => {
   renderLegend(lang);
   selection.announce();
+  card.refresh();
 });

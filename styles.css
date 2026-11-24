@@ -3683,3 +3683,222 @@ h1 {
         overflow-wrap: anywhere;
     }
 }
+
+/* T3201: detail card of the selected technology (js/tech-tree-card.js). On desktop the board
+   gets a second column for it (sticky, so it stays in view and never covers a node); on phones
+   it is a bottom sheet and the page gets room below to scroll the tree above it. */
+body.has-tech-card .tech-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 23rem;
+    gap: .8rem;
+    align-items: start;
+}
+
+.tech-card {
+    position: sticky;
+    top: .5rem;
+    z-index: 40;
+    box-sizing: border-box;
+    max-height: calc(100vh - 1rem);
+    overflow: auto;
+    overscroll-behavior: contain;
+    padding: .9rem 1rem 1rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    box-shadow: var(--shadow-modal);
+    color: var(--text);
+    font-size: .78rem;
+    line-height: 1.5;
+}
+
+.tech-card[hidden] {
+    display: none;
+}
+
+.tech-card-head {
+    display: flex;
+    gap: .75rem;
+    align-items: flex-start;
+    padding-left: .6rem;
+    border-left: 4px solid var(--tech-kind-colour, var(--line));
+}
+
+.tech-card-titles {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.tech-card-name {
+    margin: 0;
+    color: var(--accent);
+    font: 700 .95rem var(--mono);
+}
+
+.tech-card-id {
+    color: var(--muted);
+    font-size: .66rem;
+    overflow-wrap: anywhere;
+}
+
+.tech-card-meta {
+    margin: .25rem 0 0;
+    color: var(--muted);
+    font: .68rem var(--mono);
+}
+
+.tech-card-close {
+    flex: none;
+    min-width: 44px;
+    min-height: 44px;
+    margin: -.4rem -.5rem 0 0;
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.tech-card-close:hover,
+.tech-card-close:focus-visible {
+    color: var(--focus);
+}
+
+.tech-card-facts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .4rem .8rem;
+    margin: .8rem 0 0;
+}
+
+.tech-card-facts dt {
+    color: var(--muted);
+    font: .62rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-card-facts dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.tech-card-facts [data-fact="version"] {
+    grid-column: 1 / -1;
+}
+
+.tech-card-description {
+    margin: .8rem 0 0;
+}
+
+.tech-card-note,
+.tech-card-empty {
+    margin: .4rem 0 0;
+    color: var(--muted);
+    font-size: .7rem;
+}
+
+.tech-card-section {
+    margin-top: .8rem;
+    padding-top: .6rem;
+    border-top: 1px solid var(--line-soft);
+}
+
+.tech-card-label {
+    margin: 0 0 .35rem;
+    color: var(--accent-dim);
+    font: 700 .64rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-card-list {
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.tech-card-list code,
+.tech-card-weight {
+    font: .68rem var(--mono);
+    overflow-wrap: anywhere;
+}
+
+.tech-card-techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    padding: 0;
+    list-style: none;
+}
+
+.tech-card-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 44px;
+    padding: .3rem .55rem;
+    color: var(--text);
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--tech-kind-colour, var(--line));
+    font: .7rem var(--mono);
+    text-align: left;
+    cursor: pointer;
+}
+
+.tech-card-link:hover,
+.tech-card-link:focus-visible {
+    border-color: var(--focus);
+    border-left-color: var(--tech-kind-colour, var(--line));
+}
+
+.tech-card-link-meta {
+    color: var(--muted);
+    font-size: .6rem;
+}
+
+.tech-card-not {
+    color: var(--danger);
+    font: 700 .66rem var(--mono);
+}
+
+.tech-card-unlock-type {
+    color: var(--muted);
+}
+
+.tech-card-sim-link {
+    color: var(--accent);
+    text-underline-offset: .2em;
+}
+
+.tech-card-sim-badge {
+    margin-left: .35rem;
+    color: var(--slot-limited);
+    font: .6rem var(--mono);
+}
+
+.tech-card-jobs code.is-linked {
+    color: var(--slot-limited);
+}
+
+@media (max-width: 700px) {
+    body.has-tech-card .tech-board {
+        display: block;
+    }
+
+    body.has-tech-card .terminal-shell {
+        padding-bottom: 56vh;
+    }
+
+    .tech-card {
+        position: fixed;
+        top: auto;
+        right: .5rem;
+        bottom: .5rem;
+        left: .5rem;
+        width: auto;
+        max-height: 55vh;
+        padding: .7rem .8rem .9rem;
+    }
+
+    .tech-card-facts {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

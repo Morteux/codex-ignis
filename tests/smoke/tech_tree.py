@@ -317,6 +317,80 @@ async def page_checks(t):
           all(not s["has"] and not s["selected"] and not s["prereq"] and not s["unlocked"] and not s["lineP"] and not s["lineU"] and s["status"] == "" for s in (s3, s4)), (s3, s4))
     await pg.set_viewport_size({"width": 1280, "height": 900})
 
+    # T3201: detail card of the selected technology
+    card_js = """()=>{const c=document.getElementById('tech-card');const q=(s)=>c.querySelector(s);const txt=(s)=>q(s)?.textContent.trim();
+      const fact=(n)=>txt('[data-fact='+n+'] dd');const sec=(n)=>q('[data-section='+n+']');
+      return {hidden:c.hidden,shown:!c.hidden&&c.offsetHeight>0,id:c.dataset.techId,name:txt('.tech-card-name'),gameId:txt('.tech-card-id'),meta:txt('.tech-card-meta'),
+        icon:!!q('.tech-icon-slot--card'),cost:fact('cost'),dlc:fact('dlc'),version:fact('version'),flags:fact('flags'),levels:fact('levels'),
+        desc:txt('.tech-card-description'),prereq:[...c.querySelectorAll('[data-section=prerequisites] button')].map(b=>b.dataset.techId),
+        leads:[...c.querySelectorAll('[data-section=leadsTo] button')].map(b=>b.dataset.techId).sort(),
+        variants:txt('[data-section=variants]'),effects:txt('[data-section=effects]'),weight:txt('[data-section=drawWeight] .tech-card-weight'),
+        mods:c.querySelectorAll('[data-section=drawWeight] li').length,reqs:[...c.querySelectorAll('[data-section=requirements] li')].map(l=>l.textContent),
+        sim:[...c.querySelectorAll('.tech-card-sim-link')].map(a=>[a.getAttribute('href'),a.dataset.simCollection,a.dataset.simId,a.textContent]),
+        unlocks:sec('unlocks')?sec('unlocks').querySelectorAll('li').length:0,linkedJobs:[...c.querySelectorAll('.tech-card-jobs code.is-linked')].map(x=>x.textContent),
+        labels:[...c.querySelectorAll('.tech-card-label')].map(l=>l.textContent),inView:c.getBoundingClientRect().right<=document.documentElement.clientWidth+0.5}}"""
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    c1 = await pg.evaluate(card_js)
+    deps = sorted(s1["expDeps"])
+    board = await pg.evaluate("()=>{const r=(s)=>document.querySelector(s).getBoundingClientRect();return [r('#tech-card').left>=r('.tech-areas').right,r('.tech-area[data-area=engineering]').width>200]}")
+    check("tech tree card: on desktop the card has its own column next to the areas (it covers no node)", all(board), board)
+    check("tech tree card: clicking Blue Lasers opens its card (icon slot, name, id, tier · kind · area · field, base cost, DLC, version, description)",
+          c1["shown"] and c1["id"] == "tech_lasers_2" and c1["name"] == "Blue Lasers" and c1["gameId"] == "tech_lasers_2" and c1["icon"]
+          and c1["meta"] == "Tier 1 · Normal · Physics · Particles" and c1["cost"] == "1,250" and c1["dlc"] == "Base game"
+          and "stellaris-pc-4.5.4" in c1["version"] and "Cygnus v4.5.4" in c1["version"] and c1["desc"].startswith("More powerful than red lasers") and c1["inView"], c1)
+    check("tech tree card: prerequisites and leads-to as buttons, variants, effects and the draw weight as information (base 95, 2 modifiers)",
+          c1["prereq"] == ["tech_lasers_1"] and c1["leads"] == deps and "Blue Beam Projector" in c1["variants"] and "army_damage_mult" in c1["effects"]
+          and c1["weight"] == "Base: 95" and c1["mods"] == 2, c1)
+    await pg.click("#tech-card [data-section=prerequisites] button[data-tech-id=tech_lasers_1]")
+    c2 = await pg.evaluate(card_js)
+    sel2 = await pg.evaluate("()=>document.querySelector('.tech-node.is-selected')?.dataset.techId")
+    check("tech tree card: a prerequisite button selects that technology and its card (Red Lasers, starter: base cost 500, game flag)",
+          sel2 == "tech_lasers_1" and c2["name"] == "Red Lasers" and c2["cost"] == "500" and "Starter" in (c2["flags"] or ""), [sel2, c2["cost"], c2["flags"]])
+    pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const T=d.technologies;const byId=new Map(T.map(x=>[x.id,x]));
+      const cross=T.find(x=>x.prerequisites.some(p=>byId.get(p).area!==x.area));const notReq=T.find(x=>x.requirements.some(r=>r.not)&&x.dlc.length);
+      const rep=T.find(x=>x.repeatable&&x.repeatable.levels===null);const free=T.find(x=>x.baseCost===null);
+      return {cross:cross.id,crossPre:cross.prerequisites.find(p=>byId.get(p).area!==cross.area),crossArea:byId.get(cross.prerequisites.find(p=>byId.get(p).area!==cross.area)).area,
+        free:free.id,notReq:notReq.id,notText:notReq.requirements.find(r=>r.not).text,dlc:notReq.dlc.join(', '),rep:rep.id}}""")
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["cross"])
+    await pg.click(".tech-node[data-tech-id=%s]" % pick["cross"])
+    cross_btn = await pg.evaluate("(id)=>document.querySelector('#tech-card [data-section=prerequisites] button[data-tech-id='+id+'] .tech-card-link-meta')?.textContent", pick["crossPre"])
+    await pg.click("#tech-card [data-section=prerequisites] button[data-tech-id=%s]" % pick["crossPre"])
+    cross_sel = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.querySelector('.tech-node.is-selected')?.closest('.tech-area').dataset.area]")
+    check("tech tree card: a prerequisite of another area (no line) is listed with its area and selecting it jumps there",
+          cross_btn and pick["crossArea"].capitalize() in cross_btn and cross_sel == [pick["crossPre"], pick["crossArea"]], (pick, cross_btn, cross_sel))
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["notReq"])
+    await pg.click(".tech-node[data-tech-id=%s]" % pick["notReq"])
+    c3 = await pg.evaluate(card_js)
+    check("tech tree card: other requirements as game text with the NOT ones marked, and the DLC list",
+          any(r.startswith("NOT: ") and pick["notText"] in r for r in c3["reqs"]) and c3["dlc"] == pick["dlc"], (pick, c3["reqs"], c3["dlc"]))
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["free"])
+    await pg.click(".tech-node[data-tech-id=%s]" % pick["free"])
+    free_cost = (await pg.evaluate(card_js))["cost"]
+    check("tech tree card: a technology without a base cost in the game says so", free_cost == "— (the game gives none)", (pick["free"], free_cost))
+    await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_secrets_vultaum]').scrollIntoView({block:'center',inline:'center'})")
+    await pg.click(".tech-node[data-tech-id=tech_secrets_vultaum]")
+    c4 = await pg.evaluate(card_js)
+    check("tech tree card: unlocks linked to the simulator where T3007 linked them (Vultaum Reality Computer building, physicist job)",
+          c4["sim"] == [["planet-sim.html", "buildings", "vultaum_reality_computer", "Vultaum Reality Computer"]] and c4["unlocks"] == 1 and c4["linkedJobs"] == ["physicist"], c4)
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["rep"])
+    await pg.click(".tech-node[data-tech-id=%s]" % pick["rep"])
+    c5 = await pg.evaluate(card_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    c5es = await pg.evaluate(card_js)
+    await pg.click(".lang-btn[data-lang=jp]")
+    c5jp = await pg.evaluate(card_js)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree card: repeatable levels, and the labels follow the language (es, jp) while the game names stay in English",
+          c5["levels"] == "Unlimited" and c5es["levels"] == "Ilimitados" and "Prerrequisitos" in c5es["labels"] and "前提条件" in c5jp["labels"]
+          and c5es["name"] == c5["name"] == c5jp["name"], (c5["levels"], c5es["labels"][:3], c5jp["labels"][:3]))
+    await pg.click("#tech-card .tech-card-close")
+    c6 = await pg.evaluate(card_js)
+    sel6 = await pg.evaluate("()=>document.querySelectorAll('.tech-node.is-selected').length")
+    await pg.click(".tech-node[data-tech-id=tech_lasers_1]")
+    await pg.keyboard.press("Escape")
+    c7 = await pg.evaluate(card_js)
+    check("tech tree card: the close button and Escape hide the card and clear the selection", c6["hidden"] and sel6 == 0 and c7["hidden"], (c6["hidden"], sel6, c7["hidden"]))
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
     await mobile_checks(t)
@@ -365,5 +439,10 @@ async def mobile_checks(t):
     tapped = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.querySelectorAll('.tech-node.is-prerequisite').length,document.getElementById('tech-selection-status').textContent,document.documentElement.scrollWidth<=document.documentElement.clientWidth]")
     check("tech tree mobile: tapping a node selects it and marks its prerequisites, without page overflow",
           tapped[0] == "tech_lasers_2" and tapped[1] == 1 and "Blue Lasers" in tapped[2] and tapped[3], tapped)
+    card = await pg.evaluate("""()=>{const c=document.getElementById('tech-card');const r=c.getBoundingClientRect();const w=document.documentElement.clientWidth;
+      return [!c.hidden,r.left>=0&&r.right<=w+0.5,r.height<=window.innerHeight*0.56,c.querySelector('.tech-card-close').getBoundingClientRect().height>=44]}""")
+    await pg.tap("#tech-card .tech-card-close")
+    closed = await pg.evaluate("()=>document.getElementById('tech-card').hidden")
+    check("tech tree mobile: the detail card is a bottom sheet inside the 320 px screen with a 44 px close button", all(card) and closed, (card, closed))
     check("tech tree mobile: no page errors", not errors, errors[:3])
     await mctx.close()

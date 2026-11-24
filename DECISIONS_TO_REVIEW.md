@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3201 — Detail card of a technology (2026-11-25)
+- [ ] **Where the card goes**: on desktop the board gets a second column (23rem, sticky) for the card, so it never covers a node and the three areas get narrower while it is open; on phones it is a bottom sheet (55 % of the screen) and the page gets room below to scroll the tree above it.
+- [ ] **Simulator links open `planet-sim.html` only**: the simulator has no deep link to a building or district yet (new task T3405). Linked unlocks are marked "in the simulator" and linked jobs are highlighted; edicts and deposits are plain text (not linked by T3007).
+- [ ] **Extra content not named in the task**: game id, area and field, variants (`technology_swap`, with their condition), the technologies it leads to (buttons), effects (`key = value` game lines), game flags (starter, rare, dangerous, insight, event) and the repeatable cost per level and levels.
+- [ ] **Requirements and draw weight modifiers are shown as the game's script text** (monospace, `NOT` marked in red), not translated into sentences: the data file keeps them as Paradox text (GDD §4.3).
+- [ ] **Area names stay in English** in the card (game names), like the area tabs.
+- [ ] **Wording of the notes**: "Base cost: the game scales it with the game settings and the empire size" and "Information only: the research draw is not simulated" (draft texts, es/en/jp).
+
 ## T3105 — Tech tree on phones (2026-11-25)
 - [ ] **Sideways scroll inside the area panel** instead of a different mobile layout: the grid keeps its tier columns and lines; nodes shrink to 9rem, the 40 px icon slot keeps its size and about one and a half tier columns fit on a 320 px screen.
 - [ ] **Field names written vertically** (bottom to top) in a thin sticky column on phones, to leave the width to the nodes.
