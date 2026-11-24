@@ -106,7 +106,9 @@ export const TECH_DATA = {
       "requirements": [],
       "unlocks": [
         {
-          "text": "Fixture building: Pretend Relay Mast",
+          "type": "building",
+          "id": "building_fixture_pretend_relay_mast",
+          "name": "Fixture Pretend Relay Mast",
           "sim": {
             "collection": "buildings",
             "id": "fixture_pretend_relay_mast"
@@ -415,18 +417,22 @@ export const TECH_DATA = {
       "requirements": [],
       "unlocks": [
         {
-          "text": "Fixture district: Pretend Archive Ward",
+          "type": "district",
+          "id": "district_fixture_pretend_archive_ward",
+          "name": "Fixture Pretend Archive Ward",
           "sim": {
             "collection": "districts",
             "id": "fixture_pretend_archive_ward"
-          }
-        },
-        {
-          "text": "Fixture job: Pretend Clerk",
-          "sim": {
-            "collection": "jobs",
-            "id": "fixture_pretend_clerk"
-          }
+          },
+          "jobs": [
+            {
+              "id": "fixture_pretend_clerk",
+              "sim": "fixture_pretend_clerk"
+            },
+            {
+              "id": "fixture_unlinked_scribe"
+            }
+          ]
         }
       ],
       "drawWeight": {
@@ -570,7 +576,9 @@ export const TECH_DATA = {
       "requirements": [],
       "unlocks": [
         {
-          "text": "Fixture policy option: Pretend Mulching"
+          "type": "edict",
+          "id": "fixture_pretend_mulching",
+          "name": "Fixture Pretend Mulching"
         }
       ],
       "drawWeight": {

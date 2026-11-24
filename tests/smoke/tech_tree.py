@@ -55,6 +55,23 @@ async def run(t):
           and rd.get("repeatable") == rd.get("rep") == sum(1 for x in extracted if x["flags"]["repeatable"]) > 0 and rd.get("starter", 0) > 0,
           {k: v for k, v in rd.items() if k != "ids"})
 
+    # T3007: unlocks linked to simulator ids through the game ids; every linked id exists in the simulator
+    sys.path.insert(0, os.path.join(ROOT, "tools", "extract"))
+    import report_differences as rdiff
+    sim_ids = {k: {s.id for s in v} for k, v in rdiff.sim_items(rdiff.load_simulator()).items()}
+    links = node_json("import {TECH_DATA as d} from './%s'; const U=d.technologies.flatMap(t=>t.unlocks);"
+                      "console.log(JSON.stringify({sim:U.filter(u=>u.sim).map(u=>[u.type,u.id,u.sim.collection,u.sim.id]),"
+                      "jobs:U.flatMap(u=>(u.jobs||[]).filter(j=>j.sim).map(j=>j.sim)),"
+                      "mat:U.find(u=>u.id==='building_engineering_facility_1')}))" % real)
+    sim_links = links.get("sim", [])
+    bad = [l for l in sim_links if l[2] != {"building": "buildings", "district": "districts"}.get(l[0]) or l[3] not in sim_ids.get(l[2], ())]
+    bad += [j for j in links.get("jobs", []) if j not in sim_ids["jobs"]]
+    mat = links.get("mat") or {}
+    check("tech tree data: unlocked buildings, districts and their jobs linked to existing simulator ids (Materials Workshop → materials_workshop, engineer)",
+          not bad and {l[2] for l in sim_links} == {"buildings", "districts"} and len(links.get("jobs", [])) > 0
+          and mat.get("sim") == {"collection": "buildings", "id": "materials_workshop"} and {"id": "engineer", "sim": "engineer"} in mat.get("jobs", []),
+          {"bad": bad[:10], "mat": mat})
+
     # T3006: the technologies collection is registered, unverified, with its own version, outside the simulator summary
     reg = node_json("import * as v from './js/data-version.js'; import {TECH_DATA as d} from './%s'; const c=v.DATA_COLLECTIONS.technologies||{};"
                     "const sim=Object.values(v.DATA_COLLECTIONS).filter(x=>!x.tool).length;"

@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3007 — Tech unlocks linked to simulator ids (2026-11-25)
+- [ ] **Matcher of the difference report** (`report_differences.py`: game id with prefix, then English name, then icon) decides the links; a wrong name match there is also a wrong link here.
+- [ ] **Jobs linked through the unlocked buildings and districts** (`jobs: [{id, sim?}]`, conditional jobs included): no game job names a technology as prerequisite, so a tech never unlocks a job directly.
+- [ ] **Edicts and deposits are not linked** (the task only asks for buildings, jobs and districts).
+- [ ] **The data file depends on the simulator data**: it is rebuilt when the simulator changes; the browser test fails if it is stale.
+- [ ] **Fixture unlocks** changed to the same `{type, id, name, sim, jobs}` shape as the real data.
+
 ## T3004 — Tech tree data model confirmed against the extractor (2026-11-25)
 - [ ] **One `kind` per node by priority** repeatable > starter > event > dangerous > rare > normal; the game flags combine (rare + dangerous, event + rare…), so all of them are also kept in `flags` for later filters.
 - [ ] **`acquisition` is never produced** from the 4.5.4 files: the game has no such flag (the wiki colours it by hand). It stays in the kind list; `insight` techs are kept only as a flag.

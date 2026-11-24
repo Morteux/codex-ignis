@@ -1,19 +1,26 @@
-"""Tech tree data file of a game version (T3005): python tools/extract/build_tech_data.py [--data DIR] [--out FILE]
+"""Tech tree data file of a game version (T3005): python tools/extract/build_tech_data.py [--data DIR] [--out FILE] [--simulator FILE]
 
 --data is a data/generated/<rulesetId>/ folder (default: the newest one) and --out the data file
 (default: js/tech-data/<rulesetId>.js). Reads technologies.json, plus the sets whose items name a
 technology as prerequisite (buildings, districts, edicts, deposits) for the unlocks, and writes
 the model of TECH_TREE_GDD.md section 4.3: every technology, event and repeatable ones included.
 Only reads the generated data; the data file is rewritten as a whole (never edit it by hand).
+
+T3007: unlocked buildings and districts, and the jobs they give, are linked to the simulator ids
+(`sim`) with the matcher of report_differences.py (game id, then English name, then icon).
+--simulator is a dump of tools/extract/dump_simulator_data.mjs (default: the dump is made now).
 """
 import argparse, json, os, re, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pdx.parser import Block, Parser, to_text  # noqa: E402
+import report_differences as rd  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))).replace("\\", "/")
 # Sets whose items have `prerequisites` (technology ids): unlock type per set
 UNLOCK_SETS = {"buildings": "building", "districts": "district", "edicts": "edict", "deposits": "deposit"}
+# Game sets linked to simulator ids (T3007): the set name is also the data-version.js collection
+SIM_SETS = ("buildings", "districts", "jobs")
 FLAGS = ("start", "rare", "dangerous", "insight", "repeatable", "event")
 
 
@@ -59,13 +66,55 @@ def plain_name(text):
     return re.sub(r"§.|£[^£]*£", "", text or "").strip() or None
 
 
-def unlocks_by_tech(sets):
-    """{tech id: [{type, id, name}]} from the items of UNLOCK_SETS that name it as prerequisite."""
+def sim_links(sets, sim):
+    """{set: {game id: simulator id}} for SIM_SETS, with the matcher of the difference report.
+    Job swaps of the game are items of their own there, so a swap id maps to its simulator job."""
+    if not sim:
+        return {}
+    sims = rd.sim_items(sim)
+    links = {}
+    for set_name in SIM_SETS:
+        data = sets.get(set_name)
+        if not data:
+            continue
+        pairs, _ = rd.match(set_name, sims[set_name], rd.game_items(set_name, data, sets))
+        links[set_name] = {}
+        for s, g, _how in pairs:
+            if g is not None:
+                links[set_name].setdefault(g["id"], s.id)
+    return links
+
+
+def unlock_jobs(item, links):
+    """Jobs an unlocked building or district gives (always or under a condition): [{id, sim?}]."""
+    ids = list((item.get("jobs") or {}).keys())
+    for c in item.get("jobs_conditional") or []:
+        ids += [j for j in (c.get("jobs") or {}) if j not in ids]
+    out = []
+    for jid in ids:
+        entry = {"id": jid}
+        if jid in links.get("jobs", {}):
+            entry["sim"] = links["jobs"][jid]
+        out.append(entry)
+    return out
+
+
+def unlocks_by_tech(sets, links=None):
+    """{tech id: [{type, id, name, sim?, jobs?}]} from the items of UNLOCK_SETS that name it as
+    prerequisite; `sim` = {collection, id} of data-version.js when the simulator has the item."""
+    links = links or {}
     out = {}
     for set_name, unlock_type in UNLOCK_SETS.items():
         for item in (sets.get(set_name) or {}).get("items", []):
             for tech in item.get("prerequisites") or []:
-                out.setdefault(tech, []).append({"type": unlock_type, "id": item["id"], "name": plain_name(item.get("name"))})
+                entry = {"type": unlock_type, "id": item["id"], "name": plain_name(item.get("name"))}
+                if item["id"] in links.get(set_name, {}):
+                    entry["sim"] = {"collection": set_name, "id": links[set_name][item["id"]]}
+                if set_name in ("buildings", "districts"):
+                    jobs = unlock_jobs(item, links)
+                    if jobs:
+                        entry["jobs"] = jobs
+                out.setdefault(tech, []).append(entry)
     return out
 
 
@@ -96,10 +145,10 @@ def tech_record(t, unlocks):
     return record
 
 
-def build(sets):
-    """The data file content (a dict) from the loaded sets {name: json}."""
+def build(sets, sim=None):
+    """The data file content (a dict) from the loaded sets {name: json} and the simulator dump."""
     techs = sets["technologies"]
-    unlocks = unlocks_by_tech(sets)
+    unlocks = unlocks_by_tech(sets, sim_links(sets, sim))
     records = [tech_record(t, unlocks) for t in techs["items"]]
     areas = ["physics", "society", "engineering"]
     field_area = {}
@@ -136,7 +185,7 @@ def newest_data_dir():
 
 def load_sets(data_dir):
     sets = {}
-    for name in ["technologies", *UNLOCK_SETS]:
+    for name in ["technologies", *UNLOCK_SETS, "jobs"]:
         path = os.path.join(data_dir, name + ".json")
         if os.path.exists(path):
             with open(path, encoding="utf-8") as f:
@@ -148,8 +197,9 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--data", help="data/generated/<rulesetId>/ folder (default: the newest)")
     ap.add_argument("--out", help="output file (default: js/tech-data/<rulesetId>.js)")
+    ap.add_argument("--simulator", help="dump of tools/extract/dump_simulator_data.mjs (default: made now)")
     args = ap.parse_args()
-    data = build(load_sets(args.data or newest_data_dir()))
+    data = build(load_sets(args.data or newest_data_dir()), rd.load_simulator(args.simulator))
     out = args.out or os.path.join(ROOT, "js", "tech-data", data["rulesetId"] + ".js")
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8", newline="\n") as f:
