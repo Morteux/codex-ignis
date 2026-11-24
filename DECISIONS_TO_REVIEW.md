@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3403 — Accessibility of the tech tree (2026-11-25)
+- [ ] **One Tab stop per area (roving tabindex)**: Tab enters each area at its last focused node (at first, the first node; after a selection, the selected one) and the next Tab leaves the area, instead of crossing every node. The panel keeps its own Tab stop for panning with the arrows (T3204).
+- [ ] **Arrow keys on a node**: → / ← go to the nearest node (vertically) of the next / previous non-empty tier column, ↓ / ↑ to the next / previous node of the same tier column across fields, Home / End to the first / last node of the area; Enter or Space selects. There is no key to jump along prerequisite lines (the card's prerequisite and "leads to" buttons do that).
+- [ ] **Screen readers**: each node is described (`aria-describedby`) by its field label and, while something is selected, by its state text (the legend's texts, translated); the name stays "<technology> Tier N · Kind".
+- [ ] **Contrast**: dimmed nodes (unrelated to the selection, or filtered out by the search) no longer use opacity on the whole node, which put the text below 4.5:1; they get muted text, a flat background and a soft border, and only their icon fades (filtered-out names also lose the bold). The kind colours of the left border are not checked as non-text contrast: the kind is also written in every node.
+
 ## T3402 — Links from the wiki and the simulator to the tech tree (2026-11-25)
 - [ ] **Wiki tech mentions linked** (es/en/jp, first clear mention only): Proton / Neutron Launchers (`tech_energy_torpedoes_1/2`), Growth Chamber (`tech_growth_chamber_1`), Ancient Nano-Missile Cloud Launcher (`tech_archaeo_missiles`) and Disruptors (`tech_disruptors_1`). Ship classes (Corvettes, Titans…), Citadel, Juggernaut, Harbingers… are named as ships or structures in the articles, not as research, so they were not linked; "dark matter, Zro, nanites" and "Archaeotech" name several technologies each and were left alone.
 - [ ] **"Useful links" lists our tech tree first** (`tech-tree.html`, same tab) and keeps BloodStainedCrow's tree, renamed "BloodStainedCrow's Stellaris Tech Tree" and described as the inspiration of ours. The intro paragraph still says "external pages" (the owner's text, untouched).

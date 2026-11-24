@@ -9,7 +9,8 @@
  * detail card of the selected technology (js/tech-tree-card.js), the search and filters
  * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
  * technology in the URL hash (js/tech-tree-link.js) and the comparison between two data versions
- * (js/tech-tree-compare.js, T3303). The data file is the one of the version chosen
+ * (js/tech-tree-compare.js, T3303), and the keyboard navigation between nodes with their
+ * screen-reader descriptions (js/tech-tree-keyboard.js, T3403). The data file is the one of the version chosen
  * in the version selector (js/tech-versions.js, T3301), loaded before anything is drawn.
  */
 
@@ -24,6 +25,7 @@ import { createSearch } from "./tech-tree-search.js";
 import { createZoom } from "./tech-tree-zoom.js";
 import { techIdFromHash } from "./tech-tree-link.js";
 import { createCompare } from "./tech-tree-compare.js";
+import { createKeyboard } from "./tech-tree-keyboard.js";
 import "./i18n-tech-tree.js";
 
 const VERIFICATION_KEYS = {
@@ -167,6 +169,7 @@ function revealNode(id) {
   node.scrollIntoView({ block: "center", inline: "center" });
 }
 
+const keyboard = createKeyboard(document.querySelector(".tech-areas"), getLang);
 const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, getLang, {
   onSelect: (id) => {
     selection.select(id);
@@ -178,6 +181,7 @@ const selection = createSelection(document.querySelector(".tech-areas"), TECH_DA
   (id) => {
     card.show(id);
     writeHash(id);
+    keyboard.update(id);
   });
 const search = createSearch(document.getElementById("tech-search-box"), document.querySelector(".tech-areas"), TECH_DATA, getLang, {
   onPick: (id) => {
@@ -239,6 +243,7 @@ const zoom = createZoom(document.querySelector(".tech-areas"), document.getEleme
 const comparison = createCompare(document.getElementById("tech-compare-box"), VERSION, TECH_DATA, getLang);
 onLanguageChange((lang) => {
   comparison.relabel();
+  keyboard.relabel();
   renderLegend(lang);
   selection.announce();
   card.refresh();

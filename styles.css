@@ -3709,7 +3709,17 @@ h1 {
     border-left-color: var(--tech-kind-colour, var(--line));
 }
 
-.has-selection .tech-node:not(.is-selected, .is-prerequisite, .is-unlocked) {
+/* T3403: dimmed nodes keep readable text (WCAG 4.5:1): muted text, flat background and soft
+   border instead of lowering the opacity of the whole node; only the icon fades. */
+.has-selection .tech-node:not(.is-selected, .is-prerequisite, .is-unlocked),
+.has-filter .tech-node.is-filtered-out:not(.is-selected) {
+    color: var(--muted);
+    background: var(--surface);
+    border-color: var(--line-soft);
+    border-left-color: var(--tech-kind-colour, var(--line));
+}
+
+.has-selection .tech-node:not(.is-selected, .is-prerequisite, .is-unlocked) .tech-icon-slot {
     opacity: .45;
 }
 
@@ -4154,8 +4164,12 @@ body.has-tech-card .tech-board {
     font: .66rem var(--mono);
 }
 
-.has-filter .tech-node.is-filtered-out:not(.is-selected) {
-    opacity: .18;
+.has-filter .tech-node.is-filtered-out:not(.is-selected) .tech-icon-slot {
+    opacity: .2;
+}
+
+.has-filter .tech-node.is-filtered-out:not(.is-selected) .tech-node-name {
+    font-weight: 400;
 }
 
 .has-filter .tech-line.is-filtered-out {

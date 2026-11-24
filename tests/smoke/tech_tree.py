@@ -156,6 +156,7 @@ async def run(t):
     await version_checks(t)
     await i18n_checks(t)
     await link_checks(t)
+    await a11y_checks(t)
 
 
 async def page_checks(t):
@@ -293,7 +294,7 @@ async def page_checks(t):
         expAnc:[...anc].sort(),expDesc:[...desc].sort(),
         expLineP:all.filter(([f,t])=>anc.has(f)&&(t===id||anc.has(t))).map(p=>p.join('>')).sort(),
         expLineU:all.filter(([f,t])=>desc.has(t)&&(f===id||desc.has(f))).map(p=>p.join('>')).sort(),
-        lineP:lines('is-prerequisite'),lineU:lines('is-unlocked'),otherOpacity:getComputedStyle(other).opacity,
+        lineP:lines('is-prerequisite'),lineU:lines('is-unlocked'),otherOpacity:getComputedStyle(other.querySelector('.tech-icon-slot')).opacity,
         status:document.getElementById('tech-selection-status').textContent}}"""
     kinds = await pg.evaluate("""()=>{const c={};document.querySelectorAll('.tech-node').forEach(n=>{c[n.dataset.kind]=getComputedStyle(n).borderLeftColor});
       return {colours:c,legend:[...document.querySelectorAll('#tech-legend li')].map(l=>[l.dataset.legend,l.textContent,getComputedStyle(l.querySelector('.tech-legend-swatch')).backgroundColor])}}""")
@@ -437,7 +438,7 @@ async def page_checks(t):
         has:document.querySelector('.tech-areas').classList.contains('has-filter'),count:document.getElementById('tech-filter-count').textContent,
         results:[...document.querySelectorAll('#tech-filter-results button')].map(b=>b.dataset.techId),more:document.querySelector('.tech-filter-more')?.textContent||'',
         fields:[...document.querySelectorAll('#tech-filter-field option')].map(o=>o.value).filter(Boolean),
-        dimmed:getComputedStyle(document.querySelector('.tech-node.is-filtered-out')||document.body).opacity,
+        dimmed:getComputedStyle(document.querySelector('.tech-node.is-filtered-out .tech-icon-slot')||document.body).opacity,
         lineOut:document.querySelectorAll('.tech-line.is-filtered-out').length,lines:document.querySelectorAll('.tech-line').length}}"""
     expect_js = """async (f)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
       const fold=(x)=>x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();const words=fold(f.query||'').split(/\\s+/).filter(Boolean);
@@ -1023,4 +1024,81 @@ async def link_checks(t):
           and "Researched with" in s_en["label"] and "tech tree" in s_en["title"] and "Se investiga con" in s_es["label"] and s_es["n"] == s_en["n"],
           ({k: s_en[k] for k in ("n", "entries", "items", "bad", "label", "title")}, s_es["label"]))
     check("tech links (T3402): no page errors", not errors, errors)
+    await pg.close()
+
+
+# T3403: contrast of every visible node text, blending the opacity of the node and its ancestors
+NODE_CONTRAST_JS = r"""()=>{const rgb=(c)=>c.match(/[\d.]+/g).map(Number);
+  const lum=(m)=>{const f=(v)=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2])};
+  const bgOf=(e)=>{for(let x=e;x;x=x.parentElement){const a=rgb(getComputedStyle(x).backgroundColor);if(a.length<4||a[3]>.5)return a}return [7,17,12]};
+  const alpha=(e)=>{let o=1;for(let x=e;x;x=x.parentElement)o*=+getComputedStyle(x).opacity;return o};
+  const low=[];const scroll=document.querySelector('.tech-area.is-active .tech-area-scroll')||document.querySelector('.tech-area-scroll');const box=scroll.getBoundingClientRect();
+  for(const e of document.querySelectorAll('.tech-node-name,.tech-node-meta,.tech-field-label,.tech-tier-head')){const r=e.getBoundingClientRect();
+    if(!r.width||r.bottom<box.top||r.top>box.bottom||r.right<box.left||r.left>box.right)continue;
+    const bg=bgOf(e);const a=alpha(e);const fg=rgb(getComputedStyle(e).color).slice(0,3).map((v,i)=>v*a+bg[i]*(1-a));
+    const x=lum(fg),y=lum(bg);const ratio=(Math.max(x,y)+.05)/(Math.min(x,y)+.05);if(ratio<4.5)low.push(e.className+' '+e.textContent.slice(0,16)+' '+ratio.toFixed(2))}
+  return [...new Set(low)].slice(0,8)}"""
+
+
+async def a11y_checks(t):
+    url = "file://" + ROOT + "/tech-tree.html"
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.goto(url)
+    await pg.wait_for_timeout(400)
+    await pg.click(".lang-btn[data-lang=en]")
+    # one Tab stop per area: Tab from the physics panel reaches its first node, the next Tab leaves the area
+    stops = await pg.evaluate("()=>[...document.querySelectorAll('.tech-grid')].map(g=>[g.dataset.area,g.querySelectorAll('.tech-node[tabindex=\"0\"]').length,g.querySelectorAll('.tech-node').length])")
+    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.keyboard.press("Tab")
+    first = await pg.evaluate("()=>[document.activeElement.dataset.techId,document.activeElement.closest('.tech-area')?.dataset.area]")
+    await pg.keyboard.press("Tab")
+    after = await pg.evaluate("()=>[document.activeElement.className,document.activeElement.closest('.tech-area')?.dataset.area]")
+    check("tech tree a11y (T3403): one Tab stop per area (roving tabindex) instead of one per node; Tab enters the area at its first node and leaves it with the next Tab",
+          all(n == 1 and total > 100 for _, n, total in stops) and first[1] == "physics" and first[0] and after[1] != "physics", (stops, first, after))
+
+    focus_js = """()=>{const e=document.activeElement;const r=e.getBoundingClientRect();const p=e.closest('.tech-area-scroll').getBoundingClientRect();
+      return {id:e.dataset.techId,tier:+e.dataset.tier,field:e.closest('.tech-cell')?.dataset.field,top:Math.round(r.top),tab:e.tabIndex,
+        inView:r.left>=p.left-1&&r.right<=p.right+1&&r.top>=p.top-1&&r.bottom<=p.bottom+1,stops:document.querySelectorAll('#tech-area-physics .tech-node[tabindex=\"0\"]').length}}"""
+    await pg.focus(".tech-node[data-tech-id=tech_lasers_1]")
+    k0 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("ArrowRight")
+    k1 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("ArrowLeft")
+    k2 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("ArrowDown")
+    k3 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("ArrowUp")
+    k4 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("End")
+    k5 = await pg.evaluate(focus_js)
+    await pg.keyboard.press("Home")
+    k6 = await pg.evaluate(focus_js)
+    check("tech tree a11y (T3403): arrows move between nodes (→ next tier, ← back, ↓ ↑ same tier column), Home / End to the first / last node; the focused node is the area's Tab stop and stays in view",
+          k1["tier"] > k0["tier"] and k2["tier"] == k0["tier"] and k3["tier"] == k0["tier"] and k3["top"] > k0["top"] and k4["id"] == k0["id"]
+          and k5["tier"] == max(k0["tier"], k1["tier"], k5["tier"]) and k6["tier"] == 0 and all(k["stops"] == 1 and k["tab"] == 0 and k["inView"] for k in (k1, k3, k5, k6)),
+          (k0, k1, k2, k3, k4, k5, k6))
+    await pg.focus(".tech-node[data-tech-id=tech_lasers_2]")
+    await pg.keyboard.press("Enter")
+    desc_js = """()=>{const d=(id)=>{const n=document.querySelector(`.tech-node[data-tech-id=${id}]`);return (n.getAttribute('aria-describedby')||'').split(' ').map(x=>document.getElementById(x)?.textContent||'?'+x)};
+      return {sel:d('tech_lasers_2'),pre:d('tech_lasers_1'),dep:d('tech_lasers_3'),other:d('tech_corvettes'),pressed:document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').getAttribute('aria-pressed')}}"""
+    d_en = await pg.evaluate(desc_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    d_es = await pg.evaluate(desc_js)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree a11y (T3403): Enter selects the focused node; screen readers get its field and state (selected, prerequisite chain, depends on the selected) as its description, translated",
+          d_en["pressed"] == "true" and d_en["sel"][1:] == ["Selected"] and d_en["pre"][1:] == ["Prerequisite chain"] and d_en["dep"][1:] == ["Depends on the selected"]
+          and len(d_en["other"]) == 1 and d_en["sel"][0] and "?" not in d_en["sel"][0] and d_es["pre"][1:] == ["Cadena de prerrequisitos"], (d_en, d_es))
+    low_sel = await pg.evaluate(NODE_CONTRAST_JS)
+    await pg.keyboard.press("Escape")
+    low_plain = await pg.evaluate(NODE_CONTRAST_JS)
+    await pg.fill("#tech-search-box input[type=search]", "lasers")
+    await pg.wait_for_timeout(200)
+    low_filter = await pg.evaluate(NODE_CONTRAST_JS)
+    await pg.fill("#tech-search-box input[type=search]", "")
+    check("tech tree a11y (T3403): node, field and tier texts keep 4.5:1 contrast, also when dimmed by a selection or a search (opacity included)",
+          not low_plain and not low_sel and not low_filter, (low_plain, low_sel, low_filter))
+    check("tech tree a11y (T3403): no page errors", not errors, errors)
     await pg.close()
