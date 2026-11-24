@@ -236,8 +236,9 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 ## 33 · Tech tree: versions
 - [x] **T3301** (P33.1) Version selector and per-version data loading (only 4.5.2 exists; tested with a small fixture version under `tests/`)
   - Prueba manual: open `tech-tree.html`: under the intro a "Game version" selector shows "Stellaris PC 4.5.4 · current" and the tree draws its 679 technologies; `tech-tree.html?version=nope` shows the same data with a notice that the version "nope" does not exist.
-- [ ] **T3302** (P33.2) Procedure to add a new version without losing the previous ones (GDD §5 and the script's help)
+- [x] **T3302** (P33.2) Procedure to add a new version without losing the previous ones (GDD §5 and the script's help)
   - Modelo: sonnet
+  - Prueba manual: run `python tools/extract/build_tech_data.py --help`: the six-step procedure appears after the options; the same steps are in TECH_TREE_GDD.md section 5.
 - [ ] **T3303** (P33.3) Comparison view between two versions: added, removed, changed cost / tier / prerequisites (tested with the fixture version)
 
 ## 34 · Tech tree: integration

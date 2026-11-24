@@ -193,8 +193,23 @@ def load_sets(data_dir):
     return sets
 
 
+PROCEDURE = """Adding a new game version without losing the previous ones (TECH_TREE_GDD.md section 5, T3302):
+  1. python tools/extract/extract_all.py [--game DIR] [--icons]
+     Writes data/generated/<new rulesetId>/ next to the existing folders (one folder per version).
+  2. Run the validations of the extractor on the new folder (tools/extract/report_differences.py).
+  3. python tools/extract/build_tech_data.py --data data/generated/<new rulesetId>
+     Writes js/tech-data/<new rulesetId>.js. The file name comes from the rulesetId, so the data
+     files of the previous versions are never touched. Never pass --out pointing at an old file.
+  4. In js/tech-versions.js add one entry for the new file (id = rulesetId, label, file,
+     verification "unverified") and move `isCurrent` to it; keep the old entries.
+  5. Upload the new icons to StellarisAssets (commit there, the owner pushes) and regenerate
+     StellarisAssetsFileTree.txt; register the version in js/data-version.js.
+  6. Run BLOCK_REMOTE=1 python tests/policies-smoke.py and update README.md if the structure changed."""
+
+
 def main():
-    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0], epilog=PROCEDURE,
+                                 formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data", help="data/generated/<rulesetId>/ folder (default: the newest)")
     ap.add_argument("--out", help="output file (default: js/tech-data/<rulesetId>.js)")
     ap.add_argument("--simulator", help="dump of tools/extract/dump_simulator_data.mjs (default: made now)")
@@ -205,6 +220,7 @@ def main():
     with open(out, "w", encoding="utf-8", newline="\n") as f:
         f.write(to_module(data))
     print(f"{out}: {len(data['technologies'])} technologies")
+    print(f"Next: register {data['rulesetId']} in js/tech-versions.js (see --help).")
 
 
 if __name__ == "__main__":

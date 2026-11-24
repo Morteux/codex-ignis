@@ -83,7 +83,13 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 - One data file per version (`rulesetId`, e.g. `stellaris-pc-4.5.2`); a new wiki version is **added as a new file, never overwriting the previous one**.
 - Version selector in the page (same pattern as the simulator) and the version shown in every card. **Done in T3301:** the versions are listed in `js/tech-versions.js` (one entry per data file, the newest marked `isCurrent`); the page loads only the chosen file, picked from `?version=<id>`, then the last choice stored in the browser, then the current version; choosing another one reloads the page with `?version=` and keeps the technology in the hash.
 - Comparison between two versions: added, removed, and changed cost, tier or prerequisites.
-- Procedure for a new version (T3302): run `extract_technologies.py` (or `extract_all.py`) on the game files of the new version with its `rulesetId`, run the validations, upload the new icons, register it in `data-version.js`.
+- Procedure for a new version (T3302; also in `python tools/extract/build_tech_data.py --help`), which never overwrites a previous version because every step is named after the new `rulesetId`:
+  1. `extract_all.py` on the game files of the new version → `data/generated/<rulesetId>/` (a new folder next to the old ones).
+  2. Run the validations on that folder (`report_differences.py`).
+  3. `build_tech_data.py --data data/generated/<rulesetId>` → `js/tech-data/<rulesetId>.js` (a new file; never pass `--out` pointing at an old one).
+  4. Add one entry to `js/tech-versions.js` (id, label, file, `verification: "unverified"`), move `isCurrent` to it and keep the old entries.
+  5. Upload the new icons to StellarisAssets, regenerate `StellarisAssetsFileTree.txt`, register the version in `data-version.js`.
+  6. Run the smoke tests and update `README.md` if the structure changed.
 
 ## 6. Page
 - Shared page shell (header, language selector, footer) of the rest of the site.
