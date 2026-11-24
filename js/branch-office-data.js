@@ -58,6 +58,7 @@
  */
 
 import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
+import { MAX_CIVICS, civicsConflict } from "./empire-data.js";
 
 const civic = (...keys) => ({ type: "civic", keys, scope: "owner" });
 const notCivic = (...keys) => ({ type: "notCivic", keys, scope: "owner" });
@@ -295,6 +296,23 @@ export const BRANCH_OWNER_CIVICS = (() => {
   });
   return [...keys].sort();
 })();
+
+/**
+ * Valid owner civics from a list (saved planet or empire profile): only BRANCH_OWNER_CIVICS, no duplicates,
+ * none incompatible with an earlier one, at most MAX_CIVICS (in list order).
+ */
+export function sanitizeOwnerCivics(civicIds) {
+  const result = [];
+  (Array.isArray(civicIds) ? civicIds : []).forEach((key) => {
+    if (BRANCH_OWNER_CIVICS.includes(key) && result.length < MAX_CIVICS && !result.includes(key) && !result.some((other) => civicsConflict(key, other))) result.push(key);
+  });
+  return result;
+}
+
+/** P19.6: can this saved empire profile own a branch office (a megacorporation: Corporate authority)? */
+export function isBranchOwnerProfile(profile) {
+  return Boolean(profile) && profile.authorityId === BRANCH_OFFICE_HOST_RULES.ownerAuthority;
+}
 
 /** Number of branch office building slots the host capital gives (0 with no branch office allowed). */
 export function branchSlotCount(capitalTier) {

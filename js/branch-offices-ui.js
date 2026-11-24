@@ -86,7 +86,40 @@ function buildingLabel(lang, building, illegal) {
   return t(lang, variant.i18nKey);
 }
 
-function renderOwner(container, { lang, branch, onChange }) {
+/** P19.6: "Owner empire" select (saved megacorporation profiles + custom owner) and its status note. */
+function renderOwnerEmpire(section, { lang, branch, ownerEmpires = [], ownerStatus = "custom", onOwnerEmpireChange }) {
+  const label = document.createElement("label");
+  label.className = "branch-legality branch-owner-empire";
+  const text = document.createElement("span");
+  text.textContent = t(lang, "branchOwnerEmpireLabel");
+  const select = document.createElement("select");
+  select.id = "branch-owner-empire-select";
+  const addOption = (value, name) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = name;
+    select.append(option);
+  };
+  addOption("", t(lang, "branchOwnerCustom"));
+  ownerEmpires.forEach((profile) => addOption(profile.id, profile.name));
+  if (ownerStatus === "missing") addOption(branch.ownerEmpireId, t(lang, "branchOwnerSavedCopy")(branch.ownerEmpireName || "?"));
+  select.value = branch.ownerEmpireId || "";
+  select.addEventListener("change", () => onOwnerEmpireChange?.(select.value || null));
+  label.append(text, select);
+  section.append(label);
+  if (ownerStatus === "custom") return;
+  const status = document.createElement("p");
+  status.className = ownerStatus === "missing" ? "empire-authority-lock branch-owner-status" : "empire-note branch-owner-status";
+  status.id = "branch-owner-status";
+  status.dataset.status = ownerStatus;
+  status.textContent = t(lang, ownerStatus === "missing" ? "branchOwnerMissingNote" : "branchOwnerLinkedNote")(branch.ownerEmpireName || "?");
+  section.append(status);
+}
+
+function renderOwner(container, options) {
+  const { lang, branch, onChange } = options;
+  // P19.6: civics copied from a saved empire profile are read-only (custom owner = editable).
+  const readOnly = Boolean(branch.ownerEmpireId);
   const section = document.createElement("section");
   section.className = "empire-policy-group";
   const title = document.createElement("h3");
@@ -95,6 +128,7 @@ function renderOwner(container, { lang, branch, onChange }) {
   note.className = "empire-note";
   note.textContent = t(lang, "branchOwnerNote");
   section.append(title, note);
+  renderOwnerEmpire(section, options);
 
   // Legality: illegal needs Criminal Heritage among the owner's civics.
   const hasCriminalHeritage = branch.ownerCivicIds.includes("civicCriminalHeritage");
@@ -133,7 +167,8 @@ function renderOwner(container, { lang, branch, onChange }) {
     const box = document.createElement("input");
     box.type = "checkbox";
     box.checked = chosen;
-    box.disabled = blocked;
+    box.disabled = blocked || readOnly;
+    label.classList.toggle("is-readonly", readOnly);
     box.addEventListener("change", () => {
       const next = box.checked ? [...branch.ownerCivicIds, key] : branch.ownerCivicIds.filter((other) => other !== key);
       onChange({ ownerCivicIds: next, illegal: branch.illegal && next.includes("civicCriminalHeritage") });
@@ -254,8 +289,9 @@ function renderSlot(lang, index, { branch, slotCount, ownerCtx, hostCtx, describ
 
 /**
  * Draws the Sucursales tab into `container`.
- * options: { lang, branch { present, illegal, ownerCivicIds, slots }, hostBlockKey, slotCount, capitalTier,
- *            ownerCtx, hostCtx, describeRule(rule), onChange(patch), onSlotChange(index, buildingId) }
+ * options: { lang, branch { present, illegal, ownerCivicIds, ownerEmpireId, ownerEmpireName, slots }, hostBlockKey, slotCount, capitalTier,
+ *            ownerEmpires [{ id, name }], ownerStatus ("custom" | "linked" | "missing"),
+ *            ownerCtx, hostCtx, describeRule(rule), onChange(patch), onOwnerEmpireChange(id|null), onSlotChange(index, buildingId) }
  */
 export function renderBranchOffices(container, options) {
   if (!container) return;

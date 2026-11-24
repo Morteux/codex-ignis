@@ -7,11 +7,11 @@ import { RESOURCE_DISTRICT_ORDER } from "./planet-data.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { STRATEGIC_DEPOSITS, BLOCKERS } from "./planetary-features-data.js";
 import { updatePlanetState, getPlanetState } from "./planet-state.js";
-import { MAX_CIVICS, civicsConflict } from "./empire-data.js";
-import { getBranchBuilding, BRANCH_OWNER_CIVICS } from "./branch-office-data.js";
+import { getBranchBuilding, sanitizeOwnerCivics } from "./branch-office-data.js";
 import { getDesignation } from "./designation-data.js";
 import { refresh } from "./planet-sim.js";
 import { computeTotals } from "./planet-sim-economy.js";
+import { syncBranchOwner } from "./planet-sim-branch-tab.js";
 import { syncPlanetSize, renderDesignationSelect } from "./planet-sim-planet-ui.js";
 import { currentCapital, primaryMinCount, primaryOption, secondaryOption, fixedPlanetSize, totalDistrictCount, currentCapitalSet, sanitizeCivilians, unlockedKeys, inactiveReason } from "./planet-sim-rules.js";
 import { jobAssignments, builtMap, districtState, manualConditions, strategicDepositChoice, selectedBlockers, selectedPlanetModifiers, branchOffice, URBAN_MIN_COUNT, buildingsById, jobCapacityMemo, MANUAL_CONDITION_LIMIT, BRANCH_MAX_SLOTS, sim } from "./planet-sim-state.js";
@@ -49,8 +49,13 @@ export function capturePlanetConfig() {
     // P10.8: optional field, planet modifiers chosen by the user.
     planetModifierIds: [...selectedPlanetModifiers],
     // P19.4: optional field, another empire's branch office (null = none ever set up).
-    branchOffice: branchOffice.present || branchOffice.ownerCivicIds.length || branchOffice.slots.some(Boolean)
-      ? { present: branchOffice.present, illegal: branchOffice.illegal, ownerCivicIds: [...branchOffice.ownerCivicIds], slots: [...branchOffice.slots] }
+    // P19.6: ownerEmpireId / ownerEmpireName only when the owner is a saved empire profile.
+    branchOffice: branchOffice.present || branchOffice.ownerCivicIds.length || branchOffice.ownerEmpireId || branchOffice.slots.some(Boolean)
+      ? {
+        present: branchOffice.present, illegal: branchOffice.illegal, ownerCivicIds: [...branchOffice.ownerCivicIds],
+        ...(branchOffice.ownerEmpireId ? { ownerEmpireId: branchOffice.ownerEmpireId, ownerEmpireName: branchOffice.ownerEmpireName || "" } : {}),
+        slots: [...branchOffice.slots]
+      }
       : null
   };
 }
@@ -126,14 +131,15 @@ export function applyPlanetConfig(config) {
   // P19.4: branch office (optional field; older planets have none). Unknown civics/buildings are dropped, civics past
   // the cap or incompatible with an earlier one are dropped, illegal needs Criminal Heritage.
   const savedBranch = config.branchOffice || {};
-  const ownerCivicIds = [];
-  (savedBranch.ownerCivicIds || []).forEach((key) => {
-    if (BRANCH_OWNER_CIVICS.includes(key) && ownerCivicIds.length < MAX_CIVICS && !ownerCivicIds.includes(key) && !ownerCivicIds.some((other) => civicsConflict(key, other))) ownerCivicIds.push(key);
-  });
+  const ownerCivicIds = sanitizeOwnerCivics(savedBranch.ownerCivicIds);
   branchOffice.present = savedBranch.present === true;
   branchOffice.ownerCivicIds = ownerCivicIds;
   branchOffice.illegal = savedBranch.illegal === true && ownerCivicIds.includes("civicCriminalHeritage");
   branchOffice.slots = Array.from({ length: BRANCH_MAX_SLOTS }, (_, index) => (getBranchBuilding(savedBranch.slots?.[index]) ? savedBranch.slots[index] : null));
+  // P19.6: owner empire profile (optional); while it exists and is corporate its current civics and name win.
+  branchOffice.ownerEmpireId = typeof savedBranch.ownerEmpireId === "string" && savedBranch.ownerEmpireId ? savedBranch.ownerEmpireId : null;
+  branchOffice.ownerEmpireName = branchOffice.ownerEmpireId && typeof savedBranch.ownerEmpireName === "string" ? savedBranch.ownerEmpireName : null;
+  syncBranchOwner();
 
   updatePlanetState({ designationId: sim.selectedDesignationId || null });
   renderDesignationSelect();

@@ -96,7 +96,8 @@ export const strategicDepositChoice = {};
  * (they stay inactive, never deleted).
  */
 export const BRANCH_MAX_SLOTS = 4;
-export const branchOffice = { present: false, illegal: false, ownerCivicIds: [], slots: Array(BRANCH_MAX_SLOTS).fill(null) };
+// P19.6: ownerEmpireId / ownerEmpireName = saved empire profile that owns it (null = custom owner).
+export const branchOffice = { present: false, illegal: false, ownerCivicIds: [], ownerEmpireId: null, ownerEmpireName: null, slots: Array(BRANCH_MAX_SLOTS).fill(null) };
 
 /**
  * Población asignada a cada empleo (jobId -> pops trabajándolo, controlada

@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1906 — Branch office owner from a saved empire profile (2026-11-25)
+- [ ] **Corporate authority only**: the "Owner empire" select lists the profiles whose authority is Corporate; the Corporate Sovereign civic (also allowed to own branch offices in the game) is not checked.
+- [ ] **Civic order**: when a profile has more than 3 owner civics (not possible with today's 3-civic cap, but kept as a guard), the first ones in the profile's order are kept and later incompatible ones are dropped.
+- [ ] **Custom owner after a profile**: switching back to "Custom owner" keeps the copied civics as an editable starting point instead of clearing them.
+- [ ] **Unsaved Imperio edits**: the owner follows the saved profile, not unsaved changes in the Imperio tab.
+- [ ] **Texts**: the new Sucursales texts have es and jp translations written by Claude (the older Sucursales texts are still English in every language).
+
 ## T2003 — Pop upkeep in the engine (2026-11-24)
 - [ ] **Colonists without stratum**: the simulator's Colonist job is special stratum, so Colonists pay only the species upkeep (no living standard consumer goods); the 4.5.4 game files list Colonist as a worker job (+0.25 consumer goods each with Decent Conditions). Left as is until the jobs data set is switched to the extracted data (T2523).
 - [ ] **"No deficit" assumed**: living standard effects that need no consumer goods deficit (happiness, Academic Privilege research) always apply, even if the planet itself runs a consumer goods deficit (the deficit is empire-wide in the game).

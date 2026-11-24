@@ -9,8 +9,9 @@
  * Formato de cada planeta (ver PLANET_SIM_GDD.md §8): { schemaVersion, rulesetId,
  * id, name, celestialTypeId, designationId, planetSize, capitalTier, districts,
  * built, staffingOverrides, manualConditions, civilians, neuralChips, strategicDeposits, blockerIds, planetModifierIds, branchOffice, empireId, empireSnapshot, noEmpire }.
- *  - branchOffice (P19.4, optional; null = none): { present, illegal, ownerCivicIds: [≤3], slots: [id|null ×4] }
- *    of another empire's branch office; ids are validated when applied.
+ *  - branchOffice (P19.4, optional; null = none): { present, illegal, ownerCivicIds: [≤3], ownerEmpireId?, ownerEmpireName?, slots: [id|null ×4] }
+ *    of another empire's branch office; ids are validated when applied. ownerEmpireId/Name (P19.6): saved
+ *    megacorporation profile that owns it; ownerCivicIds keeps the copy used if that profile is deleted.
  *  - districts: { urban: { count, slots: [id|null, id|null] }, generator|mining|
  *    agriculture: { count, optionId, cap? } } (mismo formato que districtState; cap: límite
  *    manual de los distritos de recursos de un hábitat, P10.4, opcional).
@@ -177,6 +178,10 @@ function sanitizeBranchOffice(raw) {
     present: raw.present === true,
     illegal: raw.illegal === true,
     ownerCivicIds: Array.isArray(raw.ownerCivicIds) ? [...new Set(raw.ownerCivicIds.filter((id) => typeof id === "string"))].slice(0, 3) : [],
+    // P19.6: optional owner empire profile (id + name at save time); older planets have neither.
+    ...(typeof raw.ownerEmpireId === "string" && raw.ownerEmpireId
+      ? { ownerEmpireId: raw.ownerEmpireId, ownerEmpireName: typeof raw.ownerEmpireName === "string" ? raw.ownerEmpireName.slice(0, 60) : "" }
+      : {}),
     slots
   };
 }
