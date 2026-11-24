@@ -3335,6 +3335,37 @@ h1 {
 }
 
 /* T3101: page layout — data version line, three areas side by side (tabs on mobile), credits. */
+/* T3301: version selector of the tech tree (same look as the simulator's data version select). */
+.tech-version-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin: .8rem 0 0;
+    color: var(--muted);
+    font: 700 .66rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-version-select {
+    max-width: 100%;
+    padding: .3rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--surface);
+    font: 700 .66rem var(--mono);
+}
+
+.tech-version-select:hover {
+    border-color: var(--accent-dim);
+}
+
+.tech-version-warning {
+    margin: .5rem 0 0;
+    color: var(--warning);
+    font: .7rem var(--mono);
+}
+
 .tech-data-version {
     margin: .8rem 0 0;
     color: var(--muted);

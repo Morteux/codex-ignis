@@ -1,13 +1,16 @@
 /**
- * Tech tree test fixture (T3001): invented, clearly fake technologies with the schema of
- * TECH_TREE_GDD.md section 4.2. Covers every area, kind and tier, prerequisite chains (also across
- * fields), requirements with and without `not`, variants, DLC and unlocks linked to simulator ids.
- * Only for the tests and for building the tech tree before the real data exists: never imported
- * by a page of the site.
+ * Tech tree test fixture (T3001): invented, clearly fake technologies with the confirmed model of
+ * TECH_TREE_GDD.md section 4.3 (`gameVersion`, `flags`, `effects` and `repeatable` added in T3301).
+ * Covers every area, kind and tier, prerequisite chains (also across fields), requirements with and
+ * without `not`, variants, DLC and unlocks linked to simulator ids. Only for the tests: never
+ * imported by a page of the site; the version tests add it to js/tech-versions.js as a second
+ * version (rulesetId `fixture`).
  */
 export const TECH_DATA = {
   "rulesetId": "fixture",
   "label": "Test fixture (fake technologies)",
+  "gameVersion": "Fixture v0.0.1",
+  "source": "invented test data (tests/fixtures/tech-tree)",
   "areas": [
     "physics",
     "society",
@@ -80,9 +83,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -100,6 +107,7 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_spark_counting"
       ],
@@ -115,6 +123,7 @@ export const TECH_DATA = {
           }
         }
       ],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -132,11 +141,13 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_echo_relay"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -156,11 +167,15 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "rare",
+      "flags": [
+        "rare"
+      ],
       "prerequisites": [
         "tech_fixture_lattice_ping"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 7,
         "modifiers": [
@@ -180,12 +195,16 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "dangerous",
+      "flags": [
+        "dangerous"
+      ],
       "prerequisites": [
         "tech_fixture_prism_cascade",
         "tech_fixture_knot_seed"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 6,
         "modifiers": [
@@ -205,9 +224,11 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "acquisition",
+      "flags": [],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 0,
         "modifiers": []
@@ -225,9 +246,13 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "event",
+      "flags": [
+        "event"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 0,
         "modifiers": []
@@ -245,9 +270,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -265,11 +294,13 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_knot_seed"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -287,6 +318,7 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_braided_field"
       ],
@@ -297,6 +329,7 @@ export const TECH_DATA = {
         }
       ],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -316,12 +349,14 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_null_choir",
         "tech_fixture_tangle_loom"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": []
@@ -341,11 +376,15 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "repeatable",
+      "flags": [
+        "repeatable"
+      ],
       "prerequisites": [
         "tech_fixture_paradox_spindle"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": []
@@ -353,7 +392,11 @@ export const TECH_DATA = {
       "dlc": [],
       "icon": "technologies/tech_fixture_repeat_signal_gain.png",
       "description": "Invented fixture technology for tests; not a real game technology.",
-      "variants": []
+      "variants": [],
+      "repeatable": {
+        "costPerLevel": 555,
+        "levels": null
+      }
     },
     {
       "id": "tech_fixture_town_tally",
@@ -363,9 +406,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -383,11 +430,13 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_town_tally"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -411,6 +460,7 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_council_drafts"
       ],
@@ -435,6 +485,7 @@ export const TECH_DATA = {
           ]
         }
       ],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -454,6 +505,7 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_ledger_rites"
       ],
@@ -464,6 +516,7 @@ export const TECH_DATA = {
         }
       ],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 7,
         "modifiers": []
@@ -481,11 +534,15 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "rare",
+      "flags": [
+        "rare"
+      ],
       "prerequisites": [
         "tech_fixture_charter_weave"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 6,
         "modifiers": [
@@ -505,12 +562,14 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_assembly_echo",
         "tech_fixture_charter_weave"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": []
@@ -528,11 +587,15 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "repeatable",
+      "flags": [
+        "repeatable"
+      ],
       "prerequisites": [
         "tech_fixture_grand_compact"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": []
@@ -540,7 +603,11 @@ export const TECH_DATA = {
       "dlc": [],
       "icon": "technologies/tech_fixture_repeat_civic_drill.png",
       "description": "Invented fixture technology for tests; not a real game technology.",
-      "variants": []
+      "variants": [],
+      "repeatable": {
+        "costPerLevel": 555,
+        "levels": null
+      }
     },
     {
       "id": "tech_fixture_moss_primer",
@@ -550,9 +617,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -570,6 +641,7 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_moss_primer"
       ],
@@ -581,6 +653,7 @@ export const TECH_DATA = {
           "name": "Fixture Pretend Mulching"
         }
       ],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -598,11 +671,13 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_spore_terrace"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -622,6 +697,9 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "dangerous",
+      "flags": [
+        "dangerous"
+      ],
       "prerequisites": [
         "tech_fixture_vine_lattice"
       ],
@@ -632,6 +710,7 @@ export const TECH_DATA = {
         }
       ],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 7,
         "modifiers": [
@@ -651,11 +730,15 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "rare",
+      "flags": [
+        "rare"
+      ],
       "prerequisites": [
         "tech_fixture_bloom_engine"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 6,
         "modifiers": [
@@ -677,9 +760,13 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "event",
+      "flags": [
+        "event"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 0,
         "modifiers": []
@@ -697,9 +784,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -717,11 +808,13 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_rivet_basics"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -739,12 +832,14 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_plate_folding",
         "tech_fixture_rivet_basics"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -764,11 +859,13 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_crease_alloys"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 7,
         "modifiers": []
@@ -792,11 +889,15 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "rare",
+      "flags": [
+        "rare"
+      ],
       "prerequisites": [
         "tech_fixture_origami_hulls"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 6,
         "modifiers": [
@@ -819,12 +920,16 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "dangerous",
+      "flags": [
+        "dangerous"
+      ],
       "prerequisites": [
         "tech_fixture_pleat_armor",
         "tech_fixture_comet_nozzle"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": [
@@ -844,11 +949,15 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "repeatable",
+      "flags": [
+        "repeatable"
+      ],
       "prerequisites": [
         "tech_fixture_final_fold"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 5,
         "modifiers": []
@@ -856,7 +965,11 @@ export const TECH_DATA = {
       "dlc": [],
       "icon": "technologies/tech_fixture_repeat_fold_density.png",
       "description": "Invented fixture technology for tests; not a real game technology.",
-      "variants": []
+      "variants": [],
+      "repeatable": {
+        "costPerLevel": 555,
+        "levels": null
+      }
     },
     {
       "id": "tech_fixture_wheel_spin",
@@ -866,9 +979,13 @@ export const TECH_DATA = {
       "tier": 0,
       "baseCost": null,
       "kind": "starter",
+      "flags": [
+        "start"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": null,
         "modifiers": []
@@ -886,11 +1003,13 @@ export const TECH_DATA = {
       "tier": 1,
       "baseCost": 111,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_wheel_spin"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 9,
         "modifiers": []
@@ -908,11 +1027,13 @@ export const TECH_DATA = {
       "tier": 2,
       "baseCost": 222,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_puff_thruster"
       ],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 8,
         "modifiers": [
@@ -932,6 +1053,7 @@ export const TECH_DATA = {
       "tier": 3,
       "baseCost": 333,
       "kind": "normal",
+      "flags": [],
       "prerequisites": [
         "tech_fixture_comet_nozzle"
       ],
@@ -942,6 +1064,7 @@ export const TECH_DATA = {
         }
       ],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 7,
         "modifiers": []
@@ -959,9 +1082,11 @@ export const TECH_DATA = {
       "tier": 4,
       "baseCost": 444,
       "kind": "acquisition",
+      "flags": [],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 0,
         "modifiers": []
@@ -979,9 +1104,13 @@ export const TECH_DATA = {
       "tier": 5,
       "baseCost": 555,
       "kind": "event",
+      "flags": [
+        "event"
+      ],
       "prerequisites": [],
       "requirements": [],
       "unlocks": [],
+      "effects": [],
       "drawWeight": {
         "base": 0,
         "modifiers": []

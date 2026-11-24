@@ -153,6 +153,7 @@ async def run(t):
     await pg.close()
     await page_checks(t)
     await deeplink_checks(t)
+    await version_checks(t)
 
 
 async def page_checks(t):
@@ -650,9 +651,11 @@ async def deeplink_checks(t):
       return {hash:location.hash,selected:n?.dataset.techId||null,card:document.getElementById('tech-card').hidden?null:document.getElementById('tech-card').dataset.techId,
         inView:!!r&&r.top>=0&&r.bottom<=innerHeight&&r.left>=p.left-1&&r.right<=p.right+1,history:history.length,
         permalink:document.querySelector('#tech-card .tech-card-permalink')?.getAttribute('href')||null,status:document.getElementById('tech-selection-status').textContent}}"""
+    # English set before loading: clicking the language button would scroll the header into view
+    await pg.goto("file://" + ROOT + "/index.html")
+    await pg.evaluate("()=>localStorage.setItem('codex-ignis-lang','en')")
     await pg.goto(url + "#tech_lasers_2")
     await pg.wait_for_timeout(500)
-    await pg.click(".lang-btn[data-lang=en]")
     d1 = await pg.evaluate(state_js)
     check("tech tree deep link: tech-tree.html#tech_lasers_2 opens with Blue Lasers selected, its card open and the node scrolled into view, with a permanent link in the card",
           d1["selected"] == d1["card"] == "tech_lasers_2" and d1["inView"] and d1["permalink"] == "#tech_lasers_2" and d1["hash"] == "#tech_lasers_2", d1)
@@ -707,3 +710,100 @@ async def deeplink_checks(t):
           pg.url.endswith("tech-tree.html#tech_lasers_2") and landed["selected"] == landed["card"] == "tech_lasers_2", (pg.url, landed))
     check("tech tree deep link: no page errors", not errors, errors[:3])
     await pg.close()
+
+
+# Test-only version entry: the fixture is offered by the selector only when a test rewrites js/tech-versions.js
+FIXTURE_VERSION = ('{id: "fixture", label: "Test fixture", file: "../tests/fixtures/tech-tree/tech-data-fixture.js", '
+                   'verification: "unverified"},')
+
+
+async def version_checks(t):
+    """T3301: version selector and per-version data loading (the fixture plays a second version)."""
+    reg = node_json("""import * as v from './js/tech-versions.js'; import {DATA_COLLECTIONS as C} from './js/data-version.js';
+      const files = await Promise.all(v.TECH_VERSIONS.map(async (x) => (await v.loadTechData(x)).rulesetId === x.id));
+      let bad = null; try { await v.loadTechData({id: 'other', file: './tech-data/stellaris-pc-4.5.4.js'}); } catch (e) { bad = 'rejected'; }
+      const cur = v.currentTechVersion();
+      console.log(JSON.stringify({ids: v.TECH_VERSIONS.map((x) => x.id), current: cur.id, files, bad,
+        registered: C.technologies.rulesetId === cur.id && 'js/' + cur.file.slice(2) === C.technologies.file && C.technologies.verification === cur.verification,
+        pick: [v.pickTechVersion('?version=stellaris-pc-4.5.4', 'x'), v.pickTechVersion('?version=nope', null), v.pickTechVersion('', 'stale'), v.pickTechVersion('', null)]
+          .map((p) => [p.version.id, p.unknownId]),
+        urls: [v.versionUrl('https://h/tech-tree.html?version=old#tech_a', cur.id), v.versionUrl('https://h/tech-tree.html#tech_a', 'other')]}))""")
+    check("tech tree versions: registry of data files (4.5.4 current, the one registered in data-version.js), each file holds its own rulesetId, a mismatch is rejected",
+          reg.get("ids") == ["stellaris-pc-4.5.4"] and reg.get("current") == "stellaris-pc-4.5.4" and reg.get("files") == [True]
+          and reg.get("bad") == "rejected" and reg.get("registered"), reg)
+    check("tech tree versions: version from ?version=, then the stored choice, then the current one; an unknown id falls back and is reported; the URL keeps the hash",
+          reg.get("pick") == [["stellaris-pc-4.5.4", None], ["stellaris-pc-4.5.4", "nope"], ["stellaris-pc-4.5.4", None], ["stellaris-pc-4.5.4", None]]
+          and reg.get("urls") == ["https://h/tech-tree.html#tech_a", "https://h/tech-tree.html?version=other#tech_a"], reg)
+
+    state_js = """()=>({options:[...document.querySelectorAll('#tech-version-select option')].map(o=>[o.value,o.textContent,o.selected]),
+      label:document.querySelector('label[for=tech-version-select]').textContent,
+      warning:document.getElementById('tech-version-warning').hidden?null:document.getElementById('tech-version-warning').textContent,
+      version:document.getElementById('tech-data-version').dataset.rulesetId,line:document.getElementById('tech-data-version').textContent,
+      nodes:document.querySelectorAll('.tech-node').length,fixtureNodes:document.querySelectorAll('.tech-node[data-tech-id^=tech_fixture_]').length,
+      selected:document.querySelector('.tech-node.is-selected')?.dataset.techId||null,status:document.getElementById('tech-selection-status').textContent,
+      cardVersion:document.querySelector('#tech-card:not([hidden]) [data-fact=version] dd')?.textContent||null,
+      stored:localStorage.getItem('techTreeVersion'),search:location.search,hash:location.hash})"""
+    errors = []
+    pg = await t.ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto("file://" + ROOT + "/tech-tree.html")
+    await pg.wait_for_timeout(400)
+    await pg.click(".lang-btn[data-lang=en]")
+    s1 = await pg.evaluate(state_js)
+    check("tech tree versions: the selector lists the 4.5.4 version as current and selected, and the page draws its 679 technologies",
+          s1["options"] == [["stellaris-pc-4.5.4", "Stellaris PC 4.5.4 · current", True]] and s1["label"] == "Game version"
+          and s1["warning"] is None and s1["version"] == "stellaris-pc-4.5.4" and s1["nodes"] == 679, s1)
+    await pg.goto("file://" + ROOT + "/tech-tree.html?version=stellaris-pc-9.9.9")
+    await pg.wait_for_timeout(400)
+    s2 = await pg.evaluate(state_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    s2es = (await pg.evaluate(state_js))["warning"]
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree versions: an unknown ?version= shows the current data with a translated notice",
+          s2["version"] == "stellaris-pc-4.5.4" and s2["nodes"] == 679 and "stellaris-pc-9.9.9" in (s2["warning"] or "")
+          and "does not exist" in s2["warning"] and "no existe" in (s2es or ""), (s2["warning"], s2es))
+    await pg.close()
+
+    # the fixture as a second version: a local server of the project and a rewritten registry that adds it
+    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=ROOT))
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    base = "http://127.0.0.1:%d/" % server.server_address[1]
+    registry = open(os.path.join(ROOT, "js", "tech-versions.js"), encoding="utf-8").read()
+    patched = registry.replace("export const TECH_VERSIONS = [", "export const TECH_VERSIONS = [\n  " + FIXTURE_VERSION, 1)
+    ctx = await t.browser.new_context(locale="en-US")
+    await ctx.route("https://**/*", lambda r: r.abort())
+    await ctx.route("**/js/tech-versions.js", lambda r: r.fulfill(body=patched, content_type="text/javascript"))
+    pg = await ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    try:
+        await pg.goto(base + "tech-tree.html#tech_lasers_2")
+        await pg.wait_for_timeout(500)
+        s3 = await pg.evaluate(state_js)
+        async with pg.expect_navigation():
+            await pg.select_option("#tech-version-select", "fixture")
+        await pg.wait_for_timeout(500)
+        s4 = await pg.evaluate(state_js)
+        check("tech tree versions: choosing another version reloads the page with ?version= and only that data file (the fixture's 38 fake technologies), keeping the hash",
+              [o[0] for o in s3["options"]] == ["fixture", "stellaris-pc-4.5.4"] and s3["selected"] == "tech_lasers_2"
+              and s4["search"] == "?version=fixture" and s4["hash"] == "#tech_lasers_2" and s4["version"] == "fixture"
+              and "Fixture v0.0.1" in s4["line"] and s4["nodes"] == s4["fixtureNodes"] == 38 and s4["stored"] == "fixture"
+              and [o[0] for o in s4["options"] if o[2]] == ["fixture"], (s3["options"], s3["selected"], {k: v for k, v in s4.items() if k != "status"}))
+        check("tech tree versions: a technology of the other version is reported as missing from this data version",
+              s4["selected"] is None and "tech_lasers_2" in s4["status"] and "does not exist" in s4["status"], s4["status"])
+        await pg.click(".tech-node[data-tech-id=tech_fixture_spark_counting]")
+        s5 = await pg.evaluate(state_js)
+        await pg.goto(base + "tech-tree.html")
+        await pg.wait_for_timeout(500)
+        s6 = await pg.evaluate(state_js)
+        check("tech tree versions: the card shows the fixture version, and the stored choice is used when the URL names no version",
+              s5["cardVersion"] == "fixture · Fixture v0.0.1" and s6["version"] == "fixture" and s6["nodes"] == 38, (s5["cardVersion"], s6["version"], s6["nodes"]))
+        async with pg.expect_navigation():
+            await pg.select_option("#tech-version-select", "stellaris-pc-4.5.4")
+        await pg.wait_for_timeout(500)
+        s7 = await pg.evaluate(state_js)
+        check("tech tree versions: going back to the current version drops ?version= and draws the 4.5.4 data again",
+              s7["search"] == "" and s7["version"] == "stellaris-pc-4.5.4" and s7["nodes"] == 679 and s7["stored"] == "stellaris-pc-4.5.4", s7["search"])
+    finally:
+        await ctx.close()
+        server.shutdown()
+    check("tech tree versions: no page errors", not errors, errors[:3])

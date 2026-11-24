@@ -81,7 +81,7 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 
 ## 5. Versions
 - One data file per version (`rulesetId`, e.g. `stellaris-pc-4.5.2`); a new wiki version is **added as a new file, never overwriting the previous one**.
-- Version selector in the page (same pattern as the simulator) and the version shown in every card.
+- Version selector in the page (same pattern as the simulator) and the version shown in every card. **Done in T3301:** the versions are listed in `js/tech-versions.js` (one entry per data file, the newest marked `isCurrent`); the page loads only the chosen file, picked from `?version=<id>`, then the last choice stored in the browser, then the current version; choosing another one reloads the page with `?version=` and keeps the technology in the hash.
 - Comparison between two versions: added, removed, and changed cost, tier or prerequisites.
 - Procedure for a new version (T3302): run `extract_technologies.py` (or `extract_all.py`) on the game files of the new version with its `rulesetId`, run the validations, upload the new icons, register it in `data-version.js`.
 

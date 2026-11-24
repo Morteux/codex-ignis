@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3301 — Version selector and per-version data loading (2026-11-25)
+- [ ] **The only real version is 4.5.4**, not 4.5.2 as the task says: the tech tree data comes from the 4.5.4 game files since T3005; there is no 4.5.2 tech data file.
+- [ ] **Registry of its own, `js/tech-versions.js`** (id, label, file, verification, current), separate from the simulator's `DATA_VERSIONS` (which is about the 4.5.2 wiki data); a test checks that its current version is the one `js/data-version.js` registers for `technologies`.
+- [ ] **Changing version reloads the page** with `?version=<id>` (the current version has no parameter) and keeps the technology in the hash; only the chosen data file is downloaded (dynamic import). Rebuilding the tree in place was not worth it: every module (grid, lines, card, search, zoom) is built once per page.
+- [ ] **The last choice is remembered in the browser** (`localStorage`) and used when the URL names no version; an unknown `?version=` shows the current version with a notice. The selector is shown even with one version.
+- [ ] **The fixture is never offered on the site**: the tests serve the project locally and rewrite `js/tech-versions.js` to add it. The fixture was brought to the confirmed model (§4.3: `gameVersion`, `flags`, `effects`, `repeatable`) so the page can load it.
+
 ## T3205 — Deep link to a technology (2026-11-25)
 - [ ] **The hash is the bare game id** (`tech-tree.html#tech_lasers_2`), not `#/tech/…`: short and readable; other anchors of the page (`#tech-credits`) are ignored because they are not ids.
 - [ ] **Selecting a technology rewrites the hash with `replaceState`** (no history entry per click), and clearing the selection removes it, so the address bar can always be shared and Back leaves the tree.

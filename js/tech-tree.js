@@ -8,13 +8,13 @@
  * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
  * detail card of the selected technology (js/tech-tree-card.js), the search and filters
  * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
- * technology in the URL hash (js/tech-tree-link.js).
+ * technology in the URL hash (js/tech-tree-link.js). The data file is the one of the version chosen
+ * in the version selector (js/tech-versions.js, T3301), loaded before anything is drawn.
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
 import { t } from "./i18n.js";
-import { DATA_COLLECTIONS } from "./data-version.js";
-import { TECH_DATA } from "./tech-data/stellaris-pc-4.5.4.js";
+import { TECH_VERSIONS, VERSION_STORAGE_KEY, pickTechVersion, loadTechData, versionUrl } from "./tech-versions.js";
 import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
 import { createSelection } from "./tech-tree-states.js";
@@ -24,23 +24,61 @@ import { createZoom } from "./tech-tree-zoom.js";
 import { techIdFromHash } from "./tech-tree-link.js";
 import "./i18n-tech-tree.js";
 
-const COLLECTION = DATA_COLLECTIONS.technologies;
 const VERIFICATION_KEYS = {
   unverified: "techTreeVerificationUnverified",
   "wiki-verified": "techTreeVerificationWikiVerified",
   "game-data-verified": "techTreeVerificationGameDataVerified",
 };
 
+function readStoredVersion() {
+  try {
+    return localStorage.getItem(VERSION_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+const { version: VERSION, unknownId: unknownVersionId } = pickTechVersion(window.location.search, readStoredVersion());
+const TECH_DATA = await loadTechData(VERSION);
+
 /** "Data version: stellaris-pc-4.5.4 · Cygnus v4.5.4 (1b4f) · unverified (…)" */
 function renderDataVersion(lang) {
   const el = document.getElementById("tech-data-version");
-  const status = VERIFICATION_KEYS[COLLECTION.verification] || VERIFICATION_KEYS.unverified;
+  const status = VERIFICATION_KEYS[VERSION.verification] || VERIFICATION_KEYS.unverified;
   el.textContent = t(lang, "techTreeDataVersion")
     .replace("{label}", TECH_DATA.rulesetId)
-    .replace("{game}", TECH_DATA.gameVersion)
+    .replace("{game}", TECH_DATA.gameVersion || VERSION.label)
     .replace("{status}", t(lang, status));
   el.dataset.rulesetId = TECH_DATA.rulesetId;
-  el.dataset.verification = COLLECTION.verification;
+  el.dataset.verification = VERSION.verification;
+  const warning = document.getElementById("tech-version-warning");
+  warning.hidden = !unknownVersionId;
+  warning.textContent = unknownVersionId ? t(lang, "techTreeVersionUnknown").replace("{id}", unknownVersionId).replace("{current}", VERSION.id) : "";
+}
+
+/**
+ * Version selector (T3301): one option per data file of js/tech-versions.js. Choosing another
+ * version stores it and reloads the page with ?version=<id>, keeping the technology in the hash.
+ */
+function setupVersionSelect(lang) {
+  const select = document.getElementById("tech-version-select");
+  select.replaceChildren(...TECH_VERSIONS.map((version) => {
+    const option = document.createElement("option");
+    option.value = version.id;
+    option.textContent = version.label + (version.isCurrent ? " · " + t(lang, "techTreeVersionCurrent") : "");
+    option.selected = version.id === VERSION.id;
+    return option;
+  }));
+  if (select.dataset.ready) return;
+  select.dataset.ready = "1";
+  select.addEventListener("change", () => {
+    try {
+      localStorage.setItem(VERSION_STORAGE_KEY, select.value);
+    } catch {
+      // private mode: the choice lives only in the URL
+    }
+    window.location.assign(versionUrl(window.location.href, select.value));
+  });
 }
 
 /** Area tabs (visible on mobile only): one active panel, arrow keys move between tabs. */
@@ -106,10 +144,12 @@ function renderTree(lang) {
 
 applyPageTranslations();
 setupAreaTabs();
+setupVersionSelect(getLang());
 renderDataVersion(getLang());
 renderTree(getLang());
 const redrawLines = watchLines(document.querySelector(".tech-areas"), TECH_DATA);
 onLanguageChange((lang) => {
+  setupVersionSelect(lang);
   renderDataVersion(lang);
   relabelGrids(document.querySelector(".tech-areas"), TECH_DATA, lang);
   redrawLines();
