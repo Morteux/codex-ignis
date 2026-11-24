@@ -319,3 +319,51 @@ async def page_checks(t):
 
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
+    await mobile_checks(t)
+
+
+async def mobile_checks(t):
+    """T3105: phone layout at 320 and 375 px (touch): tabs, compact grid, sideways scroll inside the panel, tap to select."""
+    mctx = await t.browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)
+    await mctx.route("https://**/*", lambda r: r.abort())
+    pg = await mctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto("file://" + ROOT + "/tech-tree.html")
+    await pg.wait_for_timeout(300)
+    await pg.click(".lang-btn[data-lang=en]")
+    desktop_node = 176  # 11rem: node width of the desktop grid
+    for width in (320, 375):
+        await pg.set_viewport_size({"width": width, "height": 700})
+        for lang in ("en", "jp"):
+            await pg.click(".lang-btn[data-lang=" + lang + "]")
+            for area in ("physics", "society", "engineering"):
+                await pg.tap("#tech-tab-" + area)
+                await pg.wait_for_timeout(120)
+                m = await pg.evaluate("""(area)=>{const w=document.documentElement.clientWidth;const r=(e)=>e.getBoundingClientRect();
+                  const panel=document.querySelector('#tech-area-'+area);const sc=panel.querySelector('.tech-area-scroll');const g=sc.querySelector('.tech-grid');
+                  const tabs=[...document.querySelectorAll('.tech-area-tab')];const node=g.querySelector('.tech-cell[data-tier="0"] .tech-node')||g.querySelector('.tech-node');
+                  const label=g.querySelector('.tech-field-label');const svg=g.querySelector('.tech-lines');
+                  return {page:document.documentElement.scrollWidth<=w,panelIn:r(panel).left>=0&&r(panel).right<=w+0.5,
+                    tabs:tabs.map(b=>[Math.round(r(b).height),b.scrollWidth<=b.clientWidth+1]),
+                    scrolls:sc.scrollWidth>sc.clientWidth&&getComputedStyle(sc).overflowX==='auto',
+                    nodeW:Math.round(r(node).width),nodeH:Math.round(r(node).height),labelW:Math.round(r(label).width),
+                    tier0Visible:r(node).left>=r(sc).left&&r(node).right<=r(sc).right,
+                    icon:Math.round(r(node.querySelector('.tech-icon-slot')).width),
+                    nameFits:[...g.querySelectorAll('.tech-node-name')].every(n=>n.scrollWidth<=n.clientWidth+1),
+                    lines:svg?svg.querySelectorAll('path').length:0,svgSize:svg?+svg.getAttribute('width')===g.offsetWidth:false}}""", area)
+                check("tech tree mobile %dpx (%s) %s: no page overflow, the panel fits, 44 px tabs, compact nodes, thin field labels, sideways scroll in the panel, lines drawn" % (width, lang, area),
+                      m["page"] and m["panelIn"] and all(h >= 44 and fits for h, fits in m["tabs"]) and m["scrolls"]
+                      and m["nodeW"] < desktop_node and m["nodeH"] >= 44 and m["labelW"] <= 34 and m["tier0Visible"] and m["icon"] == 40
+                      and m["nameFits"] and m["lines"] > 50 and m["svgSize"], m)
+    await pg.click(".lang-btn[data-lang=en]")
+    await pg.tap("#tech-tab-physics")
+    await pg.wait_for_timeout(100)
+    await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').scrollIntoView({block:'center',inline:'center'})")
+    await pg.wait_for_timeout(100)
+    await pg.tap(".tech-node[data-tech-id=tech_lasers_2]")
+    tapped = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.querySelectorAll('.tech-node.is-prerequisite').length,document.getElementById('tech-selection-status').textContent,document.documentElement.scrollWidth<=document.documentElement.clientWidth]")
+    check("tech tree mobile: tapping a node selects it and marks its prerequisites, without page overflow",
+          tapped[0] == "tech_lasers_2" and tapped[1] == 1 and "Blue Lasers" in tapped[2] and tapped[3], tapped)
+    check("tech tree mobile: no page errors", not errors, errors[:3])
+    await mctx.close()

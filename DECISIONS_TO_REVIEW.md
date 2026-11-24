@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3105 — Tech tree on phones (2026-11-25)
+- [ ] **Sideways scroll inside the area panel** instead of a different mobile layout: the grid keeps its tier columns and lines; nodes shrink to 9rem, the 40 px icon slot keeps its size and about one and a half tier columns fit on a 320 px screen.
+- [ ] **Field names written vertically** (bottom to top) in a thin sticky column on phones, to leave the width to the nodes.
+- [ ] **The site's mobile overflow check ignores elements inside `.tech-area-scroll`**: they are clipped by the panel's own scroll, the page itself does not scroll sideways (checked separately).
+
 ## T3104 — Visual states and kind colours (2026-11-25)
 - [ ] **Kind colours**: starter green (accent), rare purple, dangerous red, repeatable blue, event yellow, acquisition amber, normal grey, on the left border of the node; the legend only lists the kinds the data file uses (no acquisition in 4.5.4).
 - [ ] **State colours**: selected yellow-green with a tinted background, prerequisite teal dashed border, unlocked by the selected orange; the other nodes and lines are dimmed while something is selected.

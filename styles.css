@@ -3634,4 +3634,52 @@ h1 {
     .tech-area-heading {
         display: none;
     }
+
+    /* T3105: 320–375 px phones. Bigger tabs, narrower nodes and columns, field names written
+       vertically in a thin sticky column, so a tier column and a half fit on screen and the
+       panel scrolls sideways (with the finger) for the rest. The 40 px icon slot keeps its size. */
+    .tech-area-tab {
+        min-height: 44px;
+        padding: .4rem .2rem;
+        font-size: .62rem;
+        overflow-wrap: anywhere;
+    }
+
+    .tech-area-scroll {
+        max-height: 70vh;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tech-grid {
+        --tech-node-width: 9rem;
+        --tech-field-width: 1.9rem;
+        column-gap: 1rem;
+        padding-right: .5rem;
+    }
+
+    .tech-field-label {
+        padding: .6rem .3rem;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        /* rotated: the bottom and left borders show at the top and right */
+        border: 0;
+        border-bottom: 1px solid var(--line-soft);
+        border-left: 1px solid var(--line-soft);
+        font-size: .58rem;
+        text-align: right;
+        overflow-wrap: normal;
+    }
+
+    .tech-node {
+        min-height: 48px;
+        gap: .35rem;
+    }
+
+    .tech-node-name {
+        font-size: .64rem;
+    }
+
+    .tech-data-version {
+        overflow-wrap: anywhere;
+    }
 }
