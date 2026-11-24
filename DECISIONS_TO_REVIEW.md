@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3405 — Deep link into the planet simulator (2026-11-25)
+
+- Format: `planet-sim.html#building=<id>` and `#district=<id>`, with the simulator ids of the tech data (`unlock.sim`). The link opens in the same tab, as before (the simulator's links to the tree open a new tab so the edited planet stays open; the other way there is nothing to lose).
+- The link never changes the planet: it only opens the tab, the category and highlights the entry (outline in the accent colour, focus, scrolled into view). If the building's requirements are not met with the current empire, or the district belongs to another celestial body (Magma Conduit on a regular planet), the notice banner says it is not in the catalogue instead of switching the empire or body.
+- Ids outside the building catalogue that the tech data links: capitals highlight the capital control (the tier is not changed; a capital of another set says it is not available) and branch office buildings open the Branch offices tab with a note to pick them in a slot.
+- The highlight stays while the catalogue is redrawn until another deep link (or a hash without one) replaces it.
+
 ## T3404 — Documentation of the finished tech tree (2026-11-25)
 - [ ] **README**: a new section "Árbol de tecnologías" (features, links, data sources, versions, tests); the module list stays in the structure table, and the tech tree checks got their own subsection under "Pruebas" (same text).
 - [ ] **"The GDD" is `TECH_TREE_GDD.md`**: marked finished, the wiki removed as its source (owner's decision of 2026-11-22), page behaviour detailed in §6 and a new §8 on code and tests. `PLANET_SIM_GDD.md` only gets one sentence in §3 about the "Researched with" links.

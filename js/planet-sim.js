@@ -61,6 +61,8 @@ import { sim } from "./planet-sim-state.js";
 import { renderActiveTabContent, setActiveTab, setMainTab } from "./planet-sim-tabs.js";
 // Reactions to the rest of the page, registered after every module above (as before the split).
 import "./planet-sim-events.js";
+// T3405: #building=<id> / #district=<id> open a catalogue entry (after every module has applied its state).
+import "./planet-sim-deeplink.js";
 
 export { showNotice } from "./planet-sim-dom.js";
 export { capturePlanetConfig, applyPlanetConfig } from "./planet-sim-config.js";

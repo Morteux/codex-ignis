@@ -19,6 +19,8 @@ registerSwapJobs();
 export const sim = {
   activeTab: "buildings",
   districtFilter: null, // null = todas, o "urban"/"generator"/"mining"/"agriculture"
+  // T3405: catalogue entry opened by a deep link ({ type: "building", id } or { type: "district", group }), kept highlighted across renders.
+  deepLink: null,
   capitalTierIndex: 0,
   lastCapitalSet: CAPITAL_SETS.standard,
   /** Designación planetaria elegida (id de DESIGNATIONS en designation-data.js, o "" si no hay ninguna). */

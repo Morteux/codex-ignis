@@ -16,6 +16,12 @@ import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
 /** Page of the planet simulator, target of the unlock links. */
 export const SIMULATOR_URL = "planet-sim.html";
 
+/** T3405: deep link to the catalogue entry of a simulator item ({collection, id} of the tech data). */
+export function simulatorUrl(sim) {
+  const type = sim.collection === "districts" ? "district" : "building";
+  return SIMULATOR_URL + "#" + type + "=" + encodeURIComponent(sim.id);
+}
+
 const UNLOCK_TYPE_KEYS = {
   building: "techTreeUnlockBuilding",
   district: "techTreeUnlockDistrict",
@@ -100,7 +106,7 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     if (unlock.sim) {
       const link = el("a", "tech-card-sim-link", unlock.name);
       link.lang = "en";
-      link.href = SIMULATOR_URL;
+      link.href = simulatorUrl(unlock.sim);
       link.dataset.simCollection = unlock.sim.collection;
       link.dataset.simId = unlock.sim.id;
       link.title = t(lang, "techTreeOpenInSimulator");

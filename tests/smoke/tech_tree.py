@@ -411,7 +411,7 @@ async def page_checks(t):
     await pg.click(".tech-node[data-tech-id=tech_secrets_vultaum]")
     c4 = await pg.evaluate(card_js)
     check("tech tree card: unlocks linked to the simulator where T3007 linked them (Vultaum Reality Computer building, physicist job)",
-          c4["sim"] == [["planet-sim.html", "buildings", "vultaum_reality_computer", "Vultaum Reality Computer"]] and c4["unlocks"] == 1 and c4["linkedJobs"] == ["physicist"], c4)
+          c4["sim"] == [["planet-sim.html#building=vultaum_reality_computer", "buildings", "vultaum_reality_computer", "Vultaum Reality Computer"]] and c4["unlocks"] == 1 and c4["linkedJobs"] == ["physicist"], c4)
     await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["rep"])
     await pg.click(".tech-node[data-tech-id=%s]" % pick["rep"])
     c5 = await pg.evaluate(card_js)
@@ -1024,6 +1024,73 @@ async def link_checks(t):
           and "Researched with" in s_en["label"] and "tech tree" in s_en["title"] and "Se investiga con" in s_es["label"] and s_es["n"] == s_en["n"],
           ({k: s_en[k] for k in ("n", "entries", "items", "bad", "label", "title")}, s_es["label"]))
     check("tech links (T3402): no page errors", not errors, errors)
+    await pg.close()
+    await sim_deeplink_checks(t, data.get("links", {}))
+
+
+async def sim_deeplink_checks(t, links):
+    """T3405: planet-sim.html#building=<id> / #district=<id> open the catalogue entry (links of the tech tree card)."""
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    url = "file://" + ROOT + "/planet-sim.html"
+    await pg.goto(url)
+    await pg.wait_for_timeout(500)
+    await pg.click(".lang-btn[data-lang=en]")
+    # a building of a closed category (or the last one) that a technology unlocks
+    target = await pg.evaluate("""()=>{const e=[...document.querySelectorAll('.planet-catalog-entry')].filter(x=>x.querySelector('.planet-catalog-tech-link'));
+      const closed=e.filter(x=>!x.closest('details').open);return (closed[0]||e[e.length-1]).dataset.buildingId}""")
+    await pg.close()
+    state_js = """()=>{const hl=[...document.querySelectorAll('.is-deep-linked')];const h=hl[0];const r=h?h.getBoundingClientRect():null;
+      const vis=(s)=>{const e=document.querySelector(s);return !!e&&!e.hidden};const n=document.getElementById('planet-sim-notice');
+      return {n:hl.length,building:h?.dataset.buildingId||null,group:h?.dataset.districtGroup||null,capital:!!h&&h.classList.contains('planet-capital-control'),
+        open:!!h&&(!h.closest('details')||h.closest('details').open),focus:!!h&&h.contains(document.activeElement),inView:!!r&&r.top>=0&&r.bottom<=innerHeight,
+        planet:vis('#planet-tab-panel-planet'),branches:vis('#planet-tab-panel-branches'),buildings:vis('#planet-catalog'),districts:vis('#planet-districts-catalog'),
+        notice:n.hidden?'':n.textContent}}"""
+    pg = await t.ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    await pg.goto(url + "#building=" + target)
+    await pg.wait_for_timeout(600)
+    s1 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): #building=<id> opens the Buildings catalogue, opens its category and highlights, focuses and shows the entry",
+          s1["n"] == 1 and s1["building"] == target and s1["open"] and s1["focus"] and s1["inView"] and s1["planet"] and s1["buildings"] and not s1["districts"] and not s1["notice"], (target, s1))
+    await pg.evaluate("()=>{location.hash='#district=mining'}")
+    await pg.wait_for_timeout(300)
+    s2 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): #district=<id> (hash change) opens the Districts catalogue on that district card; the building is no longer highlighted",
+          s2["n"] == 1 and s2["group"] == "mining" and s2["focus"] and s2["inView"] and s2["districts"] and not s2["buildings"] and not s2["notice"], s2)
+    await pg.click("#planet-tab-buildings")
+    await pg.click("#planet-tab-districts")
+    s2b = await pg.evaluate(state_js)
+    check("sim deep link (T3405): the highlight stays when the catalogue is drawn again", s2b["n"] == 1 and s2b["group"] == "mining", s2b)
+    await pg.evaluate("()=>{location.hash='#district=magmaConduit'}")
+    await pg.wait_for_timeout(300)
+    s3 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): a district of another celestial body (Magma Conduit on a regular planet) says it is not in the catalogue",
+          s3["n"] == 0 and "Magma Conduit is not in the catalogue" in s3["notice"] and s3["districts"], s3)
+    await pg.evaluate("()=>{location.hash='#building=planetary_administration'}")
+    await pg.wait_for_timeout(300)
+    s4 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): a capital highlights the capital control of the Planet tab", s4["n"] == 1 and s4["capital"] and s4["focus"] and s4["planet"], s4)
+    await pg.evaluate("()=>{location.hash='#building=corporateEmbassy'}")
+    await pg.wait_for_timeout(300)
+    s5 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): a branch office building opens the Branch offices tab with a note", s5["branches"] and not s5["planet"] and "branch office building" in s5["notice"], s5)
+    await pg.evaluate("()=>{location.hash='#building=no_such_building'}")
+    await pg.wait_for_timeout(300)
+    s6 = await pg.evaluate(state_js)
+    check("sim deep link (T3405): an unknown id says so", s6["n"] == 0 and "does not know (no_such_building)" in s6["notice"], s6)
+    # every simulator link of the tech tree data resolves (never "unknown")
+    items = [["building", i] for i in links.get("buildings", {})] + [["district", i] for i in links.get("districts", {})]
+    data_ids = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.5.4.js';"
+                         "console.log(JSON.stringify([...new Set(d.technologies.flatMap(x=>x.unlocks).filter(u=>u.sim).map(u=>(u.sim.collection==='districts'?'district':'building')+'='+u.sim.id))]))")
+    unknown = await pg.evaluate("""async (ids)=>{const m=await import('./js/planet-sim-deeplink.js');const n=document.getElementById('planet-sim-notice');const bad=[];
+      for(const id of ids){n.hidden=true;const el=m.openSimDeepLink('#'+id);if(!el&&(n.hidden||/does not know/.test(n.textContent)))bad.push(id)}return bad}""", data_ids)
+    check("sim deep link (T3405): every simulator link of the tech tree data (%d) opens an entry or says why it is not shown" % len(data_ids if isinstance(data_ids, list) else []),
+          isinstance(data_ids, list) and len(data_ids) > 100 and len(items) > 100 and not unknown, (data_ids if not isinstance(data_ids, list) else len(data_ids), unknown[:8]))
+    check("sim deep link (T3405): no page errors", not errors, errors)
     await pg.close()
 
 

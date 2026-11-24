@@ -1656,6 +1656,14 @@ h1 {
     gap: .15rem;
 }
 
+/* T3405: entry opened by a deep link (planet-sim.html#building=<id> / #district=<id>) */
+.planet-catalog-entry.is-deep-linked,
+.planet-district-card.is-deep-linked,
+.planet-capital-control.is-deep-linked {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
 .planet-catalog-tech {
     margin: 0;
     padding-left: .6rem;

@@ -165,6 +165,8 @@ function renderCatalogItem(building, slotsFull, targetKey) {
 
   const entry = document.createElement("div");
   entry.className = "planet-catalog-entry";
+  entry.dataset.buildingId = building.id; // T3405: target of planet-sim.html#building=<id>
+  if (sim.deepLink?.type === "building" && sim.deepLink.id === building.id) entry.classList.add("is-deep-linked");
   entry.append(item);
   const techLinks = renderTechLinks(TECH_UNLOCK_LINKS.buildings[building.id]);
   if (techLinks) entry.append(techLinks);
@@ -218,7 +220,10 @@ export function renderDistrictsCatalog() {
   const categories = (sim.districtFilter ? [sim.districtFilter] : ["urban", ...RESOURCE_DISTRICT_ORDER])
     .filter((cat) => cat === "urban" || !secondaryDistrictDef(cat).unavailable); // P10.5: Synaptic Lathe has two district types
   categories.forEach((cat) => {
-    districtsCatalogEl.append(cat === "urban" ? renderUrbanDistrictCard() : renderResourceDistrictCard(cat));
+    const card = cat === "urban" ? renderUrbanDistrictCard() : renderResourceDistrictCard(cat);
+    card.dataset.districtGroup = cat; // T3405: target of planet-sim.html#district=<id>
+    if (sim.deepLink?.type === "district" && sim.deepLink.group === cat) card.classList.add("is-deep-linked");
+    districtsCatalogEl.append(card);
   });
 }
 

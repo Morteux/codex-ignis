@@ -5,7 +5,7 @@ Design rules and decisions of the tech tree. Pending work lives in `tasks.md` (s
 - **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files (owner, 2026-11-22). Data stays `unverified` until the final data review (T1406).
 - **Scope:** only `tech-tree.html` and its modules. The planet simulator has its own GDD (`PLANET_SIM_GDD.md`).
 - **Rule #1 (as in the simulator):** never invent rules, numbers or names. Data comes from the game files (§4.1); missing or ambiguous data → the task is marked blocked with the question.
-- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: deep link from the card into the simulator (T3405), data verification (T1406), official localisation of game names (P15) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
+- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: data verification (T1406), official localisation of game names (P15) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
 
 ## 1. Goal
 Turn the technology data of the game into an **explorable tech tree** inside Codex Ignis: see the technologies by area, field and tier, follow prerequisites and what each one unlocks, search and filter, and consult **previous versions** of the tree as the game is updated.
@@ -96,7 +96,7 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 - Three areas side by side (tabs below 700 px); inside each area, columns by tier (0–5) and one row per field. On phones, field names are vertical, nodes narrower and the tree scrolls sideways inside its panel, never the page.
 - Nodes: icon slot, name, tier and kind. Prerequisite lines are SVG curves between nodes of the same area, redrawn on resize; prerequisites in other areas have no line.
 - States: normal, selected, prerequisite of the selected, unlocked by the selected (whole chain in both directions and across areas, direct neighbours highlighted, the rest dimmed), and kind colours (starter, rare, dangerous, repeatable, event). A second click or Escape clears the selection.
-- Detail card: base cost, tier, kind, area and field, description, variants, prerequisites and "leads to" (buttons that select that technology), other requirements, unlocks (linked to the simulator where T3007 linked them; the link opens `planet-sim.html`), effects, draw weight as information, repeatable levels, DLC, version. Own column on desktop, bottom sheet on phones.
+- Detail card: base cost, tier, kind, area and field, description, variants, prerequisites and "leads to" (buttons that select that technology), other requirements, unlocks (linked to the simulator where T3007 linked them; the link opens its entry in the simulator, `planet-sim.html#building=<id>` or `#district=<id>`, T3405), effects, draw weight as information, repeatable levels, DLC, version. Own column on desktop, bottom sheet on phones.
 - Search: by name, accent- and case-insensitive, all words; filters by area, field, tier, kind and DLC (base game included). Non-matches are dimmed and up to 30 results are listed as buttons.
 - Zoom and pan: buttons, Ctrl + wheel, two-finger pinch and + − 0 keys; drag the background or use the arrows on a focused panel.
 - Deep link: `tech-tree.html#<tech id>` selects the technology, opens its card and scrolls to it; the selection rewrites the hash without adding history entries; an unknown id shows a notice.
@@ -108,7 +108,6 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 - Let the planet simulator hide buildings not unlocked yet (today it assumes all research done).
 - Research draw simulation (weights, alternatives) and tier gating: out of scope; weights are shown as information only.
 - Unlocks from sets the extractor does not link yet (e.g. ship components); simulator links for edicts and deposits; `starting_potential` (who starts with a technology).
-- Deep link from the card to one building or district of the simulator (T3405).
 
 ## 8. Code and tests
 - Modules: listed in the structure table of `README.md`. The page loads only the data file of the chosen version.

@@ -252,7 +252,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 - [x] **T3404** (P34.4) `README.md` (structure, sources, tests, credits) and GDD updated for the finished tech tree
   - Modelo: sonnet
   - Prueba manual: open `README.md`: there is an "Árbol de tecnologías" section, a tech tree subsection under "Pruebas" and credits linking BloodStainedCrow and turanar; `TECH_TREE_GDD.md` says the tree is finished and its sections 6 and 8 describe the page and its tests.
-- [ ] **T3405** (P34.5) Deep link into the planet simulator to a building or district (e.g. `planet-sim.html#building=<id>` opens its catalogue entry), and use it in the tech tree card's unlock links (today they open `planet-sim.html` only, T3201)
+- [x] **T3405** (P34.5) Deep link into the planet simulator to a building or district (e.g. `planet-sim.html#building=<id>` opens its catalogue entry), and use it in the tech tree card's unlock links (today they open `planet-sim.html` only, T3201)
+  - Prueba manual: open `tech-tree.html#tech_secrets_vultaum` and click "Vultaum Reality Computer" in the card's unlocks: the simulator opens with that building's category expanded and its entry outlined in green and scrolled into view; `planet-sim.html#district=mining` outlines the mining district card, and `#district=magmaConduit` on a regular planet shows a notice that it is not in the catalogue.
 
 ## 35 · Bingos from game data
 - [ ] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout), order taken from the T2511 output
