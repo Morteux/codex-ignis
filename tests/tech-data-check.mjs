@@ -46,6 +46,7 @@ const SELF_TESTS = [
   ["no tier", (T) => { T.find((t) => t.id === c.id).tier = null; }, `${c.id}: no tier`],
   ["unknown field", (T) => { T[2].field = "fixture_nowhere"; }, "unknown field fixture_nowhere"],
   ["unknown kind", (T) => { T[2].kind = "mystery"; }, "unknown kind mystery"],
+  ["no icon", (T) => { delete T.find((t) => t.id === c.id).icon; }, `${c.id}: no icon path`],
 ];
 for (const [name, change, expected] of SELF_TESTS) {
   const found = broken(change);

@@ -30,8 +30,8 @@ function findCycles(techs) {
 
 /**
  * Problems of a data file `{ areas?, fields?, tiers?, technologies }` as English strings (empty
- * array = valid): unique ids, area / field / tier / kind present and known, every prerequisite
- * exists, no prerequisite cycles.
+ * array = valid): unique ids, area / field / tier / kind present and known, `icon` path
+ * (`technologies/<name>.png`) present, every prerequisite exists, no prerequisite cycles.
  */
 export function validateTechData(data) {
   const problems = [];
@@ -54,6 +54,8 @@ export function validateTechData(data) {
     else if (tiers && !tiers.has(tech.tier)) problems.push(`${id}: unknown tier ${tech.tier}`);
     if (!TECH_KINDS.includes(tech.kind)) problems.push(`${id}: unknown kind ${tech.kind}`);
     if (!Array.isArray(tech.prerequisites)) problems.push(`${id}: prerequisites is not a list`);
+    // T3003: the icon path is always filled, even before the file exists (reserved icon slot)
+    if (typeof tech.icon !== "string" || !/^technologies\/[^/]+\.png$/.test(tech.icon)) problems.push(`${id}: no icon path technologies/<name>.png`);
   });
   const ids = new Set(techs.map((tech) => tech && tech.id));
   techs.forEach((tech) => {
