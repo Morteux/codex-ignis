@@ -167,6 +167,9 @@ function renderGrid() {
     cells.forEach(({ item, position }) => grid.append(buildCard(bingo, item, position)));
 }
 
+/** Longest wait for the icons before drawing the PNG: an icon still loading is drawn as an empty cell. */
+const ICON_WAIT_MS = 5000;
+
 /** Waits for an image to load, forcing the load if it was "lazy". */
 function waitForImage(img) {
     // "complete" is also true for an icon that already failed: do not wait for it forever.
@@ -238,7 +241,9 @@ async function buildBingoCanvas() {
     const muted = readThemeColor("--muted", "#91af99");
     const accent = readThemeColor("--accent", "#a7f56a");
 
-    await Promise.all(Array.from(cards).map((card) => waitForImage(card.querySelector("img"))));
+    // A stalled icon request (slow network, CDN that never answers) must not block the download.
+    const iconsReady = Promise.all(Array.from(cards).map((card) => waitForImage(card.querySelector("img"))));
+    await Promise.race([iconsReady, new Promise((resolve) => setTimeout(resolve, ICON_WAIT_MS))]);
 
     const canvas = document.createElement("canvas");
     canvas.width = (outerPadding * 2 + cols * cellWidth) * SCALE;
@@ -278,7 +283,7 @@ async function buildBingoCanvas() {
 
         ctx.save();
         ctx.filter = isMarked ? "none" : "grayscale(100%)";
-        if (img && img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
+        if (img && img.complete && img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
         ctx.restore();
 
         ctx.fillStyle = isMarked ? accent : muted;

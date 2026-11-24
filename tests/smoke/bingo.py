@@ -1,9 +1,38 @@
 """Bingo QA: every bingo of BINGOS, layouts, marking, languages, missing icons, PNG download (P22.2, P24.1)."""
 import os, tempfile
+from playwright.async_api import TimeoutError as PlaywrightTimeout
 from smoke.common import check, ROOT
+
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
 # Icons of authorities/ exported from the game (T2524) that are not bingo cells yet (T2406).
 PENDING_AUTH_ICONS = {f"Auth_cyber_dictatorial_collectivist_{c}.png" for c in ("commander", "official", "scientist", "vacant")}
+
+# Diagnostics of a download that never came: icons still loading, button state, status text.
+DOWNLOAD_STATE_JS = "()=>({pending:[...document.querySelectorAll('#bingo-grid img')].filter(i=>!i.complete).map(i=>i.src.split('/').pop()),disabled:document.querySelector('#bingo-download').disabled,status:document.querySelector('#bingo-download-status').textContent})"
+
+
+async def download_png(page, name, timeout=30000):
+    """Clicks #bingo-download and returns (first 24 bytes, file name, status text), or None after a
+    FAIL check with diagnostics if no download comes (P22.13: never stop the whole suite)."""
+    try:
+        async with page.expect_download(timeout=timeout) as dl_info:
+            await page.click("#bingo-download")
+        dl = await dl_info.value
+    except PlaywrightTimeout:
+        check("bingo: " + name + " (no download within %d s)" % (timeout // 1000), False, await page.evaluate(DOWNLOAD_STATE_JS))
+        return None
+    path = os.path.join(tempfile.gettempdir(), dl.suggested_filename)
+    await dl.save_as(path)
+    with open(path, "rb") as f:
+        head = f.read(24)
+    os.remove(path)
+    return head, dl.suggested_filename, await page.evaluate("()=>document.querySelector('#bingo-download-status').textContent")
+
+
+def png_width(head):
+    return int.from_bytes(head[16:20], "big")
+
 
 async def run(t):
     ctx = t.ctx
@@ -55,16 +84,12 @@ async def run(t):
     check("bingo: a missing icon is flagged on its card (only that one)", len(missing_icon) == 1, missing_icon)
     for kind in ("origins", "principles"):
         await bingo.select_option("#bingo-type", kind)
-        async with bingo.expect_download() as dl_info:
-            await bingo.click("#bingo-download")
-        dl = await dl_info.value
-        path = os.path.join(tempfile.gettempdir(), dl.suggested_filename)
-        await dl.save_as(path)
-        head = open(path, "rb").read(24)
-        width, height = int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
-        status = await bingo.evaluate("()=>document.querySelector('#bingo-download-status').textContent")
-        check("bingo: PNG download of " + kind + " (valid PNG, 9 columns, no error)", head[:8] == b"\x89PNG\r\n\x1a\n" and width == (24 * 2 + 9 * 150) * 2 and height > 0 and not status and dl.suggested_filename == "bingo-" + ("origenes" if kind == "origins" else "principios") + "-stellaris.png", (dl.suggested_filename, width, height, status))
-        os.remove(path)
+        name = "PNG download of " + kind + " (valid PNG, 9 columns, no error)"
+        got = await download_png(bingo, name)
+        if got:
+            head, filename, status = got
+            width, height = png_width(head), int.from_bytes(head[20:24], "big")
+            check("bingo: " + name, head[:8] == PNG_SIGNATURE and width == (24 * 2 + 9 * 150) * 2 and height > 0 and not status and filename == "bingo-" + ("origenes" if kind == "origins" else "principios") + "-stellaris.png", (filename, width, height, status))
     # P24.3: ethics bingo on the in-game wheel (fanatic ethics on the outer ring, gestalt in the centre)
     await bingo.select_option("#bingo-type", "ethics")
     ethics = await bingo.evaluate("()=>{const g=document.querySelector('#bingo-grid').getBoundingClientRect();return [...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>{const r=c.getBoundingClientRect();return {name:c.getAttribute('aria-label'),row:+c.style.gridRow,col:+c.style.gridColumn,fanatic:(c.dataset.tags||'').includes('fanatic'),gestalt:(c.dataset.tags||'')==='gestalt',img:c.querySelector('img').src,cx:Math.round(r.left+r.width/2-g.left-g.width/2),visible:!!c.querySelector('.bingo-card-title--visible')}})}")
@@ -73,14 +98,9 @@ async def run(t):
     check("bingo: ethics wheel — fanatic ethics on the outer ring, moderate inside, gestalt centred", len(centre) == 1 and (centre[0]["row"], centre[0]["col"]) == (3, 3) and abs(centre[0]["cx"]) <= 2
           and all((e["row"] in (1, 5) or e["col"] in (1, 5)) == e["fanatic"] for e in ethics) and len({(e["row"], e["col"]) for e in ethics}) == 17, centre)
     await bingo.click("#bingo-grid .bingo-card[data-tags=gestalt]")
-    async with bingo.expect_download() as dl_info:
-        await bingo.click("#bingo-download")
-    dl = await dl_info.value
-    path = os.path.join(tempfile.gettempdir(), dl.suggested_filename)
-    await dl.save_as(path)
-    head = open(path, "rb").read(24)
-    check("bingo: PNG download of the ethics wheel (5 columns)", head[:8] == b"\x89PNG\r\n\x1a\n" and int.from_bytes(head[16:20], "big") == (24 * 2 + 5 * 150) * 2 and dl.suggested_filename == "bingo-eticas-stellaris.png", dl.suggested_filename)
-    os.remove(path)
+    got = await download_png(bingo, "PNG download of the ethics wheel (5 columns)")
+    if got:
+        check("bingo: PNG download of the ethics wheel (5 columns)", got[0][:8] == PNG_SIGNATURE and png_width(got[0]) == (24 * 2 + 5 * 150) * 2 and got[1] == "bingo-eticas-stellaris.png", got[1])
     # P24.4: authorities bingo, one cell per icon of authorities/, base authorities first
     await bingo.select_option("#bingo-type", "authorities")
     auths = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.querySelector('img').src.split('/').pop(),c.dataset.tags||''])")
@@ -103,15 +123,21 @@ async def run(t):
     check("bingo: shape layout places each cell at its row/column (unplaced items hidden)", len(shape) == 2 and shape[0][:2] == ["2", "2"] and shape[1][:2] == ["3", "3"] and shape[1][5] > shape[0][5] and shape[1][6] > shape[0][6], shape)
     check("bingo: an item without image keeps an empty slot of the same size", shape[1][2] and shape[1][3] and not shape[0][2] and abs(shape[0][4] - shape[1][4]) <= 1, shape)
     await bingo.click("#bingo-grid .bingo-card >> nth=1")
-    async with bingo.expect_download() as dl_info:
-        await bingo.click("#bingo-download")
-    dl = await dl_info.value
-    path = os.path.join(tempfile.gettempdir(), dl.suggested_filename)
-    await dl.save_as(path)
-    head = open(path, "rb").read(24)
-    width = int.from_bytes(head[16:20], "big")
-    check("bingo: PNG download of a shape bingo uses its own columns", head[:8] == b"\x89PNG\r\n\x1a\n" and width == (24 * 2 + 3 * 150) * 2 and dl.suggested_filename == "bingo-smoke-stellaris.png", (dl.suggested_filename, width))
-    os.remove(path)
+    got = await download_png(bingo, "PNG download of a shape bingo uses its own columns")
+    if got:
+        check("bingo: PNG download of a shape bingo uses its own columns", got[0][:8] == PNG_SIGNATURE and png_width(got[0]) == (24 * 2 + 3 * 150) * 2 and got[1] == "bingo-smoke-stellaris.png", (got[1], png_width(got[0])))
+    # P22.13: an icon request that never answers delays the PNG (ICON_WAIT_MS of js/bingo.js, 5 s) but never blocks it
+    stalled = []
+    await bingo.route("**/smoke_stalled.png", lambda route: stalled.append(route))
+    await bingo.evaluate("async()=>{const m=await import('./js/bingo-data.js');m.BINGOS.push({id:'smokeStalled',titleKey:'bingoTypeOrigins',fileSlug:'stalled',iconSize:70,showNames:false,layout:{type:'grid',columns:2},items:[{img:'origins/GFX_origin_remnants.png',i18nKey:'originRemnants'},{img:'origins/smoke_stalled.png',i18nKey:'originScion'}]})}")
+    await bingo.click(".lang-btn[data-lang=es]")
+    await bingo.click(".lang-btn[data-lang=en]")
+    await bingo.select_option("#bingo-type", "smokeStalled")
+    got = await download_png(bingo, "a stalled icon request does not block the PNG download", timeout=15000)
+    if got:
+        check("bingo: a stalled icon request does not block the PNG download", stalled and got[0][:8] == PNG_SIGNATURE and got[1] == "bingo-stalled-stellaris.png" and not got[2], (len(stalled), got[1], got[2]))
+    for route in stalled:
+        await route.abort()
     await bingo.select_option("#bingo-type", "origins")
     check("bingo: leaving a shape bingo restores the flowing grid", await bingo.evaluate("()=>!document.querySelector('#bingo-grid').classList.contains('bingo-grid--shape')&&!document.querySelector('#bingo-grid .bingo-card').style.gridRow"))
     await bingo.reload()

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2213 — Bingo PNG download smoke test timeout (2026-11-25)
+- [ ] **Cause not reproduced**: on the current tree the full suite passes with and without `BLOCK_REMOTE=1` (and the bingo area alone too), so the T1906 timeout was not a deterministic page or test break. The only way found for the page to never fire the download is an icon request that never settles: `buildBingoCanvas` waited for every icon with no limit, leaving the button disabled forever.
+- [ ] **Icon wait capped at 5 s** (`ICON_WAIT_MS` in `js/bingo.js`): after that the PNG is drawn and icons still loading are left as empty cells (only fully loaded icons are drawn).
+- [ ] **Test no longer stops the suite**: a download that does not arrive within 30 s is a FAIL check with the pending icons, button state and status text, and the remaining areas still run.
+
 ## T1906 — Branch office owner from a saved empire profile (2026-11-25)
 - [ ] **Corporate authority only**: the "Owner empire" select lists the profiles whose authority is Corporate; the Corporate Sovereign civic (also allowed to own branch offices in the game) is not checked.
 - [ ] **Civic order**: when a profile has more than 3 owner civics (not possible with today's 3-civic cap, but kept as a guard), the first ones in the profile's order are kept and later incompatible ones are dropped.
