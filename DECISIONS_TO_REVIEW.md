@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3204 — Zoom and pan (2026-11-25)
+- [ ] **Pan = the panel's own scroll** (scroll bars, wheel, one finger, arrow keys with the panel focused) plus dragging the empty background with the mouse; no separate canvas.
+- [ ] **One zoom level for the three areas**, 40 %–160 %, with steps 40/50/60/75/90/100/115/130/145/160 % for the buttons and keys; Ctrl + wheel and the pinch are continuous and zoom around the pointer / fingers.
+- [ ] **Zoom with a CSS transform** of each grid inside a wrapper sized to the scaled grid (nodes and lines scale together, lines are not redrawn); at 100 % nothing is transformed. The zoom is not saved.
+- [ ] **Keys `+`, `-`, `0`** only while the focus is inside the tree (a node or a panel), so they never interfere with the search box; the panels are now focusable regions named "<Area> tree".
+
 ## T3203 — Search and filters (2026-11-25)
 - [ ] **Filtering dims, it does not hide**: the tree keeps its tier columns, field rows and lines; what does not match is dimmed (and its lines), search matches get an outline. Hiding would move the nodes and break the lines.
 - [ ] **What the search looks at**: the English name, the variant names and the game id; every word must appear (accents and case ignored). Names are English in every language, so the placeholder says so in es/jp.

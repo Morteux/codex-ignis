@@ -6,8 +6,8 @@
  * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
  * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
  * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
- * detail card of the selected technology (js/tech-tree-card.js) and the search and filters
- * (js/tech-tree-search.js).
+ * detail card of the selected technology (js/tech-tree-card.js), the search and filters
+ * (js/tech-tree-search.js) and the zoom and pan (js/tech-tree-zoom.js).
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
@@ -17,8 +17,9 @@ import { TECH_DATA } from "./tech-data/stellaris-pc-4.5.4.js";
 import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
 import { createSelection } from "./tech-tree-states.js";
-import { createDetailCard } from "./tech-tree-card.js";
+import { createDetailCard, areaName } from "./tech-tree-card.js";
 import { createSearch } from "./tech-tree-search.js";
+import { createZoom } from "./tech-tree-zoom.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -141,9 +142,11 @@ const search = createSearch(document.getElementById("tech-search-box"), document
     if (tab.getAttribute("aria-selected") !== "true") tab.click();
   },
 });
+const zoom = createZoom(document.querySelector(".tech-areas"), document.getElementById("tech-zoom-bar"), getLang, areaName);
 onLanguageChange((lang) => {
   renderLegend(lang);
   selection.announce();
   card.refresh();
   search.relabel();
+  zoom.relabel();
 });

@@ -4031,3 +4031,91 @@ body.has-tech-card .tech-board {
         width: 100%;
     }
 }
+
+/* T3204: zoom and pan (js/tech-tree-zoom.js). The grid is scaled from its top left corner inside
+   a wrapper sized to the scaled grid (clipped, not a scroll box, so the sticky field labels keep
+   working); the panel is focusable for the arrow keys. */
+.tech-zoom-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem 1rem;
+    align-items: center;
+    margin: 0 0 .8rem;
+}
+
+.tech-zoom-controls {
+    display: inline-flex;
+    gap: .3rem;
+    align-items: center;
+}
+
+.tech-zoom-label {
+    margin-right: .2rem;
+    color: var(--muted);
+    font: .62rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-zoom-btn {
+    min-width: 2.4rem;
+    min-height: 2.4rem;
+    padding: .3rem .5rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font: 700 .78rem var(--mono);
+    cursor: pointer;
+}
+
+.tech-zoom-btn:disabled {
+    color: var(--muted);
+    border-color: var(--line-soft);
+    cursor: default;
+}
+
+.tech-zoom-level {
+    min-width: 3.4rem;
+    color: var(--text);
+    font: .72rem var(--mono);
+    text-align: center;
+}
+
+.tech-zoom-hint {
+    flex: 1 1 18rem;
+    margin: 0;
+    color: var(--muted);
+    font: .64rem var(--mono);
+}
+
+.tech-area-scroll {
+    cursor: grab;
+}
+
+.tech-area-scroll.is-panning {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.tech-area-scroll .tech-node {
+    cursor: pointer;
+}
+
+.tech-area-scroll:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -2px;
+}
+
+.is-zoomed .tech-zoom {
+    overflow: clip;
+}
+
+.tech-grid {
+    transform-origin: 0 0;
+}
+
+@media (max-width: 700px) {
+    .tech-zoom-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}

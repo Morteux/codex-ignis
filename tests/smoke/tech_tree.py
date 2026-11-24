@@ -495,6 +495,76 @@ async def page_checks(t):
           pick == ["tech_lasers_2", "tech_lasers_2"] and es_search[0] == "Buscar" and es_search[1] == "Todos" and "tecnologías coinciden" in es_search[2]
           and es_search[3] == "blue lasers" and not f5["has"] and len(f5["kept"]) == 679 and f5["lineOut"] == 0 and f5["count"] == "", (pick, es_search, f5["has"]))
 
+    # T3204: zoom and pan (buttons, keys, Ctrl + wheel, mouse drag, arrow keys)
+    zoom_js = """(area)=>{const sc=document.querySelector('#tech-area-'+area+' .tech-area-scroll');const g=sc.querySelector('.tech-grid');const w=sc.querySelector('.tech-zoom');
+      const n=g.querySelector('.tech-node');const svg=g.querySelector('.tech-lines');const r=(e)=>e.getBoundingClientRect();
+      return {level:document.getElementById('tech-zoom-level').textContent,transform:g.style.transform,gridW:g.offsetWidth,gridVis:r(g).width,
+        wrapW:w?w.getBoundingClientRect().width:0,scrollW:sc.scrollWidth,clientW:sc.clientWidth,left:sc.scrollLeft,top:sc.scrollTop,
+        nodeW:r(n).width,nodeOff:n.offsetWidth,svgVis:svg?r(svg).width:0,lines:svg?svg.querySelectorAll('path').length:0,
+        tab:sc.tabIndex,label:sc.getAttribute('aria-label'),
+        disabled:[...document.querySelectorAll('.tech-zoom-btn')].map(b=>[b.dataset.zoom,b.disabled])}}"""
+    z0 = await pg.evaluate(zoom_js, "physics")
+    check("tech tree zoom: zoom bar (−, level, +, 100 %) at 100 % with nothing scaled; each area panel is a focusable region with a name",
+          z0["level"] == "100 %" and z0["transform"] == "" and dict(z0["disabled"]) == {"out": False, "in": False, "reset": True}
+          and z0["tab"] == 0 and z0["label"] == "Physics tree", z0)
+    await pg.click(".tech-zoom-btn[data-zoom=in]")
+    z1 = await pg.evaluate(zoom_js, "physics")
+    check("tech tree zoom: + scales nodes and lines together (115 %), the panel scrolls exactly over the scaled tree and the lines are not redrawn",
+          z1["level"] == "115 %" and z1["transform"] == "scale(1.15)" and abs(z1["nodeW"] - z0["nodeOff"] * 1.15) < 1
+          and abs(z1["svgVis"] - z1["gridW"] * 1.15) < 1 and abs(z1["wrapW"] - z1["gridW"] * 1.15) < 1 and z1["lines"] == z0["lines"]
+          and abs(z1["scrollW"] - max(z1["clientW"], round(z1["wrapW"]))) <= 2, z1)
+    await pg.focus("#tech-area-physics .tech-area-scroll")
+    for _ in range(4):
+        await pg.keyboard.press("-")
+    z2 = await pg.evaluate(zoom_js, "physics")
+    await pg.click(".lang-btn[data-lang=es]")
+    es_zoom = await pg.evaluate("()=>[document.querySelector('.tech-zoom-btn[data-zoom=in]').getAttribute('aria-label'),document.querySelector('#tech-area-physics .tech-area-scroll').getAttribute('aria-label')]")
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree zoom: the - key inside the tree zooms out step by step (60 %), with no empty scroll space; labels follow the language",
+          z2["level"] == "60 %" and z2["transform"] == "scale(0.6)" and z2["scrollW"] <= max(z2["clientW"], round(z2["gridW"] * 0.6)) + 2
+          and es_zoom == ["Acercar", "Árbol de Physics"], (z2, es_zoom))
+    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.keyboard.press("0")
+    z_reset = (await pg.evaluate(zoom_js, "physics"))["level"]
+    check("tech tree zoom: the 0 key inside the tree goes back to 100 %", z_reset == "100 %", z_reset)
+    await pg.evaluate("()=>{const sc=document.querySelector('#tech-area-physics .tech-area-scroll');sc.scrollLeft=200;sc.scrollTop=100}")
+    box = await pg.evaluate("()=>{const r=document.querySelector('#tech-area-physics .tech-area-scroll').getBoundingClientRect();return [r.left,r.top,r.width,r.height]}")
+    px, py = box[0] + box[2] * 0.6, box[1] + box[3] * 0.5
+    before = await pg.evaluate(zoom_js, "physics")
+    await pg.mouse.move(px, py)
+    await pg.keyboard.down("Control")
+    await pg.mouse.wheel(0, -150)
+    await pg.keyboard.up("Control")
+    await pg.wait_for_timeout(150)
+    after = await pg.evaluate(zoom_js, "physics")
+    za = float(after["level"].split()[0]) / 100
+    ax, ay = box[2] * 0.6, box[3] * 0.5
+    check("tech tree zoom: Ctrl + wheel zooms in around the pointer (the point under it stays put)",
+          za > 1 and abs((before["left"] + ax) - (after["left"] + ax) / za) < 3 and abs((before["top"] + ay) - (after["top"] + ay) / za) < 3, (before["left"], after["left"], za))
+    await pg.click(".tech-zoom-btn[data-zoom=reset]")
+    z3 = await pg.evaluate(zoom_js, "physics")
+    await pg.evaluate("()=>{const sc=document.querySelector('#tech-area-physics .tech-area-scroll');sc.scrollLeft=0;sc.scrollTop=0}")
+    corner = await pg.evaluate("()=>{const r=document.querySelector('#tech-area-physics .tech-grid-corner').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]}")
+    await pg.mouse.move(corner[0], corner[1] + 4)
+    await pg.mouse.down()
+    await pg.mouse.move(corner[0] - 120, corner[1] + 4, steps=5)
+    await pg.mouse.up()
+    dragged = (await pg.evaluate(zoom_js, "physics"))["left"]
+    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.keyboard.press("ArrowRight")
+    await pg.keyboard.press("ArrowDown")
+    await pg.wait_for_timeout(300)
+    keyed = await pg.evaluate(zoom_js, "physics")
+    check("tech tree pan: 100 % removes the scale; dragging the empty space with the mouse pans the panel, and the arrow keys move it once it has the focus",
+          z3["level"] == "100 %" and z3["transform"] == "" and abs(dragged - 120) <= 2 and keyed["left"] > dragged and keyed["top"] > 0, (z3["level"], dragged, keyed["left"], keyed["top"]))
+    await pg.click(".tech-zoom-btn[data-zoom=out]")
+    await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').scrollIntoView({block:'center',inline:'center'})")
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    zsel = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.getElementById('tech-zoom-level').textContent]")
+    await pg.keyboard.press("Escape")
+    await pg.click(".tech-zoom-btn[data-zoom=reset]")
+    check("tech tree zoom: nodes can still be clicked while zoomed out", zsel == ["tech_lasers_2", "90 %"], zsel)
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
     await mobile_checks(t)
@@ -554,5 +624,15 @@ async def mobile_checks(t):
         [...document.querySelectorAll('.tech-filters input,.tech-filters select,.tech-filter-reset')].every(e=>r(e).right<=w+0.5&&r(e).height>=44)]}""")
     await pg.select_option("#tech-filter-area", "")
     check("tech tree mobile: the area filter opens that area's tab; the filters fit the 320 px screen with 44 px controls", mf == ["true", True, True], mf)
+    pinch = await pg.evaluate("""async ()=>{const sc=document.querySelector('.tech-area.is-active .tech-area-scroll');const r=sc.getBoundingClientRect();
+      const cx=r.left+r.width/2,cy=r.top+r.height/2;const touch=(id,x)=>new Touch({identifier:id,target:sc,clientX:x,clientY:cy});
+      const fire=(type,d)=>{const list=type==='touchend'?[]:[touch(1,cx-d),touch(2,cx+d)];sc.dispatchEvent(new TouchEvent(type,{touches:list,targetTouches:list,changedTouches:list,bubbles:true,cancelable:true}))};
+      fire('touchstart',30);fire('touchmove',45);fire('touchmove',60);const zin=document.getElementById('tech-zoom-level').textContent;fire('touchend',0);
+      fire('touchstart',60);fire('touchmove',30);const zout=document.getElementById('tech-zoom-level').textContent;fire('touchend',0);
+      const btns=[...document.querySelectorAll('.tech-zoom-btn')].map(b=>Math.round(b.getBoundingClientRect().height));
+      document.querySelector('.tech-zoom-btn[data-zoom=reset]').click();
+      return {zin,zout,btns,fits:document.documentElement.scrollWidth<=document.documentElement.clientWidth}}""")
+    check("tech tree mobile: a two-finger pinch zooms in (fingers apart) and out (together); 44 px zoom buttons; no page overflow",
+          pinch["zin"] == "160 %" and pinch["zout"] == "80 %" and min(pinch["btns"]) >= 44 and pinch["fits"], pinch)
     check("tech tree mobile: no page errors", not errors, errors[:3])
     await mctx.close()
