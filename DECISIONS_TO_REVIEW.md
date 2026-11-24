@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3104 — Visual states and kind colours (2026-11-25)
+- [ ] **Kind colours**: starter green (accent), rare purple, dangerous red, repeatable blue, event yellow, acquisition amber, normal grey, on the left border of the node; the legend only lists the kinds the data file uses (no acquisition in 4.5.4).
+- [ ] **State colours**: selected yellow-green with a tinted background, prerequisite teal dashed border, unlocked by the selected orange; the other nodes and lines are dimmed while something is selected.
+- [ ] **Direct links only**: prerequisite and unlocked states mark the direct neighbours (the full chain is T3202), also in the other area panels.
+- [ ] **Deselect** with a second click on the node or Escape; a live status line ("Selected: … · N prerequisites · unlocks M") summarises the selection until the detail card (T3201) exists.
+
 ## T3103 — Prerequisite lines (2026-11-25)
 - [ ] **No lines across areas**: 74 of the 568 prerequisites of 4.5.4 link two areas; with the areas in separate panels (tabs on mobile) they cannot be drawn, so they will only be listed in the detail card (T3201).
 - [ ] **Line shape**: a curve from the right edge of the prerequisite to the left edge of the technology; same-tier prerequisites (139) loop on the right side, and the 9 prerequisites of a higher tier go from the left edge back.

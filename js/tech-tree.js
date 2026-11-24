@@ -5,15 +5,16 @@
  * (js/page-shell.js). This script adds the dynamic parts: the data version line, the area tabs
  * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
  * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
- * (js/tech-tree-lines.js).
+ * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend.
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
 import { t } from "./i18n.js";
 import { DATA_COLLECTIONS } from "./data-version.js";
 import { TECH_DATA } from "./tech-data/stellaris-pc-4.5.4.js";
-import { renderAreaGrid, relabelGrids } from "./tech-tree-layout.js";
+import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
+import { createSelection } from "./tech-tree-states.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -63,6 +64,29 @@ function setupAreaTabs() {
   });
 }
 
+/**
+ * Legend of the visual states (T3104): the kinds used by the data file with their colour, then
+ * selected / prerequisite / unlocked by the selected.
+ */
+function renderLegend(lang) {
+  const kinds = Object.keys(KIND_KEYS).filter((kind) => TECH_DATA.technologies.some((tech) => tech.kind === kind));
+  const items = [
+    ...kinds.map((kind) => ["tech-legend-kind tech-node--" + kind, KIND_KEYS[kind], kind]),
+    ["tech-legend-state is-selected", "techTreeStateSelected", "selected"],
+    ["tech-legend-state is-prerequisite", "techTreeStatePrerequisite", "prerequisite"],
+    ["tech-legend-state is-unlocked", "techTreeStateUnlocked", "unlocked"],
+  ];
+  document.getElementById("tech-legend").replaceChildren(...items.map(([className, key, id]) => {
+    const item = document.createElement("li");
+    item.dataset.legend = id;
+    const swatch = document.createElement("span");
+    swatch.className = "tech-legend-swatch " + className;
+    swatch.setAttribute("aria-hidden", "true");
+    item.append(swatch, t(lang, key));
+    return item;
+  }));
+}
+
 /** Draws the tier × field grid of every area panel (T3102). Returns a Map id → node. */
 function renderTree(lang) {
   const nodes = new Map();
@@ -84,3 +108,9 @@ onLanguageChange((lang) => {
   redrawLines();
 });
 document.addEventListener("tech-area-change", redrawLines);
+renderLegend(getLang());
+const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang);
+onLanguageChange((lang) => {
+  renderLegend(lang);
+  selection.announce();
+});

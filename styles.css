@@ -3514,6 +3514,113 @@ h1 {
     stroke-width: 1.5;
 }
 
+/* T3104: kind colours (left border of the node and legend swatch) and selection states
+   (js/tech-tree-states.js). The states use the rest of the border, a glow and the line colour;
+   while something is selected the unrelated nodes and lines are dimmed. */
+.tech-node--normal { --tech-kind-colour: var(--line); }
+.tech-node--starter { --tech-kind-colour: var(--accent); }
+.tech-node--acquisition { --tech-kind-colour: var(--caution); }
+.tech-node--rare { --tech-kind-colour: #b98cff; }
+.tech-node--dangerous { --tech-kind-colour: var(--danger); }
+.tech-node--repeatable { --tech-kind-colour: var(--slot-limited); }
+.tech-node--event { --tech-kind-colour: var(--warning); }
+
+.tech-areas {
+    --tech-state-selected: var(--focus);
+    --tech-state-prerequisite: #5fe3d4;
+    --tech-state-unlocked: #ff9f43;
+}
+
+.tech-node.is-selected,
+.tech-legend-state.is-selected {
+    border-color: var(--tech-state-selected);
+    background: var(--accent-tint);
+    box-shadow: 0 0 0 2px var(--tech-state-selected);
+}
+
+.tech-node.is-prerequisite,
+.tech-legend-state.is-prerequisite {
+    border-color: var(--tech-state-prerequisite);
+    border-style: dashed;
+    box-shadow: 0 0 0 1px var(--tech-state-prerequisite);
+}
+
+.tech-node.is-unlocked,
+.tech-legend-state.is-unlocked {
+    border-color: var(--tech-state-unlocked);
+    box-shadow: 0 0 0 1px var(--tech-state-unlocked);
+}
+
+.tech-node.is-selected,
+.tech-node.is-prerequisite,
+.tech-node.is-unlocked {
+    border-left-style: solid;
+    border-left-color: var(--tech-kind-colour, var(--line));
+}
+
+.has-selection .tech-node:not(.is-selected, .is-prerequisite, .is-unlocked) {
+    opacity: .45;
+}
+
+.has-selection .tech-line {
+    opacity: .25;
+}
+
+.tech-line.is-prerequisite,
+.tech-line.is-unlocked {
+    opacity: 1;
+    stroke-width: 2.5;
+}
+
+.tech-line.is-prerequisite {
+    stroke: var(--tech-state-prerequisite);
+}
+
+.tech-line.is-unlocked {
+    stroke: var(--tech-state-unlocked);
+}
+
+.tech-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem 1rem;
+    margin: .8rem 0 0;
+    padding: 0;
+    color: var(--muted);
+    font: .64rem var(--mono);
+    list-style: none;
+    /* the state colours of .tech-areas, for the swatches */
+    --tech-state-selected: var(--focus);
+    --tech-state-prerequisite: #5fe3d4;
+    --tech-state-unlocked: #ff9f43;
+}
+
+.tech-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+}
+
+.tech-legend-swatch {
+    display: inline-block;
+    box-sizing: border-box;
+    width: .9rem;
+    height: .9rem;
+    border: 1px solid var(--line);
+}
+
+.tech-legend-kind {
+    background: var(--tech-kind-colour);
+    border-color: var(--tech-kind-colour);
+}
+
+.tech-selection-status {
+    min-height: 1.2em;
+    margin: .5rem 0 0;
+    color: var(--text);
+    font: .7rem var(--mono);
+}
+
 @media (max-width: 700px) {
     .tech-area-tabs {
         display: flex;

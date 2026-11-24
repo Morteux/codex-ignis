@@ -273,5 +273,49 @@ async def page_checks(t):
     await pg.set_viewport_size({"width": 1280, "height": 900})
     await pg.wait_for_timeout(100)
 
+    # T3104: kind colours, selected / prerequisite / unlocked-by states on nodes and lines, legend and live status
+    states_js = """async (id)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+      await new Promise(r=>setTimeout(r,120));
+      const ids=(s)=>[...document.querySelectorAll('.tech-node'+s)].map(n=>n.dataset.techId).sort();
+      const x=d.technologies.find(t=>t.id===id);const deps=id?d.technologies.filter(t=>t.prerequisites.includes(id)).map(t=>t.id).sort():[];
+      const lines=(c)=>[...document.querySelectorAll('.tech-line.'+c)].map(l=>l.dataset.from+'>'+l.dataset.to).sort();
+      const other=document.querySelector('.tech-node:not(.is-selected):not(.is-prerequisite):not(.is-unlocked)');
+      return {has:document.querySelector('.tech-areas').classList.contains('has-selection'),selected:ids('.is-selected'),pressed:ids('[aria-pressed=true]'),
+        prereq:ids('.is-prerequisite'),unlocked:ids('.is-unlocked'),expPrereq:x?[...x.prerequisites].sort():[],expDeps:deps,
+        lineP:lines('is-prerequisite'),lineU:lines('is-unlocked'),otherOpacity:getComputedStyle(other).opacity,
+        status:document.getElementById('tech-selection-status').textContent}}"""
+    kinds = await pg.evaluate("""()=>{const c={};document.querySelectorAll('.tech-node').forEach(n=>{c[n.dataset.kind]=getComputedStyle(n).borderLeftColor});
+      return {colours:c,legend:[...document.querySelectorAll('#tech-legend li')].map(l=>[l.dataset.legend,l.textContent,getComputedStyle(l.querySelector('.tech-legend-swatch')).backgroundColor])}}""")
+    colours = kinds["colours"]
+    check("tech tree states: every kind has its own colour (starter, rare, dangerous, repeatable, event, normal) and the legend shows kinds and states",
+          sorted(colours) == ["dangerous", "event", "normal", "rare", "repeatable", "starter"] and len(set(colours.values())) == 6
+          and [l[0] for l in kinds["legend"]] == ["normal", "starter", "rare", "dangerous", "repeatable", "event", "selected", "prerequisite", "unlocked"]
+          and kinds["legend"][2][2] == colours["rare"], kinds)
+    s0 = await pg.evaluate(states_js, None)
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    s1 = await pg.evaluate(states_js, "tech_lasers_2")
+    check("tech tree states: clicking a node selects it (aria-pressed), marks its prerequisites and the techs it unlocks, and dims the rest",
+          not s0["has"] and not s0["pressed"] and s1["has"] and s1["selected"] == s1["pressed"] == ["tech_lasers_2"]
+          and s1["prereq"] == s1["expPrereq"] == ["tech_lasers_1"] and s1["unlocked"] == s1["expDeps"] and len(s1["unlocked"]) >= 2
+          and float(s1["otherOpacity"]) < 1 and "Blue Lasers" in s1["status"], s1)
+    check("tech tree states: the lines into the selected are marked as prerequisite and the lines out of it as unlocked",
+          s1["lineP"] == ["tech_lasers_1>tech_lasers_2"] and s1["lineU"] == sorted("tech_lasers_2>" + i for i in s1["expDeps"]), (s1["lineP"], s1["lineU"]))
+    await pg.set_viewport_size({"width": 1180, "height": 900})
+    await pg.wait_for_timeout(200)
+    s2 = await pg.evaluate(states_js, "tech_lasers_2")
+    await pg.click(".lang-btn[data-lang=es]")
+    es_state = await pg.evaluate("()=>[document.getElementById('tech-selection-status').textContent,document.querySelector('#tech-legend li[data-legend=prerequisite]').textContent]")
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree states: the states survive a redraw of the lines and the status and legend follow the language",
+          s2["lineP"] == s1["lineP"] and s2["lineU"] == s1["lineU"] and es_state[0].startswith("Seleccionada: Blue Lasers") and es_state[1] == "Prerrequisito", (s2["lineP"], es_state))
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    s3 = await pg.evaluate(states_js, None)
+    await pg.click(".tech-node[data-tech-id=tech_lasers_1]")
+    await pg.keyboard.press("Escape")
+    s4 = await pg.evaluate(states_js, None)
+    check("tech tree states: a second click or Escape clears the selection (back to normal)",
+          all(not s["has"] and not s["selected"] and not s["prereq"] and not s["unlocked"] and not s["lineP"] and not s["lineU"] and s["status"] == "" for s in (s3, s4)), (s3, s4))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()

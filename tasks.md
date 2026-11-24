@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **79 / 135 tareas (59%)**
+> Progreso: **80 / 135 tareas (59%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -216,7 +216,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
   - Prueba manual: open `tech-tree.html`: each area panel shows the tier columns Tier 0–5 and one row per field (e.g. Physics: Field Manipulation, Particles, Computing); every node has its icon frame, the English name and "Tier N · Kind" (Red Lasers: "Tier 0 · Starter"), which turns into "Nivel 0 · Inicial" in ES.
 - [x] **T3103** (P31.3) Prerequisite lines between nodes (SVG), redrawn on resize
   - Prueba manual: open `tech-tree.html`: curves join each technology with its prerequisites of the same area (e.g. Red Lasers → Blue Lasers in Physics), under the nodes; resize the window or switch a mobile tab and the curves still end on the node edges.
-- [ ] **T3104** (P31.4) Visual states: normal, selected, prerequisite, unlocked by the selected, kind colours (starter, rare, dangerous, repeatable, event)
+- [x] **T3104** (P31.4) Visual states: normal, selected, prerequisite, unlocked by the selected, kind colours (starter, rare, dangerous, repeatable, event)
+  - Prueba manual: open `tech-tree.html` and click Blue Lasers: it is framed in yellow-green, Red Lasers gets the teal dashed prerequisite frame, the lasers it unlocks the orange one, their lines light up, the rest dims and the status line names it; click again or press Escape to clear. The legend shows the kind colours.
 - [ ] **T3105** (P31.5) Mobile layout at 320–375 px
 
 ## 32 · Tech tree: exploration
