@@ -5,12 +5,13 @@
 
 import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
-import { JOBS, CIVILIAN_OUTPUTS, civilianOutputKind, STRATUM_I18N_KEYS, RESOURCES, EFFECT_SCALE } from "./planet-data.js";
+import { JOBS, CIVILIAN_OUTPUTS, civilianOutputKind, STRATUM_I18N_KEYS, RESOURCES, EFFECT_SCALE, SPECIES_TYPES } from "./planet-data.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { STRATEGIC_DEPOSITS, BLOCKERS } from "./planetary-features-data.js";
 import { getStackingRules, getCalculationOrder } from "./stacking-rules.js";
 import { getPlanetState } from "./planet-state.js";
 import { getEdict } from "./edict-data.js";
+import { getLivingStandard } from "./living-standard-data.js";
 import { getPolicyOption } from "./policy-data.js";
 import { createInfoPanel, syncInfoButtons } from "./info-panels.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_OPTIONS, AUTHORITIES, MUTUALISTIC_INTELLIGENCE } from "./empire-data.js";
@@ -42,6 +43,8 @@ const MODIFIER_CATEGORIES = [
   { id: "resourceMult", label: "modifierCatResourceMult", unit: "percent" },
   { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
   { id: "conditionFlat", label: "modifierCatConditionFlat", unit: "flat" },
+  { id: "popUpkeep", label: "modifierCatPopUpkeep", unit: "flat" },
+  { id: "popOutput", label: "modifierCatPopOutput", unit: "flat" },
   { id: "flat", label: "modifierCatFlat", unit: "flat" }
 ];
 
@@ -56,6 +59,8 @@ export function modifierSourceName(source) {
   if (source.kind === "authority") return t(getLang(), [...AUTHORITIES, MUTUALISTIC_INTELLIGENCE].find((entry) => entry.id === source.id).i18nKey);
   if (source.kind === "stability") return t(getLang(), "conditionsStability");
   if (source.kind === "edict") return t(getLang(), getEdict(source.id).i18nKey);
+  if (source.kind === "livingStandard") return t(getLang(), getLivingStandard(source.id).i18nKey);
+  if (source.kind === "species") return t(getLang(), SPECIES_TYPES.find((type) => type.id === source.id).i18nKey);
   if (source.kind === "planetModifier") { const modifier = PLANET_MODIFIERS.find((entry) => entry.id === source.id); return modifier ? t(getLang(), modifier.i18nKey) : source.id; }
   if (source.kind === "blocker") { const blocker = BLOCKERS.find((entry) => entry.id === source.id); return blocker ? t(getLang(), blocker.i18nKey) : source.id; }
   if (source.kind === "feature") { const deposit = STRATEGIC_DEPOSITS.find((entry) => entry.id === source.id); return deposit ? t(getLang(), deposit.i18nKey) : source.id; }
@@ -271,6 +276,7 @@ export function renderConditions(totals) {
       ...(h.edicts ? [["happinessEdicts", "conditionsHappinessEdicts", h.edicts, true]] : []),
       ...(h.planetModifiers ? [["happinessPlanetModifiers", "conditionsPlanetModifiers", h.planetModifiers, true]] : []),
       ...(h.branchOffice ? [["happinessBranchOffice", "conditionsBranchOffice", h.branchOffice, true]] : []),
+      ...(h.livingStandard ? [["happinessLivingStandard", "conditionsLivingStandard", h.livingStandard, true]] : []),
       ["happinessManual", "conditionsHappinessManual", h.manual, true],
       ["happiness", "conditionsHappiness", h.value, false]
     ]);
@@ -406,7 +412,7 @@ const CONDITION_SOURCES = {
   stabilityHousing: "derived", stability: "estimated", stabilityEffect: "estimated",
   crimeHappiness: "estimated", crimeJobs: "derived", crime: "estimated",
   happinessEdicts: "derived", happinessBody: "derived", happinessPlanetModifiers: "derived", stabilityPlanetModifiers: "derived", crimePlanetModifiers: "derived", stabilityEdicts: "derived", stabilityCapital: "derived", stabilityBuildings: "derived", crimeEdicts: "derived",
-  happinessBranchOffice: "derived", crimeBranchOffice: "derived"
+  happinessBranchOffice: "derived", crimeBranchOffice: "derived", happinessLivingStandard: "derived"
 };
 const CONDITION_SOURCE_LABELS = { manual: "conditionsSourceManual", estimated: "conditionsSourceEstimated", derived: "conditionsSourceDerived" };
 const MANUAL_CONDITION_ROWS = { happinessManual: "happiness", stabilityManual: "stability" };

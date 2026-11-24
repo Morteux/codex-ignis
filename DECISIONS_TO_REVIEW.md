@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2003 — Pop upkeep in the engine (2026-11-24)
+- [ ] **Colonists without stratum**: the simulator's Colonist job is special stratum, so Colonists pay only the species upkeep (no living standard consumer goods); the 4.5.4 game files list Colonist as a worker job (+0.25 consumer goods each with Decent Conditions). Left as is until the jobs data set is switched to the extracted data (T2523).
+- [ ] **"No deficit" assumed**: living standard effects that need no consumer goods deficit (happiness, Academic Privilege research) always apply, even if the planet itself runs a consumer goods deficit (the deficit is empire-wide in the game).
+- [ ] **Living standard trade as pop output**: it gets the stability effect and the trade conversion like job trade; ethics/authority multipliers apply to it as to all positive output.
+- [ ] **Tests**: the existing economy, A/B comparison and timeline checks were updated to the new numbers (2 Traders under Decent Conditions: +0.66 trade, −1 consumer goods; 4 organic pops: −4 food).
+
 ## T2002 — Living standard in the Imperio tab (2026-11-23)
 - [ ] **Panel**: a "Living standard" panel after Civics with one card per standard (`js/living-standard-data.js`), locked cards explain the missing requirement; the default gets the "Default" badge. Names in es / jp from the game localisation 4.5.4.
 - [ ] **Silent fallback**: a standard the empire loses after an edit (e.g. Utopian Abundance after dropping Egalitarian) becomes the default without a notice (policies and edicts show one); the selected card makes the change visible.

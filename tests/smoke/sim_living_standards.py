@@ -1,5 +1,5 @@
 """Planet simulator: living standard of the empire (P20.2)."""
-from smoke.common import check
+from smoke.common import check, approx
 
 
 async def run(t):
@@ -40,3 +40,33 @@ async def run(t):
     await pg.reload(); await pg.wait_for_timeout(500)
     await tab("empire")
     check("older profile: default living standard, not modified", await selected() == "decentConditions" and not await modified())
+
+    # 11. P20.3: pop upkeep on top of job upkeep (species type + living standard per stratum), own breakdown lines
+    snapshot = await pg.evaluate("()=>JSON.stringify(Object.assign({},localStorage))")
+    totals = "async()=>{const m=await import('./js/planet-sim-economy.js');const t=m.computeTotals();return {sp:t.conditions.strataPops,civ:t.conditions.civilians,bd:t.breakdown,h:t.conditions.happiness,mods:t.modifiers}}"
+    await tab("planet")
+    await pg.evaluate("()=>{document.querySelectorAll('#planet-catalog details').forEach(d=>d.open=true);[...document.querySelectorAll('#planet-catalog button')].find(b=>/Commercial Zones/.test(b.innerText)).click()}")
+    r = await pg.evaluate(totals)
+    sp = r["sp"]
+    pops_all = sum(v for k, v in sp.items() if k != "civilian") + r["civ"]
+    goods = r["bd"].get("consumer_goods", {}).get("popUpkeepLivingStandard", 0)
+    expected = -(1 * sp["ruler"] + 0.5 * sp["specialist"] + 0.25 * sp["worker"] + 0.25 * sp["civilian"])
+    check("pop upkeep: Decent Conditions consumer goods per stratum", sp["specialist"] > 0 and approx(goods, expected), r["bd"].get("consumer_goods"))
+    food = r["bd"].get("food", {}).get("popUpkeepSpecies", 0)
+    check("pop upkeep: organic species pays 1 food per pop", food < 0 and food <= -pops_all + 1e-9, r["bd"].get("food"))
+    trade = r["bd"].get("trade", {}).get("livingStandardOutput", 0)
+    check("pop output: Decent Conditions trade per specialist", approx(trade, 0.33 * sp["specialist"] + 0.5 * sp["ruler"] + 0.2 * (sp["worker"] + sp["civilian"])), r["bd"].get("trade"))
+    await pg.evaluate("()=>{const b=document.querySelector('[data-resource=consumer_goods] .planet-resource-toggle, .planet-resource-entry[data-id=consumer_goods] button');if(b)b.click()}")
+    lines = await pg.evaluate("()=>document.querySelector('#planet-production-net').innerText")
+    check("breakdown line: Pop upkeep: living standard", "Pop upkeep: living standard" in lines or "popUpkeepLivingStandard" in str(r["bd"]), lines[:300])
+    await tab("empire")
+    await pg.click(".living-standard-card[data-living-standard=utopianAbundance]")
+    r = await pg.evaluate(totals)
+    sp = r["sp"]
+    goods = r["bd"].get("consumer_goods", {}).get("popUpkeepLivingStandard", 0)
+    check("pop upkeep: Utopian Abundance 1 consumer goods per pop of every stratum", approx(goods, -(sp["ruler"] + sp["specialist"] + sp["worker"] + sp["civilian"])), r["bd"].get("consumer_goods"))
+    check("Utopian Abundance: +20 happiness in the conditions", r["h"].get("livingStandard") == 20, r["h"])
+    await pg.click(".living-standard-card[data-living-standard=decentConditions]")
+    # leave the page as the next area expects it (no Commercial Zones, same saved data)
+    await pg.evaluate("(s)=>{localStorage.clear();Object.entries(JSON.parse(s)).forEach(([k,v])=>localStorage.setItem(k,v))}", snapshot)
+    await pg.reload(); await pg.wait_for_timeout(500)

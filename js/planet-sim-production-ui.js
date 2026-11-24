@@ -122,6 +122,7 @@ const BREAKDOWN_SOURCES = [
   { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult" },
   { id: "branchJobMult", pos: "breakdownBranchJobMult", neg: "breakdownBranchJobMult" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
+  { id: "livingStandardOutput", pos: "breakdownLivingStandardOutput", neg: "breakdownLivingStandardOutput" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
@@ -132,7 +133,9 @@ const BREAKDOWN_SOURCES = [
   { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
   { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts" },
   { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" },
-  { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings" }
+  { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings" },
+  { id: "popUpkeepSpecies", pos: "breakdownPopUpkeepSpecies", neg: "breakdownPopUpkeepSpecies" },
+  { id: "popUpkeepLivingStandard", pos: "breakdownPopUpkeepLivingStandard", neg: "breakdownPopUpkeepLivingStandard" }
 ];
 
 // Recursos de la columna "Netos" con el desglose desplegado (se conserva entre repintados).

@@ -48,7 +48,9 @@ const STACKING_RULES = {
     resourceMult: rule("add", null, "modifierStackResourceMult", "totalPositiveProduction"),
     resourceFlat: rule("add", null, "modifierStackExternal", "externalIncome"),
     flat: rule("add", null, "modifierStackFlat", "monthlyTotal"),
-    conditionFlat: rule("add", null, "modifierStackConditionFlat", "conditions")
+    conditionFlat: rule("add", null, "modifierStackConditionFlat", "conditions"),
+    popUpkeep: rule("add", null, "modifierStackPopUpkeep", "pops"),
+    popOutput: rule("add", null, "modifierStackPopOutput", "pops")
   }
 };
 

@@ -11,6 +11,7 @@ import { getStackingRules, combineFraction, stackFactor } from "./stacking-rules
 import { getPlanetState } from "./planet-state.js";
 import { getEdict } from "./edict-data.js";
 import { getPolicyOption } from "./policy-data.js";
+import { getLivingStandard, resolveLivingStandard, SPECIES_POP_UPKEEP } from "./living-standard-data.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS, ETHIC_EFFECTS, AUTHORITY_EFFECTS, authorityVariant } from "./empire-data.js";
 import { buildingRequirementsMet } from "./building-requirements.js";
 import { BRANCH_OFFICE_VALUE, ILLEGAL_BRANCH_RULES, branchBuildingVariant, branchBuildingJobs, branchJobTrade, isIllegalVariant } from "./branch-office-data.js";
@@ -399,6 +400,12 @@ export function computeTotals() {
       pushModifier(source, "conditionFlat", { stat }, value);
     });
   });
+  // P20.3: living standard of the empire (js/living-standard-data.js, GDD §5.3). Its job efficiency goes to the usual
+  // categories here; pop upkeep, pop output and happiness come after the civilians (they need the pops of each stratum).
+  const livingStandard = getLivingStandard(resolveLivingStandard(empireModifierState.livingStandardId, empireModifierState).livingStandardId);
+  const livingSource = { kind: "livingStandard", id: livingStandard.id };
+  if (livingStandard.researcherEfficiency) ["physicist", "engineer", "biologist"].forEach((jobId) => pushModifier(livingSource, "jobEfficiency", { job: jobId }, livingStandard.researcherEfficiency));
+  if (livingStandard.jobEfficiency) ["ruler", "specialist", "worker"].forEach((stratum) => pushModifier(livingSource, "stratumEfficiency", { stratum }, livingStandard.jobEfficiency));
   // P10.8: planet modifiers — stratum output / job efficiency, job upkeep and condition points.
   const planetModifierConditions = { happiness: 0, stability: 0, crime: 0 };
   const modifierEmpireKey = ethicsSatisfy(empireModifierState.ethicIds || [], GESTALT_CONSCIOUSNESS.id) ? "gestalt" : "individualist";
@@ -666,6 +673,35 @@ export function computeTotals() {
   // (especie, colonia, imperio) no se modelan: cada pop usa 1.
   const jobPops = Object.values(jobAssignments).reduce((sum, raw) => sum + divideEffect(raw), 0);
   const pops = jobPops + civilianPops + neuralChipPops;
+  // P20.3: pop upkeep on top of job upkeep (GDD §5.3): the species type upkeep of every pop and the living standard's upkeep
+  // per stratum (ruler / specialist / worker jobs and civilians; special-stratum jobs and Neural Chips have no stratum), added
+  // like the other upkeep (no job upkeep modifiers). The living standard's trade per pop and civilian output are pop output:
+  // they join the job and civilian output (stability effect, trade conversion, empire multipliers).
+  const strataPops = { ruler: 0, specialist: 0, worker: 0, civilian: civilianPops };
+  Object.entries(jobAssignments).forEach(([jobId, raw]) => {
+    const stratum = JOBS[jobId]?.stratum;
+    if (stratum && stratum !== "civilian" && stratum in strataPops) strataPops[stratum] += divideEffect(raw);
+  });
+  const stratumTarget = (stratum, resourceId) => (stratum === "civilian" ? { job: "civilian", resource: resourceId } : { stratum, resource: resourceId });
+  Object.entries(SPECIES_POP_UPKEEP[speciesType.id] || {}).forEach(([resourceId, perPop]) => {
+    pushModifier({ kind: "species", id: speciesType.id }, "popUpkeep", { resource: resourceId }, -perPop);
+    addSignedResource(resourceId, -perPop * pops, "popUpkeepSpecies");
+  });
+  Object.entries(livingStandard.upkeep).forEach(([stratum, upkeep]) => Object.entries(upkeep).forEach(([resourceId, perPop]) => {
+    pushModifier(livingSource, "popUpkeep", stratumTarget(stratum, resourceId), -perPop);
+    addSignedResource(resourceId, -perPop * strataPops[stratum], "popUpkeepLivingStandard");
+  }));
+  const addPopOutput = (stratum, resourceId, perPop) => {
+    pushModifier(livingSource, "popOutput", stratumTarget(stratum, resourceId), perPop);
+    const amount = perPop * strataPops[stratum];
+    if (!amount) return;
+    addSignedResource(resourceId, amount, "livingStandardOutput");
+    jobProduced[resourceId] = (jobProduced[resourceId] || 0) + amount;
+  };
+  Object.entries(livingStandard.trade).forEach(([stratum, perPop]) => addPopOutput(stratum, "trade", perPop));
+  Object.entries(livingStandard.civilianOutput).forEach(([resourceId, perPop]) => addPopOutput("civilian", resourceId, perPop));
+  const livingStandardHappiness = gestaltEmpire ? 0 : livingStandard.happiness || 0;
+  if (livingStandardHappiness) pushModifier(livingSource, "conditionFlat", { stat: "happiness" }, livingStandardHappiness);
   // P9.4: las condiciones se calculan antes del paso 4a (efecto de la estabilidad), así que se suman aquí los servicios y la
   // vivienda planos de la designación, que el paso 5 añade después a los totales (mismo resultado que calcularlas al final).
   // P10.8: amenities of the active blockers (Blazing Scourge with Fire Cult) and housing / amenities of the planet modifiers
@@ -717,8 +753,8 @@ export function computeTotals() {
   // P10.6: happiness of the body type (Gaia "+10% Happiness", treated as points like the edicts); no happiness in gestalt.
   const bodyHappiness = gestaltEmpire ? 0 : bodyRules()?.happinessPct || 0;
   if (bodyHappiness) pushModifier({ kind: "celestial", id: getPlanetState().celestialTypeId }, "conditionFlat", { stat: "happiness" }, bodyHappiness);
-  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, planetModifiers: gestaltEmpire ? 0 : planetModifierConditions.happiness, branchOffice: gestaltEmpire ? 0 : branchConditions.happiness, value: HAPPINESS_BASE };
-  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.planetModifiers + happiness.branchOffice + happiness.manual));
+  const happiness = { applicable: !gestaltEmpire && pops > 0, base: HAPPINESS_BASE, ...amenitiesEffect, manual: gestaltEmpire ? 0 : manualConditions.happiness, edicts: gestaltEmpire ? 0 : edictConditions.happiness, body: bodyHappiness, planetModifiers: gestaltEmpire ? 0 : planetModifierConditions.happiness, branchOffice: gestaltEmpire ? 0 : branchConditions.happiness, livingStandard: livingStandardHappiness, value: HAPPINESS_BASE };
+  if (happiness.applicable) happiness.value = Math.max(0, Math.min(100, HAPPINESS_BASE + amenitiesEffect.effect + happiness.edicts + happiness.body + happiness.planetModifiers + happiness.branchOffice + happiness.livingStandard + happiness.manual));
   // P9.3 / P9.6: estabilidad automática. Base 50 + (no gestalt) bono de aprobación o (gestalt) efecto de servicios − penalización
   // por vivienda faltante (40 · faltante / necesaria). Aprobación = felicidad (todos los pops son del mismo estrato y tienen la
   // misma felicidad); la wiki redondea hacia abajo la aprobación mostrada y el bono de estabilidad.
@@ -768,7 +804,9 @@ export function computeTotals() {
     civilians: civilianPops,
     neuralChips: neuralChipPops,
     lathe: isLatheLayout(),
-    civilianI18nKey: civilianDef.i18nKey
+    civilianI18nKey: civilianDef.i18nKey,
+    strataPops,
+    livingStandardId: livingStandard.id
   };
 
   // P9.4: efecto de la estabilidad (GDD §6), paso propio 4a. +0,6 % por punto por encima de 50 y −1 % por punto por debajo,
