@@ -32,10 +32,23 @@
  * - variantKey: optional text key shown after the name, in brackets ("Democratic (Synthetic: virtual)").
  * - tags: optional list of free labels (e.g. "hive", "fanatic"), written on the card as data-tags.
  * - dlc: optional DLC id the item needs; null or missing = base game.
+ * - origin: game id of an origin cell (origins bingo only), used for the in-game order.
  */
 
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-items.js";
 import { ETHIC_WHEEL, ETHIC_ICONS } from "./ethic-wheel.js";
+import { ORIGIN_GAME_ORDER } from "./bingo-origin-order.js";
+
+/**
+ * Origins (P24.2): cell ids in the in-game order, from the game id (`origin`) of each item and
+ * js/bingo-origin-order.js (generated from the extractor's origins.json, T2402). An origin missing
+ * from the game order goes last.
+ */
+const originRank = (item) => {
+  const index = ORIGIN_GAME_ORDER.indexOf(item.origin);
+  return index < 0 ? Infinity : index;
+};
+const ORIGIN_ORDER = [...ORIGIN_BINGO].sort((a, b) => originRank(a) - originRank(b)).map((item) => item.i18nKey);
 
 /** Tags of a civic from its icon name: the gestalt and corporate variants share the base name. */
 function civicTags(img) {
@@ -146,7 +159,7 @@ export const BINGOS = [
     fileSlug: "origenes",
     iconSize: 110,
     showNames: true,
-    layout: { type: "ordered", order: ORIGIN_BINGO.map((item) => item.i18nKey), columns: 9 },
+    layout: { type: "ordered", order: ORIGIN_ORDER, columns: 9 },
     items: ORIGIN_BINGO
   },
   {

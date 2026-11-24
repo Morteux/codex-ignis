@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2402 — Origins bingo in the in-game order (2026-11-25)
+
+- The order is a generated module, `js/bingo-origin-order.js` (`tools/extract/build_origin_order.py`, from `origins.json`'s `game_order`), and each origin cell carries its game id (`origin`). The cells keep their `i18nKey` as id, so nothing else (marks, simulator) changes. The in-game order is still the definition order assumed in P25.11 (to be checked in game); with 4.5.4 it is the same order the hand-written list already had.
+- The bingo keeps one cell per origin icon (54): the origins that share an icon with another one (Subterranean Machines, Subaquatic Machines, Voidforged, Radioactive Rovers, the Under One Rule variants) and the non-playable ones are not cells.
+- Found while testing: the PNG download of the civics bingo took over a minute and gave no file, because the grayscale filter was set on the whole PNG canvas (one full-canvas layer per icon). Unmarked icons are now greyed on a small canvas of their own, and the PNG is downloaded from a Blob URL instead of a data URL.
+
 ## T3405 — Deep link into the planet simulator (2026-11-25)
 
 - Format: `planet-sim.html#building=<id>` and `#district=<id>`, with the simulator ids of the tech data (`unlock.sim`). The link opens in the same tab, as before (the simulator's links to the tree open a new tab so the edited planet stays open; the other way there is nothing to lose).

@@ -218,6 +218,22 @@ function canvasPositions(bingo, count) {
 }
 
 /** Draws a <canvas> with every cell of the visible bingo and its current marks. */
+/**
+ * Grey copy of an icon on its own small canvas (size x size px). The filter is applied here and
+ * not on the PNG canvas: a filter on the big canvas filters a layer of the whole canvas on every
+ * draw, which took over a minute for the 226 civics.
+ */
+function grayscaleIcon(img, size) {
+    const icon = document.createElement("canvas");
+    icon.width = size;
+    icon.height = size;
+    const iconCtx = icon.getContext("2d");
+    iconCtx.imageSmoothingQuality = "high";
+    iconCtx.filter = "grayscale(100%)";
+    iconCtx.drawImage(img, 0, 0, size, size);
+    return icon;
+}
+
 async function buildBingoCanvas() {
     const bingo = currentBingo;
     const cards = grid.querySelectorAll(".bingo-card");
@@ -281,10 +297,9 @@ async function buildBingoCanvas() {
         ctx.strokeStyle = isMarked ? accent : line;
         ctx.strokeRect(x + 1, y + 1, cellWidth - 2, cellHeight - 2);
 
-        ctx.save();
-        ctx.filter = isMarked ? "none" : "grayscale(100%)";
-        if (img && img.complete && img.naturalWidth > 0) ctx.drawImage(img, x + cellPadding, y + cellPadding, cellImage, cellImage);
-        ctx.restore();
+        if (img && img.complete && img.naturalWidth > 0) {
+            ctx.drawImage(isMarked ? img : grayscaleIcon(img, cellImage * SCALE), x + cellPadding, y + cellPadding, cellImage, cellImage);
+        }
 
         ctx.fillStyle = isMarked ? accent : muted;
         ctx.font = "10px monospace";
@@ -307,10 +322,15 @@ if (downloadButton) {
         if (downloadStatus) downloadStatus.textContent = "";
         try {
             const canvas = await buildBingoCanvas();
+            // A Blob URL instead of a data URL: large bingos (226 civics) give a PNG of several MB,
+            // which a data URL may silently fail to hold ("data:," and no download).
+            const blob = await new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("empty canvas"))), "image/png"));
+            const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.download = `bingo-${currentBingo.fileSlug}-stellaris.png`;
-            link.href = canvas.toDataURL("image/png");
+            link.href = url;
             link.click();
+            setTimeout(() => URL.revokeObjectURL(url), 10000);
         } catch (error) {
             if (downloadStatus) downloadStatus.textContent = t(currentLang, "bingoDownloadError");
         } finally {

@@ -1,5 +1,5 @@
 """Bingo QA: every bingo of BINGOS, layouts, marking, languages, missing icons, PNG download (P22.2, P24.1)."""
-import os, tempfile
+import os, subprocess, sys, tempfile
 from playwright.async_api import TimeoutError as PlaywrightTimeout
 from smoke.common import check, ROOT
 
@@ -62,6 +62,23 @@ async def run(t):
     cards_js = "()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.getAttribute('aria-pressed'),c.classList.contains('is-marked'),c.querySelector('img').crossOrigin])"
     origins = await bingo.evaluate(cards_js)
     check("bingo: origins grid has one card per origin, named, CORS icons", len(origins) == sizes[0] and all(c[0] and c[0] not in sizes[2] and c[3] == "anonymous" for c in origins), (len(origins), origins[:3]))
+    # T2402: origins in the in-game order, generated from the extractor's origins.json (T2511)
+    order_file = os.path.join(ROOT, "js", "bingo-origin-order.js")
+    fresh = os.path.join(tempfile.gettempdir(), "bingo-origin-order-smoke.js")
+    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_origin_order.py"), "--out", fresh], capture_output=True, text=True)
+    same = build.returncode == 0 and open(fresh, encoding="utf-8").read() == open(order_file, encoding="utf-8").read()
+    if os.path.exists(fresh):
+        os.remove(fresh)
+    check("bingo: js/bingo-origin-order.js equals a fresh build from origins.json", same, build.stderr[-500:])
+    game_order = await bingo.evaluate("""async()=>{const o=(await import('./js/bingo-origin-order.js')).ORIGIN_GAME_ORDER,items=(await import('./js/bingo-items.js')).ORIGIN_BINGO,
+        b=(await import('./js/bingo-data.js')).BINGOS.find(x=>x.id==='origins');
+        const sorted=[...items].sort((x,y)=>o.indexOf(x.origin)-o.indexOf(y.origin));
+        const shown=[...document.querySelectorAll('#bingo-grid .bingo-card img')].map(i=>i.getAttribute('src').split('/').pop());
+        return {missing:items.filter(i=>!o.includes(i.origin)).map(i=>i.i18nKey),dupes:items.length-new Set(items.map(i=>i.origin)).size,
+          layout:b.layout.type,order:JSON.stringify(b.layout.order)===JSON.stringify(sorted.map(i=>i.i18nKey)),
+          dom:JSON.stringify(shown)===JSON.stringify(sorted.map(i=>i.img.split('/').pop())),first:o.slice(0,3),n:o.length}}""")
+    check("bingo: every origin cell names a game origin of origins.json, once", not game_order["missing"] and game_order["dupes"] == 0, game_order)
+    check("bingo: origins use the ordered layout and are shown in the in-game order", game_order["layout"] == "ordered" and game_order["order"] and game_order["dom"] and game_order["first"] == ["origin_default", "origin_default_nomads", "origin_sacred_path"], game_order)
     await bingo.click("#bingo-grid .bingo-card >> nth=1")
     await bingo.click("#bingo-grid .bingo-card >> nth=3")
     await bingo.click("#bingo-grid .bingo-card >> nth=3")
