@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **75 / 134 tareas (56%)**
+> Progreso: **76 / 135 tareas (56%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -162,6 +162,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: after the owner pushes StellarisAssets, open the simulator on a Synaptic Lathe planet: Advanced Logic shows the blue brain icon of the game (`resources/Advanced_logic.png`) in the economy and in the Lathe building costs instead of the modifier icon.
 - [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
   - ❓ Bloqueada: The owner has to review the T2522 reports first.
+- [ ] **T2526** (P25.26) The installed game is now 4.6.0 (Corona Borealis v4.6.0, `stellaris-pc-4.6.0`; found in T3008): every extractor run without `--game` now reads 4.6.0 (683 technologies, 4 new tech icons) while the project data is 4.5.4
+  - ❓ Bloqueada: Does the project move to 4.6.0 (regenerate `data/generated/`, the reports and the tech data file as a new version) or stay on 4.5.4 (then the 4.5.4 game files must be kept in another folder and passed with `--game`)?
 
 ## 10 · Special planets
 Source: the 4.5.4 game files through the extractor (section 25); runs after it.
@@ -204,7 +206,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
   - Prueba manual: open `js/data-version.js`: `DATA_COLLECTIONS.technologies` points to `js/tech-data/stellaris-pc-4.5.4.js` with `rulesetId` 4.5.4 and status `unverified`; in `planet-sim.html` the tooltip of the data version selector still counts only the simulator collections.
 - [x] **T3007** (P30.7) Link unlocks to simulator ids (buildings, jobs, districts) through the game ids
   - Prueba manual: open `js/tech-data/stellaris-pc-4.5.4.js` and find `tech_engineering_1` (Nanomechanics): its unlock Materials Workshop has `sim: {collection: "buildings", id: "materials_workshop"}` and the job `engineer` linked to the simulator `engineer`.
-- [ ] **T3008** (P30.8) Technology icons: write the PNGs exported by T2506 into the StellarisAssets repository (`technologies/`), commit them there (never push: the owner pushes), regenerate `StellarisAssetsFileTree.txt`, and check with a local file server that nodes and cards show them
+- [x] **T3008** (P30.8) Technology icons: write the PNGs exported by T2506 into the StellarisAssets repository (`technologies/`), commit them there (never push: the owner pushes), regenerate `StellarisAssetsFileTree.txt`, and check with a local file server that nodes and cards show them
+  - Prueba manual: in StellarisAssets, `technologies/` has the 812 PNGs of commit `5d5d6a1` (a new export reports them all `unchanged`) and `StellarisAssetsFileTree.txt` lists them; the browser test `tech tree icons: with a local file server…` shows them in 40 px node and 72 px card frames. Online they appear once the owner pushes StellarisAssets.
 
 ## 31 · Tech tree: page and drawing
 - [ ] **T3101** (P31.1) `tech-tree.html` layout with the shared shell: three areas (tabs on mobile), credits section and footer mention (GDD §2), data version visible

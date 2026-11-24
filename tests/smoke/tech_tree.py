@@ -1,8 +1,17 @@
 """Tech tree data (section 30): the test fixture, the data validations and the data files."""
-import glob, json, os, subprocess, sys, tempfile
+import glob, json, os, re, subprocess, sys, tempfile, threading
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from smoke.common import check, ROOT
 
 FIXTURE = "tests/fixtures/tech-tree/tech-data-fixture.js"
+# Local copy of the StellarisAssets repository (same default as tools/extract/pdx/icons.py)
+ASSETS_DIR = os.environ.get("STELLARIS_ASSETS_DIR", "C:/Users/ignis/OneDrive/Documentos/StellarisAssets")
+
+
+class QuietHandler(SimpleHTTPRequestHandler):
+    def log_message(self, *args):
+        pass
 
 
 def node_json(script):
@@ -110,4 +119,35 @@ async def run(t):
     check("tech tree icon slot: a missing file leaves the frame empty, a found one fills it, nothing moves",
           slots["missingEmpty"] and slots["foundLoaded"] and slots["noneEmpty"] and slots["before"] == slots["after"], slots)
     check("tech tree icon slot: icon path resolved on the assets repository", slots["url"].endswith("/technologies/x.png") and slots["url"].startswith("http"), slots["url"])
+
+    # T3008: every icon of the 4.5.4 data file is in StellarisAssets (file tree), and a local file server of that
+    # repository fills the node and card frames (skipped if the repository is not on this computer)
+    tree = open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8").read().splitlines()
+    start = next((i for i, line in enumerate(tree) if re.match(r"^[├└]── technologies/$", line)), len(tree))
+    in_tree = set()
+    for line in tree[start + 1:]:
+        if not line.startswith("│   "):
+            break
+        in_tree.add(re.sub(r"^│   [├└]── ", "", line))
+    icons = node_json("import {TECH_DATA as d} from './%s'; console.log(JSON.stringify([...new Set(d.technologies.map(t=>t.icon))]))" % real)
+    absent = [i for i in icons if i.split("/", 1)[1] not in in_tree] if isinstance(icons, list) else icons
+    check("tech tree icons: every icon of the 4.5.4 data file is listed under technologies/ in StellarisAssetsFileTree.txt",
+          isinstance(icons, list) and len(icons) > 600 and not absent, absent[:10] if isinstance(absent, list) else absent)
+    if os.path.isdir(os.path.join(ASSETS_DIR, "technologies")):
+        server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=ASSETS_DIR))
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        base = "http://127.0.0.1:%d/" % server.server_address[1]
+        sample = [icons[0], "technologies/tech_archeology_lab.png", icons[-1]]
+        shown = await pg.evaluate("""async ([root, base, sample])=>{
+          const m = await import(root + '/js/tech-tree-icons.js');
+          const slots = sample.flatMap((icon) => ['node', 'card'].map((size) => { const s = m.createTechIconSlot({icon}, size, base); document.body.append(s); return s; }));
+          const t0 = Date.now();
+          while (Date.now() - t0 < 5000 && slots.some((s) => !s.classList.contains('is-loaded') && !s.classList.contains('is-missing'))) await new Promise((ok) => setTimeout(ok, 50));
+          return slots.map((s) => [s.className, s.querySelector('img') ? s.querySelector('img').naturalWidth : 0, Math.round(s.getBoundingClientRect().width)]);
+        }""", ["file://" + ROOT, base, sample])
+        server.shutdown()
+        check("tech tree icons: with a local file server of StellarisAssets, node and card frames show the icons at their fixed size",
+              all("is-loaded" in c and w > 0 for c, w, _ in shown) and [s for _, _, s in shown] == [40, 72] * 3, shown)
+    else:
+        print("SKIP tech tree icons: StellarisAssets is not at " + ASSETS_DIR)
     await pg.close()
