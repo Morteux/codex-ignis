@@ -278,10 +278,17 @@ async def page_checks(t):
       await new Promise(r=>setTimeout(r,120));
       const ids=(s)=>[...document.querySelectorAll('.tech-node'+s)].map(n=>n.dataset.techId).sort();
       const x=d.technologies.find(t=>t.id===id);const deps=id?d.technologies.filter(t=>t.prerequisites.includes(id)).map(t=>t.id).sort():[];
+      const byId=new Map(d.technologies.map(t=>[t.id,t]));
+      const walk=(start,next)=>{const seen=new Set();const go=(i)=>next(i).forEach(j=>{if(!seen.has(j)){seen.add(j);go(j)}});if(start)go(start);return seen};
+      const anc=walk(id,i=>byId.get(i).prerequisites);const desc=walk(id,i=>d.technologies.filter(t=>t.prerequisites.includes(i)).map(t=>t.id));
+      const all=[...document.querySelectorAll('.tech-line')].map(l=>[l.dataset.from,l.dataset.to]);
       const lines=(c)=>[...document.querySelectorAll('.tech-line.'+c)].map(l=>l.dataset.from+'>'+l.dataset.to).sort();
       const other=document.querySelector('.tech-node:not(.is-selected):not(.is-prerequisite):not(.is-unlocked)');
       return {has:document.querySelector('.tech-areas').classList.contains('has-selection'),selected:ids('.is-selected'),pressed:ids('[aria-pressed=true]'),
-        prereq:ids('.is-prerequisite'),unlocked:ids('.is-unlocked'),expPrereq:x?[...x.prerequisites].sort():[],expDeps:deps,
+        prereq:ids('.is-prerequisite'),unlocked:ids('.is-unlocked'),direct:ids('.is-direct'),expPrereq:x?[...x.prerequisites].sort():[],expDeps:deps,
+        expAnc:[...anc].sort(),expDesc:[...desc].sort(),
+        expLineP:all.filter(([f,t])=>anc.has(f)&&(t===id||anc.has(t))).map(p=>p.join('>')).sort(),
+        expLineU:all.filter(([f,t])=>desc.has(t)&&(f===id||desc.has(f))).map(p=>p.join('>')).sort(),
         lineP:lines('is-prerequisite'),lineU:lines('is-unlocked'),otherOpacity:getComputedStyle(other).opacity,
         status:document.getElementById('tech-selection-status').textContent}}"""
     kinds = await pg.evaluate("""()=>{const c={};document.querySelectorAll('.tech-node').forEach(n=>{c[n.dataset.kind]=getComputedStyle(n).borderLeftColor});
@@ -296,10 +303,38 @@ async def page_checks(t):
     s1 = await pg.evaluate(states_js, "tech_lasers_2")
     check("tech tree states: clicking a node selects it (aria-pressed), marks its prerequisites and the techs it unlocks, and dims the rest",
           not s0["has"] and not s0["pressed"] and s1["has"] and s1["selected"] == s1["pressed"] == ["tech_lasers_2"]
-          and s1["prereq"] == s1["expPrereq"] == ["tech_lasers_1"] and s1["unlocked"] == s1["expDeps"] and len(s1["unlocked"]) >= 2
+          and s1["prereq"] == s1["expAnc"] == ["tech_lasers_1"] and s1["unlocked"] == s1["expDesc"] and len(s1["unlocked"]) > len(s1["expDeps"]) >= 2
           and float(s1["otherOpacity"]) < 1 and "Blue Lasers" in s1["status"], s1)
-    check("tech tree states: the lines into the selected are marked as prerequisite and the lines out of it as unlocked",
-          s1["lineP"] == ["tech_lasers_1>tech_lasers_2"] and s1["lineU"] == sorted("tech_lasers_2>" + i for i in s1["expDeps"]), (s1["lineP"], s1["lineU"]))
+    check("tech tree states: the lines into the selected are marked as prerequisite and the lines of its dependent chain as unlocked",
+          s1["lineP"] == ["tech_lasers_1>tech_lasers_2"] and s1["lineU"] == s1["expLineU"]
+          and set("tech_lasers_2>" + i for i in s1["expDeps"]) <= set(s1["lineU"]) and len(s1["lineU"]) > len(s1["expDeps"]), (s1["lineP"], s1["lineU"]))
+    # T3202: the whole prerequisite chain and every dependent, across areas, with the direct ones marked
+    chain_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
+      const depth=(id)=>{const x=byId.get(id);return x.prerequisites.length?1+Math.max(...x.prerequisites.map(depth)):0};
+      const deps=(id)=>d.technologies.filter(t=>t.prerequisites.includes(id));
+      const c=d.technologies.filter(t=>depth(t.id)>=3&&deps(t.id).length).sort((a,b)=>depth(b.id)-depth(a.id))[0];return c.id}""")
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", chain_pick)
+    await pg.click(".tech-node[data-tech-id=%s]" % chain_pick)
+    ch = await pg.evaluate(states_js, chain_pick)
+    check("tech tree chain: selecting a deep technology marks its whole prerequisite chain and everything that depends on it (nodes and lines), the direct ones apart",
+          ch["prereq"] == ch["expAnc"] and len(ch["expAnc"]) > len(ch["expPrereq"]) and ch["unlocked"] == ch["expDesc"] and ch["lineP"] == ch["expLineP"]
+          and ch["lineU"] == ch["expLineU"] and len(ch["lineP"]) > len(ch["expPrereq"]) and ch["direct"] == sorted(ch["expPrereq"] + ch["expDeps"])
+          and str(len(ch["expAnc"])) in ch["status"] and str(len(ch["expDesc"])) in ch["status"], (chain_pick, ch))
+    glow = await pg.evaluate("()=>{const x=document.querySelector('.tech-node.is-prerequisite.is-direct'),y=document.querySelector('.tech-node.is-prerequisite:not(.is-direct)');return [getComputedStyle(x).boxShadow!=='none',y?getComputedStyle(y).boxShadow==='none':false]}")
+    check("tech tree chain: the direct prerequisites keep the glow, the rest of the chain only the border", all(glow), glow)
+    cross = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
+      return d.technologies.find(t=>t.prerequisites.some(p=>byId.get(p).area!==t.area)).id}""")
+    await pg.click(".tech-node[data-tech-id=%s]" % chain_pick)
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", cross)
+    await pg.click(".tech-node[data-tech-id=%s]" % cross)
+    cx = await pg.evaluate(states_js, cross)
+    cx_areas = await pg.evaluate("(ids)=>[...new Set(ids.map(i=>document.querySelector('.tech-node[data-tech-id='+i+']').closest('.tech-area').dataset.area))]", cx["prereq"] + [cross])
+    check("tech tree chain: the chain crosses areas (a prerequisite in another area is marked too)", cx["prereq"] == cx["expAnc"] and len(cx_areas) >= 2, (cross, cx_areas))
+    await pg.click(".tech-node[data-tech-id=%s]" % cross)
+    await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').scrollIntoView({block:'center',inline:'center'})")
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    s1 = await pg.evaluate(states_js, "tech_lasers_2")
     await pg.set_viewport_size({"width": 1180, "height": 900})
     await pg.wait_for_timeout(200)
     s2 = await pg.evaluate(states_js, "tech_lasers_2")
@@ -307,7 +342,7 @@ async def page_checks(t):
     es_state = await pg.evaluate("()=>[document.getElementById('tech-selection-status').textContent,document.querySelector('#tech-legend li[data-legend=prerequisite]').textContent]")
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree states: the states survive a redraw of the lines and the status and legend follow the language",
-          s2["lineP"] == s1["lineP"] and s2["lineU"] == s1["lineU"] and es_state[0].startswith("Seleccionada: Blue Lasers") and es_state[1] == "Prerrequisito", (s2["lineP"], es_state))
+          s2["lineP"] == s1["lineP"] and s2["lineU"] == s1["lineU"] and es_state[0].startswith("Seleccionada: Blue Lasers") and es_state[1] == "Cadena de prerrequisitos", (s2["lineP"], es_state))
     await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
     s3 = await pg.evaluate(states_js, None)
     await pg.click(".tech-node[data-tech-id=tech_lasers_1]")

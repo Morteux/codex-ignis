@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3202 — Whole prerequisite chain and dependents (2026-11-25)
+- [ ] **The chain replaces the direct-only states of T3104**: selecting a technology marks every technology before it (teal) and every technology after it (orange), in every area; the direct ones (one step away) keep the glow, the rest only the coloured border. Lines are marked when both ends are in the chain.
+- [ ] **Legend and status renamed**: "Prerequisite chain" and "Depends on the selected"; the status line gives the size of both chains ("12 in its prerequisite chain · 40 depend on it"). The card keeps the direct prerequisites and "Leads to".
+
 ## T3201 — Detail card of a technology (2026-11-25)
 - [ ] **Where the card goes**: on desktop the board gets a second column (23rem, sticky) for the card, so it never covers a node and the three areas get narrower while it is open; on phones it is a bottom sheet (55 % of the screen) and the page gets room below to scroll the tree above it.
 - [ ] **Simulator links open `planet-sim.html` only**: the simulator has no deep link to a building or district yet (new task T3405). Linked unlocks are marked "in the simulator" and linked jobs are highlighted; edicts and deposits are plain text (not linked by T3007).

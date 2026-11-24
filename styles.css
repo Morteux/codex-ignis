@@ -3551,6 +3551,12 @@ h1 {
     box-shadow: 0 0 0 1px var(--tech-state-unlocked);
 }
 
+/* T3202: the whole chain is marked; the techs one step away (`is-direct`) keep the glow. */
+.tech-node.is-prerequisite:not(.is-direct),
+.tech-node.is-unlocked:not(.is-direct) {
+    box-shadow: none;
+}
+
 .tech-node.is-selected,
 .tech-node.is-prerequisite,
 .tech-node.is-unlocked {
