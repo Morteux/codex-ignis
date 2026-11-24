@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **77 / 135 tareas (57%)**
+> Progreso: **78 / 135 tareas (58%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -212,7 +212,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 ## 31 · Tech tree: page and drawing
 - [x] **T3101** (P31.1) `tech-tree.html` layout with the shared shell: three areas (tabs on mobile), credits section and footer mention (GDD §2), data version visible
   - Prueba manual: open `tech-tree.html`: three panels Physics / Society / Engineering side by side, the line "Data version: stellaris-pc-4.5.4 · Cygnus v4.5.4 (1b4f) · unverified…", a Credits section linking BloodStainedCrow and turanar and the footer mention; narrower than 700 px the areas become three tabs.
-- [ ] **T3102** (P31.2) Layout by tier columns and field rows; nodes with the reserved icon slot (T3003), name, tier and kind
+- [x] **T3102** (P31.2) Layout by tier columns and field rows; nodes with the reserved icon slot (T3003), name, tier and kind
+  - Prueba manual: open `tech-tree.html`: each area panel shows the tier columns Tier 0–5 and one row per field (e.g. Physics: Field Manipulation, Particles, Computing); every node has its icon frame, the English name and "Tier N · Kind" (Red Lasers: "Tier 0 · Starter"), which turns into "Nivel 0 · Inicial" in ES.
 - [ ] **T3103** (P31.3) Prerequisite lines between nodes (SVG), redrawn on resize
 - [ ] **T3104** (P31.4) Visual states: normal, selected, prerequisite, unlocked by the selected, kind colours (starter, rare, dangerous, repeatable, event)
 - [ ] **T3105** (P31.5) Mobile layout at 320–375 px

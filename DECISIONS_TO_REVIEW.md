@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3102 — Tech tree grid and nodes (2026-11-25)
+- [ ] **Nodes sorted by English name** inside each field × tier cell (no game order exists for display).
+- [ ] **Kind names translated** as interface labels (es: Inicial, Rara, Peligrosa, Repetible, De evento, Adquisición; jp: 初期, レア, 危険, 繰り返し, イベント, 獲得); "Tier" is "Nivel" in Spanish and "ティア" in Japanese. Field and technology names stay in English.
+- [ ] **Field labels stay at the left** (sticky) while an area panel scrolls sideways.
+
 ## T3101 — Tech tree page layout (2026-11-25)
 - [ ] **Three areas side by side inside the 1180 px shell**, each one a panel with its own scroll (max 75 % of the screen height): the full tier grid of an area does not fit in a third of the page, and breaking out of the shell width would overflow on some screens. Zoom and pan (T3204) will make it easier to move around.
 - [ ] **Area names stay in English** (Physics, Society, Engineering) in every language, as game names; the tabs and the rest of the interface are translated.

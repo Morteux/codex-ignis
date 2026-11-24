@@ -203,5 +203,36 @@ async def page_checks(t):
     await pg.set_viewport_size({"width": 1280, "height": 900})
     await pg.wait_for_timeout(150)
 
+    # T3102: one node per technology, in its area panel, field row and tier column, with icon slot, name, tier and kind
+    grid = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+      const nodes=[...document.querySelectorAll('.tech-node')];const byId=new Map(d.technologies.map(x=>[x.id,x]));
+      const misplaced=nodes.filter(n=>{const x=byId.get(n.dataset.techId);const c=n.closest('.tech-cell');
+        return !x||n.closest('.tech-area').dataset.area!==x.area||c.dataset.field!==x.field||+c.dataset.tier!==x.tier}).map(n=>n.dataset.techId);
+      const cols=[...document.querySelectorAll('.tech-grid')].map(g=>{const heads=[...g.querySelectorAll('.tech-tier-head')];
+        const x=(e)=>Math.round(e.getBoundingClientRect().left);
+        const aligned=[...g.querySelectorAll('.tech-node')].every(n=>x(n)===x(heads.find(h=>h.dataset.tier===n.dataset.tier)));
+        const rows=[...g.querySelectorAll('.tech-field-label')].map(l=>l.dataset.field);
+        const ordered=rows.every((f,i)=>i===0||g.querySelector('.tech-field-label[data-field='+rows[i-1]+']').getBoundingClientRect().top<g.querySelector('.tech-field-label[data-field='+f+']').getBoundingClientRect().top);
+        return {area:g.dataset.area,tiers:heads.map(h=>+h.dataset.tier),increasing:heads.every((h,i)=>i===0||x(heads[i-1])<x(h)),aligned,rows,ordered,
+          expected:d.fields.filter(f=>f.area===g.dataset.area).map(f=>f.id)}});
+      const n=document.querySelector('.tech-node[data-tech-id=tech_lasers_1]');const slot=n.querySelector('.tech-icon-slot').getBoundingClientRect();
+      return {count:nodes.length,total:d.technologies.length,unique:new Set(nodes.map(n=>n.dataset.techId)).size,misplaced:misplaced.slice(0,5),cols,
+        sample:[n.querySelector('.tech-node-name').textContent,n.querySelector('.tech-node-meta').textContent,Math.round(slot.width),Math.round(slot.height),n.tagName],
+        rare:document.querySelector('.tech-node[data-tech-id=tech_arcane_deciphering] .tech-node-meta').textContent,
+        allMeta:nodes.every(n=>/^Tier \\d · \\w+$/.test(n.querySelector('.tech-node-meta').textContent)&&n.querySelector('.tech-node-name').textContent.trim()&&n.querySelector('.tech-icon-slot'))}}""")
+    cols = grid.get("cols", [])
+    check("tech tree layout: one node per technology (679), each one in its area panel, field row and tier column",
+          grid["count"] == grid["total"] == grid["unique"] == 679 and not grid["misplaced"], grid)
+    check("tech tree layout: tier columns 0–5 left to right, field rows in the data file's order, nodes aligned with their tier header",
+          [c["area"] for c in cols] == ["physics", "society", "engineering"]
+          and all(c["tiers"] == [0, 1, 2, 3, 4, 5] and c["increasing"] and c["aligned"] and c["rows"] == c["expected"] and c["ordered"] for c in cols), cols)
+    check("tech tree nodes: button with the 40 px icon slot, the English name and 'Tier N · Kind' (Red Lasers: Tier 0 · Starter, Arcane Deciphering: Tier 2 · Rare)",
+          grid["sample"] == ["Red Lasers", "Tier 0 · Starter", 40, 40, "BUTTON"] and grid["rare"] == "Tier 2 · Rare" and grid["allMeta"], grid["sample"] + [grid["rare"]])
+    await pg.click(".lang-btn[data-lang=es]")
+    es_meta = await pg.evaluate("()=>[document.querySelector('.tech-node[data-tech-id=tech_arcane_deciphering] .tech-node-meta').textContent,document.querySelector('.tech-tier-head').textContent,document.querySelector('.tech-node[data-tech-id=tech_lasers_1] .tech-node-name').textContent]")
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree nodes: tier and kind follow the language, the technology name stays in English",
+          es_meta == ["Nivel 2 · Rara", "Nivel 0", "Red Lasers"], es_meta)
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
