@@ -7,7 +7,8 @@
  * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
  * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
  * detail card of the selected technology (js/tech-tree-card.js), the search and filters
- * (js/tech-tree-search.js) and the zoom and pan (js/tech-tree-zoom.js).
+ * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
+ * technology in the URL hash (js/tech-tree-link.js).
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
@@ -20,6 +21,7 @@ import { createSelection } from "./tech-tree-states.js";
 import { createDetailCard, areaName } from "./tech-tree-card.js";
 import { createSearch } from "./tech-tree-search.js";
 import { createZoom } from "./tech-tree-zoom.js";
+import { techIdFromHash } from "./tech-tree-link.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -120,7 +122,7 @@ function revealNode(id) {
   if (!node) return;
   const panel = node.closest(".tech-area");
   if (!panel.classList.contains("is-active")) document.getElementById("tech-tab-" + panel.dataset.area).click();
-  node.scrollIntoView({ block: "nearest", inline: "nearest" });
+  node.scrollIntoView({ block: "center", inline: "center" });
 }
 
 const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, getLang, {
@@ -131,7 +133,10 @@ const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, g
   onClose: () => selection.select(null),
 });
 const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang,
-  (id) => card.show(id));
+  (id) => {
+    card.show(id);
+    writeHash(id);
+  });
 const search = createSearch(document.getElementById("tech-search-box"), document.querySelector(".tech-areas"), TECH_DATA, getLang, {
   onPick: (id) => {
     if (selection.selected() !== id) selection.select(id);
@@ -142,6 +147,52 @@ const search = createSearch(document.getElementById("tech-search-box"), document
     if (tab.getAttribute("aria-selected") !== "true") tab.click();
   },
 });
+/**
+ * Deep link (T3205): `#<technology id>` selects that technology, opens its card and scrolls to it,
+ * on load and when the hash changes; other hashes (the footer's #tech-credits) are left alone.
+ * The selection writes its id back to the hash without adding history entries.
+ */
+const knownIds = new Set(TECH_DATA.technologies.map((tech) => tech.id));
+let unknownHashId = null;
+
+function writeHash(id) {
+  const current = techIdFromHash(window.location.hash);
+  if (id && current !== id) history.replaceState(null, "", "#" + id);
+  else if (!id && current && knownIds.has(current)) history.replaceState(null, "", window.location.pathname + window.location.search);
+}
+
+function showUnknownHash() {
+  if (unknownHashId && !selection.selected()) {
+    document.getElementById("tech-selection-status").textContent = t(getLang(), "techTreeHashUnknown").replace("{id}", unknownHashId);
+  }
+}
+
+function openFromHash() {
+  const id = techIdFromHash(window.location.hash);
+  unknownHashId = null;
+  if (!id) return;
+  if (!knownIds.has(id)) {
+    if (id.startsWith("tech_")) {
+      unknownHashId = id;
+      if (selection.selected()) selection.select(null);
+      showUnknownHash();
+    }
+    return;
+  }
+  if (selection.selected() !== id) selection.select(id);
+  revealNode(id);
+}
+
+openFromHash();
+// the web font can still change the layout after the first scroll
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => {
+    const id = techIdFromHash(window.location.hash);
+    if (id && id === selection.selected()) revealNode(id);
+  });
+}
+window.addEventListener("hashchange", openFromHash);
+
 const zoom = createZoom(document.querySelector(".tech-areas"), document.getElementById("tech-zoom-bar"), getLang, areaName);
 onLanguageChange((lang) => {
   renderLegend(lang);
@@ -149,4 +200,5 @@ onLanguageChange((lang) => {
   card.refresh();
   search.relabel();
   zoom.relabel();
+  showUnknownHash();
 });

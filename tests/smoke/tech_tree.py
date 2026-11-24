@@ -152,6 +152,7 @@ async def run(t):
         print("SKIP tech tree icons: StellarisAssets is not at " + ASSETS_DIR)
     await pg.close()
     await page_checks(t)
+    await deeplink_checks(t)
 
 
 async def page_checks(t):
@@ -636,3 +637,73 @@ async def mobile_checks(t):
           pinch["zin"] == "160 %" and pinch["zout"] == "80 %" and min(pinch["btns"]) >= 44 and pinch["fits"], pinch)
     check("tech tree mobile: no page errors", not errors, errors[:3])
     await mctx.close()
+
+
+async def deeplink_checks(t):
+    """T3205: deep link to a technology in the URL hash, from the tree itself and from a wiki article."""
+    pg = await t.ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    url = "file://" + ROOT + "/tech-tree.html"
+    state_js = """()=>{const n=document.querySelector('.tech-node.is-selected');const r=n?n.getBoundingClientRect():null;const p=n?n.closest('.tech-area-scroll').getBoundingClientRect():null;
+      return {hash:location.hash,selected:n?.dataset.techId||null,card:document.getElementById('tech-card').hidden?null:document.getElementById('tech-card').dataset.techId,
+        inView:!!r&&r.top>=0&&r.bottom<=innerHeight&&r.left>=p.left-1&&r.right<=p.right+1,history:history.length,
+        permalink:document.querySelector('#tech-card .tech-card-permalink')?.getAttribute('href')||null,status:document.getElementById('tech-selection-status').textContent}}"""
+    await pg.goto(url + "#tech_lasers_2")
+    await pg.wait_for_timeout(500)
+    await pg.click(".lang-btn[data-lang=en]")
+    d1 = await pg.evaluate(state_js)
+    check("tech tree deep link: tech-tree.html#tech_lasers_2 opens with Blue Lasers selected, its card open and the node scrolled into view, with a permanent link in the card",
+          d1["selected"] == d1["card"] == "tech_lasers_2" and d1["inView"] and d1["permalink"] == "#tech_lasers_2" and d1["hash"] == "#tech_lasers_2", d1)
+    await pg.click(".tech-node[data-tech-id=tech_lasers_1]")
+    d2 = await pg.evaluate(state_js)
+    await pg.keyboard.press("Escape")
+    d3 = await pg.evaluate(state_js)
+    check("tech tree deep link: selecting another technology writes its id in the hash without new history entries; clearing the selection removes it",
+          d2["hash"] == "#tech_lasers_1" and d2["history"] == d1["history"] and d3["hash"] == "" and d3["selected"] is None, (d2["hash"], d3["hash"], d1["history"], d2["history"]))
+    await pg.evaluate("()=>{location.hash='#tech_secrets_vultaum'}")
+    await pg.wait_for_timeout(300)
+    d4 = await pg.evaluate(state_js)
+    await pg.evaluate("()=>{location.hash='#tech-credits'}")
+    await pg.wait_for_timeout(200)
+    d5 = await pg.evaluate(state_js)
+    check("tech tree deep link: changing the hash selects that technology (Society); other anchors such as #tech-credits leave the selection alone",
+          d4["selected"] == d4["card"] == "tech_secrets_vultaum" and d4["inView"] and d5["selected"] == "tech_secrets_vultaum", (d4, d5["selected"]))
+    await pg.goto(url + "#tech_does_not_exist")
+    await pg.wait_for_timeout(400)
+    d6 = await pg.evaluate(state_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    d6es = (await pg.evaluate(state_js))["status"]
+    await pg.click(".lang-btn[data-lang=en]")
+    check("tech tree deep link: an unknown technology id selects nothing and says so (translated)",
+          d6["selected"] is None and "tech_does_not_exist" in d6["status"] and "does not exist" in d6["status"] and "no existe" in d6es, (d6["status"], d6es))
+    mod = await pg.evaluate("""async ()=>{const m=await import('./js/tech-tree-link.js');
+      return [m.techTreeUrl('tech_lasers_2'),m.techIdFromHash('#tech_lasers_2'),m.techIdFromHash('#/slug'),m.techIdFromHash('#%E0%A4%A'),
+        m.formatTechLinks('See [Blue Lasers](tech-tree.html#tech_lasers_2) and [x](tech-tree.html#bad id)'),m.isTechTreeUrl('tech-tree.html#tech_x'),m.isTechTreeUrl('https://example.com')]}""")
+    check("tech tree deep link: link helpers (URL, hash parsing that ignores other hashes, Markdown link to the tree as a same-tab link)",
+          mod == ["tech-tree.html#tech_lasers_2", "tech_lasers_2", None, None,
+                  'See <a class="tech-tree-link" href="tech-tree.html#tech_lasers_2">Blue Lasers</a> and [x](tech-tree.html#bad id)', True, False], mod)
+    await pg.close()
+
+    # from a wiki article: a Markdown link and a "links" block item to the tree open it in the same tab with the technology selected
+    pg = await t.ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto("file://" + ROOT + "/index.html")
+    await pg.wait_for_timeout(400)
+    await pg.evaluate("""async ()=>{const {knowledgeBase}=await import('./js/content.js');
+      knowledgeBase.push({slug:'smoke-tech-link',title:'Smoke tech link',icon:'✦',hidden:true,blocks:[
+        {type:'paragraph',text:'Research [Blue Lasers](tech-tree.html#tech_lasers_2) first.'},
+        {type:'links',items:[{label:'Vultaum Reality Computer',url:'tech-tree.html#tech_secrets_vultaum'}]}]});
+      location.hash='#/smoke-tech-link'}""")
+    await pg.wait_for_timeout(400)
+    wiki = await pg.evaluate("""()=>[...document.querySelectorAll('a[href^="tech-tree.html#"]')].map(a=>[a.getAttribute('href'),a.getAttribute('target'),a.textContent])""")
+    check("wiki: links to a technology of the tree ([text](tech-tree.html#id) and link lists) open in the same tab",
+          wiki == [["tech-tree.html#tech_lasers_2", None, "Blue Lasers"], ["tech-tree.html#tech_secrets_vultaum", None, "Vultaum Reality Computer"]], wiki)
+    await pg.click('a[href="tech-tree.html#tech_lasers_2"]')
+    await pg.wait_for_timeout(600)
+    landed = await pg.evaluate(state_js)
+    check("wiki → tech tree: following the link opens the tree with that technology selected and its card open",
+          pg.url.endswith("tech-tree.html#tech_lasers_2") and landed["selected"] == landed["card"] == "tech_lasers_2", (pg.url, landed))
+    check("tech tree deep link: no page errors", not errors, errors[:3])
+    await pg.close()

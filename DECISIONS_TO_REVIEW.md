@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3205 — Deep link to a technology (2026-11-25)
+- [ ] **The hash is the bare game id** (`tech-tree.html#tech_lasers_2`), not `#/tech/…`: short and readable; other anchors of the page (`#tech-credits`) are ignored because they are not ids.
+- [ ] **Selecting a technology rewrites the hash with `replaceState`** (no history entry per click), and clearing the selection removes it, so the address bar can always be shared and Back leaves the tree.
+- [ ] **An unknown `tech_…` id selects nothing** and the status line says it does not exist in this data version (translated).
+- [ ] **The card has a "Link to this technology" link** (`#id`) to copy from the browser's link menu; no copy-to-clipboard button.
+- [ ] **Wiki articles link with `[text](tech-tree.html#tech_id)`** (and `links` blocks with that URL); these open in the same tab, unlike external links. No existing article links a technology yet.
+
 ## T3204 — Zoom and pan (2026-11-25)
 - [ ] **Pan = the panel's own scroll** (scroll bars, wheel, one finger, arrow keys with the panel focused) plus dragging the empty background with the mouse; no separate canvas.
 - [ ] **One zoom level for the three areas**, 40 %–160 %, with steps 40/50/60/75/90/100/115/130/145/160 % for the buttons and keys; Ctrl + wheel and the pinch are continuous and zoom around the pointer / fingers.

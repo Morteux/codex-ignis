@@ -3752,6 +3752,15 @@ body.has-tech-card .tech-board {
     font: .68rem var(--mono);
 }
 
+/* T3205: permanent link of the card (#<technology id>) */
+.tech-card-permalink {
+    display: inline-block;
+    margin-top: .2rem;
+    color: var(--accent);
+    font: .66rem var(--mono);
+    text-underline-offset: .2em;
+}
+
 .tech-card-close {
     flex: none;
     min-width: 44px;

@@ -6,6 +6,7 @@ import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.j
 import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
 import { openModal } from "./modal.js";
+import { formatTechLinks, isTechTreeUrl } from "./tech-tree-link.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
@@ -111,10 +112,14 @@ function applyWordHighlights(html) {
   });
 }
 
-/** Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces, y colorea palabras clave. */
+/**
+ * Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces, y colorea palabras clave.
+ * [texto](tech-tree.html#tech_id) enlaza con una tecnología del árbol en la misma pestaña (T3205).
+ */
 function formatText(text) {
   let html = escapeHtml(text);
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  html = formatTechLinks(html);
   html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   return applyWordHighlights(html);
 }
@@ -196,8 +201,10 @@ function renderBlock(block, query) {
         const listItem = document.createElement("li");
         const link = document.createElement("a");
         link.href = item.url;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
+        if (!isTechTreeUrl(item.url)) {
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+        }
         link.innerHTML = highlightMatches(formatText(item.label), query);
         listItem.append(link);
         if (item.description) {

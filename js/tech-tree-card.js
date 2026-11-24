@@ -144,6 +144,10 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
         fieldName.get(tech.field) || tech.field,
       ].join(" · ")),
     );
+    // T3205: permanent link to this technology (copy it from the browser's link menu)
+    const permalink = el("a", "tech-card-permalink", t(lang, "techTreePermalink"));
+    permalink.href = "#" + tech.id;
+    titles.append(permalink);
     const close = el("button", "tech-card-close", "×");
     close.type = "button";
     close.setAttribute("aria-label", t(lang, "techTreeCardClose"));
