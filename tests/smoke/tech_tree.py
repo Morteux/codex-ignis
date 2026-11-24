@@ -426,6 +426,75 @@ async def page_checks(t):
     c7 = await pg.evaluate(card_js)
     check("tech tree card: the close button and Escape hide the card and clear the selection", c6["hidden"] and sel6 == 0 and c7["hidden"], (c6["hidden"], sel6, c7["hidden"]))
 
+    # T3203: accent-insensitive search by name and filters (area, field, tier, kind, DLC)
+    search_js = """async ()=>{await new Promise(r=>setTimeout(r,60));const nodes=[...document.querySelectorAll('.tech-node')];
+      return {match:nodes.filter(n=>n.classList.contains('is-match')).map(n=>n.dataset.techId).sort(),
+        kept:nodes.filter(n=>!n.classList.contains('is-filtered-out')).map(n=>n.dataset.techId).sort(),
+        has:document.querySelector('.tech-areas').classList.contains('has-filter'),count:document.getElementById('tech-filter-count').textContent,
+        results:[...document.querySelectorAll('#tech-filter-results button')].map(b=>b.dataset.techId),more:document.querySelector('.tech-filter-more')?.textContent||'',
+        fields:[...document.querySelectorAll('#tech-filter-field option')].map(o=>o.value).filter(Boolean),
+        dimmed:getComputedStyle(document.querySelector('.tech-node.is-filtered-out')||document.body).opacity,
+        lineOut:document.querySelectorAll('.tech-line.is-filtered-out').length,lines:document.querySelectorAll('.tech-line').length}}"""
+    expect_js = """async (f)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+      const fold=(x)=>x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();const words=fold(f.query||'').split(/\\s+/).filter(Boolean);
+      return d.technologies.filter(t=>(!f.area||t.area===f.area)&&(!f.field||t.field===f.field)&&(f.tier===undefined||t.tier===f.tier)&&(!f.kind||t.kind===f.kind)
+        &&(!f.dlc||(f.dlc==='base'?!t.dlc.length:t.dlc.includes(f.dlc)))&&words.every(w=>fold([t.name,t.id,...t.variants.map(v=>v.name)].join(' ')).includes(w))).map(t=>t.id).sort()}"""
+    form = await pg.evaluate("""()=>({search:!!document.querySelector('form.tech-filters[role=search] input[type=search]#tech-search'),
+      selects:[...document.querySelectorAll('.tech-filters select')].map(s=>s.dataset.filter),reset:document.querySelector('.tech-filter-reset').disabled,
+      labels:[...document.querySelectorAll('.tech-filter-label')].map(l=>l.textContent),has:document.querySelector('.tech-areas').classList.contains('has-filter')})""")
+    check("tech tree search: search box and area, field, tier, kind and DLC filters, nothing filtered at first",
+          form["search"] and form["selects"] == ["area", "field", "tier", "kind", "dlc"] and form["reset"] and not form["has"]
+          and form["labels"] == ["Search", "Area", "Field", "Tier", "Kind", "DLC"], form)
+    await pg.fill("#tech-search", "lasers")
+    q1 = await pg.evaluate(search_js)
+    e1 = await pg.evaluate(expect_js, {"query": "lasers"})
+    await pg.fill("#tech-search", "LÁSÉRS")
+    q2 = await pg.evaluate(search_js)
+    check("tech tree search: by name, case- and accent-insensitive ('LÁSÉRS' = 'lasers'), matches outlined, the rest and their lines dimmed, count and result buttons",
+          q1["match"] == q1["kept"] == e1 and len(e1) >= 5 and q2["match"] == e1 and q1["has"] and float(q1["dimmed"]) < 0.3
+          and q1["count"] == "%d of 679 technologies match" % len(e1) and sorted(q1["results"]) == e1 and 0 < q1["lineOut"] < q1["lines"], (q1, e1))
+    fold = await pg.evaluate("async ()=>{const m=await import('./js/tech-tree-search.js');return [m.foldText('Énergie Ñandú Über'),m.filterTechnologies({technologies:[{id:'x',name:'Énergie',tier:1,area:'a',field:'f',kind:'normal',dlc:[],variants:[]}]},{query:'energie',area:'',field:'',tier:'',kind:'',dlc:''}).length]}")
+    check("tech tree search: the fold removes accents and case from names too ('Énergie' found by 'energie')", fold == ["energie nandu uber", 1], fold)
+    await pg.fill("#tech-search", "red laser")
+    q3 = await pg.evaluate(search_js)
+    await pg.fill("#tech-search", "zzzz nothing")
+    q4 = await pg.evaluate(search_js)
+    check("tech tree search: every word must appear ('red laser' finds Red Lasers) and no match says so",
+          "tech_lasers_1" in q3["match"] and q3["match"] == await pg.evaluate(expect_js, {"query": "red laser"}) and q4["kept"] == [] and q4["count"] == "No technology matches", (q3["match"], q4["count"]))
+    await pg.fill("#tech-search", "")
+    await pg.select_option("#tech-filter-area", "society")
+    await pg.select_option("#tech-filter-tier", "3")
+    await pg.select_option("#tech-filter-kind", "rare")
+    f1 = await pg.evaluate(search_js)
+    e2 = await pg.evaluate(expect_js, {"area": "society", "tier": 3, "kind": "rare"})
+    soc_fields = await pg.evaluate("async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');return d.fields.filter(f=>f.area==='society').map(f=>f.id)}")
+    check("tech tree filters: area + tier + kind keep only those technologies, and the field list shows only the fields of the chosen area",
+          f1["kept"] == e2 and len(e2) > 0 and f1["match"] == [] and f1["fields"] == soc_fields, (f1["kept"], e2, f1["fields"]))
+    await pg.select_option("#tech-filter-field", soc_fields[0])
+    f2 = await pg.evaluate(search_js)
+    check("tech tree filters: the field filter", f2["kept"] == await pg.evaluate(expect_js, {"area": "society", "tier": 3, "kind": "rare", "field": soc_fields[0]}), f2["kept"])
+    await pg.click(".tech-filter-reset")
+    await pg.select_option("#tech-filter-dlc", "The Machine Age")
+    f3 = await pg.evaluate(search_js)
+    await pg.select_option("#tech-filter-dlc", "base")
+    f4 = await pg.evaluate(search_js)
+    e3, e4 = await pg.evaluate(expect_js, {"dlc": "The Machine Age"}), await pg.evaluate(expect_js, {"dlc": "base"})
+    check("tech tree filters: DLC (The Machine Age: its technologies; Base game: those without DLC), with the extra matches counted under the list",
+          f3["kept"] == e3 and len(e3) > 5 and f4["kept"] == e4 and len(e4) > 400 and len(f4["results"]) == 30 and str(len(e4) - 30) in f4["more"], (len(e3), len(e4), f4["more"]))
+    await pg.click(".tech-filter-reset")
+    await pg.fill("#tech-search", "blue lasers")
+    await pg.click("#tech-filter-results button[data-tech-id=tech_lasers_2]")
+    pick = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.getElementById('tech-card').dataset.techId]")
+    await pg.click(".lang-btn[data-lang=es]")
+    es_search = await pg.evaluate("()=>[document.querySelector('.tech-filter-label').textContent,document.querySelector('#tech-filter-area option').textContent,document.getElementById('tech-filter-count').textContent,document.getElementById('tech-search').value]")
+    await pg.click(".lang-btn[data-lang=en]")
+    await pg.click(".tech-filter-reset")
+    f5 = await pg.evaluate(search_js)
+    await pg.keyboard.press("Escape")
+    check("tech tree search: a result button selects the technology and opens its card; labels follow the language keeping the search; reset clears everything",
+          pick == ["tech_lasers_2", "tech_lasers_2"] and es_search[0] == "Buscar" and es_search[1] == "Todos" and "tecnologías coinciden" in es_search[2]
+          and es_search[3] == "blue lasers" and not f5["has"] and len(f5["kept"]) == 679 and f5["lineOut"] == 0 and f5["count"] == "", (pick, es_search, f5["has"]))
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
     await mobile_checks(t)
@@ -479,5 +548,11 @@ async def mobile_checks(t):
     await pg.tap("#tech-card .tech-card-close")
     closed = await pg.evaluate("()=>document.getElementById('tech-card').hidden")
     check("tech tree mobile: the detail card is a bottom sheet inside the 320 px screen with a 44 px close button", all(card) and closed, (card, closed))
+    await pg.select_option("#tech-filter-area", "engineering")
+    mf = await pg.evaluate("""()=>{const w=document.documentElement.clientWidth;const r=(e)=>e.getBoundingClientRect();
+      return [document.getElementById('tech-tab-engineering').getAttribute('aria-selected'),document.documentElement.scrollWidth<=w,
+        [...document.querySelectorAll('.tech-filters input,.tech-filters select,.tech-filter-reset')].every(e=>r(e).right<=w+0.5&&r(e).height>=44)]}""")
+    await pg.select_option("#tech-filter-area", "")
+    check("tech tree mobile: the area filter opens that area's tab; the filters fit the 320 px screen with 44 px controls", mf == ["true", True, True], mf)
     check("tech tree mobile: no page errors", not errors, errors[:3])
     await mctx.close()

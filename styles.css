@@ -3908,3 +3908,126 @@ body.has-tech-card .tech-board {
         grid-template-columns: minmax(0, 1fr);
     }
 }
+
+/* T3203: search and filters (js/tech-tree-search.js). The tree keeps its layout: what does not
+   match is dimmed and the search matches are outlined. */
+.tech-search {
+    margin: 0 0 .8rem;
+}
+
+.tech-filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem .7rem;
+    align-items: flex-end;
+}
+
+.tech-filter {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    min-width: 0;
+}
+
+.tech-filter--query {
+    flex: 1 1 14rem;
+}
+
+.tech-filter-label {
+    color: var(--muted);
+    font: .62rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-filter input,
+.tech-filter select,
+.tech-filter-reset {
+    box-sizing: border-box;
+    min-height: 2.4rem;
+    max-width: 100%;
+    padding: .35rem .5rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font: .72rem var(--mono);
+}
+
+.tech-filter input:focus-visible,
+.tech-filter select:focus-visible {
+    border-color: var(--focus);
+}
+
+.tech-filter-reset {
+    cursor: pointer;
+}
+
+.tech-filter-reset:disabled {
+    color: var(--muted);
+    border-color: var(--line-soft);
+    cursor: default;
+}
+
+.tech-filter input::placeholder {
+    color: var(--muted);
+    opacity: 1;
+}
+
+.tech-filter-count {
+    min-height: 1.2em;
+    margin: .5rem 0 0;
+    color: var(--text);
+    font: .7rem var(--mono);
+}
+
+.tech-filter-results {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .35rem;
+    max-height: 9.5rem;
+    margin: .4rem 0 0;
+    padding: 0;
+    overflow: auto;
+    list-style: none;
+}
+
+.tech-filter-results[hidden] {
+    display: none;
+}
+
+.tech-filter-more {
+    align-self: center;
+    color: var(--muted);
+    font: .66rem var(--mono);
+}
+
+.has-filter .tech-node.is-filtered-out:not(.is-selected) {
+    opacity: .18;
+}
+
+.has-filter .tech-line.is-filtered-out {
+    opacity: .08;
+}
+
+.tech-node.is-match {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+@media (max-width: 700px) {
+    .tech-filter-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tech-filter--query,
+    .tech-filter-reset {
+        grid-column: 1 / -1;
+    }
+
+    .tech-filter input,
+    .tech-filter select,
+    .tech-filter-reset {
+        min-height: 44px;
+        width: 100%;
+    }
+}

@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3203 — Search and filters (2026-11-25)
+- [ ] **Filtering dims, it does not hide**: the tree keeps its tier columns, field rows and lines; what does not match is dimmed (and its lines), search matches get an outline. Hiding would move the nodes and break the lines.
+- [ ] **What the search looks at**: the English name, the variant names and the game id; every word must appear (accents and case ignored). Names are English in every language, so the placeholder says so in es/jp.
+- [ ] **Result list capped at 30** (sorted by name) under the filters, with "… and N more (highlighted in the tree)"; a result selects the technology and shows it (switches the mobile tab).
+- [ ] **Area filter on phones switches to that area's tab**; the field list only shows the fields of the chosen area. The DLC filter has a "Base game" option (technologies without DLC).
+- [ ] **Filters are not saved** (reset on reload); the deep link (T3205) only carries the technology.
+
 ## T3202 — Whole prerequisite chain and dependents (2026-11-25)
 - [ ] **The chain replaces the direct-only states of T3104**: selecting a technology marks every technology before it (teal) and every technology after it (orange), in every area; the direct ones (one step away) keep the glow, the rest only the coloured border. Lines are marked when both ends are in the chain.
 - [ ] **Legend and status renamed**: "Prerequisite chain" and "Depends on the selected"; the status line gives the size of both chains ("12 in its prerequisite chain · 40 depend on it"). The card keeps the direct prerequisites and "Leads to".

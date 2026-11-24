@@ -6,7 +6,8 @@
  * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
  * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
  * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
- * detail card of the selected technology (js/tech-tree-card.js).
+ * detail card of the selected technology (js/tech-tree-card.js) and the search and filters
+ * (js/tech-tree-search.js).
  */
 
 import { applyPageTranslations, getLang, onLanguageChange } from "./page-shell.js";
@@ -17,6 +18,7 @@ import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
 import { createSelection } from "./tech-tree-states.js";
 import { createDetailCard } from "./tech-tree-card.js";
+import { createSearch } from "./tech-tree-search.js";
 import "./i18n-tech-tree.js";
 
 const COLLECTION = DATA_COLLECTIONS.technologies;
@@ -129,8 +131,19 @@ const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, g
 });
 const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang,
   (id) => card.show(id));
+const search = createSearch(document.getElementById("tech-search-box"), document.querySelector(".tech-areas"), TECH_DATA, getLang, {
+  onPick: (id) => {
+    if (selection.selected() !== id) selection.select(id);
+    revealNode(id);
+  },
+  onAreaFilter: (area) => {
+    const tab = document.getElementById("tech-tab-" + area);
+    if (tab.getAttribute("aria-selected") !== "true") tab.click();
+  },
+});
 onLanguageChange((lang) => {
   renderLegend(lang);
   selection.announce();
   card.refresh();
+  search.relabel();
 });
