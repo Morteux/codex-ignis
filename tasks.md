@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **71 / 134 tareas (53%)**
+> Progreso: **72 / 134 tareas (54%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -196,7 +196,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
   - Prueba manual: run `node tests/tech-data-check.mjs .`: the fixture gives 38 technologies and 0 problems, every self-test (duplicate id, unknown prerequisite, cycle, missing area / field / tier, unknown kind) says `caught` and it ends with `problems 0`.
 - [x] **T3003** (P30.3) Reserved icon slot: every record has its `icon` path (`technologies/<id>.png`, as exported by T2506); nodes and the detail card keep a fixed-size empty frame, images load lazily and a missing file leaves the frame empty with no layout shift
   - Prueba manual: run `node tests/tech-data-check.mjs .` (self-test `no icon` caught) and the browser tests: the `tech tree icon slot` checks pass (40 px node / 72 px card frames, lazy images, a missing file leaves the frame empty without moving the name next to it).
-- [ ] **T3004** (P30.4) Confirm the data model of GDD §4.2 against the extractor output (ids, kinds, tier gating, event and repeatable techs, DLC) and write it as GDD §4.3
+- [x] **T3004** (P30.4) Confirm the data model of GDD §4.2 against the extractor output (ids, kinds, tier gating, event and repeatable techs, DLC) and write it as GDD §4.3
+  - Prueba manual: open `TECH_TREE_GDD.md` §4.3: the record fields with the 4.5.4 counts (679 technologies, 13 fields, kinds from the game flags, icons from the texture, variants, repeatable levels); `DECISIONS_TO_REVIEW.md` has the T3004 decisions.
 - [ ] **T3005** (P30.5) Data file of 4.5.4 generated from the extractor output, every technology including event and repeatable ones
 - [ ] **T3006** (P30.6) Register the collection in `js/data-version.js` with status `unverified`
 - [ ] **T3007** (P30.7) Link unlocks to simulator ids (buildings, jobs, districts) through the game ids

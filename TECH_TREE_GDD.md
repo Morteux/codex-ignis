@@ -55,6 +55,30 @@ One record per technology: `id` (game id), `name` (English), `area` (`physics` /
 
 Automatic validations: every prerequisite exists, no cycles, no duplicate ids, every tech has an area, field and tier.
 
+### 4.3 Confirmed model (T3004, against the extractor output of 4.5.4)
+Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologies: 168 physics, 312 society, 199 engineering; tiers 0–5). The §4.2 model holds with these precisions; the data file (T3005, `tools/extract/build_tech_data.py`) writes exactly this, and `js/tech-tree-validate.js` checks it. Decisions taken without the owner are in `DECISIONS_TO_REVIEW.md` (T3004).
+
+**Data file** (`js/tech-data/<rulesetId>.js`, `export const TECH_DATA`): `rulesetId`, `gameVersion` (e.g. `Cygnus v4.5.4 (1b4f)`), `source`, `areas` (`physics`, `society`, `engineering`), `fields` (`{id, area, name, icon}`; 13 used fields, each one in a single area), `tiers` (`{tier, previouslyUnlocked}`: the game's tier gating, 6 techs of the previous tier from tier 2 on, 0 for tier 1), `technologies`.
+
+**Technology record:**
+- `id`: the game key (`tech_…`). Unique in 4.5.4 (no duplicate), stable across versions. Variant ids are *not* nodes (see `variants`).
+- `name`, `description`: English localisation (the extractor resolves `$key$` references).
+- `area`, `field`: every technology has exactly one area and **one category** in 4.5.4, so `field` is a single id (the game allows a list; the first one is used if a later version adds more).
+- `tier`: always present (0–5). Starter techs are tier 0 (38) or tier 1 (4).
+- `baseCost`: number, or `null` when the game gives none (5 techs: four starters and `tech_asteroidal_carapace`). Base cost only; the game scales it.
+- `kind`: one value per technology for the node colour, from the game flags with this priority: `repeatable` > `starter` (`start_tech`) > `event` (`is_event_tech`) > `dangerous` > `rare` > `normal`. Flags combine in the game (e.g. 41 rare + dangerous, 35 event + rare), so **all of them are also kept** in `flags` (`start`, `rare`, `dangerous`, `insight`, `repeatable`, `event`).
+- **`acquisition` has no game flag**: the wiki colours it by hand. The 4.5.4 data file never uses it; it stays in the enum (the fixture uses it) in case a later rule derives it. The closest game notions are `insight` (13 techs, weight 0, obtained from insights) and the event techs.
+- `prerequisites`: technology ids only; every one exists in 4.5.4 and there are no cycles.
+- `requirements`: the `potential` block (376 techs: DLC, authority, origin, civic and game rule checks), one entry per top-level statement as Paradox text, `NOT = { … }` → `{text, not: true}`. `starting_potential` (19 techs, who starts with it) is not a requirement and is not shown yet.
+- `unlocks`: not in the technology file; built from the other extracted sets that name the technology as a prerequisite (buildings, districts, edicts, deposits): `{type, id, name}` with the game id, linked to simulator ids in T3007. Ship components, jobs and other unlocks are not extracted yet.
+- `effects`: the technology `modifier` block (243 techs) as `key = value` lines with game modifier keys; tooltips and effects kept as text.
+- `drawWeight`: `base` (`weight`; `null` for 38 techs, 100 techs have 0 — event, insight and `tech_subspace_drive`) and `modifiers` (the `weight_modifier` statements as text). Information only.
+- `dlc`: DLC names derived from the requirements (13 DLCs in 4.5.4, e.g. The Machine Age 28 techs).
+- `icon`: the extractor's asset path. It is **not always `technologies/<id>.png`**: 5 techs reuse another texture (e.g. `tech_archeology_lab_ancrel` → `technologies/tech_archeology_lab.png`), so the rule is `technologies/<texture name>.png`, always filled.
+- `variants`: the game `technology_swap` blocks (180 techs, 206 swaps): `{id, name, condition}`. 127 swaps have their own icon and 32 swap ids are also ids of other technologies, so variants are only shown inside their base node, never as nodes.
+- `repeatable` (only repeatable techs, 26): `{costPerLevel, levels}` with `levels: null` for unlimited (21 techs, game `-1`) and 5 for the capped ones.
+- Not kept: `gateway` (52 techs, a research grouping of the AI), `feature_flags`, `reverse_engineerable`, `cost_modifiers` (resolution factors; information for later).
+
 ## 5. Versions
 - One data file per version (`rulesetId`, e.g. `stellaris-pc-4.5.2`); a new wiki version is **added as a new file, never overwriting the previous one**.
 - Version selector in the page (same pattern as the simulator) and the version shown in every card.

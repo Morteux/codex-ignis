@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3004 — Tech tree data model confirmed against the extractor (2026-11-25)
+- [ ] **One `kind` per node by priority** repeatable > starter > event > dangerous > rare > normal; the game flags combine (rare + dangerous, event + rare…), so all of them are also kept in `flags` for later filters.
+- [ ] **`acquisition` is never produced** from the 4.5.4 files: the game has no such flag (the wiki colours it by hand). It stays in the kind list; `insight` techs are kept only as a flag.
+- [ ] **Icon path from the game texture**, not always `technologies/<id>.png` (5 techs share another tech's texture); the T3003 slot and the validations accept any `technologies/<name>.png`.
+- [ ] **Variants are never nodes** (32 swap ids are also other tech ids); shown inside their base node.
+- [ ] **Not kept in the data file**: `gateway`, `feature_flags`, `reverse_engineerable`, `cost_modifiers` and `starting_potential`.
+
 ## T2004 — Pop upkeep edicts (2026-11-25)
 - [ ] **Source**: the three edicts come from the 4.5.4 game files (`common/edicts/00_edicts.txt`), not the 4.5.2 wiki like the rest of `js/edict-data.js`.
 - [ ] **"Organics" upkeep as every pop upkeep**: `planet_pops_organics_{food,minerals,alloys}_upkeep_mult` is applied to all pop upkeep of those resources; only organic / lithoid / infernal species pay them, so it is the same unless robots are added.
