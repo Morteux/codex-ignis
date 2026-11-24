@@ -55,6 +55,15 @@ async def run(t):
           and rd.get("repeatable") == rd.get("rep") == sum(1 for x in extracted if x["flags"]["repeatable"]) > 0 and rd.get("starter", 0) > 0,
           {k: v for k, v in rd.items() if k != "ids"})
 
+    # T3006: the technologies collection is registered, unverified, with its own version, outside the simulator summary
+    reg = node_json("import * as v from './js/data-version.js'; import {TECH_DATA as d} from './%s'; const c=v.DATA_COLLECTIONS.technologies||{};"
+                    "const sim=Object.values(v.DATA_COLLECTIONS).filter(x=>!x.tool).length;"
+                    "console.log(JSON.stringify({file:c.file,status:c.verification,rule:c.rulesetId===d.rulesetId,tool:c.tool,"
+                    "simCount:Object.values(v.verificationSummary()).reduce((a,b)=>a+b,0),sim,tech:v.verificationSummary('tech-tree')}))" % real)
+    check("tech tree data: technologies registered in data-version.js as unverified 4.5.4, not counted in the simulator summary",
+          reg.get("file") == real and reg.get("status") == "unverified" and reg.get("rule") and reg.get("tool") == "tech-tree"
+          and reg.get("simCount") == reg.get("sim") and reg.get("tech") == {"unverified": 1}, reg)
+
     # T3003: reserved icon slot — fixed-size frame, lazy image, a missing file leaves it empty with no layout shift
     pg = await t.ctx.new_page()
     await pg.goto("file://" + ROOT + "/tech-tree.html")

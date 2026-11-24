@@ -81,7 +81,9 @@ const WIKI = "https://stellaris.paradoxwikis.com/";
 /**
  * Colecciones de datos y su procedencia. `file`: dónde viven los datos.
  * `sources`: de dónde se transcribieron (páginas de la wiki; todas
- * `unverified` hasta la fase P14).
+ * `unverified` hasta la fase P14). Opcionales: `tool` (herramienta que la
+ * usa; sin él, el simulador) y `rulesetId` (versión propia de la colección;
+ * sin él, CURRENT_RULESET_ID).
  */
 export const DATA_COLLECTIONS = {
   buildings: {
@@ -170,6 +172,16 @@ export const DATA_COLLECTIONS = {
     // No hay una página de la wiki dedicada a tipos de planeta entre las aportadas: la lista sale de los iconos de la carpeta planets/ de la API de assets.
     sources: ["https://morteux.github.io/StellarisAssets/planets/"],
     verification: VERIFICATION.UNVERIFIED
+  },
+  technologies: {
+    // T3006: tech tree data (tech-tree.html), generated from the 4.5.4 game files by
+    // tools/extract/build_tech_data.py. Its own game version and tool: it does not count in the
+    // simulator's verification summary. Unverified until the final data check (section 14).
+    tool: "tech-tree",
+    rulesetId: "stellaris-pc-4.5.4",
+    file: "js/tech-data/stellaris-pc-4.5.4.js",
+    sources: ["common/technology", "common/technology/category", "common/technology/tier", "localisation/english"].map((folder) => "game files 4.5.4: " + folder),
+    verification: VERIFICATION.UNVERIFIED
   }
 };
 
@@ -182,7 +194,7 @@ function getProvenance(collectionId, entryId) {
   if (!collection) return null;
   const override = (entryId != null && PROVENANCE_OVERRIDES[`${collectionId}:${entryId}`]) || {};
   return {
-    rulesetId: CURRENT_RULESET_ID,
+    rulesetId: collection.rulesetId || CURRENT_RULESET_ID,
     collection: collectionId,
     file: collection.file,
     sources: override.sources || collection.sources,
@@ -190,10 +202,13 @@ function getProvenance(collectionId, entryId) {
   };
 }
 
-/** Recuento de colecciones por estado de verificación (solo a nivel de colección; los overrides por entrada no se cuentan). */
-export function verificationSummary() {
+/**
+ * Recuento de colecciones por estado de verificación (solo a nivel de colección; los overrides por
+ * entrada no se cuentan). `tool`: solo las colecciones de esa herramienta (sin `tool` = simulador).
+ */
+export function verificationSummary(tool = "planet-sim") {
   const counts = {};
-  Object.values(DATA_COLLECTIONS).forEach((collection) => {
+  Object.values(DATA_COLLECTIONS).filter((collection) => (collection.tool || "planet-sim") === tool).forEach((collection) => {
     counts[collection.verification] = (counts[collection.verification] || 0) + 1;
   });
   return counts;
