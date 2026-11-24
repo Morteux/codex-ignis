@@ -44,6 +44,7 @@ const MODIFIER_CATEGORIES = [
   { id: "resourceFlat", label: "modifierCatResourceFlat", unit: "flat" },
   { id: "conditionFlat", label: "modifierCatConditionFlat", unit: "flat" },
   { id: "popUpkeep", label: "modifierCatPopUpkeep", unit: "flat" },
+  { id: "popUpkeepMult", label: "modifierCatPopUpkeepMult", unit: "percent" },
   { id: "popOutput", label: "modifierCatPopOutput", unit: "flat" },
   { id: "flat", label: "modifierCatFlat", unit: "flat" }
 ];

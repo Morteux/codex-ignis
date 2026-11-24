@@ -377,6 +377,7 @@ export function computeTotals() {
   const edictJobFlat = {}; // jobId -> { resourceId: cantidad por empleo }
   const edictCivilianFlat = {}; // resourceId -> cantidad por civil
   const edictConditions = { happiness: 0, stability: 0, crime: 0 };
+  const edictSpeciesHappiness = []; // [source, { speciesType: points }], applied once the species type is known
   (empireModifierState.edictIds || []).forEach((edictId) => {
     const edict = getEdict(edictId);
     if (!edict) return;
@@ -399,6 +400,9 @@ export function computeTotals() {
       edictConditions[stat] += value;
       pushModifier(source, "conditionFlat", { stat }, value);
     });
+    // P20.4: pop upkeep change per resource (applied with the pop upkeep, after the civilians).
+    Object.entries(effects.popUpkeep || {}).forEach(([resourceId, fraction]) => pushModifier(source, "popUpkeepMult", { resource: resourceId }, fraction));
+    edictSpeciesHappiness.push([source, effects.speciesHappiness || {}]);
   });
   // P20.3: living standard of the empire (js/living-standard-data.js, GDD §5.3). Its job efficiency goes to the usual
   // categories here; pop upkeep, pop output and happiness come after the civilians (they need the pops of each stratum).
@@ -435,6 +439,13 @@ export function computeTotals() {
   const allowedSpecies = allowedSpeciesTypes(empireState.authorityId);
   const speciesType = SPECIES_TYPES.find((type) => type.id === empireState.speciesType && allowedSpecies.includes(type.id))
     || SPECIES_TYPES.find((type) => type.id === allowedSpecies[0]);
+  // P20.4: edict happiness for some species types (biological / lithoid pops); no happiness in gestalt.
+  if (!gestaltEmpire) edictSpeciesHappiness.forEach(([source, bySpecies]) => {
+    const value = bySpecies[speciesType.id] || 0;
+    if (!value) return;
+    edictConditions.happiness += value;
+    pushModifier(source, "conditionFlat", { stat: "happiness" }, value);
+  });
   // P10.6: staffed pops of the jobs producing each resource (base output > 0), for JOB_WORKFORCE_SCALING.
   const producerPops = {};
   Object.keys(jobCapacities).forEach((jobId) => {
@@ -683,13 +694,22 @@ export function computeTotals() {
     if (stratum && stratum !== "civilian" && stratum in strataPops) strataPops[stratum] += divideEffect(raw);
   });
   const stratumTarget = (stratum, resourceId) => (stratum === "civilian" ? { job: "civilian", resource: resourceId } : { stratum, resource: resourceId });
+  // P20.4: edicts change the pop upkeep of a resource (popUpkeepMult, e.g. Recycling Campaign −10 % consumer goods); the
+  // change is shown on its own breakdown line "Pop upkeep: edicts".
+  const popUpkeepFactor = (resourceId) => stackFactor(stacking.popUpkeepMult, modifierValues("popUpkeepMult", { resource: resourceId }));
+  const addPopUpkeep = (resourceId, baseAmount, breakdownId) => {
+    if (!baseAmount) return;
+    addSignedResource(resourceId, -baseAmount, breakdownId);
+    const change = baseAmount * (popUpkeepFactor(resourceId) - 1);
+    if (change) addSignedResource(resourceId, -change, "popUpkeepEdicts");
+  };
   Object.entries(SPECIES_POP_UPKEEP[speciesType.id] || {}).forEach(([resourceId, perPop]) => {
     pushModifier({ kind: "species", id: speciesType.id }, "popUpkeep", { resource: resourceId }, -perPop);
-    addSignedResource(resourceId, -perPop * pops, "popUpkeepSpecies");
+    addPopUpkeep(resourceId, perPop * pops, "popUpkeepSpecies");
   });
   Object.entries(livingStandard.upkeep).forEach(([stratum, upkeep]) => Object.entries(upkeep).forEach(([resourceId, perPop]) => {
     pushModifier(livingSource, "popUpkeep", stratumTarget(stratum, resourceId), -perPop);
-    addSignedResource(resourceId, -perPop * strataPops[stratum], "popUpkeepLivingStandard");
+    addPopUpkeep(resourceId, perPop * strataPops[stratum], "popUpkeepLivingStandard");
   }));
   const addPopOutput = (stratum, resourceId, perPop) => {
     pushModifier(livingSource, "popOutput", stratumTarget(stratum, resourceId), perPop);

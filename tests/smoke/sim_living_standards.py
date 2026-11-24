@@ -1,4 +1,4 @@
-"""Planet simulator: living standard of the empire (P20.2)."""
+"""Planet simulator: living standard of the empire (P20.2), pop upkeep (P20.3) and pop upkeep edicts (P20.4)."""
 from smoke.common import check, approx
 
 
@@ -67,6 +67,28 @@ async def run(t):
     check("pop upkeep: Utopian Abundance 1 consumer goods per pop of every stratum", approx(goods, -(sp["ruler"] + sp["specialist"] + sp["worker"] + sp["civilian"])), r["bd"].get("consumer_goods"))
     check("Utopian Abundance: +20 happiness in the conditions", r["h"].get("livingStandard") == 20, r["h"])
     await pg.click(".living-standard-card[data-living-standard=decentConditions]")
+
+    # 12. P20.4: edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program)
+    await tab("edicts")
+    edict_card = lambda eid: pg.evaluate("(e)=>{const c=document.querySelector(`.edict-card[data-edict-id=${e}]`);return c&&{disabled:c.disabled,text:c.innerText}}", eid)
+    recycling = await edict_card("recyclingCampaign")
+    check("Recycling Campaign card: −10% pop consumer goods upkeep", recycling and not recycling["disabled"] and "Pop Consumer goods upkeep" in recycling["text"] and "−10%" in recycling["text"].replace("-", "−"), recycling)
+    nutrition = await edict_card("nutritionalPlenitude")
+    check("Nutritional Plenitude card: +25% food upkeep, +5 happiness, growth info", nutrition and not nutrition["disabled"] and "+25% Pop Food upkeep" in nutrition["text"] and "Logistic growth" in nutrition["text"], nutrition)
+    check("hive / servitor variants locked for this empire", (await edict_card("nutritionalPlenitudeHive"))["disabled"] and (await edict_card("expandedBreedingProgram"))["disabled"])
+    before = await pg.evaluate(totals)
+    base_goods = before["bd"].get("consumer_goods", {}).get("popUpkeepLivingStandard", 0)
+    base_food = before["bd"].get("food", {}).get("popUpkeepSpecies", 0)
+    await pg.click(".edict-card[data-edict-id=recyclingCampaign]")
+    await pg.click(".edict-card[data-edict-id=nutritionalPlenitude]")
+    r = await pg.evaluate(totals)
+    check("Recycling Campaign: −10% of the living standard consumer goods upkeep on its own line", base_goods < 0 and approx(r["bd"].get("consumer_goods", {}).get("popUpkeepEdicts", 0), -0.1 * base_goods), r["bd"].get("consumer_goods"))
+    check("Nutritional Plenitude: +25% of the species food upkeep", base_food < 0 and approx(r["bd"].get("food", {}).get("popUpkeepEdicts", 0), 0.25 * base_food), r["bd"].get("food"))
+    check("Nutritional Plenitude: +5 happiness for organic pops", approx(r["h"]["edicts"] - before["h"]["edicts"], 5), r["h"])
+    check("pop upkeep edicts in the modifiers (popUpkeepMult)", sum(1 for m in r["mods"] if m.get("category") == "popUpkeepMult") >= 2, [m for m in r["mods"] if m.get("category") == "popUpkeepMult"])
+    await ethic("Egalitarian")
+    await ethic("Gestalt Consciousness")
+    check("Recycling Campaign dropped for gestalt empires", (await edict_card("recyclingCampaign"))["disabled"])
     # leave the page as the next area expects it (no Commercial Zones, same saved data)
     await pg.evaluate("(s)=>{localStorage.clear();Object.entries(JSON.parse(s)).forEach(([k,v])=>localStorage.setItem(k,v))}", snapshot)
     await pg.reload(); await pg.wait_for_timeout(500)

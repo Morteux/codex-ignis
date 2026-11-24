@@ -28,6 +28,11 @@
  *      resourceMult { resource: fraction }    "Monthly X" (step 6)
  *      conditions { happiness, stability, crime } points (the wiki's % for
  *                                             happiness is read as points)
+ *      popUpkeep { resource: fraction }       change of every pop upkeep of the
+ *                                             resource (species type and living
+ *                                             standard; not job upkeep), P20.4
+ *      speciesHappiness { speciesType: points } happiness points when the
+ *                                             empire's species type is listed
  *  - info: i18n keys of effects shown on the card but not computed.
  *
  * Verification: `wiki-verified` for the values transcribed from the 4.5.2
@@ -48,6 +53,9 @@ const authority = (...ids) => ({ type: "authority", ids });
 const tradition = (i18nKey) => ({ type: "tradition", i18nKey });
 
 const unity = (amount) => ({ unity: amount });
+const ORGANIC_UPKEEP_25 = { food: 0.25, minerals: 0.25, alloys: 0.25 };
+// biological_pop_happiness + lithoid_pop_happiness: organic, infernal (BIOLOGICAL archetype) and lithoid pops.
+const BIOLOGICAL_HAPPINESS_5 = { organic: 5, infernal: 5, lithoid: 5 };
 
 export const EDICTS = [
   // Unity edicts
@@ -77,6 +85,15 @@ export const EDICTS = [
     effects: { conditions: { happiness: -10 } }, info: ["edictInfoTelepathCrime", "edictInfoEncryption", "edictInfoGoverningAttraction"] },
   { id: "thoughtPreEmption", i18nKey: "edictThoughtPreEmption", kind: "unity", upkeep: unity(30), requires: [GESTALT],
     effects: { jobUpkeep: { all: -0.1 }, conditions: { stability: -5 } }, info: ["edictInfoTelepathDeviancy", "edictInfoEncryption"] },
+  // Pop upkeep edicts (P20.4, game files 4.5.4: common/edicts/00_edicts.txt). "planet_pops_organics_X_upkeep_mult" only
+  // touches the species type upkeep of organic pops (food / minerals / alloys); machine pops pay energy, so it is applied
+  // to every pop upkeep of those resources. The prerequisite technology (Gene Crops) counts as researched.
+  { id: "nutritionalPlenitude", i18nKey: "edictNutritionalPlenitude", kind: "unity", upkeep: unity(10), requires: [NOT_GESTALT],
+    effects: { popUpkeep: ORGANIC_UPKEEP_25, speciesHappiness: BIOLOGICAL_HAPPINESS_5 }, info: ["edictInfoLogisticGrowth10"] },
+  { id: "nutritionalPlenitudeHive", i18nKey: "edictNutritionalPlenitude", kind: "unity", upkeep: unity(10), requires: [authority("hiveMind")],
+    effects: { popUpkeep: ORGANIC_UPKEEP_25 }, info: ["edictInfoLogisticGrowth10"] },
+  { id: "expandedBreedingProgram", i18nKey: "edictExpandedBreedingProgram", kind: "unity", upkeep: unity(10), requires: [civic("civicMachineServitor")],
+    effects: { popUpkeep: ORGANIC_UPKEEP_25, speciesHappiness: BIOLOGICAL_HAPPINESS_5 }, info: ["edictInfoLogisticGrowth10"] },
   // Ethic edicts
   { id: "informationQuarantine", i18nKey: "edictInformationQuarantine", kind: "ethic", upkeep: unity(10), requires: [ethic("authoritarian")],
     effects: { conditions: { stability: 5 } }, info: ["edictInfoGoverningAttraction"] },
@@ -96,6 +113,9 @@ export const EDICTS = [
   // Campaigns
   { id: "fearCampaign", i18nKey: "edictFearCampaign", kind: "campaign", upkeep: { energy: 15 }, requires: [ethic("xenophobe")],
     effects: { resourceMult: { unity: 0.1 } }, info: ["edictInfoXenophobeAttraction"] },
+  // P20.4 (game files 4.5.4); Planetary Unification counts as researched.
+  { id: "recyclingCampaign", i18nKey: "edictRecyclingCampaign", kind: "campaign", upkeep: { energy: 15 }, requires: [NOT_GESTALT],
+    effects: { popUpkeep: { consumer_goods: -0.1 } } },
   // Strategic resource edicts (base cost per month, scaled by empire size)
   { id: "innerFocus", i18nKey: "edictInnerFocus", kind: "strategic", upkeep: { influence: 3 },
     requires: [civic("civicSovereignGuardianship", "civicCorporateSovereignGuardianship", "civicHiveSovereignGuardianship", "civicMachineSovereignGuardianship")],

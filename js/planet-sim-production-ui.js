@@ -135,7 +135,8 @@ const BREAKDOWN_SOURCES = [
   { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" },
   { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings" },
   { id: "popUpkeepSpecies", pos: "breakdownPopUpkeepSpecies", neg: "breakdownPopUpkeepSpecies" },
-  { id: "popUpkeepLivingStandard", pos: "breakdownPopUpkeepLivingStandard", neg: "breakdownPopUpkeepLivingStandard" }
+  { id: "popUpkeepLivingStandard", pos: "breakdownPopUpkeepLivingStandard", neg: "breakdownPopUpkeepLivingStandard" },
+  { id: "popUpkeepEdicts", pos: "breakdownPopUpkeepEdicts", neg: "breakdownPopUpkeepEdicts" }
 ];
 
 // Recursos de la columna "Netos" con el desglose desplegado (se conserva entre repintados).

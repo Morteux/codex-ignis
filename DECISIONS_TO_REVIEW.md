@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2004 — Pop upkeep edicts (2026-11-25)
+- [ ] **Source**: the three edicts come from the 4.5.4 game files (`common/edicts/00_edicts.txt`), not the 4.5.2 wiki like the rest of `js/edict-data.js`.
+- [ ] **"Organics" upkeep as every pop upkeep**: `planet_pops_organics_{food,minerals,alloys}_upkeep_mult` is applied to all pop upkeep of those resources; only organic / lithoid / infernal species pay them, so it is the same unless robots are added.
+- [ ] **Infernal pops get the +5 happiness** (assumed BIOLOGICAL archetype for `biological_pop_happiness`); points, like the other edict happiness.
+- [ ] **Hive variant**: `nutritional_plenitude_hive` is its own card with the same name, locked unless Hive Mind; Expanded Breeding Program needs Rogue Servitor (its happiness never applies: gestalt). Gene Crops / Planetary Unification count as researched.
+- [ ] **Own breakdown line** "Pop upkeep: edicts" for the change, instead of folding it into the species / living standard lines; the change stacks additively with floor 0 (`popUpkeepMult`).
+- [ ] **Names in es / jp** from the game localisation 4.5.4 (the other edict names are still English in every language).
+
 ## T2213 — Bingo PNG download smoke test timeout (2026-11-25)
 - [ ] **Cause not reproduced**: on the current tree the full suite passes with and without `BLOCK_REMOTE=1` (and the bingo area alone too), so the T1906 timeout was not a deterministic page or test break. The only way found for the page to never fire the download is an icon request that never settles: `buildBingoCanvas` waited for every icon with no limit, leaving the button disabled forever.
 - [ ] **Icon wait capped at 5 s** (`ICON_WAIT_MS` in `js/bingo.js`): after that the PNG is drawn and icons still loading are left as empty cells (only fully loaded icons are drawn).

@@ -50,6 +50,7 @@ const STACKING_RULES = {
     flat: rule("add", null, "modifierStackFlat", "monthlyTotal"),
     conditionFlat: rule("add", null, "modifierStackConditionFlat", "conditions"),
     popUpkeep: rule("add", null, "modifierStackPopUpkeep", "pops"),
+    popUpkeepMult: rule("add", 0, "modifierStackPopUpkeepMult", "pops"),
     popOutput: rule("add", null, "modifierStackPopOutput", "pops")
   }
 };

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **67 / 134 tareas (50%)**
+> Progreso: **68 / 134 tareas (51%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -185,7 +185,8 @@ Source: the 4.5.4 game files through the extractor (species rights / living stan
   - Prueba manual: in `planet-sim.html`, Imperio tab, panel "Living standard": Decent Conditions is selected by default and Utopian Abundance is locked until you pick Egalitarian; choose it, save the empire and reload: Utopian Abundance is still selected.
 - [x] **T2003** (P20.3) Engine: pop upkeep (food/minerals/energy/consumer goods...) on top of job upkeep, with its own breakdown lines and modifier category
   - Prueba manual: open `planet-sim.html`, build Commercial Zones and click the Consumer goods row of Net: the breakdown shows "Pop upkeep: living standard" −1 (2 Traders × 0.5) on top of the Traders' −2; Food shows "Pop upkeep: species type" −4; in the Imperio tab pick Utopian Abundance (with Egalitarian) and the living standard upkeep grows to 1 per pop.
-- [ ] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
+- [x] **T2004** (P20.4) Edicts with pop upkeep effects (Recycling Campaign, Nutritional Plenitude, Expanded Breeding Program) added to `js/edict-data.js`
+  - Prueba manual: in `planet-sim.html`, build Commercial Zones, then in the Edicts tab turn on Recycling Campaign and Nutritional Plenitude: the Net Consumer goods breakdown shows "Pop upkeep: edicts" +10 % of the living standard upkeep (positive), Food shows it −25 % of the species upkeep, and happiness rises by 5.
 
 ## 30 · Tech tree: data
 Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Until the real data exists, sections 31–34 are built and tested with the fixture version (T3001).

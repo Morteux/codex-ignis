@@ -25,6 +25,9 @@ function edictEffectLines(lang, edict) {
   });
   Object.entries(effects.civilianFlat || {}).forEach(([resourceId, amount]) => lines.push(t(lang, "edictLineCivilianFlat")(num(amount), resourceName(lang, resourceId))));
   Object.entries(effects.resourceMult || {}).forEach(([resourceId, fraction]) => lines.push(t(lang, "edictLineMonthly")(pct(fraction), resourceName(lang, resourceId))));
+  Object.entries(effects.popUpkeep || {}).forEach(([resourceId, fraction]) => lines.push(t(lang, "edictLinePopUpkeep")(pct(fraction), resourceName(lang, resourceId))));
+  const speciesHappiness = Object.entries(effects.speciesHappiness || {});
+  if (speciesHappiness.length) lines.push(t(lang, "edictLineSpeciesHappiness")(num(speciesHappiness[0][1])));
   const conditions = effects.conditions || {};
   ["happiness", "stability", "crime"].forEach((stat) => {
     if (conditions[stat]) lines.push(t(lang, `edictLine_${stat}`)(num(conditions[stat])));
