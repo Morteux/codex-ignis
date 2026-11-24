@@ -17,7 +17,7 @@ const { validateTechData } = await load("js/tech-tree-validate.js");
 
 const FIXTURE = "tests/fixtures/tech-tree/tech-data-fixture.js";
 const dataDir = join(root, "js", "tech-data");
-const files = [FIXTURE, ...(existsSync(dataDir) ? readdirSync(dataDir).filter((f) => f.endsWith(".js")).sort().map((f) => "js/tech-data/" + f) : [])];
+const files = [FIXTURE, "tests/fixtures/tech-tree/tech-data-fixture-next.js", ...(existsSync(dataDir) ? readdirSync(dataDir).filter((f) => f.endsWith(".js")).sort().map((f) => "js/tech-data/" + f) : [])];
 
 let problems = 0;
 for (const file of files) {

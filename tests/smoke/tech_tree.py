@@ -803,7 +803,137 @@ async def version_checks(t):
         s7 = await pg.evaluate(state_js)
         check("tech tree versions: going back to the current version drops ?version= and draws the 4.5.4 data again",
               s7["search"] == "" and s7["version"] == "stellaris-pc-4.5.4" and s7["nodes"] == 679 and s7["stored"] == "stellaris-pc-4.5.4", s7["search"])
+        await ctx.close()
+        await compare_checks(t, base, registry, errors)
     finally:
         await ctx.close()
         server.shutdown()
     check("tech tree versions: no page errors", not errors, errors[:3])
+
+
+# Second test-only version (T3303): the fixture with a few changes, newest first in the rewritten registry
+FIXTURE_NEXT_VERSION = ('{id: "fixture-next", label: "Test fixture next", file: "../tests/fixtures/tech-tree/tech-data-fixture-next.js", '
+                        'verification: "unverified"},')
+
+
+async def compare_checks(t, base, registry, errors):
+    """T3303: comparison between two versions (the fixture and its next version)."""
+    pure = node_json("""import {compareTechData as c} from './js/tech-tree-compare.js';
+      import {TECH_DATA as a} from './tests/fixtures/tech-tree/tech-data-fixture.js';
+      import {TECH_DATA as b} from './tests/fixtures/tech-tree/tech-data-fixture-next.js';
+      const d = c(a, b), back = c(b, a), same = c(a, a);
+      const strip = (x) => ({id: x.id, cost: x.cost, tier: x.tier, prerequisites: x.prerequisites});
+      console.log(JSON.stringify({added: d.added.map((x) => x.id), removed: d.removed.map((x) => x.id), changed: d.changed.map(strip),
+        back: [back.added.map((x) => x.id), back.removed.map((x) => x.id), back.changed.length],
+        same: same.added.length + same.removed.length + same.changed.length}))""")
+    check("tech tree compare: added, removed and changed cost / tier / prerequisites between the fixture versions (description changes ignored)",
+          pure.get("added") == ["tech_fixture_lens_polisher"] and pure.get("removed") == ["tech_fixture_found_beacon"]
+          and pure.get("changed") == [
+              {"id": "tech_fixture_assembly_echo", "prerequisites": {"added": ["tech_fixture_vine_lattice"], "removed": []}},
+              {"id": "tech_fixture_crease_alloys", "prerequisites": {"added": [], "removed": ["tech_fixture_rivet_basics"]}},
+              {"id": "tech_fixture_drift_coil", "cost": {"from": 444, "to": 555}, "tier": {"from": 4, "to": 5}},
+              {"id": "tech_fixture_echo_relay", "cost": {"from": 111, "to": 150}},
+              {"id": "tech_fixture_wake_skimmer", "tier": {"from": 3, "to": 4}}]
+          and pure.get("back") == [["tech_fixture_found_beacon"], ["tech_fixture_lens_polisher"], 5] and pure.get("same") == 0, pure)
+
+    state_js = """()=>({heading:document.getElementById('tech-compare-heading').textContent,
+      controls:!document.querySelector('.tech-compare-controls').hidden,
+      from:document.getElementById('tech-compare-from')?.value,to:document.getElementById('tech-compare-to')?.value,
+      labels:[...document.querySelectorAll('.tech-compare-field label')].map(l=>l.textContent),
+      note:document.querySelector('.tech-compare-note')?.textContent||null,
+      summary:document.querySelector('.tech-compare-summary')?.textContent||null,
+      groups:Object.fromEntries([...document.querySelectorAll('.tech-compare-group')].map(g=>[g.dataset.group,
+        [...g.querySelectorAll('.tech-compare-item')].map(i=>i.dataset.techId)])),
+      changes:Object.fromEntries([...document.querySelectorAll('[data-group=changed] .tech-compare-item')].map(i=>[i.dataset.techId,
+        [...i.querySelectorAll('[data-change]')].map(c=>c.textContent)])),
+      links:[...document.querySelectorAll('.tech-compare-link')].map(a=>[a.dataset.techId,new URL(a.href).search+new URL(a.href).hash]),
+      wide:document.documentElement.scrollWidth>document.documentElement.clientWidth})"""
+
+    # only one data version: the section explains that the comparison needs a second one
+    pg = await t.ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto("file://" + ROOT + "/tech-tree.html")
+    await pg.wait_for_timeout(400)
+    await pg.click(".lang-btn[data-lang=en]")
+    c1 = await pg.evaluate(state_js)
+    await pg.click(".lang-btn[data-lang=es]")
+    c1es = await pg.evaluate(state_js)
+    await pg.click(".lang-btn[data-lang=en]")
+    await pg.close()
+    check("tech tree compare: with a single data version the section says the comparison waits for the next one (translated)",
+          c1["heading"] == "Compare versions" and not c1["controls"] and "only one data version (Stellaris PC 4.5.4)" in (c1["note"] or "")
+          and c1es["heading"] == "Comparar versiones" and "Solo hay una versión" in (c1es["note"] or ""), (c1, c1es["note"]))
+
+    patched = registry.replace("export const TECH_VERSIONS = [", "export const TECH_VERSIONS = [\n  " + FIXTURE_NEXT_VERSION + "\n  " + FIXTURE_VERSION, 1)
+    ctx = await t.browser.new_context(locale="en-US")
+    await ctx.route("https://**/*", lambda r: r.abort())
+    await ctx.route("**/js/tech-versions.js", lambda r: r.fulfill(body=patched, content_type="text/javascript"))
+    loaded = []
+    pg = await ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    pg.on("request", lambda r: loaded.append(r.url.rsplit("/", 1)[-1]) if "tech-data" in r.url else None)
+    try:
+        await pg.goto(base + "tech-tree.html?version=fixture-next")
+        await pg.wait_for_timeout(500)
+        c2 = await pg.evaluate(state_js)
+        before = list(loaded)
+        # (the next fixture imports the fixture itself, so the file that must not load early is the 4.5.4 one)
+        await pg.select_option("#tech-compare-from", "stellaris-pc-4.5.4")
+        early = list(loaded)
+        await pg.click(".tech-compare-run")
+        await pg.wait_for_timeout(800)
+        c2b = await pg.evaluate(state_js)
+        await pg.select_option("#tech-compare-from", "fixture")
+        await pg.click(".tech-compare-run")
+        await pg.wait_for_timeout(300)
+        c3 = await pg.evaluate(state_js)
+        check("tech tree compare: defaults to the previous version → the shown one, and loads the other data file only when asked",
+              c2["controls"] and c2["from"] == "fixture" and c2["to"] == "fixture-next" and c2["labels"] == ["From", "To"]
+              and c2["summary"] is None and "stellaris-pc-4.5.4.js" not in before + early and "stellaris-pc-4.5.4.js" in loaded
+              and (c2b["summary"] or "").endswith("38 added · 679 removed · 0 changed"), (c2, before, loaded, c2b["summary"]))
+        check("tech tree compare: summary and the added, removed and changed lists of the fixture versions",
+              c3["summary"] == "Test fixture → Test fixture next: 1 added · 1 removed · 5 changed"
+              and c3["groups"] == {"added": ["tech_fixture_lens_polisher"], "removed": ["tech_fixture_found_beacon"],
+                                   "changed": ["tech_fixture_assembly_echo", "tech_fixture_crease_alloys", "tech_fixture_drift_coil",
+                                               "tech_fixture_echo_relay", "tech_fixture_wake_skimmer"]}
+              and c3["changes"] == {"tech_fixture_assembly_echo": ["Prerequisites: + Fixture Vine Lattice"],
+                                    "tech_fixture_crease_alloys": ["Prerequisites: − Fixture Rivet Basics"],
+                                    "tech_fixture_drift_coil": ["Base cost: 444 → 555", "Tier: 4 → 5"],
+                                    "tech_fixture_echo_relay": ["Base cost: 111 → 150"],
+                                    "tech_fixture_wake_skimmer": ["Tier: 3 → 4"]}, c3)
+        check("tech tree compare: each technology links to its node in the version where it exists",
+              ["tech_fixture_found_beacon", "?version=fixture#tech_fixture_found_beacon"] in c3["links"]
+              and ["tech_fixture_lens_polisher", "?version=fixture-next#tech_fixture_lens_polisher"] in c3["links"], c3["links"])
+        await pg.click(".lang-btn[data-lang=jp]")
+        c3jp = await pg.evaluate(state_js)
+        await pg.click(".lang-btn[data-lang=en]")
+        check("tech tree compare: labels and results follow the language, game names stay in English",
+              c3jp["labels"] == ["比較元", "比較先"] and "追加 1" in (c3jp["summary"] or "")
+              and c3jp["changes"]["tech_fixture_echo_relay"] == ["基本コスト：111 → 150"]
+              and c3jp["changes"]["tech_fixture_assembly_echo"] == ["前提条件：+ Fixture Vine Lattice"], c3jp)
+        await pg.select_option("#tech-compare-from", "fixture-next")
+        await pg.click(".tech-compare-run")
+        await pg.wait_for_timeout(200)
+        c4 = await pg.evaluate(state_js)
+        check("tech tree compare: the same version on both sides asks for two different ones", c4["note"] == "Choose two different versions." and c4["summary"] is None, c4["note"])
+        await pg.select_option("#tech-compare-from", "fixture")
+        await pg.click(".tech-compare-run")
+        await pg.wait_for_timeout(300)
+        async with pg.expect_navigation():
+            await pg.click(".tech-compare-link[data-tech-id=tech_fixture_found_beacon]")
+        await pg.wait_for_timeout(500)
+        landed = await pg.evaluate("""()=>({search:location.search,hash:location.hash,version:document.getElementById('tech-data-version').dataset.rulesetId,
+          selected:document.querySelector('.tech-node.is-selected')?.dataset.techId||null})""")
+        check("tech tree compare: following a removed technology opens the older version with it selected",
+              landed == {"search": "?version=fixture", "hash": "#tech_fixture_found_beacon", "version": "fixture", "selected": "tech_fixture_found_beacon"}, landed)
+        await pg.set_viewport_size({"width": 320, "height": 700})
+        await pg.goto(base + "tech-tree.html?version=fixture-next")
+        await pg.wait_for_timeout(400)
+        await pg.click(".tech-compare-run")
+        await pg.wait_for_timeout(400)
+        small = await pg.evaluate(state_js)
+        sizes = await pg.evaluate("()=>[...document.querySelectorAll('.tech-compare-select,.tech-compare-run')].map(e=>Math.round(e.getBoundingClientRect().height))")
+        check("tech tree compare: on a 320 px phone the comparison does not overflow and its controls are 44 px tall",
+              not small["wide"] and small["summary"] and all(h >= 44 for h in sizes), (small["wide"], sizes))
+    finally:
+        await ctx.close()

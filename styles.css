@@ -3423,6 +3423,101 @@ h1 {
     overscroll-behavior: contain;
 }
 
+/* T3303: comparison between two data versions (js/tech-tree-compare.js). */
+.tech-compare {
+    margin-top: 2.5rem;
+    color: var(--muted);
+    font-size: .8rem;
+    line-height: 1.6;
+}
+
+.tech-compare-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: .5rem .8rem;
+}
+
+.tech-compare-field {
+    display: flex;
+    flex-direction: column;
+    gap: .2rem;
+    max-width: 100%;
+    font: 700 .66rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-compare-select,
+.tech-compare-run {
+    box-sizing: border-box;
+    min-height: 2.4rem;
+}
+
+.tech-compare-run {
+    max-width: 100%;
+    padding: .35rem .8rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    font: 700 .72rem var(--mono);
+    cursor: pointer;
+}
+
+.tech-compare-run:hover,
+.tech-compare-select:focus-visible,
+.tech-compare-run:focus-visible {
+    border-color: var(--accent-dim);
+}
+
+.tech-compare-summary,
+.tech-compare-note {
+    margin: .8rem 0 0;
+    color: var(--text);
+    font: .75rem var(--mono);
+}
+
+.tech-compare-group-heading {
+    margin: 1rem 0 .3rem;
+    color: var(--text);
+    font: 700 .75rem var(--mono);
+    text-transform: uppercase;
+}
+
+.tech-compare-list,
+.tech-compare-changes {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.tech-compare-item {
+    overflow-wrap: anywhere;
+}
+
+.tech-compare-link {
+    color: var(--text);
+    text-decoration-color: var(--accent-dim);
+    text-underline-offset: .25em;
+}
+
+.tech-compare-id,
+.tech-compare-meta {
+    margin-right: .5rem;
+    font: .7rem var(--mono);
+}
+
+.tech-compare-empty {
+    margin: 0;
+}
+
+@media (max-width: 700px) {
+    .tech-compare-field,
+    .tech-compare-select,
+    .tech-compare-run {
+        width: 100%;
+        min-height: 44px;
+    }
+}
+
 .tech-credits {
     margin-top: 2.5rem;
     color: var(--muted);

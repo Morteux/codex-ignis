@@ -8,7 +8,8 @@
  * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
  * detail card of the selected technology (js/tech-tree-card.js), the search and filters
  * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
- * technology in the URL hash (js/tech-tree-link.js). The data file is the one of the version chosen
+ * technology in the URL hash (js/tech-tree-link.js) and the comparison between two data versions
+ * (js/tech-tree-compare.js, T3303). The data file is the one of the version chosen
  * in the version selector (js/tech-versions.js, T3301), loaded before anything is drawn.
  */
 
@@ -22,6 +23,7 @@ import { createDetailCard, areaName } from "./tech-tree-card.js";
 import { createSearch } from "./tech-tree-search.js";
 import { createZoom } from "./tech-tree-zoom.js";
 import { techIdFromHash } from "./tech-tree-link.js";
+import { createCompare } from "./tech-tree-compare.js";
 import "./i18n-tech-tree.js";
 
 const VERIFICATION_KEYS = {
@@ -234,7 +236,9 @@ if (document.fonts && document.fonts.ready) {
 window.addEventListener("hashchange", openFromHash);
 
 const zoom = createZoom(document.querySelector(".tech-areas"), document.getElementById("tech-zoom-bar"), getLang, areaName);
+const comparison = createCompare(document.getElementById("tech-compare-box"), VERSION, TECH_DATA, getLang);
 onLanguageChange((lang) => {
+  comparison.relabel();
   renderLegend(lang);
   selection.announce();
   card.refresh();

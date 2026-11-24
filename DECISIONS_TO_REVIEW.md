@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3303 — Comparison between two versions (2026-11-25)
+- [ ] **A section of `tech-tree.html` below the tree** ("Compare versions"), not a separate page: two selectors (from, to; default from the version just older than the shown one to the shown one) and a Compare button. The other data file is downloaded only when Compare is pressed.
+- [ ] **Only base cost, tier and prerequisites count as a change** (as the task says); name, description, kind, requirements, unlocks, effects or DLC changes are not reported. A technology whose id changes appears as removed + added.
+- [ ] **Every technology links to its node** in the version where it exists (`?version=<id>#<tech id>`): removed ones to the old version, added and changed ones to the new one.
+- [ ] **With a single data version** (today: 4.5.4) the section only says the comparison will be available when the next version is added.
+- [ ] **A second test version** `tests/fixtures/tech-tree/tech-data-fixture-next.js` (the fixture with one added, one removed and five changed technologies, plus a description change that must be ignored) is what the tests compare; like the fixture, it is never offered on the site.
+
 ## T3301 — Version selector and per-version data loading (2026-11-25)
 - [ ] **The only real version is 4.5.4**, not 4.5.2 as the task says: the tech tree data comes from the 4.5.4 game files since T3005; there is no 4.5.2 tech data file.
 - [ ] **Registry of its own, `js/tech-versions.js`** (id, label, file, verification, current), separate from the simulator's `DATA_VERSIONS` (which is about the 4.5.2 wiki data); a test checks that its current version is the one `js/data-version.js` registers for `technologies`.

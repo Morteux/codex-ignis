@@ -82,7 +82,7 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 ## 5. Versions
 - One data file per version (`rulesetId`, e.g. `stellaris-pc-4.5.2`); a new wiki version is **added as a new file, never overwriting the previous one**.
 - Version selector in the page (same pattern as the simulator) and the version shown in every card. **Done in T3301:** the versions are listed in `js/tech-versions.js` (one entry per data file, the newest marked `isCurrent`); the page loads only the chosen file, picked from `?version=<id>`, then the last choice stored in the browser, then the current version; choosing another one reloads the page with `?version=` and keeps the technology in the hash.
-- Comparison between two versions: added, removed, and changed cost, tier or prerequisites.
+- Comparison between two versions: added, removed, and changed cost, tier or prerequisites. **Done in T3303** (`js/tech-tree-compare.js`): a "Compare versions" section below the tree with two version selectors and a Compare button (the other data file loads only then); it lists added, removed and changed technologies (base cost, tier, prerequisites added / removed; other fields are ignored), each one linked to its node in the version where it exists. With a single data version it says so.
 - Procedure for a new version (T3302; also in `python tools/extract/build_tech_data.py --help`), which never overwrites a previous version because every step is named after the new `rulesetId`:
   1. `extract_all.py` on the game files of the new version → `data/generated/<rulesetId>/` (a new folder next to the old ones).
   2. Run the validations on that folder (`report_differences.py`).
