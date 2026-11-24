@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **65 / 132 tareas (49%)**
+> Progreso: **65 / 133 tareas (49%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -172,6 +172,8 @@ Source: the 4.5.4 game files through the extractor (section 25); runs after it.
 Models another empire placing branch office buildings on this planet; any branch office building can be chosen.
 - [x] **T1905** (P19.5) `maxPerColony` of every branch office building, taken from its limits in the game files (extractor output of T2508)
   - Prueba manual: in `planet-sim.html`, raise the capital to tier III, open the Sucursales tab, tick the branch office and pick Commercial Forum in slot 1: in slot 2 the Commercial Forum option is greyed out with «limit: 1 per colony».
+- [ ] **T1906** (P19.6) Branch office owner taken from a saved empire profile: in the Sucursales tab, an "Owner empire" select lists the saved empire profiles that are megacorporations (Corporate authority) plus "Custom owner" (today's civic checkboxes). Picking a profile copies its civics (only those of `BRANCH_OWNER_CIVICS`, at most 3) into the owner civics, which become read-only; illegal is dropped if it lacks Criminal Heritage. The choice is saved with the planet as optional `ownerEmpireId` / `ownerEmpireName` inside `branchOffice` (plus the copied `ownerCivicIds`; `planet-library.js` sanitizer, `capturePlanetConfig` / `applyPlanetConfig`); planets without them keep loading as before. While the profile exists and is still a megacorporation its current civics and name win (also live, on `onEmpiresChange`); if it is deleted or no longer corporate, the planet keeps the saved copy and the tab says so. Interface texts in es/en/jp; smoke tests in `tests/smoke/sim_branches_swaps.py`; GDD §5.2 and §8 updated
+  - Prueba manual: in `planet-sim.html`, Imperio tab, pick the Corporate authority and Criminal Heritage and save the empire as "Mega test"; open the Sucursales tab, tick the branch office and choose "Mega test" in "Owner empire": the owner civics show Criminal Heritage ticked and greyed out, and Illegal can be chosen; save the planet, reload and open it from the Biblioteca: "Mega test" is still the owner. Delete the empire: the tab says it keeps the saved civics.
 
 ## 20 · Pop upkeep and living standards
 Source: the 4.5.4 game files through the extractor (species rights / living standards in `common/`); runs after section 25.
