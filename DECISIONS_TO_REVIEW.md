@@ -2,6 +2,40 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4402 — First batch of wiki questions (2026-11-26)
+
+- **Batch**: 156 hand-written questions (`<topic>.wiki.<slug>`), 24/35/34/39/24 in tiers 1–5, from these articles of the local copy: Ambition, Astral threads, Celestial object, Colonization, Empire, Government, Jargon, Leaders, Minor artifacts, Origin, Planetary features, Population, Resources, Technology, The Shroud, Traditions. The copy has no articles of their own for events or fallen empires, so there are few events questions and no `fallen_empires` topic.
+- **Installed game is 4.6.0** (T2526): numbers and facts were only cited against the committed 4.5.4 data (origins and planet classes). The official es/jp names that the 4.5.4 data does not hold (ascension perks, crises, patrons, relics, leaders' traits and other terms) were read from the localisation of the installed 4.6.0 game, matched by their English name in the 4.5.2 wiki; they should be checked again if the project stays on 4.5.4.
+- **Tier** of each question chosen by hand following the table of GDD §3.1 (how often a player meets the fact).
+- **Odd official names kept as the game has them** (es): Behemoth and Juggernaut are both «Gigante».
+- **Drafts to check** (they are in the bank and are asked; delete or fix the ones that fail):
+  - [ ] Wiki text marked there as last verified for 4.3 (Population): check in game.
+    - `species.wiki.founder_purge`: Which species can never be purged? → The empire's founder species
+    - `species.wiki.robot_hive`: What do Hive Mind empires do with robots on their worlds? → They always purge them
+  - [ ] Player advice or observed behaviour, not a rule (the wiki itself says it may be unintended for the sale).
+    - `shroud.wiki.reckoning_corvettes`: According to the wiki, what tends to work better against the stronger versions of the Reckoning? → Swarms of corvettes with autocannons
+    - `economy.wiki.market_partial_sale`: According to the wiki, what happens if a monthly sell order asks for more than you have stored? → Nothing is sold that month
+  - [ ] From the Jargon article, which may describe an older version.
+    - `ships.wiki.jargon_monohull`: Which game patch made single-hull (monohull) fleets far less viable? → 3.6
+    - `subjects.wiki.jargon_diplo_annex`: According to the wiki's slang entry, how long must a vassal have been under its overlord to be diplo-annexed? → At least 3600 days
+    - `subjects.wiki.jargon_shell`: In player slang, what is vassal shelling? → Ringing an empire with vassals so it cannot expand
+  - [ ] Tagged as base game because the section names no DLC, although the content probably needs one (psionic ascension: Utopia or Shadows of the Shroud; the relic, the dig site or the perk may need a DLC too).
+    - `shroud.wiki.shroud_nature`: What is the Shroud? → An immaterial realm of pure psionic energy beyond the physical universe
+    - `shroud.wiki.shroud_psionic_archive`: Which relic lets an empire delve into the Shroud more often? → Psionic Archive
+    - `shroud.wiki.end_of_cycle_one`: If the Shadows of the Shroud expansion is absent, how many empires may ally themselves with the End of the Cycle? → Only one
+    - `shroud.wiki.end_of_cycle_mark`: Without Shadows of the Shroud, how long does the Covenant with the End of the Cycle last before the Reckoning? → 50 years
+    - `shroud.wiki.chosen_negative_traits`: What happens to a leader who gains a Chosen trait from the Shroud? → It loses its negative traits, except those specific to the Luminary
+    - `shroud.wiki.chosen_one_risk`: What is the risk of trying to gain the Chosen One trait during a Shroud delve? → The leader may die and a hostile Corrupted Avatar may appear
+    - `shroud.wiki.divine_sovereign_ethics`: When a Chosen leader is declared a deity (Divine Sovereign), which ethics does the empire shift to? → Fanatic Authoritarian and Spiritualist
+    - `shroud.wiki.reckoning_exile`: After the Reckoning, the empire that made the Covenant survives only on a newly colonized planet. What is it named? → Exile
+    - `shroud.wiki.reckoning_corvettes`: According to the wiki, what tends to work better against the stronger versions of the Reckoning? → Swarms of corvettes with autocannons
+    - `leaders.wiki.leader_immortal_trait`: Which of these traits means a leader never dies of old age? → Chosen One
+    - `events.wiki.unique_larion`: Which archaeology site can give rise to the Larionessi Consciousness, a fungoid empire? → The Signal
+    - `planets.wiki.gaia_perk`: Which ascension perk lets you terraform a regular planet into a Gaia World? → World Shaper
+  - [ ] Facts about the Shroud without Shadows of the Shroud: the question says so, but a player with every DLC checked still gets it.
+    - `shroud.wiki.end_of_cycle_one`: If the Shadows of the Shroud expansion is absent, how many empires may ally themselves with the End of the Cycle? → Only one
+    - `shroud.wiki.end_of_cycle_mark`: Without Shadows of the Shroud, how long does the Covenant with the End of the Cycle last before the Reckoning? → 50 years
+
 ## T4401 — Wiki questions in the Testellaris bank (2026-11-26)
 
 - **Source format**: `{"kind": "wiki", "article", "section"}` with optional `file`/`key`/`loc` when a number or name was checked against the extractor data; ids use the template `wiki` (`<topic>.wiki.<slug>`), and the validator requires the template and the wiki source to go together. Game-file sources keep their old shape (no `kind`), so the 2375 generated questions did not change.

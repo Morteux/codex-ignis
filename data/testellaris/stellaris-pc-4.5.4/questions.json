@@ -2,7 +2,7 @@
  "rulesetId": "stellaris-pc-4.5.4",
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
  "generator": "tools/testellaris/generate_questions.py",
- "count": 2375,
+ "count": 2531,
  "questions": [
   {
    "id": "artifacts.archaeotech.tech_archaeo_mass_accelerator",
@@ -1188,6 +1188,183 @@
    }
   },
   {
+   "id": "artifacts.wiki.artifacts_analysis_max",
+   "tier": 5,
+   "topic": "artifacts",
+   "dlc": [
+    "Ancient Relics Story Pack",
+    "Grand Archive"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Minor artifacts",
+    "section": "Artifact Analysis"
+   },
+   "text": {
+    "es": "Con Grand Archive, ¿cuántas veces como máximo se puede usar el análisis de artefactos?",
+    "en": "With Grand Archive, how many times can Artifact Analysis be used at most?",
+    "jp": "Grand Archive導入時、遺物の分析は最大何回使える？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "10",
+     "3",
+     "5"
+    ],
+    "en": [
+     "1",
+     "10",
+     "3",
+     "5"
+    ],
+    "jp": [
+     "1",
+     "10",
+     "3",
+     "5"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Cada uso da un espécimen al azar, que no se repite, y encarece el siguiente.",
+    "en": "Each use grants a random, non-repeating specimen and makes the next one dearer.",
+    "jp": "毎回重複しない標本がもらえ、次の費用が上がります。"
+   }
+  },
+  {
+   "id": "artifacts.wiki.artifacts_baol",
+   "tier": 5,
+   "topic": "artifacts",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Minor artifacts",
+    "section": "Secrets of the Precursors"
+   },
+   "text": {
+    "es": "¿Qué mundo hay que explorar para desbloquear los secretos de los baol con artefactos menores?",
+    "en": "Which world must be surveyed to unlock the Secrets of the Baol artifact action?",
+    "jp": "バオルの秘密を探る遺物アクションに必要な調査対象は？"
+   },
+   "answers": {
+    "es": [
+     "Grunur",
+     "Irassia",
+     "Fen Habbanis III",
+     "Zron Prime"
+    ],
+    "en": [
+     "Grunur",
+     "Irassia",
+     "Fen Habbanis III",
+     "Zron Prime"
+    ],
+    "jp": [
+     "グルナー",
+     "イラッシア",
+     "フェン・ハバニス III",
+     "ズィロンプライム"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Cada precursor tiene su propia acción de un solo uso tras completar su cadena.",
+    "en": "Each precursor offers its own single-use action after its chain is completed.",
+    "jp": "先駆者ごとに、調査の完了後一度だけ使えるアクションがあります。"
+   }
+  },
+  {
+   "id": "artifacts.wiki.artifacts_origin",
+   "tier": 1,
+   "topic": "artifacts",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Minor artifacts",
+    "section": "Minor artifacts"
+   },
+   "text": {
+    "es": "¿Qué representan los Artefactos menores?",
+    "en": "What do Minor Artifacts represent?",
+    "jp": "「出土品」が表すものは？"
+   },
+   "answers": {
+    "es": [
+     "Bienes de lujo fabricados por los pops",
+     "Fragmentos de estrellas muertas",
+     "Tecnología oscura y saber casi olvidado de civilizaciones antiguas",
+     "Obras de arte de los enclaves comerciantes"
+    ],
+    "en": [
+     "Luxury goods made by pops",
+     "Fragments of dead stars",
+     "Obscure technology and half-forgotten lore of ancient civilizations",
+     "Artworks of the trader enclaves"
+    ],
+    "jp": [
+     "人口が作る高級品",
+     "死んだ恒星のかけら",
+     "古代文明の謎の技術や忘れかけられた伝承",
+     "商人の飛び地の美術品"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Se obtienen sobre todo en lotes, de sucesos, proyectos y yacimientos arqueológicos.",
+    "en": "They mostly come in batches from events, special projects and archaeological sites.",
+    "jp": "主にイベント、特別プロジェクト、考古学調査地点からまとめて得ます。"
+   }
+  },
+  {
+   "id": "artifacts.wiki.artifacts_reverse",
+   "tier": 4,
+   "topic": "artifacts",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Minor artifacts",
+    "section": "Reverse-Engineer Arcane Technology"
+   },
+   "text": {
+    "es": "¿Cuántos Artefactos menores cuesta cada uso de la ingeniería inversa de tecnología arcana?",
+    "en": "How many Minor Artifacts does each use of Reverse-Engineer Arcane Technology cost?",
+    "jp": "「古代技術の解析」1回に必要な「出土品」は？"
+   },
+   "answers": {
+    "es": [
+     "150",
+     "300",
+     "500",
+     "1000"
+    ],
+    "en": [
+     "150",
+     "300",
+     "500",
+     "1000"
+    ],
+    "jp": [
+     "150",
+     "300",
+     "500",
+     "1000"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Puede dar investigación, velocidad, una tecnología avanzada o incluso un edificio de los imperios caídos.",
+    "en": "It can give research, speed, a half-researched technology or even a Fallen Empire building.",
+    "jp": "研究値や速度、技術の進捗、没落した帝国の建造物まで得られます。"
+   }
+  },
+  {
    "id": "astral.content_feature.d_forceful_winds",
    "tier": 3,
    "topic": "astral",
@@ -1533,6 +1710,182 @@
     "es": "«Salvaguardias contra tormentas gracias a los conocimientos zroni» es parte del contenido de Astral Planes.",
     "en": "Zroni Insight Storm Safeguards is part of the content of Astral Planes.",
     "jp": "「ズィロニの洞察　ストームセーフガード」は「Astral Planes」の内容です。"
+   }
+  },
+  {
+   "id": "astral.wiki.astral_double_relic",
+   "tier": 5,
+   "topic": "astral",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Astral threads",
+    "section": "Astral actions"
+   },
+   "text": {
+    "es": "¿Qué acción astral permite activar un segundo triunfo de reliquia?",
+    "en": "Which astral action allows activating a second relic triumph?",
+    "jp": "2つ目の遺産の凱旋を発動できるアストラルアクションは？"
+   },
+   "answers": {
+    "es": [
+     "Dualidad de artefactos",
+     "Cierre dimensional",
+     "Potenciación astral",
+     "Convocar flota dimensional"
+    ],
+    "en": [
+     "Lateral Artifacting",
+     "Dimensional Lock",
+     "Astral Boost",
+     "Summon Dimensional Fleet"
+    ],
+    "jp": [
+     "ラテラル・アーティファクティング",
+     "次元ロック",
+     "アストラル・ブースト",
+     "次元艦隊の召喚"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Manipula el flujo del tiempo para usar dos artefactos poderosos a la vez.",
+    "en": "It bends the flow of time to use two powerful artifacts at once.",
+    "jp": "時間の流れを操り、強力な遺物を2つ同時に使います。"
+   }
+  },
+  {
+   "id": "astral.wiki.astral_scars_start",
+   "tier": 5,
+   "topic": "astral",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Astral scars"
+   },
+   "text": {
+    "es": "Al empezar la partida, ¿qué parte de los sistemas que no limitan con ningún sistema inicial tiene una cicatriz astral?",
+    "en": "At game start, what share of systems not bordering any starting system holds an astral scar?",
+    "jp": "ゲーム開始時、初期星系に隣接しない星系のうち天体の傷があるのは何割？"
+   },
+   "answers": {
+    "es": [
+     "El 1 %",
+     "El 25 %",
+     "El 10 %",
+     "El 50 %"
+    ],
+    "en": [
+     "1 %",
+     "25 %",
+     "10 %",
+     "50 %"
+    ],
+    "jp": [
+     "1％",
+     "25％",
+     "10％",
+     "50％"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Cada una tiene un depósito de 2 hilos astrales y están en el borde de los sistemas.",
+    "en": "Each holds a deposit of 2 Astral Threads and sits at the edge of the system.",
+    "jp": "それぞれ星系の外縁にあり、アストラル・スレッド2の鉱床を持ちます。"
+   }
+  },
+  {
+   "id": "astral.wiki.astral_storage",
+   "tier": 4,
+   "topic": "astral",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Astral threads",
+    "section": "Astral threads"
+   },
+   "text": {
+    "es": "Al principio, ¿cuántos hilos astrales puede almacenar un imperio?",
+    "en": "How many Astral Threads can an empire store at the start?",
+    "jp": "帝国が最初に貯蔵できる「アストラル・スレッド」の量は？"
+   },
+   "answers": {
+    "es": [
+     "100",
+     "500",
+     "1000",
+     "2500"
+    ],
+    "en": [
+     "100",
+     "500",
+     "1000",
+     "2500"
+    ],
+    "jp": [
+     "100",
+     "500",
+     "1000",
+     "2500"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Cada grieta completada y cada nivel de los sifones astrales amplían la capacidad.",
+    "en": "Each completed rift and each tier of Astral Siphon raises the capacity.",
+    "jp": "裂け目の踏破やアストラル・サイフォンの建設で上限が増えます。"
+   }
+  },
+  {
+   "id": "astral.wiki.astral_what",
+   "tier": 2,
+   "topic": "astral",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Astral threads",
+    "section": "Astral threads"
+   },
+   "text": {
+    "es": "¿Qué son los hilos astrales?",
+    "en": "What are Astral Threads?",
+    "jp": "「アストラル・スレッド」とは何？"
+   },
+   "answers": {
+    "es": [
+     "Restos de materia oscura de las estrellas moribundas",
+     "Fibras de zro cultivadas por los zroni",
+     "Filamentos de espacio-tiempo condensado por el choque de planos dimensionales",
+     "Datos de una civilización extinta"
+    ],
+    "en": [
+     "Dark matter residue from dying stars",
+     "Zro fibres grown by the Zroni",
+     "Filaments of condensed space-time from colliding dimensional planes",
+     "Data of an extinct civilization"
+    ],
+    "jp": [
+     "死にゆく恒星の暗黒物質の残滓",
+     "ズィロニが育てたズィロの繊維",
+     "次元面の衝突で生じた凝縮時空の糸",
+     "滅んだ文明のデータ"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Solo se consiguen en cicatrices astrales o completando grietas astrales.",
+    "en": "They only come from Astral Scars or completed astral rifts.",
+    "jp": "天体の傷か、裂け目の踏破でしか得られません。"
    }
   },
   {
@@ -13672,6 +14025,1150 @@
     "jp": "「戦士の文化」には「軍国主義」か「狂信的な軍国主義」が必要で、他の3つはどちらもなくても選べます。"
    },
    "icon": "civics/Civic_warrior_culture.png"
+  },
+  {
+   "id": "crises.wiki.behemoth_class_four_death",
+   "tier": 3,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoths"
+   },
+   "text": {
+    "es": "¿Qué le pasa a un imperio si matan a su gigante de clase IV?",
+    "en": "What happens to an empire if its Class IV Behemoth is killed?",
+    "jp": "クラスIVのベヒモスを倒された帝国はどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Pierde la mitad de sus pops",
+     "Recibe otro huevo gratis",
+     "Queda destruido al instante",
+     "Vuelve al primer nivel de ambición"
+    ],
+    "en": [
+     "It loses half of its pops",
+     "It gets a free egg",
+     "It is instantly destroyed",
+     "It drops to the first ambition level"
+    ],
+    "jp": [
+     "人口の半分を失う",
+     "卵を無料で受け取る",
+     "即座に滅亡する",
+     "野望が第1段階に戻る"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Solo la clase IV, que pone huevos y crece con la situación final, ata así la suerte de su imperio.",
+    "en": "Only the Class IV, which lays eggs and grows during the final situation, ties its empire's fate to its own.",
+    "jp": "卵を産み最終状況で強化されるクラスIVだけが、帝国と運命を共にします。"
+   }
+  },
+  {
+   "id": "crises.wiki.behemoth_fed",
+   "tier": 3,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoths"
+   },
+   "text": {
+    "es": "¿Qué puede ocurrir si un gigante pasa dos años sin alimentarse?",
+    "en": "What can happen if a Behemoth goes unfed for 2 years?",
+    "jp": "ベヒモスが2年間えさを得られないと何が起こり得る？"
+   },
+   "answers": {
+    "es": [
+     "Puede enfurecerse y volverse hostil a todos",
+     "Muere al instante",
+     "Vuelve a ser un huevo",
+     "Se pasa al imperio más cercano"
+    ],
+    "en": [
+     "It may become enraged and hostile to everyone",
+     "It dies at once",
+     "It turns back into an egg",
+     "It joins the nearest empire"
+    ],
+    "jp": [
+     "激昂して全方位に敵対する",
+     "即座に死ぬ",
+     "卵に戻る",
+     "最寄りの帝国に寝返る"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Tiene un 75 % de probabilidad; enfurecido ataca todas las naves del sistema.",
+    "en": "The chance is 75 %; once enraged it attacks every ship in the system.",
+    "jp": "確率は75％で、激昂すると星系の全艦を攻撃します。"
+   }
+  },
+  {
+   "id": "crises.wiki.behemoth_guardian",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoths"
+   },
+   "text": {
+    "es": "¿Cuánto crecimiento da siempre a un gigante devorar un guardián?",
+    "en": "How much Growth does feeding on a guardian always give a Behemoth?",
+    "jp": "守護者を食べたベヒモスが必ず得る成長値は？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "150",
+     "300",
+     "40"
+    ],
+    "en": [
+     "10",
+     "150",
+     "300",
+     "40"
+    ],
+    "jp": [
+     "10",
+     "150",
+     "300",
+     "40"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Los gigantes comen bionaves, fauna, guardianes y otros gigantes, o bombardean planetas.",
+    "en": "Behemoths feed on bioships, fauna, guardians and each other, or by bombarding planets.",
+    "jp": "ベヒモスは生体艦、宇宙生物、守護者、同族を食べ、惑星爆撃でも成長します。"
+   }
+  },
+  {
+   "id": "crises.wiki.behemoth_king",
+   "tier": 5,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoth Fury"
+   },
+   "text": {
+    "es": "¿A qué guardián hay que derrotar para ganar con Furia de gigante?",
+    "en": "Which guardian must be defeated to win with Behemoth Fury?",
+    "jp": "「ベヒモスの怒り」で勝利するために倒す必要がある守護者は？"
+   },
+   "answers": {
+    "es": [
+     "Engendro del vacío anciano",
+     "El dragón del éter",
+     "Horror dimensional",
+     "La reina del azote prethoryn"
+    ],
+    "en": [
+     "Elder Voidspawn",
+     "The Ether Drake",
+     "Dimensional Horror",
+     "The Prethoryn Scourge Queen"
+    ],
+    "jp": [
+     "エルダー・ボイドスポーン",
+     "エーテルドレイク",
+     "異次元の恐怖",
+     "プレスリンの女王"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "También hay que vencer a los gigantes de clase IV de otros y completar la situación de los dolores del crecimiento.",
+    "en": "Other empires' Class IV Behemoths must also fall and the Growing Pains situation must be finished.",
+    "jp": "他国のクラスIVベヒモスも倒し、成長痛の状況を完了する必要があります。"
+   }
+  },
+  {
+   "id": "crises.wiki.behemoth_opinion",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoth Fury"
+   },
+   "text": {
+    "es": "¿Cuándo empieza Furia de gigante a penalizar la opinión de los demás imperios?",
+    "en": "When does Behemoth Fury start causing opinion penalties with other empires?",
+    "jp": "「ベヒモスの怒り」で他国からの評価が下がり始めるのはいつ？"
+   },
+   "answers": {
+    "es": [
+     "En cuanto se elige la ventaja",
+     "Solo al llegar al último nivel",
+     "Al construir el primer huevo",
+     "Nunca, siempre la mejora"
+    ],
+    "en": [
+     "As soon as the perk is picked",
+     "Only on reaching the final level",
+     "When the first egg is built",
+     "Never, it always improves opinion"
+    ],
+    "jp": [
+     "パークを取った直後",
+     "最終段階に達してから",
+     "最初の卵を建造した時",
+     "下がることはなく常に上がる"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Antes del último nivel no hay penalización; después, la caída de opinión es enorme.",
+    "en": "There is no penalty before the final level; after it, the opinion drop is huge.",
+    "jp": "最終段階までは罰則がなく、到達後は評価が激しく落ちます。"
+   }
+  },
+  {
+   "id": "crises.wiki.behemoth_resource",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Behemoth Fury"
+   },
+   "text": {
+    "es": "¿Qué recurso acumula un imperio de Furia de gigante?",
+    "en": "Which resource does a Behemoth Fury empire accumulate?",
+    "jp": "「ベヒモスの怒り」の帝国が蓄積する資源は？"
+   },
+   "answers": {
+    "es": [
+     "Conocimiento salvaje",
+     "Entropía cristalizada",
+     "Lógica avanzada",
+     "Amenaza"
+    ],
+    "en": [
+     "Feral Insight",
+     "Crystallized Entropy",
+     "Advanced Logic",
+     "Menace"
+    ],
+    "jp": [
+     "野生の知見",
+     "結晶化したエントロピー",
+     "高度なロジック",
+     "メナス"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Sale de criar y cazar fauna, construir bionaves y dar a luz gigantes.",
+    "en": "It comes from breeding and hunting fauna, building bioships and birthing Behemoths.",
+    "jp": "宇宙生物の繁殖や狩り、生体艦の建造、ベヒモスの誕生で得られます。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_black_hole",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿Hacia dónde se envía la Aguja del horizonte para lograr la victoria de Cosmogénesis?",
+    "en": "Where is the Horizon Needle sent to achieve the Cosmogenesis victory?",
+    "jp": "「宇宙の起源」の勝利のためにホライゾンニードルを送り込む先は？"
+   },
+   "answers": {
+    "es": [
+     "Al interior de una nebulosa",
+     "A un púlsar",
+     "A otra galaxia por una puerta estelar",
+     "A un agujero negro"
+    ],
+    "en": [
+     "Into a nebula",
+     "To a pulsar",
+     "Through a gateway to another galaxy",
+     "Into a black hole"
+    ],
+    "jp": [
+     "星雲の内部",
+     "パルサー",
+     "ゲートウェイの先の別銀河",
+     "ブラックホール"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Hay varios finales según el agujero negro elegido, con uno aparte para el del centro galáctico.",
+    "en": "There are several endings depending on the black hole, with a separate one for the galactic core.",
+    "jp": "選んだブラックホールで結末が変わり、銀河中心のものには専用の結末があります。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_days",
+   "tier": 5,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿Cuántos días tarda en construirse la Aguja del horizonte?",
+    "en": "How many days does the Horizon Needle take to build?",
+    "jp": "ホライゾンニードルの建造にかかる日数は？"
+   },
+   "answers": {
+    "es": [
+     "1200",
+     "3600",
+     "720",
+     "2400"
+    ],
+    "en": [
+     "1200",
+     "3600",
+     "720",
+     "2400"
+    ],
+    "jp": [
+     "1200",
+     "3600",
+     "720",
+     "2400"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Se construye en la órbita de la capital como si fuera una megaestructura.",
+    "en": "It is built in orbit of the capital, like a megastructure.",
+    "jp": "首都の軌道で巨大建造物と同じように建造します。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_fallen",
+   "tier": 3,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Post-Cosmogenesis galaxy"
+   },
+   "text": {
+    "es": "¿En qué se convierte el imperio que completa Cosmogénesis y deja de ser jugable?",
+    "en": "What does the empire that completes Cosmogenesis become once it is no longer playable?",
+    "jp": "「宇宙の起源」を完遂して操作できなくなった帝国は何になる？"
+   },
+   "answers": {
+    "es": [
+     "Un enclave comerciante",
+     "Un imperio caído",
+     "Una civilización pre-UL",
+     "Una horda de merodeadores"
+    ],
+    "en": [
+     "A trader enclave",
+     "A Fallen Empire",
+     "A pre-FTL civilization",
+     "A marauder horde"
+    ],
+    "jp": [
+     "商人の飛び地",
+     "没落した帝国",
+     "前FTL文明",
+     "マローダーの大群"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Su personalidad depende de las éticas, y conserva súbditos y federación.",
+    "en": "Its personality depends on its ethics, and it keeps its subjects and federation.",
+    "jp": "性格は思想で決まり、従属国や連邦への加盟は維持されます。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_keepers",
+   "tier": 5,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿Qué imperio caído exige condiciones a quien investiga la tesis de infinitud aplicada de Cosmogénesis?",
+    "en": "Which Fallen Empire sets demands on a Cosmogenesis empire that researches the Applied Infinity Thesis?",
+    "jp": "「宇宙の起源」で無限理論の応用を研究すると条件を突きつけてくる没落した帝国は？"
+   },
+   "answers": {
+    "es": [
+     "Aislacionistas militaristas",
+     "Veladores del conocimiento",
+     "Guardianes sagrados",
+     "Antiguos cuidadores"
+    ],
+    "en": [
+     "Militant Isolationists",
+     "Keepers of Knowledge",
+     "Holy Guardians",
+     "Ancient Caretakers"
+    ],
+    "jp": [
+     "過激な孤立主義者",
+     "知識の番人",
+     "聖地の守護者",
+     "古代の管理機械"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Pueden imponer un recorte de investigación, ir a la guerra o hacerte renunciar a los edificios caídos.",
+    "en": "They can impose a research penalty, go to war or force you to give up Fallen Empire buildings.",
+    "jp": "研究ペナルティの受け入れ、戦争、没落帝国の建造物の放棄を迫られます。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_lathe",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿En qué megaestructura purga pops la mayor parte de la hostilidad de Cosmogénesis?",
+    "en": "Most of the hostility of Cosmogenesis comes from purging pops in which megastructure?",
+    "jp": "「宇宙の起源」の敵対性の大半は、どの巨大建造物で人口を粛清することから生じる？"
+   },
+   "answers": {
+    "es": [
+     "Compresor de materia",
+     "Torno sináptico",
+     "Horno de arco",
+     "Centro de coordinación estratégica"
+    ],
+    "en": [
+     "Matter Decompressor",
+     "Synaptic Lathe",
+     "Arc Furnace",
+     "Strategic Coordination Center"
+    ],
+    "jp": [
+     "物質展開機",
+     "シナプス旋盤",
+     "アーク炉",
+     "戦略調整センター"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Se puede prescindir de él, pero entonces la progresión es mucho más lenta.",
+    "en": "It can be avoided, but progress then becomes much slower.",
+    "jp": "使わないこともできますが、進行はかなり遅くなります。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_needle",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿Qué construye un imperio de Cosmogénesis en la órbita de su capital para culminar su plan?",
+    "en": "What does a Cosmogenesis empire build above its capital to complete its plan?",
+    "jp": "「宇宙の起源」の帝国が計画の仕上げに首都軌道で建造するものは？"
+   },
+   "answers": {
+    "es": [
+     "Motor eterofásico",
+     "Crisol galáctico",
+     "Una puerta estelar al Velo",
+     "Aguja del Horizonte"
+    ],
+    "en": [
+     "Aetherophasic Engine",
+     "Galactic Crucible",
+     "A gateway to the Shroud",
+     "Horizon Needle"
+    ],
+    "jp": [
+     "エーテル位相機関",
+     "銀河の坩堝",
+     "シュラウドへのゲートウェイ",
+     "ホライゾンニードル"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Es una nave que se construye como una megaestructura, muy resistente, con motor de salto y sin armas.",
+    "en": "It is a ship built like a megastructure, very tough, with a Jump Drive and no weapons.",
+    "jp": "巨大建造物のように造る艦で、非常に頑丈でジャンプドライブを持ち、武器はありません。"
+   }
+  },
+  {
+   "id": "crises.wiki.cosmo_resource",
+   "tier": 1,
+   "topic": "crises",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Cosmogenesis"
+   },
+   "text": {
+    "es": "¿Qué recurso acumula un imperio de Cosmogénesis?",
+    "en": "Which resource does a Cosmogenesis empire accumulate?",
+    "jp": "「宇宙の起源」の帝国が蓄積する資源は？"
+   },
+   "answers": {
+    "es": [
+     "Amenaza",
+     "Lógica avanzada",
+     "Coraje",
+     "Artefactos menores"
+    ],
+    "en": [
+     "Menace",
+     "Advanced Logic",
+     "Valor",
+     "Minor Artifacts"
+    ],
+    "jp": [
+     "メナス",
+     "高度なロジック",
+     "武勇",
+     "出土品"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Se combina con tecnologías muy caras para subir los niveles de la ambición.",
+    "en": "Together with expensive technologies, it raises the ambition level.",
+    "jp": "高コストの技術研究とあわせて野望の段階を上げます。"
+   }
+  },
+  {
+   "id": "crises.wiki.defender_custodian",
+   "tier": 5,
+   "topic": "crises",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Defender of the Galaxy"
+   },
+   "text": {
+    "es": "¿Qué cargo hace falta para alcanzar el nivel Héroe de Defensor de la galaxia?",
+    "en": "Which office is needed to reach the Hero level of Defender of the Galaxy?",
+    "jp": "「銀河の番人」で第4段階（英雄）に達するのに必要な地位は？"
+   },
+   "answers": {
+    "es": [
+     "Emperador galáctico",
+     "Presidente de una federación",
+     "Miembro de pleno derecho sin más",
+     "Custodio galáctico"
+    ],
+    "en": [
+     "Galactic Emperor",
+     "Federation President",
+     "Just a regular Community member",
+     "Galactic Custodian"
+    ],
+    "jp": [
+     "銀河皇帝",
+     "連邦議長",
+     "共同体の一般加盟国で十分",
+     "銀河守護者"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Los niveles piden primero entrar en la Comunidad, luego en el Consejo y por último ser custodio.",
+    "en": "The levels first ask for Community membership, then a Council seat and finally the custodianship.",
+    "jp": "段階ごとに共同体加盟、評議会入り、守護者就任が順に求められます。"
+   }
+  },
+  {
+   "id": "crises.wiki.defender_opinion",
+   "tier": 3,
+   "topic": "crises",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Defender of the Galaxy"
+   },
+   "text": {
+    "es": "¿Qué distingue a Defensor de la galaxia de las otras ambiciones en la diplomacia?",
+    "en": "What sets Defender of the Galaxy apart from other ambitions in diplomacy?",
+    "jp": "外交面で「銀河の番人」が他の野望と違う点は？"
+   },
+   "answers": {
+    "es": [
+     "Da bonificaciones de opinión en vez de penalizaciones",
+     "Declara guerra total a todos",
+     "Prohíbe entrar en federaciones",
+     "Anula todos los envoys"
+    ],
+    "en": [
+     "It gives opinion bonuses instead of penalties",
+     "It declares Total War on everyone",
+     "It forbids joining federations",
+     "It removes every envoy"
+    ],
+    "jp": [
+     "評価が下がるどころか上がる",
+     "全帝国に総力戦を布告する",
+     "連邦加盟が禁止される",
+     "全使節が失われる"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Es la ambición del protector: gana valor sin atacar a otros.",
+    "en": "It is the protector's ambition: valor is earned by guarding, not attacking.",
+    "jp": "守護者の野望で、侵略ではなく防衛で武勇を稼ぎます。"
+   }
+  },
+  {
+   "id": "crises.wiki.defender_resource",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Defender of the Galaxy"
+   },
+   "text": {
+    "es": "¿Qué recurso acumula un imperio de Defensor de la galaxia?",
+    "en": "Which resource does a Defender of the Galaxy empire accumulate?",
+    "jp": "「銀河の番人」の帝国が蓄積する資源は？"
+   },
+   "answers": {
+    "es": [
+     "Amenaza",
+     "Conocimiento salvaje",
+     "Coraje",
+     "Lógica avanzada"
+    ],
+    "en": [
+     "Menace",
+     "Feral Insight",
+     "Valor",
+     "Advanced Logic"
+    ],
+    "jp": [
+     "メナス",
+     "野生の知見",
+     "武勇",
+     "高度なロジック"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Premia ayudar a la Comunidad galáctica, las federaciones y la lucha contra las crisis.",
+    "en": "It rewards helping the Galactic Community, federations and the fight against crises.",
+    "jp": "銀河共同体や連邦への貢献、危機との戦いが評価されます。"
+   }
+  },
+  {
+   "id": "crises.wiki.defender_victory",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Defender of the Galaxy"
+   },
+   "text": {
+    "es": "¿Qué hay que lograr para ganar con Defensor de la galaxia?",
+    "en": "What must be done to win with Defender of the Galaxy?",
+    "jp": "「銀河の番人」で勝利する条件は？"
+   },
+   "answers": {
+    "es": [
+     "Conquistar todos los imperios caídos",
+     "Proclamar el Imperio galáctico y gobernarlo 100 años",
+     "Derrotar dos crisis de final de partida y aprobar el fin de la custodia",
+     "Acumular 100000 de valor"
+    ],
+    "en": [
+     "Conquer every Fallen Empire",
+     "Proclaim the Galactic Imperium and rule it for 100 years",
+     "Defeat two endgame crises and pass the End Custodianship resolution",
+     "Hoard 100,000 Valor"
+    ],
+    "jp": [
+     "全ての没落した帝国を征服する",
+     "銀河帝国を樹立して100年統治する",
+     "終盤危機を2回倒し、守護者の任を終える決議を通す",
+     "武勇を10万ためる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El proyecto de tomar la iniciativa adelanta las crisis aunque estén desactivadas en la configuración.",
+    "en": "The Take the Initiative project brings crises forward even if they were disabled in the settings.",
+    "jp": "先手を打つプロジェクトは、設定で危機を無効にしていても危機を呼び起こします。"
+   }
+  },
+  {
+   "id": "crises.wiki.hyper_conduit",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Hyperthermia"
+   },
+   "text": {
+    "es": "¿Qué hace el arma de los conductos de Hipertermia galáctica?",
+    "en": "What does the weapon of the Galactic Hyperthermia Conduits do?",
+    "jp": "「銀河の超高温化」のコンジットが持つ兵器の効果は？"
+   },
+   "answers": {
+    "es": [
+     "Convierte la nave enemiga en aliada",
+     "Impide a su objetivo moverse y atacar durante 7 días",
+     "Borra la armadura para siempre",
+     "Envía la nave a otro sistema al azar"
+    ],
+    "en": [
+     "It turns the enemy ship into an ally",
+     "It freezes the target and silences its guns for a week",
+     "It strips armour permanently",
+     "It sends the ship to a random system"
+    ],
+    "jp": [
+     "敵艦を味方にする",
+     "対象を7日間、移動も攻撃もできなくする",
+     "装甲を永久に消し去る",
+     "艦を無作為な星系へ飛ばす"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Las naves conducto llevan el paralizador de lente.",
+    "en": "Conduits are ships armed with a Lensed Paralyzer.",
+    "jp": "コンジットはレンズ麻痺砲を搭載した艦です。"
+   }
+  },
+  {
+   "id": "crises.wiki.hyper_crucible",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Hyperthermia"
+   },
+   "text": {
+    "es": "¿Qué megaestructura hay que mejorar nivel a nivel en Hipertermia galáctica?",
+    "en": "Which megastructure is upgraded level by level in Galactic Hyperthermia?",
+    "jp": "「銀河の超高温化」で段階的に強化していく巨大建造物は？"
+   },
+   "answers": {
+    "es": [
+     "Motor eterofásico",
+     "Crisol galáctico",
+     "Esfera Dyson",
+     "Megastillero"
+    ],
+    "en": [
+     "Aetherophasic Engine",
+     "Galactic Crucible",
+     "Dyson Sphere",
+     "Mega Shipyard"
+    ],
+    "jp": [
+     "エーテル位相機関",
+     "銀河の坩堝",
+     "ダイソンスフィア",
+     "巨大造船所"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "A partir del nivel 2 fabrica conductos, tantos como sistemas poseídos.",
+    "en": "From level 2 it builds Conduits, as many as the number of owned systems.",
+    "jp": "レベル2以降は所有星系数までコンジットを建造します。"
+   }
+  },
+  {
+   "id": "crises.wiki.hyper_resource",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Hyperthermia"
+   },
+   "text": {
+    "es": "¿Qué recurso acumula un imperio de Hipertermia galáctica?",
+    "en": "Which resource does a Galactic Hyperthermia empire accumulate?",
+    "jp": "「銀河の超高温化」の帝国が蓄積する資源は？"
+   },
+   "answers": {
+    "es": [
+     "Materia oscura",
+     "Entropía cristalizada",
+     "Metal vivo",
+     "Hilos astrales"
+    ],
+    "en": [
+     "Dark Matter",
+     "Crystallized Entropy",
+     "Living Metal",
+     "Astral Threads"
+    ],
+    "jp": [
+     "ダークマター",
+     "結晶化したエントロピー",
+     "生体金属",
+     "アストラル・スレッド"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Se gana sobre todo creando y poseyendo mundos volcánicos y estrellas rojas.",
+    "en": "It mostly comes from creating and owning Volcanic Worlds and red stars.",
+    "jp": "主に火山型惑星や赤い恒星を作り、保有することで得られます。"
+   }
+  },
+  {
+   "id": "crises.wiki.hyper_victory_stars",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Hyperthermia"
+   },
+   "text": {
+    "es": "Si el imperio gana con Hipertermia galáctica, ¿en qué se convierten las estrellas que no son agujeros negros?",
+    "en": "When Galactic Hyperthermia wins, what do all stars other than black holes become?",
+    "jp": "「銀河の超高温化」で勝利すると、ブラックホール以外の恒星はどうなる？"
+   },
+   "answers": {
+    "es": [
+     "En estrellas de neutrones",
+     "En gigantes rojas de clase M",
+     "En púlsares",
+     "En enanas marrones"
+    ],
+    "en": [
+     "Neutron stars",
+     "Class M Red Giants",
+     "Pulsars",
+     "Brown dwarfs"
+    ],
+    "jp": [
+     "中性子星",
+     "M型赤色巨星",
+     "パルサー",
+     "褐色矮星"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Y los planetas que no sean ecumenópolis pasan a ser mundos volcánicos.",
+    "en": "Planets other than ecumenopoleis also turn into Volcanic Worlds.",
+    "jp": "エキュメノポリス以外の惑星は火山型惑星になります。"
+   }
+  },
+  {
+   "id": "crises.wiki.nemesis_breach_law",
+   "tier": 4,
+   "topic": "crises",
+   "dlc": [
+    "Nemesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Nemesis"
+   },
+   "text": {
+    "es": "¿Cuál de estas acciones da amenaza cada año a un imperio con Némesis galáctica?",
+    "en": "Which of these earns a Galactic Nemesis Menace every year?",
+    "jp": "次のうち「銀河の大敵」が毎年メナスを得られる行動は？"
+   },
+   "answers": {
+    "es": [
+     "Incumplir las leyes de la Comunidad galáctica",
+     "Ser miembro de una federación",
+     "Estudiar tecnologías nuevas",
+     "No participar en guerras de agresión"
+    ],
+    "en": [
+     "Being in breach of Galactic Community law",
+     "Being part of a federation",
+     "Researching new technologies",
+     "Staying out of wars of aggression"
+    ],
+    "jp": [
+     "銀河共同体の法に違反していること",
+     "連邦に加盟していること",
+     "新しい技術を研究すること",
+     "侵略戦争に参加しないこと"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Desafiar a los burócratas galácticos suma cada año, igual que conservar vasallos.",
+    "en": "Defying the galactic bureaucrats counts every year, and so does retaining vassals.",
+    "jp": "銀河の官僚への反抗は毎年加点され、属国の維持も同様です。"
+   }
+  },
+  {
+   "id": "crises.wiki.nemesis_engine",
+   "tier": 1,
+   "topic": "crises",
+   "dlc": [
+    "Nemesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Nemesis"
+   },
+   "text": {
+    "es": "¿Qué megaestructura completa un imperio con Némesis galáctica para ganar destruyendo la galaxia?",
+    "en": "Which megastructure must a Galactic Nemesis finish to win by destroying the galaxy?",
+    "jp": "「銀河の大敵」が銀河を破壊して勝利するために完成させる巨大建造物は？"
+   },
+   "answers": {
+    "es": [
+     "Motor eterofásico",
+     "Compresor de materia",
+     "Esfera Dyson",
+     "Megastillero"
+    ],
+    "en": [
+     "Aetherophasic Engine",
+     "Matter Decompressor",
+     "Dyson Sphere",
+     "Mega Shipyard"
+    ],
+    "jp": [
+     "エーテル位相機関",
+     "物質展開機",
+     "ダイソンスフィア",
+     "巨大造船所"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Si se mejora por completo, la galaxia entera es destruida y ese imperio gana la partida.",
+    "en": "If fully upgraded, the whole galaxy is destroyed and that empire wins the game.",
+    "jp": "完全に強化されると銀河全体が滅び、その帝国の勝利となります。"
+   }
+  },
+  {
+   "id": "crises.wiki.nemesis_level_five",
+   "tier": 3,
+   "topic": "crises",
+   "dlc": [
+    "Nemesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Nemesis"
+   },
+   "text": {
+    "es": "¿A partir de qué nivel se considera crisis a un imperio con Némesis galáctica, con guerra total contra todos?",
+    "en": "At which ambition level is a Galactic Nemesis treated as a crisis, in Total War with everyone?",
+    "jp": "「銀河の大敵」が危機扱いになり、全帝国と総力戦になるのは何段階目？"
+   },
+   "answers": {
+    "es": [
+     "El quinto",
+     "El primero",
+     "El tercero",
+     "El segundo"
+    ],
+    "en": [
+     "The fifth",
+     "The first",
+     "The third",
+     "The second"
+    ],
+    "jp": [
+     "第5段階",
+     "第1段階",
+     "第3段階",
+     "第2段階"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "En los niveles 1 a 4 actúa como un imperio normal, salvo que no puede ser custodio; el quinto no tiene vuelta atrás.",
+    "en": "Through levels 1 to 4 it behaves normally, except it cannot be Custodian; the fifth is the point of no return.",
+    "jp": "第1～4段階では銀河守護者になれないだけで普通ですが、第5段階は後戻りできません。"
+   }
+  },
+  {
+   "id": "crises.wiki.nemesis_resource",
+   "tier": 1,
+   "topic": "crises",
+   "dlc": [
+    "Nemesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Nemesis"
+   },
+   "text": {
+    "es": "¿Qué recurso acumula un imperio con la ventaja Némesis galáctica para avanzar?",
+    "en": "Which resource does a Galactic Nemesis empire gather to progress?",
+    "jp": "「銀河の大敵」の帝国が段階を進めるために集める資源は？"
+   },
+   "answers": {
+    "es": [
+     "Lógica avanzada",
+     "Amenaza",
+     "Coraje",
+     "Conocimiento salvaje"
+    ],
+    "en": [
+     "Advanced Logic",
+     "Menace",
+     "Valor",
+     "Feral Insight"
+    ],
+    "jp": [
+     "高度なロジック",
+     "メナス",
+     "武勇",
+     "野生の知見"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Se gana cumpliendo objetivos como destruir naves, bases estelares o imperios.",
+    "en": "It is earned by completing objectives such as destroying ships, starbases or empires.",
+    "jp": "艦船や星系基地、帝国の破壊といった目標を達成すると得られます。"
+   }
+  },
+  {
+   "id": "crises.wiki.nemesis_ship",
+   "tier": 2,
+   "topic": "crises",
+   "dlc": [
+    "Nemesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Ambition",
+    "section": "Galactic Nemesis"
+   },
+   "text": {
+    "es": "¿Qué nave especial puede construir un imperio con Némesis galáctica al llegar al último nivel?",
+    "en": "Which special ship can a Galactic Nemesis build at the final level?",
+    "jp": "「銀河の大敵」が最終段階で建造できる特別な艦は？"
+   },
+   "answers": {
+    "es": [
+     "Aguja del Horizonte",
+     "Coloso",
+     "Comedor de estrellas",
+     "Gigante"
+    ],
+    "en": [
+     "Horizon Needle",
+     "Colossus",
+     "Star-Eater",
+     "Juggernaut"
+    ],
+    "jp": [
+     "ホライゾンニードル",
+     "コロッサス",
+     "スターイーター",
+     "ジャガーノート"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Con el nivel final se reciben además dos de ellas y la tecnología de energía de materia oscura.",
+    "en": "The final level also grants two of them and the Dark Matter Power technology.",
+    "jp": "最終段階ではこの艦を2隻受け取り、ダークマター動力の技術も得ます。"
+   }
   },
   {
    "id": "economy.branch_office.building_bio_reprocessing_facilities",
@@ -31028,6 +32525,344 @@
    }
   },
   {
+   "id": "economy.wiki.gal_market_ecu",
+   "tier": 5,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "Galactic market"
+   },
+   "text": {
+    "es": "En el sorteo para albergar el mercado galáctico, ¿qué tipo de planeta dispara la probabilidad de una candidatura fuerte?",
+    "en": "In the galactic market lottery, which planet type massively raises the chance of a Strong nomination?",
+    "jp": "銀河市場の誘致で「強」の評価が出る確率を跳ね上げる惑星の種類は？"
+   },
+   "answers": {
+    "es": [
+     "Mundo Gaia",
+     "Mundo reliquia",
+     "Mundo máquina",
+     "Ecumenópolis"
+    ],
+    "en": [
+     "Gaia World",
+     "Relic World",
+     "Machine World",
+     "Ecumenopolis"
+    ],
+    "jp": [
+     "ガイア型惑星",
+     "遺物惑星",
+     "機械惑星",
+     "エキュメノポリス"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "La ponderación de la candidatura fuerte se multiplica por 200.",
+    "en": "The weight of a Strong rating is multiplied by 200.",
+    "jp": "「強」の抽選重みが200倍になります。"
+   }
+  },
+  {
+   "id": "economy.wiki.gal_market_members",
+   "tier": 2,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "Galactic market"
+   },
+   "text": {
+    "es": "¿Qué se necesita para comerciar en el mercado galáctico?",
+    "en": "What is needed to trade on the galactic market?",
+    "jp": "銀河市場で取引するための条件は？"
+   },
+   "answers": {
+    "es": [
+     "Pertenecer a una federación comercial",
+     "Ser un imperio corporativo",
+     "Tener un enclave en tu territorio",
+     "Ser miembro de la Comunidad galáctica"
+    ],
+    "en": [
+     "Belonging to a trade federation",
+     "Being a corporate empire",
+     "Having an enclave in your borders",
+     "Being a Galactic Community member"
+    ],
+    "jp": [
+     "通商連邦に属すること",
+     "企業国家であること",
+     "領内に飛び地があること",
+     "銀河共同体に加盟していること"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Su oferta y demanda afectan a los precios de todos los imperios.",
+    "en": "Its supply and demand move prices for every empire.",
+    "jp": "その需給は全帝国の価格に影響します。"
+   }
+  },
+  {
+   "id": "economy.wiki.jargon_tall",
+   "tier": 1,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Jargon",
+    "section": "Slang"
+   },
+   "text": {
+    "es": "¿Qué significa jugar «a lo alto» (tall)?",
+    "en": "What does playing \"tall\" mean?",
+    "jp": "「トール（tall）」プレイとはどんな遊び方？"
+   },
+   "answers": {
+    "es": [
+     "Desarrollar pocos planetas al máximo en vez de expandirse",
+     "Conquistar tantos sistemas como se pueda",
+     "Construir solo acorazados",
+     "Jugar con la dificultad más alta"
+    ],
+    "en": [
+     "Developing a few planets as far as possible instead of expanding",
+     "Conquering as many systems as possible",
+     "Building only battleships",
+     "Playing on the highest difficulty"
+    ],
+    "jp": [
+     "拡張せず少数の惑星を徹底的に発展させる",
+     "できるだけ多くの星系を征服する",
+     "戦艦だけを造る",
+     "最高難度で遊ぶ"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Lo contrario es jugar a lo ancho (wide).",
+    "en": "Its opposite is playing wide.",
+    "jp": "反対は「ワイド」プレイです。"
+   }
+  },
+  {
+   "id": "economy.wiki.market_currency",
+   "tier": 1,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "The market"
+   },
+   "text": {
+    "es": "¿Con qué recurso se compra y se vende en el mercado?",
+    "en": "Which resource is used to buy and sell on the market?",
+    "jp": "市場の売買に使う資源は？"
+   },
+   "answers": {
+    "es": [
+     "Comercio",
+     "Unidad",
+     "Influencia",
+     "Aleaciones"
+    ],
+    "en": [
+     "Trade",
+     "Unity",
+     "Influence",
+     "Alloys"
+    ],
+    "jp": [
+     "交易",
+     "ユニティ",
+     "影響力",
+     "合金"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Los precios dependen de la economía del imperio, la oferta, la demanda y el mercado galáctico.",
+    "en": "Prices depend on the empire's economy, supply, demand and the galactic market.",
+    "jp": "価格は帝国の経済、需給、銀河市場で変わります。"
+   }
+  },
+  {
+   "id": "economy.wiki.market_fee",
+   "tier": 3,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "Market fee"
+   },
+   "text": {
+    "es": "¿Cuál es la comisión de mercado de partida?",
+    "en": "What is the starting market fee?",
+    "jp": "市場手数料の初期値は？"
+   },
+   "answers": {
+    "es": [
+     "5 %",
+     "10 %",
+     "50 %",
+     "30 %"
+    ],
+    "en": [
+     "5 %",
+     "10 %",
+     "50 %",
+     "30 %"
+    ],
+    "jp": [
+     "5％",
+     "10％",
+     "50％",
+     "30％"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Se puede rebajar con edificios y tradiciones, pero nunca por debajo del 5 %.",
+    "en": "Buildings and traditions can lower it, but never below 5 %.",
+    "jp": "建造物や伝統で下げられますが、5％より低くはなりません。"
+   }
+  },
+  {
+   "id": "economy.wiki.market_partial_sale",
+   "tier": 4,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "Automated trading"
+   },
+   "text": {
+    "es": "Según la wiki, ¿qué pasa si una venta mensual automática pide más recurso del que tienes almacenado?",
+    "en": "According to the wiki, what happens if a monthly sell order asks for more than you have stored?",
+    "jp": "ウィキによると、毎月の自動売却で備蓄より多い量を指定するとどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Se vende lo que haya",
+     "Se vende a crédito",
+     "La orden se borra y cobra una multa",
+     "No se vende nada ese mes"
+    ],
+    "en": [
+     "Whatever is available is sold",
+     "It is sold on credit",
+     "The order is deleted with a fine",
+     "Nothing is sold that month"
+    ],
+    "jp": [
+     "ある分だけ売れる",
+     "信用取引で売れる",
+     "注文が消えて罰金を取られる",
+     "その月は何も売れない"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El juego no completa ventas parciales: ignora la orden entera.",
+    "en": "There are no partial sales: the whole order is skipped.",
+    "jp": "部分的な売却はなく、注文全体が無視されます。"
+   }
+  },
+  {
+   "id": "economy.wiki.resettle_last",
+   "tier": 4,
+   "topic": "economy",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Population",
+    "section": "Resettlement"
+   },
+   "text": {
+    "es": "¿Qué ocurre al reubicar los últimos pops de un mundo?",
+    "en": "What happens when you resettle the last pop of a world?",
+    "jp": "惑星の最後の人口を再定住させるとどうなる？"
+   },
+   "answers": {
+    "es": [
+     "No está permitido",
+     "La colonia se conserva vacía",
+     "Cuesta influencia adicional y el mundo se abandona",
+     "El planeta se convierte en mundo tumba"
+    ],
+    "en": [
+     "It is not allowed",
+     "The colony stays empty",
+     "It costs extra Influence and the world is abandoned",
+     "The planet becomes a Tomb World"
+    ],
+    "jp": [
+     "実行できない",
+     "無人の植民地として残る",
+     "追加で影響力がかかり、惑星は放棄される",
+     "死の惑星になる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La reubicación es instantánea y cuesta energía y unidad.",
+    "en": "Resettlement is instant and costs energy and unity.",
+    "jp": "再定住は即時で、エネルギーとユニティがかかります。"
+   }
+  },
+  {
+   "id": "economy.wiki.slave_market",
+   "tier": 3,
+   "topic": "economy",
+   "dlc": [
+    "Megacorp"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Resources",
+    "section": "Slave market"
+   },
+   "text": {
+    "es": "¿Qué le pasa a un pop comprado en el mercado de esclavos por un imperio con la esclavitud prohibida?",
+    "en": "What happens to a pop bought on the slave market by an empire that outlaws slavery?",
+    "jp": "奴隷制を禁じた帝国が奴隷市場で人口を買うとどうなる？"
+   },
+   "answers": {
+    "es": [
+     "No se permite la compra",
+     "Sigue siendo esclavo",
+     "Se convierte en refugiado de otro imperio",
+     "Queda libre, y su precio es el doble"
+    ],
+    "en": [
+     "The purchase is not allowed",
+     "It stays enslaved",
+     "It becomes a refugee elsewhere",
+     "It is set free, at double the price"
+    ],
+    "jp": [
+     "購入できない",
+     "奴隷のまま",
+     "他国への難民になる",
+     "解放されるが、価格は2倍になる"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mercado de esclavos se abre al fundarse el mercado galáctico.",
+    "en": "The slave market opens once the galactic market is founded.",
+    "jp": "奴隷市場は銀河市場の設立で利用できるようになります。"
+   }
+  },
+  {
    "id": "ethics.ethic_civic_forbidden.ethic_egalitarian.civic_entropy_drinkers",
    "tier": 3,
    "topic": "ethics",
@@ -35244,6 +37079,222 @@
     "jp": "「排他主義」のコストは3ポイント中1です。"
    },
    "icon": "ethics/Xenophobe.png"
+  },
+  {
+   "id": "events.wiki.jargon_aar",
+   "tier": 2,
+   "topic": "events",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Jargon",
+    "section": "AAR"
+   },
+   "text": {
+    "es": "En la comunidad de Stellaris, ¿qué es un AAR?",
+    "en": "In the Stellaris community, what is an AAR?",
+    "jp": "Stellarisコミュニティで「AAR」とは？"
+   },
+   "answers": {
+    "es": [
+     "Una alianza automática entre jugadores",
+     "El relato de una partida contado por el jugador",
+     "Un reinicio rápido de la galaxia",
+     "Un tipo de arma antiacorazado"
+    ],
+    "en": [
+     "An automatic alliance between players",
+     "A player's write-up of one of their games",
+     "A quick galaxy restart",
+     "A kind of anti-battleship weapon"
+    ],
+    "jp": [
+     "プレイヤー間の自動同盟",
+     "プレイヤーが自分のプレイを語る体験記",
+     "銀河の素早い作り直し",
+     "対戦艦兵器の一種"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Son las siglas de After Action Report; a menudo se escribe como ficción de fans.",
+    "en": "It stands for After Action Report, often written as fan fiction.",
+    "jp": "After Action Reportの略で、ファン小説の形も多いです。"
+   }
+  },
+  {
+   "id": "events.wiki.msi_debt",
+   "tier": 4,
+   "topic": "events",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Payback interactions"
+   },
+   "text": {
+    "es": "Con el origen Revancha, ¿qué te exige Industrias Especializadas Minamar cada 15 años mientras no estéis en guerra?",
+    "en": "With the Payback origin, what does Minamar Specialized Industries ask for every 15 years while at peace?",
+    "jp": "起源「復讐」で、戦争中でない限りミナマールが15年ごとに要求してくるものは？"
+   },
+   "answers": {
+    "es": [
+     "Una flota de acorazados",
+     "La cesión de un sistema",
+     "Un pago en energía o pops",
+     "Un líder como rehén"
+    ],
+    "en": [
+     "A fleet of battleships",
+     "A star system",
+     "A payment in energy or pops",
+     "A leader as hostage"
+    ],
+    "jp": [
+     "戦艦の艦隊",
+     "星系の割譲",
+     "エネルギーか人口の支払い",
+     "指導者を人質に差し出すこと"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Si te niegas, envían una flota de cobro de deudas contra tu capital.",
+    "en": "If you refuse, a debt collector fleet attacks your capital system.",
+    "jp": "拒否すると取り立て艦隊が首都星系を襲います。"
+   }
+  },
+  {
+   "id": "events.wiki.msi_war",
+   "tier": 5,
+   "topic": "events",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Payback interactions"
+   },
+   "text": {
+    "es": "¿Cuántas flotas de cobro de Minamar hay que derrotar para que declare la guerra?",
+    "en": "How many Minamar debt collector fleets must be defeated before MSI declares war?",
+    "jp": "ミナマールの取り立て艦隊を何回撃退すると宣戦布告される？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "5",
+     "3",
+     "10"
+    ],
+    "en": [
+     "1",
+     "5",
+     "3",
+     "10"
+    ],
+    "jp": [
+     "1",
+     "5",
+     "3",
+     "10"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Lo hace con el motivo de guerra de animosidad, incluso sin comunicaciones establecidas.",
+    "en": "It does so with the Animosity casus belli, even without established communications.",
+    "jp": "通信が確立していなくても「敵意」の開戦事由で宣戦します。"
+   }
+  },
+  {
+   "id": "events.wiki.unique_daemons",
+   "tier": 5,
+   "topic": "events",
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Unique empires"
+   },
+   "text": {
+    "es": "¿Qué imperio único solo puede aparecer si está presente el origen Caballeros del Dios tóxico?",
+    "en": "Which unique empire can only appear when the Knights of the Toxic God origin is in play?",
+    "jp": "起源「汚毒神の騎士」がある場合にのみ出現し得る固有帝国は？"
+   },
+   "answers": {
+    "es": [
+     "Consciencia Larionessi",
+     "Mundos Habinte Unificados",
+     "Incursión demoníaca",
+     "Pack estelar Ketling"
+    ],
+    "en": [
+     "Larionessi Consciousness",
+     "Habinte Unified Worlds",
+     "Daemonic Incursion",
+     "Ketling Star Pack"
+    ],
+    "jp": [
+     "ラリオネッシ意識体",
+     "ハビンテ連係諸世界",
+     "邪悪なる侵攻",
+     "ケットリング星間群"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Surge de la cadena de sucesos «El portal», con una especie daemónica de éticas fanáticamente xenófobas.",
+    "en": "It comes out of The Doorway event chain, a daemon species with fanatically xenophobe ethics.",
+    "jp": "「出入り口」のイベントから現れる、狂信的排他主義の悪魔の種族です。"
+   }
+  },
+  {
+   "id": "events.wiki.unique_larion",
+   "tier": 5,
+   "topic": "events",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Unique empires"
+   },
+   "text": {
+    "es": "¿Qué yacimiento arqueológico puede dar lugar a la consciencia Larionessi, un imperio fúngico?",
+    "en": "Which archaeology site can give rise to the Larionessi Consciousness, a fungoid empire?",
+    "jp": "菌類型のラリオネッシ帝国が生まれるきっかけとなる考古学サイトは？"
+   },
+   "answers": {
+    "es": [
+     "Ex Gravitas",
+     "Mundo robot antiguo",
+     "La señal",
+     "Cráter antiguo"
+    ],
+    "en": [
+     "Ex Gravitas",
+     "Ancient Robot World",
+     "The Signal",
+     "Ancient Crater"
+    ],
+    "jp": [
+     "エクス・グラヴィタス",
+     "太古のロボット惑星",
+     "信号",
+     "古代クレーター"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Es una mente colmena con el origen Restos.",
+    "en": "It is a hive mind with the Remnants origin.",
+    "jp": "起源「残党」を持つ集合意識です。"
+   }
   },
   {
    "id": "government.authority_ethic.auth_corporate.ethic_fanatic_authoritarian",
@@ -39782,6 +41833,680 @@
     "jp": "その統治形態と倫理観の両方に合うのは「虚空奪取団」だけです。"
    },
    "icon": "civics/Civic_void_reavers.png"
+  },
+  {
+   "id": "government.wiki.elections_democratic",
+   "tier": 3,
+   "topic": "government",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Government",
+    "section": "Elections"
+   },
+   "text": {
+    "es": "En unas elecciones democráticas, ¿en qué se basa principalmente el apoyo de cada candidato?",
+    "en": "In democratic elections, what is each candidate's support mainly based on?",
+    "jp": "民主制の選挙で各候補の支持の基礎になるのは？"
+   },
+   "answers": {
+    "es": [
+     "El poder de la facción que comparte su ética",
+     "La riqueza personal del líder",
+     "El número de flotas que manda",
+     "Un sorteo puro"
+    ],
+    "en": [
+     "The power of the faction sharing its ethic",
+     "The leader's personal wealth",
+     "The number of fleets it commands",
+     "Pure chance"
+    ],
+    "jp": [
+     "同じ思想を持つ派閥の勢力",
+     "指導者の個人資産",
+     "指揮する艦隊の数",
+     "完全な抽選"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Después pesan cosas como el nivel, los rasgos, ser el gobernante actual o la edad.",
+    "en": "Skill level, traits, being the incumbent or old age then adjust it.",
+    "jp": "そこにレベル、特性、現職、高齢などの補正がかかります。"
+   }
+  },
+  {
+   "id": "government.wiki.elections_imperial",
+   "tier": 1,
+   "topic": "government",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Government",
+    "section": "Elections"
+   },
+   "text": {
+    "es": "¿Qué autoridad no celebra elecciones?",
+    "en": "Which authority holds no elections?",
+    "jp": "選挙が行われない政体は？"
+   },
+   "answers": {
+    "es": [
+     "Imperial",
+     "Democrático",
+     "Oligárquico",
+     "Dictatorial"
+    ],
+    "en": [
+     "Imperial",
+     "Democratic",
+     "Oligarchic",
+     "Dictatorial"
+    ],
+    "jp": [
+     "君主制",
+     "民主制",
+     "寡頭制",
+     "独裁制"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Las dictatoriales sí eligen, como las oligárquicas, pero quien gana gobierna hasta morir.",
+    "en": "Dictatorial ones do vote, like oligarchic ones, but the winner rules for life.",
+    "jp": "独裁制は寡頭制と同様に選挙しますが、勝者は終身統治します。"
+   }
+  },
+  {
+   "id": "government.wiki.elections_oligarchic",
+   "tier": 3,
+   "topic": "government",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Government",
+    "section": "Elections"
+   },
+   "text": {
+    "es": "En unas elecciones oligárquicas, ¿qué puede hacer el imperio para decidir quién gana?",
+    "en": "In oligarchic elections, how can the empire pick the winner?",
+    "jp": "寡頭制の選挙で帝国が勝者を決めるには？"
+   },
+   "answers": {
+    "es": [
+     "Pagar influencia por cada voto",
+     "Pagar unidad",
+     "Declarar una guerra",
+     "Nada: siempre es al azar"
+    ],
+    "en": [
+     "Paying Influence per vote",
+     "Paying Unity",
+     "Declaring a war",
+     "Nothing: it is always random"
+    ],
+    "jp": [
+     "票ごとに影響力を払う",
+     "ユニティを支払う",
+     "戦争を宣言する",
+     "何もできず常に無作為"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Si no se paga, se elige un líder al azar; el coste depende del tamaño del imperio.",
+    "en": "Without payment a random leader wins; the price depends on empire size.",
+    "jp": "支払わなければ無作為に選ばれます。費用は帝国の規模次第です。"
+   }
+  },
+  {
+   "id": "government.wiki.victory_year",
+   "tier": 1,
+   "topic": "government",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Victory score"
+   },
+   "text": {
+    "es": "¿Quién gana cuando llega el año de victoria?",
+    "en": "Who wins when the Victory Year arrives?",
+    "jp": "勝利年を迎えたとき、勝者になるのは？"
+   },
+   "answers": {
+    "es": [
+     "El imperio con más sistemas",
+     "El custodio galáctico",
+     "El imperio con la puntuación más alta",
+     "El imperio más antiguo"
+    ],
+    "en": [
+     "The empire with the most systems",
+     "The Galactic Custodian",
+     "The empire with the highest score",
+     "The oldest empire"
+    ],
+    "jp": [
+     "星系数が最多の帝国",
+     "銀河守護者",
+     "スコアが最も高い帝国",
+     "最古の帝国"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La puntuación suma economía, tecnología, sistemas, colonias, pops, reliquias y más.",
+    "en": "The score adds economy, technology, systems, colonies, pops, relics and more.",
+    "jp": "スコアは経済、技術、星系、植民地、人口、遺産などの合計です。"
+   }
+  },
+  {
+   "id": "leaders.wiki.external_pool",
+   "tier": 3,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "External leader pool"
+   },
+   "text": {
+    "es": "¿Qué permite reclutar líderes de las especies de otro imperio?",
+    "en": "Which of these allows recruiting leaders from another empire's species?",
+    "jp": "他の帝国の種族から指導者を雇えるようになる条件はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Un tratado de migración con él",
+     "Un pacto de no agresión",
+     "Una rivalidad declarada",
+     "Un acuerdo comercial entre enclaves"
+    ],
+    "en": [
+     "A Migration Treaty with it",
+     "A Non-Aggression Pact",
+     "A declared rivalry",
+     "A deal with a trader enclave"
+    ],
+    "jp": [
+     "その帝国との移住協定",
+     "不可侵条約",
+     "ライバル宣言",
+     "商人の飛び地との取引"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "También sirve estar en la misma federación o que uno sea súbdito del otro.",
+    "en": "Sharing a federation or one being the other's subject also works.",
+    "jp": "同じ連邦に属するか、一方が従属国である場合にも可能です。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_cap_default",
+   "tier": 2,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader capacity"
+   },
+   "text": {
+    "es": "¿Cuál es el límite base de líderes por cada clase?",
+    "en": "What is the base leader capacity for each class?",
+    "jp": "各クラスの指導者上限の基本値は？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "1",
+     "5",
+     "8"
+    ],
+    "en": [
+     "3",
+     "1",
+     "5",
+     "8"
+    ],
+    "jp": [
+     "3",
+     "1",
+     "5",
+     "8"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Superarlo encarece el mantenimiento y reduce la experiencia de toda esa clase.",
+    "en": "Going over it raises upkeep and cuts experience for that whole class.",
+    "jp": "超過するとそのクラス全員の維持費が増え、経験値が減ります。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_cap_free",
+   "tier": 4,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader capacity"
+   },
+   "text": {
+    "es": "¿Qué líderes no cuentan para el límite de su clase?",
+    "en": "Which leaders do not count towards the leader capacity?",
+    "jp": "指導者上限に数えられないのはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Los gobernantes de edad avanzada",
+     "Los paragones de leyenda",
+     "Los comandantes sin flota",
+     "Todos los líderes robóticos"
+    ],
+    "en": [
+     "Rulers of advanced age",
+     "Legendary Paragons",
+     "Commanders without a fleet",
+     "Every robotic leader"
+    ],
+    "jp": [
+     "高齢の支配者",
+     "伝説のパラゴン",
+     "艦隊を持たない司令官",
+     "すべてのロボット指導者"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Tampoco cuentan los líderes con el rasgo ansioso por debajo del nivel 4.",
+    "en": "Leaders with the Eager trait below level 4 do not count either.",
+    "jp": "レベル4未満の熱心な特性を持つ指導者も対象外です。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_classes",
+   "tier": 1,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader class"
+   },
+   "text": {
+    "es": "¿Cuáles son las tres clases de líderes?",
+    "en": "What are the three leader classes?",
+    "jp": "指導者の3つのクラスは？"
+   },
+   "answers": {
+    "es": [
+     "Gobernador, almirante y general",
+     "Oficial, Científico y Comandante",
+     "Oficial, Científico y espía",
+     "Científico, Comandante y sacerdote"
+    ],
+    "en": [
+     "Governor, Admiral and General",
+     "Official, Scientist and Commander",
+     "Official, Scientist and Spy",
+     "Scientist, Commander and Priest"
+    ],
+    "jp": [
+     "総督・提督・将軍",
+     "役人・科学者・司令官",
+     "役人・科学者・諜報員",
+     "科学者・司令官・司祭"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La clase decide asignaciones, puestos del consejo, fuentes de experiencia y rasgos disponibles.",
+    "en": "The class decides assignments, council positions, experience sources and available traits.",
+    "jp": "クラスによって任務、評議会の役職、経験の得方、取得できる特性が決まります。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_immortal_trait",
+   "tier": 3,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Lifespan"
+   },
+   "text": {
+    "es": "¿Cuál de estos rasgos hace que un líder nunca muera de viejo?",
+    "en": "Which of these traits means a leader never dies of old age?",
+    "jp": "指導者が老衰で死ななくなる特性はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Elegido",
+     "Venerable",
+     "Litoideo",
+     "Robusta"
+    ],
+    "en": [
+     "Chosen One",
+     "Venerable",
+     "Lithoid",
+     "Robust"
+    ],
+    "jp": [
+     "選ばれし者",
+     "高徳",
+     "岩石種族",
+     "頑健な臓器"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Los demás alargan la vida, pero no la hacen eterna.",
+    "en": "The others lengthen lifespan but do not make it endless.",
+    "jp": "他の特性は寿命を延ばすだけで、不死にはなりません。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_lifespan_base",
+   "tier": 2,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Lifespan"
+   },
+   "text": {
+    "es": "¿Cuál es la esperanza de vida base garantizada de un líder?",
+    "en": "What is the base guaranteed lifespan of a leader?",
+    "jp": "指導者の保証された基本寿命は？"
+   },
+   "answers": {
+    "es": [
+     "60 años",
+     "100 años",
+     "80 años",
+     "150 años"
+    ],
+    "en": [
+     "60 years",
+     "100 years",
+     "80 years",
+     "150 years"
+    ],
+    "jp": [
+     "60歳",
+     "100歳",
+     "80歳",
+     "150歳"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Pasada esa edad, cada mes hay una probabilidad creciente de morir.",
+    "en": "Past that age, there is a growing chance of death every month.",
+    "jp": "それを超えると毎月死亡する可能性があり、次第に高まります。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_max_level",
+   "tier": 3,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Skill level"
+   },
+   "text": {
+    "es": "¿Cuál es el nivel de habilidad máximo de un líder?",
+    "en": "What is the highest skill level a leader can have?",
+    "jp": "指導者のスキルレベルの最大値は？"
+   },
+   "answers": {
+    "es": [
+     "5",
+     "7",
+     "20",
+     "10"
+    ],
+    "en": [
+     "5",
+     "7",
+     "20",
+     "10"
+    ],
+    "jp": [
+     "5",
+     "7",
+     "20",
+     "10"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "La mayoría empieza en el nivel 1 y gana rasgos al subir, a menudo relacionados con su puesto.",
+    "en": "Most start at level 1 and gain traits on level up, often tied to their assignment.",
+    "jp": "多くはレベル1から始まり、任務に関係する特性をレベルアップで得ます。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_negative_max",
+   "tier": 4,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Negative traits"
+   },
+   "text": {
+    "es": "De base, ¿cuántos rasgos negativos como máximo puede acumular un líder?",
+    "en": "By default, how many negative traits can a leader accumulate at most?",
+    "jp": "基本状態で指導者が持てる負の特性は最大いくつ？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "2",
+     "4",
+     "6"
+    ],
+    "en": [
+     "1",
+     "2",
+     "4",
+     "6"
+    ],
+    "jp": [
+     "1",
+     "2",
+     "4",
+     "6"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Algunas cívicas, tradiciones y rasgos de especie suben o bajan ese tope.",
+    "en": "Some civics, traditions and species traits raise or lower the cap.",
+    "jp": "一部の国是、伝統、種族特性で上限が増減します。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_pool_refresh",
+   "tier": 2,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader pool"
+   },
+   "text": {
+    "es": "¿Cada cuánto se renueva la reserva de líderes disponibles para reclutar?",
+    "en": "How often is the pool of recruitable leaders replenished?",
+    "jp": "雇用できる指導者の候補はどのくらいの間隔で補充される？"
+   },
+   "answers": {
+    "es": [
+     "Cada año",
+     "Cada 5 años",
+     "Cada 10 años",
+     "Cada mes"
+    ],
+    "en": [
+     "Every year",
+     "Every 5 years",
+     "Every 10 years",
+     "Every month"
+    ],
+    "jp": [
+     "毎年",
+     "5年ごと",
+     "10年ごと",
+     "毎月"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La reserva empieza con 3 candidatos de cada clase, ampliables con cívicas, tradiciones o ventajas.",
+    "en": "The pool starts with 3 candidates per class, which civics, traditions or perks can increase.",
+    "jp": "候補は各クラス3人から始まり、国是や伝統、パークで増やせます。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_recruit_resource",
+   "tier": 1,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader pool"
+   },
+   "text": {
+    "es": "¿Con qué recurso se contrata a un líder de la reserva?",
+    "en": "Which resource is spent to recruit a leader from the pool?",
+    "jp": "候補から指導者を雇うのに支払う資源は？"
+   },
+   "answers": {
+    "es": [
+     "Unidad",
+     "Influencia",
+     "Créditos de energía",
+     "Bienes de consumo"
+    ],
+    "en": [
+     "Unity",
+     "Influence",
+     "Energy Credits",
+     "Consumer Goods"
+    ],
+    "jp": [
+     "ユニティ",
+     "影響力",
+     "エネルギー通貨",
+     "消費財"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "También se paga cada mes un mantenimiento en ese recurso, proporcional al nivel.",
+    "en": "Their monthly upkeep is paid in the same resource and grows with level.",
+    "jp": "毎月の維持費も同じ資源で、レベルに応じて増えます。"
+   }
+  },
+  {
+   "id": "leaders.wiki.leader_ruler_dismiss",
+   "tier": 1,
+   "topic": "leaders",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader pool"
+   },
+   "text": {
+    "es": "¿A qué líder no se puede despedir?",
+    "en": "Which leader cannot be dismissed?",
+    "jp": "解任できない指導者は？"
+   },
+   "answers": {
+    "es": [
+     "Al gobernante del imperio",
+     "Al científico más veterano",
+     "Al gobernador de la capital",
+     "Al comandante de la flota principal"
+    ],
+    "en": [
+     "The empire's ruler",
+     "The most experienced scientist",
+     "The governor of the capital",
+     "The commander of the main fleet"
+    ],
+    "jp": [
+     "帝国の支配者",
+     "最も経験豊富な科学者",
+     "首都の総督",
+     "主力艦隊の司令官"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El despido de cualquier otro es irreversible.",
+    "en": "Dismissing anyone else cannot be undone.",
+    "jp": "それ以外の解任は取り消せません。"
+   }
+  },
+  {
+   "id": "leaders.wiki.veteran_level",
+   "tier": 2,
+   "topic": "leaders",
+   "dlc": [
+    "Galactic Paragons"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Leaders",
+    "section": "Leader class"
+   },
+   "text": {
+    "es": "Con Galactic Paragons, ¿en qué nivel puede un líder especializarse como veterano?",
+    "en": "With Galactic Paragons, at which skill level can a leader specialize into a veteran class?",
+    "jp": "Galactic Paragons導入時、指導者がベテランクラスに専門化できるのはレベル何？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "6",
+     "8",
+     "4"
+    ],
+    "en": [
+     "2",
+     "6",
+     "8",
+     "4"
+    ],
+    "jp": [
+     "2",
+     "6",
+     "8",
+     "4"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Cada clase se divide entonces en una de cuatro clases veteranas.",
+    "en": "Each class then splits into one of four veteran classes.",
+    "jp": "各クラスは4つのベテランクラスのどれかに分かれます。"
+   }
   },
   {
    "id": "modifiers.modifier_amount.arkship_purge_enacted.stability",
@@ -46922,6 +49647,1413 @@
     "jp": "「虚空鋳造」の開始惑星：軌道上居住地。"
    },
    "icon": "origin_icons/Origin_void_dwellers.png"
+  },
+  {
+   "id": "origins.wiki.broken_shackles_mutiny",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Diplomacy-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_broken_shackles"
+   },
+   "text": {
+    "es": "¿Cómo empezó la civilización del origen Grilletes rotos?",
+    "en": "How did the civilization of the Broken Shackles origin begin?",
+    "jp": "起源「破られた手枷」の文明はどのように始まった？"
+   },
+   "answers": {
+    "es": [
+     "Como una colonia olvidada por su metrópoli",
+     "Como pupilo de un imperio caído",
+     "Como una compañía minera independizada",
+     "Como un motín a bordo de una nave esclavista"
+    ],
+    "en": [
+     "As a colony forgotten by its homeland",
+     "As a ward of a Fallen Empire",
+     "As a mining company that broke away",
+     "As a mutiny aboard a slaver vessel"
+    ],
+    "jp": [
+     "本国に忘れられた植民地から",
+     "没落した帝国の被後見者として",
+     "独立した採掘会社として",
+     "奴隷船での反乱から"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "La forman especies pre-FTL muy diversas y empieza sin distritos rurales en un mundo que no es el suyo.",
+    "en": "It is made of many pre-FTL species and starts without rural districts on a world that is not their own.",
+    "jp": "多様なFTL以前の種族で構成され、故郷でない惑星で地方区画なしに始まります。"
+   }
+  },
+  {
+   "id": "origins.wiki.calamitous_birth_arrival",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "Lithoids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_lithoid"
+   },
+   "text": {
+    "es": "Según la historia de Nacimiento calamitoso, ¿cómo llegaron esos litoides a su mundo natal?",
+    "en": "In the story of Calamitous Birth, how did those Lithoids arrive on their homeworld?",
+    "jp": "起源「天災より生まれしもの」の物語で、この岩石種族はどうやって母星にやって来た？"
+   },
+   "answers": {
+    "es": [
+     "Traídos como esclavos por un imperio vecino",
+     "A bordo de un meteorito que arrasó casi toda la vida nativa",
+     "Cultivados en tanques por constructores desaparecidos",
+     "Cruzando una grieta astral"
+    ],
+    "en": [
+     "Brought as slaves by a neighbouring empire",
+     "On a meteorite that wiped out most native life",
+     "Grown in vats by vanished builders",
+     "Through an astral rift"
+    ],
+    "jp": [
+     "隣の帝国に奴隷として連れて来られた",
+     "隕石に乗って落下し、原生生物の大半を滅ぼした",
+     "姿を消した建設者の培養槽で生まれた",
+     "天体の裂け目を通り抜けた"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "No son nativos: el meteorito se estrelló contra el planeta y dejó un cráter enorme.",
+    "en": "They are not native: the meteorite slammed into the planet and left a massive crater.",
+    "jp": "彼らは原住種ではなく、隕石の衝突で巨大なクレーターが残りました。"
+   }
+  },
+  {
+   "id": "origins.wiki.clone_army_site",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_clone_army"
+   },
+   "text": {
+    "es": "En Ejército clon, ¿qué ocurre pocos años después de empezar la partida?",
+    "en": "In Clone Army, what happens a few years after the game starts?",
+    "jp": "起源「クローン軍団」でゲーム開始の数年後に起こることは？"
+   },
+   "answers": {
+    "es": [
+     "Sus antiguos amos regresan con una flota de guerra",
+     "Todos los clones obtienen fertilidad natural sin intervención",
+     "Aparece en el mundo natal un yacimiento arqueológico sobre su origen",
+     "El mundo natal se convierte en un mundo tumba"
+    ],
+    "en": [
+     "Their old masters return with a war fleet",
+     "Every clone becomes naturally fertile on its own",
+     "An archaeological site about their origin appears on the homeworld",
+     "The homeworld turns into a tomb world"
+    ],
+    "jp": [
+     "かつての主人が艦隊を率いて帰還する",
+     "全クローンがひとりでに生殖能力を得る",
+     "母星に出自をめぐる考古学サイトが現れる",
+     "母星が死の惑星になる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La excavación del mundo natal inicia la cadena sobre la encrucijada genética de esta especie sin amos.",
+    "en": "Excavating the site starts the event chain about the genetic crossroads of this masterless species.",
+    "jp": "発掘すると、主を失ったこの種族の遺伝的な岐路を描くイベントが始まります。"
+   }
+  },
+  {
+   "id": "origins.wiki.cosmic_dawn_awakening",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Homeworld-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_cosmic_dawn"
+   },
+   "text": {
+    "es": "¿Cómo comienza la historia de la civilización de Amanecer cósmico?",
+    "en": "How does the story of the Cosmic Dawn civilization begin?",
+    "jp": "起源「宇宙の黎明」の文明の物語はどう始まる？"
+   },
+   "answers": {
+    "es": [
+     "Nace de un experimento de un imperio vecino",
+     "Despierta al abrirse sus cápsulas de estasis en un mundo envejecido",
+     "Llega a la galaxia a través de una grieta astral",
+     "Se rebela contra los dueños de sus naves mineras"
+    ],
+    "en": [
+     "It is born from a neighbour's experiment",
+     "It wakes as its stasis pods open on a world aged beyond recognition",
+     "It reaches the galaxy through an astral rift",
+     "It mutinies against its mining ship owners"
+    ],
+    "jp": [
+     "隣国の実験から生まれる",
+     "ステイシスポッドが開き、様変わりした古い世界で目覚める",
+     "天体の裂け目から銀河に現れる",
+     "採掘船の所有者に反乱を起こす"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Su pasado sigue enterrado por la galaxia bajo polvo y ruinas, esperando ser redescubierto.",
+    "en": "Their past still lies scattered across the galaxy under dust and ruins, waiting to be rediscovered.",
+    "jp": "彼らの過去は塵と廃墟の下に銀河中へ散らばり、再発見を待っています。"
+   }
+  },
+  {
+   "id": "origins.wiki.doomsday_homeworld",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [
+    "Federations"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_doomsday"
+   },
+   "text": {
+    "es": "¿Qué le ocurre al mundo natal de una civilización con el origen Día del Juicio Final?",
+    "en": "What happens to the homeworld of a civilization with the Doomsday origin?",
+    "jp": "起源「終末の日」の文明の母星はどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Se convierte en un mundo Gaia",
+     "Explota y queda como un mundo destrozado",
+     "Lo reclama un imperio caído",
+     "Se hunde bajo un océano planetario"
+    ],
+    "en": [
+     "It turns into a Gaia world",
+     "It explodes and is left as a shattered world",
+     "A Fallen Empire claims it",
+     "It sinks under a planet-wide ocean"
+    ],
+    "jp": [
+     "ガイア型惑星に変わる",
+     "爆発して粉砕された惑星になる",
+     "没落した帝国に接収される",
+     "全球の海に沈む"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El mundo natal es muy inestable y estalla entre 35 y 45 años después; hay un aviso un año antes.",
+    "en": "The homeworld is unstable and blows up after 35 to 45 years, with a warning one year in advance.",
+    "jp": "母星は不安定で35～45年後に爆発し、その1年前に警告があります。"
+   }
+  },
+  {
+   "id": "origins.wiki.doorstep_gateway",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Megastructure-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_galactic_doorstep"
+   },
+   "text": {
+    "es": "¿Qué hay dormido en el sistema natal con el origen Puerta galáctica?",
+    "en": "What lies dormant in the home system with the Galactic Doorstep origin?",
+    "jp": "起源「銀河の玄関口」の母星系で眠っているものは？"
+   },
+   "answers": {
+    "es": [
+     "Una esfera Dyson",
+     "Un portal",
+     "Una catapulta cuántica",
+     "Un horno de arco"
+    ],
+    "en": [
+     "A Dyson sphere",
+     "A gateway",
+     "A quantum catapult",
+     "An arc furnace"
+    ],
+    "jp": [
+     "ダイソン球",
+     "ゲートウェイ",
+     "量子カタパルト",
+     "アーク炉"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El portal inactivo puede ser una ventaja tecnológica o una amenaza al reactivarla.",
+    "en": "The dormant gateway may be a technological benefit or a looming menace once reactivated.",
+    "jp": "休眠中のゲートウェイは技術的な恩恵にも、忍び寄る脅威にもなり得ます。"
+   }
+  },
+  {
+   "id": "origins.wiki.dragons_neighbour",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_here_be_dragons"
+   },
+   "text": {
+    "es": "¿Qué criatura comparte el sistema natal con un imperio de origen Aquí hay dragones?",
+    "en": "Which creature shares the home system with an empire of the Here Be Dragons origin?",
+    "jp": "起源「竜在りし地」の帝国の母星系に同居している生物は？"
+   },
+   "answers": {
+    "es": [
+     "Una ballena espacial Tiyanki",
+     "Un dragón celestial, al principio aliado",
+     "Un leviatán de cristal hostil",
+     "Una colmena de amebas espaciales"
+    ],
+    "en": [
+     "A Tiyanki space whale",
+     "A Sky Dragon, friendly at the start",
+     "A hostile crystal leviathan",
+     "A hive of space amoebae"
+    ],
+    "jp": [
+     "ティヤンキ宇宙クジラ",
+     "当初は友好的なスカイドラゴン",
+     "敵対的な結晶のリヴァイアサン",
+     "宇宙アメーバの巣"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El origen empieza con un guardián dragón aliado en el sistema; matarlo concede un modificador de imperio.",
+    "en": "The origin starts with an allied dragon guardian in the system; killing it grants an empire modifier.",
+    "jp": "この起源は星系に味方のドラゴンがいる状態で始まり、倒すと帝国修正が得られます。"
+   }
+  },
+  {
+   "id": "origins.wiki.elder_race_origin",
+   "tier": 4,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Unselectable origins",
+    "file": "common/governments/civics/01_origins_non_playable.txt",
+    "key": "origin_fallen_empire"
+   },
+   "text": {
+    "es": "¿Qué origen no se puede elegir al crear un imperio y pertenece a los imperios caídos?",
+    "en": "Which origin cannot be picked at empire creation and belongs to Fallen Empires?",
+    "jp": "帝国作成では選べず、没落した帝国が持つ起源はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Vástago",
+     "Separatistas",
+     "Restos",
+     "Raza antigua"
+    ],
+    "en": [
+     "Scion",
+     "Separatists",
+     "Remnants",
+     "Elder Race"
+    ],
+    "jp": [
+     "サイオン",
+     "分離主義者",
+     "残党",
+     "旧き種族"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Es la civilización mucho más antigua que las demás, reducida por eones de estancamiento a una sombra.",
+    "en": "It is a civilization far older than the rest, reduced by eons of stagnation to a shadow of itself.",
+    "jp": "他よりはるかに古く、永い停滞でかつての影にまで衰えた文明です。"
+   }
+  },
+  {
+   "id": "origins.wiki.enlightened_source",
+   "tier": 4,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Unselectable origins",
+    "file": "common/governments/civics/01_origins_non_playable.txt",
+    "key": "origin_enlightened"
+   },
+   "text": {
+    "es": "Una civilización pre-FTL con el origen Civilización en desarrollo es ilustrada por un imperio espacial. ¿Qué origen recibe?",
+    "en": "A pre-FTL civilization with the Developing Civilization origin is enlightened by a spacefaring empire. Which origin does it get?",
+    "jp": "起源「発達中文明」のFTL以前文明が宇宙帝国に啓蒙されると、起源は何になる？"
+   },
+   "answers": {
+    "es": [
+     "Liberada",
+     "Separatistas",
+     "Aterrizados",
+     "Iluminados"
+    ],
+    "en": [
+     "Liberated",
+     "Separatists",
+     "Planetfallen",
+     "Enlightened"
+    ],
+    "jp": [
+     "解放後誕生",
+     "分離主義者",
+     "惑星に降りた国",
+     "啓蒙された種族"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Su desarrollo se aceleró enormemente por la intervención externa que la convirtió en una cultura espacial.",
+    "en": "Outside interference greatly accelerated their development and made them a spacefaring culture.",
+    "jp": "外部の介入で発展が大きく加速され、宇宙文明になったためです。"
+   }
+  },
+  {
+   "id": "origins.wiki.giants_site",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Federations"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_shoulders_of_giants"
+   },
+   "text": {
+    "es": "Con el origen A hombros de gigantes, ¿qué yacimiento arqueológico aparece en un planeta del sistema natal?",
+    "en": "With On the Shoulders of Giants, which archaeological site appears on a planet of the home system?",
+    "jp": "起源「巨人の肩の上」で母星系の惑星に現れる考古学サイトは？"
+   },
+   "answers": {
+    "es": [
+     "Cráter antiguo",
+     "Ex Gravitas",
+     "El Mundo velado",
+     "Excavación en mundo natal"
+    ],
+    "en": [
+     "Ancient Crater",
+     "Ex Gravitas",
+     "The Shrouded World",
+     "Homeworld Excavation"
+    ],
+    "jp": [
+     "古代クレーター",
+     "エクス・グラヴィタス",
+     "シュラウドの惑星",
+     "故郷の発掘"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Un benefactor misterioso dejó secretos en el sistema, y hasta completar esa historia no se pueden descubrir precursores.",
+    "en": "A mysterious benefactor left boons in the system, and precursors cannot be found until that story is completed.",
+    "jp": "謎の恩人が星系に遺産を残し、その物語を終えるまで先駆者は発見できません。"
+   }
+  },
+  {
+   "id": "origins.wiki.hard_reset_story",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Combat-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_unplugged"
+   },
+   "text": {
+    "es": "¿Qué le pasó a la civilización del origen Restablecimiento completo?",
+    "en": "What happened to the civilization of the Hard Reset origin?",
+    "jp": "起源「強制リセット」の文明に何が起きた？"
+   },
+   "answers": {
+    "es": [
+     "Sus robots se rebelaron y la expulsaron",
+     "Un virus borró su memoria colectiva y la hizo una colmena",
+     "Vendió su mundo a una megacorporación",
+     "Fue separada de golpe de la Máquina que la había asimilado"
+    ],
+    "en": [
+     "Its robots rebelled and expelled it",
+     "A virus wiped its memory and made it a hive",
+     "It sold its world to a megacorporation",
+     "It was abruptly severed from the Machine that had assimilated it"
+    ],
+    "jp": [
+     "ロボットが反乱して彼らを追放した",
+     "ウイルスで記憶を失い群体になった",
+     "母星をメガコーポに売り払った",
+     "自分たちを同化していた機械から突然切り離された"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Recién nacida, lucha por hacerse un hueco: empieza en combate contra corbetas en su propio sistema.",
+    "en": "Newly born, it fights for a place of its own and starts in combat against corvettes in its home system.",
+    "jp": "生まれたばかりの彼らは居場所を求め、母星系でコルベットと交戦中の状態で始まります。"
+   }
+  },
+  {
+   "id": "origins.wiki.heirs_khan_story",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_heirs_of_the_khan"
+   },
+   "text": {
+    "es": "¿Cuál es el pasado de los nómadas del origen Herederos del kan?",
+    "en": "What is the past of the nomads in the Heirs of the Khan origin?",
+    "jp": "起源「ハーンの後継者」の遊牧民の過去は？"
+   },
+   "answers": {
+    "es": [
+     "Eran mercaderes arruinados por la Comunidad Galáctica",
+     "Son los restos de una flota enviada por un imperio caído",
+     "Abandonaron su mundo cuando su estrella se convirtió en gigante roja",
+     "El clan era el siguiente en la línea del kanato y fue derrocado por traición"
+    ],
+    "en": [
+     "They were traders ruined by the Galactic Community",
+     "They are the remains of a fleet sent by a Fallen Empire",
+     "They left home when their star became a red giant",
+     "The clan was next in line for the Khanate and was cast down by treachery"
+    ],
+    "jp": [
+     "銀河共同体に破産させられた商人だった",
+     "没落した帝国が送り出した艦隊の生き残りだ",
+     "恒星が赤色巨星になり母星を捨てた",
+     "ハン国の次期継承者だったが、裏切りで追放された"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Traicionados por los suyos, recorren las hipervías reuniendo fuerzas para devolver el golpe.",
+    "en": "Betrayed by their own kin, they stalk the hyperlanes gathering strength to return the favour.",
+    "jp": "身内に裏切られた彼らは、報復の力を蓄えながらハイパーレーンをさまよいます。"
+   }
+  },
+  {
+   "id": "origins.wiki.life_seeded_world",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [
+    "Apocalypse"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Homeworld-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_life_seeded"
+   },
+   "text": {
+    "es": "¿Qué mundo natal tienen las civilizaciones del origen Sembrado de vida?",
+    "en": "What homeworld do civilizations with the Life-Seeded origin have?",
+    "jp": "起源「生命の播種」の文明の母星は？"
+   },
+   "answers": {
+    "es": [
+     "Un mundo oceánico de tamaño 15",
+     "Un mundo volcánico de tamaño 20",
+     "Un mundo Gaia de tamaño 30",
+     "Un mundo máquina de tamaño 25"
+    ],
+    "en": [
+     "A size 15 Ocean World",
+     "A size 20 Volcanic World",
+     "A size 30 Gaia World",
+     "A size 25 Machine World"
+    ],
+    "jp": [
+     "サイズ15の海洋型惑星",
+     "サイズ20の火山型惑星",
+     "サイズ30のガイア型惑星",
+     "サイズ25の機械惑星"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Su hogar es un paraíso quizá diseñado para ellos, pero no aparecen mundos habitables garantizados cerca.",
+    "en": "Their home is a paradise, perhaps designed for them, but no guaranteed habitable worlds appear nearby.",
+    "jp": "母星は彼らのために造られたかのような楽園ですが、近くに保証された居住可能惑星はありません。"
+   }
+  },
+  {
+   "id": "origins.wiki.lost_colony_parent",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Diplomacy-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_lost_colony"
+   },
+   "text": {
+    "es": "Si eliges el origen Colonia perdida, ¿qué más habrá en la galaxia?",
+    "en": "If you pick the Lost Colony origin, what else will exist in the galaxy?",
+    "jp": "起源「消えた移民団」を選ぶと、銀河には他に何が存在する？"
+   },
+   "answers": {
+    "es": [
+     "Un imperio caído que te vigila como protegido",
+     "Una colonia gemela en tu propio sistema",
+     "Un enclave de mercaderes con tu especie",
+     "Un imperio avanzado de tu misma especie"
+    ],
+    "en": [
+     "A Fallen Empire that watches you as its ward",
+     "A twin colony in your own system",
+     "A trader enclave of your species",
+     "An advanced empire of your own species"
+    ],
+    "jp": [
+     "あなたを被後見者として見守る没落した帝国",
+     "自星系にある双子の植民地",
+     "同種族の商人の飛び地",
+     "自分と同じ種族の先進帝国"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Los colonos quedaron separados de su mundo de origen; con retrato humano, ese imperio usa el sistema Sol.",
+    "en": "The colonists were cut off from their homeland; with a human portrait, that empire uses the Sol system.",
+    "jp": "入植者は本国と切り離されました。人類の外見なら、その帝国は太陽系を使います。"
+   }
+  },
+  {
+   "id": "origins.wiki.mechanist_robots",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Secondary species origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_mechanists"
+   },
+   "text": {
+    "es": "¿Qué logró la civilización del origen Mecanista mucho antes de los primeros vuelos espaciales?",
+    "en": "What did the Mechanist civilization achieve long before even basic space flight?",
+    "jp": "起源「機械主義」の文明が、初歩的な宇宙飛行よりずっと前に成し遂げたことは？"
+   },
+   "answers": {
+    "es": [
+     "Fabricar los primeros robots auténticos",
+     "Abrir un portal estable a otra galaxia",
+     "Clonar a todos sus gobernantes",
+     "Contactar con el Velo"
+    ],
+    "en": [
+     "Building the first true robots",
+     "Opening a stable portal to another galaxy",
+     "Cloning all of their rulers",
+     "Contacting the Shroud"
+    ],
+    "jp": [
+     "本物のロボットを初めて製造した",
+     "別の銀河への安定した門を開いた",
+     "支配者全員をクローン化した",
+     "シュラウドとの接触に成功した"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Fascinados por los autómatas desde la primera era del vapor, empiezan con población robótica.",
+    "en": "Obsessed with automatons since the early Steam Age, they start with robot pops.",
+    "jp": "蒸気時代から自動人形に夢中だった彼らは、ロボット人口を持って始まります。"
+   }
+  },
+  {
+   "id": "origins.wiki.mindwardens_defence",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Combat-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_mindwardens"
+   },
+   "text": {
+    "es": "¿Contra qué desarrollaron tecnología los antepasados de Guardianes de la mente?",
+    "en": "Against what did the ancestors of the Mindwardens develop technology?",
+    "jp": "起源「マインドウォーデン」の祖先は何に対抗する技術を作った？"
+   },
+   "answers": {
+    "es": [
+     "Flotas robóticas de un imperio extinto",
+     "Plagas biológicas traídas por meteoritos",
+     "Tormentas cósmicas recurrentes",
+     "Fuerzas de otro mundo que invadían la mente"
+    ],
+    "en": [
+     "Robot fleets of a dead empire",
+     "Biological plagues carried by meteorites",
+     "Recurring cosmic storms",
+     "Otherworldly forces that invaded the mind"
+    ],
+    "jp": [
+     "滅びた帝国のロボット艦隊",
+     "隕石が運んだ生物学的疫病",
+     "繰り返し起こる宇宙嵐",
+     "精神に侵入する異界の力"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Sus dispositivos antiguos siguen funcionando, aunque no se han probado contra amenazas psiónicas externas.",
+    "en": "The old machinery remains operational, but nobody knows whether it can stop the psionics of other empires.",
+    "jp": "古代の装置はまだ動きますが、外の銀河のサイオニックの脅威には未検証です。"
+   }
+  },
+  {
+   "id": "origins.wiki.msi_origin_name",
+   "tier": 5,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Unselectable origins",
+    "file": "common/governments/civics/01_origins_non_playable.txt",
+    "key": "origin_slavers"
+   },
+   "text": {
+    "es": "¿Cómo se llama el origen no seleccionable de Industrias Especializadas Minamar?",
+    "en": "What is the name of the unselectable origin of Minamar Specialized Industries?",
+    "jp": "ミナマール特化産業株式会社が持つ選択不可の起源の名前は？"
+   },
+   "answers": {
+    "es": [
+     "Señor imperial",
+     "Vuestra escalera al cielo",
+     "Incursión demoníaca",
+     "Sucesor del kanato"
+    ],
+    "en": [
+     "Imperial Liege",
+     "Your Ladder To The Sky",
+     "Daemonic Incursion",
+     "Khanate Successor"
+    ],
+    "jp": [
+     "帝国君主",
+     "天上への梯子",
+     "邪悪なる侵攻",
+     "ハン国の後継者"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La empresa presume de llevar el viaje más rápido que la luz a civilizaciones menos desarrolladas… con un precio.",
+    "en": "The company boasts of bringing FTL travel to less developed civilizations… at a cost.",
+    "jp": "この企業は未発達な文明にFTL航行をもたらすと誇りますが、それには代価があります。"
+   }
+  },
+  {
+   "id": "origins.wiki.necrophage_pops",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Necroids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Secondary species origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_necrophage"
+   },
+   "text": {
+    "es": "En un imperio con el origen Necrófagos, ¿quién puede ser líder u ocupar trabajos de élite?",
+    "en": "In an empire with the Necrophage origin, who can be a leader or hold elite jobs?",
+    "jp": "起源「ネクロファージ」の帝国で、指導者になったりエリート職に就けたりするのは誰？"
+   },
+   "answers": {
+    "es": [
+     "Solo la especie presente",
+     "Cualquier pop con ciudadanía plena",
+     "Solo los pops necrófagos",
+     "Solo los robots"
+    ],
+    "en": [
+     "Only the prepatent species",
+     "Any pop with full citizenship",
+     "Only the Necrophage pops",
+     "Only robot pops"
+    ],
+    "jp": [
+     "前宿主の種族だけ",
+     "完全な市民権を持つ全人口",
+     "ネクロファージの人口だけ",
+     "ロボット人口だけ"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La civilización evolucionó como parásita: la especie fundadora manda y las demás son recursos o alimento.",
+    "en": "Being parasites, the founders rule; other species end up converted or eaten.",
+    "jp": "寄生生物として進化した文明では創始種族が支配し、他種族は仲間か食料になります。"
+   }
+  },
+  {
+   "id": "origins.wiki.origin_default_start",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_default"
+   },
+   "text": {
+    "es": "¿Qué origen describe una sociedad que, tras luchas y triunfos, ha logrado un mundo natal con objetivos unificados?",
+    "en": "Which origin describes a society that, through strife and triumph, has reached a homeworld with unified goals?",
+    "jp": "苦難と勝利を経て、目標を一つにした母星を手に入れた社会を描く起源はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Intereses comunes",
+     "Unificación próspera",
+     "Colonia perdida",
+     "Puerta galáctica"
+    ],
+    "en": [
+     "Common Ground",
+     "Prosperous Unification",
+     "Lost Colony",
+     "Galactic Doorstep"
+    ],
+    "jp": [
+     "共通の土台",
+     "統一による繁栄",
+     "消えた移民団",
+     "銀河の玄関口"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Unificación próspera es el origen de partida: más pops iniciales y un modificador de mundo natal durante 20 años.",
+    "en": "Prosperous Unification gives extra starting pops and a homeworld modifier that lasts 20 years.",
+    "jp": "「統一による繁栄」は開始人口が増え、母星に20年間の修正がつきます。"
+   }
+  },
+  {
+   "id": "origins.wiki.payback_visit",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Combat-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_payback"
+   },
+   "text": {
+    "es": "¿Qué le hizo a la civilización del origen Revancha el imperio alienígena que la visitó?",
+    "en": "What did the visiting alien empire do to the civilization of the Payback origin?",
+    "jp": "起源「復讐」の文明を訪れた異星帝国は何をした？"
+   },
+   "answers": {
+    "es": [
+     "Le vendió tecnología a cambio de su luna",
+     "La puso en cuarentena sin contacto",
+     "La forzó a la ilustración y la esclavizó",
+     "Le entregó una puerta estelar rota"
+    ],
+    "en": [
+     "Sold it technology for its moon",
+     "Quarantined it without contact",
+     "Forcibly enlightened and enslaved it",
+     "Gave it a broken gateway"
+    ],
+    "jp": [
+     "衛星と引き換えに技術を売った",
+     "接触せず隔離した",
+     "無理やり啓蒙して奴隷にした",
+     "壊れたゲートウェイを贈った"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Ya han repelido a los invasores, pero la pregunta es si volverán.",
+    "en": "They have repelled the invaders, but will they return?",
+    "jp": "侵略者は撃退しましたが、彼らは戻ってくるのでしょうか。"
+   }
+  },
+  {
+   "id": "origins.wiki.red_giant_nebula",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Homeworld-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_red_giant"
+   },
+   "text": {
+    "es": "¿Qué amenaza a la civilización del origen Gigante roja?",
+    "en": "What threatens the civilization of the Red Giant origin?",
+    "jp": "起源「赤色巨星」の文明を脅かしているのは？"
+   },
+   "answers": {
+    "es": [
+     "Un asteroide chocará con su luna",
+     "Una plaga destruye sus cosechas",
+     "Un agujero negro devora su sistema",
+     "Su estrella está calentando el planeta y podría cocerlos vivos"
+    ],
+    "en": [
+     "An asteroid will hit their moon",
+     "A blight destroys their crops",
+     "A black hole is eating their system",
+     "Their star is heating the planet and may cook them alive"
+    ],
+    "jp": [
+     "小惑星が衛星に衝突する",
+     "疫病が作物を枯らす",
+     "ブラックホールが星系を飲み込む",
+     "恒星が惑星を熱し、生きたまま焼かれかねない"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Pueden intentar adaptarse hasta arreglar la causa o abrazar el calor y aprovechar los extraños cambios.",
+    "en": "They can adapt until the cause is fixed, or embrace the heat and exploit the strange changes.",
+    "jp": "原因を直すまで耐えるか、熱を受け入れて奇妙な変化を利用するかを選びます。"
+   }
+  },
+  {
+   "id": "origins.wiki.remnants_homeworld",
+   "tier": 1,
+   "topic": "origins",
+   "dlc": [
+    "Federations",
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Homeworld-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_remnants"
+   },
+   "text": {
+    "es": "¿Qué tipo de planeta es el mundo natal del origen Restos?",
+    "en": "What kind of planet is the homeworld of the Remnants origin?",
+    "jp": "起源「残党」の母星はどんな惑星？"
+   },
+   "answers": {
+    "es": [
+     "Un mundo tumba",
+     "Un mundo Gaia",
+     "Un mundo reliquia",
+     "Un ecumenópolis nuevo"
+    ],
+    "en": [
+     "A Tomb World",
+     "A Gaia World",
+     "A Relic World",
+     "A newly built Ecumenopolis"
+    ],
+    "jp": [
+     "死の惑星",
+     "ガイア型惑星",
+     "遺物惑星",
+     "新築のエキュメノポリス"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Esta civilización dominó gran parte de la galaxia, cayó y ahora vuelve a las estrellas entre sus ruinas.",
+    "en": "This civilization once controlled much of the galaxy, fell, and is returning to the stars from its ruins.",
+    "jp": "かつて銀河の多くを支配して滅びかけた文明が、廃墟から星々へ戻ります。"
+   }
+  },
+  {
+   "id": "origins.wiki.shroud_forged_units",
+   "tier": 4,
+   "topic": "origins",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Ascension-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_shroud_forged"
+   },
+   "text": {
+    "es": "¿Qué problema define el origen Forjado por el Velo?",
+    "en": "Which problem defines the Shroud-Forged origin?",
+    "jp": "起源「シュラウド改変型」を特徴づける問題は？"
+   },
+   "answers": {
+    "es": [
+     "Los psiónicos orgánicos hackean las fábricas",
+     "La red consume zro más rápido de lo que se produce",
+     "Autómatas independientes, desconectados de la inteligencia máquina, exigen cada vez más",
+     "Una entidad del Velo borra cada mes un nodo"
+    ],
+    "en": [
+     "Organic psionics hack the factories",
+     "The network burns zro faster than it is made",
+     "Independent automata, cut off from the Machine Intelligence, make ever greater demands",
+     "A Shroud entity deletes one node every month"
+    ],
+    "jp": [
+     "有機生命の超能力者が工場をハッキングする",
+     "ネットワークが生産以上の速さでズィロを消費する",
+     "機械知性から切り離された自律機械の要求が増え続ける",
+     "シュラウドの存在が毎月ノードを一つ消す"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La guía de una entidad del Velo tiene un precio: parte de la sociedad conectada actúa por su cuenta.",
+    "en": "A Shroud entity steers them, and the price is that some units of the network now act by themselves.",
+    "jp": "シュラウドの導きには代償があり、ネットワーク社会の一部が勝手に動き始めます。"
+   }
+  },
+  {
+   "id": "origins.wiki.slingshot_catapult",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "Overlord"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Megastructure-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_star_slingshot"
+   },
+   "text": {
+    "es": "¿Qué megaestructura abandonada descubren los exploradores del origen Honda hacia las estrellas?",
+    "en": "Which abandoned megastructure do the explorers of Slingshot to the Stars discover?",
+    "jp": "起源「星の海への直行便」の探検家が見つける放棄された巨大建造物は？"
+   },
+   "answers": {
+    "es": [
+     "Un portal",
+     "Una catapulta cuántica",
+     "Un mundo anillo",
+     "Un ascensor orbital"
+    ],
+    "en": [
+     "A gateway",
+     "A Quantum Catapult",
+     "A ring world",
+     "An orbital elevator"
+    ],
+    "jp": [
+     "ゲートウェイ",
+     "量子カタパルト",
+     "リングワールド",
+     "軌道エレベーター"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Está en ruinas en un sistema vecino y se puede reparar sin necesitar megaingeniería.",
+    "en": "It lies ruined in a neighbouring system and can be repaired without Mega-Engineering.",
+    "jp": "隣の星系に廃墟として残り、メガエンジニアリングなしで修復できます。"
+   }
+  },
+  {
+   "id": "origins.wiki.starlit_citadel_threat",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Megastructure-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_starlit_citadel"
+   },
+   "text": {
+    "es": "En Ciudadela de luz estelar, ¿de dónde salen las oleadas de enemigos?",
+    "en": "In Starlit Citadel, where do the waves of enemies come from?",
+    "jp": "起源「星明かりのシタデル」で敵の波はどこから現れる？"
+   },
+   "answers": {
+    "es": [
+     "Del interior de la estrella natal",
+     "De un portal en el borde del sistema natal",
+     "De un imperio caído vecino",
+     "De los restos de una luna colonizada"
+    ],
+    "en": [
+     "From inside the home star",
+     "From a portal at the edge of the home system",
+     "From a neighbouring Fallen Empire",
+     "From the ruins of a settled moon"
+    ],
+    "jp": [
+     "母星の恒星内部から",
+     "母星系の外縁にある門から",
+     "隣の没落した帝国から",
+     "植民された衛星の廃墟から"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Las invasiones son imprevisibles, y la defensa se basa en la ciudadela del espacio profundo junto al agujero de gusano.",
+    "en": "The invasions are unpredictable, and the defence relies on the Deep Space Citadel next to the wormhole.",
+    "jp": "侵攻は予測不能で、ワームホール脇の深宇宙要塞が防衛の要です。"
+   }
+  },
+  {
+   "id": "origins.wiki.syncretic_second_species",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Secondary species origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_syncretic_evolution"
+   },
+   "text": {
+    "es": "¿Qué rasgo tiene la segunda especie con la que empieza Evolución sincrética?",
+    "en": "Which trait does the second species of Syncretic Evolution start with?",
+    "jp": "起源「混合進化」の第二種族が最初から持つ特性は？"
+   },
+   "answers": {
+    "es": [
+     "Serviles",
+     "Necrófagos",
+     "Cavernícola",
+     "Superviviente"
+    ],
+    "en": [
+     "Serviles",
+     "Necrophage",
+     "Cave Dweller",
+     "Survivor"
+    ],
+    "jp": [
+     "盲従的",
+     "ネクロファージ",
+     "洞窟生まれ",
+     "生存者"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Son grandes, fuertes y poco brillantes: las guerras antiguas eliminaron casi toda su agresividad.",
+    "en": "They are big, strong and not very bright: ancient wars culled most of their aggression.",
+    "jp": "大柄で力持ちだが知恵は乏しく、古代の戦争で攻撃性の大半を失っています。"
+   }
+  },
+  {
+   "id": "origins.wiki.synthetic_fertility_disease",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Ascension-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_synthetic_fertility"
+   },
+   "text": {
+    "es": "¿Por qué la especie de Fertilidad sintética busca la salvación digital?",
+    "en": "Why does the species of Synthetic Fertility seek digital salvation?",
+    "jp": "起源「人工生命の生殖能力」の種族がデジタル化に救いを求める理由は？"
+   },
+   "answers": {
+    "es": [
+     "Su estrella está a punto de colapsar",
+     "Sus leyes prohíben los cuerpos biológicos",
+     "Un imperio vecino envenenó su atmósfera",
+     "Una enfermedad genética nueva le impide reproducirse"
+    ],
+    "en": [
+     "Its star is about to collapse",
+     "Its laws ban biological bodies",
+     "A neighbour poisoned its atmosphere",
+     "A novel genetic disease left it unable to reproduce"
+    ],
+    "jp": [
+     "恒星が崩壊しかけている",
+     "法律が生身の体を禁じた",
+     "隣国に大気を汚染された",
+     "新種の遺伝病で繁殖できなくなった"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Sin opciones y ante la extinción, la sociedad antes próspera apuesta por lo sintético.",
+    "en": "Out of options and facing extinction, the once thriving society turns to the synthetic.",
+    "jp": "打つ手を失い絶滅を目前にした社会は、合成の道にすがります。"
+   }
+  },
+  {
+   "id": "origins.wiki.toxic_god_quest",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Megastructure-focused origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_toxic_knights"
+   },
+   "text": {
+    "es": "¿Para qué se creó la Orden de caballeros del origen Caballeros del Dios tóxico?",
+    "en": "Why was the Order of Knights of the Knights of the Toxic God origin created?",
+    "jp": "起源「汚毒神の騎士」の騎士団は何のために結成された？"
+   },
+   "answers": {
+    "es": [
+     "Para destruir al Dios tóxico",
+     "Para buscar al Dios tóxico",
+     "Para vigilar un portal hostil",
+     "Para vender residuos a otros imperios"
+    ],
+    "en": [
+     "To destroy the Toxic God",
+     "To search for the Toxic God",
+     "To guard a hostile portal",
+     "To sell waste to other empires"
+    ],
+    "jp": [
+     "汚毒神を滅ぼすため",
+     "汚毒神を探し求めるため",
+     "敵対的な門を監視するため",
+     "他の帝国に廃棄物を売るため"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Tras la visita de una entidad tóxica que arruinó medio mundo, los supervivientes se unieron para venerarla.",
+    "en": "After a Toxic Entity ruined half their world, the survivors united in reverence for it.",
+    "jp": "毒の存在に母星の半分を汚染された生存者たちは、それを崇めて団結しました。"
+   }
+  },
+  {
+   "id": "origins.wiki.treasure_hunters_relic",
+   "tier": 3,
+   "topic": "origins",
+   "dlc": [
+    "Grand Archive"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_treasure_hunters"
+   },
+   "text": {
+    "es": "¿Con qué reliquia empiezan los imperios del origen Cazatesoros?",
+    "en": "Which relic do empires with the Treasure Hunters origin start with?",
+    "jp": "起源「トレジャーハンター」の帝国が最初から持つレリックは？"
+   },
+   "answers": {
+    "es": [
+     "Cápsula orbital misteriosa",
+     "El Galatrón",
+     "Galaxia en miniatura",
+     "Escamas del gusano"
+    ],
+    "en": [
+     "Mysterious Orbital Capsule",
+     "The Galatron",
+     "Miniature Galaxy",
+     "Scales of the Worm"
+    ],
+    "jp": [
+     "謎の軌道カプセル",
+     "ガラトロン",
+     "ミニチュア銀河",
+     "ワームの鱗"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Un proyecto especial convierte después la cápsula en la Carta celeste, la carta que lleva al tesoro pirata.",
+    "en": "A special project later turns the capsule into the Celestial Chart, the map towards the pirate treasure.",
+    "jp": "のちに特別プロジェクトでカプセルは「天体図」になり、海賊の財宝へ導きます。"
+   }
+  },
+  {
+   "id": "origins.wiki.under_one_rule_leader",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "Galactic Paragons"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_legendary_leader"
+   },
+   "text": {
+    "es": "¿Con qué rasgo empieza el gobernante de un imperio con el origen Solo un gobierno?",
+    "en": "Which trait does the ruler of an empire with the Under One Rule origin start with?",
+    "jp": "起源「国家統一」の帝国の支配者が最初から持つ特性は？"
+   },
+   "answers": {
+    "es": [
+     "Jinete de tormentas",
+     "Luminaria",
+     "Bucanero",
+     "Precursor"
+    ],
+    "en": [
+     "Storm Rider",
+     "Luminary",
+     "Buccaneer",
+     "Trailblazer"
+    ],
+    "jp": [
+     "ストームライダー",
+     "啓発者",
+     "バッカニアー",
+     "トレイルブレイザー"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El gobernante unificó solo la civilización y tiene además rasgos de gobernante exclusivos.",
+    "en": "The ruler unified the civilization alone and can also pick unique ruler traits.",
+    "jp": "支配者は単独で文明を統一し、専用の支配者特性も選べます。"
+   }
+  },
+  {
+   "id": "origins.wiki.wilderness_entity",
+   "tier": 2,
+   "topic": "origins",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Origin",
+    "section": "Selectable origins",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_wilderness"
+   },
+   "text": {
+    "es": "¿Qué es la entidad que protagoniza el origen Natura?",
+    "en": "What is the entity behind the Wilderness origin?",
+    "jp": "起源「ウィルダネス」の主体はどんな存在？"
+   },
+   "answers": {
+    "es": [
+     "Una ecosfera consciente que formó una conciencia colectiva planetaria",
+     "Una red de fábricas abandonadas por sus creadores",
+     "Una flota de naves vivas sin planeta",
+     "Un consejo de colonos que rechaza la tecnología"
+    ],
+    "en": [
+     "A sapient ecosphere that merged into a planet-wide gestalt",
+     "A network of factories abandoned by its makers",
+     "A fleet of living ships without a planet",
+     "A council of settlers who reject technology"
+    ],
+    "jp": [
+     "惑星規模の集合意識になった知的な生態圏",
+     "創造主に放棄された工場ネットワーク",
+     "母星を持たない生体艦の艦隊",
+     "技術を拒む入植者の評議会"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Las muchas formas de vida del planeta se fusionaron hace mucho en una sola mente.",
+    "en": "The many lifeforms of the planet long ago coalesced into a single mind.",
+    "jp": "惑星の多様な生命がはるか昔に一つの精神へと融合しました。"
+   }
   },
   {
    "id": "planets.blocker_districts.d_biological_enclaves",
@@ -57018,6 +61150,1032 @@
    "icon": "planet_modifiers/Pm_wild_storms.png"
   },
   {
+   "id": "planets.wiki.asteroid_survey",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Asteroid belts"
+   },
+   "text": {
+    "es": "¿Cuánto se tarda en explorar un asteroide en comparación con otros cuerpos celestes?",
+    "en": "How does surveying an asteroid compare with surveying other celestial objects?",
+    "jp": "小惑星の調査時間は他の天体と比べてどうなる？"
+   },
+   "answers": {
+    "es": [
+     "El doble: 60 días en vez de 30",
+     "Lo mismo: 30 días",
+     "La mitad: 15 días en vez de 30",
+     "Es instantáneo"
+    ],
+    "en": [
+     "Twice as long: 60 days instead of 30",
+     "The same: 30 days",
+     "Half the time: 15 days instead of 30",
+     "It is instant"
+    ],
+    "jp": [
+     "2倍で、30日ではなく60日",
+     "同じく30日",
+     "半分で、30日ではなく15日",
+     "一瞬で終わる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Los cinturones solo aparecen en sistemas de una sola estrella o especiales.",
+    "en": "Belts only appear in single-star systems or special ones.",
+    "jp": "小惑星帯は単独星系か特殊星系にだけ現れます。"
+   }
+  },
+  {
+   "id": "planets.wiki.brown_dwarf",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Stars"
+   },
+   "text": {
+    "es": "¿Qué objeto carece de masa suficiente para fusionar hidrógeno?",
+    "en": "Which object lacks the mass to sustain hydrogen fusion?",
+    "jp": "水素核融合を維持できる質量がない天体は？"
+   },
+   "answers": {
+    "es": [
+     "La estrella de neutrones",
+     "La enana marrón de clase T",
+     "El púlsar",
+     "La gigante roja de clase M"
+    ],
+    "en": [
+     "A Neutron Star",
+     "A Class T Brown Dwarf",
+     "A Pulsar",
+     "A Class M Red Giant"
+    ],
+    "jp": [
+     "中性子星",
+     "T型褐色矮星",
+     "パルサー",
+     "M型赤色巨星"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Son del tamaño de grandes gigantes gaseosos pero mucho más densas.",
+    "en": "They are about the size of large gas giants but far denser.",
+    "jp": "大型の巨大ガス惑星ほどの大きさで、はるかに高密度です。"
+   }
+  },
+  {
+   "id": "planets.wiki.climate_categories",
+   "tier": 1,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Habitable planets"
+   },
+   "text": {
+    "es": "¿En qué tres categorías de clima se agrupan los nueve tipos normales de planeta habitable?",
+    "en": "Into which three climate categories are the nine regular habitable planet types grouped?",
+    "jp": "通常の居住可能惑星9種が分けられる3つの気候区分は？"
+   },
+   "answers": {
+    "es": [
+     "Húmedo, seco y frío",
+     "Cálido, templado y helado",
+     "Rocoso, gaseoso y líquido",
+     "Interior, habitable y exterior"
+    ],
+    "en": [
+     "Wet, dry and cold",
+     "Hot, mild and icy",
+     "Rocky, gaseous and liquid",
+     "Inner, habitable and outer"
+    ],
+    "jp": [
+     "湿潤・乾燥・寒冷",
+     "高温・温暖・氷結",
+     "岩石・ガス・液体",
+     "内側・生存圏・外側"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Cada categoría favorece un poco distintos recursos en sus rasgos planetarios.",
+    "en": "Each category leans slightly towards different resources in its planetary features.",
+    "jp": "区分ごとに惑星の地形で得やすい資源が少し異なります。"
+   }
+  },
+  {
+   "id": "planets.wiki.deluge_machine",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Alternative terraforming methods"
+   },
+   "text": {
+    "es": "¿Qué hace el coloso con la máquina de diluvio con un planeta?",
+    "en": "What does the Deluge Machine colossus do to a planet?",
+    "jp": "コロッサスの「洪水発生装置」は惑星をどうする？"
+   },
+   "answers": {
+    "es": [
+     "Lo convierte en mundo tóxico con candidato a terraformación",
+     "Lo parte en pedazos",
+     "Lo convierte en mundo oceánico y mata a los pops no acuáticos",
+     "Lo congela para siempre"
+    ],
+    "en": [
+     "It turns it into a Toxic World that can be terraformed",
+     "It cracks it apart",
+     "It turns it into an Ocean World, killing non-aquatic pops",
+     "It freezes it forever"
+    ],
+    "jp": [
+     "テラフォーミング可能な有毒惑星に変える",
+     "粉々に砕く",
+     "海洋型惑星に変え、水棲でない人口を死滅させる",
+     "永久に凍らせる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Se puede disparar sobre planetas propios, y si queda población el dueño del coloso se queda el mundo.",
+    "en": "It can target owned planets, and if pops survive the colossus owner takes the world.",
+    "jp": "自国の惑星も狙え、生存者がいればコロッサスの持ち主が惑星を得ます。"
+   }
+  },
+  {
+   "id": "planets.wiki.dry_features",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Habitable planets"
+   },
+   "text": {
+    "es": "¿Qué rasgos planetarios suelen abundar en los mundos secos (desértico, árido y sabana)?",
+    "en": "Which features do dry worlds (desert, arid and savanna) tend to favour?",
+    "jp": "乾燥系の惑星（砂漠・乾燥・サバンナ）で多い地形はどれ向き？"
+   },
+   "answers": {
+    "es": [
+     "Los de agricultura",
+     "Los de minería",
+     "Los de investigación",
+     "Los de generadores"
+    ],
+    "en": [
+     "Agriculture features",
+     "Mining features",
+     "Research features",
+     "Generator features"
+    ],
+    "jp": [
+     "農業向き",
+     "採掘向き",
+     "研究向き",
+     "発電向き"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Los mundos húmedos favorecen la agricultura y los fríos la minería.",
+    "en": "Wet worlds favour agriculture and cold worlds favour mining.",
+    "jp": "湿潤系は農業、寒冷系は採掘に向いています。"
+   }
+  },
+  {
+   "id": "planets.wiki.earth_crater",
+   "tier": 5,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Planetary features",
+    "section": "Earth features"
+   },
+   "text": {
+    "es": "En la Tierra, ¿qué dejó el asteroide que causó el Gran Pánico del 72?",
+    "en": "On Earth, what did the asteroid behind the Great Panic of '72 leave behind?",
+    "jp": "地球で「72年の大混乱」を起こした小惑星が残したのは？"
+   },
+   "answers": {
+    "es": [
+     "Corredor urbano mesopotámico",
+     "Zona de seguridad mauritana",
+     "Sector de recuperación escandinavo",
+     "Gran cráter de Alberta"
+    ],
+    "en": [
+     "Mesopotamian Urban Corridor",
+     "Mauritanian Security Zone",
+     "Scandinavian Reclamation Sector",
+     "Great Albertan Crater"
+    ],
+    "jp": [
+     "メソポタミア都市回廊",
+     "モーリタニア警戒区域",
+     "スカンジナビア再生地区",
+     "アルバータの巨大クレーター"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "No fue tan grande como para extinguir la vida, pero arrasó gran parte de Alberta.",
+    "en": "It was not big enough for an extinction event, but it wiped out much of Alberta.",
+    "jp": "絶滅級ではなかったものの、アルバータの大部分を消し去りました。"
+   }
+  },
+  {
+   "id": "planets.wiki.earth_sahara",
+   "tier": 5,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Planetary features",
+    "section": "Earth features"
+   },
+   "text": {
+    "es": "¿Qué profesor propuso la operación Sahara Verde, tan ridiculizada en su día?",
+    "en": "Which professor proposed the much-mocked Operation Green Sahara?",
+    "jp": "当初あざ笑われた「サハラ緑化作戦」を提唱した博士は？"
+   },
+   "answers": {
+    "es": [
+     "El coronel Tetchu",
+     "La profesora Lakshmi",
+     "El profesor Satis",
+     "El profesor Izquierdo"
+    ],
+    "en": [
+     "Colonel Tetchu",
+     "Professor Lakshmi",
+     "Professor Satis",
+     "Professor Izquierdo"
+    ],
+    "jp": [
+     "テッチュ大佐",
+     "ラクシュミ博士",
+     "サティス博士",
+     "イスキエルド博士"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Hoy es el proyecto de irrigación del Sahara, que da distritos agrícolas a la Tierra.",
+    "en": "Today it is the Saharan Irrigation Project, which grants Earth agriculture districts.",
+    "jp": "今ではサハラ灌漑計画として地球の農業区画枠を増やしています。"
+   }
+  },
+  {
+   "id": "planets.wiki.first_colony_spiritualist",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "First colony"
+   },
+   "text": {
+    "es": "Al fundar la primera colonia, ¿qué recompensa puede elegir un imperio espiritualista?",
+    "en": "On founding the first colony, which reward can a Spiritualist empire choose?",
+    "jp": "最初の植民地を築いたとき、精神主義の帝国が選べる報酬は？"
+   },
+   "answers": {
+    "es": [
+     "Unidad",
+     "Investigación de física",
+     "Créditos de energía",
+     "Aleaciones"
+    ],
+    "en": [
+     "Unity",
+     "Physics Research",
+     "Energy Credits",
+     "Alloys"
+    ],
+    "jp": [
+     "ユニティ",
+     "物理学研究",
+     "エネルギー通貨",
+     "合金"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Además aumenta la atracción de su ética en esa colonia durante 20 años.",
+    "en": "It also raises the attraction of that ethic on the colony for 20 years.",
+    "jp": "その植民地での思想の吸引力も20年間上がります。"
+   }
+  },
+  {
+   "id": "planets.wiki.gaia_perk",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Special planet types"
+   },
+   "text": {
+    "es": "¿Qué ventaja de ascenso permite terraformar un planeta normal en mundo Gaia?",
+    "en": "Which ascension perk lets you terraform a regular planet into a Gaia World?",
+    "jp": "通常の惑星をガイア型惑星にテラフォーミングできるアセンションパークは？"
+   },
+   "answers": {
+    "es": [
+     "Mente sobre la materia",
+     "Maestros constructores",
+     "Proyección de fuerza galáctica",
+     "Conformador de mundos"
+    ],
+    "en": [
+     "Mind Over Matter",
+     "Master Builders",
+     "Galactic Force Projection",
+     "World Shaper"
+    ],
+    "jp": [
+     "物質を超越する精神",
+     "建築の巨匠",
+     "銀河規模の戦力投射",
+     "惑星の加工者"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Un mundo con el modificador de haber sido terraformado antes es la única excepción.",
+    "en": "Only one special planet, terraformed long ago, can become Gaia without the perk.",
+    "jp": "例外は過去にテラフォーミングされた固有惑星だけです。"
+   }
+  },
+  {
+   "id": "planets.wiki.gaia_world",
+   "tier": 1,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Special habitable planets",
+    "file": "common/planet_classes/00_planet_classes.txt",
+    "key": "pc_gaia"
+   },
+   "text": {
+    "es": "¿Qué mundo especial tiene habitabilidad perfecta y aumenta la felicidad y los recursos de los trabajos?",
+    "en": "Which special world has perfect habitability and boosts happiness and job resources?",
+    "jp": "居住適性が完璧で、幸福度と仕事の産出が上がる特殊な惑星は？"
+   },
+   "answers": {
+    "es": [
+     "Mundo tumba",
+     "Mundo máquina",
+     "Mundo Gaia",
+     "Mundo reliquia"
+    ],
+    "en": [
+     "Tomb World",
+     "Machine World",
+     "Gaia World",
+     "Relic World"
+    ],
+    "jp": [
+     "死の惑星",
+     "機械惑星",
+     "ガイア型惑星",
+     "遺物惑星"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Es un mundo templado con un ecosistema resistente, óptimo para toda forma de vida superior.",
+    "en": "A temperate world with a resilient ecosystem, optimal for every higher form of life.",
+    "jp": "強靭な生態系を持つ温暖な惑星で、あらゆる高等生物に最適です。"
+   }
+  },
+  {
+   "id": "planets.wiki.genesis_ark",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Colony ships"
+   },
+   "text": {
+    "es": "¿Qué consigue un planeta colonizado con un arca de génesis?",
+    "en": "What does a planet colonized by a Genesis Ark gain?",
+    "jp": "創造の方舟で入植した惑星が得るものは？"
+   },
+   "answers": {
+    "es": [
+     "Un cráter y dos obstáculos de litoides enterrados",
+     "El estado de mundo Gaia",
+     "Una especie presintiente y una reserva de génesis",
+     "Una colonia ya desarrollada de 1000 pops"
+    ],
+    "en": [
+     "A crater and two buried Lithoid blockers",
+     "Gaia World status",
+     "A species of pre-sapient pops and a Genesis Preserve",
+     "A fully developed colony of 1000 pops"
+    ],
+    "jp": [
+     "クレーターと埋もれた岩石種族の障害物",
+     "ガイア型惑星化",
+     "準知的生命体の人口と創造保護区",
+     "人口1000の発展済み植民地"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Las cívicas de la familia de los guías de génesis no permiten construir naves colonizadoras normales.",
+    "en": "The Genesis Guides civics cannot build regular colony ships.",
+    "jp": "創造の方舟を使う国是では通常の入植船を造れません。"
+   }
+  },
+  {
+   "id": "planets.wiki.habitability_confirm",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Habitability"
+   },
+   "text": {
+    "es": "¿Por debajo de qué habitabilidad pide confirmación el juego al colonizar un planeta?",
+    "en": "Below which habitability does the game ask you to confirm before settling a planet?",
+    "jp": "入植時に確認メッセージが出るのは居住適性がいくつ未満？"
+   },
+   "answers": {
+    "es": [
+     "50 %",
+     "70 %",
+     "40 %",
+     "90 %"
+    ],
+    "en": [
+     "50 %",
+     "70 %",
+     "40 %",
+     "90 %"
+    ],
+    "jp": [
+     "50％",
+     "70％",
+     "40％",
+     "90％"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La poca habitabilidad encarece el mantenimiento y las comodidades y baja el rendimiento y el crecimiento.",
+    "en": "Low habitability raises upkeep and amenity use and lowers efficiency and growth.",
+    "jp": "居住適性が低いと維持費と快適度消費が増え、効率と成長が落ちます。"
+   }
+  },
+  {
+   "id": "planets.wiki.home_size",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Planet size"
+   },
+   "text": {
+    "es": "Salvo que el origen diga otra cosa, ¿entre qué tamaños está un mundo natal?",
+    "en": "Unless the origin says otherwise, between which sizes is a homeworld?",
+    "jp": "起源で指定がない限り、母星のサイズの範囲は？"
+   },
+   "answers": {
+    "es": [
+     "Entre 10 y 15",
+     "Entre 22 y 30",
+     "Siempre 25",
+     "Entre 18 y 21"
+    ],
+    "en": [
+     "Between 10 and 15",
+     "Between 22 and 30",
+     "Always 25",
+     "Between 18 and 21"
+    ],
+    "jp": [
+     "10～15",
+     "22～30",
+     "常に25",
+     "18～21"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Los planetas habitables normales van de 12 a 25 y las lunas de 10 a 15.",
+    "en": "Regular habitable planets range from 12 to 25 and moons from 10 to 15.",
+    "jp": "通常の居住可能惑星は12～25、衛星は10～15です。"
+   }
+  },
+  {
+   "id": "planets.wiki.homeworld_bonus",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Habitability"
+   },
+   "text": {
+    "es": "¿Qué bonificación de habitabilidad tiene una especie en su mundo natal?",
+    "en": "What habitability bonus does a species get on its homeworld?",
+    "jp": "種族が自分の母星で得る居住適性ボーナスは？"
+   },
+   "answers": {
+    "es": [
+     "+10 %",
+     "+20 %",
+     "+50 %",
+     "+30 %"
+    ],
+    "en": [
+     "+10 %",
+     "+20 %",
+     "+50 %",
+     "+30 %"
+    ],
+    "jp": [
+     "+10％",
+     "+20％",
+     "+50％",
+     "+30％"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Se suma a la habitabilidad del planeta solo para la especie originaria.",
+    "en": "It only applies to the species that comes from that world.",
+    "jp": "その惑星を出身とする種族にだけ加算されます。"
+   }
+  },
+  {
+   "id": "planets.wiki.initial_colony",
+   "tier": 4,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Colony development"
+   },
+   "text": {
+    "es": "Una vez establecida, ¿con cuántos pops empieza una colonia nueva fundada con una nave colonizadora?",
+    "en": "Once established, how many pops does a new colony founded by a colony ship start with?",
+    "jp": "入植船で築いた新しい植民地は、確立時に何人口で始まる？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "500",
+     "100",
+     "1000"
+    ],
+    "en": [
+     "1",
+     "500",
+     "100",
+     "1000"
+    ],
+    "jp": [
+     "1",
+     "500",
+     "100",
+     "1000"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Antes pasa casi tres años de desarrollo inicial, muy vulnerable a bombardeos.",
+    "en": "Before that it goes through almost three years of initial development, very vulnerable to bombardment.",
+    "jp": "それまでの約3年は初期開発期間で、爆撃に非常に弱いです。"
+   }
+  },
+  {
+   "id": "planets.wiki.meteorite_ship",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [
+    "Lithoids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Colonization",
+    "section": "Colony ships",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_lithoid"
+   },
+   "text": {
+    "es": "¿Con qué origen se pueden construir naves colonizadoras en forma de meteorito, sin mantenimiento?",
+    "en": "Which origin can build meteorite colony ships with no upkeep?",
+    "jp": "維持費のかからない隕石型の入植船を造れる起源は？"
+   },
+   "answers": {
+    "es": [
+     "Árbol de la vida",
+     "Sociedad fructífera",
+     "Nacimiento calamitoso",
+     "Sembrado de vida"
+    ],
+    "en": [
+     "Tree of Life",
+     "Fruitful Partnership",
+     "Calamitous Birth",
+     "Life-Seeded"
+    ],
+    "jp": [
+     "生命の樹",
+     "実りある協力関係",
+     "天災より生まれしもの",
+     "生命の播種"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Cuestan minerales, se construyen en 150 días y viajan mucho más rápido.",
+    "en": "They cost minerals, take 150 days to build and fly much faster.",
+    "jp": "鉱物で150日で建造でき、通常の入植船よりずっと速く飛びます。"
+   }
+  },
+  {
+   "id": "planets.wiki.ocean_cover",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Habitable planets",
+    "file": "common/planet_classes/00_planet_classes.txt",
+    "key": "pc_ocean"
+   },
+   "text": {
+    "es": "Según la descripción del mundo oceánico, ¿qué parte de su superficie cubren los océanos?",
+    "en": "According to the description of an Ocean World, how much of its surface do oceans cover?",
+    "jp": "海洋型惑星の説明では、地表のどれくらいが海？"
+   },
+   "answers": {
+    "es": [
+     "Cerca del 50 %",
+     "Más del 90 %",
+     "Algo más del 70 %",
+     "El 100 %, sin una sola isla"
+    ],
+    "en": [
+     "About 50 %",
+     "More than 90 %",
+     "A little over 70 %",
+     "All of it, without a single island"
+    ],
+    "jp": [
+     "約50％",
+     "90％以上",
+     "70％強",
+     "100％で島はひとつもない"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El resto son islas dispersas.",
+    "en": "Scattered islands make up the rest.",
+    "jp": "残りは点在する島々です。"
+   }
+  },
+  {
+   "id": "planets.wiki.red_dwarf",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Stars"
+   },
+   "text": {
+    "es": "¿Qué clase de estrella es la más común del universo, las llamadas enanas rojas?",
+    "en": "Which star class is the most common in the universe, the so-called red dwarves?",
+    "jp": "宇宙で最も多い、いわゆる赤色矮星のクラスは？"
+   },
+   "answers": {
+    "es": [
+     "Clase G",
+     "Clase M",
+     "Clase B",
+     "Clase F"
+    ],
+    "en": [
+     "Class G",
+     "Class M",
+     "Class B",
+     "Class F"
+    ],
+    "jp": [
+     "G型",
+     "M型",
+     "B型",
+     "F型"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Viven muchísimo, pero apenas emiten luz ultravioleta y son poco favorables a la vida.",
+    "en": "They live extremely long but emit almost no UV light, which is unfavourable to life.",
+    "jp": "寿命は非常に長いものの紫外線がほとんどなく、生命には不向きです。"
+   }
+  },
+  {
+   "id": "planets.wiki.relic_ecu",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Special habitable planets",
+    "file": "common/planet_classes/03_planet_classes_ancient_relics.txt",
+    "key": "pc_relic"
+   },
+   "text": {
+    "es": "¿Qué decisión se puede usar en un mundo reliquia para reconstruirlo?",
+    "en": "Which decision can be used on a Relic World to rebuild it?",
+    "jp": "遺物惑星の決定で実現できる再建はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Crear un mundo colmena",
+     "Convertirlo en mundo Gaia al instante",
+     "Desmontarlo para un mundo anillo",
+     "Restaurar un ecumenópolis"
+    ],
+    "en": [
+     "Creating a Hive World",
+     "Instantly turning it into a Gaia World",
+     "Dismantling it for a ring world",
+     "Restoring an Ecumenopolis"
+    ],
+    "jp": [
+     "集合惑星への改造",
+     "即時のガイア型惑星化",
+     "リングワールド用の解体",
+     "エキュメノポリスの復元"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Una ciudad cubrió una vez todo el planeta y solo quedan ruinas abandonadas.",
+    "en": "A city once covered the whole planet and only abandoned ruins remain.",
+    "jp": "かつて惑星全体を都市が覆い、今は廃墟だけが残ります。"
+   }
+  },
+  {
+   "id": "planets.wiki.shattered_cause",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Special uninhabitable planets"
+   },
+   "text": {
+    "es": "¿Cuál de estas cosas deja un planeta destrozado?",
+    "en": "Which of these leaves behind a Shattered World?",
+    "jp": "次のうち粉砕された惑星を生むのはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Un coloso con el fracturador de mundo",
+     "Un disparo del pacificador global",
+     "La infestación del azote prethoryn",
+     "La subsunción por nanitas"
+    ],
+    "en": [
+     "A World Cracker colossus",
+     "A Global Pacifier shot",
+     "A Prethoryn infestation",
+     "Nanite subsumption"
+    ],
+    "jp": [
+     "惑星破砕砲を積んだコロッサス",
+     "惑星調停機の照射",
+     "プレスリンの寄生",
+     "ナノマシンへの取り込み"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "También lo dejan los terravoros al consumir un mundo.",
+    "en": "Terravore empires also leave one behind when they consume a world.",
+    "jp": "テラヴォアが惑星を食らった場合にも生まれます。"
+   }
+  },
+  {
+   "id": "planets.wiki.shielded_world",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Special uninhabitable planets"
+   },
+   "text": {
+    "es": "¿Qué arma de coloso encierra un mundo en una barrera de energía impenetrable?",
+    "en": "Which colossus weapon creates a world wrapped in an impenetrable energy barrier?",
+    "jp": "貫けないエネルギー障壁に包まれた惑星を作るコロッサス兵器は？"
+   },
+   "answers": {
+    "es": [
+     "Máquina de diluvio",
+     "Fracturador de mundo",
+     "Barrido de neutrones",
+     "Pacificador global"
+    ],
+    "en": [
+     "Deluge Machine",
+     "World Cracker",
+     "Neutron Sweep",
+     "Global Pacifier"
+    ],
+    "jp": [
+     "洪水発生装置",
+     "惑星破砕砲",
+     "中性子掃射砲",
+     "惑星調停機"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "También se encuentran explorando, y a veces un proyecto especial retira la barrera.",
+    "en": "They are also found by exploring, and a special project can sometimes bring the shield down.",
+    "jp": "探索で見つかることもあり、特別プロジェクトで障壁を解除できる場合があります。"
+   }
+  },
+  {
+   "id": "planets.wiki.tomb_winter",
+   "tier": 2,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Special habitable planets",
+    "file": "common/planet_classes/00_planet_classes.txt",
+    "key": "pc_nuked"
+   },
+   "text": {
+    "es": "¿En qué situación se encuentra un mundo tumba?",
+    "en": "What condition is a Tomb World in?",
+    "jp": "死の惑星はどんな状態にある？"
+   },
+   "answers": {
+    "es": [
+     "En un invierno nuclear con radiación alta en la superficie",
+     "Cubierto por lagos de lava",
+     "Infestado por un contaminante biológico",
+     "Encerrado en una barrera de energía"
+    ],
+    "en": [
+     "In a nuclear winter with high surface radiation",
+     "Covered in lava lakes",
+     "Infested by a biological contaminant",
+     "Sealed in an energy barrier"
+    ],
+    "jp": [
+     "地表の放射線が強い核の冬",
+     "溶岩の湖に覆われている",
+     "生物汚染物質がはびこっている",
+     "エネルギー障壁に封じられている"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Capas densas de aerosoles de hollín lo oscurecen y apenas quedan señales de vida.",
+    "en": "Dense sooty aerosols darken it and signs of life are minimal.",
+    "jp": "濃いすすの層に覆われ、生命の兆しはわずかです。"
+   }
+  },
+  {
+   "id": "planets.wiki.toxic_star",
+   "tier": 5,
+   "topic": "planets",
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Stars"
+   },
+   "text": {
+    "es": "¿Qué estrella única emite una inquietante neblina verde por la influencia de la Entidad tóxica?",
+    "en": "Which unique star glows with an eerie green haze because of the Toxic Entity?",
+    "jp": "毒性体の影響で不気味な緑の霞を放つ固有の恒星は？"
+   },
+   "answers": {
+    "es": [
+     "La estrella astral",
+     "El Lucero ponzoñoso de Zron",
+     "Portadora de luz viridescente",
+     "La Corona esmeralda"
+    ],
+    "en": [
+     "The Astral Star",
+     "The Venomous Beacon of Zron",
+     "Viridescent Lightbringer",
+     "The Emerald Crown"
+    ],
+    "jp": [
+     "アストラル星",
+     "ズロンの毒の灯火",
+     "青緑色の妖星",
+     "エメラルドの冠"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Antes era una estrella de clase G corriente; milenios de exposición la cambiaron.",
+    "en": "It was once a fairly standard G-type star until millennia of exposure changed it.",
+    "jp": "かつてはありふれたG型でしたが、何千年もの影響で変質しました。"
+   }
+  },
+  {
+   "id": "planets.wiki.yellow_dwarf",
+   "tier": 3,
+   "topic": "planets",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Celestial object",
+    "section": "Stars"
+   },
+   "text": {
+    "es": "¿A qué clase pertenecen las llamadas enanas amarillas?",
+    "en": "Which class are the so-called yellow dwarves?",
+    "jp": "いわゆる黄色矮星はどのスペクトル型？"
+   },
+   "answers": {
+    "es": [
+     "Clase K",
+     "Clase A",
+     "Clase G",
+     "Clase M"
+    ],
+    "en": [
+     "Class K",
+     "Class A",
+     "Class G",
+     "Class M"
+    ],
+    "jp": [
+     "K型",
+     "A型",
+     "G型",
+     "M型"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Las de clase K son las enanas naranjas, estables hasta 30 000 millones de años.",
+    "en": "Class K stars are the orange dwarves, stable for up to 30 billion years.",
+    "jp": "K型は橙色矮星で、最長300億年も安定します。"
+   }
+  },
+  {
    "id": "planets.world_climate.pc_alpine",
    "tier": 1,
    "topic": "planets",
@@ -65852,6 +71010,48 @@
    }
   },
   {
+   "id": "ships.wiki.jargon_monohull",
+   "tier": 4,
+   "topic": "ships",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Jargon",
+    "section": "Slang"
+   },
+   "text": {
+    "es": "¿Qué versión del juego redujo mucho la viabilidad de las flotas de un solo tipo de nave (monohull)?",
+    "en": "Which game patch made single-hull (monohull) fleets far less viable?",
+    "jp": "単一艦種（monohull）艦隊の有効性を大きく下げたパッチは？"
+   },
+   "answers": {
+    "es": [
+     "2.0",
+     "3.6",
+     "3.0",
+     "4.0"
+    ],
+    "en": [
+     "2.0",
+     "3.6",
+     "3.0",
+     "4.0"
+    ],
+    "jp": [
+     "2.0",
+     "3.6",
+     "3.0",
+     "4.0"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Antes dominaban, sobre todo con acorazados de artillería.",
+    "en": "Before it they were the meta, usually with artillery battleships.",
+    "jp": "以前は砲撃型戦艦の単一編成が主流でした。"
+   }
+  },
+  {
    "id": "shroud.content_feature.d_ruined_sanctum_of_the_lost",
    "tier": 3,
    "topic": "shroud",
@@ -66710,6 +71910,912 @@
     "es": "«Regalo del Instrumento» sube el máximo de distritos.",
     "en": "Gift of the Instrument raises the maximum number of districts.",
     "jp": "「道具の贈り物」は区域上限を高めます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.animator_refuses",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Animator of Clay",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_shroud_forged"
+   },
+   "text": {
+    "es": "Un imperio Forjado por el Velo que se alió con el Animante le pide un pacto tras romper el Velo. ¿Qué pasa?",
+    "en": "A Shroud-Forged empire allied with the Animator of Clay asks for a Covenant after breaching the Shroud. What happens?",
+    "jp": "「傀儡の開眼者」に味方した「シュラウド改変型」帝国が、シュラウド到達後に誓約を求めるとどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Acepta y sustituye a todos los patrones",
+     "Se niega",
+     "Exige sacrificar la capital",
+     "Convierte al gobernante en Elegido"
+    ],
+    "en": [
+     "He accepts and replaces every patron",
+     "He refuses",
+     "He demands the capital as a sacrifice",
+     "He turns the ruler into the Chosen One"
+    ],
+    "jp": [
+     "受け入れられ、全後援者に取って代わる",
+     "拒否される",
+     "首都の生贄を要求される",
+     "支配者が「選ばれし者」になる"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Ofrece ayudas militares, cívicas o de investigación a cambio de zro, pero nunca un pacto.",
+    "en": "He offers military, civic or research help for zro, but never a Covenant.",
+    "jp": "ズィロと引き換えに軍事・内政・研究の支援はしますが、誓約は結びません。"
+   }
+  },
+  {
+   "id": "shroud.wiki.chosen_negative_traits",
+   "tier": 3,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Chosen leader traits"
+   },
+   "text": {
+    "es": "¿Qué le ocurre a un líder al ganar un rasgo de Elegido del Velo?",
+    "en": "What happens to a leader who gains a Chosen trait from the Shroud?",
+    "jp": "指導者がシュラウドの「選ばれし者」系の特性を得ると何が起こる？"
+   },
+   "answers": {
+    "es": [
+     "Pierde todos sus rasgos anteriores",
+     "Deja de poder estar en el consejo",
+     "Su esperanza de vida se reduce a la mitad",
+     "Pierde sus rasgos negativos, salvo los propios de Luminaria"
+    ],
+    "en": [
+     "It loses every earlier trait",
+     "It can no longer sit in the council",
+     "Its lifespan is halved",
+     "It loses its negative traits, except those specific to the Luminary"
+    ],
+    "jp": [
+     "以前の特性をすべて失う",
+     "評議会に入れなくなる",
+     "寿命が半分になる",
+     "「啓発者」固有のものを除き、負の特性を失う"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Son de los rasgos más poderosos del juego y solo se consiguen a través del Velo.",
+    "en": "They are among the strongest leader traits in the game and come only from the Shroud.",
+    "jp": "ゲーム屈指の強力な指導者特性で、シュラウド経由でのみ得られます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.chosen_one_risk",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Chosen leader traits"
+   },
+   "text": {
+    "es": "¿Qué riesgo tiene intentar conseguir el rasgo Elegido en un viaje al Velo?",
+    "en": "What is the risk of trying to gain the Chosen One trait during a Shroud delve?",
+    "jp": "シュラウド潜行で「選ばれし者」特性を狙う危険は？"
+   },
+   "answers": {
+    "es": [
+     "El líder puede morir y quizá aparezca un avatar corrupto hostil",
+     "El imperio pierde la ascensión psiónica",
+     "La capital se convierte en un mundo tumba",
+     "Todos los pactos futuros quedan prohibidos"
+    ],
+    "en": [
+     "The leader may die and a hostile Corrupted Avatar may appear",
+     "The empire loses psionic ascension",
+     "The capital turns into a Tomb World",
+     "Every future Covenant is forbidden"
+    ],
+    "jp": [
+     "指導者が死に、敵対的な邪悪なアバターが現れることがある",
+     "超能力進化が失われる",
+     "首都が死の惑星になる",
+     "今後の誓約がすべて禁じられる"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El éxito no está garantizado y el fracaso se paga caro.",
+    "en": "Success is not guaranteed and failure is costly.",
+    "jp": "成功は保証されず、失敗の代償は大きいです。"
+   }
+  },
+  {
+   "id": "shroud.wiki.covenant_doom",
+   "tier": 3,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Covenant powers"
+   },
+   "text": {
+    "es": "¿Qué patrón concede el poder de pacto Perdición, que invoca una flota de naves psiónicas?",
+    "en": "Which patron grants the Covenant power Doom, which summons a fleet of psionic ships?",
+    "jp": "サイオニック艦隊を呼び出す誓約の力「破滅」を授ける後援者は？"
+   },
+   "answers": {
+    "es": [
+     "Compositor de Hebras",
+     "Devorador de Mundos",
+     "Instrumento del Deseo",
+     "Cuna de las Almas"
+    ],
+    "en": [
+     "Composer of Strands",
+     "Eater of Worlds",
+     "Instrument of Desire",
+     "Cradle of Souls"
+    ],
+    "jp": [
+     "螺旋の作曲家",
+     "世界を喰らうもの",
+     "欲望の道具",
+     "魂のゆりかご"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Un hambre insaciable: sus poderes son bélicos y la flota crece con la intensidad de la fatalidad.",
+    "en": "An unending hunger: its powers are warlike and the fleet grows with Doom Intensity.",
+    "jp": "飽くなき飢えを体現し、力は戦闘向きで、艦隊は強度とともに増強されます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.covenant_hindsight",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Covenant powers"
+   },
+   "text": {
+    "es": "¿Qué hace en un imperio asentado el poder Retrospectiva de Susurradores del Vacío?",
+    "en": "For a settled empire, what does the Whisperers in the Void power Hindsight do?",
+    "jp": "定住帝国で「虚無の囁き手」の力「後知恵」を使うとどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Revela todos los sistemas de la galaxia",
+     "Deshace la última guerra perdida",
+     "Convierte una colonia bajo el aura en un mundo reliquia",
+     "Devuelve a la vida a un líder muerto"
+    ],
+    "en": [
+     "It reveals every system of the galaxy",
+     "It undoes the last lost war",
+     "It turns a colony within the aura into a Relic World",
+     "It brings a dead leader back to life"
+    ],
+    "jp": [
+     "銀河の全星系を明らかにする",
+     "最後に負けた戦争をなかったことにする",
+     "オーラ内の植民地を遺物惑星にする",
+     "死んだ指導者を蘇らせる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Mira al pasado del planeta; no funciona en colonias que no se pueden terraformar.",
+    "en": "It looks into the planet's past; it does not work on colonies that cannot be terraformed.",
+    "jp": "惑星の過去を呼び起こします。テラフォーミングできない植民地には効きません。"
+   }
+  },
+  {
+   "id": "shroud.wiki.covenant_transformation",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Covenant powers"
+   },
+   "text": {
+    "es": "¿Qué consigue en un imperio asentado el poder Transformación del Compositor de Hebras?",
+    "en": "For a settled empire, what does the Composer of Strands power Transformation do?",
+    "jp": "定住帝国で「螺旋の作曲家」の力「変容」を使うと何が起こる？"
+   },
+   "answers": {
+    "es": [
+     "Convierte una colonia en un mundo reliquia",
+     "Crea una flota de bioformas aliadas",
+     "Terraforma un mundo o luna inhabitable en un mundo Gaia",
+     "Cambia la especie dominante de un enemigo"
+    ],
+    "en": [
+     "It turns a colony into a Relic World",
+     "It creates a fleet of allied bioforms",
+     "It terraforms an uninhabitable world or moon into a Gaia World",
+     "It changes the dominant species of an enemy"
+    ],
+    "jp": [
+     "植民地を遺物惑星に変える",
+     "味方の生体艦隊を生み出す",
+     "居住不可の惑星や衛星をガイア型惑星に変える",
+     "敵の支配種族を変化させる"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Es un poder que no exige haber sellado el pacto; el mundo resultante es de tamaño 10.",
+    "en": "This power does not require the Covenant, and the resulting world has size 10.",
+    "jp": "この力は誓約がなくても使え、できる惑星のサイズは10です。"
+   }
+  },
+  {
+   "id": "shroud.wiki.divine_sovereign_ethics",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Divine Sovereign"
+   },
+   "text": {
+    "es": "Al declarar divinidad a un líder Elegido y fundar el culto del Soberano divino, ¿qué éticas adopta el imperio?",
+    "en": "When a Chosen leader is declared a deity (Divine Sovereign), which ethics does the empire shift to?",
+    "jp": "選ばれし指導者を神格化して「神による支配」となると、帝国の思想は何になる？"
+   },
+   "answers": {
+    "es": [
+     "Espiritualista fanático y Militarista",
+     "Igualitaria fanática y Espiritualista",
+     "Xenófobo fanático y Autoritaria",
+     "Autoritaria fanática y Espiritualista"
+    ],
+    "en": [
+     "Fanatic Spiritualist and Militarist",
+     "Fanatic Egalitarian and Spiritualist",
+     "Fanatic Xenophobe and Authoritarian",
+     "Fanatic Authoritarian and Spiritualist"
+    ],
+    "jp": [
+     "「狂信的な精神主義」と「軍国主義」",
+     "「狂信的な平等主義」と「精神主義」",
+     "「狂信的な排他主義」と「権威主義」",
+     "「狂信的な権威主義」と「精神主義」"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Además la autoridad pasa a imperial y el antiguo gobernante marcha al exilio.",
+    "en": "The authority also becomes Imperial and the previous ruler is exiled.",
+    "jp": "政体は帝政になり、前の支配者は追放されます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.end_of_cycle_mark",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "End of the Cycle"
+   },
+   "text": {
+    "es": "Sin Shadows of the Shroud, ¿cuánto dura el pacto con el Final del Ciclo antes de que llegue el ajuste de cuentas?",
+    "en": "Without Shadows of the Shroud, how long does the Covenant with the End of the Cycle last before the Reckoning?",
+    "jp": "「Shadows of the Shroud」がない場合、「円環の終わり」の誓約は清算まで何年続く？"
+   },
+   "answers": {
+    "es": [
+     "25 años",
+     "100 años",
+     "50 años",
+     "10 años"
+    ],
+    "en": [
+     "25 years",
+     "100 years",
+     "50 years",
+     "10 years"
+    ],
+    "jp": [
+     "25年",
+     "100年",
+     "50年",
+     "10年"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Durante ese tiempo duplica la producción y la capacidad naval, y después cobra su precio.",
+    "en": "During that time it doubles job output and naval capacity, and then it takes its price.",
+    "jp": "その間は仕事の産出と艦隊規模上限が倍になりますが、後で代価を取られます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.end_of_cycle_one",
+   "tier": 3,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "End of the Cycle"
+   },
+   "text": {
+    "es": "Sin la expansión Shadows of the Shroud, ¿cuántos imperios pueden sellar un pacto con el Final del Ciclo?",
+    "en": "If the Shadows of the Shroud expansion is absent, how many empires may ally themselves with the End of the Cycle?",
+    "jp": "拡張「Shadows of the Shroud」がない場合、「円環の終わり」と誓約を結べる帝国はいくつ？"
+   },
+   "answers": {
+    "es": [
+     "Solo uno",
+     "Todos los que tengan la ascensión psiónica",
+     "Uno por cada federación",
+     "Hasta cuatro, uno por cada patrón mayor"
+    ],
+    "en": [
+     "Only one",
+     "Every empire with psionic ascension",
+     "One per federation",
+     "Up to four, one for each major patron"
+    ],
+    "jp": [
+     "1つだけ",
+     "超能力進化した全帝国",
+     "連邦ごとに1つ",
+     "主要な後援者の数にあわせ最大4つ"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El pacto es único en la galaxia y dura 50 años antes del ajuste de cuentas.",
+    "en": "The Covenant is unique in the galaxy and lasts 50 years before the Reckoning.",
+    "jp": "この誓約は銀河で唯一で、清算が訪れるまで50年続きます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.eoc_eradication",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "End of the Cycle",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_endbringers"
+   },
+   "text": {
+    "es": "Con el origen Portadores del fin, ¿qué exige Erradicación, el último sacrificio para frenar el Final del Ciclo?",
+    "en": "With the Endbringers origin, what does Eradication, the last sacrifice that holds back the End of the Cycle, demand?",
+    "jp": "起源「終焉をもたらすもの」で「円環の終わり」を遅らせる最後の犠牲「根絶」が求めるものは？"
+   },
+   "answers": {
+    "es": [
+     "Entregar el mundo capital",
+     "Sacrificar a todos los líderes psiónicos",
+     "Guerra total contra todos los imperios no caídos",
+     "Destruir todas las megaestructuras propias"
+    ],
+    "en": [
+     "Giving up the capital world",
+     "Sacrificing every psionic leader",
+     "Total War against every non-Fallen empire",
+     "Destroying every megastructure you own"
+    ],
+    "jp": [
+     "首都惑星を差し出すこと",
+     "超能力指導者全員の犠牲",
+     "没落していない全帝国への総力戦",
+     "自国の全巨大建造物の破壊"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Los cuatro sacrificios van subiendo: recursos, pops, una colonia grande y, al final, la guerra contra todos.",
+    "en": "The four sacrifices escalate: resources, pops, a large colony and finally war on everyone.",
+    "jp": "4つの犠牲は資源、人口、大きな植民地と重くなり、最後は全方位の戦争です。"
+   }
+  },
+  {
+   "id": "shroud.wiki.eoc_fractalization",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "End of the Cycle"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un poder de pacto del Final del Ciclo?",
+    "en": "Which of these is a Covenant power of the End of the Cycle?",
+    "jp": "次のうち「円環の終わり」の誓約の力はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Explotación",
+     "Fractalización",
+     "Previsión",
+     "Vínculo de pensamiento"
+    ],
+    "en": [
+     "Exploitation",
+     "Fractalization",
+     "Foresight",
+     "Thoughtbond"
+    ],
+    "jp": [
+     "搾取",
+     "フラクタル化",
+     "洞察力",
+     "思考の絆"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Retuerce partes de la realidad hacia el Velo y aumenta la producción de las estaciones de aura.",
+    "en": "It twists parts of reality into the Shroud and boosts the output of aura stations.",
+    "jp": "現実の一部をシュラウドへねじ込み、オーラステーションの産出を増やします。"
+   }
+  },
+  {
+   "id": "shroud.wiki.reckoning_corvettes",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Reckoning"
+   },
+   "text": {
+    "es": "Según la wiki, ¿qué suele rendir mejor contra las versiones más fuertes del ajuste de cuentas?",
+    "en": "According to the wiki, what tends to work better against the stronger versions of the Reckoning?",
+    "jp": "ウィキによると、強い段階の清算の存在により有効なのは？"
+   },
+   "answers": {
+    "es": [
+     "Unos pocos colosos con escudos reforzados",
+     "Masas de corbetas con cañones automáticos",
+     "Acorazados con armadura máxima",
+     "Ejércitos de asalto desde el planeta"
+    ],
+    "en": [
+     "A few colossi with reinforced shields",
+     "Swarms of corvettes with autocannons",
+     "Battleships stacked with armour",
+     "Assault armies from the ground"
+    ],
+    "jp": [
+     "シールドを強化した少数のコロッサス",
+     "オートキャノンを積んだコルベットの大群",
+     "装甲を積んだ戦艦",
+     "地上からの強襲軍"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Cada disparo suyo destruye de sobra una corbeta, y el daño de los cañones automáticos contra escudos compensa en combates largos.",
+    "en": "Each of its shots vastly overkills a corvette, and autocannon damage against shields pays off in a long fight.",
+    "jp": "敵の一撃はコルベットには過剰威力で、長期戦ではシールドに強いオートキャノンが勝ります。"
+   }
+  },
+  {
+   "id": "shroud.wiki.reckoning_exile",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Reckoning"
+   },
+   "text": {
+    "es": "Tras el ajuste de cuentas, el imperio que pactó con el Final del Ciclo solo sobrevive en un planeta recién colonizado. ¿Cómo se llama ese planeta?",
+    "en": "After the Reckoning, the empire that made the Covenant survives only on a newly colonized planet. What is it named?",
+    "jp": "清算の後、誓約した帝国は新たに植民した惑星一つだけで生き残ります。その惑星の名前は？"
+   },
+   "answers": {
+    "es": [
+     "Esperanza",
+     "Penitencia",
+     "Réquiem",
+     "Exilio"
+    ],
+    "en": [
+     "Hope",
+     "Penance",
+     "Requiem",
+     "Exile"
+    ],
+    "jp": [
+     "希望",
+     "贖罪",
+     "鎮魂",
+     "エグザイル"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Se queda con 800 pops, sin flotas ni reservas, mientras el ser llamado el ajuste de cuentas ronda la galaxia.",
+    "en": "It is left with 800 pops, no ships and almost no stockpile while the Reckoning roams the galaxy.",
+    "jp": "残るのは800の人口だけで、艦隊も備蓄もほぼ失われ、清算の存在が銀河をさまよいます。"
+   }
+  },
+  {
+   "id": "shroud.wiki.reckoning_relic",
+   "tier": 5,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Reckoning",
+    "file": "common/governments/civics/00_origins.txt",
+    "key": "origin_endbringers"
+   },
+   "text": {
+    "es": "¿Qué reliquia consigue un imperio Portadores del fin que mata al ajuste de cuentas?",
+    "en": "Which relic does an Endbringers empire get for killing the Reckoning?",
+    "jp": "「終焉をもたらすもの」の帝国が清算の存在を倒すと得られるレリックは？"
+   },
+   "answers": {
+    "es": [
+     "Archivo psiónico",
+     "Núcleo del Juicio",
+     "Escamas del gusano",
+     "El último baol"
+    ],
+    "en": [
+     "Psionic Archive",
+     "Core of the Reckoning",
+     "Scales of the Worm",
+     "The Last Baol"
+    ],
+    "jp": [
+     "超能力アーカイブ",
+     "レコニングのコア",
+     "ワームの鱗",
+     "最後のバオル"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "Solo ese origen obtiene la recompensa por acabar con la entidad.",
+    "en": "Only that origin earns this reward for ending the entity.",
+    "jp": "この存在を倒した報酬を得られるのはその起源だけです。"
+   }
+  },
+  {
+   "id": "shroud.wiki.shroud_nature",
+   "tier": 1,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Shroud"
+   },
+   "text": {
+    "es": "¿Qué es el Velo?",
+    "en": "What is the Shroud?",
+    "jp": "シュラウドとは何？"
+   },
+   "answers": {
+    "es": [
+     "Una nebulosa del núcleo galáctico donde se oculta una civilización",
+     "Una red artificial que construyeron las inteligencias mecánicas",
+     "Una dimensión de materia oscura habitada solo por fauna espacial",
+     "Un reino inmaterial de pura energía psiónica fuera del universo físico"
+    ],
+    "en": [
+     "A nebula in the galactic core that hides a civilization",
+     "An artificial network built by machine intelligences",
+     "A dark matter dimension inhabited only by space fauna",
+     "An immaterial realm of pure psionic energy beyond the physical universe"
+    ],
+    "jp": [
+     "文明が隠れ住む銀河中心の星雲",
+     "機械知性が築いた人工ネットワーク",
+     "宇宙生物だけが住むダークマター次元",
+     "物理宇宙の外にある純粋なサイオニックエネルギーの非物質領域"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Todas las especies conscientes están ligadas a él de algún modo, pero solo la ascensión psiónica permite interactuar.",
+    "en": "Every sentient species is linked to it somehow, but only psionic ascension lets an empire interact with it.",
+    "jp": "知的種族はみな何らかの形で結びついていますが、干渉できるのは超能力への進化を終えた者だけです。"
+   }
+  },
+  {
+   "id": "shroud.wiki.shroud_psionic_archive",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "The Shroud"
+   },
+   "text": {
+    "es": "¿Qué reliquia permite adentrarse en el Velo cada menos tiempo?",
+    "en": "Which relic lets an empire delve into the Shroud more often?",
+    "jp": "シュラウドへより短い間隔で潜れるようになるレリックは？"
+   },
+   "answers": {
+    "es": [
+     "Archivo psiónico",
+     "Escamas del gusano",
+     "El Galatrón",
+     "Galaxia en miniatura"
+    ],
+    "en": [
+     "Psionic Archive",
+     "Scales of the Worm",
+     "The Galatron",
+     "Miniature Galaxy"
+    ],
+    "jp": [
+     "超能力アーカイブ",
+     "ワームの鱗",
+     "ガラトロン",
+     "ミニチュア銀河"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Normalmente se puede entrar cada 5 años; con ella, cada 2,5 años.",
+    "en": "Delving is normally possible every 5 years; with it, every 2.5 years.",
+    "jp": "通常は5年ごとですが、このレリックがあると2.5年ごとになります。"
+   }
+  },
+  {
+   "id": "shroud.wiki.sots_great_patron",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Shadows of the Shroud mechanics"
+   },
+   "text": {
+    "es": "Con Shadows of the Shroud, ¿qué dos seres pueden aparecer como gran patrón?",
+    "en": "With Shadows of the Shroud, which two beings can show up as a great patron?",
+    "jp": "「Shadows of the Shroud」で偉大な後援者として現れ得る2つの存在は？"
+   },
+   "answers": {
+    "es": [
+     "Susurradores del Vacío y Final del Ciclo",
+     "Devorador de Mundos y Cuna de las Almas",
+     "Compositor de Hebras y Instrumento del Deseo",
+     "Instrumento del Deseo y Final del Ciclo"
+    ],
+    "en": [
+     "Whisperers in the Void and the End of the Cycle",
+     "Eater of Worlds and Cradle of Souls",
+     "Composer of Strands and Instrument of Desire",
+     "Instrument of Desire and the End of the Cycle"
+    ],
+    "jp": [
+     "「虚無の囁き手」と「円環の終わり」",
+     "「世界を喰らうもの」と「魂のゆりかご」",
+     "「螺旋の作曲家」と「欲望の道具」",
+     "「欲望の道具」と「円環の終わり」"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Llega un proyecto especial pasado el medio juego: casi siempre son los susurros, rara vez el fin del ciclo.",
+    "en": "A special project arrives after mid-game: it is almost always the Whisperers and rarely the End.",
+    "jp": "中盤以降に特別プロジェクトが届き、ほとんどはささやく者で、終焉はまれです。"
+   }
+  },
+  {
+   "id": "shroud.wiki.sots_patron_count",
+   "tier": 4,
+   "topic": "shroud",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "The Shroud",
+    "section": "Shadows of the Shroud mechanics"
+   },
+   "text": {
+    "es": "Con Shadows of the Shroud, ¿cuántos patrones tiene el Velo en total?",
+    "en": "With Shadows of the Shroud, how many patrons does the Shroud have in total?",
+    "jp": "「Shadows of the Shroud」ありの場合、シュラウドの後援者は全部でいくつ？"
+   },
+   "answers": {
+    "es": [
+     "14",
+     "5",
+     "8",
+     "21"
+    ],
+    "en": [
+     "14",
+     "5",
+     "8",
+     "21"
+    ],
+    "jp": [
+     "14",
+     "5",
+     "8",
+     "21"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Son 4 patrones mayores, 8 menores (solo 4 disponibles para cada imperio) y 2 grandes.",
+    "en": "There are 4 major patrons, 8 minor ones (only 4 available to each empire) and 2 great ones.",
+    "jp": "主要な後援者4、下位の後援者8（各帝国が出会えるのは4つ）、偉大な後援者2です。"
+   }
+  },
+  {
+   "id": "species.wiki.founder_purge",
+   "tier": 3,
+   "topic": "species",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Population",
+    "section": "Purges"
+   },
+   "text": {
+    "es": "¿Qué especie no se puede purgar nunca?",
+    "en": "Which species can never be purged?",
+    "jp": "決して粛清できない種族は？"
+   },
+   "answers": {
+    "es": [
+     "La especie fundadora del imperio",
+     "Los robots",
+     "Las especies presintientes",
+     "Las especies con la ciudadanía de esclavos"
+    ],
+    "en": [
+     "The empire's founder species",
+     "Robots",
+     "Pre-sapient species",
+     "Species with slave citizenship"
+    ],
+    "jp": [
+     "帝国の建国種族",
+     "ロボット",
+     "準知的生命体",
+     "奴隷身分の種族"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Para purgar a las demás hay que darles la ciudadanía de indeseables.",
+    "en": "Others are purged by giving them the Undesirables citizenship.",
+    "jp": "他の種族は市民権を「不適格」にすると粛清されます。"
+   }
+  },
+  {
+   "id": "species.wiki.migration_base",
+   "tier": 5,
+   "topic": "species",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Population",
+    "section": "Migration"
+   },
+   "text": {
+    "es": "De base, ¿cuántos pops migran solos desde un planeta cada mes?",
+    "en": "By default, how many pops migrate on their own from a planet each month?",
+    "jp": "基本状態で、1惑星から毎月自動で移住する人口は？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "50",
+     "10",
+     "100"
+    ],
+    "en": [
+     "1",
+     "50",
+     "10",
+     "100"
+    ],
+    "jp": [
+     "1",
+     "50",
+     "10",
+     "100"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El centro de tránsito en la base estelar y varios edictos aumentan la cifra.",
+    "en": "A starbase Transit Hub and several edicts raise the number.",
+    "jp": "星系基地の輸送拠点や布告で増やせます。"
+   }
+  },
+  {
+   "id": "species.wiki.robot_hive",
+   "tier": 2,
+   "topic": "species",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Population",
+    "section": "Robots"
+   },
+   "text": {
+    "es": "¿Qué hacen las mentes colmena con los robots de sus mundos?",
+    "en": "What do Hive Mind empires do with robots on their worlds?",
+    "jp": "集合意識の帝国は自国の惑星のロボットをどうする？"
+   },
+   "answers": {
+    "es": [
+     "Los asimilan en la colmena",
+     "Les dan plena ciudadanía",
+     "Los purgan siempre",
+     "Los usan solo como soldados"
+    ],
+    "en": [
+     "They assimilate them into the hive",
+     "They grant them full citizenship",
+     "They always purge them",
+     "They use them only as soldiers"
+    ],
+    "jp": [
+     "群体に同化する",
+     "完全な市民権を与える",
+     "必ず粛清する",
+     "兵士としてのみ使う"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Tampoco pueden construir robots.",
+    "en": "They cannot build robots either.",
+    "jp": "ロボットの建造もできません。"
    }
   },
   {
@@ -70875,6 +76981,176 @@
     "jp": "「獲得物省」には宗主国の技術「高度な食品加工」が必要です。"
    },
    "icon": "buildings/holding_produce_requisitorium.png"
+  },
+  {
+   "id": "subjects.wiki.fiefdom_breakup",
+   "tier": 4,
+   "topic": "subjects",
+   "dlc": [
+    "Overlord"
+   ],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Imperial Fiefdom empires"
+   },
+   "text": {
+    "es": "En una partida con Feudo imperial, ¿qué le ocurre al dominador entre 40 y 65 años después del inicio?",
+    "en": "In an Imperial Fiefdom game, what happens to the overlord 40 to 65 years after the start?",
+    "jp": "起源「帝国封土」で開始40～65年後、宗主国に何が起こる？"
+   },
+   "answers": {
+    "es": [
+     "Se divide en tres imperios en guerra y los vasallos quedan libres",
+     "Despierta como imperio caído",
+     "Anexiona a todos sus vasallos",
+     "Se convierte en una crisis galáctica"
+    ],
+    "en": [
+     "It breaks into three warring empires and the vassals go free",
+     "It awakens as a Fallen Empire",
+     "It annexes all its vassals",
+     "It becomes a galactic crisis"
+    ],
+    "jp": [
+     "戦争状態の3帝国に分裂し、属国は独立する",
+     "没落した帝国として覚醒する",
+     "全ての属国を併合する",
+     "銀河の危機になる"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Los fragmentos débiles pueden ofrecerse como súbditos al imperio que empezó como vasallo.",
+    "en": "Weak fragments may offer to become subjects of the former vassal player.",
+    "jp": "弱い分裂国は、かつての属国に従属を申し出ることがあります。"
+   }
+  },
+  {
+   "id": "subjects.wiki.jargon_diplo_annex",
+   "tier": 5,
+   "topic": "subjects",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Jargon",
+    "section": "Slang"
+   },
+   "text": {
+    "es": "Según la jerga de la wiki, ¿cuántos días debe llevar un vasallo bajo su dominador para anexionarlo diplomáticamente?",
+    "en": "According to the wiki's slang entry, how long must a vassal have been under its overlord to be diplo-annexed?",
+    "jp": "ウィキの用語解説で、属国を外交併合するには何日以上従属している必要がある？"
+   },
+   "answers": {
+    "es": [
+     "Al menos 3600 días",
+     "Al menos 360 días",
+     "Al menos 1800 días",
+     "Al menos 7200 días"
+    ],
+    "en": [
+     "At least 3600 days",
+     "At least 360 days",
+     "At least 1800 days",
+     "At least 7200 days"
+    ],
+    "jp": [
+     "3600日以上",
+     "360日以上",
+     "1800日以上",
+     "7200日以上"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Es la forma pacífica de incorporar un estado vasallo.",
+    "en": "It is the peaceful way to absorb a vassal state.",
+    "jp": "属国を平和的に取り込む方法です。"
+   }
+  },
+  {
+   "id": "subjects.wiki.jargon_shell",
+   "tier": 4,
+   "topic": "subjects",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Jargon",
+    "section": "Slang"
+   },
+   "text": {
+    "es": "En la jerga de los jugadores, ¿en qué consiste el vassal shelling?",
+    "en": "In player slang, what is vassal shelling?",
+    "jp": "プレイヤー用語の「vassal shelling」とは？"
+   },
+   "answers": {
+    "es": [
+     "Bombardear los planetas de un vasallo",
+     "Vender vasallos a otro imperio",
+     "Usar a los vasallos como escudo en cada batalla",
+     "Rodear un imperio con vasallos para impedirle expandirse"
+    ],
+    "en": [
+     "Bombarding a vassal's planets",
+     "Selling vassals to another empire",
+     "Using vassals as shields in every battle",
+     "Ringing an empire with vassals so it cannot expand"
+    ],
+    "jp": [
+     "属国の惑星を爆撃する",
+     "属国を他国に売る",
+     "戦闘のたびに属国を盾にする",
+     "属国で帝国を包囲して拡張を封じる"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Se crea una cáscara exterior de súbditos alrededor del objetivo.",
+    "en": "It builds an outer shell of subjects around the target.",
+    "jp": "標的の外側に従属国の殻を作ります。"
+   }
+  },
+  {
+   "id": "subjects.wiki.victory_subjects",
+   "tier": 4,
+   "topic": "subjects",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Empire",
+    "section": "Victory score"
+   },
+   "text": {
+    "es": "¿Qué parte de la puntuación de un súbdito recibe su dominador?",
+    "en": "How much of a subject's victory score does its overlord receive?",
+    "jp": "従属国の勝利スコアのうち、宗主国が受け取る割合は？"
+   },
+   "answers": {
+    "es": [
+     "El 50 %",
+     "El 10 %",
+     "El 25 %",
+     "El 100 %"
+    ],
+    "en": [
+     "50 %",
+     "10 %",
+     "25 %",
+     "100 %"
+    ],
+    "jp": [
+     "50％",
+     "10％",
+     "25％",
+     "100％"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Los miembros de una federación comparten solo un 10 % entre ellos.",
+    "en": "Federation members only share 10 % among themselves.",
+    "jp": "連邦加盟国どうしで共有されるのは10％だけです。"
+   }
   },
   {
    "id": "technology.tech_cost.tech_advanced_metallurgy_2",
@@ -100657,6 +106933,510 @@
     "jp": "ゲームファイルでの「対応型触手」の基本ウェイトは20です。"
    },
    "icon": "technologies/tech_weaver_bio_evasion_6.png"
+  },
+  {
+   "id": "technology.wiki.tech_cards",
+   "tier": 1,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Technology cards"
+   },
+   "text": {
+    "es": "¿Cómo presenta el juego las opciones de investigación?",
+    "en": "How does the game present research options?",
+    "jp": "ゲームでの研究の選択肢の示され方は？"
+   },
+   "answers": {
+    "es": [
+     "Como un árbol fijo en el que se elige cualquier nodo",
+     "Por votación de las facciones",
+     "Comprando planos en el mercado",
+     "Como una mano de cartas semialeatoria"
+    ],
+    "en": [
+     "As a fixed tree where any node can be picked",
+     "By a faction vote",
+     "By buying blueprints on the market",
+     "As a semi-random hand of cards"
+    ],
+    "jp": [
+     "どのノードも選べる固定ツリー",
+     "派閥の投票",
+     "市場で設計図を買う",
+     "半ランダムに引かれる手札"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Las cartas salen de un mazo oculto con todas las investigaciones válidas en ese momento.",
+    "en": "The cards come from a hidden deck holding every currently valid option.",
+    "jp": "手札はその時点で有効な研究を含む隠れた山札から引かれます。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_debris_progress",
+   "tier": 3,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Debris"
+   },
+   "text": {
+    "es": "¿Cuánto progreso aporta analizar los restos de un componente enemigo?",
+    "en": "How much progress does analysing an enemy component's debris give?",
+    "jp": "敵部品の残骸を解析すると得られる研究の進捗は？"
+   },
+   "answers": {
+    "es": [
+     "Un 10 %",
+     "Un 1 %",
+     "Un 33 %",
+     "La tecnología completa"
+    ],
+    "en": [
+     "10 %",
+     "1 %",
+     "33 %",
+     "The whole technology"
+    ],
+    "jp": [
+     "10％",
+     "1％",
+     "33％",
+     "技術の全部"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Si falta el requisito previo, el progreso va a este.",
+    "en": "If its prerequisite is missing, the progress goes to that prerequisite.",
+    "jp": "前提技術が未研究なら、進捗は前提技術に入ります。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_debris_repeatable",
+   "tier": 4,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Debris"
+   },
+   "text": {
+    "es": "¿Cuál de estas cosas no se puede conseguir de los restos de combate?",
+    "en": "Which of these cannot be obtained from battle debris?",
+    "jp": "戦闘の残骸から入手できないのはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Las tecnologías de nuevos tamaños de casco",
+     "La mayoría de las armas",
+     "La mayoría de los componentes",
+     "La mayoría de las defensas"
+    ],
+    "en": [
+     "Technologies for new ship hull sizes",
+     "Most weapons",
+     "Most components",
+     "Most defences"
+    ],
+    "jp": [
+     "新しい艦体サイズの技術",
+     "大半の兵器",
+     "大半の部品",
+     "大半の防御装備"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Tampoco salen mejoras de naves, repetibles ni tecnologías psiónicas.",
+    "en": "Ship upgrades, repeatables and psionic technologies are excluded too.",
+    "jp": "艦の改良、反復研究、超能力の技術も対象外です。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_default_choices",
+   "tier": 2,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Research alternatives"
+   },
+   "text": {
+    "es": "De base, ¿cuántas alternativas de investigación ofrece cada mano?",
+    "en": "By default, how many research alternatives does each hand offer?",
+    "jp": "基本状態で一度に提示される研究の選択肢は？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "5",
+     "3",
+     "8"
+    ],
+    "en": [
+     "1",
+     "5",
+     "3",
+     "8"
+    ],
+    "jp": [
+     "1",
+     "5",
+     "3",
+     "8"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Cívicas como la tecnocracia, edictos o tradiciones añaden más.",
+    "en": "Civics such as Technocracy, edicts or traditions add more.",
+    "jp": "「技術官僚の支配」などの国是や布告、伝統で増えます。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_empire_size",
+   "tier": 4,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Research progress"
+   },
+   "text": {
+    "es": "Por encima de 100 de tamaño de imperio, ¿cuánto sube el coste de investigación por cada punto extra?",
+    "en": "Above 100 empire size, how much does research cost rise per extra point?",
+    "jp": "帝国の規模が100を超えると、1ごとに研究費用はいくら増える？"
+   },
+   "answers": {
+    "es": [
+     "Un 1 %",
+     "Un 2 %",
+     "Un 0,2 %",
+     "Un 0,01 %"
+    ],
+    "en": [
+     "1 %",
+     "2 %",
+     "0.2 %",
+     "0.01 %"
+    ],
+    "jp": [
+     "1％",
+     "2％",
+     "0.2％",
+     "0.01％"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El mismo tamaño del imperio encarece también las tradiciones.",
+    "en": "Empire size also makes traditions dearer.",
+    "jp": "帝国の規模は伝統の費用も上げます。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_repeat_weight",
+   "tier": 4,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Technology cards"
+   },
+   "text": {
+    "es": "¿Qué le pasa al peso de una tecnología que salió en la mano anterior?",
+    "en": "What happens to the weight of a technology that appeared in the previous hand?",
+    "jp": "直前の手札に出た技術の出現しやすさはどうなる？"
+   },
+   "answers": {
+    "es": [
+     "Se duplica",
+     "Queda en cero hasta investigar otras 6",
+     "No cambia",
+     "Se reduce a la mitad en el siguiente robo"
+    ],
+    "en": [
+     "It is doubled",
+     "It drops to zero until 6 others are researched",
+     "It stays the same",
+     "It is halved for the next draw"
+    ],
+    "jp": [
+     "2倍になる",
+     "別の6件を研究するまで0になる",
+     "変わらない",
+     "次の抽選だけ半分になる"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Sirve para dar más variedad; al robo siguiente vuelve a la normalidad.",
+    "en": "This adds variety, and the weight resets after that draw.",
+    "jp": "選択肢に変化をつけるためで、その後は元に戻ります。"
+   }
+  },
+  {
+   "id": "technology.wiki.tech_tier_requirement",
+   "tier": 3,
+   "topic": "technology",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Technology",
+    "section": "Technology cards"
+   },
+   "text": {
+    "es": "¿Cuántas tecnologías del nivel anterior de la misma área hacen falta para que aparezcan las del siguiente nivel?",
+    "en": "How many technologies of the previous tier in the same area unlock the next tier?",
+    "jp": "次の階層の技術が出るには、同じ分野の前の階層の技術がいくつ必要？"
+   },
+   "answers": {
+    "es": [
+     "6",
+     "3",
+     "10",
+     "12"
+    ],
+    "en": [
+     "6",
+     "3",
+     "10",
+     "12"
+    ],
+    "jp": [
+     "6",
+     "3",
+     "10",
+     "12"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Los niveles van del T0 al T5 y el requisito es el mismo para todos.",
+    "en": "Tiers run from T0 to T5 and the requirement is the same for all.",
+    "jp": "階層はT0～T5で、条件はどれも同じです。"
+   }
+  },
+  {
+   "id": "traditions.wiki.tradition_cost_size",
+   "tier": 4,
+   "topic": "traditions",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Traditions",
+    "section": "Tradition cost"
+   },
+   "text": {
+    "es": "¿A partir de qué tamaño de imperio empieza a encarecerse cada tradición?",
+    "en": "Above which empire size do traditions start getting more expensive from size?",
+    "jp": "帝国の規模がいくつを超えると伝統の費用が規模で増える？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "50",
+     "500",
+     "100"
+    ],
+    "en": [
+     "10",
+     "50",
+     "500",
+     "100"
+    ],
+    "jp": [
+     "10",
+     "50",
+     "500",
+     "100"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste crece también con el número de tradiciones ya desbloqueadas.",
+    "en": "The cost also grows with the number of traditions already unlocked.",
+    "jp": "取得済みの伝統の数でも費用は増えます。"
+   }
+  },
+  {
+   "id": "traditions.wiki.tradition_per_tree",
+   "tier": 2,
+   "topic": "traditions",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Traditions",
+    "section": "Tradition trees"
+   },
+   "text": {
+    "es": "Sin contar la adopción ni el remate, ¿cuántas tradiciones tiene cada árbol?",
+    "en": "Not counting the adoption and finisher effects, how many traditions does each tree have?",
+    "jp": "採用と完成の効果を除くと、各ツリーの伝統はいくつ？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "5",
+     "7",
+     "10"
+    ],
+    "en": [
+     "3",
+     "5",
+     "7",
+     "10"
+    ],
+    "jp": [
+     "3",
+     "5",
+     "7",
+     "10"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La adopción y el remate cuentan además como tradiciones al calcular el coste.",
+    "en": "Adoption and finisher also count as traditions when the cost is worked out.",
+    "jp": "コスト計算では採用と完成の効果も伝統として数えます。"
+   }
+  },
+  {
+   "id": "traditions.wiki.tradition_perk_slot",
+   "tier": 1,
+   "topic": "traditions",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Traditions",
+    "section": "Traditions"
+   },
+   "text": {
+    "es": "¿Qué desbloquea completar un árbol de tradiciones?",
+    "en": "What does completing a tradition tree unlock?",
+    "jp": "伝統ツリーを完成させると解放されるのは？"
+   },
+   "answers": {
+    "es": [
+     "Una cívica adicional",
+     "Una nueva ética",
+     "Un hueco para una ventaja de ascenso",
+     "Un tercer gobernante"
+    ],
+    "en": [
+     "An extra civic",
+     "A new ethic",
+     "A slot for an ascension perk",
+     "A third ruler"
+    ],
+    "jp": [
+     "追加の国是",
+     "新しい思想",
+     "アセンションパークの枠",
+     "3人目の支配者"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "Las ventajas de ascenso son las grandes mejoras que definen un imperio.",
+    "en": "Ascension perks are the major upgrades that define an empire.",
+    "jp": "アセンションパークは帝国を特徴づける大きな強化です。"
+   }
+  },
+  {
+   "id": "traditions.wiki.tradition_resource",
+   "tier": 1,
+   "topic": "traditions",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Traditions",
+    "section": "Traditions"
+   },
+   "text": {
+    "es": "¿Con qué recurso se desbloquean las tradiciones?",
+    "en": "Which resource unlocks traditions?",
+    "jp": "伝統の取得に使う資源は？"
+   },
+   "answers": {
+    "es": [
+     "Influencia",
+     "Comercio",
+     "Investigación de sociedad",
+     "Unidad"
+    ],
+    "en": [
+     "Influence",
+     "Trade",
+     "Society Research",
+     "Unity"
+    ],
+    "jp": [
+     "影響力",
+     "交易",
+     "社会学研究",
+     "ユニティ"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "Representan la evolución sociocultural de un imperio.",
+    "en": "They stand for the socio-cultural evolution of an empire.",
+    "jp": "伝統は帝国の社会と文化の進化を表します。"
+   }
+  },
+  {
+   "id": "traditions.wiki.tradition_trees_max",
+   "tier": 2,
+   "topic": "traditions",
+   "dlc": [],
+   "source": {
+    "kind": "wiki",
+    "article": "Traditions",
+    "section": "Tradition trees"
+   },
+   "text": {
+    "es": "¿Cuántos árboles de tradiciones puede elegir cada imperio como máximo?",
+    "en": "How many tradition trees can each empire pick at most?",
+    "jp": "帝国が選べる伝統ツリーは最大いくつ？"
+   },
+   "answers": {
+    "es": [
+     "7",
+     "3",
+     "5",
+     "10"
+    ],
+    "en": [
+     "7",
+     "3",
+     "5",
+     "10"
+    ],
+    "jp": [
+     "7",
+     "3",
+     "5",
+     "10"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "Cada árbol tiene 5 tradiciones, además de un efecto al adoptarlo y otro al completarlo.",
+    "en": "Each tree has 5 traditions, plus an effect for adopting it and one for finishing it.",
+    "jp": "各ツリーは5つの伝統と、採用時・完成時の効果を持ちます。"
+   }
   }
  ]
 }

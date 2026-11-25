@@ -431,7 +431,7 @@ async def game_checks(pg, by_id):
     hud = await pg.evaluate(HUD_JS)
     marks = await pg.evaluate("()=>[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>[b.disabled,b.className])")
     check("testellaris game: the key of the right answer gives 100 points, shows Correct, the explanation and the source, and focuses Next",
-          hud["score"] == "Score: 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and q1["source"]["key"] in hud["feedback"]
+          hud["score"] == "Score: 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and source_en(q1) in hud["feedback"]
           and hud["announce"].startswith("Correct.") and hud["focus"] == "tq-next" and all(m[0] for m in marks) and "is-correct" in marks[first["right"]][1], (hud, marks))
     await pg.keyboard.press("Enter")
     second = await pg.evaluate(POSITIONS_JS, small)

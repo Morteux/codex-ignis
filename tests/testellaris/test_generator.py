@@ -98,6 +98,8 @@ class BankFactsTest(unittest.TestCase):
         tech_by_name = {self.d.name("technologies", k)["en"]: k for k in techs if self.d.name("technologies", k)}
         sources = {(x.get("file"), x["id"]) for s in self.d.manifest["sets"] for x in self.d.items(s)}
         for q in self.bank["questions"]:
+            if qb.is_wiki(q) and "file" not in q["source"]:
+                continue  # a wiki fact the extractor data does not hold (GDD §5.3)
             with self.subTest(q["id"]):
                 self.assertIn((q["source"]["file"], q["source"]["key"]), sources)
         for q in self.bank["questions"]:

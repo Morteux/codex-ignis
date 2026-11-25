@@ -125,6 +125,19 @@ class BankTest(unittest.TestCase):
         self.assertEqual(b["rulesetId"], qb.DEFAULT_RULESET)
         self.assertEqual(qb.validate(b, qb.dlc_names(), qb.WIKI_DIR), [])
 
+    def test_bank_has_wiki_questions_in_every_tier(self):
+        """First batch of hand-written wiki questions (T4402): about 150, all tiers, some in the base game."""
+        path = qb.bank_path()
+        if not os.path.exists(path):
+            self.skipTest("no question bank yet")
+        wiki = [q for q in qb.load(path)["questions"] if qb.is_wiki(q)]
+        self.assertGreaterEqual(len(wiki), 150)
+        for tier in qb.TIERS:
+            self.assertGreaterEqual(sum(1 for q in wiki if q["tier"] == tier), 20, f"tier {tier}")
+            self.assertTrue(any(not q["dlc"] for q in wiki if q["tier"] == tier), f"no base-game wiki question in tier {tier}")
+        positions = [sum(1 for q in wiki if q["correct"] == p) for p in range(4)]
+        self.assertLessEqual(max(positions) - min(positions), 1, positions)
+
 
 if __name__ == "__main__":
     unittest.main()
