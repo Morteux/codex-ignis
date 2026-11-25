@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4104 — Questions about technology and research (2026-11-25)
+
+- [ ] **New templates** (`q_technology.py`) and tiers: starting technology (1); building, district, blocker or edict that needs a technology (2); same research area (2); technology unlocked by another (3); DLC (3); rare (4), highest base cost (4), the two prerequisites (4); dangerous, repeatable with a level limit and base draw weight (5); highest tier (2–5). About 330 new questions on top of the 400 of T4111.
+- [ ] **Research areas** are asked as "which technology shares the area of X", because the data has no official es/en/jp names of Physics, Society and Engineering.
+- [ ] **Base draw weight** is the number of the technology file, said so in the question ("before modifiers"); it is an obscure fact, so tier 5.
+- [ ] **Blocker names** are read without the blocker icon the game writes before them (`£blocker£`).
+
 ## T4103 — Questions about ethics and government (2026-11-25)
 
 - [ ] **Done with the data the extractor has** (`q_government.py`): topic `ethics` (points, tier 1–2; legal and illegal pairs, 1–2; civics and origins an ethic rules out, 3) and topic `government` (authority facts, 1–2; which ethics and authorities go together, 2; term length, 4; civic allowed by an authority and an ethic, 4; authority variants, 4–5; the authority players cannot pick, 5). About 200 questions with the opposite ethics of T4111.

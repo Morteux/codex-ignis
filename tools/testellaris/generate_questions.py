@@ -33,6 +33,7 @@ DLC_TRIGGERS = None
 _SCRIPTED = re.compile(r"\b(has_[a-z0-9_]+)\s*=\s*(?:yes|no)\b")
 _DLC_KEY = re.compile(r"^has_[a-z0-9_]+_dlc$")
 _CODES = re.compile(r"[§£$]")
+_NAME_MARK = re.compile(r"^£blocker£\s*")  # the icon the game puts before the name of a blocker
 _NEGATE = {"NOT", "NOR"}
 _ALTERNATIVE = {"OR", "NAND"}
 
@@ -50,7 +51,9 @@ class Data:
         self.folder = folder.replace("\\", "/").rstrip("/")
         self.manifest = self._json("manifest")
         self.ruleset = self.manifest["rulesetId"]
-        self.loc = {lang: self._json(f"localisation/{f}")["sets"] for lang, f in LOC_FILES.items()}
+        self.loc = {lang: {s: {k: v and _NAME_MARK.sub("", v) for k, v in names.items()}
+                           for s, names in self._json(f"localisation/{f}")["sets"].items()}
+                    for lang, f in LOC_FILES.items()}
         self._sets, self._unique = {}, {}
         global DLC_TRIGGERS
         DLC_TRIGGERS = self.raw("dlc").get("scripted_triggers")
@@ -699,7 +702,7 @@ def gen_civics(b):
 
 TEMPLATES = (gen_technologies, gen_buildings, gen_ethics, gen_civics)
 # One module per batch of section 41, each with `generate(builder)` and `CAPS` ({template: cap})
-MODULES = ("q_civics", "q_government")
+MODULES = ("q_civics", "q_government", "q_technology")
 
 
 # ---------------------------------------------------------------- bank
