@@ -67,6 +67,42 @@
           <p class="tq-warning" id="tq-few" hidden></p>
           <button type="button" class="tq-btn is-primary tq-start-btn" id="tq-start-btn" data-i18n="tqStart" disabled>Empezar</button>
         </section>
+
+        <!-- Question screen (§8.2–8.3), filled by js/testellaris.js. -->
+        <section class="tq-screen tq-game" id="tq-game" aria-labelledby="tq-question" hidden>
+          <div class="tq-hud">
+            <p class="tq-hud-item tq-hud-tier" id="tq-hud-tier"></p>
+            <p class="tq-hud-item" id="tq-hud-number"></p>
+            <p class="tq-hud-item" id="tq-hud-score"></p>
+            <p class="tq-hud-item tq-lives" id="tq-hud-lives"></p>
+          </div>
+          <div class="tq-question-row">
+            <img class="tq-question-icon" id="tq-question-icon" alt="" width="64" height="64" hidden />
+            <h2 class="tq-question" id="tq-question" tabindex="-1"></h2>
+          </div>
+          <div class="tq-answers" id="tq-answers" role="group" aria-labelledby="tq-question"></div>
+          <div class="tq-feedback" id="tq-feedback" hidden>
+            <p class="tq-feedback-result" id="tq-feedback-result"></p>
+            <p class="tq-feedback-explanation" id="tq-feedback-explanation"></p>
+            <p class="tq-source" id="tq-feedback-source"></p>
+            <button type="button" class="tq-btn is-primary" id="tq-next" data-i18n="tqNext">Siguiente</button>
+          </div>
+          <p class="visually-hidden" id="tq-announce" aria-live="assertive" aria-atomic="true"></p>
+          <div class="tq-game-actions">
+            <button type="button" class="tq-btn is-danger" id="tq-give-up" data-i18n="tqGiveUp">Rendirse</button>
+          </div>
+        </section>
+
+        <!-- End screen (§8.4). -->
+        <section class="tq-screen tq-end" id="tq-end" aria-labelledby="tq-end-title" hidden>
+          <h2 class="tq-end-title" id="tq-end-title" tabindex="-1" data-i18n="tqGameOver">Fin de la partida</h2>
+          <p class="tq-end-reason" id="tq-end-reason"></p>
+          <dl class="tq-end-stats" id="tq-end-stats"></dl>
+          <div class="tq-end-actions">
+            <button type="button" class="tq-btn is-primary" id="tq-play-again" data-i18n="tqPlayAgain">Jugar otra vez</button>
+            <button type="button" class="tq-btn" id="tq-back-start" data-i18n="tqBackToStart">Cambiar el filtro de DLC</button>
+          </div>
+        </section>
       </main>
 
       <footer class="footer">

@@ -2,7 +2,8 @@
  * Testellaris (testellaris.html), the Stellaris quiz: page script (TESTELLARIS_GDD.md §8).
  *
  * Loads the question bank of the ruleset (data/testellaris/<rulesetId>/questions.json) and
- * drives the screens: start (rules and DLC filter). The rules without DOM live in
+ * drives the screens: start (rules and DLC filter), question (one at a time, with the result
+ * and the explanation after each answer) and end. The rules without DOM live in
  * js/testellaris-engine.js. The language and the static markup are handled by the shared
  * shell (js/page-shell.js); this module repaints its dynamic parts on a language change.
  */
@@ -12,12 +13,16 @@ import "./i18n-testellaris.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
-import { TIERS, FEW_QUESTIONS, filterBank, tierCounts } from "./testellaris-engine.js";
+import { confirmChoice } from "./confirm-dialog.js";
+import { TIERS, FEW_QUESTIONS, LIVES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent } from "./testellaris-engine.js";
 
 export const RULESET_ID = "stellaris-pc-4.5.4";
 const BANK_URL = `data/testellaris/${RULESET_ID}/questions.json`;
 /** Unchecked DLC names (so a DLC added later starts checked), GDD §4. */
 const DLC_STORAGE_KEY = "testellaris-dlc-off";
+/** Ids of the questions asked in the last games (GDD §3.2). */
+const RECENT_STORAGE_KEY = "testellaris-recent";
+const ANSWER_KEYS = { 1: 0, 2: 1, 3: 2, 4: 3, a: 0, b: 1, c: 2, d: 3 };
 
 /** DLCs of the filter: the gameplay ones installed with the game (the portrait packs change no question). */
 const DLC_GROUPS = [
@@ -31,10 +36,18 @@ const dlcGroups = el("tq-dlc-groups");
 const availableEl = el("tq-available");
 const fewEl = el("tq-few");
 const startButton = el("tq-start-btn");
+const screens = { start: el("tq-start"), game: el("tq-game"), end: el("tq-end") };
+const questionEl = el("tq-question");
+const iconEl = el("tq-question-icon");
+const answersEl = el("tq-answers");
+const feedbackEl = el("tq-feedback");
+const announceEl = el("tq-announce");
 
 let lang = getLang();
 let bank = null; // { rulesetId, questions } once loaded
 let loadFailed = false;
+let game = null; // the game in play or just ended (js/testellaris-engine.js)
+let lastResult = null; // result of the answer shown in the feedback, null while answering
 
 /** Replaces {name} placeholders of an interface text. */
 export function format(text, values) {
@@ -138,6 +151,161 @@ function setAllDlcs(checked) {
     renderAvailable();
 }
 
+// ── Screens ─────────────────────────────────────────────────────────────────
+
+function showScreen(name) {
+    for (const [key, section] of Object.entries(screens)) section.hidden = key !== name;
+}
+
+const tierName = (tier) => t(lang, `tqTier${tier}`);
+const livesText = () => format(t(lang, "tqLives"), { lives: game.lives, max: LIVES });
+const answerText = (question, bankIndex) => question.answers[lang][bankIndex];
+
+function startGame() {
+    if (!bank) return;
+    game = createGame(filterBank(bank.questions, checkedDlcs()), { recent: readStorage(RECENT_STORAGE_KEY, []) });
+    showScreen("game");
+    advance();
+}
+
+/** Next question, or the end screen when the game is over. */
+function advance() {
+    lastResult = null;
+    announceEl.textContent = "";
+    const question = game.over ? null : nextQuestion(game);
+    if (!question) {
+        showEnd();
+        return;
+    }
+    writeStorage(RECENT_STORAGE_KEY, mergeRecent(readStorage(RECENT_STORAGE_KEY, []), game));
+    renderGame();
+    questionEl.focus();
+}
+
+function renderHud() {
+    const { tier } = game.current.question;
+    el("tq-hud-tier").textContent = format(t(lang, "tqTierLabel"), { tier, name: tierName(tier) });
+    el("tq-hud-number").textContent = format(t(lang, "tqQuestionNumber"), { n: game.number });
+    el("tq-hud-score").textContent = format(t(lang, "tqScore"), { score: game.score });
+    const hearts = document.createElement("span");
+    hearts.className = "tq-hearts";
+    hearts.setAttribute("aria-hidden", "true");
+    hearts.textContent = "♥".repeat(game.lives) + "♡".repeat(LIVES - game.lives);
+    el("tq-hud-lives").replaceChildren(hearts, " ", livesText());
+}
+
+/** Draws the current question in the current language, with the answer order of the game. */
+function renderGame() {
+    const { question, order, removed, answered, chosenPosition } = game.current;
+    renderHud();
+    questionEl.textContent = question.text[lang];
+    questionEl.dataset.questionId = question.id;
+    if (question.icon) {
+        iconEl.onerror = () => { iconEl.hidden = true; };
+        iconEl.src = IMAGE_BASE + question.icon;
+        iconEl.hidden = false;
+    } else {
+        iconEl.hidden = true;
+        iconEl.removeAttribute("src");
+    }
+    const correctPosition = order.indexOf(question.correct);
+    answersEl.replaceChildren(...order.map((bankIndex, position) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "tq-answer";
+        button.dataset.position = String(position);
+        const letter = document.createElement("span");
+        letter.className = "tq-answer-key";
+        letter.setAttribute("aria-hidden", "true");
+        letter.textContent = "ABCD"[position];
+        const label = document.createElement("span");
+        label.className = "tq-answer-text";
+        label.textContent = answerText(question, bankIndex);
+        button.append(letter, label);
+        const isRemoved = removed.has(position);
+        if (isRemoved) button.classList.add("is-removed");
+        if (answered && position === correctPosition) button.classList.add("is-correct");
+        if (answered && position === chosenPosition && position !== correctPosition) button.classList.add("is-wrong");
+        button.disabled = answered || isRemoved;
+        button.addEventListener("click", () => pick(position));
+        return button;
+    }));
+    renderFeedback();
+}
+
+function renderFeedback() {
+    feedbackEl.hidden = !lastResult;
+    if (!lastResult) return;
+    const { question } = game.current;
+    const result = el("tq-feedback-result");
+    result.className = `tq-feedback-result ${lastResult.correct ? "is-correct" : "is-wrong"}`;
+    const lines = [lastResult.correct ? t(lang, "tqCorrect") : format(t(lang, "tqWrong"), { answer: answerText(question, question.correct) })];
+    if (lastResult.tierUp) lines.push(format(t(lang, "tqTierUp"), { tier: lastResult.tierUp, name: tierName(lastResult.tierUp) }));
+    result.textContent = lines.join(" ");
+    el("tq-feedback-explanation").textContent = question.explanation[lang];
+    el("tq-feedback-source").textContent = format(t(lang, "tqSource"), { file: question.source.file, key: question.source.key });
+}
+
+function pick(position) {
+    if (!game || game.over || !game.current || game.current.answered || game.current.removed.has(position)) return;
+    const tierBefore = game.tier;
+    const result = answer(game, position);
+    lastResult = { ...result, tierUp: !game.over && game.tier > tierBefore ? game.tier : null };
+    renderGame();
+    const { question } = game.current;
+    announceEl.textContent = result.correct
+        ? format(t(lang, "tqAnnounceCorrect"), { lives: livesText() })
+        : format(t(lang, "tqAnnounceWrong"), { answer: answerText(question, question.correct), lives: livesText() });
+    el("tq-next").focus();
+}
+
+function showEnd() {
+    showScreen("end");
+    renderEnd();
+    el("tq-end-title").focus();
+}
+
+function renderEnd() {
+    el("tq-end-reason").textContent = t(lang, { lives: "tqEndLives", completed: "tqEndCompleted", gaveUp: "tqEndGaveUp" }[game.endReason]);
+    const stats = [
+        ["tqStatScore", String(game.score)],
+        ["tqStatTier", format(t(lang, "tqTierLabel"), { tier: game.maxTier, name: tierName(game.maxTier) })],
+        ["tqStatCorrect", format(t(lang, "tqStatCorrectValue"), { correct: game.correct, answered: game.answered })],
+    ];
+    el("tq-end-stats").replaceChildren(...stats.flatMap(([key, value]) => {
+        const term = document.createElement("dt");
+        term.textContent = t(lang, key);
+        const detail = document.createElement("dd");
+        detail.textContent = value;
+        detail.dataset.stat = key;
+        return [term, detail];
+    }));
+}
+
+async function giveUp() {
+    const choice = await confirmChoice({
+        title: t(lang, "tqGiveUpTitle"),
+        message: t(lang, "tqGiveUpMessage"),
+        buttons: [{ id: "giveUp", label: t(lang, "tqGiveUpConfirm"), variant: "danger" }, { id: "cancel", label: t(lang, "tqCancel") }],
+    });
+    if (choice !== "giveUp" || !game || game.over) return;
+    endGame(game, "gaveUp");
+    showEnd();
+}
+
+function onKeyDown(event) {
+    if (screens.game.hidden || !game?.current || event.altKey || event.ctrlKey || event.metaKey) return;
+    if (document.querySelector(".confirm-overlay")) return; // a dialog is open
+    const key = event.key.toLowerCase();
+    if (!game.current.answered && key in ANSWER_KEYS) {
+        event.preventDefault();
+        pick(ANSWER_KEYS[key]);
+    } else if (game.current.answered && key === "enter" && document.activeElement?.tagName !== "BUTTON") {
+        event.preventDefault();
+        advance();
+    }
+}
+
 // ── Set-up ──────────────────────────────────────────────────────────────────
 
 /** XMLHttpRequest rather than fetch(): it also reads file:// pages (the smoke tests), where fetch() cannot. */
@@ -167,8 +335,16 @@ buildDlcFilter();
 dlcGroups.addEventListener("change", () => { saveDlcFilter(); renderAvailable(); });
 el("tq-dlc-all").addEventListener("click", () => setAllDlcs(true));
 el("tq-dlc-none").addEventListener("click", () => setAllDlcs(false));
+startButton.addEventListener("click", startGame);
+el("tq-next").addEventListener("click", advance);
+el("tq-give-up").addEventListener("click", giveUp);
+el("tq-play-again").addEventListener("click", startGame);
+el("tq-back-start").addEventListener("click", () => { showScreen("start"); startButton.focus(); });
+document.addEventListener("keydown", onKeyDown);
 onLanguageChange((next) => {
     lang = next;
     renderAvailable();
+    if (game && !screens.game.hidden) renderGame();
+    if (game && !screens.end.hidden) renderEnd();
 });
 loadBank();

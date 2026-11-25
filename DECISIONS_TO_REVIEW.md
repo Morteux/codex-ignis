@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4202 — Testellaris game loop (2026-11-25)
+
+- [ ] **A tier that runs out** moves the game up to the next tier with questions, and the count of right answers towards the next tier starts again there (the GDD only says the next question comes from the next tier up).
+- [ ] **"Recently asked" list** (`testellaris-recent`, last 200 ids) is written as each question is shown, so a game left half way also counts; those questions are drawn only when a tier has nothing else left.
+- [ ] **After the last life** the result and the explanation are still shown, and Next opens the end screen.
+- [ ] **The end screen has a second button**, "Change the DLC filter", back to the start screen; Play again keeps the same filter.
+- [ ] **No topic weighting** when drawing (T4109 suggested it as an option): every unasked question of the tier has the same chance.
+
 ## T4201 — Testellaris page and start screen (2026-11-25)
 
 - [ ] **The page reads the bank JSON itself** (`data/testellaris/stellaris-pc-4.5.4/questions.json`, 2.9 MB, about 330 KB gzipped) after the page is usable, with `XMLHttpRequest` so the `file://` smoke tests can read it too. No minified copy or JS module was generated; if the size matters, the generator could write a compact copy.
