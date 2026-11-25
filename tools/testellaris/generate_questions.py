@@ -32,7 +32,7 @@ GENERATOR = "tools/testellaris/generate_questions.py"
 DLC_TRIGGERS = None
 _SCRIPTED = re.compile(r"\b(has_[a-z0-9_]+)\s*=\s*(?:yes|no)\b")
 _DLC_KEY = re.compile(r"^has_[a-z0-9_]+_dlc$")
-_CODES = re.compile(r"[§£$]")
+_CODES = re.compile(r"[§£$\[\]]")  # formatting codes and [scripted.Names]
 _NAME_MARK = re.compile(r"^£blocker£\s*")  # the icon the game puts before the name of a blocker
 _NEGATE = {"NOT", "NOR"}
 _ALTERNATIVE = {"OR", "NAND"}
@@ -710,7 +710,7 @@ def gen_civics(b):
 
 TEMPLATES = (gen_technologies, gen_buildings, gen_ethics, gen_civics)
 # One module per batch of section 41, each with `generate(builder)` and `CAPS` ({template: cap})
-MODULES = ("q_civics", "q_government", "q_technology", "q_planets")
+MODULES = ("q_civics", "q_government", "q_technology", "q_planets", "q_economy")
 
 
 # ---------------------------------------------------------------- bank

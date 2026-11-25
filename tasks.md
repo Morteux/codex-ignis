@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **107 / 139 tareas (77%)**
+> Progreso: **108 / 139 tareas (78%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -295,8 +295,9 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 - [x] **T4105** (P41.5) Questions: planets and colonies: planet classes, planetary features and modifiers, designations, districts, specializations, capital buildings (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `planets.feature_district.d_great_river`: "Which of these planetary features raises the maximum of Agriculture District?" with the correct answer "Great River", in es, en and jp.
-- [ ] **T4106** (P41.6) Questions: economy: resources, jobs, buildings, branch offices, living standards (from the extractor output, written by hand where a template does not fit)
+- [x] **T4106** (P41.6) Questions: economy: resources, jobs, buildings, branch offices, living standards (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
+  - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `economy.branch_office_criminal.building_disinformation_center`: "Which of these branch office buildings can only a criminal corporation build?" with the correct answer "Disinformation Center", in es, en and jp.
 - [ ] **T4107** (P41.7) Questions: policies, edicts, decisions, traditions, ascension perks and ambition (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
 - [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)

@@ -42,8 +42,8 @@ FIELDS = {"id", "tier", "topic", "dlc", "source", "text", "answers", "correct", 
 REQUIRED = FIELDS - {"icon"}
 SOURCE_FIELDS = {"file", "key", "loc"}
 ID_RE = re.compile(r"^([a-z_]+)\.([a-z0-9_]+)\.([A-Za-z0-9_.:@-]+)$")
-# Formatting codes of the game localisation (§Y … §!, £icon£, $variable$) must never reach a question.
-UNRESOLVED_RE = re.compile(r"[§£]|\$[A-Za-z_]")
+# Formatting codes of the game localisation (§Y … §!, £icon£, $variable$, [scope.Name]) must never reach a question.
+UNRESOLVED_RE = re.compile(r"[§£]|\$[A-Za-z_]|\[[A-Za-z_]+\.")
 
 
 def bank_path(ruleset_id=DEFAULT_RULESET):

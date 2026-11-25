@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4106 — Questions about the economy (2026-11-25)
+
+- [ ] **New templates** (`q_economy.py`, topic `economy`, about 240 questions) and tiers: stratum of a job (1, drones 2); which is a branch office building (1); jobs that produce the same resource (2); same upkeep resource, criminal and required civic or origin of branch office buildings, living standard with the highest upkeep (3); highest base output, jobs of a branch office building, slowest building to build, living standard with the most political power (4); build days and political power values (5); living standard of a civic or origin (2).
+- [ ] **Resources are never named**: the 4.5.4 extractor output has no official es/en/jp resource names, so the questions compare them ("produces the same resource as X"). Adding them needs the 4.5.4 game files (see T4103).
+- [ ] **Job variants** (swaps such as Merchant for Politician) are not asked: their conditions are scripted triggers the data does not resolve, so their DLC list could be incomplete.
+- [ ] **Names with game script** such as `[foundry.GetName]` are now rejected by the generator and the validator (an overlord job slipped one into a question).
+
 ## T4105 — Questions about planets and colonies (2026-11-25)
 
 - [ ] **New templates** (`q_planets.py`, topic `planets`, about 275 questions) and tiers: shared climate and "which is a blocker" (1–2); features that raise a district maximum and district jobs (2); where a feature appears, designations, specialization and capital jobs (3); blocker days and lost districts, district amounts, workforce bonuses, capital housing and job counts (4); which planet modifier can spawn on a world (5).
