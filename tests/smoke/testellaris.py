@@ -14,6 +14,10 @@ class _Result(unittest.TestResult):
 
     addError = addFailure
 
+    def addSubTest(self, test, subtest, err):
+        if err is not None:  # a failed subTest never reaches addFailure
+            self.addFailure(subtest, err)
+
     def addSkip(self, test, reason):
         check("testellaris: " + test.id().split(".", 1)[1] + " (skipped: " + reason + ")", True)
 

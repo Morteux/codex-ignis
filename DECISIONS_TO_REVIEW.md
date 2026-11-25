@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4107 — Questions about policies and edicts (2026-11-25)
+
+- [ ] **Done with the data the extractor has** (`q_policies.py`, topic `policies`, about 175 questions) and tiers: options of a policy and policy of an option (2, options only non-player empires have 4); ethic and origin an edict requires (2); ethic that closes an option, civic that opens it, edicts sharing an upkeep resource, edict DLC and the technology of the ambitions (3); authority of an edict, base costs and wartime edicts (4); months an edict stays locked (5).
+- [ ] **Left blocked**: traditions, ascension perks and decisions have no data set in the 4.5.4 extractor output and the installed game is 4.6.0.
+- [ ] **A question about a policy option** has the policy as its source key (options are not items of the data sets).
+- [ ] **Draft wording**: "ambition" is written "ambición" / "大望"; the data has no official name of the edict group, so a native review should check it.
+- [ ] **Smoke fix**: `tests/smoke/testellaris.py` ignored failures inside `subTest`; they now fail the browser tests too.
+
 ## T4106 — Questions about the economy (2026-11-25)
 
 - [ ] **New templates** (`q_economy.py`, topic `economy`, about 240 questions) and tiers: stratum of a job (1, drones 2); which is a branch office building (1); jobs that produce the same resource (2); same upkeep resource, criminal and required civic or origin of branch office buildings, living standard with the highest upkeep (3); highest base output, jobs of a branch office building, slowest building to build, living standard with the most political power (4); build days and political power values (5); living standard of a civic or origin (2).

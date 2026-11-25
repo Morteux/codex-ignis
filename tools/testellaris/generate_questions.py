@@ -710,7 +710,7 @@ def gen_civics(b):
 
 TEMPLATES = (gen_technologies, gen_buildings, gen_ethics, gen_civics)
 # One module per batch of section 41, each with `generate(builder)` and `CAPS` ({template: cap})
-MODULES = ("q_civics", "q_government", "q_technology", "q_planets", "q_economy")
+MODULES = ("q_civics", "q_government", "q_technology", "q_planets", "q_economy", "q_policies")
 
 
 # ---------------------------------------------------------------- bank

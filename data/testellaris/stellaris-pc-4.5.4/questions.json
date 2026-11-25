@@ -2,7 +2,7 @@
  "rulesetId": "stellaris-pc-4.5.4",
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
  "generator": "tools/testellaris/generate_questions.py",
- "count": 1991,
+ "count": 2168,
  "questions": [
   {
    "id": "civics.civic_authority.civic_beacon_of_liberty",
@@ -54658,6 +54658,7412 @@
     "jp": "「糸通す道」は職業「トレーダー」を提供します。"
    },
    "icon": "districts_specialization/District_specialization_wilderness_trade.png"
+  },
+  {
+   "id": "policies.ambition_technology.architectural_renaissance_nomad",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "architectural_renaissance_nomad"
+   },
+   "text": {
+    "es": "¿Qué tecnología hace falta para la ambición «Decreto: Renacimiento nómada»?",
+    "en": "Which technology is needed for the ambition Decree: Nomadic Renaissance?",
+    "jp": "大望「布告：遊牧ルネサンス」に必要な技術はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Potenciadores de capacidad",
+     "Biomecánica",
+     "Haz involutivo",
+     "Teoría de la ascensión"
+    ],
+    "en": [
+     "Capacity Boosters",
+     "Biomechanics",
+     "Devolving Beam",
+     "Ascension Theory"
+    ],
+    "jp": [
+     "能力増強",
+     "バイオメカニクス",
+     "退化砲",
+     "アセンション理論"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Decreto: Renacimiento nómada» requiere la tecnología Teoría de la ascensión.",
+    "en": "Decree: Nomadic Renaissance requires the technology Ascension Theory.",
+    "jp": "「布告：遊牧ルネサンス」には技術「アセンション理論」が必要です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.ambition_technology.desperate_measures",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "desperate_measures"
+   },
+   "text": {
+    "es": "¿Qué tecnología hace falta para la ambición «Decreto: Medidas desesperadas»?",
+    "en": "Which technology is needed for the ambition Decree: Desperate Measures?",
+    "jp": "大望「布告：窮余の策」に必要な技術はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Mutaciones controladas avanzadas",
+     "Heraldo de laberintos",
+     "Motor estelar",
+     "Teoría de la ascensión"
+    ],
+    "en": [
+     "Advanced Controlled Mutations",
+     "Maze Harbinger",
+     "Stellar Engine",
+     "Ascension Theory"
+    ],
+    "jp": [
+     "高度な制御された突然変異",
+     "メイズ・ハーヴィンジャー",
+     "恒星エンジン",
+     "アセンション理論"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Decreto: Medidas desesperadas» requiere la tecnología Teoría de la ascensión.",
+    "en": "Decree: Desperate Measures requires the technology Ascension Theory.",
+    "jp": "「布告：窮余の策」には技術「アセンション理論」が必要です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.ambition_technology.fortress_proclamation",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "fortress_proclamation"
+   },
+   "text": {
+    "es": "¿Qué tecnología hace falta para la ambición «Decreto: Proclamación de fortaleza»?",
+    "en": "Which technology is needed for the ambition Decree: Fortress Proclamation?",
+    "jp": "大望「布告：要塞宣言」に必要な技術はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Cañones \\\"tormenta de fuego\\\"",
+     "Reprocesador planetario",
+     "Teoría de la ascensión",
+     "Mutaciones controladas avanzadas"
+    ],
+    "en": [
+     "Stormfire Cannons",
+     "Planetary Reprocessor",
+     "Ascension Theory",
+     "Advanced Controlled Mutations"
+    ],
+    "jp": [
+     "ストームファイアキャノン",
+     "惑星再処理機",
+     "アセンション理論",
+     "高度な制御された突然変異"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Decreto: Proclamación de fortaleza» requiere la tecnología Teoría de la ascensión.",
+    "en": "Decree: Fortress Proclamation requires the technology Ascension Theory.",
+    "jp": "「布告：要塞宣言」には技術「アセンション理論」が必要です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.ambition_technology.hearts_and_minds",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "hearts_and_minds"
+   },
+   "text": {
+    "es": "¿Qué tecnología hace falta para la ambición «Decreto: Corazones y mentes»?",
+    "en": "Which technology is needed for the ambition Decree: Hearts and Minds?",
+    "jp": "大望「布告：民心掌握」に必要な技術はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Haz involutivo",
+     "Teoría de la ascensión",
+     "Emisores de arcos",
+     "Aleaciones de duracero"
+    ],
+    "en": [
+     "Devolving Beam",
+     "Ascension Theory",
+     "Arc Emitters",
+     "Durasteel-Laced Alloys"
+    ],
+    "jp": [
+     "退化砲",
+     "アセンション理論",
+     "アーク放射器",
+     "デュラスチール混合合金"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Decreto: Corazones y mentes» requiere la tecnología Teoría de la ascensión.",
+    "en": "Decree: Hearts and Minds requires the technology Ascension Theory.",
+    "jp": "「布告：民心掌握」には技術「アセンション理論」が必要です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.battle_royale",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "battle_royale"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Batalla campal»?",
+    "en": "Which type of authority does the edict Battle Royale require?",
+    "jp": "布告「バトルロイヤル」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Corporación",
+     "Dictatorial",
+     "Oligárquico",
+     "Imperial"
+    ],
+    "en": [
+     "Corporate",
+     "Dictatorial",
+     "Oligarchic",
+     "Imperial"
+    ],
+    "jp": [
+     "企業",
+     "独裁制",
+     "寡頭制",
+     "君主制"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Batalla campal» exige: Oligárquico.",
+    "en": "Battle Royale requires: Oligarchic.",
+    "jp": "「バトルロイヤル」の条件：寡頭制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.customer_insights",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "customer_insights"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Perspectiva del cliente»?",
+    "en": "Which type of authority does the edict Customer Insights require?",
+    "jp": "布告「顧客の知見」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Imperial",
+     "Corporación",
+     "Democrático",
+     "Oligárquico"
+    ],
+    "en": [
+     "Imperial",
+     "Corporate",
+     "Democratic",
+     "Oligarchic"
+    ],
+    "jp": [
+     "君主制",
+     "企業",
+     "民主制",
+     "寡頭制"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Perspectiva del cliente» exige: Corporación.",
+    "en": "Customer Insights requires: Corporate.",
+    "jp": "「顧客の知見」の条件：企業。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.legislative_chorus",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "legislative_chorus"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Coro legislativo»?",
+    "en": "Which type of authority does the edict Legislative Chorus require?",
+    "jp": "布告「議会コーラス」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Dictatorial",
+     "Imperial",
+     "Oligárquico",
+     "Democrático"
+    ],
+    "en": [
+     "Dictatorial",
+     "Imperial",
+     "Oligarchic",
+     "Democratic"
+    ],
+    "jp": [
+     "独裁制",
+     "君主制",
+     "寡頭制",
+     "民主制"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Coro legislativo» exige: Democrático.",
+    "en": "Legislative Chorus requires: Democratic.",
+    "jp": "「議会コーラス」の条件：民主制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.levied_experience",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "levied_experience"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Experiencia percibida»?",
+    "en": "Which type of authority does the edict Levied Experience require?",
+    "jp": "布告「経験徴収」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Corporación",
+     "Oligárquico",
+     "Imperial",
+     "Democrático"
+    ],
+    "en": [
+     "Corporate",
+     "Oligarchic",
+     "Imperial",
+     "Democratic"
+    ],
+    "jp": [
+     "企業",
+     "寡頭制",
+     "君主制",
+     "民主制"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Experiencia percibida» exige: Imperial.",
+    "en": "Levied Experience requires: Imperial.",
+    "jp": "「経験徴収」の条件：君主制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.neurocasted_spectacles",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "neurocasted_spectacles"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Espectáculos neuroemitidos»?",
+    "en": "Which type of authority does the edict Neurocasted Spectacles require?",
+    "jp": "布告「スポーツショーの神経放送」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Oligárquico",
+     "Democrático",
+     "Dictatorial",
+     "Imperial"
+    ],
+    "en": [
+     "Oligarchic",
+     "Democratic",
+     "Dictatorial",
+     "Imperial"
+    ],
+    "jp": [
+     "寡頭制",
+     "民主制",
+     "独裁制",
+     "君主制"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Espectáculos neuroemitidos» exige: Imperial.",
+    "en": "Neurocasted Spectacles requires: Imperial.",
+    "jp": "「スポーツショーの神経放送」の条件：君主制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.rolling_updates",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "rolling_updates"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Actualizaciones»?",
+    "en": "Which type of authority does the edict Rolling Updates require?",
+    "jp": "布告「定期アップデート」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Dictatorial",
+     "Imperial",
+     "Oligárquico",
+     "Corporación"
+    ],
+    "en": [
+     "Dictatorial",
+     "Imperial",
+     "Oligarchic",
+     "Corporate"
+    ],
+    "jp": [
+     "独裁制",
+     "君主制",
+     "寡頭制",
+     "企業"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Actualizaciones» exige: Corporación.",
+    "en": "Rolling Updates requires: Corporate.",
+    "jp": "「定期アップデート」の条件：企業。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.self_indictment_protocol",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "self_indictment_protocol"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Protocolo de autoacusación»?",
+    "en": "Which type of authority does the edict Self-Indictment Protocol require?",
+    "jp": "布告「自己起訴プロトコル」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Democrático",
+     "Imperial",
+     "Dictatorial",
+     "Corporación"
+    ],
+    "en": [
+     "Democratic",
+     "Imperial",
+     "Dictatorial",
+     "Corporate"
+    ],
+    "jp": [
+     "民主制",
+     "君主制",
+     "独裁制",
+     "企業"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Protocolo de autoacusación» exige: Dictatorial.",
+    "en": "Self-Indictment Protocol requires: Dictatorial.",
+    "jp": "「自己起訴プロトコル」の条件：独裁制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.self_preservation_override",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "self_preservation_override"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Anulación de la autoconservación»?",
+    "en": "Which type of authority does the edict Self-Preservation Override require?",
+    "jp": "布告「自己保存オーバーライド」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Dictatorial",
+     "Imperial",
+     "Oligárquico",
+     "Democrático"
+    ],
+    "en": [
+     "Dictatorial",
+     "Imperial",
+     "Oligarchic",
+     "Democratic"
+    ],
+    "jp": [
+     "独裁制",
+     "君主制",
+     "寡頭制",
+     "民主制"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Anulación de la autoconservación» exige: Democrático.",
+    "en": "Self-Preservation Override requires: Democratic.",
+    "jp": "「自己保存オーバーライド」の条件：民主制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_authority.stately_acclaim",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "stately_acclaim"
+   },
+   "text": {
+    "es": "¿Qué tipo de autoridad exige el edicto «Aclamación señorial»?",
+    "en": "Which type of authority does the edict Stately Acclaim require?",
+    "jp": "布告「大絶賛」に必要な統治体制はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Corporación",
+     "Oligárquico",
+     "Dictatorial",
+     "Democrático"
+    ],
+    "en": [
+     "Corporate",
+     "Oligarchic",
+     "Dictatorial",
+     "Democratic"
+    ],
+    "jp": [
+     "企業",
+     "寡頭制",
+     "独裁制",
+     "民主制"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Aclamación señorial» exige: Oligárquico.",
+    "en": "Stately Acclaim requires: Oligarchic.",
+    "jp": "「大絶賛」の条件：寡頭制。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.architectural_renaissance",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "architectural_renaissance"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Decreto: Renacimiento arquitectónico»?",
+    "en": "What is the base cost of activating the edict Decree: Architectural Renaissance?",
+    "jp": "布告「布告：建築ルネサンス」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "75",
+     "30",
+     "20",
+     "100"
+    ],
+    "en": [
+     "75",
+     "30",
+     "20",
+     "100"
+    ],
+    "jp": [
+     "75",
+     "30",
+     "20",
+     "100"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «Decreto: Renacimiento arquitectónico» es 75 (el juego puede escalarlo).",
+    "en": "The base cost of Decree: Architectural Renaissance is 75 (the game may scale it).",
+    "jp": "「布告：建築ルネサンス」の基本コストは75です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.astral_cloaking",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "astral_cloaking"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Camuflaje astral»?",
+    "en": "What is the base cost of activating the edict Astral Cloaking?",
+    "jp": "布告「アストラル・クローク」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "5",
+     "15",
+     "25"
+    ],
+    "en": [
+     "1",
+     "5",
+     "15",
+     "25"
+    ],
+    "jp": [
+     "1",
+     "5",
+     "15",
+     "25"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Camuflaje astral» es 5 (el juego puede escalarlo).",
+    "en": "The base cost of Astral Cloaking is 5 (the game may scale it).",
+    "jp": "「アストラル・クローク」の基本コストは5です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.astral_shielding",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "astral_shielding"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Protección astral»?",
+    "en": "What is the base cost of activating the edict Astral Shielding?",
+    "jp": "布告「アストラル・シールド」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "10",
+     "20",
+     "5"
+    ],
+    "en": [
+     "1",
+     "10",
+     "20",
+     "5"
+    ],
+    "jp": [
+     "1",
+     "10",
+     "20",
+     "5"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Protección astral» es 10 (el juego puede escalarlo).",
+    "en": "The base cost of Astral Shielding is 10 (the game may scale it).",
+    "jp": "「アストラル・シールド」の基本コストは10です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.auto_hunker_down",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "auto_hunker_down"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Protocolos de resguardo»?",
+    "en": "What is the base cost of activating the edict Hunker Down Protocols?",
+    "jp": "布告「避難プロトコル」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "10",
+     "5",
+     "15"
+    ],
+    "en": [
+     "1",
+     "10",
+     "5",
+     "15"
+    ],
+    "jp": [
+     "1",
+     "10",
+     "5",
+     "15"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste base de «Protocolos de resguardo» es 15 (el juego puede escalarlo).",
+    "en": "The base cost of Hunker Down Protocols is 15 (the game may scale it).",
+    "jp": "「避難プロトコル」の基本コストは15です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.behemoth_nanite_augmentation",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_nanite_augmentation"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Aumento de gigante: Nanorrobots»?",
+    "en": "What is the base cost of activating the edict Behemoth Augmentation: Nanites?",
+    "jp": "布告「ベヒモス強化：ナノマシン」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "50",
+     "100",
+     "2500",
+     "75"
+    ],
+    "en": [
+     "50",
+     "100",
+     "2500",
+     "75"
+    ],
+    "jp": [
+     "50",
+     "100",
+     "2500",
+     "75"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de «Aumento de gigante: Nanorrobots» es 2500 (el juego puede escalarlo).",
+    "en": "The base cost of Behemoth Augmentation: Nanites is 2500 (the game may scale it).",
+    "jp": "「ベヒモス強化：ナノマシン」の基本コストは2500です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.cybernetic_creed_construction_labor",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_construction_labor"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Las masas trabajadoras»?",
+    "en": "What is the base cost of activating the edict The Labored Masses?",
+    "jp": "布告「苦心する大衆」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "25",
+     "15",
+     "30"
+    ],
+    "en": [
+     "10",
+     "25",
+     "15",
+     "30"
+    ],
+    "jp": [
+     "10",
+     "25",
+     "15",
+     "30"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Las masas trabajadoras» es 25 (el juego puede escalarlo).",
+    "en": "The base cost of The Labored Masses is 25 (the game may scale it).",
+    "jp": "「苦心する大衆」の基本コストは25です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.cybernetic_creed_war_edict",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_war_edict"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «La cruzada del acero»?",
+    "en": "What is the base cost of activating the edict The Crusade of Steel?",
+    "jp": "布告「鋼鉄の聖戦」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "25",
+     "15",
+     "30",
+     "10"
+    ],
+    "en": [
+     "25",
+     "15",
+     "30",
+     "10"
+    ],
+    "jp": [
+     "25",
+     "15",
+     "30",
+     "10"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «La cruzada del acero» es 25 (el juego puede escalarlo).",
+    "en": "The base cost of The Crusade of Steel is 25 (the game may scale it).",
+    "jp": "「鋼鉄の聖戦」の基本コストは25です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.dark_matter_forging",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "dark_matter_forging"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Forja de materia oscura»?",
+    "en": "What is the base cost of activating the edict Dark Matter Forging?",
+    "jp": "布告「ダークマター鋳造」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "5",
+     "10",
+     "15"
+    ],
+    "en": [
+     "3",
+     "5",
+     "10",
+     "15"
+    ],
+    "jp": [
+     "3",
+     "5",
+     "10",
+     "15"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «Forja de materia oscura» es 3 (el juego puede escalarlo).",
+    "en": "The base cost of Dark Matter Forging is 3 (the game may scale it).",
+    "jp": "「ダークマター鋳造」の基本コストは3です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.energy_drain",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "energy_drain"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Drenaje de energía»?",
+    "en": "What is the base cost of activating the edict Energy Drain?",
+    "jp": "布告「エネルギードレイン」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "20",
+     "30",
+     "15"
+    ],
+    "en": [
+     "10",
+     "20",
+     "30",
+     "15"
+    ],
+    "jp": [
+     "10",
+     "20",
+     "30",
+     "15"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Drenaje de energía» es 20 (el juego puede escalarlo).",
+    "en": "The base cost of Energy Drain is 20 (the game may scale it).",
+    "jp": "「エネルギードレイン」の基本コストは20です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.improved_work_environment",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "improved_work_environment"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Entorno laboral mejorado»?",
+    "en": "What is the base cost of activating the edict Improved Working Environment?",
+    "jp": "布告「改善された労働環境」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "5",
+     "20",
+     "25"
+    ],
+    "en": [
+     "10",
+     "5",
+     "20",
+     "25"
+    ],
+    "jp": [
+     "10",
+     "5",
+     "20",
+     "25"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste base de «Entorno laboral mejorado» es 25 (el juego puede escalarlo).",
+    "en": "The base cost of Improved Working Environment is 25 (the game may scale it).",
+    "jp": "「改善された労働環境」の基本コストは25です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.masters_writings_philosophy",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "masters_writings_philosophy"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Lecciones magistrales: actitud filosófica»?",
+    "en": "What is the base cost of activating the edict Master's Teachings: Philosophical Mindset?",
+    "jp": "布告「師の教え：哲学的思考」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "20",
+     "5",
+     "30",
+     "25"
+    ],
+    "en": [
+     "20",
+     "5",
+     "30",
+     "25"
+    ],
+    "jp": [
+     "20",
+     "5",
+     "30",
+     "25"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «Lecciones magistrales: actitud filosófica» es 20 (el juego puede escalarlo).",
+    "en": "The base cost of Master's Teachings: Philosophical Mindset is 20 (the game may scale it).",
+    "jp": "「師の教え：哲学的思考」の基本コストは20です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.motes_kinetic",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "motes_kinetic"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Munición volátil»?",
+    "en": "What is the base cost of activating the edict Volatile Ammunition?",
+    "jp": "布告「揮発性粉末の弾薬化」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "20",
+     "25",
+     "10"
+    ],
+    "en": [
+     "1",
+     "20",
+     "25",
+     "10"
+    ],
+    "jp": [
+     "1",
+     "20",
+     "25",
+     "10"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «Munición volátil» es 1 (el juego puede escalarlo).",
+    "en": "The base cost of Volatile Ammunition is 1 (the game may scale it).",
+    "jp": "「揮発性粉末の弾薬化」の基本コストは1です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.nanite_actuators",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "nanite_actuators"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Actuadores nanorrobots»?",
+    "en": "What is the base cost of activating the edict Nanite Actuators?",
+    "jp": "布告「ナノマシン・アクチュエータ」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "20",
+     "10",
+     "1",
+     "15"
+    ],
+    "en": [
+     "20",
+     "10",
+     "1",
+     "15"
+    ],
+    "jp": [
+     "20",
+     "10",
+     "1",
+     "15"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Actuadores nanorrobots» es 10 (el juego puede escalarlo).",
+    "en": "The base cost of Nanite Actuators is 10 (the game may scale it).",
+    "jp": "「ナノマシン・アクチュエータ」の基本コストは10です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.sacrifice_harmony",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/03_sacrifices.txt",
+    "key": "sacrifice_harmony"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Sacrificio: Armonía»?",
+    "en": "What is the base cost of activating the edict Sacrifice: Harmony?",
+    "jp": "布告「犠牲：調和」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "25",
+     "1",
+     "20",
+     "5"
+    ],
+    "en": [
+     "25",
+     "1",
+     "20",
+     "5"
+    ],
+    "jp": [
+     "25",
+     "1",
+     "20",
+     "5"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Sacrificio: Armonía» es 1 (el juego puede escalarlo).",
+    "en": "The base cost of Sacrifice: Harmony is 1 (the game may scale it).",
+    "jp": "「犠牲：調和」の基本コストは1です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.subsidized_identity_backups",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "subsidized_identity_backups"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Copias de seguridad de identidad subvencionadas»?",
+    "en": "What is the base cost of activating the edict Subsidized Identity Backups?",
+    "jp": "布告「補助金を受けた自我バックアップ」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "10",
+     "25",
+     "20",
+     "30"
+    ],
+    "en": [
+     "10",
+     "25",
+     "20",
+     "30"
+    ],
+    "jp": [
+     "10",
+     "25",
+     "20",
+     "30"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de «Copias de seguridad de identidad subvencionadas» es 25 (el juego puede escalarlo).",
+    "en": "The base cost of Subsidized Identity Backups is 25 (the game may scale it).",
+    "jp": "「補助金を受けた自我バックアップ」の基本コストは25です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.super_sensors",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "super_sensors"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Búsquedas de sensores extensas»?",
+    "en": "What is the base cost of activating the edict Extensive Sensor Searches?",
+    "jp": "布告「大規模なセンサー探索」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "30",
+     "20",
+     "25",
+     "5"
+    ],
+    "en": [
+     "30",
+     "20",
+     "25",
+     "5"
+    ],
+    "jp": [
+     "30",
+     "20",
+     "25",
+     "5"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de «Búsquedas de sensores extensas» es 25 (el juego puede escalarlo).",
+    "en": "The base cost of Extensive Sensor Searches is 25 (the game may scale it).",
+    "jp": "「大規模なセンサー探索」の基本コストは25です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_cost.will_of_endless",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_endless"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Voluntad de infinitud»?",
+    "en": "What is the base cost of activating the edict Will of Endless?",
+    "jp": "布告「無限の意志」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "5",
+     "25",
+     "1",
+     "10"
+    ],
+    "en": [
+     "5",
+     "25",
+     "1",
+     "10"
+    ],
+    "jp": [
+     "5",
+     "25",
+     "1",
+     "10"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de «Voluntad de infinitud» es 1 (el juego puede escalarlo).",
+    "en": "The base cost of Will of Endless is 1 (the game may scale it).",
+    "jp": "「無限の意志」の基本コストは1です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.will_of_motion",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_motion"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Voluntad de movimiento»?",
+    "en": "What is the base cost of activating the edict Will of Motion?",
+    "jp": "布告「運動の意志」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "15",
+     "20",
+     "5",
+     "1"
+    ],
+    "en": [
+     "15",
+     "20",
+     "5",
+     "1"
+    ],
+    "jp": [
+     "15",
+     "20",
+     "5",
+     "1"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste base de «Voluntad de movimiento» es 1 (el juego puede escalarlo).",
+    "en": "The base cost of Will of Motion is 1 (the game may scale it).",
+    "jp": "「運動の意志」の基本コストは1です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.will_of_rebirth",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_rebirth"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Voluntad de renacimiento»?",
+    "en": "What is the base cost of activating the edict Will of Rebirth?",
+    "jp": "布告「再生の意志」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "25",
+     "15",
+     "10"
+    ],
+    "en": [
+     "1",
+     "25",
+     "15",
+     "10"
+    ],
+    "jp": [
+     "1",
+     "25",
+     "15",
+     "10"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El coste base de «Voluntad de renacimiento» es 1 (el juego puede escalarlo).",
+    "en": "The base cost of Will of Rebirth is 1 (the game may scale it).",
+    "jp": "「再生の意志」の基本コストは1です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_cost.will_to_power",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/02_ambitions.txt",
+    "key": "will_to_power"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de activar el edicto «Decreto: Voluntad de poder»?",
+    "en": "What is the base cost of activating the edict Decree: Will to Power?",
+    "jp": "布告「布告：権力への意志」を発動する基本コストは？"
+   },
+   "answers": {
+    "es": [
+     "20",
+     "50",
+     "30",
+     "75"
+    ],
+    "en": [
+     "20",
+     "50",
+     "30",
+     "75"
+    ],
+    "jp": [
+     "20",
+     "50",
+     "30",
+     "75"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste base de «Decreto: Voluntad de poder» es 75 (el juego puede escalarlo).",
+    "en": "The base cost of Decree: Will to Power is 75 (the game may scale it).",
+    "jp": "「布告：権力への意志」の基本コストは75です（ゲーム内で変動する場合があります）。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_dlc.aggregated_memory",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "aggregated_memory"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Memoria agregada»?",
+    "en": "Which DLC does the edict Aggregated Memory need?",
+    "jp": "布告「収集されたメモリー」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Cosmic Storms",
+     "The Machine Age",
+     "Infernals Species Pack",
+     "Galactic Paragons"
+    ],
+    "en": [
+     "Cosmic Storms",
+     "The Machine Age",
+     "Infernals Species Pack",
+     "Galactic Paragons"
+    ],
+    "jp": [
+     "Cosmic Storms",
+     "The Machine Age",
+     "Infernals Species Pack",
+     "Galactic Paragons"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Memoria agregada» necesita el DLC The Machine Age.",
+    "en": "Aggregated Memory needs the DLC The Machine Age.",
+    "jp": "「収集されたメモリー」にはDLC「The Machine Age」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.automated_disinfection",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "automated_disinfection"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Desinfección automatizada»?",
+    "en": "Which DLC does the edict Automated Disinfection need?",
+    "jp": "布告「自動殺菌」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Apocalypse",
+     "First Contact Story Pack",
+     "Astral Planes",
+     "Ancient Relics Story Pack"
+    ],
+    "en": [
+     "Apocalypse",
+     "First Contact Story Pack",
+     "Astral Planes",
+     "Ancient Relics Story Pack"
+    ],
+    "jp": [
+     "Apocalypse",
+     "First Contact Story Pack",
+     "Astral Planes",
+     "Ancient Relics Story Pack"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Desinfección automatizada» necesita el DLC Astral Planes.",
+    "en": "Automated Disinfection needs the DLC Astral Planes.",
+    "jp": "「自動殺菌」にはDLC「Astral Planes」が必要です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_dlc.choral_harmony",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "The Machine Age"
+   ],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "choral_harmony"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Armonía coral»?",
+    "en": "Which DLC does the edict Choral Harmony need?",
+    "jp": "布告「コーラルハーモニー」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "The Machine Age",
+     "Nomads",
+     "Synthetic Dawn Story Pack",
+     "Nemesis"
+    ],
+    "en": [
+     "The Machine Age",
+     "Nomads",
+     "Synthetic Dawn Story Pack",
+     "Nemesis"
+    ],
+    "jp": [
+     "The Machine Age",
+     "Nomads",
+     "Synthetic Dawn Story Pack",
+     "Nemesis"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Armonía coral» necesita el DLC The Machine Age.",
+    "en": "Choral Harmony needs the DLC The Machine Age.",
+    "jp": "「コーラルハーモニー」にはDLC「The Machine Age」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.dimensional_artificing",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "dimensional_artificing"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Artificio dimensional»?",
+    "en": "Which DLC does the edict Dimensional Artificing need?",
+    "jp": "布告「異次元アーティファクト生成」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Grand Archive",
+     "Galactic Paragons",
+     "Ancient Relics Story Pack",
+     "Utopia"
+    ],
+    "en": [
+     "Grand Archive",
+     "Galactic Paragons",
+     "Ancient Relics Story Pack",
+     "Utopia"
+    ],
+    "jp": [
+     "Grand Archive",
+     "Galactic Paragons",
+     "Ancient Relics Story Pack",
+     "Utopia"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Artificio dimensional» necesita el DLC Ancient Relics Story Pack.",
+    "en": "Dimensional Artificing needs the DLC Ancient Relics Story Pack.",
+    "jp": "「異次元アーティファクト生成」にはDLC「Ancient Relics Story Pack」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.dimensional_collapse",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "dimensional_collapse"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Colapso dimensional»?",
+    "en": "Which DLC does the edict Dimensional Collapse need?",
+    "jp": "布告「次元崩壊」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Astral Planes",
+     "BioGenesis",
+     "Distant Stars Story Pack",
+     "Cosmic Storms"
+    ],
+    "en": [
+     "Astral Planes",
+     "BioGenesis",
+     "Distant Stars Story Pack",
+     "Cosmic Storms"
+    ],
+    "jp": [
+     "Astral Planes",
+     "BioGenesis",
+     "Distant Stars Story Pack",
+     "Cosmic Storms"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Colapso dimensional» necesita el DLC Astral Planes.",
+    "en": "Dimensional Collapse needs the DLC Astral Planes.",
+    "jp": "「次元崩壊」にはDLC「Astral Planes」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.obsidian_veil",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "obsidian_veil"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Velo de obsidiana»?",
+    "en": "Which DLC does the edict Obsidian Veil need?",
+    "jp": "布告「黒曜石のベール」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Humanoids Species Pack",
+     "Nomads",
+     "Shadows of the Shroud",
+     "First Contact Story Pack"
+    ],
+    "en": [
+     "Humanoids Species Pack",
+     "Nomads",
+     "Shadows of the Shroud",
+     "First Contact Story Pack"
+    ],
+    "jp": [
+     "Humanoids Species Pack",
+     "Nomads",
+     "Shadows of the Shroud",
+     "First Contact Story Pack"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Velo de obsidiana» necesita el DLC First Contact Story Pack.",
+    "en": "Obsidian Veil needs the DLC First Contact Story Pack.",
+    "jp": "「黒曜石のベール」にはDLC「First Contact Story Pack」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.relay_network_movement",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Overlord"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "relay_network_movement"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Movimiento en la red»?",
+    "en": "Which DLC does the edict Networked Movement need?",
+    "jp": "布告「移住ネットワーク」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Utopia",
+     "Infernals Species Pack",
+     "Overlord",
+     "Galactic Paragons"
+    ],
+    "en": [
+     "Utopia",
+     "Infernals Species Pack",
+     "Overlord",
+     "Galactic Paragons"
+    ],
+    "jp": [
+     "Utopia",
+     "Infernals Species Pack",
+     "Overlord",
+     "Galactic Paragons"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Movimiento en la red» necesita el DLC Overlord.",
+    "en": "Networked Movement needs the DLC Overlord.",
+    "jp": "「移住ネットワーク」にはDLC「Overlord」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.relay_network_stability",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Overlord"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "relay_network_stability"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Dominio de la red»?",
+    "en": "Which DLC does the edict Networked Dominance need?",
+    "jp": "布告「支配ネットワーク」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Federations",
+     "Overlord",
+     "Synthetic Dawn Story Pack",
+     "Galactic Paragons"
+    ],
+    "en": [
+     "Federations",
+     "Overlord",
+     "Synthetic Dawn Story Pack",
+     "Galactic Paragons"
+    ],
+    "jp": [
+     "Federations",
+     "Overlord",
+     "Synthetic Dawn Story Pack",
+     "Galactic Paragons"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Dominio de la red» necesita el DLC Overlord.",
+    "en": "Networked Dominance needs the DLC Overlord.",
+    "jp": "「支配ネットワーク」にはDLC「Overlord」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_dlc.thought_enforcement_gestalt",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "thought_enforcement_gestalt"
+   },
+   "text": {
+    "es": "¿Qué DLC necesita el edicto «Prevención de pensamiento»?",
+    "en": "Which DLC does the edict Thought Pre-Emption need?",
+    "jp": "布告「思想の先制制御」に必要なDLCはどれ？"
+   },
+   "answers": {
+    "es": [
+     "Overlord",
+     "Galactic Paragons",
+     "Shadows of the Shroud",
+     "Toxoids Species Pack"
+    ],
+    "en": [
+     "Overlord",
+     "Galactic Paragons",
+     "Shadows of the Shroud",
+     "Toxoids Species Pack"
+    ],
+    "jp": [
+     "Overlord",
+     "Galactic Paragons",
+     "Shadows of the Shroud",
+     "Toxoids Species Pack"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Prevención de pensamiento» necesita el DLC Shadows of the Shroud.",
+    "en": "Thought Pre-Emption needs the DLC Shadows of the Shroud.",
+    "jp": "「思想の先制制御」にはDLC「Shadows of the Shroud」が必要です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_ethic.encourage_free_thought",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "encourage_free_thought"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Alentar el pensamiento político»?",
+    "en": "Which ethic (fanatic or not) does the edict Encourage Political Thought require?",
+    "jp": "布告「政治的思考の推奨」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Militarista",
+     "Autoritaria",
+     "Igualitaria",
+     "Pacifista"
+    ],
+    "en": [
+     "Militarist",
+     "Authoritarian",
+     "Egalitarian",
+     "Pacifist"
+    ],
+    "jp": [
+     "軍国主義",
+     "権威主義",
+     "平等主義",
+     "平和主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Alentar el pensamiento político» exige: Igualitaria.",
+    "en": "Encourage Political Thought requires: Egalitarian.",
+    "jp": "「政治的思考の推奨」の条件：平等主義。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_ethic.fear_campaign",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "fear_campaign"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Campaña del miedo»?",
+    "en": "Which ethic (fanatic or not) does the edict Fear Campaign require?",
+    "jp": "布告「恐怖運動」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Igualitaria",
+     "Pacifista",
+     "Xenófobo",
+     "Espiritualista"
+    ],
+    "en": [
+     "Egalitarian",
+     "Pacifist",
+     "Xenophobe",
+     "Spiritualist"
+    ],
+    "jp": [
+     "平等主義",
+     "平和主義",
+     "排他主義",
+     "精神主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Campaña del miedo» exige: Xenófobo.",
+    "en": "Fear Campaign requires: Xenophobe.",
+    "jp": "「恐怖運動」の条件：排他主義。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_ethic.information_quarantine",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "information_quarantine"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Cuarentena de información»?",
+    "en": "Which ethic (fanatic or not) does the edict Information Quarantine require?",
+    "jp": "布告「情報検閲」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Militarista",
+     "Pacifista",
+     "Autoritaria",
+     "Igualitaria"
+    ],
+    "en": [
+     "Militarist",
+     "Pacifist",
+     "Authoritarian",
+     "Egalitarian"
+    ],
+    "jp": [
+     "軍国主義",
+     "平和主義",
+     "権威主義",
+     "平等主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Cuarentena de información» exige: Autoritaria.",
+    "en": "Information Quarantine requires: Authoritarian.",
+    "jp": "「情報検閲」の条件：権威主義。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_ethic.land_of_opportunity",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "land_of_opportunity"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Tierra de oportunidades»?",
+    "en": "Which ethic (fanatic or not) does the edict Land of Opportunity require?",
+    "jp": "布告「夢叶う土地」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófilo",
+     "Espiritualista",
+     "Autoritaria",
+     "Militarista"
+    ],
+    "en": [
+     "Xenophile",
+     "Spiritualist",
+     "Authoritarian",
+     "Militarist"
+    ],
+    "jp": [
+     "受容主義",
+     "精神主義",
+     "権威主義",
+     "軍国主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Tierra de oportunidades» exige: Xenófilo.",
+    "en": "Land of Opportunity requires: Xenophile.",
+    "jp": "「夢叶う土地」の条件：受容主義。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_ethic.peace_festivals",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "peace_festivals"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Festivales de paz»?",
+    "en": "Which ethic (fanatic or not) does the edict Peace Festivals require?",
+    "jp": "布告「平和の祭典」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófilo",
+     "Xenófobo",
+     "Espiritualista",
+     "Pacifista"
+    ],
+    "en": [
+     "Xenophile",
+     "Xenophobe",
+     "Spiritualist",
+     "Pacifist"
+    ],
+    "jp": [
+     "受容主義",
+     "排他主義",
+     "精神主義",
+     "平和主義"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Festivales de paz» exige: Pacifista.",
+    "en": "Peace Festivals requires: Pacifist.",
+    "jp": "「平和の祭典」の条件：平和主義。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_ethic.veneration_of_saints",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "veneration_of_saints"
+   },
+   "text": {
+    "es": "¿Qué ética (fanática o no) exige el edicto «Veneración de los santos»?",
+    "en": "Which ethic (fanatic or not) does the edict Veneration of Saints require?",
+    "jp": "布告「聖人崇敬」に必要な倫理観（狂信的を含む）はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Espiritualista",
+     "Autoritaria",
+     "Xenófilo",
+     "Igualitaria"
+    ],
+    "en": [
+     "Spiritualist",
+     "Authoritarian",
+     "Xenophile",
+     "Egalitarian"
+    ],
+    "jp": [
+     "精神主義",
+     "権威主義",
+     "受容主義",
+     "平等主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Veneración de los santos» exige: Espiritualista.",
+    "en": "Veneration of Saints requires: Spiritualist.",
+    "jp": "「聖人崇敬」の条件：精神主義。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_lock.behemoth_alloys_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_alloys_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Aumento de gigante: Aleaciones» al activarlo?",
+    "en": "For how many months is the edict Behemoth Augmentation: Alloys locked in once activated?",
+    "jp": "布告「ベヒモス強化：合金」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "60",
+     "180",
+     "36",
+     "240"
+    ],
+    "en": [
+     "60",
+     "180",
+     "36",
+     "240"
+    ],
+    "jp": [
+     "60",
+     "180",
+     "36",
+     "240"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Aumento de gigante: Aleaciones» queda fijado 180 meses.",
+    "en": "Behemoth Augmentation: Alloys is locked in for 180 months.",
+    "jp": "「ベヒモス強化：合金」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.behemoth_living_metal_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_living_metal_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Aumento de gigante: Metal vivo» al activarlo?",
+    "en": "For how many months is the edict Behemoth Augmentation: Living Metal locked in once activated?",
+    "jp": "布告「ベヒモス強化：生体金属」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "120",
+     "60",
+     "180",
+     "240"
+    ],
+    "en": [
+     "120",
+     "60",
+     "180",
+     "240"
+    ],
+    "jp": [
+     "120",
+     "60",
+     "180",
+     "240"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Aumento de gigante: Metal vivo» queda fijado 180 meses.",
+    "en": "Behemoth Augmentation: Living Metal is locked in for 180 months.",
+    "jp": "「ベヒモス強化：生体金属」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.behemoth_nanite_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_nanite_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Aumento de gigante: Nanorrobots» al activarlo?",
+    "en": "For how many months is the edict Behemoth Augmentation: Nanites locked in once activated?",
+    "jp": "布告「ベヒモス強化：ナノマシン」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "60",
+     "24",
+     "120",
+     "180"
+    ],
+    "en": [
+     "60",
+     "24",
+     "120",
+     "180"
+    ],
+    "jp": [
+     "60",
+     "24",
+     "120",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Aumento de gigante: Nanorrobots» queda fijado 180 meses.",
+    "en": "Behemoth Augmentation: Nanites is locked in for 180 months.",
+    "jp": "「ベヒモス強化：ナノマシン」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.cybernetic_creed_construction_edict",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_construction_edict"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Martilleo de la virtud» al activarlo?",
+    "en": "For how many months is the edict A Virtuous Hammering locked in once activated?",
+    "jp": "布告「高潔な槌打」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "36",
+     "60",
+     "180",
+     "240"
+    ],
+    "en": [
+     "36",
+     "60",
+     "180",
+     "240"
+    ],
+    "jp": [
+     "36",
+     "60",
+     "180",
+     "240"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Martilleo de la virtud» queda fijado 180 meses.",
+    "en": "A Virtuous Hammering is locked in for 180 months.",
+    "jp": "「高潔な槌打」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.cybernetic_creed_construction_labor",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_construction_labor"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Las masas trabajadoras» al activarlo?",
+    "en": "For how many months is the edict The Labored Masses locked in once activated?",
+    "jp": "布告「苦心する大衆」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "24",
+     "60",
+     "120",
+     "180"
+    ],
+    "en": [
+     "24",
+     "60",
+     "120",
+     "180"
+    ],
+    "jp": [
+     "24",
+     "60",
+     "120",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Las masas trabajadoras» queda fijado 180 meses.",
+    "en": "The Labored Masses is locked in for 180 months.",
+    "jp": "「苦心する大衆」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.cybernetic_creed_general_edict",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_general_edict"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Lecciones de armonía» al activarlo?",
+    "en": "For how many months is the edict The Lessons of Harmony locked in once activated?",
+    "jp": "布告「ハーモニーの教訓」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "60",
+     "180",
+     "240",
+     "120"
+    ],
+    "en": [
+     "60",
+     "180",
+     "240",
+     "120"
+    ],
+    "jp": [
+     "60",
+     "180",
+     "240",
+     "120"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Lecciones de armonía» queda fijado 180 meses.",
+    "en": "The Lessons of Harmony is locked in for 180 months.",
+    "jp": "「ハーモニーの教訓」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.cybernetic_creed_research_edict",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_research_edict"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «La canción del conocimiento» al activarlo?",
+    "en": "For how many months is the edict The Song of Knowledge locked in once activated?",
+    "jp": "布告「知識の歌」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "36",
+     "240",
+     "180",
+     "120"
+    ],
+    "en": [
+     "36",
+     "240",
+     "180",
+     "120"
+    ],
+    "jp": [
+     "36",
+     "240",
+     "180",
+     "120"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«La canción del conocimiento» queda fijado 180 meses.",
+    "en": "The Song of Knowledge is locked in for 180 months.",
+    "jp": "「知識の歌」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.cybernetic_creed_war_edict",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "cybernetic_creed_war_edict"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «La cruzada del acero» al activarlo?",
+    "en": "For how many months is the edict The Crusade of Steel locked in once activated?",
+    "jp": "布告「鋼鉄の聖戦」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "120",
+     "240",
+     "60",
+     "180"
+    ],
+    "en": [
+     "120",
+     "240",
+     "60",
+     "180"
+    ],
+    "jp": [
+     "120",
+     "240",
+     "60",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«La cruzada del acero» queda fijado 180 meses.",
+    "en": "The Crusade of Steel is locked in for 180 months.",
+    "jp": "「鋼鉄の聖戦」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.damn_the_consequences",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "damn_the_consequences"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Malditas consecuencias» al activarlo?",
+    "en": "For how many months is the edict Damn the Consequences locked in once activated?",
+    "jp": "布告「成り行きまかせ」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "36",
+     "12",
+     "180",
+     "60"
+    ],
+    "en": [
+     "36",
+     "12",
+     "180",
+     "60"
+    ],
+    "jp": [
+     "36",
+     "12",
+     "180",
+     "60"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Malditas consecuencias» queda fijado 60 meses.",
+    "en": "Damn the Consequences is locked in for 60 months.",
+    "jp": "「成り行きまかせ」は60か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_lock.hive_mega_construction",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "hive_mega_construction"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Megaconstrucción integrada» al activarlo?",
+    "en": "For how many months is the edict Integrated Mega-Construction locked in once activated?",
+    "jp": "布告「統合されたメガ建設」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "24",
+     "120",
+     "60",
+     "180"
+    ],
+    "en": [
+     "24",
+     "120",
+     "60",
+     "180"
+    ],
+    "jp": [
+     "24",
+     "120",
+     "60",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Megaconstrucción integrada» queda fijado 180 meses.",
+    "en": "Integrated Mega-Construction is locked in for 180 months.",
+    "jp": "「統合されたメガ建設」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.legislative_chorus",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "legislative_chorus"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Coro legislativo» al activarlo?",
+    "en": "For how many months is the edict Legislative Chorus locked in once activated?",
+    "jp": "布告「議会コーラス」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "120",
+     "180",
+     "24",
+     "240"
+    ],
+    "en": [
+     "120",
+     "180",
+     "24",
+     "240"
+    ],
+    "jp": [
+     "120",
+     "180",
+     "24",
+     "240"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Coro legislativo» queda fijado 180 meses.",
+    "en": "Legislative Chorus is locked in for 180 months.",
+    "jp": "「議会コーラス」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.nanotech_alloy_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "nanotech_alloy_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Nanocomplejos coordinados» al activarlo?",
+    "en": "For how many months is the edict Coordinated Nanocomplexes locked in once activated?",
+    "jp": "布告「組織的ナノ複合体」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ],
+    "en": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ],
+    "jp": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Nanocomplejos coordinados» queda fijado 180 meses.",
+    "en": "Coordinated Nanocomplexes is locked in for 180 months.",
+    "jp": "「組織的ナノ複合体」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.nanotech_energy_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "nanotech_energy_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Generadores nanoconectados» al activarlo?",
+    "en": "For how many months is the edict Nanoconnected Generators locked in once activated?",
+    "jp": "布告「ナノ接続済みジェネレーター」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ],
+    "en": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ],
+    "jp": [
+     "60",
+     "36",
+     "120",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Generadores nanoconectados» queda fijado 180 meses.",
+    "en": "Nanoconnected Generators is locked in for 180 months.",
+    "jp": "「ナノ接続済みジェネレーター」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.nanotech_naval_augmentation",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "nanotech_naval_augmentation"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Cadenas de suministro nanotecnológicas» al activarlo?",
+    "en": "For how many months is the edict Nano-operated Supply Chains locked in once activated?",
+    "jp": "布告「ナノ操作サプライチェーン」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "120",
+     "24",
+     "240",
+     "180"
+    ],
+    "en": [
+     "120",
+     "24",
+     "240",
+     "180"
+    ],
+    "jp": [
+     "120",
+     "24",
+     "240",
+     "180"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Cadenas de suministro nanotecnológicas» queda fijado 180 meses.",
+    "en": "Nano-operated Supply Chains is locked in for 180 months.",
+    "jp": "「ナノ操作サプライチェーン」は180か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_lock.neurocasted_spectacles",
+   "tier": 5,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "neurocasted_spectacles"
+   },
+   "text": {
+    "es": "¿Durante cuántos meses queda fijado el edicto «Espectáculos neuroemitidos» al activarlo?",
+    "en": "For how many months is the edict Neurocasted Spectacles locked in once activated?",
+    "jp": "布告「スポーツショーの神経放送」は発動すると何か月間固定される？"
+   },
+   "answers": {
+    "es": [
+     "120",
+     "12",
+     "24",
+     "36"
+    ],
+    "en": [
+     "120",
+     "12",
+     "24",
+     "36"
+    ],
+    "jp": [
+     "120",
+     "12",
+     "24",
+     "36"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Espectáculos neuroemitidos» queda fijado 12 meses.",
+    "en": "Neurocasted Spectacles is locked in for 12 months.",
+    "jp": "「スポーツショーの神経放送」は12か月間固定されます。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_origin.damn_the_consequences",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "damn_the_consequences"
+   },
+   "text": {
+    "es": "¿Qué origen exige el edicto «Malditas consecuencias»?",
+    "en": "Which origin does the edict Damn the Consequences require?",
+    "jp": "布告「成り行きまかせ」に必要な起源はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Surcavacíos",
+     "Unificación próspera",
+     "Iluminados",
+     "Perfección"
+    ],
+    "en": [
+     "Voidfarers",
+     "Prosperous Unification",
+     "Enlightened",
+     "Overtuned"
+    ],
+    "jp": [
+     "虚無放浪者",
+     "統一による繁栄",
+     "啓蒙された種族",
+     "過剰チューニング"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Malditas consecuencias» exige: Perfección.",
+    "en": "Damn the Consequences requires: Overtuned.",
+    "jp": "「成り行きまかせ」の条件：過剰チューニング。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_origin.evacuation_protocols",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "evacuation_protocols"
+   },
+   "text": {
+    "es": "¿Qué origen exige el edicto «Protocolos de evacuación»?",
+    "en": "Which origin does the edict Evacuation Protocols require?",
+    "jp": "布告「退去命令」に必要な起源はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Depredadores evolutivos",
+     "Ejército clon",
+     "Día del Juicio Final",
+     "Unificación próspera"
+    ],
+    "en": [
+     "Evolutionary Predators",
+     "Clone Army",
+     "Doomsday",
+     "Prosperous Unification"
+    ],
+    "jp": [
+     "進化的捕食者",
+     "クローン軍団",
+     "終末の日",
+     "統一による繁栄"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Protocolos de evacuación» exige: Día del Juicio Final.",
+    "en": "Evacuation Protocols requires: Doomsday.",
+    "jp": "「退去命令」の条件：終末の日。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.animatus",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "animatus"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Animatus»?",
+    "en": "Which of these edicts has the same upkeep resource as Animatus?",
+    "jp": "布告「生命の付与」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Carga del nexo",
+     "Voluntad de infinitud",
+     "Bestias de carga",
+     "Sutura astral"
+    ],
+    "en": [
+     "Nexus Charge",
+     "Will of Endless",
+     "Beasts of Burden",
+     "Astral Binding"
+    ],
+    "jp": [
+     "ネクサスチャージ",
+     "無限の意志",
+     "荷運び動物",
+     "アストラル・バインド"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Animatus» y «Voluntad de infinitud» se mantienen con el mismo recurso.",
+    "en": "Animatus and Will of Endless have the same upkeep resource.",
+    "jp": "「生命の付与」と「無限の意志」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.astral_binding",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "astral_binding"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Sutura astral»?",
+    "en": "Which of these edicts has the same upkeep resource as Astral Binding?",
+    "jp": "布告「アストラル・バインド」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Sustracción centrífuga",
+     "Artificio dimensional",
+     "Programa de crianza ampliado",
+     "Protocolos de evacuación"
+    ],
+    "en": [
+     "Centrifugal Siphoning",
+     "Dimensional Artificing",
+     "Expanded Breeding Program",
+     "Evacuation Protocols"
+    ],
+    "jp": [
+     "遠心採取",
+     "異次元アーティファクト生成",
+     "繁殖計画の拡大",
+     "退去命令"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Sutura astral» y «Artificio dimensional» se mantienen con el mismo recurso.",
+    "en": "Astral Binding and Dimensional Artificing have the same upkeep resource.",
+    "jp": "「アストラル・バインド」と「異次元アーティファクト生成」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.astral_cloaking",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "astral_cloaking"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Camuflaje astral»?",
+    "en": "Which of these edicts has the same upkeep resource as Astral Cloaking?",
+    "jp": "布告「アストラル・クローク」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Más grande que nosotros",
+     "Vigilancia mejorada",
+     "Artificio dimensional",
+     "Conversión de materia oscura"
+    ],
+    "en": [
+     "Greater Than Ourselves",
+     "Enhanced Surveillance",
+     "Dimensional Artificing",
+     "Dark Matter Unravelling"
+    ],
+    "jp": [
+     "個よりも重要なもの",
+     "監視の強化",
+     "異次元アーティファクト生成",
+     "ダークマター分解"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Camuflaje astral» y «Artificio dimensional» se mantienen con el mismo recurso.",
+    "en": "Astral Cloaking and Dimensional Artificing have the same upkeep resource.",
+    "jp": "「アストラル・クローク」と「異次元アーティファクト生成」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.baryonic_insight",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "baryonic_insight"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Saber bariónico»?",
+    "en": "Which of these edicts has the same upkeep resource as Baryonic Insight?",
+    "jp": "布告「重粒子に関する洞察」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Sustracción centrífuga",
+     "Conversión de materia oscura",
+     "Más grande que nosotros",
+     "Programa de crianza ampliado"
+    ],
+    "en": [
+     "Centrifugal Siphoning",
+     "Dark Matter Unravelling",
+     "Greater Than Ourselves",
+     "Expanded Breeding Program"
+    ],
+    "jp": [
+     "遠心採取",
+     "ダークマター分解",
+     "個よりも重要なもの",
+     "繁殖計画の拡大"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Saber bariónico» y «Conversión de materia oscura» se mantienen con el mismo recurso.",
+    "en": "Baryonic Insight and Dark Matter Unravelling have the same upkeep resource.",
+    "jp": "「重粒子に関する洞察」と「ダークマター分解」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.behemoth_living_metal_augmentation",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_living_metal_augmentation"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Aumento de gigante: Metal vivo»?",
+    "en": "Which of these edicts has the same upkeep resource as Behemoth Augmentation: Living Metal?",
+    "jp": "布告「ベヒモス強化：生体金属」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Compuestos de crecimiento modulares",
+     "Drones a toda máquina",
+     "Supremacía de la flota",
+     "Saber bariónico"
+    ],
+    "en": [
+     "Modular Growth Compounds",
+     "Drone Overdrive",
+     "Fleet Supremacy",
+     "Baryonic Insight"
+    ],
+    "jp": [
+     "成長モジュール化合物",
+     "ドローンの酷使",
+     "覇権艦隊",
+     "重粒子に関する洞察"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Aumento de gigante: Metal vivo» y «Compuestos de crecimiento modulares» se mantienen con el mismo recurso.",
+    "en": "Behemoth Augmentation: Living Metal and Modular Growth Compounds have the same upkeep resource.",
+    "jp": "「ベヒモス強化：生体金属」と「成長モジュール化合物」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.behemoth_nanite_augmentation",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_biogenesis_edicts.txt",
+    "key": "behemoth_nanite_augmentation"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Aumento de gigante: Nanorrobots»?",
+    "en": "Which of these edicts has the same upkeep resource as Behemoth Augmentation: Nanites?",
+    "jp": "布告「ベヒモス強化：ナノマシン」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Batalla campal",
+     "Camuflaje astral",
+     "Generadores nanoconectados",
+     "Decreto: Renacimiento arquitectónico"
+    ],
+    "en": [
+     "Battle Royale",
+     "Astral Cloaking",
+     "Nanoconnected Generators",
+     "Decree: Architectural Renaissance"
+    ],
+    "jp": [
+     "バトルロイヤル",
+     "アストラル・クローク",
+     "ナノ接続済みジェネレーター",
+     "布告：建築ルネサンス"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Aumento de gigante: Nanorrobots» y «Generadores nanoconectados» se mantienen con el mismo recurso.",
+    "en": "Behemoth Augmentation: Nanites and Nanoconnected Generators have the same upkeep resource.",
+    "jp": "「ベヒモス強化：ナノマシン」と「ナノ接続済みジェネレーター」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.dark_matter_forging",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "dark_matter_forging"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Forja de materia oscura»?",
+    "en": "Which of these edicts has the same upkeep resource as Dark Matter Forging?",
+    "jp": "布告「ダークマター鋳造」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Compuestos de crecimiento modulares",
+     "Camuflaje astral",
+     "Programa de crianza ampliado",
+     "Matriz sombría"
+    ],
+    "en": [
+     "Modular Growth Compounds",
+     "Astral Cloaking",
+     "Expanded Breeding Program",
+     "Shadow Matrix"
+    ],
+    "jp": [
+     "成長モジュール化合物",
+     "アストラル・クローク",
+     "繁殖計画の拡大",
+     "シャドウ・マトリックス"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Forja de materia oscura» y «Matriz sombría» se mantienen con el mismo recurso.",
+    "en": "Dark Matter Forging and Shadow Matrix have the same upkeep resource.",
+    "jp": "「ダークマター鋳造」と「シャドウ・マトリックス」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.dark_matter_unravelling",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "First Contact Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "dark_matter_unravelling"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Conversión de materia oscura»?",
+    "en": "Which of these edicts has the same upkeep resource as Dark Matter Unravelling?",
+    "jp": "布告「ダークマター分解」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Velo de obsidiana",
+     "Aprovechamiento de la entropía",
+     "Sustracción centrífuga",
+     "Mapa de las estrellas"
+    ],
+    "en": [
+     "Obsidian Veil",
+     "Entropy Harnessing",
+     "Centrifugal Siphoning",
+     "Map the Stars"
+    ],
+    "jp": [
+     "黒曜石のベール",
+     "エントロピー制御",
+     "遠心採取",
+     "星図作成"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Conversión de materia oscura» y «Velo de obsidiana» se mantienen con el mismo recurso.",
+    "en": "Dark Matter Unravelling and Obsidian Veil have the same upkeep resource.",
+    "jp": "「ダークマター分解」と「黒曜石のベール」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.dimensional_artificing",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "dimensional_artificing"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Artificio dimensional»?",
+    "en": "Which of these edicts has the same upkeep resource as Dimensional Artificing?",
+    "jp": "布告「異次元アーティファクト生成」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Cuarentena de información",
+     "Turnos alargados",
+     "Protección astral",
+     "Algoritmo de análisis encubierto"
+    ],
+    "en": [
+     "Information Quarantine",
+     "Extended Shifts",
+     "Astral Shielding",
+     "Covert Analysis Algorithm"
+    ],
+    "jp": [
+     "情報検閲",
+     "シフト延長",
+     "アストラル・シールド",
+     "秘密分析アルゴリズム"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Artificio dimensional» y «Protección astral» se mantienen con el mismo recurso.",
+    "en": "Dimensional Artificing and Astral Shielding have the same upkeep resource.",
+    "jp": "「異次元アーティファクト生成」と「アストラル・シールド」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.education_campaign",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "education_campaign"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Campaña de educación»?",
+    "en": "Which of these edicts has the same upkeep resource as Education Campaign?",
+    "jp": "布告「教育運動」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Desinfección automatizada",
+     "Gases exóticos potenciaescudos",
+     "Iniciativa de energía mejorada",
+     "Memoria agregada"
+    ],
+    "en": [
+     "Automated Disinfection",
+     "Exotic Gases for Shield Boost",
+     "Improved Energy Initiative",
+     "Aggregated Memory"
+    ],
+    "jp": [
+     "自動殺菌",
+     "エキゾチックガスによるシールド強化",
+     "改善されたエネルギー指針",
+     "収集されたメモリー"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Campaña de educación» y «Desinfección automatizada» se mantienen con el mismo recurso.",
+    "en": "Education Campaign and Automated Disinfection have the same upkeep resource.",
+    "jp": "「教育運動」と「自動殺菌」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.fear_campaign",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "fear_campaign"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Campaña del miedo»?",
+    "en": "Which of these edicts has the same upkeep resource as Fear Campaign?",
+    "jp": "布告「恐怖運動」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Munición volátil",
+     "Entorno laboral mejorado",
+     "Megaconstrucción de metal vivo",
+     "Desinfección automatizada"
+    ],
+    "en": [
+     "Volatile Ammunition",
+     "Improved Working Environment",
+     "Living Metal Mega-Construction",
+     "Automated Disinfection"
+    ],
+    "jp": [
+     "揮発性粉末の弾薬化",
+     "改善された労働環境",
+     "生体金属の大規模建築",
+     "自動殺菌"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Campaña del miedo» y «Desinfección automatizada» se mantienen con el mismo recurso.",
+    "en": "Fear Campaign and Automated Disinfection have the same upkeep resource.",
+    "jp": "「恐怖運動」と「自動殺菌」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.hive_mega_construction",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "hive_mega_construction"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Megaconstrucción integrada»?",
+    "en": "Which of these edicts has the same upkeep resource as Integrated Mega-Construction?",
+    "jp": "布告「統合されたメガ建設」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Aumento de gigante: Metal vivo",
+     "Bestias de carga",
+     "Aniquilación de energía",
+     "Aumento de gigante: Aleaciones"
+    ],
+    "en": [
+     "Behemoth Augmentation: Living Metal",
+     "Beasts of Burden",
+     "Annihilation of Energy",
+     "Behemoth Augmentation: Alloys"
+    ],
+    "jp": [
+     "ベヒモス強化：生体金属",
+     "荷運び動物",
+     "エネルギーの徹底排除",
+     "ベヒモス強化：合金"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Megaconstrucción integrada» y «Aumento de gigante: Aleaciones» se mantienen con el mismo recurso.",
+    "en": "Integrated Mega-Construction and Behemoth Augmentation: Alloys have the same upkeep resource.",
+    "jp": "「統合されたメガ建設」と「ベヒモス強化：合金」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.living_metal_construction",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "living_metal_construction"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Megaconstrucción de metal vivo»?",
+    "en": "Which of these edicts has the same upkeep resource as Living Metal Mega-Construction?",
+    "jp": "布告「生体金属の大規模建築」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Conversión de materia oscura",
+     "Algoritmo de análisis encubierto",
+     "Compuestos de crecimiento modulares",
+     "Malditas consecuencias"
+    ],
+    "en": [
+     "Dark Matter Unravelling",
+     "Covert Analysis Algorithm",
+     "Modular Growth Compounds",
+     "Damn the Consequences"
+    ],
+    "jp": [
+     "ダークマター分解",
+     "秘密分析アルゴリズム",
+     "成長モジュール化合物",
+     "成り行きまかせ"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Megaconstrucción de metal vivo» y «Compuestos de crecimiento modulares» se mantienen con el mismo recurso.",
+    "en": "Living Metal Mega-Construction and Modular Growth Compounds have the same upkeep resource.",
+    "jp": "「生体金属の大規模建築」と「成長モジュール化合物」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.machine_learning_campaign",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "machine_learning_campaign"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Campaña de aprendizaje artificial»?",
+    "en": "Which of these edicts has the same upkeep resource as Machine Learning Campaign?",
+    "jp": "布告「機械学習運動」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Desinfección automatizada",
+     "Munición volátil",
+     "Sutura astral",
+     "Megaconstrucción de metal vivo"
+    ],
+    "en": [
+     "Automated Disinfection",
+     "Volatile Ammunition",
+     "Astral Binding",
+     "Living Metal Mega-Construction"
+    ],
+    "jp": [
+     "自動殺菌",
+     "揮発性粉末の弾薬化",
+     "アストラル・バインド",
+     "生体金属の大規模建築"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Campaña de aprendizaje artificial» y «Desinfección automatizada» se mantienen con el mismo recurso.",
+    "en": "Machine Learning Campaign and Automated Disinfection have the same upkeep resource.",
+    "jp": "「機械学習運動」と「自動殺菌」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.modular_growth_compounds",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "modular_growth_compounds"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Compuestos de crecimiento modulares»?",
+    "en": "Which of these edicts has the same upkeep resource as Modular Growth Compounds?",
+    "jp": "布告「成長モジュール化合物」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Lecciones magistrales: confianza diplomática",
+     "Búsquedas de sensores extensas",
+     "Megaconstrucción de metal vivo",
+     "Blindaje reactivo volátil"
+    ],
+    "en": [
+     "Master's Teachings: Diplomatic Trust",
+     "Extensive Sensor Searches",
+     "Living Metal Mega-Construction",
+     "Volatile Reactive Armor"
+    ],
+    "jp": [
+     "師の教え：外交的信頼",
+     "大規模なセンサー探索",
+     "生体金属の大規模建築",
+     "揮発性粉末の反応装甲化"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Compuestos de crecimiento modulares» y «Megaconstrucción de metal vivo» se mantienen con el mismo recurso.",
+    "en": "Modular Growth Compounds and Living Metal Mega-Construction have the same upkeep resource.",
+    "jp": "「成長モジュール化合物」と「生体金属の大規模建築」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.nanite_actuators",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "nanite_actuators"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Actuadores nanorrobots»?",
+    "en": "Which of these edicts has the same upkeep resource as Nanite Actuators?",
+    "jp": "布告「ナノマシン・アクチュエータ」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Generadores nanoconectados",
+     "Copias de seguridad de identidad subvencionadas",
+     "Perspectiva del cliente",
+     "La canción del conocimiento"
+    ],
+    "en": [
+     "Nanoconnected Generators",
+     "Subsidized Identity Backups",
+     "Customer Insights",
+     "The Song of Knowledge"
+    ],
+    "jp": [
+     "ナノ接続済みジェネレーター",
+     "補助金を受けた自我バックアップ",
+     "顧客の知見",
+     "知識の歌"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Actuadores nanorrobots» y «Generadores nanoconectados» se mantienen con el mismo recurso.",
+    "en": "Nanite Actuators and Nanoconnected Generators have the same upkeep resource.",
+    "jp": "「ナノマシン・アクチュエータ」と「ナノ接続済みジェネレーター」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.nanotech_naval_augmentation",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/04_machine_age_edicts.txt",
+    "key": "nanotech_naval_augmentation"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Cadenas de suministro nanotecnológicas»?",
+    "en": "Which of these edicts has the same upkeep resource as Nano-operated Supply Chains?",
+    "jp": "布告「ナノ操作サプライチェーン」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Bestias de carga",
+     "Batalla campal",
+     "Camuflaje astral",
+     "Aumento de gigante: Nanorrobots"
+    ],
+    "en": [
+     "Beasts of Burden",
+     "Battle Royale",
+     "Astral Cloaking",
+     "Behemoth Augmentation: Nanites"
+    ],
+    "jp": [
+     "荷運び動物",
+     "バトルロイヤル",
+     "アストラル・クローク",
+     "ベヒモス強化：ナノマシン"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Cadenas de suministro nanotecnológicas» y «Aumento de gigante: Nanorrobots» se mantienen con el mismo recurso.",
+    "en": "Nano-operated Supply Chains and Behemoth Augmentation: Nanites have the same upkeep resource.",
+    "jp": "「ナノ操作サプライチェーン」と「ベヒモス強化：ナノマシン」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.recycling_campaign",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Astral Planes"
+   ],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "recycling_campaign"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Campaña de reciclaje»?",
+    "en": "Which of these edicts has the same upkeep resource as Recycling Campaign?",
+    "jp": "布告「リサイクル運動」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Sutura astral",
+     "Desinfección automatizada",
+     "Memoria agregada",
+     "Manejo localizado de la volatilidad"
+    ],
+    "en": [
+     "Astral Binding",
+     "Automated Disinfection",
+     "Aggregated Memory",
+     "Volatile Compartment Reclamation"
+    ],
+    "jp": [
+     "アストラル・バインド",
+     "自動殺菌",
+     "収集されたメモリー",
+     "揮発性区画の再利用"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Campaña de reciclaje» y «Desinfección automatizada» se mantienen con el mismo recurso.",
+    "en": "Recycling Campaign and Automated Disinfection have the same upkeep resource.",
+    "jp": "「リサイクル運動」と「自動殺菌」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.shadow_matrix",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/00_edicts.txt",
+    "key": "shadow_matrix"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Matriz sombría»?",
+    "en": "Which of these edicts has the same upkeep resource as Shadow Matrix?",
+    "jp": "布告「シャドウ・マトリックス」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Aprovechamiento de la entropía",
+     "Forja de materia oscura",
+     "Supremacía de la flota",
+     "Mapa de las estrellas"
+    ],
+    "en": [
+     "Entropy Harnessing",
+     "Dark Matter Forging",
+     "Fleet Supremacy",
+     "Map the Stars"
+    ],
+    "jp": [
+     "エントロピー制御",
+     "ダークマター鋳造",
+     "覇権艦隊",
+     "星図作成"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Matriz sombría» y «Forja de materia oscura» se mantienen con el mismo recurso.",
+    "en": "Shadow Matrix and Dark Matter Forging have the same upkeep resource.",
+    "jp": "「シャドウ・マトリックス」と「ダークマター鋳造」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.shroud_bonded",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "shroud_bonded"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Vinculados al Velo»?",
+    "en": "Which of these edicts has the same upkeep resource as Shroud-Bonded?",
+    "jp": "布告「シュラウドの絆」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Aniquilación de energía",
+     "Batalla campal",
+     "Voluntad de infinitud",
+     "Bienestar de las criaturas"
+    ],
+    "en": [
+     "Annihilation of Energy",
+     "Battle Royale",
+     "Will of Endless",
+     "Creature Welfare"
+    ],
+    "jp": [
+     "エネルギーの徹底排除",
+     "バトルロイヤル",
+     "無限の意志",
+     "生き物の快適性"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Vinculados al Velo» y «Voluntad de infinitud» se mantienen con el mismo recurso.",
+    "en": "Shroud-Bonded and Will of Endless have the same upkeep resource.",
+    "jp": "「シュラウドの絆」と「無限の意志」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.sight_beyond_sight",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "sight_beyond_sight"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Más allá de lo evidente»?",
+    "en": "Which of these edicts has the same upkeep resource as Sight Beyond Sight?",
+    "jp": "布告「遠隔視」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Voluntad de infinitud",
+     "Aumento de gigante: Nanorrobots",
+     "Saber bariónico",
+     "Batalla campal"
+    ],
+    "en": [
+     "Will of Endless",
+     "Behemoth Augmentation: Nanites",
+     "Baryonic Insight",
+     "Battle Royale"
+    ],
+    "jp": [
+     "無限の意志",
+     "ベヒモス強化：ナノマシン",
+     "重粒子に関する洞察",
+     "バトルロイヤル"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Más allá de lo evidente» y «Voluntad de infinitud» se mantienen con el mismo recurso.",
+    "en": "Sight Beyond Sight and Will of Endless have the same upkeep resource.",
+    "jp": "「遠隔視」と「無限の意志」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_same_resource.will_of_endless",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_endless"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Voluntad de infinitud»?",
+    "en": "Which of these edicts has the same upkeep resource as Will of Endless?",
+    "jp": "布告「無限の意志」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Consejo vampírico",
+     "Algoritmo de análisis encubierto",
+     "Agencia de espionaje",
+     "Animatus"
+    ],
+    "en": [
+     "Sanguine Council",
+     "Covert Analysis Algorithm",
+     "Bureau of Espionage",
+     "Animatus"
+    ],
+    "jp": [
+     "紅顔の評議会",
+     "秘密分析アルゴリズム",
+     "諜報局",
+     "生命の付与"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Voluntad de infinitud» y «Animatus» se mantienen con el mismo recurso.",
+    "en": "Will of Endless and Animatus have the same upkeep resource.",
+    "jp": "「無限の意志」と「生命の付与」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.will_of_order",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_order"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Voluntad de orden»?",
+    "en": "Which of these edicts has the same upkeep resource as Will of Order?",
+    "jp": "布告「秩序の意志」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Más allá de lo evidente",
+     "Gases exóticos combustibles",
+     "Campaña del miedo",
+     "Blindaje reactivo volátil"
+    ],
+    "en": [
+     "Sight Beyond Sight",
+     "Exotic Gases as Fuel",
+     "Fear Campaign",
+     "Volatile Reactive Armor"
+    ],
+    "jp": [
+     "遠隔視",
+     "燃料としてのエキゾチックガス",
+     "恐怖運動",
+     "揮発性粉末の反応装甲化"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Voluntad de orden» y «Más allá de lo evidente» se mantienen con el mismo recurso.",
+    "en": "Will of Order and Sight Beyond Sight have the same upkeep resource.",
+    "jp": "「秩序の意志」と「遠隔視」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.will_of_rebirth",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/06_shroud_edicts.txt",
+    "key": "will_of_rebirth"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Voluntad de renacimiento»?",
+    "en": "Which of these edicts has the same upkeep resource as Will of Rebirth?",
+    "jp": "布告「再生の意志」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Lecciones magistrales: el bien mayor",
+     "Blindaje reactivo volátil",
+     "Más allá de lo evidente",
+     "Cristales concentradores"
+    ],
+    "en": [
+     "Master's Teachings: The Greater Good",
+     "Volatile Reactive Armor",
+     "Sight Beyond Sight",
+     "Focusing Crystals"
+    ],
+    "jp": [
+     "師の教え：より大いなる善",
+     "揮発性粉末の反応装甲化",
+     "遠隔視",
+     "クリスタルフォーカス"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Voluntad de renacimiento» y «Más allá de lo evidente» se mantienen con el mismo recurso.",
+    "en": "Will of Rebirth and Sight Beyond Sight have the same upkeep resource.",
+    "jp": "「再生の意志」と「遠隔視」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_policy.png"
+  },
+  {
+   "id": "policies.edict_same_resource.zro_observators",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "zro_observators"
+   },
+   "text": {
+    "es": "¿Cuál de estos edictos se mantiene con el mismo recurso que «Observación del Velo»?",
+    "en": "Which of these edicts has the same upkeep resource as Shroud Observation?",
+    "jp": "布告「シュラウドの観測」と同じ資源を維持費にする布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Voluntad de templanza",
+     "Consejo vampírico",
+     "Aumento de gigante: Metal vivo",
+     "Drenaje de energía"
+    ],
+    "en": [
+     "Will of Temperance",
+     "Sanguine Council",
+     "Behemoth Augmentation: Living Metal",
+     "Energy Drain"
+    ],
+    "jp": [
+     "自重の意志",
+     "紅顔の評議会",
+     "ベヒモス強化：生体金属",
+     "エネルギードレイン"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Observación del Velo» y «Voluntad de templanza» se mantienen con el mismo recurso.",
+    "en": "Shroud Observation and Will of Temperance have the same upkeep resource.",
+    "jp": "「シュラウドの観測」と「自重の意志」の維持費は同じ資源です。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_wartime.crystal_focus",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "crystal_focus"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un edicto de tiempos de guerra?",
+    "en": "Which of these is a wartime edict?",
+    "jp": "次のうち戦時の布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Lecciones magistrales: el bien mayor",
+     "Observación del Velo",
+     "Cristales concentradores",
+     "Campaña de educación"
+    ],
+    "en": [
+     "Master's Teachings: The Greater Good",
+     "Shroud Observation",
+     "Focusing Crystals",
+     "Education Campaign"
+    ],
+    "jp": [
+     "師の教え：より大いなる善",
+     "シュラウドの観測",
+     "クリスタルフォーカス",
+     "教育運動"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Cristales concentradores» es un edicto de guerra; los otros tres no.",
+    "en": "Focusing Crystals is a wartime edict; the other three are not.",
+    "jp": "「クリスタルフォーカス」は戦時の布告です。他の3つは違います。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_wartime.fuel_gases",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "fuel_gases"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un edicto de tiempos de guerra?",
+    "en": "Which of these is a wartime edict?",
+    "jp": "次のうち戦時の布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Animatus",
+     "Gases exóticos combustibles",
+     "Entorno laboral mejorado",
+     "Búsquedas de sensores extensas"
+    ],
+    "en": [
+     "Animatus",
+     "Exotic Gases as Fuel",
+     "Improved Working Environment",
+     "Extensive Sensor Searches"
+    ],
+    "jp": [
+     "生命の付与",
+     "燃料としてのエキゾチックガス",
+     "改善された労働環境",
+     "大規模なセンサー探索"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Gases exóticos combustibles» es un edicto de guerra; los otros tres no.",
+    "en": "Exotic Gases as Fuel is a wartime edict; the other three are not.",
+    "jp": "「燃料としてのエキゾチックガス」は戦時の布告です。他の3つは違います。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_wartime.motes_armor",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "motes_armor"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un edicto de tiempos de guerra?",
+    "en": "Which of these is a wartime edict?",
+    "jp": "次のうち戦時の布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Blindaje reactivo volátil",
+     "Campaña dron de guerra",
+     "Más allá de lo evidente",
+     "Desinfección automatizada"
+    ],
+    "en": [
+     "Volatile Reactive Armor",
+     "War Drone Campaign",
+     "Sight Beyond Sight",
+     "Automated Disinfection"
+    ],
+    "jp": [
+     "揮発性粉末の反応装甲化",
+     "戦闘ドローン強化運動",
+     "遠隔視",
+     "自動殺菌"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Blindaje reactivo volátil» es un edicto de guerra; los otros tres no.",
+    "en": "Volatile Reactive Armor is a wartime edict; the other three are not.",
+    "jp": "「揮発性粉末の反応装甲化」は戦時の布告です。他の3つは違います。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_wartime.motes_kinetic",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "motes_kinetic"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un edicto de tiempos de guerra?",
+    "en": "Which of these is a wartime edict?",
+    "jp": "次のうち戦時の布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Megaconstrucción de metal vivo",
+     "Aniquilación de energía",
+     "Animatus",
+     "Munición volátil"
+    ],
+    "en": [
+     "Living Metal Mega-Construction",
+     "Annihilation of Energy",
+     "Animatus",
+     "Volatile Ammunition"
+    ],
+    "jp": [
+     "生体金属の大規模建築",
+     "エネルギーの徹底排除",
+     "生命の付与",
+     "揮発性粉末の弾薬化"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Munición volátil» es un edicto de guerra; los otros tres no.",
+    "en": "Volatile Ammunition is a wartime edict; the other three are not.",
+    "jp": "「揮発性粉末の弾薬化」は戦時の布告です。他の3つは違います。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.edict_wartime.shield_gases",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/edicts/01_campaigns.txt",
+    "key": "shield_gases"
+   },
+   "text": {
+    "es": "¿Cuál de estos es un edicto de tiempos de guerra?",
+    "en": "Which of these is a wartime edict?",
+    "jp": "次のうち戦時の布告はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Explosivos volátiles",
+     "Lecciones magistrales: estados en guerra",
+     "Gases exóticos potenciaescudos",
+     "Decreto: Renacimiento arquitectónico"
+    ],
+    "en": [
+     "Volatile Explosives",
+     "Master's Teachings: Warring States",
+     "Exotic Gases for Shield Boost",
+     "Decree: Architectural Renaissance"
+    ],
+    "jp": [
+     "揮発性粉末の爆薬化",
+     "師の教え：戦時国家",
+     "エキゾチックガスによるシールド強化",
+     "布告：建築ルネサンス"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Gases exóticos potenciaescudos» es un edicto de guerra; los otros tres no.",
+    "en": "Exotic Gases for Shield Boost is a wartime edict; the other three are not.",
+    "jp": "「エキゾチックガスによるシールド強化」は戦時の布告です。他の3つは違います。"
+   },
+   "icon": "edicts/edict_type_time.png"
+  },
+  {
+   "id": "policies.option_civic.diplomatic_stance.diplo_stance_devastators",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Qué principio permite la opción «Devastadores» de la política «Postura diplomática»?",
+    "en": "Which civic allows the option Devastators of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢「破壊者」を可能にする国是はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Consciencia correctiva",
+     "Cuidadores galácticos",
+     "Heraldos de mundos calcinados",
+     "Colectivo de artistas"
+    ],
+    "en": [
+     "Corrective Consciousness",
+     "Galactic Curators",
+     "Scorched World Heralds",
+     "Artist Collective"
+    ],
+    "jp": [
+     "是正意識",
+     "銀河キュレーター",
+     "灼熱惑星の使徒",
+     "芸術家集団"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Devastadores» requiere uno de estos principios: Instinto pirómano, Heraldos de mundos calcinados.",
+    "en": "Devastators requires one of these civics: Pyromanic Instinct, Scorched World Heralds.",
+    "jp": "「破壊者」には次のいずれかの国是が必要です：「発火本能」、「灼熱惑星の使徒」。"
+   }
+  },
+  {
+   "id": "policies.option_civic.orbital_bombardment.orbital_bombardment_armageddon",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "orbital_bombardment"
+   },
+   "text": {
+    "es": "¿Qué principio permite la opción «Armagedón» de la política «Bombardeo orbital»?",
+    "en": "Which civic allows the option Armageddon of the policy Orbital Bombardment?",
+    "jp": "政策「軌道爆撃」の選択肢「終末」を可能にする国是はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Gremios esclavistas",
+     "Enclave de mercenarios",
+     "Maestros de bestias",
+     "Purificadores fanáticos"
+    ],
+    "en": [
+     "Slaver Guilds",
+     "Mercenary Enclave",
+     "Beastmasters",
+     "Fanatic Purifiers"
+    ],
+    "jp": [
+     "奴隷ギルド",
+     "傭兵中立機構",
+     "ビーストマスター",
+     "狂信的な浄化主義"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Armagedón» requiere uno de estos principios: Purificadores fanáticos, Exterminador decidido.",
+    "en": "Armageddon requires one of these civics: Fanatic Purifiers, Determined Exterminator.",
+    "jp": "「終末」には次のいずれかの国是が必要です：「狂信的な浄化主義」、「断固たる殺戮機械」。"
+   }
+  },
+  {
+   "id": "policies.option_civic.orbital_bombardment.orbital_bombardment_devastation",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "orbital_bombardment"
+   },
+   "text": {
+    "es": "¿Qué principio permite la opción «Devastación» de la política «Bombardeo orbital»?",
+    "en": "Which civic allows the option Devastation of the policy Orbital Bombardment?",
+    "jp": "政策「軌道爆撃」の選択肢「破壊」を可能にする国是はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Nexo zodiacal",
+     "Algoritmos tácticos",
+     "Heraldos de mundos calcinados",
+     "Perfección interior"
+    ],
+    "en": [
+     "Zodiac Nexus",
+     "Tactical Algorithms",
+     "Scorched World Heralds",
+     "Inward Perfection"
+    ],
+    "jp": [
+     "ゾディアック・ネクサス",
+     "戦術アルゴリズム",
+     "灼熱惑星の使徒",
+     "内向きの成熟"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Devastación» requiere uno de estos principios: Instinto pirómano, Heraldos de mundos calcinados.",
+    "en": "Devastation requires one of these civics: Pyromanic Instinct, Scorched World Heralds.",
+    "jp": "「破壊」には次のいずれかの国是が必要です：「発火本能」、「灼熱惑星の使徒」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.disconnected_drones.disconnected_drones_purge",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "disconnected_drones"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Exterminio» en la política «Drones desconectados»?",
+    "en": "Which ethic prevents choosing Extermination in the policy Disconnected Drones?",
+    "jp": "政策「切り離されたドローン」で「駆除」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Autoritaria fanática",
+     "Autoritaria",
+     "Xenófilo",
+     "Espiritualista"
+    ],
+    "en": [
+     "Fanatic Authoritarian",
+     "Authoritarian",
+     "Xenophile",
+     "Spiritualist"
+    ],
+    "jp": [
+     "狂信的な権威主義",
+     "権威主義",
+     "受容主義",
+     "精神主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Exterminio» no se puede elegir con: Xenófilo fanático, Xenófilo.",
+    "en": "Extermination cannot be chosen with: Fanatic Xenophile, Xenophile.",
+    "jp": "「駆除」を選べない倫理観：「狂信的な受容主義」、「受容主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.enlightenment.enlightenment_allowed",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "enlightenment"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Permitido» en la política «Ilustración de pre-UL»?",
+    "en": "Which ethic prevents choosing Allowed in the policy Pre-FTL Enlightenment?",
+    "jp": "政策「前FTL文明への啓蒙」で「許可」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófobo fanático",
+     "Autoritaria fanática",
+     "Xenófilo fanático",
+     "Igualitaria fanática"
+    ],
+    "en": [
+     "Fanatic Xenophobe",
+     "Fanatic Authoritarian",
+     "Fanatic Xenophile",
+     "Fanatic Egalitarian"
+    ],
+    "jp": [
+     "狂信的な排他主義",
+     "狂信的な権威主義",
+     "狂信的な受容主義",
+     "狂信的な平等主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Permitido» no se puede elegir con: Xenófobo fanático.",
+    "en": "Allowed cannot be chosen with: Fanatic Xenophobe.",
+    "jp": "「許可」を選べない倫理観：「狂信的な排他主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.enlightenment.enlightenment_covert_only",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "enlightenment"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Solo de forma encubierta» en la política «Ilustración de pre-UL»?",
+    "en": "Which ethic prevents choosing Covert Only in the policy Pre-FTL Enlightenment?",
+    "jp": "政策「前FTL文明への啓蒙」で「水面下限定」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Militarista fanático",
+     "Espiritualista fanático",
+     "Autoritaria",
+     "Xenófobo fanático"
+    ],
+    "en": [
+     "Fanatic Militarist",
+     "Fanatic Spiritualist",
+     "Authoritarian",
+     "Fanatic Xenophobe"
+    ],
+    "jp": [
+     "狂信的な軍国主義",
+     "狂信的な精神主義",
+     "権威主義",
+     "狂信的な排他主義"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Solo de forma encubierta» no se puede elegir con: Xenófobo fanático.",
+    "en": "Covert Only cannot be chosen with: Fanatic Xenophobe.",
+    "jp": "「水面下限定」を選べない倫理観：「狂信的な排他主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.first_contact_protocol.first_contact_attack_allowed",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "first_contact_protocol"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Agresivo» en la política «Protocolo de primer contacto»?",
+    "en": "Which ethic prevents choosing Aggressive in the policy First Contact Protocol?",
+    "jp": "政策「ファーストコンタクト・プロトコル」で「攻撃的」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Pacifista",
+     "Espiritualista",
+     "Igualitaria fanática",
+     "Igualitaria"
+    ],
+    "en": [
+     "Pacifist",
+     "Spiritualist",
+     "Fanatic Egalitarian",
+     "Egalitarian"
+    ],
+    "jp": [
+     "平和主義",
+     "精神主義",
+     "狂信的な平等主義",
+     "平等主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Agresivo» no se puede elegir con: Pacifista fanático, Pacifista.",
+    "en": "Aggressive cannot be chosen with: Fanatic Pacifist, Pacifist.",
+    "jp": "「攻撃的」を選べない倫理観：「狂信的な平和主義」、「平和主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.first_contact_protocol.first_contact_proactive",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "first_contact_protocol"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Proactivo» en la política «Protocolo de primer contacto»?",
+    "en": "Which ethic prevents choosing Proactive in the policy First Contact Protocol?",
+    "jp": "政策「ファーストコンタクト・プロトコル」で「積極的」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófobo",
+     "Pacifista",
+     "Autoritaria",
+     "Igualitaria"
+    ],
+    "en": [
+     "Xenophobe",
+     "Pacifist",
+     "Authoritarian",
+     "Egalitarian"
+    ],
+    "jp": [
+     "排他主義",
+     "平和主義",
+     "権威主義",
+     "平等主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Proactivo» no se puede elegir con: Xenófobo fanático, Xenófobo.",
+    "en": "Proactive cannot be chosen with: Fanatic Xenophobe, Xenophobe.",
+    "jp": "「積極的」を選べない倫理観：「狂信的な排他主義」、「排他主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.leader_enhancement.leader_enhancement_capacity_boosters",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "leader_enhancement"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Potenciadores de capacidad» en la política «Mejora de líderes»?",
+    "en": "Which ethic prevents choosing Capacity Boosters in the policy Leader Enhancement?",
+    "jp": "政策「リーダーの強化」で「能力増強」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Igualitaria",
+     "Autoritaria",
+     "Xenófilo",
+     "Militarista"
+    ],
+    "en": [
+     "Egalitarian",
+     "Authoritarian",
+     "Xenophile",
+     "Militarist"
+    ],
+    "jp": [
+     "平等主義",
+     "権威主義",
+     "受容主義",
+     "軍国主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Potenciadores de capacidad» no se puede elegir con: Igualitaria, Igualitaria fanática.",
+    "en": "Capacity Boosters cannot be chosen with: Egalitarian, Fanatic Egalitarian.",
+    "jp": "「能力増強」を選べない倫理観：「平等主義」、「狂信的な平等主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.leader_enhancement.leader_enhancement_selected_lineages",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "leader_enhancement"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Linajes seleccionados» en la política «Mejora de líderes»?",
+    "en": "Which ethic prevents choosing Selected Lineages in the policy Leader Enhancement?",
+    "jp": "政策「リーダーの強化」で「血統選別」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófobo fanático",
+     "Materialista fanático",
+     "Militarista fanático",
+     "Igualitaria fanática"
+    ],
+    "en": [
+     "Fanatic Xenophobe",
+     "Fanatic Materialist",
+     "Fanatic Militarist",
+     "Fanatic Egalitarian"
+    ],
+    "jp": [
+     "狂信的な排他主義",
+     "狂信的な物質主義",
+     "狂信的な軍国主義",
+     "狂信的な平等主義"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Linajes seleccionados» no se puede elegir con: Igualitaria fanática.",
+    "en": "Selected Lineages cannot be chosen with: Fanatic Egalitarian.",
+    "jp": "「血統選別」を選べない倫理観：「狂信的な平等主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.nomad_deterrence.nomad_deterrence_do_no_harm",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_deterrence"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «No dañar» en la política «Disuasión nómada»?",
+    "en": "Which ethic prevents choosing Do No Harm in the policy Nomad Deterrence?",
+    "jp": "政策「放浪帝国の処遇」で「危害なし」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Xenófobo",
+     "Pacifista",
+     "Igualitaria",
+     "Autoritaria fanática"
+    ],
+    "en": [
+     "Xenophobe",
+     "Pacifist",
+     "Egalitarian",
+     "Fanatic Authoritarian"
+    ],
+    "jp": [
+     "排他主義",
+     "平和主義",
+     "平等主義",
+     "狂信的な権威主義"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«No dañar» no se puede elegir con: Xenófobo fanático, Xenófobo.",
+    "en": "Do No Harm cannot be chosen with: Fanatic Xenophobe, Xenophobe.",
+    "jp": "「危害なし」を選べない倫理観：「狂信的な排他主義」、「排他主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.nomad_total_war.nomad_total_war_displace",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "nomad_total_war"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Desplazar» en la política «Comportamiento de guerra total»?",
+    "en": "Which ethic prevents choosing Displace in the policy Total War Behavior?",
+    "jp": "政策「総力戦の行動」で「強制退去」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Igualitaria",
+     "Xenófilo",
+     "Xenófobo",
+     "Pacifista"
+    ],
+    "en": [
+     "Egalitarian",
+     "Xenophile",
+     "Xenophobe",
+     "Pacifist"
+    ],
+    "jp": [
+     "平等主義",
+     "受容主義",
+     "排他主義",
+     "平和主義"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Desplazar» no se puede elegir con: Xenófilo fanático, Xenófilo.",
+    "en": "Displace cannot be chosen with: Fanatic Xenophile, Xenophile.",
+    "jp": "「強制退去」を選べない倫理観：「狂信的な受容主義」、「受容主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.orbital_bombardment.orbital_bombardment_indiscriminate",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "orbital_bombardment"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Indiscriminado» en la política «Bombardeo orbital»?",
+    "en": "Which ethic prevents choosing Indiscriminate in the policy Orbital Bombardment?",
+    "jp": "政策「軌道爆撃」で「無差別」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Autoritaria fanática",
+     "Autoritaria",
+     "Pacifista",
+     "Materialista"
+    ],
+    "en": [
+     "Fanatic Authoritarian",
+     "Authoritarian",
+     "Pacifist",
+     "Materialist"
+    ],
+    "jp": [
+     "狂信的な権威主義",
+     "権威主義",
+     "平和主義",
+     "物質主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Indiscriminado» no se puede elegir con: Pacifista fanático, Pacifista.",
+    "en": "Indiscriminate cannot be chosen with: Fanatic Pacifist, Pacifist.",
+    "jp": "「無差別」を選べない倫理観：「狂信的な平和主義」、「平和主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.refugees.refugees_allowed",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "refugees"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Refugiados bienvenidos» en la política «Refugiados»?",
+    "en": "Which ethic prevents choosing Refugees Welcome in the policy Refugees?",
+    "jp": "政策「難民」で「難民歓迎」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Pacifista",
+     "Igualitaria",
+     "Xenófilo",
+     "Xenófobo"
+    ],
+    "en": [
+     "Pacifist",
+     "Egalitarian",
+     "Xenophile",
+     "Xenophobe"
+    ],
+    "jp": [
+     "平和主義",
+     "平等主義",
+     "受容主義",
+     "排他主義"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Refugiados bienvenidos» no se puede elegir con: Xenófobo fanático, Xenófobo.",
+    "en": "Refugees Welcome cannot be chosen with: Fanatic Xenophobe, Xenophobe.",
+    "jp": "「難民歓迎」を選べない倫理観：「狂信的な排他主義」、「排他主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.refugees.refugees_not_allowed",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "refugees"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «No refugiados» en la política «Refugiados»?",
+    "en": "Which ethic prevents choosing No Refugees in the policy Refugees?",
+    "jp": "政策「難民」で「難民拒否」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Pacifista",
+     "Materialista",
+     "Xenófilo",
+     "Igualitaria"
+    ],
+    "en": [
+     "Pacifist",
+     "Materialist",
+     "Xenophile",
+     "Egalitarian"
+    ],
+    "jp": [
+     "平和主義",
+     "物質主義",
+     "受容主義",
+     "平等主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«No refugiados» no se puede elegir con: Xenófilo fanático, Xenófilo.",
+    "en": "No Refugees cannot be chosen with: Fanatic Xenophile, Xenophile.",
+    "jp": "「難民拒否」を選べない倫理観：「狂信的な受容主義」、「受容主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.war_philosophy.liberation_wars",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_philosophy"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Guerras de liberación» en la política «Filosofía de guerra»?",
+    "en": "Which ethic prevents choosing Liberation Wars in the policy War Philosophy?",
+    "jp": "政策「戦争哲学」で「解放戦争」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Autoritaria",
+     "Pacifista fanático",
+     "Espiritualista fanático",
+     "Materialista fanático"
+    ],
+    "en": [
+     "Authoritarian",
+     "Fanatic Pacifist",
+     "Fanatic Spiritualist",
+     "Fanatic Materialist"
+    ],
+    "jp": [
+     "権威主義",
+     "狂信的な平和主義",
+     "狂信的な精神主義",
+     "狂信的な物質主義"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Guerras de liberación» no se puede elegir con: Pacifista fanático.",
+    "en": "Liberation Wars cannot be chosen with: Fanatic Pacifist.",
+    "jp": "「解放戦争」を選べない倫理観：「狂信的な平和主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.war_philosophy.no_wars",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_philosophy"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Guerras defensivas» en la política «Filosofía de guerra»?",
+    "en": "Which ethic prevents choosing Defensive Wars in the policy War Philosophy?",
+    "jp": "政策「戦争哲学」で「防衛戦争」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Espiritualista fanático",
+     "Materialista fanático",
+     "Militarista fanático",
+     "Xenófobo fanático"
+    ],
+    "en": [
+     "Fanatic Spiritualist",
+     "Fanatic Materialist",
+     "Fanatic Militarist",
+     "Fanatic Xenophobe"
+    ],
+    "jp": [
+     "狂信的な精神主義",
+     "狂信的な物質主義",
+     "狂信的な軍国主義",
+     "狂信的な排他主義"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Guerras defensivas» no se puede elegir con: Militarista fanático.",
+    "en": "Defensive Wars cannot be chosen with: Fanatic Militarist.",
+    "jp": "「防衛戦争」を選べない倫理観：「狂信的な軍国主義」。"
+   }
+  },
+  {
+   "id": "policies.option_ethic.war_philosophy.unrestricted_wars",
+   "tier": 3,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_philosophy"
+   },
+   "text": {
+    "es": "¿Qué ética impide elegir «Guerras sin restricción» en la política «Filosofía de guerra»?",
+    "en": "Which ethic prevents choosing Unrestricted Wars in the policy War Philosophy?",
+    "jp": "政策「戦争哲学」で「無制限戦争」を選べなくする倫理観はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Militarista",
+     "Pacifista",
+     "Autoritaria",
+     "Xenófilo"
+    ],
+    "en": [
+     "Militarist",
+     "Pacifist",
+     "Authoritarian",
+     "Xenophile"
+    ],
+    "jp": [
+     "軍国主義",
+     "平和主義",
+     "権威主義",
+     "受容主義"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Guerras sin restricción» no se puede elegir con: Pacifista fanático, Pacifista.",
+    "en": "Unrestricted Wars cannot be chosen with: Fanatic Pacifist, Pacifist.",
+    "jp": "「無制限戦争」を選べない倫理観：「狂信的な平和主義」、「平和主義」。"
+   }
+  },
+  {
+   "id": "policies.option_policy.computation_core_allocation.computation_core_research",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/01_policies_machine_age.txt",
+    "key": "computation_core_allocation"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Procesos de investigación»?",
+    "en": "Which policy does the option Research Processes belong to?",
+    "jp": "選択肢「研究プロセス」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Mejora de líderes",
+     "Inteligencia artificial",
+     "Estándares de ciberización",
+     "Prioridad de núcleos computacionales"
+    ],
+    "en": [
+     "Leader Enhancement",
+     "Artificial Intelligence",
+     "Cyberization Standards",
+     "Computation Core Focus"
+    ],
+    "jp": [
+     "リーダーの強化",
+     "人工知能",
+     "サイバー化規格",
+     "演算コアへの注力"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Procesos de investigación» es una opción de la política «Prioridad de núcleos computacionales».",
+    "en": "Research Processes is an option of the policy Computation Core Focus.",
+    "jp": "「研究プロセス」は政策「演算コアへの注力」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.defense_platform_protocols.defense_platform_reinforced_plating",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/06_policies_fleets_and_starbases.txt",
+    "key": "defense_platform_protocols"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Blindaje reforzado»?",
+    "en": "Which policy does the option Reinforced Plating belong to?",
+    "jp": "選択肢「強化装甲」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Aceptación de rendición orbital",
+     "Doctrina de flota",
+     "Protocolos de plataforma de defensa",
+     "Regulación metabólica"
+    ],
+    "en": [
+     "Orbital Surrender Acceptance",
+     "Fleet Doctrine",
+     "Defense Platform Protocols",
+     "Metabolic Regulation"
+    ],
+    "jp": [
+     "軌道上降伏の承認",
+     "艦隊ドクトリン",
+     "防衛プラットフォームプロトコル",
+     "代謝管理"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Blindaje reforzado» es una opción de la política «Protocolos de plataforma de defensa».",
+    "en": "Reinforced Plating is an option of the policy Defense Platform Protocols.",
+    "jp": "「強化装甲」は政策「防衛プラットフォームプロトコル」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_animosity",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Antagónico»?",
+    "en": "Which policy does the option Antagonistic belong to?",
+    "jp": "選択肢「対立主義」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Comportamiento de guerra total",
+     "Postura diplomática",
+     "Interferencia pre-UL",
+     "Estado inicial de las fronteras"
+    ],
+    "en": [
+     "Total War Behavior",
+     "Diplomatic Stance",
+     "Pre-FTL Interference",
+     "Initial Border Status"
+    ],
+    "jp": [
+     "総力戦の行動",
+     "外交スタンス",
+     "前FTL文明への干渉",
+     "国境の初期状態"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Antagónico» es una opción de la política «Postura diplomática».",
+    "en": "Antagonistic is an option of the policy Diplomatic Stance.",
+    "jp": "「対立主義」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_cooperative",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Cooperativa»?",
+    "en": "Which policy does the option Cooperative belong to?",
+    "jp": "選択肢「協力的」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Disuasión nómada",
+     "Comportamiento de guerra total",
+     "Protocolo de primer contacto",
+     "Postura diplomática"
+    ],
+    "en": [
+     "Nomad Deterrence",
+     "Total War Behavior",
+     "First Contact Protocol",
+     "Diplomatic Stance"
+    ],
+    "jp": [
+     "放浪帝国の処遇",
+     "総力戦の行動",
+     "ファーストコンタクト・プロトコル",
+     "外交スタンス"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Cooperativa» es una opción de la política «Postura diplomática».",
+    "en": "Cooperative is an option of the policy Diplomatic Stance.",
+    "jp": "「協力的」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_culture_shock",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Choque cultural estelar»?",
+    "en": "Which policy does the option Stellar Culture Shock belong to?",
+    "jp": "選択肢「星間カルチャーショック」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Interferencia pre-UL",
+     "Disuasión nómada",
+     "Comportamiento de guerra total",
+     "Postura diplomática"
+    ],
+    "en": [
+     "Pre-FTL Interference",
+     "Nomad Deterrence",
+     "Total War Behavior",
+     "Diplomatic Stance"
+    ],
+    "jp": [
+     "前FTL文明への干渉",
+     "放浪帝国の処遇",
+     "総力戦の行動",
+     "外交スタンス"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Choque cultural estelar» es una opción de la política «Postura diplomática».",
+    "en": "Stellar Culture Shock is an option of the policy Diplomatic Stance.",
+    "jp": "「星間カルチャーショック」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_eager",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Impaciente»?",
+    "en": "Which policy does the option Eager belong to?",
+    "jp": "選択肢「熱心」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Postura diplomática",
+     "Condiciones de guerra de sometimiento",
+     "Estado inicial de las fronteras",
+     "Ilustración de pre-UL"
+    ],
+    "en": [
+     "Diplomatic Stance",
+     "Subjugation War Terms",
+     "Initial Border Status",
+     "Pre-FTL Enlightenment"
+    ],
+    "jp": [
+     "外交スタンス",
+     "従属化戦争条件",
+     "国境の初期状態",
+     "前FTL文明への啓蒙"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Impaciente» es una opción de la política «Postura diplomática».",
+    "en": "Eager is an option of the policy Diplomatic Stance.",
+    "jp": "「熱心」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_fearful",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Temor»?",
+    "en": "Which policy does the option Fearful belong to?",
+    "jp": "選択肢「恐怖」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Interferencia pre-UL",
+     "Postura diplomática",
+     "Ilustración de pre-UL"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Pre-FTL Interference",
+     "Diplomatic Stance",
+     "Pre-FTL Enlightenment"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "前FTL文明への干渉",
+     "外交スタンス",
+     "前FTL文明への啓蒙"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Temor» es una opción de la política «Postura diplomática».",
+    "en": "Fearful is an option of the policy Diplomatic Stance.",
+    "jp": "「恐怖」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_ignorant",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Inconsciente»?",
+    "en": "Which policy does the option Ignorant belong to?",
+    "jp": "選択肢「無知」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Interferencia pre-UL",
+     "Postura diplomática",
+     "Condiciones de guerra de sometimiento",
+     "Disuasión nómada"
+    ],
+    "en": [
+     "Pre-FTL Interference",
+     "Diplomatic Stance",
+     "Subjugation War Terms",
+     "Nomad Deterrence"
+    ],
+    "jp": [
+     "前FTL文明への干渉",
+     "外交スタンス",
+     "従属化戦争条件",
+     "放浪帝国の処遇"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Inconsciente» es una opción de la política «Postura diplomática».",
+    "en": "Ignorant is an option of the policy Diplomatic Stance.",
+    "jp": "「無知」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_isolationist_fallen_empire",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Latente»?",
+    "en": "Which policy does the option Dormant belong to?",
+    "jp": "選択肢「休眠」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Interferencia pre-UL",
+     "Postura diplomática",
+     "Estado inicial de las fronteras",
+     "Condiciones de guerra de sometimiento"
+    ],
+    "en": [
+     "Pre-FTL Interference",
+     "Diplomatic Stance",
+     "Initial Border Status",
+     "Subjugation War Terms"
+    ],
+    "jp": [
+     "前FTL文明への干渉",
+     "外交スタンス",
+     "国境の初期状態",
+     "従属化戦争条件"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Latente» es una opción de la política «Postura diplomática».",
+    "en": "Dormant is an option of the policy Diplomatic Stance.",
+    "jp": "「休眠」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_questioning",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Preguntas»?",
+    "en": "Which policy does the option Questioning belong to?",
+    "jp": "選択肢「好奇心」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Política de fronteras nómadas",
+     "Postura diplomática",
+     "Disuasión nómada",
+     "Interferencia pre-UL"
+    ],
+    "en": [
+     "Nomad Border Policy",
+     "Diplomatic Stance",
+     "Nomad Deterrence",
+     "Pre-FTL Interference"
+    ],
+    "jp": [
+     "放浪民に関する国境政策",
+     "外交スタンス",
+     "放浪帝国の処遇",
+     "前FTL文明への干渉"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Preguntas» es una opción de la política «Postura diplomática».",
+    "en": "Questioning is an option of the policy Diplomatic Stance.",
+    "jp": "「好奇心」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.diplomatic_stance.diplo_stance_uncertain",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Vacilante»?",
+    "en": "Which policy does the option Uncertain belong to?",
+    "jp": "選択肢「迷い」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Postura diplomática",
+     "Estado inicial de las fronteras",
+     "Ilustración de pre-UL",
+     "Política de fronteras nómadas"
+    ],
+    "en": [
+     "Diplomatic Stance",
+     "Initial Border Status",
+     "Pre-FTL Enlightenment",
+     "Nomad Border Policy"
+    ],
+    "jp": [
+     "外交スタンス",
+     "国境の初期状態",
+     "前FTL文明への啓蒙",
+     "放浪民に関する国境政策"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Vacilante» es una opción de la política «Postura diplomática».",
+    "en": "Uncertain is an option of the policy Diplomatic Stance.",
+    "jp": "「迷い」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.disconnected_drones.disconnected_drones_sustain",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "BioGenesis"
+   ],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "disconnected_drones"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Apoyo»?",
+    "en": "Which policy does the option Sustain belong to?",
+    "jp": "選択肢「維持」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Confección genómica",
+     "Drones desconectados",
+     "Inteligencia artificial",
+     "Estándares de ciberización"
+    ],
+    "en": [
+     "Genome Tailoring",
+     "Disconnected Drones",
+     "Artificial Intelligence",
+     "Cyberization Standards"
+    ],
+    "jp": [
+     "ゲノム改変",
+     "切り離されたドローン",
+     "人工知能",
+     "サイバー化規格"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Apoyo» es una opción de la política «Drones desconectados».",
+    "en": "Sustain is an option of the policy Disconnected Drones.",
+    "jp": "「維持」は政策「切り離されたドローン」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.engineering_research_policy.research_policy_voidcraft",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "engineering_research_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Arte del vacío»?",
+    "en": "Which policy does the option Voidcraft belong to?",
+    "jp": "選択肢「宇宙工学」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Incautación de tierras",
+     "Meta en investigación De ingeniería",
+     "Preferencias armamentísticas (Arcas)",
+     "Restos"
+    ],
+    "en": [
+     "Land Appropriation",
+     "Engineering Research Focus",
+     "Weapon Preferences (Arkships)",
+     "Debris"
+    ],
+    "jp": [
+     "土地の収用",
+     "工学研究優先",
+     "兵器の優先方針 (箱舟)",
+     "デブリ"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Arte del vacío» es una opción de la política «Meta en investigación De ingeniería».",
+    "en": "Voidcraft is an option of the policy Engineering Research Focus.",
+    "jp": "「宇宙工学」は政策「工学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.first_contact_protocol.first_contact_attack_allowed",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "first_contact_protocol"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Agresivo»?",
+    "en": "Which policy does the option Aggressive belong to?",
+    "jp": "選択肢「攻撃的」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Condiciones de guerra de sometimiento",
+     "Estado inicial de las fronteras",
+     "Comportamiento de guerra total"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Subjugation War Terms",
+     "Initial Border Status",
+     "Total War Behavior"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "従属化戦争条件",
+     "国境の初期状態",
+     "総力戦の行動"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Agresivo» es una opción de la política «Protocolo de primer contacto».",
+    "en": "Aggressive is an option of the policy First Contact Protocol.",
+    "jp": "「攻撃的」は政策「ファーストコンタクト・プロトコル」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.first_contact_protocol.first_contact_cautious",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "first_contact_protocol"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Cauto»?",
+    "en": "Which policy does the option Cautious belong to?",
+    "jp": "選択肢「慎重」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Condiciones de guerra de sometimiento",
+     "Protocolo de primer contacto",
+     "Política de fronteras nómadas",
+     "Estado inicial de las fronteras"
+    ],
+    "en": [
+     "Subjugation War Terms",
+     "First Contact Protocol",
+     "Nomad Border Policy",
+     "Initial Border Status"
+    ],
+    "jp": [
+     "従属化戦争条件",
+     "ファーストコンタクト・プロトコル",
+     "放浪民に関する国境政策",
+     "国境の初期状態"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Cauto» es una opción de la política «Protocolo de primer contacto».",
+    "en": "Cautious is an option of the policy First Contact Protocol.",
+    "jp": "「慎重」は政策「ファーストコンタクト・プロトコル」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_border_policy.nomad_border_policy_open",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_border_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Legalizados»?",
+    "en": "Which policy does the option Legalized belong to?",
+    "jp": "選択肢「合法化」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Postura diplomática",
+     "Disuasión nómada",
+     "Condiciones de guerra de sometimiento",
+     "Política de fronteras nómadas"
+    ],
+    "en": [
+     "Diplomatic Stance",
+     "Nomad Deterrence",
+     "Subjugation War Terms",
+     "Nomad Border Policy"
+    ],
+    "jp": [
+     "外交スタンス",
+     "放浪帝国の処遇",
+     "従属化戦争条件",
+     "放浪民に関する国境政策"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Legalizados» es una opción de la política «Política de fronteras nómadas».",
+    "en": "Legalized is an option of the policy Nomad Border Policy.",
+    "jp": "「合法化」は政策「放浪民に関する国境政策」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_deterrence.nomad_deterrence_purge_pops",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_deterrence"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Ejecutar a la población»?",
+    "en": "Which policy does the option Execute Population belong to?",
+    "jp": "選択肢「住民を処刑」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Disuasión nómada",
+     "Ilustración de pre-UL",
+     "Postura diplomática"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Nomad Deterrence",
+     "Pre-FTL Enlightenment",
+     "Diplomatic Stance"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "放浪帝国の処遇",
+     "前FTL文明への啓蒙",
+     "外交スタンス"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Ejecutar a la población» es una opción de la política «Disuasión nómada».",
+    "en": "Execute Population is an option of the policy Nomad Deterrence.",
+    "jp": "「住民を処刑」は政策「放浪帝国の処遇」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_deterrence.nomad_deterrence_strip_districts",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_deterrence"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Desguazar»?",
+    "en": "Which policy does the option Strip For Parts belong to?",
+    "jp": "選択肢「解体して部品回収」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Disuasión nómada",
+     "Estado inicial de las fronteras",
+     "Política de fronteras nómadas"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Nomad Deterrence",
+     "Initial Border Status",
+     "Nomad Border Policy"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "放浪帝国の処遇",
+     "国境の初期状態",
+     "放浪民に関する国境政策"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Desguazar» es una opción de la política «Disuasión nómada».",
+    "en": "Strip For Parts is an option of the policy Nomad Deterrence.",
+    "jp": "「解体して部品回収」は政策「放浪帝国の処遇」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_total_war.nomad_total_war_displace",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "nomad_total_war"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Desplazar»?",
+    "en": "Which policy does the option Displace belong to?",
+    "jp": "選択肢「強制退去」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Condiciones de guerra de sometimiento",
+     "Comportamiento de guerra total",
+     "Ilustración de pre-UL",
+     "Interferencia pre-UL"
+    ],
+    "en": [
+     "Subjugation War Terms",
+     "Total War Behavior",
+     "Pre-FTL Enlightenment",
+     "Pre-FTL Interference"
+    ],
+    "jp": [
+     "従属化戦争条件",
+     "総力戦の行動",
+     "前FTL文明への啓蒙",
+     "前FTL文明への干渉"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Desplazar» es una opción de la política «Comportamiento de guerra total».",
+    "en": "Displace is an option of the policy Total War Behavior.",
+    "jp": "「強制退去」は政策「総力戦の行動」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_total_war.nomad_total_war_purge",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "nomad_total_war"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Purgar»?",
+    "en": "Which policy does the option Purge belong to?",
+    "jp": "選択肢「浄化」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Interferencia pre-UL",
+     "Comportamiento de guerra total",
+     "Estado inicial de las fronteras"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Pre-FTL Interference",
+     "Total War Behavior",
+     "Initial Border Status"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "前FTL文明への干渉",
+     "総力戦の行動",
+     "国境の初期状態"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Purgar» es una opción de la política «Comportamiento de guerra total».",
+    "en": "Purge is an option of the policy Total War Behavior.",
+    "jp": "「浄化」は政策「総力戦の行動」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.nomad_total_war.nomad_total_war_subject",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "nomad_total_war"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Sojuzgar»?",
+    "en": "Which policy does the option Subjugate belong to?",
+    "jp": "選択肢「従属国化」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Comportamiento de guerra total",
+     "Política de fronteras nómadas",
+     "Ilustración de pre-UL"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Total War Behavior",
+     "Nomad Border Policy",
+     "Pre-FTL Enlightenment"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "総力戦の行動",
+     "放浪民に関する国境政策",
+     "前FTL文明への啓蒙"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Sojuzgar» es una opción de la política «Comportamiento de guerra total».",
+    "en": "Subjugate is an option of the policy Total War Behavior.",
+    "jp": "「従属国化」は政策「総力戦の行動」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.physics_research_policy.research_policy_field_manipulation",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "physics_research_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Manipulación de campos»?",
+    "en": "Which policy does the option Field Manipulation belong to?",
+    "jp": "選択肢「力場操作」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Inteligencia artificial",
+     "Meta en investigación De ingeniería",
+     "Preferencias armamentísticas (Arcas)",
+     "Meta en investigación De física"
+    ],
+    "en": [
+     "Artificial Intelligence",
+     "Engineering Research Focus",
+     "Weapon Preferences (Arkships)",
+     "Physics Research Focus"
+    ],
+    "jp": [
+     "人工知能",
+     "工学研究優先",
+     "兵器の優先方針 (箱舟)",
+     "物理学研究優先"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Manipulación de campos» es una opción de la política «Meta en investigación De física».",
+    "en": "Field Manipulation is an option of the policy Physics Research Focus.",
+    "jp": "「力場操作」は政策「物理学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.relentless_industrialists_policy.relentless_industrialists_cleanup",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "relentless_industrialists_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Limpieza»?",
+    "en": "Which policy does the option Cleanup belong to?",
+    "jp": "選択肢「汚染除去」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Industrialismo",
+     "Incautación de tierras",
+     "Política económica",
+     "Estado inicial de las fronteras"
+    ],
+    "en": [
+     "Industrialism",
+     "Land Appropriation",
+     "Economic Policy",
+     "Initial Border Status"
+    ],
+    "jp": [
+     "工業主義",
+     "土地の収用",
+     "経済政策",
+     "国境の初期状態"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Limpieza» es una opción de la política «Industrialismo».",
+    "en": "Cleanup is an option of the policy Industrialism.",
+    "jp": "「汚染除去」は政策「工業主義」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.relentless_industrialists_policy.relentless_industrialists_full_steam_ahead",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "relentless_industrialists_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «A toda máquina»?",
+    "en": "Which policy does the option Full Steam Ahead belong to?",
+    "jp": "選択肢「全速前進」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Industrialismo",
+     "Inteligencia artificial",
+     "Estado inicial de las fronteras",
+     "Prioridad de núcleos computacionales"
+    ],
+    "en": [
+     "Industrialism",
+     "Artificial Intelligence",
+     "Initial Border Status",
+     "Computation Core Focus"
+    ],
+    "jp": [
+     "工業主義",
+     "人工知能",
+     "国境の初期状態",
+     "演算コアへの注力"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«A toda máquina» es una opción de la política «Industrialismo».",
+    "en": "Full Steam Ahead is an option of the policy Industrialism.",
+    "jp": "「全速前進」は政策「工業主義」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.society_research_policy.research_policy_biology",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "society_research_policy"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Biología»?",
+    "en": "Which policy does the option Biology belong to?",
+    "jp": "選択肢「生物学」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Preferencias armamentísticas (Arcas)",
+     "Restricciones de investigación",
+     "Enfoque de exposición",
+     "Meta en investigación de sociedad"
+    ],
+    "en": [
+     "Weapon Preferences (Arkships)",
+     "Research Restrictions",
+     "Exhibition Focus",
+     "Society Research Focus"
+    ],
+    "jp": [
+     "兵器の優先方針 (箱舟)",
+     "研究の制限",
+     "展示優先",
+     "社会学研究優先"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Biología» es una opción de la política «Meta en investigación de sociedad».",
+    "en": "Biology is an option of the policy Society Research Focus.",
+    "jp": "「生物学」は政策「社会学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.space_fauna_growth.excessive_space_fauna_growth",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/02_policies_grand_archive.txt",
+    "key": "space_fauna_growth"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Excesivo»?",
+    "en": "Which policy does the option Excessive belong to?",
+    "jp": "選択肢「過剰」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Desarrollo de huevo",
+     "Regulación metabólica",
+     "Aceptación de rendición orbital",
+     "Crecimiento de la fauna espacial"
+    ],
+    "en": [
+     "Egg Development",
+     "Metabolic Regulation",
+     "Orbital Surrender Acceptance",
+     "Space Fauna Growth"
+    ],
+    "jp": [
+     "卵の成長",
+     "代謝管理",
+     "軌道上降伏の承認",
+     "宇宙動物の成長"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Excesivo» es una opción de la política «Crecimiento de la fauna espacial».",
+    "en": "Excessive is an option of the policy Space Fauna Growth.",
+    "jp": "「過剰」は政策「宇宙動物の成長」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.subjugation_war_terms.benevolent_corporate_terms",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "subjugation_war_terms"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Sinergia negociada»?",
+    "en": "Which policy does the option Negotiated Synergy belong to?",
+    "jp": "選択肢「交渉シナジー」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Condiciones de guerra de sometimiento",
+     "Estado inicial de las fronteras",
+     "Política de fronteras nómadas",
+     "Interferencia pre-UL"
+    ],
+    "en": [
+     "Subjugation War Terms",
+     "Initial Border Status",
+     "Nomad Border Policy",
+     "Pre-FTL Interference"
+    ],
+    "jp": [
+     "従属化戦争条件",
+     "国境の初期状態",
+     "放浪民に関する国境政策",
+     "前FTL文明への干渉"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Sinergia negociada» es una opción de la política «Condiciones de guerra de sometimiento».",
+    "en": "Negotiated Synergy is an option of the policy Subjugation War Terms.",
+    "jp": "「交渉シナジー」は政策「従属化戦争条件」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.subjugation_war_terms.benevolent_terms",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "subjugation_war_terms"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Vasallaje benévolo»?",
+    "en": "Which policy does the option Benevolent Vassalage belong to?",
+    "jp": "選択肢「良心的な主従関係」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Protocolo de primer contacto",
+     "Condiciones de guerra de sometimiento",
+     "Estado inicial de las fronteras",
+     "Política de fronteras nómadas"
+    ],
+    "en": [
+     "First Contact Protocol",
+     "Subjugation War Terms",
+     "Initial Border Status",
+     "Nomad Border Policy"
+    ],
+    "jp": [
+     "ファーストコンタクト・プロトコル",
+     "従属化戦争条件",
+     "国境の初期状態",
+     "放浪民に関する国境政策"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Vasallaje benévolo» es una opción de la política «Condiciones de guerra de sometimiento».",
+    "en": "Benevolent Vassalage is an option of the policy Subjugation War Terms.",
+    "jp": "「良心的な主従関係」は政策「従属化戦争条件」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.subjugation_war_terms.oppressive_corporate_terms",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "subjugation_war_terms"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Toma hostil»?",
+    "en": "Which policy does the option Hostile Takeover belong to?",
+    "jp": "選択肢「敵対的買収」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Condiciones de guerra de sometimiento",
+     "Política de fronteras nómadas",
+     "Estado inicial de las fronteras",
+     "Ilustración de pre-UL"
+    ],
+    "en": [
+     "Subjugation War Terms",
+     "Nomad Border Policy",
+     "Initial Border Status",
+     "Pre-FTL Enlightenment"
+    ],
+    "jp": [
+     "従属化戦争条件",
+     "放浪民に関する国境政策",
+     "国境の初期状態",
+     "前FTL文明への啓蒙"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Toma hostil» es una opción de la política «Condiciones de guerra de sometimiento».",
+    "en": "Hostile Takeover is an option of the policy Subjugation War Terms.",
+    "jp": "「敵対的買収」は政策「従属化戦争条件」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.war_doctrine.final_price_doctrine",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_doctrine"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «El precio final»?",
+    "en": "Which policy does the option Final Price belong to?",
+    "jp": "選択肢「究極の代償」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Bombardeo orbital",
+     "Regulación metabólica",
+     "Doctrina de flota",
+     "Doctrina de guerra"
+    ],
+    "en": [
+     "Orbital Bombardment",
+     "Metabolic Regulation",
+     "Fleet Doctrine",
+     "War Doctrine"
+    ],
+    "jp": [
+     "軌道爆撃",
+     "代謝管理",
+     "艦隊ドクトリン",
+     "戦争ドクトリン"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«El precio final» es una opción de la política «Doctrina de guerra».",
+    "en": "Final Price is an option of the policy War Doctrine.",
+    "jp": "「究極の代償」は政策「戦争ドクトリン」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.war_doctrine.rapid_deployment_doctrine",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_doctrine"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Despliegue rápido»?",
+    "en": "Which policy does the option Rapid Deployment belong to?",
+    "jp": "選択肢「早期展開」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Aceptación de rendición orbital",
+     "Regulación metabólica",
+     "Doctrina de guerra",
+     "Protocolos de plataforma de defensa"
+    ],
+    "en": [
+     "Orbital Surrender Acceptance",
+     "Metabolic Regulation",
+     "War Doctrine",
+     "Defense Platform Protocols"
+    ],
+    "jp": [
+     "軌道上降伏の承認",
+     "代謝管理",
+     "戦争ドクトリン",
+     "防衛プラットフォームプロトコル"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Despliegue rápido» es una opción de la política «Doctrina de guerra».",
+    "en": "Rapid Deployment is an option of the policy War Doctrine.",
+    "jp": "「早期展開」は政策「戦争ドクトリン」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.option_policy.war_doctrine.rip_and_tear",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "war_doctrine"
+   },
+   "text": {
+    "es": "¿A qué política pertenece la opción «Rasgar y romper»?",
+    "en": "Which policy does the option Rip and Tear belong to?",
+    "jp": "選択肢「切り裂け」はどの政策のもの？"
+   },
+   "answers": {
+    "es": [
+     "Doctrina de guerra",
+     "Aceptación de rendición orbital",
+     "Preferencias armamentísticas (Arcas)",
+     "Desarrollo de huevo"
+    ],
+    "en": [
+     "War Doctrine",
+     "Orbital Surrender Acceptance",
+     "Weapon Preferences (Arkships)",
+     "Egg Development"
+    ],
+    "jp": [
+     "戦争ドクトリン",
+     "軌道上降伏の承認",
+     "兵器の優先方針 (箱舟)",
+     "卵の成長"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Rasgar y romper» es una opción de la política «Doctrina de guerra».",
+    "en": "Rip and Tear is an option of the policy War Doctrine.",
+    "jp": "「切り裂け」は政策「戦争ドクトリン」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.border_policy.border_policy_closed",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "border_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Estado inicial de las fronteras»?",
+    "en": "Which of these is an option of the policy Initial Border Status?",
+    "jp": "政策「国境の初期状態」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Coincidir con la flota",
+     "Desarrollo de Macero",
+     "Cerradas",
+     "Armas cinéticas"
+    ],
+    "en": [
+     "Match Fleet",
+     "Mauler Development",
+     "Closed",
+     "Kinetic Weapons"
+    ],
+    "jp": [
+     "艦隊に合わせる",
+     "モーラーの成長",
+     "閉鎖",
+     "実体弾兵器"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Cerradas» es una opción de la política «Estado inicial de las fronteras».",
+    "en": "Closed is an option of the policy Initial Border Status.",
+    "jp": "「閉鎖」は政策「国境の初期状態」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.defense_platform_protocols.defense_platform_reinforced_plating",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/06_policies_fleets_and_starbases.txt",
+    "key": "defense_platform_protocols"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Protocolos de plataforma de defensa»?",
+    "en": "Which of these is an option of the policy Defense Platform Protocols?",
+    "jp": "政策「防衛プラットフォームプロトコル」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Defensas equilibradas",
+     "Hambre",
+     "Blindaje reforzado",
+     "Ciberización limitada"
+    ],
+    "en": [
+     "Balanced Defenses",
+     "Hunger",
+     "Reinforced Plating",
+     "Limited Cyberization"
+    ],
+    "jp": [
+     "バランス型防衛",
+     "飢え",
+     "強化装甲",
+     "限定的サイバー化"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Blindaje reforzado» es una opción de la política «Protocolos de plataforma de defensa».",
+    "en": "Reinforced Plating is an option of the policy Defense Platform Protocols.",
+    "jp": "「強化装甲」は政策「防衛プラットフォームプロトコル」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.defense_preference.armor_preference",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/06_policies_fleets_and_starbases.txt",
+    "key": "defense_preference"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Preferencias de defensa (flotas)»?",
+    "en": "Which of these is an option of the policy Defense Preferences (Fleets)?",
+    "jp": "政策「防衛の優先方針 (艦隊)」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Investigar y desguazar restos",
+     "Vacilante",
+     "Blindaje prioritario",
+     "Inconsciente"
+    ],
+    "en": [
+     "Research & Scavenge Debris",
+     "Uncertain",
+     "Armor Priority",
+     "Ignorant"
+    ],
+    "jp": [
+     "デブリを回収／調査",
+     "迷い",
+     "装甲優先",
+     "無知"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Blindaje prioritario» es una opción de la política «Preferencias de defensa (flotas)».",
+    "en": "Armor Priority is an option of the policy Defense Preferences (Fleets).",
+    "jp": "「装甲優先」は政策「防衛の優先方針 (艦隊)」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_animosity_nomad",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Antagónico",
+     "Producción agilizada",
+     "Desarrollo híbrido",
+     "Derechos civiles"
+    ],
+    "en": [
+     "Antagonistic",
+     "Production Streamlining",
+     "Mixed Development",
+     "Citizen Rights"
+    ],
+    "jp": [
+     "対立主義",
+     "生産の効率化",
+     "混合成長",
+     "市民権"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Antagónico» es una opción de la política «Postura diplomática».",
+    "en": "Antagonistic is an option of the policy Diplomatic Stance.",
+    "jp": "「対立主義」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_cooperative",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Cooperativa",
+     "Ciberización limitada",
+     "Enfoque de Historia galáctica",
+     "Cauto"
+    ],
+    "en": [
+     "Cooperative",
+     "Limited Cyberization",
+     "Galactic History Focus",
+     "Cautious"
+    ],
+    "jp": [
+     "協力的",
+     "限定的サイバー化",
+     "銀河の歴史優先",
+     "慎重"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Cooperativa» es una opción de la política «Postura diplomática».",
+    "en": "Cooperative is an option of the policy Diplomatic Stance.",
+    "jp": "「協力的」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_culture_shock",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Permitido",
+     "Doctrina de falange",
+     "Producción agilizada",
+     "Choque cultural estelar"
+    ],
+    "en": [
+     "Allowed",
+     "Phalanx Doctrine",
+     "Production Streamlining",
+     "Stellar Culture Shock"
+    ],
+    "jp": [
+     "許可",
+     "ファランクスドクトリン",
+     "生産の効率化",
+     "星間カルチャーショック"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Choque cultural estelar» es una opción de la política «Postura diplomática».",
+    "en": "Stellar Culture Shock is an option of the policy Diplomatic Stance.",
+    "jp": "「星間カルチャーショック」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_eager",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Impaciente",
+     "Defensas equilibradas",
+     "Ciberización plena",
+     "Ciberización limitada"
+    ],
+    "en": [
+     "Eager",
+     "Balanced Defenses",
+     "Full Cyberization",
+     "Limited Cyberization"
+    ],
+    "jp": [
+     "熱心",
+     "バランス型防衛",
+     "完全サイバー化",
+     "限定的サイバー化"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Impaciente» es una opción de la política «Postura diplomática».",
+    "en": "Eager is an option of the policy Diplomatic Stance.",
+    "jp": "「熱心」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_fearful",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Ciberización plena",
+     "Desarrollo híbrido",
+     "Temor",
+     "Investigar restos"
+    ],
+    "en": [
+     "Full Cyberization",
+     "Mixed Development",
+     "Fearful",
+     "Research Debris"
+    ],
+    "jp": [
+     "完全サイバー化",
+     "混合成長",
+     "恐怖",
+     "デブリを調査"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Temor» es una opción de la política «Postura diplomática».",
+    "en": "Fearful is an option of the policy Diplomatic Stance.",
+    "jp": "「恐怖」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_hunger",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Hambre",
+     "Doctrina de línea de batalla",
+     "Economía mixta",
+     "Desarrollo híbrido"
+    ],
+    "en": [
+     "Hunger",
+     "Battle Line Doctrine",
+     "Mixed Economy",
+     "Mixed Development"
+    ],
+    "jp": [
+     "飢え",
+     "戦列ドクトリン",
+     "混合経済",
+     "混合成長"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Hambre» es una opción de la política «Postura diplomática».",
+    "en": "Hunger is an option of the policy Diplomatic Stance.",
+    "jp": "「飢え」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_ignorant",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Análisis de estabilidad",
+     "Economía mixta",
+     "Inconsciente",
+     "Doctrina de falange"
+    ],
+    "en": [
+     "Stability Analysis",
+     "Mixed Economy",
+     "Ignorant",
+     "Phalanx Doctrine"
+    ],
+    "jp": [
+     "安定性分析",
+     "混合経済",
+     "無知",
+     "ファランクスドクトリン"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Inconsciente» es una opción de la política «Postura diplomática».",
+    "en": "Ignorant is an option of the policy Diplomatic Stance.",
+    "jp": "「無知」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_isolationist_fallen_empire",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Latente",
+     "Ciberización limitada",
+     "Cauto",
+     "Agresivo"
+    ],
+    "en": [
+     "Dormant",
+     "Limited Cyberization",
+     "Cautious",
+     "Aggressive"
+    ],
+    "jp": [
+     "休眠",
+     "限定的サイバー化",
+     "慎重",
+     "攻撃的"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Latente» es una opción de la política «Postura diplomática».",
+    "en": "Dormant is an option of the policy Diplomatic Stance.",
+    "jp": "「休眠」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_questioning",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Defensas equilibradas",
+     "Solo de forma encubierta",
+     "Preguntas",
+     "Desarrollo híbrido"
+    ],
+    "en": [
+     "Balanced Defenses",
+     "Covert Only",
+     "Questioning",
+     "Mixed Development"
+    ],
+    "jp": [
+     "バランス型防衛",
+     "水面下限定",
+     "好奇心",
+     "混合成長"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Preguntas» es una opción de la política «Postura diplomática».",
+    "en": "Questioning is an option of the policy Diplomatic Stance.",
+    "jp": "「好奇心」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.diplomatic_stance.diplo_stance_uncertain",
+   "tier": 4,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "diplomatic_stance"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Postura diplomática»?",
+    "en": "Which of these is an option of the policy Diplomatic Stance?",
+    "jp": "政策「外交スタンス」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Vacilante",
+     "Desarrollo de Heraldo",
+     "Escudo sincronizado",
+     "Armazones resistentes"
+    ],
+    "en": [
+     "Uncertain",
+     "Harbinger Development",
+     "Synchronized Shielding",
+     "Resilient Frames"
+    ],
+    "jp": [
+     "迷い",
+     "ハーヴィンジャーの成長",
+     "同期シールド",
+     "高耐久フレーム"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Vacilante» es una opción de la política «Postura diplomática».",
+    "en": "Uncertain is an option of the policy Diplomatic Stance.",
+    "jp": "「迷い」は政策「外交スタンス」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.homogenous_class.homogenous_class_scientists",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/03_policies_biogenesis.txt",
+    "key": "homogenous_class"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Confección genómica»?",
+    "en": "Which of these is an option of the policy Genome Tailoring?",
+    "jp": "政策「ゲノム改変」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Desarrollo de Macero",
+     "Antagónico",
+     "Códice científico",
+     "Armas cinéticas"
+    ],
+    "en": [
+     "Mauler Development",
+     "Antagonistic",
+     "Scientific Codex",
+     "Kinetic Weapons"
+    ],
+    "jp": [
+     "モーラーの成長",
+     "対立主義",
+     "科学的規定",
+     "実体弾兵器"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Códice científico» es una opción de la política «Confección genómica».",
+    "en": "Scientific Codex is an option of the policy Genome Tailoring.",
+    "jp": "「科学的規定」は政策「ゲノム改変」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.leader_enhancement.leader_enhancement_capacity_boosters",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "leader_enhancement"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Mejora de líderes»?",
+    "en": "Which of these is an option of the policy Leader Enhancement?",
+    "jp": "政策「リーダーの強化」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Supremacista",
+     "Expansionista",
+     "Investigar restos",
+     "Potenciadores de capacidad"
+    ],
+    "en": [
+     "Supremacist",
+     "Expansionist",
+     "Research Debris",
+     "Capacity Boosters"
+    ],
+    "jp": [
+     "至上主義者",
+     "拡張主義者",
+     "デブリを調査",
+     "能力増強"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Potenciadores de capacidad» es una opción de la política «Mejora de líderes».",
+    "en": "Capacity Boosters is an option of the policy Leader Enhancement.",
+    "jp": "「能力増強」は政策「リーダーの強化」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.nomad_border_policy.nomad_border_policy_open",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_border_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Política de fronteras nómadas»?",
+    "en": "Which of these is an option of the policy Nomad Border Policy?",
+    "jp": "政策「放浪民に関する国境政策」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Escudo sincronizado",
+     "Desarrollo de Aguijón",
+     "Aislacionista",
+     "Legalizados"
+    ],
+    "en": [
+     "Synchronized Shielding",
+     "Stinger Development",
+     "Isolationist",
+     "Legalized"
+    ],
+    "jp": [
+     "同期シールド",
+     "スティンガーの成長",
+     "孤立主義者",
+     "合法化"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Legalizados» es una opción de la política «Política de fronteras nómadas».",
+    "en": "Legalized is an option of the policy Nomad Border Policy.",
+    "jp": "「合法化」は政策「放浪民に関する国境政策」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.nomad_deterrence.nomad_deterrence_purge_pops",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Nomads"
+   ],
+   "source": {
+    "file": "common/policies/05_policies_nomads.txt",
+    "key": "nomad_deterrence"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Disuasión nómada»?",
+    "en": "Which of these is an option of the policy Nomad Deterrence?",
+    "jp": "政策「放浪帝国の処遇」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Exterminio",
+     "Cooperativa",
+     "Ciberización limitada",
+     "Ejecutar a la población"
+    ],
+    "en": [
+     "Extermination",
+     "Cooperative",
+     "Limited Cyberization",
+     "Execute Population"
+    ],
+    "jp": [
+     "駆除",
+     "協力的",
+     "限定的サイバー化",
+     "住民を処刑"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Ejecutar a la población» es una opción de la política «Disuasión nómada».",
+    "en": "Execute Population is an option of the policy Nomad Deterrence.",
+    "jp": "「住民を処刑」は政策「放浪帝国の処遇」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.orbital_bombardment.orbital_bombardment_devastation",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "orbital_bombardment"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Bombardeo orbital»?",
+    "en": "Which of these is an option of the policy Orbital Bombardment?",
+    "jp": "政策「軌道爆撃」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Servidumbre",
+     "Prohibida",
+     "Devastación",
+     "Investigar y desguazar restos"
+    ],
+    "en": [
+     "Servitude",
+     "Outlawed",
+     "Devastation",
+     "Research & Scavenge Debris"
+    ],
+    "jp": [
+     "隷属",
+     "非合法",
+     "破壊",
+     "デブリを回収／調査"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Devastación» es una opción de la política «Bombardeo orbital».",
+    "en": "Devastation is an option of the policy Orbital Bombardment.",
+    "jp": "「破壊」は政策「軌道爆撃」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.orbital_bombardment.orbital_bombardment_selective",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "orbital_bombardment"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Bombardeo orbital»?",
+    "en": "Which of these is an option of the policy Orbital Bombardment?",
+    "jp": "政策「軌道爆撃」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Beligerante",
+     "Supremacista",
+     "Defensas equilibradas",
+     "Selectivo"
+    ],
+    "en": [
+     "Belligerent",
+     "Supremacist",
+     "Balanced Defenses",
+     "Selective"
+    ],
+    "jp": [
+     "好戦的",
+     "至上主義者",
+     "バランス型防衛",
+     "精密"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Selectivo» es una opción de la política «Bombardeo orbital».",
+    "en": "Selective is an option of the policy Orbital Bombardment.",
+    "jp": "「精密」は政策「軌道爆撃」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.physics_research_policy.research_policy_particles",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "physics_research_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Meta en investigación De física»?",
+    "en": "Which of these is an option of the policy Physics Research Focus?",
+    "jp": "政策「物理学研究優先」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Antagónico",
+     "Partículas",
+     "Prohibida",
+     "Análisis de estabilidad"
+    ],
+    "en": [
+     "Antagonistic",
+     "Particles",
+     "Prohibited",
+     "Stability Analysis"
+    ],
+    "jp": [
+     "対立主義",
+     "素粒子物理学",
+     "禁止",
+     "安定性分析"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Partículas» es una opción de la política «Meta en investigación De física».",
+    "en": "Particles is an option of the policy Physics Research Focus.",
+    "jp": "「素粒子物理学」は政策「物理学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.population_controls.population_controls_not_allowed",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "population_controls"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Controles de población»?",
+    "en": "Which of these is an option of the policy Population Controls?",
+    "jp": "政策「人口統制」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Doctrina estándar",
+     "Coincidir con la flota",
+     "Prohibida",
+     "Prohibidos"
+    ],
+    "en": [
+     "Standard Doctrine",
+     "Match Fleet",
+     "Outlawed",
+     "Prohibited"
+    ],
+    "jp": [
+     "標準ドクトリン",
+     "艦隊に合わせる",
+     "非合法",
+     "禁止"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Prohibidos» es una opción de la política «Controles de población».",
+    "en": "Prohibited is an option of the policy Population Controls.",
+    "jp": "「禁止」は政策「人口統制」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.pre_sapients.pre_sapients_allow",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "pre_sapients"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Presintientes»?",
+    "en": "Which of these is an option of the policy Pre-Sapients?",
+    "jp": "政策「準知的生命体」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Armas de energía",
+     "Choque cultural estelar",
+     "Abiertas",
+     "Tolerados"
+    ],
+    "en": [
+     "Energy Weapons",
+     "Stellar Culture Shock",
+     "Open",
+     "Tolerated"
+    ],
+    "jp": [
+     "エネルギー兵器",
+     "星間カルチャーショック",
+     "開放",
+     "許容"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Tolerados» es una opción de la política «Presintientes».",
+    "en": "Tolerated is an option of the policy Pre-Sapients.",
+    "jp": "「許容」は政策「準知的生命体」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.pre_sapients.pre_sapients_purge",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "pre_sapients"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Presintientes»?",
+    "en": "Which of these is an option of the policy Pre-Sapients?",
+    "jp": "政策「準知的生命体」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Temor",
+     "Blindaje reforzado",
+     "Expansionista",
+     "Exterminio"
+    ],
+    "en": [
+     "Fearful",
+     "Reinforced Plating",
+     "Expansionist",
+     "Extermination"
+    ],
+    "jp": [
+     "恐怖",
+     "強化装甲",
+     "拡張主義者",
+     "駆除"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Exterminio» es una opción de la política «Presintientes».",
+    "en": "Extermination is an option of the policy Pre-Sapients.",
+    "jp": "「駆除」は政策「準知的生命体」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.psionic_choir.song_of_luxury",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "file": "common/policies/04_policies_shroud.txt",
+    "key": "psionic_choir"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Coro psiónico»?",
+    "en": "Which of these is an option of the policy Psionic Choir?",
+    "jp": "政策「サイオニック・クワイア」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Choque cultural estelar",
+     "Desarrollo híbrido",
+     "Canto al lujo",
+     "Armazones resistentes"
+    ],
+    "en": [
+     "Stellar Culture Shock",
+     "Mixed Development",
+     "Song of Luxury",
+     "Resilient Frames"
+    ],
+    "jp": [
+     "星間カルチャーショック",
+     "混合成長",
+     "富裕の歌",
+     "高耐久フレーム"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Canto al lujo» es una opción de la política «Coro psiónico».",
+    "en": "Song of Luxury is an option of the policy Psionic Choir.",
+    "jp": "「富裕の歌」は政策「サイオニック・クワイア」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.psionic_choir.song_of_plenty",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "source": {
+    "file": "common/policies/04_policies_shroud.txt",
+    "key": "psionic_choir"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Coro psiónico»?",
+    "en": "Which of these is an option of the policy Psionic Choir?",
+    "jp": "政策「サイオニック・クワイア」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Escudos prioritarios",
+     "Desarrollo híbrido",
+     "Devastadores",
+     "Canto a la abundancia"
+    ],
+    "en": [
+     "Shield Priority",
+     "Mixed Development",
+     "Devastators",
+     "Song of Plenty"
+    ],
+    "jp": [
+     "シールド優先",
+     "混合成長",
+     "破壊者",
+     "豊饒の歌"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Canto a la abundancia» es una opción de la política «Coro psiónico».",
+    "en": "Song of Plenty is an option of the policy Psionic Choir.",
+    "jp": "「豊饒の歌」は政策「サイオニック・クワイア」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.refugees.refugees_only_citizens",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "refugees"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Refugiados»?",
+    "en": "Which of these is an option of the policy Refugees?",
+    "jp": "政策「難民」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Solo especies con ciudadanía",
+     "Coincidir con la flota",
+     "Desarrollo de Heraldo",
+     "Escudo sincronizado"
+    ],
+    "en": [
+     "Citizen Species Only",
+     "Match Fleet",
+     "Harbinger Development",
+     "Synchronized Shielding"
+    ],
+    "jp": [
+     "市民権のある種族限定",
+     "艦隊に合わせる",
+     "ハーヴィンジャーの成長",
+     "同期シールド"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Solo especies con ciudadanía» es una opción de la política «Refugiados».",
+    "en": "Citizen Species Only is an option of the policy Refugees.",
+    "jp": "「市民権のある種族限定」は政策「難民」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.slavery.slavery_allowed",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "slavery"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Esclavitud»?",
+    "en": "Which of these is an option of the policy Slavery?",
+    "jp": "政策「奴隷制」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Supremacista",
+     "Permitido",
+     "Defensas equilibradas",
+     "Investigar restos"
+    ],
+    "en": [
+     "Supremacist",
+     "Allowed",
+     "Balanced Defenses",
+     "Research Debris"
+    ],
+    "jp": [
+     "至上主義者",
+     "許可",
+     "バランス型防衛",
+     "デブリを調査"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "«Permitido» es una opción de la política «Esclavitud».",
+    "en": "Allowed is an option of the policy Slavery.",
+    "jp": "「許可」は政策「奴隷制」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.society_research_policy.research_policy_no_focus",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "society_research_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Meta en investigación de sociedad»?",
+    "en": "Which of these is an option of the policy Society Research Focus?",
+    "jp": "政策「社会学研究優先」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Blindaje prioritario",
+     "Supremacista",
+     "Desarrollo de Macero",
+     "Estudios generales"
+    ],
+    "en": [
+     "Armor Priority",
+     "Supremacist",
+     "Mauler Development",
+     "General Studies"
+    ],
+    "jp": [
+     "装甲優先",
+     "至上主義者",
+     "モーラーの成長",
+     "一般研究"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Estudios generales» es una opción de la política «Meta en investigación de sociedad».",
+    "en": "General Studies is an option of the policy Society Research Focus.",
+    "jp": "「一般研究」は政策「社会学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.society_research_policy.research_policy_statecraft",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "society_research_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Meta en investigación de sociedad»?",
+    "en": "Which of these is an option of the policy Society Research Focus?",
+    "jp": "政策「社会学研究優先」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Estadismo",
+     "Beligerante",
+     "Purificación",
+     "Exterminio"
+    ],
+    "en": [
+     "Statecraft",
+     "Belligerent",
+     "Purification",
+     "Extermination"
+    ],
+    "jp": [
+     "統治学",
+     "好戦的",
+     "浄化",
+     "絶滅"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Estadismo» es una opción de la política «Meta en investigación de sociedad».",
+    "en": "Statecraft is an option of the policy Society Research Focus.",
+    "jp": "「統治学」は政策「社会学研究優先」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.trade_policy.trade_policy_consumer_goods",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "trade_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Política comercial»?",
+    "en": "Which of these is an option of the policy Trade Policy?",
+    "jp": "政策「交易政策」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Desguazar restos",
+     "Preguntas",
+     "Devastadores",
+     "Beneficios para el consumidor"
+    ],
+    "en": [
+     "Scavenge Debris",
+     "Questioning",
+     "Devastators",
+     "Consumer Benefits"
+    ],
+    "jp": [
+     "デブリを回収",
+     "好奇心",
+     "破壊者",
+     "消費者の利益"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "«Beneficios para el consumidor» es una opción de la política «Política comercial».",
+    "en": "Consumer Benefits is an option of the policy Trade Policy.",
+    "jp": "「消費者の利益」は政策「交易政策」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.trade_policy.trade_policy_holy_covenant",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/00_policies.txt",
+    "key": "trade_policy"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Política comercial»?",
+    "en": "Which of these is an option of the policy Trade Policy?",
+    "jp": "政策「交易政策」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Desguazar restos",
+     "Blindaje reforzado",
+     "Pacto sagrado",
+     "Procesos de investigación"
+    ],
+    "en": [
+     "Scavenge Debris",
+     "Reinforced Plating",
+     "Holy Covenant",
+     "Research Processes"
+    ],
+    "jp": [
+     "デブリを回収",
+     "強化装甲",
+     "聖なる盟約",
+     "研究プロセス"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "«Pacto sagrado» es una opción de la política «Política comercial».",
+    "en": "Holy Covenant is an option of the policy Trade Policy.",
+    "jp": "「聖なる盟約」は政策「交易政策」の選択肢です。"
+   }
+  },
+  {
+   "id": "policies.policy_option.waystation_defense_preference.waystation_armor_preference",
+   "tier": 2,
+   "topic": "policies",
+   "dlc": [],
+   "source": {
+    "file": "common/policies/06_policies_fleets_and_starbases.txt",
+    "key": "waystation_defense_preference"
+   },
+   "text": {
+    "es": "¿Cuál de estas es una opción de la política «Preferencias de defensa (Estaciones de paso)»?",
+    "en": "Which of these is an option of the policy Defense Preferences (Waystations)?",
+    "jp": "政策「防衛の優先方針 (中継所)」の選択肢はどれ？"
+   },
+   "answers": {
+    "es": [
+     "Blindaje prioritario",
+     "Servidumbre",
+     "Coincidir con la flota",
+     "Aislacionista"
+    ],
+    "en": [
+     "Armor Priority",
+     "Servitude",
+     "Match Fleet",
+     "Isolationist"
+    ],
+    "jp": [
+     "装甲優先",
+     "隷属",
+     "艦隊に合わせる",
+     "孤立主義者"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "«Blindaje prioritario» es una opción de la política «Preferencias de defensa (Estaciones de paso)».",
+    "en": "Armor Priority is an option of the policy Defense Preferences (Waystations).",
+    "jp": "「装甲優先」は政策「防衛の優先方針 (中継所)」の選択肢です。"
+   }
   },
   {
    "id": "technology.tech_cost.tech_advanced_metallurgy_2",

@@ -300,6 +300,7 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `economy.branch_office_criminal.building_disinformation_center`: "Which of these branch office buildings can only a criminal corporation build?" with the correct answer "Disinformation Center", in es, en and jp.
 - [ ] **T4107** (P41.7) Questions: policies, edicts, decisions, traditions, ascension perks and ambition (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
+  - ❓ Bloqueada: Policy, edict and ambition questions are done (`q_policies.py`), but traditions, ascension perks and decisions are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 - [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
 - [ ] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
