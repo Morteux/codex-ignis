@@ -21,6 +21,7 @@ export const strings = {
         bingoTypeEthics: "Éticas",
         bingoTypeAuthorities: "Autoridades",
         bingoTypeTechnologies: "Tecnologías raras y peligrosas",
+        bingoTypeDlc: "DLC",
         bingoTypeEmpty: "Este bingo todavía no tiene casillas. Vuelve pronto.",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "Marca los orígenes con los que ya has jugado una partida.",
@@ -28,6 +29,7 @@ export const strings = {
         bingoEthicsDescription: "Marca las éticas que ya has tenido en un imperio, sobre la rueda de éticas del juego.",
         bingoAuthoritiesDescription: "Marca las autoridades que ya has usado, también sus variantes tras cada ascensión.",
         bingoTechnologiesDescription: "Marca las tecnologías raras (marco morado) y peligrosas (marco rojo) que ya has investigado.",
+        bingoDlcDescription: "Marca los DLC con los que ya has jugado: expansiones, packs de historia, de especies y de retratos.",
         // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
         authorityMemoryAggregator: "Agregador de memoria",
         authorityNeuralChorus: "Coro neuronal",
@@ -119,6 +121,7 @@ export const strings = {
         bingoTypeEthics: "Ethics",
         bingoTypeAuthorities: "Authorities",
         bingoTypeTechnologies: "Rare and dangerous technologies",
+        bingoTypeDlc: "DLC",
         bingoTypeEmpty: "This bingo has no tiles yet. Check back soon.",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "Mark the origins you have already played a game with.",
@@ -126,6 +129,7 @@ export const strings = {
         bingoEthicsDescription: "Mark the ethics you have already had in an empire, on the in-game ethics wheel.",
         bingoAuthoritiesDescription: "Mark the authorities you have already used, also their variants after each ascension.",
         bingoTechnologiesDescription: "Mark the rare (purple frame) and dangerous (red frame) technologies you have already researched.",
+        bingoDlcDescription: "Mark the DLCs you have already played with: expansions, story packs, species packs and portrait packs.",
         // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
         authorityMemoryAggregator: "Memory Aggregator",
         authorityNeuralChorus: "Neural Chorus",
@@ -215,6 +219,7 @@ export const strings = {
         bingoTypeEthics: "倫理観",
         bingoTypeAuthorities: "統治形態",
         bingoTypeTechnologies: "希少技術と危険技術",
+        bingoTypeDlc: "DLC",
         bingoTypeEmpty: "このビンゴにはまだマスがありません。またお越しください。",
         // Draft descriptions (P24.1), pending review
         bingoOriginsDescription: "これまでにプレイしたことのある起源をマークしましょう。",
@@ -222,6 +227,7 @@ export const strings = {
         bingoEthicsDescription: "ゲーム内の倫理観ホイール上で、これまでに帝国で採用したことのある倫理観をマークしましょう。",
         bingoAuthoritiesDescription: "これまでに使ったことのある統治形態を、各アセンション後の派生形も含めてマークしましょう。",
         bingoTechnologiesDescription: "これまでに研究したことのある希少技術（紫の枠）と危険技術（赤の枠）をマークしましょう。",
+        bingoDlcDescription: "これまでにプレイしたことのあるDLC（拡張、ストーリーパック、種族パック、ポートレートパック）をマークしましょう。",
         // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
         authorityMemoryAggregator: "メモリー収集者",
         authorityNeuralChorus: "神経コーラス",

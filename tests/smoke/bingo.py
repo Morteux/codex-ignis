@@ -189,6 +189,24 @@ async def run(t):
     got = await download_png(bingo, "PNG download of the technologies bingo (12 columns)")
     if got:
         check("bingo: PNG download of the technologies bingo (12 columns)", got[0][:8] == PNG_SIGNATURE and png_width(got[0]) == (24 * 2 + 12 * 150) * 2 and got[1] == "bingo-tecnologias-stellaris.png" and not got[2], (got[1], png_width(got[0])))
+    # T3502: DLC bingo, every DLC installed with the game (dlc.json, T2519), reserved slots without icon
+    with open(os.path.join(generated, "dlc.json"), encoding="utf-8") as f:
+        game_dlcs = {d["id"]: d for d in json.load(f)["items"] if d["installed"] and d["category"]}
+    tree_dlc = set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8"))
+    await bingo.select_option("#bingo-type", "dlc")
+    dlcs = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>({id:c.dataset.id,name:c.getAttribute('aria-label'),tags:c.dataset.tags,img:c.querySelector('img')?.src.split('/').pop()??null,slot:!!c.querySelector('.bingo-card-slot'),visible:!!c.querySelector('.bingo-card-title--visible')}))")
+    categories = ["expansion", "story_pack", "species_pack", "content_pack"]
+    check("bingo: DLC bingo has every DLC installed with the game, once, expansions first and in release order",
+          sorted(c["id"] for c in dlcs) == sorted(game_dlcs) and [(categories.index(c["tags"]), c["id"]) for c in dlcs] == sorted((categories.index(c["tags"]), c["id"]) for c in dlcs)
+          and all(c["tags"] == game_dlcs[c["id"]]["category"] for c in dlcs), [(c["id"], c["tags"]) for c in dlcs][:5])
+    check("bingo: DLC cells show their game name and their dlc/ icon, or a reserved slot when the game has none",
+          all(c["name"] == (game_dlcs[c["id"]]["localised_name"] or game_dlcs[c["id"]]["name"]) and c["visible"] for c in dlcs)
+          and all((c["img"] == ((game_dlcs[c["id"]]["icon_big"] or game_dlcs[c["id"]]["icon"] or {}).get("asset") or "").split("/")[-1] and c["img"] in tree_dlc) if c["img"] else c["slot"] and not game_dlcs[c["id"]]["icon_big"] and not game_dlcs[c["id"]]["icon"] for c in dlcs)
+          and sum(c["slot"] for c in dlcs) == 6, [c for c in dlcs if c["slot"] or c["img"] not in tree_dlc][:8])
+    await bingo.click("#bingo-grid .bingo-card >> nth=0")
+    got = await download_png(bingo, "PNG download of the DLC bingo (8 columns)")
+    if got:
+        check("bingo: PNG download of the DLC bingo (8 columns)", got[0][:8] == PNG_SIGNATURE and png_width(got[0]) == (24 * 2 + 8 * 150) * 2 and got[1] == "bingo-dlc-stellaris.png" and not got[2], (got[1], png_width(got[0])))
     # P24.1: a "shape" bingo with an item without image (test-only entry added to BINGOS)
     await bingo.evaluate("async()=>{const m=await import('./js/bingo-data.js');m.BINGOS.push({id:'smokeShape',titleKey:'bingoTypeOrigins',fileSlug:'smoke',iconSize:70,showNames:false,layout:{type:'shape',rows:3,columns:3,cells:{originDefault:[1,1],originRemnants:[2,2],originTree:[3,3]}},items:[{img:'origins/GFX_origin_remnants.png',i18nKey:'originRemnants'},{img:null,i18nKey:'originTree'},{img:'origins/GFX_origin_scion.png',i18nKey:'originScion'}]})}")
     await bingo.click(".lang-btn[data-lang=es]")

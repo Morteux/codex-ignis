@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3502 — DLC bingo (2026-11-25)
+
+- [ ] **Which DLCs**: the 32 DLCs of `dlc.json` (4.5.4) installed with the game and with a category (13 expansions, 6 story packs, 7 species packs, 6 cosmetic/portrait packs, including Horizon Signal); store-only extras without a `dlc/` folder (soundtracks, art books) are left out. Order: by category, then release order (dlc id).
+- [ ] **Icons**: the big icon of `interface/dlc_icons.gfx` (`dlc/*_big.png`), else the small one; the 6 cosmetic packs have none in the game and keep a reserved empty slot with the name.
+- [ ] **Names**: the game has no localised DLC names (only Nomads, in English), so es/en/jp all use the `dlc_info` name; names are always shown under the icon. 8 columns in the PNG. The description text (`bingoDlcDescription`) is a draft.
+
 ## T3501 — Rare and dangerous technologies bingo (2026-11-25)
 
 - [ ] **Which technologies**: the 166 technologies of `technologies.json` (4.5.4) that the tech tree draws as rare or dangerous (`build_tech_data.kind`: a dangerous flag wins over rare), including event, story-pack and ascension ones. Order: rare first, then dangerous, each by area (physics, society, engineering), tier and English name.

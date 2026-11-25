@@ -42,7 +42,7 @@
 import { ORIGIN_BINGO, PRINCIPLE_BINGO } from "./bingo-items.js";
 import { ETHIC_WHEEL, ETHIC_ICONS } from "./ethic-wheel.js";
 import { ORIGIN_GAME_ORDER } from "./bingo-origin-order.js";
-import { TECH_BINGO } from "./bingo-game-items.js";
+import { TECH_BINGO, DLC_BINGO } from "./bingo-game-items.js";
 
 /**
  * Origins (P24.2): cell ids in the in-game order, from the game id (`origin`) of each item and
@@ -226,5 +226,17 @@ export const BINGOS = [
     showNames: false,
     layout: { type: "grid", columns: 12 },
     items: TECH_BINGO
+  },
+  {
+    // T3502: DLCs installed with the game (dlc.json of the extractor, T2519), expansions first;
+    // the cosmetic packs have no icon in the game and keep a reserved empty slot (img: null).
+    id: "dlc",
+    titleKey: "bingoTypeDlc",
+    descriptionKey: "bingoDlcDescription",
+    fileSlug: "dlc",
+    iconSize: 90,
+    showNames: true,
+    layout: { type: "grid", columns: 8 },
+    items: DLC_BINGO
   }
 ];

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **99 / 137 tareas (72%)**
+> Progreso: **100 / 137 tareas (73%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -267,7 +267,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
   - Prueba manual: open `bingo.html`, choose the authorities bingo and hover the cells after "Dictatorial Alignment (Dictatorial)": four more cells read "Dictatorial Alignment – Official / Commander / Scientist / No ruler (Dictatorial)", in es and jp too (79 cells in all).
 - [x] **T3501** (P35.1) Rare and dangerous technologies bingo (purple = rare, red = dangerous) from the tech data, with reserved icon slots until T3008
   - Prueba manual: open `bingo.html` and choose "Rare and dangerous technologies": 166 cells with the `technologies/` icons, the rare ones first with a purple frame and then the dangerous ones with a red frame; hovering shows the official name in es/en/jp, and "Download as image" gives a 12-column PNG that keeps the frames.
-- [ ] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots
+- [x] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots
+  - Prueba manual: open `bingo.html` and choose "DLC": 32 named cells, the 13 expansions first (Utopia… Nomads), then story, species and portrait packs; the 6 portrait packs show an empty reserved slot, and "Download as image" gives an 8-column PNG.
 
 ## 40 · Testellaris: design
 Quiz game: consecutive questions of increasing difficulty by tiers, 3 lives, lifelines (50 % and others), shared top 10 "hall of fame" without accounts (MongoDB Atlas behind a Vercel function, decided by the owner on 2026-11-22). Questions in es/en/jp, each tagged with tier and DLC and citing its source; never invented.
