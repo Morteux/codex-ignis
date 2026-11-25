@@ -3,7 +3,7 @@
  * specialization pickers, count controls and district caps).
  */
 
-import { t } from "./i18n.js";
+import { t, gameName } from "./i18n.js";
 import { getLang } from "./page-shell.js";
 import { BUILDINGS, CATEGORY_ORDER, CATEGORY_I18N_KEYS, RESOURCE_DISTRICT_ORDER } from "./planet-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
@@ -192,10 +192,10 @@ function renderTechLinks(techs) {
     link.href = `${TECH_TREE_URL}#${tech.id}`;
     link.target = "_blank";
     link.rel = "noopener";
-    link.lang = "en";
     link.dataset.techId = tech.id;
-    link.textContent = tech.name;
-    link.title = t(getLang(), "planetSimTechLinkTitle").replace("{tech}", tech.name);
+    const name = gameName(getLang(), "technologies", tech.id) ?? tech.name; // official name of the language (P15)
+    link.textContent = name;
+    link.title = t(getLang(), "planetSimTechLinkTitle").replace("{tech}", name);
     link.setAttribute("aria-label", link.title); // says that it opens a new tab
     line.append(index ? ", " : "", link);
   });

@@ -245,6 +245,34 @@ a {
     border-color: var(--accent);
 }
 
+/* Other game languages (planet simulator and tech tree, P15) */
+.lang-select {
+    max-width: 7.5rem;
+    min-height: 24px;
+    padding: .2rem .3rem;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--background);
+    font: 700 .68rem var(--mono);
+    cursor: pointer;
+}
+
+.lang-select:hover {
+    border-color: var(--accent-dim);
+    color: var(--text);
+}
+
+.lang-select.is-active {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.lang-select option {
+    color: var(--text);
+    background: var(--background);
+}
+
 .terminal-intro {
     /* max-width: 720px; */
     padding: 4vh 1vh 3vh 1vh;

@@ -5,7 +5,7 @@ Design rules and decisions of the tech tree. Pending work lives in `tasks.md` (s
 - **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files (owner, 2026-11-22). Data stays `unverified` until the final data review (T1406).
 - **Scope:** only `tech-tree.html` and its modules. The planet simulator has its own GDD (`PLANET_SIM_GDD.md`).
 - **Rule #1 (as in the simulator):** never invent rules, numbers or names. Data comes from the game files (§4.1); missing or ambiguous data → the task is marked blocked with the question.
-- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: data verification (T1406), official localisation of game names (P15) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
+- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: data verification (T1406), the interface in the seven new languages (T1505) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
 
 ## 1. Goal
 Turn the technology data of the game into an **explorable tech tree** inside Codex Ignis: see the technologies by area, field and tier, follow prerequisites and what each one unlocks, search and filter, and consult **previous versions** of the tree as the game is updated.
@@ -21,7 +21,7 @@ Inspired by the *Stellaris Tech Tree* of **BloodStainedCrow** (https://bloodstai
 - **Data-driven and versioned:** data lives in its own files, one per game version, never inside the drawing logic. Reuses the `js/data-version.js` registry (`DATA_VERSIONS`, `rulesetId`, verification statuses `unverified` → `wiki-verified`).
 - **Honest:** whatever is not modelled is shown as such; nothing is filled in by eye.
 - **No build step**, ES modules, the same terminal look and the shared page shell of the rest of the site.
-- **Languages:** interface texts in `js/i18n-tech-tree.js` (the tech tree area of `js/i18n.js`, P23.4) with es/en/jp keys. Game names (technologies, buildings, components…) stay in **English** in every language until official localisation (P15) is unblocked; no hand translations.
+- **Languages:** interface texts in `js/i18n-tech-tree.js` (the tech tree area of `js/i18n.js`, P23.4) with es/en/jp keys. Since P15 (T1503) the page offers the 10 official game languages: game names (technologies and their variants, areas, fields, unlocks) are the **official strings** of each language from `js/game-names/<lang>.js` (`LOCALISATION_PLAN.md`), never hand translations; descriptions stay English; the interface of the seven languages other than es/en/jp is English until T1505.
 - **Icons** from the assets repository (`STELLARIS_ASSETS_BASE`, `js/asset-config.js`; file list in `StellarisAssetsFileTree.txt`). Technology icons are in `technologies/`, exported by the extractor (T2524, T3008). Every node and card keeps a **fixed-size icon slot** (never a made-up placeholder): each record carries its `icon` path (§4.3), images load lazily, and a missing file leaves the frame empty without moving anything.
 - **No code or data from other tech tree projects** (owner, 2026-11-22): the data comes from our own game files extractor (`GAME_FILES_EXTRACTOR.md`).
 - **Testable:** every task ends with browser checks in the smoke tests (load the page, open a node, search, switch version), like the simulator.

@@ -6,11 +6,11 @@
  * the description are not reported). `createCompare` draws the section of the page: two version
  * selectors (from, to) and a Compare button; the other data file is loaded only when asked.
  * Every technology links to its node in the version where it exists (`?version=<id>#<tech id>`).
- * Game names stay in English (GDD §4.3); the labels are translated.
+ * Game names are the official ones of the language (js/tech-tree-names.js); the labels are translated.
  */
 import { t } from "./i18n.js";
 import { TECH_VERSIONS, loadTechData, versionUrl } from "./tech-versions.js";
-import { areaName } from "./tech-tree-card.js";
+import { areaName, localizeTechData } from "./tech-tree-names.js";
 
 const byName = (a, b) => a.name.localeCompare(b.name, "en") || a.id.localeCompare(b.id);
 
@@ -50,7 +50,6 @@ function techLink(versionId, id, name) {
   const url = new URL(versionUrl(window.location.href, versionId));
   url.hash = id;
   const link = el("a", "tech-compare-link", name);
-  link.lang = "en";
   link.href = url.href;
   link.dataset.techId = id;
   link.dataset.version = versionId;
@@ -118,7 +117,7 @@ export function createCompare(container, shown, shownData, getLang) {
     list.append(...items.map((item) => {
       const row = el("li", "tech-compare-item");
       row.dataset.techId = item.id;
-      row.append(techLink(versionId, item.id, item.name), " ", el("code", "tech-compare-id", item.id));
+      row.append(techLink(versionId, item.id, (item.tech || item).name), " ", el("code", "tech-compare-id", item.id));
       row.append(...describe(item));
       return row;
     }));
@@ -142,6 +141,8 @@ export function createCompare(container, shown, shownData, getLang) {
     if (last.kind === "loading") return result.replaceChildren(el("p", "tech-compare-note", t(lang, "techTreeCompareLoading")));
     if (last.kind === "error") return result.replaceChildren(el("p", "tech-compare-note", t(lang, "techTreeCompareError").replace("{id}", last.id)));
     const { from, to, diff } = last;
+    localizeTechData(last.fromData, lang);
+    localizeTechData(last.toData, lang);
     const summary = el("p", "tech-compare-summary", t(lang, "techTreeCompareSummary")
       .replace("{from}", from.label).replace("{to}", to.label)
       .replace("{added}", diff.added.length).replace("{removed}", diff.removed.length).replace("{changed}", diff.changed.length));

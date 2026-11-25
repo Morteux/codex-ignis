@@ -263,8 +263,8 @@ async def page_checks(t):
     await pg.click(".lang-btn[data-lang=es]")
     es_meta = await pg.evaluate("()=>[document.querySelector('.tech-node[data-tech-id=tech_arcane_deciphering] .tech-node-meta').textContent,document.querySelector('.tech-tier-head').textContent,document.querySelector('.tech-node[data-tech-id=tech_lasers_1] .tech-node-name').textContent]")
     await pg.click(".lang-btn[data-lang=en]")
-    check("tech tree nodes: tier and kind follow the language, the technology name stays in English",
-          es_meta == ["Nivel 2 · Rara", "Nivel 0", "Red Lasers"], es_meta)
+    check("tech tree nodes: tier and kind follow the language, and so does the official technology name (P15: Láseres rojos)",
+          es_meta == ["Nivel 2 · Rara", "Nivel 0", "Láseres rojos"], es_meta)
 
     # T3103: SVG prerequisite lines between nodes of the same area, ends on the node edges, redrawn on resize
     lines_js = """async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
@@ -374,7 +374,7 @@ async def page_checks(t):
     es_state = await pg.evaluate("()=>[document.getElementById('tech-selection-status').textContent,document.querySelector('#tech-legend li[data-legend=prerequisite]').textContent]")
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree states: the states survive a redraw of the lines and the status and legend follow the language",
-          s2["lineP"] == s1["lineP"] and s2["lineU"] == s1["lineU"] and es_state[0].startswith("Seleccionada: Blue Lasers") and es_state[1] == "Cadena de prerrequisitos", (s2["lineP"], es_state))
+          s2["lineP"] == s1["lineP"] and s2["lineU"] == s1["lineU"] and es_state[0].startswith("Seleccionada: Láseres azules") and es_state[1] == "Cadena de prerrequisitos", (s2["lineP"], es_state))
     await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
     s3 = await pg.evaluate(states_js, None)
     await pg.click(".tech-node[data-tech-id=tech_lasers_1]")
@@ -443,13 +443,15 @@ async def page_checks(t):
     await pg.click(".tech-node[data-tech-id=%s]" % pick["rep"])
     c5 = await pg.evaluate(card_js)
     await pg.click(".lang-btn[data-lang=es]")
+    await pg.wait_for_timeout(300)  # the official names of a language not loaded yet arrive after the first redraw
     c5es = await pg.evaluate(card_js)
     await pg.click(".lang-btn[data-lang=jp]")
+    await pg.wait_for_timeout(300)
     c5jp = await pg.evaluate(card_js)
     await pg.click(".lang-btn[data-lang=en]")
-    check("tech tree card: repeatable levels, and the labels follow the language (es, jp) while the game names stay in English",
+    check("tech tree card: repeatable levels, and the labels and the official game names follow the language (es, jp)",
           c5["levels"] == "Unlimited" and c5es["levels"] == "Ilimitados" and "Prerrequisitos" in c5es["labels"] and "前提条件" in c5jp["labels"]
-          and c5es["name"] == c5["name"] == c5jp["name"], (c5["levels"], c5es["labels"][:3], c5jp["labels"][:3]))
+          and len({c5["name"], c5es["name"], c5jp["name"]}) == 3, (c5["levels"], c5es["labels"][:3], c5jp["labels"][:3], c5["name"], c5es["name"], c5jp["name"]))
     await pg.click("#tech-card .tech-card-close")
     c6 = await pg.evaluate(card_js)
     sel6 = await pg.evaluate("()=>document.querySelectorAll('.tech-node.is-selected').length")
@@ -554,7 +556,7 @@ async def page_checks(t):
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree zoom: the - key inside the tree zooms out step by step (60 %), with no empty scroll space; labels follow the language",
           z2["level"] == "60 %" and z2["transform"] == "scale(0.6)" and z2["scrollW"] <= max(z2["clientW"], round(z2["gridW"] * 0.6)) + 2
-          and es_zoom == ["Acercar", "Árbol de Physics"], (z2, es_zoom))
+          and es_zoom == ["Acercar", "Árbol de Física"], (z2, es_zoom))
     await pg.focus("#tech-area-physics .tech-area-scroll")
     await pg.keyboard.press("0")
     z_reset = (await pg.evaluate(zoom_js, "physics"))["level"]
@@ -973,7 +975,7 @@ async def compare_checks(t, base, registry, errors):
         await ctx.close()
 
 
-# T3401: visible interface text of the page in es and jp (outside the game names, which stay English)
+# T3401: visible interface text of the page in es and jp (outside the game names, official in every language since P15)
 I18N_SCAN_JS = r"""async()=>{const m=await import('./js/i18n-tech-tree.js');const S=m.strings;
   const skip=(n)=>n.closest('[lang=en],code,script,style,[hidden],.tech-legend-swatch');
   const texts=[];const w=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
@@ -986,7 +988,8 @@ I18N_SCAN_JS = r"""async()=>{const m=await import('./js/i18n-tech-tree.js');cons
     .filter(k=>new RegExp('(^|[^A-Za-z])'+esc(S.en[k])+'([^A-Za-z]|$)').test(all));
   const gameNames=[...document.querySelectorAll('.tech-node-name,.tech-field-label,#tech-card-title,.tech-area-tab,.tech-area-heading,.tech-card-description')];
   return {lang,keys:(all.match(/\btechTree[A-Z]\w+/g)||[]),english:english.map(k=>k+'='+S.en[k]),
-    unmarked:gameNames.filter(e=>!e.closest('[lang=en]')).length,gameNames:gameNames.length,
+    english_marked:gameNames.filter(e=>!e.classList.contains('tech-card-description')&&e.closest('[lang=en]')).length,gameNames:gameNames.length,
+    description:[...document.querySelectorAll('.tech-card-description')].every(e=>e.closest('[lang=en]')),
     names:[...document.querySelectorAll('.tech-node-name')].slice(0,40).map(e=>e.textContent).join('|')}}"""
 
 
@@ -1006,14 +1009,14 @@ async def i18n_checks(t):
     scans = {}
     for lang in ("es", "jp"):
         await pg.click(".lang-btn[data-lang=" + lang + "]")
-        await pg.wait_for_timeout(150)
+        await pg.wait_for_timeout(400)
         scans[lang] = await pg.evaluate(I18N_SCAN_JS)
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree i18n (T3401): in es and jp no English interface text and no raw i18n key is visible (text, aria-label, title, placeholder)",
           all(not s["keys"] and not s["english"] for s in scans.values()) and not en["keys"], {k: (v["keys"], v["english"]) for k, v in scans.items()})
-    check("tech tree i18n (T3401): game names (nodes, fields, areas, card title and description) are English in every language and marked lang=en",
-          en["gameNames"] > 50 and all(s["unmarked"] == 0 and s["names"] == en["names"] for s in scans.values()) and en["unmarked"] == 0,
-          {k: (v["unmarked"], v["gameNames"]) for k, v in scans.items()})
+    check("tech tree i18n (T1503): game names (nodes, fields, areas, card title) are the official ones of each language, not marked English; the description stays English, marked lang=en",
+          en["gameNames"] > 50 and all(s["english_marked"] == 0 and s["names"] != en["names"] and s["description"] for s in scans.values()) and en["description"],
+          {k: (v["english_marked"], v["gameNames"], v["description"], v["names"][:80]) for k, v in scans.items()})
     check("tech tree i18n (T3401): no page errors", not errors, errors)
     await pg.close()
 
@@ -1044,7 +1047,7 @@ async def link_checks(t):
     await pg.click(".lang-btn[data-lang=en]")
     sim_js = r"""()=>{const a=[...document.querySelectorAll('.planet-catalog-entry .planet-catalog-tech-link')];
       return {n:a.length,entries:document.querySelectorAll('.planet-catalog-entry').length,items:document.querySelectorAll('.planet-catalog-item').length,
-        bad:a.filter(x=>!/^tech-tree\.html#tech_\w+$/.test(x.getAttribute('href'))||x.target!=='_blank'||x.lang!=='en').length,
+        bad:a.filter(x=>!/^tech-tree\.html#tech_\w+$/.test(x.getAttribute('href'))||x.target!=='_blank').length,
         label:a[0]?.parentElement.firstChild.textContent||'',title:a[0]?.title||'',ids:a.map(x=>x.dataset.techId)}}"""
     s_en = await pg.evaluate(sim_js)
     await pg.click(".lang-btn[data-lang=es]")

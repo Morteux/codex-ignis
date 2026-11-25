@@ -14,12 +14,12 @@
  * after the static markup has been translated.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta, loadLanguage } from "./i18n.js";
+import { DEFAULT_LANG, detectInitialLang, pageLangs, storeLang, t, htmlLangCode, syncSocialMeta, loadLanguage } from "./i18n.js";
 
 let currentLang = detectInitialLang();
 const listeners = [];
 
-// Pages that show game names (<html data-game-names>: planet simulator, bingo) load the
+// Pages that show game names (<html data-game-names>: planet simulator, tech tree, bingo) load the
 // official names of the language before any page script draws (P15, js/game-names.js).
 if (document.documentElement.hasAttribute("data-game-names")) await import("./game-names.js");
 
@@ -47,6 +47,12 @@ export function applyPageTranslations() {
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.setAttribute("aria-pressed", String(btn.dataset.lang === currentLang));
   });
+  // the selector of the other game languages (planet simulator and tech tree, P15)
+  document.querySelectorAll(".lang-select").forEach((select) => {
+    const chosen = [...select.options].some((option) => option.value === currentLang);
+    select.value = chosen ? currentLang : "";
+    select.classList.toggle("is-active", chosen);
+  });
 }
 
 /** Runs `callback(lang)` every time the user picks another language. */
@@ -65,7 +71,7 @@ function redraw() {
  * again when they arrive.
  */
 function setLanguage(lang) {
-  currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
+  currentLang = pageLangs().includes(lang) ? lang : DEFAULT_LANG;
   storeLang(currentLang);
   redraw();
   const pending = loadLanguage(currentLang);
@@ -79,4 +85,9 @@ function setLanguage(lang) {
 
 document.querySelectorAll(".lang-btn").forEach((btn) => {
   btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+document.querySelectorAll(".lang-select").forEach((select) => {
+  select.addEventListener("change", () => {
+    if (select.value) setLanguage(select.value);
+  });
 });

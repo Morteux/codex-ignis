@@ -11,7 +11,7 @@
  */
 import { t } from "./i18n.js";
 import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
-import { areaName } from "./tech-tree-card.js";
+import { areaName, byLocalName } from "./tech-tree-names.js";
 
 /** Matches listed under the filters (the tree shows all of them). */
 export const RESULT_LIMIT = 30;
@@ -32,7 +32,8 @@ export function filterTechnologies(data, filters) {
     if (filters.dlc === "base" && tech.dlc.length) return false;
     if (filters.dlc && filters.dlc !== "base" && !tech.dlc.includes(filters.dlc)) return false;
     if (!words.length) return true;
-    const haystack = foldText([tech.name, tech.id, ...tech.variants.map((variant) => variant.name)].join(" "));
+    // the official name of the language and the English one (P15)
+    const haystack = foldText([tech.name, tech.nameEn, tech.id, ...tech.variants.flatMap((variant) => [variant.name, variant.nameEn])].filter(Boolean).join(" "));
     return words.every((word) => haystack.includes(word));
   });
 }
@@ -110,10 +111,10 @@ export function createSearch(container, root, data, getLang, { onPick, onAreaFil
 
   function fillOptions(lang) {
     const all = t(lang, "techTreeFilterAll");
-    selects.area.replaceChildren(option("", all), ...data.areas.map((area) => option(area, areaName(area), true)));
+    selects.area.replaceChildren(option("", all), ...data.areas.map((area) => option(area, areaName(area))));
     const fields = data.fields.filter((entry) => !state.area || entry.area === state.area);
     if (state.field && !fields.some((entry) => entry.id === state.field)) state.field = "";
-    selects.field.replaceChildren(option("", all), ...fields.map((entry) => option(entry.id, entry.name, true)));
+    selects.field.replaceChildren(option("", all), ...fields.map((entry) => option(entry.id, entry.name)));
     selects.tier.replaceChildren(option("", all), ...tiers.map((tier) => option(String(tier), t(lang, "techTreeTier").replace("{tier}", tier))));
     selects.kind.replaceChildren(option("", all), ...kinds.map((kind) => option(kind, t(lang, KIND_KEYS[kind]))));
     selects.dlc.replaceChildren(option("", all), option("base", t(lang, "techTreeBaseGame")), ...dlcs.map((dlc) => option(dlc, dlc, true)));
@@ -159,7 +160,7 @@ export function createSearch(container, root, data, getLang, { onPick, onAreaFil
     count.textContent = !active ? "" : matches.length
       ? t(lang, "techTreeFilterCount").replace("{count}", matches.length).replace("{total}", data.technologies.length)
       : t(lang, "techTreeFilterNone");
-    const shown = matches.slice().sort((a, b) => a.name.localeCompare(b.name, "en")).slice(0, RESULT_LIMIT);
+    const shown = matches.slice().sort((a, b) => byLocalName(lang)(a.name, b.name)).slice(0, RESULT_LIMIT);
     results.replaceChildren(...shown.map((tech) => {
       const item = document.createElement("li");
       const button = document.createElement("button");

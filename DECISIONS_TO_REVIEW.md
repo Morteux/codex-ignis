@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1503 — Every official game language on the simulator and the tech tree (2026-11-25)
+
+- [ ] **A «More» selector** after the ES / EN / JP buttons lists Português (BR), Français, Deutsch, 한국어, Polski, Русский and 简体中文 (native names, marked with their `lang`); it is highlighted when one of them is chosen. Only `planet-sim.html` and `tech-tree.html` have it.
+- [ ] **The tech tree names follow the language**: technologies and their variants, the three areas (game strings `PHYSICS`, `SOCIETY`, `ENGINEERING`: e.g. French «Sciences physiques»), the 13 fields, the unlocks and the "Researched with" links of the simulator; nodes inside a cell are sorted by the name of the language. Descriptions, requirement texts and DLC names stay English. The search finds a technology by its name in the language and in English.
+- [ ] **One module per language (~110–160 KB uncompressed)** with the simulator names and the tech tree names together; only the current language is downloaded.
+- [ ] **Key parity**: the 10 modules have the same keys in every group, and the game has every name in every language (0 English fallbacks today).
+- [ ] **The technology area and field names come from the installed game folder** (4.6.0), like the resources (`data/localisation/game-folder-names.json`, which replaces `resource-names.json`).
+
 ## T1502 — Official es/en/jp game names (2026-11-25)
 
 - [ ] **992 names replaced in es, en and jp**, English included: the official English differs from the hand-written one in some 45 cases, e.g. planet types «Continental» → «Continental World», «Habitat» → «Orbital Habitat», resources «Energy» → «Energy Credits», «Physics» → «Physics Research», «Trade value» → «Trade», «Noble Researcher» → «Noble Scientist», the Decrees «Decree: Scientific Revolution», «Urban district» → «City District» (`district_city`). Longer names may need more room in narrow cards.

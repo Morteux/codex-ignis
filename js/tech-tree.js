@@ -20,7 +20,8 @@ import { TECH_VERSIONS, VERSION_STORAGE_KEY, pickTechVersion, loadTechData, vers
 import { renderAreaGrid, relabelGrids, KIND_KEYS } from "./tech-tree-layout.js";
 import { watchLines } from "./tech-tree-lines.js";
 import { createSelection } from "./tech-tree-states.js";
-import { createDetailCard, areaName } from "./tech-tree-card.js";
+import { createDetailCard } from "./tech-tree-card.js";
+import { localizeTechData, areaName } from "./tech-tree-names.js";
 import { createSearch } from "./tech-tree-search.js";
 import { createZoom } from "./tech-tree-zoom.js";
 import { techIdFromHash } from "./tech-tree-link.js";
@@ -146,6 +147,18 @@ function renderTree(lang) {
   return nodes;
 }
 
+/** Official names of the language on the data and the area tabs (P15). */
+function localize(lang) {
+  localizeTechData(TECH_DATA, lang);
+  document.querySelectorAll(".tech-area-tab").forEach((tab) => {
+    tab.textContent = areaName(tab.dataset.area);
+  });
+  document.querySelectorAll(".tech-area-heading").forEach((heading) => {
+    heading.textContent = areaName(heading.closest(".tech-area").dataset.area);
+  });
+}
+
+localize(getLang());
 applyPageTranslations();
 setupAreaTabs();
 setupVersionSelect(getLang());
@@ -153,6 +166,7 @@ renderDataVersion(getLang());
 renderTree(getLang());
 const redrawLines = watchLines(document.querySelector(".tech-areas"), TECH_DATA);
 onLanguageChange((lang) => {
+  localize(lang);
   setupVersionSelect(lang);
   renderDataVersion(lang);
   relabelGrids(document.querySelector(".tech-areas"), TECH_DATA, lang);

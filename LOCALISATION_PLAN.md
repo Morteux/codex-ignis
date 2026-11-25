@@ -13,10 +13,12 @@ no string for. Decisions taken without the owner are listed in `DECISIONS_TO_REV
   A `null` name means the game has no string in that language.
 - The ruleset is the project one (`stellaris-pc-4.5.4`). The generated folder is never regenerated
   from another game version for this section (the installed game is 4.6.0, T2526).
-- Resources are not a data set of the extractor. Their names (`energy`, `minerals`, `food`, `alloys`,
-  `consumer_goods`, `unity`, the three research kinds, `amenities`, `trade`…) are read with the same
-  localisation reader (`tools/extract/pdx/localisation.py`) from the game folder, and the game version
-  read is written in the generated file. Only names are taken from it, never figures.
+- Resources and the technology areas and fields are not data sets of the extractor. Their names
+  (`energy`, `minerals`, `food`, `alloys`, `consumer_goods`, `unity`, the three research kinds,
+  `amenities`, `trade`…, `PHYSICS`…, `field_manipulation`…) are read with the same localisation reader
+  (`tools/extract/pdx/localisation.py`) from the game folder into
+  `data/localisation/game-folder-names.json`, with the game version read. Only names are taken from
+  it, never figures.
 
 ## 2. Keys: every game name keyed by its game id
 
@@ -40,12 +42,13 @@ no string for. Decisions taken without the owner are listed in `DECISIONS_TO_REV
   listed in that file's `fallback` export.
 - `js/game-names.js` loads only the current language's module (dynamic `import()`), adds it on top of
   the hand-written texts, and loads the new module before the page redraws on a language change. The
-  areas that hold game names import it (`js/i18n-simulator.js`, `js/i18n-empire-names.js`,
-  `js/i18n-tech-tree.js`). The hand-written es/en/jp values stay as the fallback when a generated
-  module fails to load.
-- Technologies keep their English name in `js/tech-data/<rulesetId>.js`; the tech tree reads the
-  official name of the current language by technology id from the same generated modules
-  (`tech:<id>` keys).
+  pages that show game names are marked `<html data-game-names>` and `js/page-shell.js` imports it
+  before any page script draws (simulator, tech tree, bingo). The hand-written es/en/jp values stay
+  as the fallback when a generated module fails to load.
+- Technologies keep their English name in `js/tech-data/<rulesetId>.js`; the same generated modules
+  hold, by game id, the technologies and their variants (`technologies`), areas (`techAreas`), fields
+  (`techFields`) and unlocks (`unlocks`, `"<type>/<id>"`), and `js/tech-tree-names.js` puts the names
+  of the current language on the data (the English one stays in `nameEn` for the search).
 
 ## 4. Languages per page
 

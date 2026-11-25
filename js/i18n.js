@@ -7,23 +7,47 @@
  * -tech-tree.js, -legal.js), which register their texts with addStrings().
  * Every area file has the same keys in es, en and jp (tests/i18n-audit.mjs).
  *
- * To add a language: copy the "en" block of every area file, translate it and
- * add its code (e.g. "fr") to SUPPORTED_LANGS. Article translations live in
- * content.js, inside `i18n`.
+ * Languages (P15, LOCALISATION_PLAN.md §4): the site is written in es, en and jp
+ * (SITE_LANGS). The planet simulator and the tech tree also offer the other
+ * official game languages (GAME_LANGS): their game names are official
+ * (js/game-names.js) and their interface texts are English until translated
+ * (T1505). A page offers the languages of its own selector (pageLangs()).
+ *
+ * To translate the interface into a game language: add its block (e.g. "fr") to
+ * every area file the simulator and the tech tree load. Article translations live
+ * in content.js, inside `i18n`.
  */
 
 import { strings as commonStrings } from "./i18n-common.js";
 
-export const SUPPORTED_LANGS = ["es", "en", "jp"];
+/** Languages the whole site is written in. */
+export const SITE_LANGS = ["es", "en", "jp"];
+/** Every official Stellaris language, with the site's code (game folder in tools/extract/build_game_names.py). */
+export const GAME_LANGS = ["es", "en", "jp", "pt", "fr", "de", "ko", "pl", "ru", "zh"];
+export const SUPPORTED_LANGS = GAME_LANGS;
 export const DEFAULT_LANG = "es";
+/** Interface texts missing in a language fall back to English, then to the default language. */
+const FALLBACK_LANG = "en";
 const STORAGE_KEY = "codex-ignis-lang";
 
 /** Texts of the areas loaded by the page: the common ones, plus each js/i18n-<area>.js the page imports. */
-const strings = { es: { ...commonStrings.es }, en: { ...commonStrings.en }, jp: { ...commonStrings.jp } };
+const strings = Object.fromEntries(SUPPORTED_LANGS.map((lang) => [lang, { ...commonStrings[lang] }]));
 
 /** Called by every js/i18n-<area>.js when it is imported. */
 export function addStrings(area) {
     for (const lang of SUPPORTED_LANGS) Object.assign(strings[lang], area[lang]);
+}
+
+/** Languages the current page offers: its language buttons and the options of its language selector. */
+let offered = null;
+export function pageLangs() {
+    if (offered) return offered;
+    if (typeof document === "undefined") return SITE_LANGS;
+    const codes = [...document.querySelectorAll(".lang-btn[data-lang], .lang-select option[value]")]
+        .map((el) => el.dataset.lang || el.value)
+        .filter((code) => code && SUPPORTED_LANGS.includes(code));
+    offered = codes.length ? [...new Set(codes)] : SITE_LANGS;
+    return offered;
 }
 
 function getStoredLang() {
@@ -44,20 +68,33 @@ export function storeLang(lang) {
     }
 }
 
-export function detectInitialLang() {
-    const stored = getStoredLang();
-    if (stored) return stored;
-    let browserLang = ((typeof navigator !== "undefined" && navigator.language) || "").slice(0, 2).toLowerCase();
-    if (browserLang === "ja") browserLang = "jp"; // the site's code for Japanese
-    return SUPPORTED_LANGS.includes(browserLang) ? browserLang : DEFAULT_LANG;
+/** Browser language → site code ("ja" → "jp", "pt-BR" → "pt", "zh-CN" → "zh"). */
+function browserLang() {
+    const code = ((typeof navigator !== "undefined" && navigator.language) || "").slice(0, 2).toLowerCase();
+    return code === "ja" ? "jp" : code;
 }
 
-/** BCP 47 tag for <html lang>: the site calls Japanese "jp", but its language tag is "ja". */
+/**
+ * Language of the page: the stored choice, else the browser language, if the page
+ * offers it. A game language the page does not offer gives English; anything else
+ * the default language. The stored choice is kept for the pages that offer it.
+ */
+export function detectInitialLang(available = pageLangs()) {
+    for (const lang of [getStoredLang(), browserLang()]) {
+        if (!lang) continue;
+        if (available.includes(lang)) return lang;
+        if (GAME_LANGS.includes(lang)) return available.includes(FALLBACK_LANG) ? FALLBACK_LANG : DEFAULT_LANG;
+    }
+    return DEFAULT_LANG;
+}
+
+/** BCP 47 tag for <html lang>: the site's codes "jp", "pt" and "zh" are "ja", "pt-BR" and "zh-Hans". */
+const HTML_LANGS = { jp: "ja", pt: "pt-BR", zh: "zh-Hans" };
 export function htmlLangCode(lang) {
-    return lang === "jp" ? "ja" : lang;
+    return HTML_LANGS[lang] || lang;
 }
 
-const OG_LOCALES = { es: "es_ES", en: "en_US", jp: "ja_JP" };
+const OG_LOCALES = { es: "es_ES", en: "en_US", jp: "ja_JP", pt: "pt_BR", fr: "fr_FR", de: "de_DE", ko: "ko_KR", pl: "pl_PL", ru: "ru_RU", zh: "zh_CN" };
 
 /**
  * Keeps the Open Graph tags in step with the page: og:title follows <title>,
@@ -78,10 +115,18 @@ export function syncSocialMeta(lang) {
  * Official game names (P15, LOCALISATION_PLAN.md): js/game-names.js adds the
  * generated js/game-names/<lang>.js on top of the hand-written texts, which stay
  * as the fallback. Kept apart so an area imported later does not overwrite them.
+ * `names` are i18n keys (t()); the other groups (technologies, techAreas,
+ * techFields, unlocks) are read by id with gameName().
  */
 const gameNames = {};
-export function addGameNames(lang, names) {
-    gameNames[lang] = { ...gameNames[lang], ...names };
+export function addGameNames(lang, groups) {
+    gameNames[lang] = gameNames[lang] || {};
+    for (const [group, names] of Object.entries(groups)) gameNames[lang][group] = { ...gameNames[lang][group], ...names };
+}
+
+/** Official name of a game item of `group` in `lang`, or undefined if it is not loaded. */
+export function gameName(lang, group, id) {
+    return gameNames[lang]?.[group]?.[id];
 }
 
 /** Loaders of the extra texts of a language: each returns null if already loaded, else a promise (js/game-names.js registers one). */
@@ -96,8 +141,7 @@ export function loadLanguage(lang) {
 }
 
 export function t(lang, key) {
-    const official = gameNames[lang]?.[key];
+    const official = gameNames[lang]?.names?.[key];
     if (official !== undefined) return official;
-    const dict = strings[lang] || strings[DEFAULT_LANG];
-    return dict[key] ?? strings[DEFAULT_LANG][key];
+    return strings[lang]?.[key] ?? strings[FALLBACK_LANG][key] ?? strings[DEFAULT_LANG][key];
 }

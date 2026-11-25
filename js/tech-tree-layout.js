@@ -3,11 +3,12 @@
  * tier and one row per field. Every cell holds the nodes of that field and tier, sorted by name.
  *
  * A node is a button with the reserved icon slot (js/tech-tree-icons.js), the technology name
- * (English, a game name) and a translated line with its tier and kind. Only the data file drives
+ * (the official name of the language, js/tech-tree-names.js) and a translated line with its tier and kind. Only the data file drives
  * the layout: areas, fields and tiers come from TECH_DATA, never from a hand-written list.
  */
 import { t } from "./i18n.js";
 import { createTechIconSlot } from "./tech-tree-icons.js";
+import { byLocalName } from "./tech-tree-names.js";
 
 /** i18n key of each node kind (`kind` of the data file, GDD §4.3). */
 export const KIND_KEYS = {
@@ -21,14 +22,14 @@ export const KIND_KEYS = {
 };
 
 /**
- * Span holding a game name (technology, field, unlock…): game names stay in English in every
- * language until the official localisation (P15), so they are marked `lang="en"` for screen
- * readers and hyphenation (T3401).
+ * Span holding a game name (technology, field, unlock…). Since P15 the names are the official
+ * ones of the page language (js/tech-tree-names.js), so they take the page's `lang`; `lang`
+ * marks a name in another language (T3401).
  */
-export function gameNameSpan(text, className = "") {
+export function gameNameSpan(text, className = "", lang = "") {
   const span = document.createElement("span");
   if (className) span.className = className;
-  span.lang = "en";
+  if (lang) span.lang = lang;
   span.textContent = text;
   return span;
 }
@@ -89,7 +90,6 @@ export function renderAreaGrid(container, data, area, lang) {
     label.className = "tech-field-label";
     label.dataset.field = field.id;
     label.style.gridRow = row + 2;
-    label.lang = "en";
     label.textContent = field.name;
     grid.append(label);
     tiers.forEach((tier, column) => {
@@ -100,7 +100,7 @@ export function renderAreaGrid(container, data, area, lang) {
       cell.style.gridRow = row + 2;
       cell.style.gridColumn = column + 2;
       techs.filter((tech) => tech.field === field.id && tech.tier === tier)
-        .sort((a, b) => a.name.localeCompare(b.name, "en"))
+        .sort((a, b) => byLocalName(lang)(a.name, b.name))
         .forEach((tech) => {
           const node = createNode(tech, lang);
           nodes.set(tech.id, node);
@@ -114,13 +114,28 @@ export function renderAreaGrid(container, data, area, lang) {
   return nodes;
 }
 
-/** Translates the tier headers and node lines of every grid after a language change. */
+/**
+ * Translates the tier headers, field labels, node names and node lines of every grid after a
+ * language change (the data already holds the names of `lang`), and sorts every cell again.
+ */
 export function relabelGrids(root, data, lang) {
   const byId = new Map(data.technologies.map((tech) => [tech.id, tech]));
+  const fields = new Map(data.fields.map((field) => [field.id, field]));
+  const compare = byLocalName(lang);
   root.querySelectorAll(".tech-tier-head").forEach((head) => {
     head.textContent = t(lang, "techTreeTier").replace("{tier}", head.dataset.tier);
   });
+  root.querySelectorAll(".tech-field-label").forEach((label) => {
+    label.textContent = fields.get(label.dataset.field)?.name ?? label.textContent;
+  });
   root.querySelectorAll(".tech-node").forEach((node) => {
-    node.querySelector(".tech-node-meta").textContent = nodeMetaText(byId.get(node.dataset.techId), lang);
+    const tech = byId.get(node.dataset.techId);
+    node.querySelector(".tech-node-name").textContent = tech.name;
+    node.querySelector(".tech-node-meta").textContent = nodeMetaText(tech, lang);
+  });
+  root.querySelectorAll(".tech-cell").forEach((cell) => {
+    const nodes = [...cell.querySelectorAll(":scope > .tech-node")];
+    const sorted = nodes.slice().sort((a, b) => compare(byId.get(a.dataset.techId).name, byId.get(b.dataset.techId).name));
+    if (sorted.some((node, i) => node !== nodes[i])) cell.append(...sorted);
   });
 }

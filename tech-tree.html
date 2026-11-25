@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" data-game-names>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,6 +33,16 @@
           <button type="button" class="lang-btn" data-lang="es" aria-pressed="true" aria-label="Español" lang="es">ES</button>
           <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" aria-label="English" lang="en">EN</button>
           <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false" aria-label="日本語" lang="ja">JP</button>
+          <select class="lang-select" aria-label="Otros idiomas del juego (interfaz en inglés)" data-i18n-attr="aria-label:a11yLangMore">
+            <option value="" data-i18n="langMore">Más</option>
+            <option value="pt" lang="pt-BR">Português (BR)</option>
+            <option value="fr" lang="fr">Français</option>
+            <option value="de" lang="de">Deutsch</option>
+            <option value="ko" lang="ko">한국어</option>
+            <option value="pl" lang="pl">Polski</option>
+            <option value="ru" lang="ru">Русский</option>
+            <option value="zh" lang="zh-Hans">简体中文</option>
+          </select>
         </div>
       </header>
 
@@ -56,21 +66,21 @@
       <section class="tech-board" aria-labelledby="tech-board-heading">
         <h2 class="visually-hidden" id="tech-board-heading" data-i18n="techTreeBoardHeading">Áreas de investigación</h2>
         <div class="tech-area-tabs" role="tablist" aria-label="Áreas de investigación" data-i18n-attr="aria-label:techTreeBoardHeading">
-          <button type="button" class="tech-area-tab" role="tab" lang="en" id="tech-tab-physics" data-area="physics" aria-controls="tech-area-physics" aria-selected="true">Physics</button>
-          <button type="button" class="tech-area-tab" role="tab" lang="en" id="tech-tab-society" data-area="society" aria-controls="tech-area-society" aria-selected="false" tabindex="-1">Society</button>
-          <button type="button" class="tech-area-tab" role="tab" lang="en" id="tech-tab-engineering" data-area="engineering" aria-controls="tech-area-engineering" aria-selected="false" tabindex="-1">Engineering</button>
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-physics" data-area="physics" aria-controls="tech-area-physics" aria-selected="true">Physics</button>
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-society" data-area="society" aria-controls="tech-area-society" aria-selected="false" tabindex="-1">Society</button>
+          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-engineering" data-area="engineering" aria-controls="tech-area-engineering" aria-selected="false" tabindex="-1">Engineering</button>
         </div>
         <div class="tech-areas">
           <section class="tech-area tech-area--physics is-active" id="tech-area-physics" data-area="physics" role="tabpanel" aria-labelledby="tech-tab-physics">
-            <h3 class="tech-area-heading" lang="en">Physics</h3>
+            <h3 class="tech-area-heading">Physics</h3>
             <div class="tech-area-scroll"></div>
           </section>
           <section class="tech-area tech-area--society" id="tech-area-society" data-area="society" role="tabpanel" aria-labelledby="tech-tab-society">
-            <h3 class="tech-area-heading" lang="en">Society</h3>
+            <h3 class="tech-area-heading">Society</h3>
             <div class="tech-area-scroll"></div>
           </section>
           <section class="tech-area tech-area--engineering" id="tech-area-engineering" data-area="engineering" role="tabpanel" aria-labelledby="tech-tab-engineering">
-            <h3 class="tech-area-heading" lang="en">Engineering</h3>
+            <h3 class="tech-area-heading">Engineering</h3>
             <div class="tech-area-scroll"></div>
           </section>
         </div>

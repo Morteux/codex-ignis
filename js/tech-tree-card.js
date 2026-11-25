@@ -9,9 +9,12 @@
  * only), repeatable levels, DLC and the data version. Game names and script texts stay in English
  * (GDD §4.3); the labels are translated.
  */
-import { t } from "./i18n.js";
+import { t, htmlLangCode } from "./i18n.js";
 import { createTechIconSlot } from "./tech-tree-icons.js";
 import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
+import { areaName, byLocalName } from "./tech-tree-names.js";
+
+export { areaName };
 
 /** Page of the planet simulator, target of the unlock links. */
 export const SIMULATOR_URL = "planet-sim.html";
@@ -46,13 +49,10 @@ function el(tag, className, text) {
 }
 
 /** Area names are game names: English in every language, like the area tabs. */
-export function areaName(area) {
-  return area.charAt(0).toUpperCase() + area.slice(1);
-}
 
 /** Number with the thousands separator of the language ("12 000", "12,000"). */
 function formatNumber(value, lang) {
-  return new Intl.NumberFormat(lang === "jp" ? "ja" : lang).format(value);
+  return new Intl.NumberFormat(htmlLangCode(lang)).format(value);
 }
 
 /**
@@ -61,7 +61,7 @@ function formatNumber(value, lang) {
  */
 export function createDetailCard(container, data, getLang, { onSelect, onClose }) {
   const byId = new Map(data.technologies.map((tech) => [tech.id, tech]));
-  const fieldName = new Map(data.fields.map((field) => [field.id, field.name]));
+  const fieldName = { get: (id) => data.fields.find((field) => field.id === id)?.name };
   const dependents = new Map();
   data.technologies.forEach((tech) => tech.prerequisites.forEach((id) => {
     if (!dependents.has(id)) dependents.set(id, []);
@@ -105,7 +105,6 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     item.append(el("span", "tech-card-unlock-type", t(lang, UNLOCK_TYPE_KEYS[unlock.type] || "techTreeUnlockOther") + ": "));
     if (unlock.sim) {
       const link = el("a", "tech-card-sim-link", unlock.name);
-      link.lang = "en";
       link.href = simulatorUrl(unlock.sim);
       link.dataset.simCollection = unlock.sim.collection;
       link.dataset.simId = unlock.sim.id;
@@ -141,7 +140,6 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     const titles = el("div", "tech-card-titles");
     const title = el("h3", "tech-card-name", tech.name);
     title.id = "tech-card-title";
-    title.lang = "en";
     titles.append(
       title,
       el("code", "tech-card-id", tech.id),
@@ -203,7 +201,7 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
         return item;
       }))));
     }
-    const leadsTo = (dependents.get(tech.id) || []).slice().sort((a, b) => byId.get(a).name.localeCompare(byId.get(b).name, "en"));
+    const leadsTo = (dependents.get(tech.id) || []).slice().sort((a, b) => byLocalName(lang)(byId.get(a).name, byId.get(b).name));
     blocks.push(section("techTreeLeadsTo", "leadsTo", leadsTo.length
       ? list(leadsTo.map((id) => techButton(id, tech, lang)), "tech-card-techs")
       : el("p", "tech-card-empty", t(lang, "techTreeNone"))));

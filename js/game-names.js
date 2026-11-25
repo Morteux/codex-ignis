@@ -3,7 +3,8 @@
  *
  * Loads the generated js/game-names/<lang>.js of the current language (written by
  * tools/extract/build_game_names.py from the extractor localisation) on top of the
- * hand-written texts before the page first draws; on a language change, page-shell.js
+ * hand-written texts before the page first draws (names by i18n key, and the
+ * technologies, technology areas and fields and unlocks by id, read with gameName()); on a language change, page-shell.js
  * draws at once and again when the new module arrives. page-shell.js imports it on the
  * pages marked <html data-game-names>; if a module cannot be loaded, the hand-written
  * names stay.
@@ -20,7 +21,8 @@ export function loadGameNames(lang) {
     if (!loading.has(lang)) {
         loading.set(lang, import(`./game-names/${lang}.js`)
             .then((module) => {
-                addGameNames(lang, module.names);
+                const { names, technologies, techAreas, techFields, unlocks } = module;
+                addGameNames(lang, { names, technologies, techAreas, techFields, unlocks });
                 loaded.add(lang);
             })
             .catch((error) => console.warn(`Official game names (${lang}) not loaded; the hand-written names are shown.`, error))
