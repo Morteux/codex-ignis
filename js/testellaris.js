@@ -8,12 +8,13 @@
  * shell (js/page-shell.js); this module repaints its dynamic parts on a language change.
  */
 
-import { t } from "./i18n.js";
+import { t, htmlLangCode } from "./i18n.js";
 import "./i18n-testellaris.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
+import { loadBoard } from "./testellaris-scores.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
     canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
@@ -52,6 +53,7 @@ let questionsById = new Map();
 let loadFailed = false;
 let game = null; // the game in play or just ended (js/testellaris-engine.js)
 let lastResult = null; // result of the answer shown in the feedback, null while answering
+let board = null; // { shared, entries } of the top 10 shown, null while loading
 let lifelineStatus = null; // i18n key of the last lifeline message of the current question
 
 /** Replaces {name} placeholders of an interface text. */
@@ -154,6 +156,53 @@ function setAllDlcs(checked) {
     dlcBoxes().forEach((box) => { box.checked = checked; });
     saveDlcFilter();
     renderAvailable();
+}
+
+// ── Top 10 ──────────────────────────────────────────────────────────────────
+
+function formatDate(iso) {
+    const date = new Date(iso);
+    return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString(htmlLangCode(lang));
+}
+
+/** Draws the top 10 into the elements `<prefix>-source`, `-list` and `-empty`. */
+function renderTop(prefix = "tq-top") {
+    const source = el(`${prefix}-source`);
+    const list = el(`${prefix}-list`);
+    if (!board) {
+        source.textContent = t(lang, "tqTopLoading");
+        list.replaceChildren();
+        el(`${prefix}-empty`).hidden = true;
+        return;
+    }
+    source.textContent = t(lang, board.shared ? "tqTopShared" : "tqTopLocal");
+    source.classList.toggle("is-local", !board.shared);
+    el(`${prefix}-empty`).hidden = board.entries.length > 0;
+    list.replaceChildren(...board.entries.map((entry, index) => {
+        const item = document.createElement("li");
+        item.className = "tq-top-entry";
+        if (entry === board.highlight) item.classList.add("is-new");
+        const rank = document.createElement("span");
+        rank.className = "tq-top-rank";
+        rank.textContent = String(index + 1);
+        const name = document.createElement("span");
+        name.className = "tq-top-name";
+        name.textContent = entry.name;
+        const detail = document.createElement("span");
+        detail.className = "tq-top-detail";
+        detail.textContent = format(t(lang, "tqTopEntry"), {
+            score: entry.score, tier: entry.maxTier, correct: entry.correct, answered: entry.answered, dlcs: entry.dlcs, date: formatDate(entry.date),
+        });
+        item.append(rank, name, detail);
+        return item;
+    }));
+}
+
+async function refreshTop() {
+    board = null;
+    renderTop();
+    board = await loadBoard(RULESET_ID);
+    renderTop();
 }
 
 // ── Screens ─────────────────────────────────────────────────────────────────
@@ -424,12 +473,14 @@ el("tq-next").addEventListener("click", advance);
 el("tq-give-up").addEventListener("click", giveUp);
 LIFELINES.forEach((name) => el(`tq-lifeline-${name}`).addEventListener("click", () => onLifeline(name)));
 el("tq-play-again").addEventListener("click", startGame);
-el("tq-back-start").addEventListener("click", () => { showScreen("start"); startButton.focus(); });
+el("tq-back-start").addEventListener("click", () => { showScreen("start"); refreshTop(); startButton.focus(); });
 document.addEventListener("keydown", onKeyDown);
 onLanguageChange((next) => {
     lang = next;
     renderAvailable();
+    renderTop();
     if (game && !screens.game.hidden) renderGame();
     if (game && !screens.end.hidden) renderEnd();
 });
 loadBank();
+refreshTop();

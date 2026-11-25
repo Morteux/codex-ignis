@@ -4800,3 +4800,63 @@ body.has-tech-card .tech-board {
 .tq-failed-explanation {
     color: var(--text);
 }
+
+.tq-top {
+    display: grid;
+    gap: .6rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line-soft);
+}
+
+.tq-note.is-local {
+    color: var(--warning);
+}
+
+.tq-top-list {
+    display: grid;
+    gap: .3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.tq-top-entry {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 10ch) minmax(0, 1fr);
+    align-items: baseline;
+    gap: .2rem .8rem;
+    padding: .35rem .5rem;
+    border-bottom: 1px solid var(--line-soft);
+    font: .8rem/1.5 var(--mono);
+}
+
+.tq-top-entry.is-new {
+    border-color: var(--accent-dim);
+    background: var(--accent-tint);
+}
+
+.tq-top-rank {
+    color: var(--accent);
+    font-weight: 700;
+    text-align: right;
+}
+
+.tq-top-name {
+    color: var(--text);
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.tq-top-detail {
+    color: var(--muted);
+}
+
+@media (max-width: 700px) {
+    .tq-top-entry {
+        grid-template-columns: 2rem minmax(0, 1fr);
+    }
+
+    .tq-top-detail {
+        grid-column: 2;
+    }
+}

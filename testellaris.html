@@ -66,6 +66,14 @@
           <p class="tq-note" id="tq-available" role="status" data-i18n="tqLoading">Cargando preguntas…</p>
           <p class="tq-warning" id="tq-few" hidden></p>
           <button type="button" class="tq-btn is-primary tq-start-btn" id="tq-start-btn" data-i18n="tqStart" disabled>Empezar</button>
+
+          <!-- Top 10 (§7): the shared hall of fame, or the local top 10 of this browser when it cannot be reached. -->
+          <section class="tq-top" id="tq-top" aria-labelledby="tq-top-title">
+            <h2 class="tq-heading" id="tq-top-title" data-i18n="tqTopHeading">Salón de la fama</h2>
+            <p class="tq-note" id="tq-top-source"></p>
+            <ol class="tq-top-list" id="tq-top-list"></ol>
+            <p class="tq-note" id="tq-top-empty" data-i18n="tqTopEmpty" hidden>Todavía no hay puntuaciones.</p>
+          </section>
         </section>
 
         <!-- Question screen (§8.2–8.3), filled by js/testellaris.js. -->

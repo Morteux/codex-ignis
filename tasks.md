@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **113 / 139 tareas (81%)**
+> Progreso: **114 / 139 tareas (82%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -318,7 +318,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Prueba manual: start a game in `testellaris.html` and press Sensor Sweep: two wrong answers are struck out and the right answer gives 50 points; on the next question raise Deflector Shields and pick a wrong answer: it is crossed out and the lives stay at 3; Hyperlane Jump swaps the question, and every used lifeline stays greyed out.
 - [x] **T4204** (P42.4) Scoring and end screen: score, tier reached, correct answers and the explanation of the failed questions
   - Prueba manual: in `testellaris.html` answer a question right (the feedback says "+100 points.") and then fail three: the end screen shows Score 100, "Tier 1 · Primitive", "1 of 4", the lifelines used and the three failed questions with your answer, the correct one, the explanation and the source.
-- [ ] **T4205** (P42.5) Local top 10 (`localStorage`) used when the hall of fame cannot be reached
+- [x] **T4205** (P42.5) Local top 10 (`localStorage`) used when the hall of fame cannot be reached
+  - Prueba manual: open `testellaris.html`: under Start, "Hall of fame" says the hall of fame cannot be reached and shows "No scores yet."; once a score is saved (T4206) it appears there after a reload, best first.
 - [ ] **T4206** (P42.6) Hall of fame: when a score enters the top 10, name input (at most 10 characters) and the top 10 list
 - [ ] **T4207** (P42.7) Mobile layout, accessibility, es/en/jp interface, smoke tests and `README.md`
 

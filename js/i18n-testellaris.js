@@ -84,6 +84,12 @@ export const strings = {
         tqFailedNone: "No has fallado ninguna pregunta.",
         tqYourAnswer: "Tu respuesta: {answer}",
         tqRightAnswer: "Respuesta correcta: {answer}",
+        tqTopHeading: "Salón de la fama",
+        tqTopEmpty: "Todavía no hay puntuaciones.",
+        tqTopLoading: "Cargando el salón de la fama…",
+        tqTopShared: "Las 10 mejores puntuaciones de todos los jugadores.",
+        tqTopLocal: "No se puede conectar con el salón de la fama: se muestra el top 10 de este navegador.",
+        tqTopEntry: "{score} puntos · nivel {tier} · {correct}/{answered} · {dlcs} DLC · {date}",
     },
     en: {
         tqPageTitle: "Testellaris · Codex Ignis",
@@ -161,6 +167,12 @@ export const strings = {
         tqFailedNone: "You did not fail any question.",
         tqYourAnswer: "Your answer: {answer}",
         tqRightAnswer: "Correct answer: {answer}",
+        tqTopHeading: "Hall of fame",
+        tqTopEmpty: "No scores yet.",
+        tqTopLoading: "Loading the hall of fame…",
+        tqTopShared: "The 10 best scores of every player.",
+        tqTopLocal: "The hall of fame cannot be reached: this is the top 10 of this browser.",
+        tqTopEntry: "{score} points · tier {tier} · {correct}/{answered} · {dlcs} DLC · {date}",
     },
     jp: {
         tqPageTitle: "Testellaris · Codex Ignis",
@@ -238,6 +250,12 @@ export const strings = {
         tqFailedNone: "間違えた問題はありません。",
         tqYourAnswer: "あなたの答え：{answer}",
         tqRightAnswer: "正解：{answer}",
+        tqTopHeading: "殿堂",
+        tqTopEmpty: "まだスコアがありません。",
+        tqTopLoading: "殿堂を読み込み中…",
+        tqTopShared: "全プレイヤーのベスト10スコア。",
+        tqTopLocal: "殿堂に接続できません：このブラウザのトップ10を表示しています。",
+        tqTopEntry: "{score}点・レベル{tier}・{correct}/{answered}・DLC {dlcs}・{date}",
     },
 };
 

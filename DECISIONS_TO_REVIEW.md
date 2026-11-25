@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4205 — Testellaris local top 10 (2026-11-25)
+
+- [ ] **Until T4303 connects the API, the game always uses the local top 10** and says so on the start screen ("The hall of fame cannot be reached: this is the top 10 of this browser"). `js/testellaris-scores.js` has the slot for the API client (`hallOfFame.client`, with `load` and `submit`); when it fails, the local board is used and the score is kept there, never queued (GDD §7.2).
+- [ ] **Local board per ruleset** (`testellaris-top10` = `{ <rulesetId>: [10 entries] }`), as the shared one will be (GDD §7.1 proposal). Damaged data is ignored.
+- [ ] **A score of 0 never enters** the top 10, even with room on the board.
+- [ ] **Each row** shows rank, name, score, tier reached, right answers / answered, number of DLCs checked and the date in the page language.
+
 ## T4204 — Testellaris scoring and end screen (2026-11-25)
 
 - [ ] **Scoring as in the GDD proposal** (§3.5): 100 × tier per right answer, half with Sensor Sweep, 0 for a skipped question, +250 per life left only when the game is completed; a given-up or lost game keeps its score. After each right answer the feedback says how many points it gave.

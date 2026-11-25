@@ -68,8 +68,59 @@ async def run(t):
     await pg.click(".lang-btn[data-lang=en]")
     await engine_checks(pg)
     await game_checks(pg, {q["id"]: q for q in bank})
+    await scores_checks(pg)
+    await top_list_checks(pg)
     check("testellaris: no page errors", not errors, errors[:3])
     await ctx.close()
+
+
+SCORES_JS = """async()=>{const S=await import('./js/testellaris-scores.js');const out={};
+  const e=(name,score,maxTier=1,answered=5,date='2026-01-01T00:00:00Z',rulesetId='rs')=>({name,score,maxTier,answered,correct:3,dlcs:26,rulesetId,date});
+  // ties: score, then tier reached, then fewer answered, then the earlier date
+  out.order=S.sortEntries([e('d',500,2,9),e('a',900),e('c',500,2,8,'2026-02-01'),e('b',500,3,20),e('e',500,2,8,'2026-03-01')]).map(x=>x.name).join('');
+  const ten=Array.from({length:10},(_,i)=>e('p'+i,1000-i*100));
+  out.qual=[S.qualifies(ten,e('x',150)),S.qualifies(ten,e('x',100)),S.qualifies(ten.slice(0,9),e('x',1)),S.qualifies([],e('x',0))];
+  localStorage.removeItem(S.LOCAL_STORAGE_KEY);
+  for(let i=0;i<12;i++)S.saveLocal(e('n'+i,(i+1)*10));S.saveLocal(e('other',5,1,5,'2026-01-01',' rs2'));
+  const local=S.loadLocal('rs');out.local=[local.length,local[0].name,local[9].name,S.loadLocal(' rs2').length];
+  localStorage.setItem(S.LOCAL_STORAGE_KEY,'{broken');out.broken=S.loadLocal('rs').length;localStorage.removeItem(S.LOCAL_STORAGE_KEY);
+  // shared board when the client answers, local top 10 when it cannot be reached
+  out.none=(await S.loadBoard('rs')).shared;
+  S.hallOfFame.client={load:async()=>[e('remote',10)],submit:async(x)=>[x]};
+  const remote=await S.loadBoard('rs');const sent=await S.submitEntry(e('me',20));
+  out.remote=[remote.shared,remote.entries[0].name,sent.shared,S.loadLocal('rs').length];
+  S.hallOfFame.client={load:()=>Promise.reject(new Error('offline')),submit:()=>Promise.reject(new Error('offline'))};
+  const off=await S.loadBoard('rs');const kept=await S.submitEntry(e('me',20));
+  out.offline=[off.shared,kept.shared,kept.entries.map(x=>x.name).join(','),S.loadLocal('rs').length];
+  S.hallOfFame.client=null;localStorage.removeItem(S.LOCAL_STORAGE_KEY);
+  return out}"""
+
+
+async def scores_checks(pg):
+    r = await pg.evaluate(SCORES_JS)
+    check("testellaris top 10: order by score, then tier reached, then fewer questions answered, then the earlier date", r["order"] == "abced", r["order"])
+    check("testellaris top 10: a score enters when it beats the 10th or the board has room, never with 0 points", r["qual"] == [True, False, True, False], r["qual"])
+    check("testellaris top 10: the local board keeps the best 10 per ruleset in localStorage and survives damaged data",
+          r["local"] == [10, "n11", "n2", 1] and r["broken"] == 0, (r["local"], r["broken"]))
+    check("testellaris top 10: the shared board is used when it answers; the local top 10 when it cannot be reached (and the score is kept there)",
+          r["none"] is False and r["remote"] == [True, "remote", True, 0] and r["offline"] == [False, False, "me", 1], (r["none"], r["remote"], r["offline"]))
+
+
+async def top_list_checks(pg):
+    """The start screen lists the local top 10 (no hall of fame yet, T4303) with a notice."""
+    entries = [{"name": "<b>Zed</b>", "score": 300, "maxTier": 2, "answered": 6, "correct": 3, "dlcs": 26, "rulesetId": RULESET, "date": "2026-11-20T10:00:00Z"},
+               {"name": "宇宙の王", "score": 1200, "maxTier": 3, "answered": 12, "correct": 10, "dlcs": 4, "rulesetId": RULESET, "date": "2026-11-21T10:00:00Z"}]
+    await pg.evaluate("(e)=>localStorage.setItem('testellaris-top10',JSON.stringify({'%s':e}))" % RULESET, entries)
+    await pg.reload()
+    await pg.wait_for_function("()=>document.querySelector('#tq-top-list li')", timeout=15000)
+    top = await pg.evaluate("()=>({source:document.querySelector('#tq-top-source').textContent,rows:[...document.querySelectorAll('#tq-top-list li')].map(li=>[...li.children].map(c=>c.textContent)),bold:!!document.querySelector('#tq-top-list b'),empty:document.querySelector('#tq-top-empty').hidden})")
+    check("testellaris top 10: the start screen lists the local top 10 in order, names as plain text, with the notice that the hall of fame cannot be reached",
+          top["source"].startswith("The hall of fame cannot be reached") and [r[:2] for r in top["rows"]] == [["1", "宇宙の王"], ["2", "<b>Zed</b>"]]
+          and top["rows"][0][2].startswith("1200 points · tier 3 · 10/12 · 4 DLC · ") and not top["bold"] and top["empty"], top)
+    await pg.evaluate("()=>localStorage.removeItem('testellaris-top10')")
+    await pg.reload()
+    await pg.wait_for_function("()=>!document.querySelector('#tq-top-empty').hidden", timeout=15000)
+    check("testellaris top 10: an empty board says there are no scores yet", await pg.evaluate("()=>document.querySelector('#tq-top-list').children.length") == 0)
 
 
 # A small fake bank for the engine: `n` questions per tier, the correct answer always index 0.
