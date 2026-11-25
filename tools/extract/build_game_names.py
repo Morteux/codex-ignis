@@ -49,6 +49,11 @@ RESOURCE_KEYS = {
 }
 # Technology area → game localisation key.
 TECH_AREA_KEYS = {"physics": "PHYSICS", "society": "SOCIETY", "engineering": "ENGINEERING"}
+# Alternative names a civic shows for some empires (T1504), not civics of their own: localisation keys.
+CIVIC_VARIANT_KEYS = ["civic_hive_devouring_swarm_lithoid", "civic_hive_devouring_swarm_wilderness", "civic_wilderness_cordyceptic_drones",
+                      "civic_wilderness_upkeep_twister", "civic_machine_servitor_forever_cruise"]
+# Joins the names of a key that groups several game items under one card ("Anglers / Marine Machines").
+GROUP_SEPARATOR = " / "
 # Technology unlock type → localisation set of the extractor.
 UNLOCK_SETS = {"building": "buildings", "district": "districts", "edict": "edicts", "deposit": "deposits"}
 
@@ -95,7 +100,8 @@ def read_game_folder(game_arg):
     game = GameFiles(game_arg)
     loc = game.localisation
     fields = sorted({f["id"] for data in tech_data_files() for f in data["fields"]})
-    groups = {"resources": RESOURCE_KEYS, "techAreas": TECH_AREA_KEYS, "techFields": {fid: fid for fid in fields}}
+    groups = {"resources": RESOURCE_KEYS, "techAreas": TECH_AREA_KEYS, "techFields": {fid: fid for fid in fields},
+              "civicVariants": {key: key for key in CIVIC_VARIANT_KEYS}}
     names = {lang: {group: {item: clean(loc.get(key, lang)) for item, key in keys.items()} for group, keys in groups.items()}
              for lang in loc.languages()}
     value = {"gameVersion": game.version, "rulesetId": game.ruleset_id, "keys": groups, "names": names}
@@ -139,8 +145,9 @@ def key_map(sim, sets, folder):
             keys.pop(key, None)
         else:
             keys[key] = target
-    # Only keys of a hand-written text; grouped names ("Anglers / Marine Machines") stay hand-written (T1504).
-    keys = {k: v for k, v in keys.items() if k in sim["en"] and " / " not in sim["en"][k]}
+    # Only keys of a hand-written text. A grouped name ("Anglers / Marine Machines") gets an official
+    # string only from a list of targets in the overrides (T1504), never from the matching.
+    keys = {k: v for k, v in keys.items() if k in sim["en"] and (isinstance(v, list) or GROUP_SEPARATOR not in sim["en"][k])}
     seen, rest = set(), []
     for u in unmatched:
         if u[1] not in keys and u[1] not in seen:
@@ -167,8 +174,11 @@ def tech_targets():
 
 
 def official(loc_sets, folder, lang_folder, target):
+    if isinstance(target, list):  # a key grouping several items: every name, joined (T1504)
+        parts = [official(loc_sets, folder, lang_folder, t) for t in target]
+        return GROUP_SEPARATOR.join(parts) if all(parts) else None
     set_name, gid = target.split("/", 1)
-    if set_name in ("resources", "techAreas", "techFields"):
+    if set_name in ("resources", "techAreas", "techFields", "civicVariants"):
         return clean(folder["names"].get(lang_folder, {}).get(set_name, {}).get(gid))
     return clean((loc_sets.get(set_name) or {}).get(gid))
 
@@ -240,6 +250,9 @@ def main():
         for key in keys:
             if key in en and sim["en"].get(key) != en[key]:
                 print(f"changes  {key}: {sim['en'].get(key)!r} -> {en[key]!r} ({keys[key]})")
+        for key, target in keys.items():
+            if isinstance(target, list):
+                print(f"group    {key}: {en.get(key)!r} ({', '.join(target)})")
         for set_name, key, name in unmatched:
             print(f"no match {set_name} {key}: {name!r}")
         for key in no_english:

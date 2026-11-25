@@ -1,6 +1,6 @@
 {
   "rulesetId": "stellaris-pc-4.5.4",
-  "count": 992,
+  "count": 1003,
   "keys": {
     "authorityCorporate": "authorities/auth_corporate",
     "authorityDemocratic": "authorities/auth_democratic",
@@ -217,6 +217,10 @@
     "buildingWasteReprocessingCenter": "buildings/building_waste_reprocessing_center",
     "buildingXenobiologicalLab": "buildings/building_biolab_1",
     "civicAgrarianIdyll": "civics/civic_agrarian_idyll",
+    "civicAnglers": [
+      "civics/civic_anglers",
+      "civics/civic_machine_anglers"
+    ],
     "civicAristocraticElite": "civics/civic_aristocratic_elite",
     "civicAscensionists": "civics/civic_ascensionists",
     "civicAstrometeorology": "civics/civic_astrometeorology",
@@ -230,6 +234,10 @@
     "civicChosen": "civics/civic_chosen",
     "civicCitizenService": "civics/civic_citizen_service",
     "civicCivilEducation": "civics/civic_civil_education",
+    "civicCorporateAnglers": [
+      "civics/civic_corporate_anglers",
+      "civics/civic_corporate_machine_anglers"
+    ],
     "civicCorporateAscensionists": "civics/civic_corporate_ascensionists",
     "civicCorporateAstrometeorology": "civics/civic_astrometeorology_megacorp",
     "civicCorporateAugmentationBazaars": "civics/civic_augmentation_bazaars",
@@ -264,6 +272,10 @@
     "civicCorporateSuperstitiousBeliefs": "civics/civic_corporate_superstitious_beliefs",
     "civicCorporateTankbound": "civics/civic_tankbound_corporate",
     "civicCorporateTaskDelegation": "civics/civic_task_delegation_corporate",
+    "civicCorporateToxicBaths": [
+      "civics/civic_corporate_toxic_baths",
+      "civics/civic_corporate_toxic_baths_individual_machine"
+    ],
     "civicCorporateTwistedExperimenters": "civics/civic_twisted_experimenters_corporate",
     "civicCorporateWorldForgers": "civics/civic_corporate_world_forgers",
     "civicCorveeSystem": "civics/civic_corvee_system",
@@ -276,6 +288,11 @@
     "civicDarkConsortium": "civics/civic_dark_consortium",
     "civicDeathCult": "civics/civic_death_cult",
     "civicDeepSleep": "civics/civic_deep_sleep",
+    "civicDevouringSwarm": [
+      "civics/civic_hive_devouring_swarm",
+      "civicVariants/civic_hive_devouring_swarm_lithoid",
+      "civicVariants/civic_hive_devouring_swarm_wilderness"
+    ],
     "civicDimensionalWorship": "civics/civic_dimensional_worship",
     "civicDiplomaticCorps": "civics/civic_diplomatic_corps",
     "civicDistinguishedAdmiralty": "civics/civic_distinguished_admiralty",
@@ -295,6 +312,10 @@
     "civicFreeTraders": "civics/civic_free_traders",
     "civicFunctionalArchitecture": "civics/civic_functional_architecture",
     "civicGalacticCurators": "civics/civic_galactic_curators",
+    "civicGalacticSovereign": [
+      "civics/civic_galactic_sovereign",
+      "civics/civic_galactic_sovereign_megacorp"
+    ],
     "civicGalvanicSymbiosis": "civics/civic_galvanic_symbiosis",
     "civicGeneticIdentification": "civics/civic_genetic_identification",
     "civicGospelOfTheMasses": "civics/civic_gospel_of_the_masses",
@@ -309,6 +330,10 @@
     "civicHiveBodysnatcher": "civics/civic_hive_bodysnatcher",
     "civicHiveCatalyticProcessing": "civics/civic_hive_catalytic_processing",
     "civicHiveChosen": "civics/civic_hive_chosen",
+    "civicHiveCordycepticDrones": [
+      "civics/civic_hive_cordyceptic_drones",
+      "civicVariants/civic_wilderness_cordyceptic_drones"
+    ],
     "civicHiveDeepSleep": "civics/civic_hive_deep_sleep",
     "civicHiveEntropyDrinkers": "civics/civic_entropy_drinkers_hive_mind",
     "civicHiveFamiliarFace": "civics/civic_hive_familiar_face",
@@ -331,6 +356,10 @@
     "civicHiveSuperstitiousBeliefs": "civics/civic_hive_superstitious_beliefs",
     "civicHiveToxicBaths": "civics/civic_hive_toxic_baths",
     "civicHiveTwistedExperimenters": "civics/civic_twisted_experimenters_hive_mind",
+    "civicHiveUpkeepTwister": [
+      "civics/civic_hive_upkeep_twister",
+      "civicVariants/civic_wilderness_upkeep_twister"
+    ],
     "civicHiveWorldForgers": "civics/civic_hive_world_forgers",
     "civicHyperspaceSpecialty": "civics/civic_hyperspace_specialty",
     "civicIdealisticFoundation": "civics/civic_idealistic_foundation",
@@ -370,6 +399,10 @@
     "civicMachinePredictiveAnalysis": "civics/civic_machine_predictive_analysis",
     "civicMachineReplication": "civics/civic_machine_replication",
     "civicMachineRockbreakers": "civics/civic_machine_rockbreakers",
+    "civicMachineServitor": [
+      "civics/civic_machine_servitor",
+      "civicVariants/civic_machine_servitor_forever_cruise"
+    ],
     "civicMachineSovereignCircuits": "civics/civic_machine_upkeep_twister",
     "civicMachineSovereignGuardianship": "civics/civic_machine_sovereign_guardianship",
     "civicMachineSpybots": "civics/civic_machine_spybots",
@@ -378,6 +411,10 @@
     "civicMachineSuperstitiousBeliefs": "civics/civic_machine_superstitious_beliefs",
     "civicMachineTacticalAlgorithms": "civics/civic_machine_tactical_algorithms",
     "civicMachineTerminator": "civics/civic_machine_terminator",
+    "civicMachineToxicBaths": [
+      "civics/civic_machine_toxic_baths",
+      "civics/civic_toxic_baths"
+    ],
     "civicMachineUnitaryCohesion": "civics/civic_machine_unitary_cohesion",
     "civicMachineWarbots": "civics/civic_machine_warbots",
     "civicMachineWorldForgers": "civics/civic_machine_world_forgers",
@@ -425,10 +462,18 @@
     "civicSuperstitiousBeliefs": "civics/civic_superstitious_beliefs",
     "civicTankbound": "civics/civic_tankbound",
     "civicTechnocracy": "civics/civic_technocracy",
+    "civicToxicBaths": [
+      "civics/civic_toxic_baths",
+      "civics/civic_toxic_baths_individual_machine"
+    ],
     "civicTradingPosts": "civics/civic_trading_posts",
     "civicTwistedExperimenters": "civics/civic_twisted_experimenters",
     "civicVoidHive": "civics/civic_void_hive",
     "civicVoidReavers": "civics/civic_void_reavers",
+    "civicWarriorCulture": [
+      "civics/civic_warrior_culture",
+      "civics/civic_great_khans_vision"
+    ],
     "civicWorkerCoop": "civics/civic_worker_coop",
     "civicWorldForgers": "civics/civic_world_forgers",
     "designationAgriWorld": "designations/col_farming",

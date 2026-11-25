@@ -20,7 +20,15 @@ async def run(t):
           [names.get(l, {}).get("jobMiner") for l in ("es", "en", "jp")] == ["Minero", "Miner", "鉱山労働者"]
           and [names.get(l, {}).get("resourceEnergy") for l in ("es", "en", "jp")] == ["Créditos energéticos", "Energy Credits", "エネルギー通貨"],
           {l: (names.get(l, {}).get("jobMiner"), names.get(l, {}).get("resourceEnergy")) for l in ("es", "en", "jp")})
-    check("game names (T1502): grouped civic names stay hand-written (T1504)", "civicAnglers" not in keys and "civicWarriorCulture" not in keys)
+    grouped = node_json("const o={};for(const l of ['es','en','jp']){const m=await import('./js/game-names/'+l+'.js');o[l]=[m.names.civicAnglers,m.names.civicDevouringSwarm,m.names.civicCorporateAnglers]}console.log(JSON.stringify(o))")
+    check("grouped civics (T1504): a key that groups several civics under one card links every game civic and joins their official names",
+          keys.get("civicAnglers") == ["civics/civic_anglers", "civics/civic_machine_anglers"] and len(keys.get("civicDevouringSwarm", [])) == 3
+          and grouped.get("es", [None])[0] == "Pescadores / Máquinas marinas" and grouped.get("en", [None, None])[1] == "Devouring Swarm / Terravore / Devouring Wilderness"
+          and all(" / " in n for l in ("es", "en", "jp") for n in grouped.get(l, [""])), grouped)
+    check("grouped civics (T1504): no civic or origin name of es or jp is an English placeholder any more (every one without an official string is translated)",
+          not node_json("""const {strings:e}=await import('./js/i18n-empire-names.js');const {strings:s}=await import('./js/i18n-simulator.js');const {names}=await import('./js/game-names/es.js');const {names:jn}=await import('./js/game-names/jp.js');
+            const es={...s.es,...e.es},en={...s.en,...e.en},jp={...s.jp,...e.jp};
+            console.log(JSON.stringify(Object.keys(en).filter(k=>/^(civic|origin)[A-Z]/.test(k)&&typeof en[k]==='string'&&!(k in names&&k in jn)&&(es[k]===en[k]||jp[k]===en[k]))))"""), "placeholders")
 
     pg = await t.ctx.new_page()
     errors = []

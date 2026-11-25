@@ -44,6 +44,13 @@
       "psionics": "psionics",
       "statecraft": "statecraft",
       "voidcraft": "voidcraft"
+    },
+    "civicVariants": {
+      "civic_hive_devouring_swarm_lithoid": "civic_hive_devouring_swarm_lithoid",
+      "civic_hive_devouring_swarm_wilderness": "civic_hive_devouring_swarm_wilderness",
+      "civic_wilderness_cordyceptic_drones": "civic_wilderness_cordyceptic_drones",
+      "civic_wilderness_upkeep_twister": "civic_wilderness_upkeep_twister",
+      "civic_machine_servitor_forever_cruise": "civic_machine_servitor_forever_cruise"
     }
   },
   "names": {
@@ -90,6 +97,13 @@
         "psionics": "Psiônica",
         "statecraft": "Estudo de Estado",
         "voidcraft": "Ciência do vazio"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Terrávoro",
+        "civic_hive_devouring_swarm_wilderness": "Silvestria Devoradora",
+        "civic_wilderness_cordyceptic_drones": "Simbiontes Cordicépticos",
+        "civic_wilderness_upkeep_twister": "Simbiontes Autônomos",
+        "civic_machine_servitor_forever_cruise": "Servidor de Hospitalidade"
       }
     },
     "english": {
@@ -135,6 +149,13 @@
         "psionics": "Psionics",
         "statecraft": "Statecraft",
         "voidcraft": "Voidcraft"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Terravore",
+        "civic_hive_devouring_swarm_wilderness": "Devouring Wilderness",
+        "civic_wilderness_cordyceptic_drones": "Cordyceptic Symbionts",
+        "civic_wilderness_upkeep_twister": "Autonomous Symbionts",
+        "civic_machine_servitor_forever_cruise": "Hospitality Servitor"
       }
     },
     "french": {
@@ -180,6 +201,13 @@
         "psionics": "Psionisme",
         "statecraft": "Art de gouverner",
         "voidcraft": "Exploration du vide"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Mondovore",
+        "civic_hive_devouring_swarm_wilderness": "Contrée sauvage dévorante",
+        "civic_wilderness_cordyceptic_drones": "Symbiotes cordyceptiques",
+        "civic_wilderness_upkeep_twister": "Symbiotes autonomes",
+        "civic_machine_servitor_forever_cruise": "Serviteur accueillant"
       }
     },
     "german": {
@@ -225,6 +253,13 @@
         "psionics": "Psionik",
         "statecraft": "Staatskunst",
         "voidcraft": "Weltraumkunde"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Terravoren",
+        "civic_hive_devouring_swarm_wilderness": "Verschlingende Wildnis",
+        "civic_wilderness_cordyceptic_drones": "Parasitäre Symbionten",
+        "civic_wilderness_upkeep_twister": "Autonome Symbionten",
+        "civic_machine_servitor_forever_cruise": "Hospitalitätsservitor"
       }
     },
     "japanese": {
@@ -270,6 +305,13 @@
         "psionics": "超能力",
         "statecraft": "統治学",
         "voidcraft": "宇宙工学"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "大地を喰らうもの",
+        "civic_hive_devouring_swarm_wilderness": "貪るウィルダネス",
+        "civic_wilderness_cordyceptic_drones": "寄生共生者",
+        "civic_wilderness_upkeep_twister": "自律共生体",
+        "civic_machine_servitor_forever_cruise": "奉仕機械のもてなし"
       }
     },
     "korean": {
@@ -315,6 +357,13 @@
         "psionics": "사이오닉",
         "statecraft": "국가 운영",
         "voidcraft": "우주 공학"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "대지 포식자",
+        "civic_hive_devouring_swarm_wilderness": "포식자 광야 공생군",
+        "civic_wilderness_cordyceptic_drones": "기생 진균 공생체",
+        "civic_wilderness_upkeep_twister": "자율 공생체",
+        "civic_machine_servitor_forever_cruise": "접객 하인"
       }
     },
     "polish": {
@@ -360,6 +409,13 @@
         "psionics": "Psionika",
         "statecraft": "Biegłość polityczna",
         "voidcraft": "Technika kosmiczna"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Ziemiożerca",
+        "civic_hive_devouring_swarm_wilderness": "Nienasycona dzicz",
+        "civic_wilderness_cordyceptic_drones": "Symbionty maczużniki",
+        "civic_wilderness_upkeep_twister": "Symbionty autonomiczne",
+        "civic_machine_servitor_forever_cruise": "Sługa turystyczno-hotelarski"
       }
     },
     "russian": {
@@ -405,6 +461,13 @@
         "psionics": "Псионика",
         "statecraft": "Искусство управления",
         "voidcraft": "Приручение пустоты"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Пожиратель миров",
+        "civic_hive_devouring_swarm_wilderness": "Пожирающее дикое сознание",
+        "civic_wilderness_cordyceptic_drones": "Кордицептовые симбионты",
+        "civic_wilderness_upkeep_twister": "Автономные симбионты",
+        "civic_machine_servitor_forever_cruise": "Радушный служитель"
       }
     },
     "simp_chinese": {
@@ -450,6 +513,13 @@
         "psionics": "灵能理论",
         "statecraft": "治国术",
         "voidcraft": "宇航技术"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "噬岩者",
+        "civic_hive_devouring_swarm_wilderness": "嗜杀荒野",
+        "civic_wilderness_cordyceptic_drones": "虫草共生体",
+        "civic_wilderness_upkeep_twister": "自主共生体",
+        "civic_machine_servitor_forever_cruise": "食宿机侍"
       }
     },
     "spanish": {
@@ -495,6 +565,13 @@
         "psionics": "Psiónicas",
         "statecraft": "Estadismo",
         "voidcraft": "Arte del vacío"
+      },
+      "civicVariants": {
+        "civic_hive_devouring_swarm_lithoid": "Terrávoro",
+        "civic_hive_devouring_swarm_wilderness": "Devorar natura",
+        "civic_wilderness_cordyceptic_drones": "Simbiontes cordicépticos",
+        "civic_wilderness_upkeep_twister": "Simbiontes autónomos",
+        "civic_machine_servitor_forever_cruise": "Sirviente hospitalario"
       }
     }
   }

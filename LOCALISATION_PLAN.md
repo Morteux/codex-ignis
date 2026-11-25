@@ -30,9 +30,13 @@ no string for. Decisions taken without the owner are listed in `DECISIONS_TO_REV
   Icon matches are not used (icons are shared, the name would be wrong). Keys the matching cannot
   find, or finds wrongly, are fixed in `tools/extract/game_name_overrides.json`
   (`{"key": "set/gameId"}`, or `null` to keep the hand-written text).
-- Only names that are exactly one game item get an official string. Hand-made labels that combine
-  several items ("Miner (Wilderness)"), group several civics under one card (T1504) or describe
-  something the game does not name stay hand-written.
+- Only names that are exactly one game item get an official string from the matching. A key that
+  groups several civics under one card gets a list of targets in the overrides and its name is
+  their official names joined with " / " (T1504: "Pescadores / Máquinas marinas"); alternative names
+  that are not civics of their own (Terravore, Hospitality Servitor…) are localisation keys read from
+  the game folder (`civicVariants`). Hand-made labels that combine items with a qualifier
+  ("Cheap Thrills (Virtual hunting ground)") or describe something the game does not name stay
+  hand-written.
 
 ## 3. Output and loading
 

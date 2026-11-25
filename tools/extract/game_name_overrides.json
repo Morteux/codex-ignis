@@ -1,10 +1,55 @@
 {
-  "_comment": "Hand-kept links of tools/extract/build_game_names.py (T1502): i18n key -> \"set/gameId\" for names the id and English-name matching cannot find, or null to keep the hand-written text. Grouped civic names (\"A / B\") are skipped by the script and reviewed in T1504.",
+  "_comment": "Hand-kept links of tools/extract/build_game_names.py (T1502, T1504): i18n key -> \"set/gameId\" for names the id and English-name matching cannot find, null to keep the hand-written text, or a list of targets for a key that groups several civics under one card (their official names joined with \" / \"; civicVariants are alternative names read from the game folder).",
   "buildingColonyShelter": null,
   "buildingHabitatAdministration": "buildings/building_hab_capital",
   "buildingParadiseDomes": "buildings/building_paradise_dome",
+  "civicAnglers": [
+    "civics/civic_anglers",
+    "civics/civic_machine_anglers"
+  ],
+  "civicCorporateAnglers": [
+    "civics/civic_corporate_anglers",
+    "civics/civic_corporate_machine_anglers"
+  ],
+  "civicCorporateToxicBaths": [
+    "civics/civic_corporate_toxic_baths",
+    "civics/civic_corporate_toxic_baths_individual_machine"
+  ],
+  "civicDevouringSwarm": [
+    "civics/civic_hive_devouring_swarm",
+    "civicVariants/civic_hive_devouring_swarm_lithoid",
+    "civicVariants/civic_hive_devouring_swarm_wilderness"
+  ],
+  "civicGalacticSovereign": [
+    "civics/civic_galactic_sovereign",
+    "civics/civic_galactic_sovereign_megacorp"
+  ],
   "civicHiveAstrometeorology": "civics/civic_astrometeorology_hive",
+  "civicHiveCordycepticDrones": [
+    "civics/civic_hive_cordyceptic_drones",
+    "civicVariants/civic_wilderness_cordyceptic_drones"
+  ],
+  "civicHiveUpkeepTwister": [
+    "civics/civic_hive_upkeep_twister",
+    "civicVariants/civic_wilderness_upkeep_twister"
+  ],
   "civicMachineAstrometeorology": "civics/civic_astrometeorology_machine",
+  "civicMachineServitor": [
+    "civics/civic_machine_servitor",
+    "civicVariants/civic_machine_servitor_forever_cruise"
+  ],
+  "civicMachineToxicBaths": [
+    "civics/civic_machine_toxic_baths",
+    "civics/civic_toxic_baths"
+  ],
+  "civicToxicBaths": [
+    "civics/civic_toxic_baths",
+    "civics/civic_toxic_baths_individual_machine"
+  ],
+  "civicWarriorCulture": [
+    "civics/civic_warrior_culture",
+    "civics/civic_great_khans_vision"
+  ],
   "designationEcumenopolisFactory": "designations/col_ecu_factory",
   "designationEcumenopolisFoundry": "designations/col_ecu_foundry",
   "designationEcumenopolisIndustrial": "designations/col_ecu_industrial",

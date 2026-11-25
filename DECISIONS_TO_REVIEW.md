@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1504 — Civics with English placeholder names and grouped civic keys (2026-11-25)
+
+- [ ] **No English placeholders left**: after T1502 every civic and origin name of es and jp is an official string or a hand translation; the ones that were English (Trawling Operations / Maritime Robotics, Mutagenic Luxury / Luxury Lubrication Pools, Autonomous Drones / Autonomous Symbionts, Hyper Lubrication Basin / Mutagenic Spas, Mutagenic Spas / Lubrication Tanks) were all grouped keys and now take the official names. Gigacorp and Biodrones read the same in English and Spanish in the game itself.
+- [ ] **The 11 keys that put several civics on one card keep one card** and their name joins the official name of each civic with " / " in every language (`tools/extract/game_name_overrides.json`): Anglers + Marine Machines, Trawling Operations + Maritime Robotics, Mutagenic Luxury + Luxury Lubrication Pools, Mutagenic Spas + Lubrication Tanks, Galactic Sovereign + Corporate Sovereign, Warrior Culture + Great Khan's Vision (real civics of their own), and Devouring Swarm + Terravore + Devouring Wilderness, Cordyceptic Drones / Autonomous Drones + their Symbionts versions, Rogue Servitor + Hospitality Servitor (alternative names of one civic for Lithoid, Wilderness or Voidborne empires, localisation keys read from the game folder).
+- [ ] **To review — split or not**: the grouped cards carry one icon and one rule set for two game civics with their own icons (for example Anglers uses `Civic_anglers.png` while Marine Machines has `Civic_machine_anglers.png`, and the Anglers rule allows Machine Intelligence because of Marine Machines). Splitting them would change the bingo boards and the simulator civic list, so it is left for the owner.
+- [ ] **«Hyper Lubrication Basin / Mutagenic Spas»** (`civicMachineToxicBaths`) keeps its second name, which is the regular `civic_toxic_baths` (already its own card, `civicToxicBaths`): it may be a mistake of the original label.
+- [ ] **Official strings kept as the game writes them**, including oddities such as the Spanish «Visón del/de la gran kan» (Great Khan's Vision).
+
 ## T1503 — Every official game language on the simulator and the tech tree (2026-11-25)
 
 - [ ] **A «More» selector** after the ES / EN / JP buttons lists Português (BR), Français, Deutsch, 한국어, Polski, Русский and 简体中文 (native names, marked with their `lang`); it is highlighted when one of them is chosen. Only `planet-sim.html` and `tech-tree.html` have it.
