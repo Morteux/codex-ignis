@@ -1,0 +1,370 @@
+{
+ "rulesetId": "stellaris-pc-4.5.4",
+ "count": 2375,
+ "tiers": {
+  "1": 213,
+  "2": 520,
+  "3": 649,
+  "4": 613,
+  "5": 380
+ },
+ "baseGameTiers": {
+  "1": 211,
+  "2": 371,
+  "3": 424,
+  "4": 481,
+  "5": 288
+ },
+ "topics": {
+  "origins": {
+   "total": 112,
+   "tiers": [
+    7,
+    68,
+    25,
+    1,
+    11
+   ]
+  },
+  "civics": {
+   "total": 281,
+   "tiers": [
+    27,
+    72,
+    132,
+    25,
+    25
+   ]
+  },
+  "ethics": {
+   "total": 100,
+   "tiers": [
+    44,
+    21,
+    35,
+    0,
+    0
+   ]
+  },
+  "government": {
+   "total": 108,
+   "tiers": [
+    3,
+    26,
+    0,
+    58,
+    21
+   ]
+  },
+  "leaders": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "technology": {
+   "total": 702,
+   "tiers": [
+    53,
+    93,
+    136,
+    205,
+    215
+   ]
+  },
+  "planets": {
+   "total": 274,
+   "tiers": [
+    29,
+    42,
+    89,
+    94,
+    20
+   ]
+  },
+  "economy": {
+   "total": 414,
+   "tiers": [
+    35,
+    118,
+    135,
+    93,
+    33
+   ]
+  },
+  "policies": {
+   "total": 177,
+   "tiers": [
+    0,
+    58,
+    56,
+    48,
+    15
+   ]
+  },
+  "traditions": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "shroud": {
+   "total": 20,
+   "tiers": [
+    0,
+    0,
+    5,
+    15,
+    0
+   ]
+  },
+  "subjects": {
+   "total": 97,
+   "tiers": [
+    15,
+    12,
+    20,
+    35,
+    15
+   ]
+  },
+  "modifiers": {
+   "total": 55,
+   "tiers": [
+    0,
+    0,
+    0,
+    30,
+    25
+   ]
+  },
+  "species": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "ships": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "megastructures": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "crises": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "fallen_empires": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "events": {
+   "total": 0,
+   "tiers": [
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "astral": {
+   "total": 8,
+   "tiers": [
+    0,
+    0,
+    4,
+    4,
+    0
+   ]
+  },
+  "artifacts": {
+   "total": 27,
+   "tiers": [
+    0,
+    10,
+    12,
+    5,
+    0
+   ]
+  }
+ },
+ "templates": {
+  "ambition_technology": 4,
+  "archaeotech": 10,
+  "authority_ethic": 10,
+  "authority_feature": 7,
+  "authority_not_playable": 1,
+  "authority_term": 3,
+  "authority_variant": 20,
+  "authority_variant_base": 30,
+  "blocker_districts": 15,
+  "blocker_time": 15,
+  "branch_office": 20,
+  "branch_office_criminal": 11,
+  "branch_office_job": 25,
+  "branch_office_requirement": 4,
+  "building_days": 15,
+  "building_job": 40,
+  "building_slowest": 20,
+  "building_tech": 93,
+  "building_upgrade": 40,
+  "capital_housing": 15,
+  "capital_job": 15,
+  "capital_job_count": 14,
+  "civic_authority": 21,
+  "civic_combo": 25,
+  "civic_corporate_version": 16,
+  "civic_dlc": 40,
+  "civic_ethic_forbidden": 15,
+  "civic_ethic_required": 42,
+  "civic_group": 45,
+  "civic_incompatible": 25,
+  "civic_kind": 12,
+  "civic_not_playable": 25,
+  "civic_requires_ethic": 15,
+  "content_feature": 26,
+  "content_modifier": 40,
+  "designation_bonus": 15,
+  "designation_job": 20,
+  "designation_world": 9,
+  "district_job": 12,
+  "edict_authority": 9,
+  "edict_cost": 20,
+  "edict_dlc": 9,
+  "edict_ethic": 6,
+  "edict_lock": 15,
+  "edict_origin": 2,
+  "edict_same_resource": 25,
+  "edict_wartime": 5,
+  "ethic_authority": 12,
+  "ethic_authority_civic": 25,
+  "ethic_civic_forbidden": 20,
+  "ethic_combination": 20,
+  "ethic_combination_illegal": 20,
+  "ethic_opposite": 8,
+  "ethic_origin_forbidden": 15,
+  "ethic_points": 17,
+  "feature_blocker": 25,
+  "feature_district": 25,
+  "feature_district_amount": 20,
+  "feature_world": 20,
+  "holding": 27,
+  "holding_job": 17,
+  "holding_loyalty": 15,
+  "holding_loyalty_gain": 3,
+  "holding_overlord": 8,
+  "holding_technology": 2,
+  "job_most_output": 20,
+  "job_same_output": 25,
+  "job_same_upkeep": 20,
+  "job_stratum": 26,
+  "living_civic": 2,
+  "living_power": 15,
+  "living_power_most": 18,
+  "living_upkeep_most": 20,
+  "modifier_amount": 25,
+  "modifier_raises": 30,
+  "modifier_world": 20,
+  "option_civic": 3,
+  "option_ethic": 15,
+  "option_policy": 32,
+  "origin_authority": 4,
+  "origin_combo": 1,
+  "origin_dlc": 40,
+  "origin_ethic_forbidden": 9,
+  "origin_ethic_required": 6,
+  "origin_incompatible_civic": 25,
+  "origin_kind": 7,
+  "origin_not_playable": 11,
+  "origin_start_planet": 9,
+  "patron_gift": 4,
+  "policy_option": 32,
+  "tech_cost": 80,
+  "tech_dangerous": 20,
+  "tech_dlc": 24,
+  "tech_for_blocker": 11,
+  "tech_for_district": 5,
+  "tech_for_edict": 9,
+  "tech_highest_cost": 20,
+  "tech_highest_tier": 32,
+  "tech_limited_levels": 5,
+  "tech_prerequisite": 120,
+  "tech_rare": 15,
+  "tech_same_area": 32,
+  "tech_starting": 13,
+  "tech_tier": 200,
+  "tech_two_prerequisites": 21,
+  "tech_unlocks": 42,
+  "tech_unlocks_building": 33,
+  "tech_weight": 20,
+  "world_climate": 9,
+  "zone_job": 25
+ },
+ "correctPosition": [
+  584,
+  611,
+  579,
+  601
+ ],
+ "dlcQuestions": 600,
+ "duplicates": [],
+ "ambiguous": [],
+ "warnings": [
+  "tier 1 has 213 questions (9% of the bank, below 10%)",
+  "topic leaders has 0 questions",
+  "topic traditions has 0 questions",
+  "topic species has 0 questions",
+  "topic ships has 0 questions",
+  "topic megastructures has 0 questions",
+  "topic crises has 0 questions",
+  "topic fallen_empires has 0 questions",
+  "topic events has 0 questions",
+  "topic astral has 8 questions",
+  "topic artifacts has no questions in tier 1, 5",
+  "topic astral has no questions in tier 1, 2, 5",
+  "topic ethics has no questions in tier 4, 5",
+  "topic government has no questions in tier 3",
+  "topic modifiers has no questions in tier 1, 2, 3",
+  "topic policies has no questions in tier 1",
+  "topic shroud has no questions in tier 1, 2, 5"
+ ]
+}

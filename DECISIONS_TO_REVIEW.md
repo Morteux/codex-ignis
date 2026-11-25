@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4109 — Review of the whole bank (2026-11-25)
+
+- [ ] **Review tool** `tools/testellaris/review_bank.py` writes `data/testellaris/stellaris-pc-4.5.4/review.json` (count per topic and tier, base-game count per tier, templates, position of the correct answer, DLC share, duplicates, ambiguous questions, warnings); a test keeps it current and fails on any duplicate or ambiguous question.
+- [ ] **Result on 2,375 questions**: 0 duplicates, 0 ambiguous; the correct answer is spread evenly (584 / 611 / 579 / 601); base-game questions per tier 211 / 371 / 424 / 481 / 288, enough for many games without repeats (a game asks 5 per tier).
+- [ ] **Ambiguity rule**: a question is ambiguous when a wrong answer is the right answer of another question with the same text, or the same text and answers have another correct answer. The "which of these has the most…" templates (`building_slowest`, `job_most_output`, `living_power_most`, `living_upkeep_most`, `tech_highest_cost`, `tech_highest_tier`) are left out: they compare the four answers, and their generators only take distractors with a strictly lower value, so they have no ties (the first run flagged 59 of these, none real).
+- [ ] **Balance left as warnings, not changed**: tier 1 is 9 % of the bank (proposed threshold 10 %); technology is 30 % of the bank; ethics has no tier 4–5 questions, government none in tier 3, modifiers none in tiers 1–3; leaders, traditions, species, ships, megastructures, crises, fallen empires and events have none (T4110 and the 4.5.4 game files they need). The game page (T4202) could weight topics when it draws questions instead of trimming the bank.
+
 ## T4108 — Questions about the Shroud, astral content, artifacts, subjects and modifiers (2026-11-25)
 
 - [ ] **Done with the data the extractor has** (`q_shroud.py`, about 270 questions) and tiers: holdings among ordinary buildings (1–2); archaeotechnologies (2); planetary features of one expansion, patron gifts, holdings that raise loyalty and the overlord's civic or origin (3); modifiers of one expansion, what a modifier raises, holding jobs and overlord technology (4); loyalty and modifier values (5).

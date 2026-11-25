@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **108 / 139 tareas (78%)**
+> Progreso: **109 / 139 tareas (78%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -304,7 +304,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 - [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
   - ❓ Bloqueada: Shroud, astral and artifact content, subject holdings and modifier questions are done (`q_shroud.py`), but relics, astral rifts, Shroud events and subject types are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
-- [ ] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
+- [x] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
+  - Prueba manual: run `python tools/testellaris/review_bank.py`: it prints the table of 21 topics × 5 tiers (2375 questions, base game per tier 211 / 371 / 424 / 481 / 288), "0 duplicates, 0 ambiguous" and the balance warnings, and writes `data/testellaris/stellaris-pc-4.5.4/review.json`.
 - [ ] **T4110** (P41.10) More topics to reach thousands of questions: new extractors (one script each, added to `extract_all.py`) for species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and event texts, and their questions
 
 ## 42 · Testellaris: game page
