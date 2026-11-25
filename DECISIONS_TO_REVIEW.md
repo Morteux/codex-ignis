@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4203 — Testellaris lifelines (2026-11-25)
+
+- [ ] **The three lifelines of the GDD proposal** (§3.4): Sensor Sweep (50 %), Hyperlane Jump (skip) and Deflector Shields (second chance), with the draft names in es (Barrido de sensores, Salto hiperespacial, Escudos deflectores) and jp (センサー掃引, ハイパーレーン・ジャンプ, 偏向シールド).
+- [ ] **One lifeline per question includes the jump:** the question that replaces a skipped one cannot take another lifeline, and keeps the number of the skipped one (so "Question n" counts the questions faced, not the ones skipped).
+- [ ] **Hyperlane Jump is off** when the tier of the question has no other unasked question.
+- [ ] **The shields stay up only for that question**: if the player answers right, they are spent anyway. A crossed-out answer looks like the ones Sensor Sweep removes.
+
 ## T4202 — Testellaris game loop (2026-11-25)
 
 - [ ] **A tier that runs out** moves the game up to the next tier with questions, and the count of right answers towards the next tier starts again there (the GDD only says the next question comes from the next tier up).

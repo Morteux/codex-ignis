@@ -96,6 +96,20 @@ ENGINE_JS = """async(spec)=>{const E=await import('./js/testellaris-engine.js');
   // the four answers are shuffled every time
   const orders=new Set();for(let k=0;k<40;k++){const h=E.createGame(bank({1:1}));E.nextQuestion(h);orders.add(h.current.order.join(''))}
   out.orders=orders.size;
+  // lifelines: 50 % removes two wrong answers and halves the points; once per game; one per question
+  g=E.createGame(bank({1:10}));E.nextQuestion(g);const removed=E.useFifty(g);
+  out.fifty=[removed.length,removed.every(p=>g.current.order[p]!==0),E.canUseLifeline(g,'fifty'),E.canUseLifeline(g,'skip'),E.canUseLifeline(g,'shield'),E.answer(g,right(g)).points];
+  E.nextQuestion(g);out.fiftyAgain=E.canUseLifeline(g,'fifty');
+  // skip: another unasked question of the same tier, no points, same number; not when the tier has nothing else
+  const before=g.current.question.id,n=g.number;const next=E.useSkip(g);
+  out.skip=[next.id!==before,next.tier,g.number===n,g.score,g.answered,g.skipped[0]===before,g.asked.has(before),E.canUseLifeline(g,'shield')];
+  let h=E.createGame(bank({1:1,2:3}));E.nextQuestion(h);out.skipEmpty=E.canUseLifeline(h,'skip');
+  // shields: a wrong answer is crossed out without losing a life, the second wrong one costs it
+  h=E.createGame(bank({1:3}));E.nextQuestion(h);E.useShield(h);const w1=wrong(h);const r1=E.answer(h,w1);
+  const w2=h.current.order.findIndex((i,p)=>i!==0&&p!==w1);const r2=E.answer(h,w2);
+  out.shield=[r1.retry,h.current.removed.has(w1),r2.retry,r2.correct,h.lives,h.answered];
+  h=E.createGame(bank({1:3}));E.nextQuestion(h);E.useShield(h);out.shieldRight=[E.answer(h,right(h)).points,h.lives];
+  let threw=false;try{E.useShield(h)}catch(e){threw=true}out.shieldThrows=threw;
   return out}"""
 
 
@@ -110,6 +124,13 @@ async def engine_checks(pg):
     check("testellaris engine: questions asked in recent games are avoided and the list keeps the last 200",
           r["recent"][0] == "t1.2" and r["recent"][1] == 200 and r["recent"][2] == "a,t1.2", r["recent"])
     check("testellaris engine: the four answers are shuffled", r["orders"] > 6, r["orders"])
+    check("testellaris engine: Sensor Sweep removes two wrong answers, blocks other lifelines on that question and halves the points (50 at tier 1)",
+          r["fifty"] == [2, True, False, False, False, 50], r["fifty"])
+    check("testellaris engine: each lifeline once per game", r["fiftyAgain"] is False and r["shieldThrows"], (r["fiftyAgain"], r["shieldThrows"]))
+    check("testellaris engine: Hyperlane Jump swaps in another unasked question of the same tier, keeps the number, gives no points, and is off when the tier has nothing else",
+          r["skip"] == [True, 1, True, 50, 1, True, True, False] and r["skipEmpty"] is False, (r["skip"], r["skipEmpty"]))
+    check("testellaris engine: Deflector Shields cross out the first wrong answer without losing a life; the second wrong answer costs it",
+          r["shield"] == [True, True, False, False, 2, 1] and r["shieldRight"] == [100, 3], (r["shield"], r["shieldRight"]))
 
 
 # Position of the right / a wrong answer of the question on screen, from the bank record.
@@ -171,6 +192,7 @@ async def game_checks(pg, by_id):
     last_game = await pg.evaluate("()=>JSON.parse(localStorage.getItem('testellaris-recent'))")
     check("testellaris game: Play again starts a new game (question 1) without the questions of the last one",
           len(last_game) == 5 and again["id"] == last_game[-1] and again["id"] not in last_game[:-1] and (await pg.evaluate(HUD_JS))["n"] == "Question 1", (again["id"], last_game))
+    await lifeline_checks(pg, small)
     await pg.click("#tq-give-up")
     await pg.click(".confirm-dialog .confirm-btn:not(.is-danger)")
     still = await pg.evaluate("()=>!document.querySelector('#tq-game').hidden&&!document.querySelector('.confirm-overlay')")
@@ -180,3 +202,52 @@ async def game_checks(pg, by_id):
     check("testellaris game: Give up asks first (Keep playing goes on), then ends the game", still and gave == [False, "You gave up."], (still, gave))
     await pg.click("#tq-back-start")
     check("testellaris game: Change the DLC filter goes back to the start screen", await pg.evaluate("()=>!document.querySelector('#tq-start').hidden&&document.querySelector('#tq-end').hidden"))
+
+
+LIFELINES_JS = """()=>({buttons:[...document.querySelectorAll('.tq-lifeline')].map(b=>[b.dataset.lifeline,b.disabled,b.className.replace('tq-lifeline','').trim(),[...b.children].map(c=>c.textContent).join(' ')]),
+  status:document.querySelector('#tq-lifeline-status').textContent,removed:[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.disabled&&b.classList.contains('is-removed')),
+  score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,n:document.querySelector('#tq-hud-number').textContent,
+  answered:!document.querySelector('#tq-feedback').hidden,focus:document.activeElement.className})"""
+
+
+async def lifeline_checks(pg, small):
+    """T4203, on question 1 of a fresh game (score 0, 3 lives)."""
+    start = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: three lifelines with their names and effects, all available at the start",
+          [b[0] for b in start["buttons"]] == ["fifty", "skip", "shield"] and not any(b[1] for b in start["buttons"])
+          and start["buttons"][0][3].startswith("Sensor Sweep 50 %") and start["buttons"][1][3].startswith("Hyperlane Jump") and start["buttons"][2][3].startswith("Deflector Shields"), start["buttons"])
+    await pg.click("#tq-lifeline-fifty")
+    s = await pg.evaluate(LIFELINES_JS)
+    pos = await pg.evaluate(POSITIONS_JS, small)
+    check("testellaris lifelines: Sensor Sweep takes away two wrong answers (never the right one), says so, and locks the other lifelines for this question",
+          s["removed"].count(True) == 2 and not s["removed"][pos["right"]] and "removed two wrong answers" in s["status"]
+          and [b[1] for b in s["buttons"]] == [True, True, True] and "used" in s["buttons"][0][3] and "tq-answer" in s["focus"], s)
+    await pg.keyboard.press(str(next(i for i, r in enumerate(s["removed"]) if r) + 1))  # a removed answer cannot be picked
+    still = await pg.evaluate(LIFELINES_JS)
+    await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: a removed answer cannot be picked; the right answer with Sensor Sweep is worth half (50 at tier 1)", not still["answered"] and s["answered"] and s["score"] == "Score: 50", (still["answered"], s["score"]))
+    await pg.click("#tq-next")
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: on the next question Sensor Sweep stays used and the other two are available",
+          [b[1] for b in s["buttons"]] == [True, False, False] and "is-used" in s["buttons"][0][2] and s["status"] == "", s["buttons"])
+    await pg.click("#tq-lifeline-shield")
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: Deflector Shields show as active before answering", "is-active" in s["buttons"][2][2] and "active" in s["buttons"][2][3] and "Shields up" in s["status"], s)
+    pos = await pg.evaluate(POSITIONS_JS, small)
+    await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: with the shields a wrong answer is crossed out, costs no life and the player picks again",
+          not s["answered"] and s["removed"][pos["wrong"]] and s["lives"].endswith("Lives: 3 of 3") and "absorbed" in s["status"]
+          and "absorbed" in await pg.evaluate("()=>document.querySelector('#tq-announce').textContent"), s)
+    await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: then the right answer scores as usual (100 at tier 1)", s["answered"] and s["score"] == "Score: 150" and s["lives"].endswith("Lives: 3 of 3"), s)
+    await pg.click("#tq-next")
+    before = await pg.evaluate(POSITIONS_JS, small)
+    n = (await pg.evaluate(LIFELINES_JS))["n"]
+    await pg.click("#tq-lifeline-skip")
+    after = await pg.evaluate(POSITIONS_JS, small)
+    s = await pg.evaluate(LIFELINES_JS)
+    check("testellaris lifelines: Hyperlane Jump shows another question with the same number and score, and every lifeline is now used",
+          after["id"] != before["id"] and s["n"] == n == "Question 3" and s["score"] == "Score: 150" and not s["answered"] and all(b[1] for b in s["buttons"]) and "Hyperlane Jump" in s["status"], (before["id"], after["id"], s))

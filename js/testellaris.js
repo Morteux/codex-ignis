@@ -14,7 +14,10 @@ import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.j
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
-import { TIERS, FEW_QUESTIONS, LIVES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent } from "./testellaris-engine.js";
+import {
+    TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
+    canUseLifeline, useFifty, useSkip, useShield,
+} from "./testellaris-engine.js";
 
 export const RULESET_ID = "stellaris-pc-4.5.4";
 const BANK_URL = `data/testellaris/${RULESET_ID}/questions.json`;
@@ -48,6 +51,7 @@ let bank = null; // { rulesetId, questions } once loaded
 let loadFailed = false;
 let game = null; // the game in play or just ended (js/testellaris-engine.js)
 let lastResult = null; // result of the answer shown in the feedback, null while answering
+let lifelineStatus = null; // i18n key of the last lifeline message of the current question
 
 /** Replaces {name} placeholders of an interface text. */
 export function format(text, values) {
@@ -171,6 +175,7 @@ function startGame() {
 /** Next question, or the end screen when the game is over. */
 function advance() {
     lastResult = null;
+    lifelineStatus = null;
     announceEl.textContent = "";
     const question = game.over ? null : nextQuestion(game);
     if (!question) {
@@ -192,6 +197,41 @@ function renderHud() {
     hearts.setAttribute("aria-hidden", "true");
     hearts.textContent = "♥".repeat(game.lives) + "♡".repeat(LIVES - game.lives);
     el("tq-hud-lives").replaceChildren(hearts, " ", livesText());
+    renderLifelines();
+}
+
+/** The three lifeline buttons: name, what it does, and whether it is used, active or available. */
+function renderLifelines() {
+    for (const name of LIFELINES) {
+        const button = el(`tq-lifeline-${name}`);
+        const used = game.lifelines[name];
+        const active = name === "shield" && game.current.shield;
+        const title = document.createElement("span");
+        title.className = "tq-lifeline-name";
+        title.textContent = t(lang, `tqLifeline_${name}`);
+        const hint = document.createElement("span");
+        hint.className = "tq-lifeline-hint";
+        hint.textContent = active ? t(lang, "tqLifelineActive") : used ? t(lang, "tqLifelineUsed") : t(lang, `tqLifelineHint_${name}`);
+        button.replaceChildren(title, hint);
+        button.disabled = !canUseLifeline(game, name);
+        button.classList.toggle("is-used", used && !active);
+        button.classList.toggle("is-active", active);
+    }
+    el("tq-lifeline-status").textContent = lifelineStatus ? t(lang, lifelineStatus) : "";
+}
+
+const LIFELINE_ACTIONS = { fifty: [useFifty, "tqFiftyDone"], skip: [useSkip, "tqSkipDone"], shield: [useShield, "tqShieldOn"] };
+
+function onLifeline(name) {
+    if (!game || !canUseLifeline(game, name)) return;
+    const [use, message] = LIFELINE_ACTIONS[name];
+    use(game);
+    lifelineStatus = message;
+    if (name === "skip") writeStorage(RECENT_STORAGE_KEY, mergeRecent(readStorage(RECENT_STORAGE_KEY, []), game));
+    renderGame();
+    // the focus goes on: to the question after a jump, else to the first answer left
+    if (name === "skip") questionEl.focus();
+    else answersEl.querySelector(".tq-answer:not(:disabled)")?.focus();
 }
 
 /** Draws the current question in the current language, with the answer order of the game. */
@@ -250,6 +290,13 @@ function pick(position) {
     if (!game || game.over || !game.current || game.current.answered || game.current.removed.has(position)) return;
     const tierBefore = game.tier;
     const result = answer(game, position);
+    if (result.retry) { // Deflector Shields: that answer is crossed out, pick again
+        lifelineStatus = "tqShieldHit";
+        renderGame();
+        announceEl.textContent = t(lang, "tqShieldHit");
+        answersEl.querySelector(".tq-answer:not(:disabled)")?.focus();
+        return;
+    }
     lastResult = { ...result, tierUp: !game.over && game.tier > tierBefore ? game.tier : null };
     renderGame();
     const { question } = game.current;
@@ -338,6 +385,7 @@ el("tq-dlc-none").addEventListener("click", () => setAllDlcs(false));
 startButton.addEventListener("click", startGame);
 el("tq-next").addEventListener("click", advance);
 el("tq-give-up").addEventListener("click", giveUp);
+LIFELINES.forEach((name) => el(`tq-lifeline-${name}`).addEventListener("click", () => onLifeline(name)));
 el("tq-play-again").addEventListener("click", startGame);
 el("tq-back-start").addEventListener("click", () => { showScreen("start"); startButton.focus(); });
 document.addEventListener("keydown", onKeyDown);

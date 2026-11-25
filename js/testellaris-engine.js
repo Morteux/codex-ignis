@@ -60,7 +60,9 @@ export function createGame(questions, { recent = [], rng = Math.random } = {}) {
         score: 0,
         answered: 0,
         correct: 0,
-        number: 0, // questions shown so far (the current one included)
+        number: 0, // questions shown so far (the current one included; a skipped one is replaced, not counted)
+        lifelines: Object.fromEntries(LIFELINES.map((name) => [name, false])), // true once used
+        skipped: [], // ids replaced with Hyperlane Jump
         current: null,
         history: [], // { id, tier, correct, chosen, points } per answered question
         over: false,
@@ -81,7 +83,9 @@ function showQuestion(game, question) {
     game.current = {
         question,
         order: shuffle([0, 1, 2, 3], game.rng),
-        removed: new Set(), // shown positions taken away by a lifeline
+        removed: new Set(), // shown positions taken away by Sensor Sweep or crossed out by the shields
+        lifeline: null, // the lifeline used on this question (one per question)
+        shield: false, // Deflector Shields up: the next wrong answer is crossed out instead of costing a life
         answered: false,
     };
     return question;
@@ -108,41 +112,92 @@ export function nextQuestion(game) {
     return null;
 }
 
-/** Points of a right answer at `tier` (GDD §3.5). */
-export function pointsFor(tier) {
-    return 100 * tier;
+/** Points of a right answer at `tier`, half of them with Sensor Sweep on the question (GDD §3.5). */
+export function pointsFor(tier, fifty = false) {
+    return fifty ? 50 * tier : 100 * tier;
+}
+
+// ── Lifelines (GDD §3.4): each once per game, only before answering, one per question ──
+
+/** fifty = Sensor Sweep (50 %), skip = Hyperlane Jump, shield = Deflector Shields (second chance). */
+export const LIFELINES = ["fifty", "skip", "shield"];
+
+export function canUseLifeline(game, name) {
+    const current = game.current;
+    if (game.over || !current || current.answered || current.lifeline || game.lifelines[name]) return false;
+    return name !== "skip" || candidates(game, current.question.tier).length > 0;
+}
+
+function spendLifeline(game, name) {
+    if (!canUseLifeline(game, name)) throw new Error(`lifeline ${name} not available`);
+    game.lifelines[name] = true;
+    game.current.lifeline = name;
+}
+
+/** Sensor Sweep: takes away two wrong answers at random; returns their shown positions. */
+export function useFifty(game) {
+    spendLifeline(game, "fifty");
+    const { order, question, removed } = game.current;
+    const wrong = shuffle([0, 1, 2, 3].filter((position) => order[position] !== question.correct), game.rng).slice(0, 2);
+    wrong.forEach((position) => removed.add(position));
+    return wrong;
+}
+
+/** Hyperlane Jump: replaces the question with another unasked one of the same tier; no points either way. */
+export function useSkip(game) {
+    const { tier, id } = game.current.question;
+    spendLifeline(game, "skip");
+    game.skipped.push(id);
+    const pool = candidates(game, tier);
+    game.number -= 1; // the new question takes the number of the skipped one
+    const question = showQuestion(game, pool[Math.floor(game.rng() * pool.length)]);
+    game.current.lifeline = "skip";
+    return question;
+}
+
+/** Deflector Shields: raised before answering; the next wrong answer of this question is crossed out without losing a life. */
+export function useShield(game) {
+    spendLifeline(game, "shield");
+    game.current.shield = true;
 }
 
 /**
  * The player picks the answer shown at `position` (0–3). Returns
- * { correct, points, correctPosition, livesLost } and updates the score, lives and tier.
+ * { correct, points, correctPosition, livesLost, retry } and updates the score, lives and tier.
+ * With the shields up a wrong pick only crosses that answer out (`retry`: pick again).
  */
 export function answer(game, position) {
     const current = game.current;
-    if (!current || current.answered || game.over) throw new Error("no question to answer");
+    if (!current || current.answered || game.over || current.removed.has(position)) throw new Error("no question to answer");
     const { question } = current;
     const chosen = current.order[position];
     const correct = chosen === question.correct;
     const correctPosition = current.order.indexOf(question.correct);
+    if (!correct && current.shield) {
+        current.shield = false;
+        current.removed.add(position);
+        current.shieldHit = position;
+        return { correct: false, points: 0, correctPosition, livesLost: 0, retry: true };
+    }
     current.answered = true;
     current.chosenPosition = position;
     game.answered += 1;
     let points = 0;
     if (correct) {
-        points = pointsFor(question.tier);
+        points = pointsFor(question.tier, current.lifeline === "fifty");
         game.score += points;
         game.correct += 1;
         game.correctInTier += 1;
     } else {
         game.lives -= 1;
     }
-    game.history.push({ id: question.id, tier: question.tier, correct, chosen, points });
+    game.history.push({ id: question.id, tier: question.tier, correct, chosen, points, lifeline: current.lifeline });
     if (game.lives <= 0) endGame(game, "lives");
     else if (correct && game.correctInTier >= CORRECT_TO_ADVANCE && game.tier < MAX_TIER) {
         game.tier += 1;
         game.correctInTier = 0;
     }
-    return { correct, points, correctPosition, livesLost: correct ? 0 : 1 };
+    return { correct, points, correctPosition, livesLost: correct ? 0 : 1, retry: false };
 }
 
 export function endGame(game, reason) {

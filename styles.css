@@ -4684,3 +4684,68 @@ body.has-tech-card .tech-board {
     color: var(--text);
     font-weight: 700;
 }
+
+.tq-lifelines {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    gap: .5rem;
+}
+
+.tq-lifeline {
+    display: grid;
+    gap: .2rem;
+    min-height: 44px;
+    padding: .5rem .7rem;
+    border: 1px solid var(--slot-limited);
+    color: var(--text);
+    background: var(--surface);
+    font: .72rem/1.4 var(--mono);
+    text-align: left;
+    cursor: pointer;
+}
+
+.tq-lifeline:hover:not(:disabled) {
+    background: var(--surface-raised);
+}
+
+.tq-lifeline:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.tq-lifeline:disabled {
+    cursor: default;
+    opacity: .55;
+}
+
+.tq-lifeline.is-used {
+    border-color: var(--line-soft);
+    opacity: .4;
+}
+
+.tq-lifeline.is-active {
+    border-color: var(--warning);
+    opacity: 1;
+}
+
+.tq-lifeline-name {
+    color: var(--slot-limited);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.tq-lifeline.is-active .tq-lifeline-name {
+    color: var(--warning);
+}
+
+.tq-lifeline-hint {
+    color: var(--muted);
+}
+
+.tq-lifeline-status {
+    margin: 0;
+    min-height: 1.2em;
+    color: var(--slot-limited);
+    font: .78rem/1.5 var(--mono);
+}
