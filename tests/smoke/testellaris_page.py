@@ -399,7 +399,22 @@ END_JS = """()=>{const dl=[...document.querySelectorAll('#tq-end-stats > *')];co
 HUD_JS ="()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:document.querySelector('#tq-hud-number').textContent,score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
 
 
+def source_en(q):
+    src = q["source"]
+    if src.get("kind") == "wiki":
+        return "Source: Stellaris Wiki (4.5.2), %s · %s" % (src["article"], src["section"])
+    return "Source: %s · %s" % (src["file"], src["key"])
+
+
+SOURCE_JS = """async()=>{const m=await import('./js/testellaris.js');const w={source:{kind:'wiki',article:'Ambition',section:'Galactic Nemesis'}};const g={source:{file:'common/x.txt',key:'k'}};
+  return [m.sourceText(w,'en'),m.sourceText(w,'es'),m.sourceText(w,'jp'),m.sourceText(g,'en')]}"""
+
+
 async def game_checks(pg, by_id):
+    texts = await pg.evaluate(SOURCE_JS)
+    check("testellaris page: a wiki question cites the wiki article and section in every language, a game question its file and key (T4401)",
+          texts == ["Source: Stellaris Wiki (4.5.2), Ambition · Galactic Nemesis", "Fuente: wiki de Stellaris (4.5.2), Ambition · Galactic Nemesis",
+                    "出典：Stellaris Wiki（4.5.2）、Ambition・Galactic Nemesis", "Source: common/x.txt · k"], texts)
     small = {k: {"answers": v["answers"], "correct": v["correct"]} for k, v in by_id.items()}
     await pg.evaluate("()=>localStorage.removeItem('testellaris-recent')")
     await pg.click("#tq-start-btn")
@@ -449,7 +464,7 @@ async def game_checks(pg, by_id):
           end["game"] and end["end"] and end["reason"] == "You have no lives left." and end["stats"] == {"Score": "100", "Tier reached": "Tier 1 · Primitive", "Correct answers": "1 of 4", "Lifelines used": "none"}
           and end["focus"] == "tq-end-title", end)
     expected = [[qid, by_id[qid]["text"]["en"], "Your answer: " + chosen, "Correct answer: " + by_id[qid]["answers"]["en"][by_id[qid]["correct"]], by_id[qid]["explanation"]["en"],
-                 "Source: %s · %s" % (by_id[qid]["source"]["file"], by_id[qid]["source"]["key"])] for qid, chosen in picks]
+                 source_en(by_id[qid])] for qid, chosen in picks]
     check("testellaris end screen: every failed question with the answer given, the correct one, the explanation and the source", end["failed"] == expected and end["none"], (end["failed"], expected))
     await pg.click(".lang-btn[data-lang=es]")
     es = await pg.evaluate(END_JS)

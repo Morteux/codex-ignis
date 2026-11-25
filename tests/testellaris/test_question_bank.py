@@ -72,6 +72,28 @@ class ValidatorTest(unittest.TestCase):
         self.assertInvalid(bank(variant(source={"file": "common/x.txt"})), "source needs")
         self.assertInvalid(bank(variant(source={"file": "", "key": "x"})), "source needs")
 
+    def test_wiki_source(self):
+        wiki = {"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}
+        good = variant(id="crises.wiki.galactic_nemesis_crisis_level", topic="crises", source=wiki)
+        checked = variant(id="crises.wiki.checked", topic="crises", source=dict(wiki, file="common/ascension_perks/00_ascension_perks.txt", key="ap_become_the_crisis"))
+        self.assertEqual(qb.validate(bank(good, checked), set()), [])
+        self.assertInvalid(bank(variant(id="crises.wiki.x", topic="crises", source=dict(wiki, section=""))), "article and a section")
+        self.assertInvalid(bank(variant(id="crises.wiki.x", topic="crises", source={"kind": "wiki", "section": "x"})), "article and a section")
+        self.assertInvalid(bank(variant(id="crises.wiki.x", topic="crises", source=dict(wiki, kind="forum"))), "unknown source kind")
+        self.assertInvalid(bank(variant(id="crises.wiki.x", topic="crises", source=dict(wiki, url="https://x"))), "unknown source field url")
+        self.assertInvalid(bank(variant(id="crises.wiki.x", topic="crises", source=dict(wiki, file="common/x.txt"))), "both a game file and a key")
+        self.assertInvalid(bank(variant(id="crises.hand.x", topic="crises", source=wiki)), "template 'wiki'")
+        self.assertInvalid(bank(variant(id="technology.wiki.tech_lasers_1")), "only for wiki sources")
+
+    def test_wiki_source_against_local_copy(self):
+        if not os.path.isdir(qb.WIKI_DIR):
+            self.skipTest("no local copy of the wiki")
+        q = lambda article, section: variant(id="crises.wiki.x", topic="crises", source={"kind": "wiki", "article": article, "section": section})
+        self.assertEqual(qb.validate(bank(q("Ambition", "Galactic Nemesis")), set(), qb.WIKI_DIR), [])
+        self.assertEqual(qb.validate(bank(q("Ambition", "Ambition")), set(), qb.WIKI_DIR), [])
+        self.assertTrue(any("not in the local copy" in e for e in qb.validate(bank(q("No Such Article", "x")), set(), qb.WIKI_DIR)))
+        self.assertTrue(any("has no section" in e for e in qb.validate(bank(q("Ambition", "No such section")), set(), qb.WIKI_DIR)))
+
     def test_correct_answer(self):
         for c in (-1, 4, "0", None):
             self.assertInvalid(bank(variant(correct=c)), "correct")
@@ -101,7 +123,7 @@ class BankTest(unittest.TestCase):
             self.skipTest("no question bank yet")
         b = qb.load(path)
         self.assertEqual(b["rulesetId"], qb.DEFAULT_RULESET)
-        self.assertEqual(qb.validate(b, qb.dlc_names()), [])
+        self.assertEqual(qb.validate(b, qb.dlc_names(), qb.WIKI_DIR), [])
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **127 / 145 tareas (88%)**
+> Progreso: **128 / 145 tareas (88%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -348,7 +348,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 
 ## 44 · Testellaris: questions from the wiki (owner, 2026-11-26)
 Owner's decision of 2026-11-26: besides the extractor output, Testellaris may also use the community wiki (local copy in `C:/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki`, `v4-5-2`), written by players, for deeper and more interesting questions (lore, mechanics, strategy, history of the game) than the automated numeric ones. This replaces the "never the wiki" rule of `TESTELLARIS_GDD.md` §5.3 (Sources).
-- [ ] **T4401** (P44.1) Wiki as a question source: update `TESTELLARIS_GDD.md` (sources, how a wiki fact is cited: article and section; facts that are numbers or names are checked against the 4.5.4 extractor data when it has them, and wiki facts that changed after 4.5.2 are not used), the question bank format and validator (`source` of kind `wiki` with article and section), the DLC tagging of wiki questions and the review tool (`review_bank.py` counts them apart); questions written in our own words, never copied text
+- [x] **T4401** (P44.1) Wiki as a question source: update `TESTELLARIS_GDD.md` (sources, how a wiki fact is cited: article and section; facts that are numbers or names are checked against the 4.5.4 extractor data when it has them, and wiki facts that changed after 4.5.2 are not used), the question bank format and validator (`source` of kind `wiki` with article and section), the DLC tagging of wiki questions and the review tool (`review_bank.py` counts them apart); questions written in our own words, never copied text
+  - Prueba manual: run `python tools/testellaris/review_bank.py`: the report has a "wiki questions: 0 …" line and "0 copied"; a question with `source: {"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}` and id `crises.wiki.<x>` passes `python tools/testellaris/question_bank.py`, and in `testellaris.html` its source reads "Source: Stellaris Wiki (4.5.2), Ambition · Galactic Nemesis".
 - [ ] **T4402** (P44.2) First batch of wiki questions (about 150, all tiers, es/en/jp with the official game names): read wiki articles and write questions about lore, mechanics, events, crises, origins' stories and other details the game files do not give as data; each one cites its article; mark doubtful ones as drafts in `DECISIONS_TO_REVIEW.md`
   - Modelo: sonnet
 

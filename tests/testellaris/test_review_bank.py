@@ -66,6 +66,26 @@ class ReviewTest(unittest.TestCase):
         self.assertEqual(r["correctPosition"], [1, 0, 1, 0])
         self.assertEqual(r["dlcQuestions"], 1)
         self.assertTrue(any("tier 2" in w for w in r["warnings"]))
+        self.assertEqual(r["wiki"]["count"], 0)
+
+    def test_wiki_questions_counted_apart(self):
+        a = question("economy.hand.a", ["A", "B", "C", "D"])
+        w = question("crises.wiki.w", ["E", "F", "G", "H"], text="Which of these is another thing?")
+        w.update(tier=3, dlc=["Nemesis"], source={"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis", "file": "common/x.txt", "key": "x"})
+        r = rb.report(bank(a, w), wiki_dir=None)
+        self.assertEqual(r["count"], 2)
+        self.assertEqual(r["wiki"], {"count": 1, "tiers": {1: 0, 2: 0, 3: 1, 4: 0, 5: 0}, "topics": {"crises": 1}, "dlcQuestions": 1, "checkedAgainstData": 1})
+        self.assertEqual(r["copied"], [])
+
+    def test_copied_wiki_text_is_found(self):
+        if not os.path.isdir(qb.WIKI_DIR):
+            self.skipTest("no local copy of the wiki")
+        own = question("crises.wiki.own", ["A", "B", "C", "D"], text="At which level does a Galactic Nemesis become a crisis for everyone?")
+        own["source"] = {"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}
+        copied = copy.deepcopy(own)
+        copied["id"] = "crises.wiki.copied"
+        copied["explanation"]["en"] = "It should be noted that only upon reaching the fifth ambition level is the empire treated as a crisis."
+        self.assertEqual([qid for qid, _ in rb.find_copied([own, copied])], ["crises.wiki.copied"])
 
 
 class GeneratedBankReviewTest(unittest.TestCase):
@@ -80,6 +100,9 @@ class GeneratedBankReviewTest(unittest.TestCase):
 
     def test_no_ambiguous(self):
         self.assertEqual(self.report["ambiguous"], [])
+
+    def test_no_copied_wiki_text(self):
+        self.assertEqual(self.report["copied"], [])
 
     def test_every_tier_has_base_game_questions(self):
         for t in qb.TIERS:

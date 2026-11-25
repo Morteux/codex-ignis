@@ -8,7 +8,7 @@ question_bank.validate. Every template asks a fact read from one field of one da
 the official es/en/jp names of the game localisation; an item whose name is missing, repeated
 inside its set or still holds formatting codes is not asked. Re-runnable for a new game version:
 the ids (`<topic>.<template>.<game id>`) and the random choices (seeded by the id) are stable, and
-hand-written questions already in the bank (template "hand") are kept as they are.
+hand-written questions already in the bank (templates "hand" and "wiki") are kept as they are.
 
 --check regenerates in memory and fails if the bank on disk differs (used by the tests).
 """
@@ -739,7 +739,7 @@ def generate(data_dir, existing=None, cap=CAP):
         module.generate(b)
         caps.update(module.CAPS)
     questions = capped(b.out, cap, caps)
-    hand = [q for q in (existing or {}).get("questions", []) if q.get("id", "").split(".")[1:2] == ["hand"]]
+    hand = [q for q in (existing or {}).get("questions", []) if q.get("id", "").split(".")[1:2] in (["hand"], [qb.WIKI_TEMPLATE])]
     ids = {q["id"] for q in hand}
     questions = sorted(hand + [q for q in questions if q["id"] not in ids], key=lambda q: q["id"])
     return {

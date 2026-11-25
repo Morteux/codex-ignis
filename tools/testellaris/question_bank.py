@@ -25,6 +25,15 @@ A bank is `data/testellaris/<rulesetId>/questions.json`:
 `source` may also hold "loc" (the localisation key, when the fact is a text). Hand-written
 questions use "hand" as their template part of the id and are kept by the generator (T4111).
 
+Questions from the community wiki (T4401, GDD §5.3) use "wiki" as their template part of the id
+and cite the article and section of the local 4.5.2 copy instead of a game file:
+
+    "source": {"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}
+
+plus "file", "key" (and "loc") of the extractor data a number or name was checked against, when
+the data has it. Every "wiki" id has a wiki source and every wiki source a "wiki" id. When the
+local wiki copy exists, the article must be one of its files and the section one of its headings.
+
 Run `python tools/testellaris/question_bank.py [bank.json]` to validate a bank from the shell.
 """
 import json, os, re, sys
@@ -41,6 +50,12 @@ TOPICS = (
 FIELDS = {"id", "tier", "topic", "dlc", "source", "text", "answers", "correct", "explanation", "icon"}
 REQUIRED = FIELDS - {"icon"}
 SOURCE_FIELDS = {"file", "key", "loc"}
+WIKI_SOURCE_FIELDS = {"kind", "article", "section"} | SOURCE_FIELDS
+WIKI_TEMPLATE = "wiki"
+# Local copy of the community wiki (owner, section 44): one Markdown file per article.
+WIKI_VERSION = "4.5.2"
+WIKI_DIR = os.path.join(os.path.dirname(ROOT), "Codex Ignis Wiki", "markdown", "v4-5-2").replace("\\", "/")
+HEADING_RE = re.compile(r"^#{1,6}\s+(.+?)\s*#*\s*$", re.M)
 ID_RE = re.compile(r"^([a-z_]+)\.([a-z0-9_]+)\.([A-Za-z0-9_.:@-]+)$")
 # Formatting codes of the game localisation (§Y … §!, £icon£, $variable$, [scope.Name]) must never reach a question.
 UNRESOLVED_RE = re.compile(r"[§£]|\$[A-Za-z_]|\[[A-Za-z_]+\.")
@@ -70,12 +85,37 @@ def dlc_names(ruleset_id=DEFAULT_RULESET):
     return {d["name"] for d in load(path)["items"]}
 
 
+_headings = {}
+
+
+def wiki_article_path(article, wiki_dir=WIKI_DIR):
+    return f"{wiki_dir}/{article}.md"
+
+
+def wiki_headings(article, wiki_dir=WIKI_DIR):
+    """Headings of a wiki article of the local copy (the title is the first), or None if it has no file."""
+    path = wiki_article_path(article, wiki_dir)
+    if path not in _headings:
+        if not os.path.exists(path):
+            _headings[path] = None
+        else:
+            with open(path, encoding="utf-8") as f:
+                _headings[path] = [h.strip() for h in HEADING_RE.findall(f.read())]
+    return _headings[path]
+
+
+def is_wiki(q):
+    src = q.get("source") if isinstance(q, dict) else None
+    return isinstance(src, dict) and src.get("kind") == "wiki"
+
+
 def _text(value):
     return isinstance(value, str) and value.strip() != ""
 
 
-def validate_question(q, known_dlc=None):
-    """Errors of one question record (empty list = valid)."""
+def validate_question(q, known_dlc=None, wiki_dir=None):
+    """Errors of one question record (empty list = valid). With `wiki_dir`, wiki sources are checked
+    against the local copy of the wiki (article file and section heading)."""
     if not isinstance(q, dict):
         return ["question is not an object"]
     qid = q.get("id")
@@ -107,9 +147,32 @@ def validate_question(q, known_dlc=None):
             if d not in known_dlc:
                 err(f"unknown DLC {d!r}")
     src = q.get("source")
-    if not isinstance(src, dict) or not _text(src.get("file")) or not _text(src.get("key")):
+    wiki_id = bool(m) and m.group(2) == WIKI_TEMPLATE
+    if isinstance(src, dict) and "kind" in src:
+        if src["kind"] != "wiki":
+            err(f"unknown source kind {src['kind']!r}")
+        elif not _text(src.get("article")) or not _text(src.get("section")):
+            err("wiki source needs an article and a section")
+        else:
+            for f in sorted(src.keys() - WIKI_SOURCE_FIELDS):
+                err(f"unknown source field {f}")
+            if ("file" in src) != ("key" in src) or ("file" in src and not (_text(src["file"]) and _text(src["key"]))):
+                err("wiki source checked against the data needs both a game file and a key")
+            if "loc" in src and not _text(src["loc"]):
+                err("source loc must be a localisation key")
+            if not wiki_id and m:
+                err(f"wiki question needs the template {WIKI_TEMPLATE!r} in its id")
+            if wiki_dir and os.path.isdir(wiki_dir):
+                heads = wiki_headings(src["article"], wiki_dir)
+                if heads is None:
+                    err(f"wiki article {src['article']!r} is not in the local copy")
+                elif src["section"].strip() not in heads:
+                    err(f"wiki article {src['article']!r} has no section {src['section']!r}")
+    elif not isinstance(src, dict) or not _text(src.get("file")) or not _text(src.get("key")):
         err("source needs a game file and a key")
     else:
+        if wiki_id:
+            err(f"template {WIKI_TEMPLATE!r} is only for wiki sources")
         for f in sorted(src.keys() - SOURCE_FIELDS):
             err(f"unknown source field {f}")
         if "loc" in src and not _text(src["loc"]):
@@ -151,7 +214,7 @@ def validate_question(q, known_dlc=None):
     return errors
 
 
-def validate(bank, known_dlc=None):
+def validate(bank, known_dlc=None, wiki_dir=None):
     """Errors of a whole bank (empty list = valid): every question, unique ids, header and count."""
     if not isinstance(bank, dict) or not isinstance(bank.get("questions"), list):
         return ["bank must be an object with a questions list"]
@@ -162,7 +225,7 @@ def validate(bank, known_dlc=None):
         errors.append(f"count {bank.get('count')!r} is not the number of questions ({len(bank['questions'])})")
     seen = set()
     for q in bank["questions"]:
-        errors += validate_question(q, known_dlc)
+        errors += validate_question(q, known_dlc, wiki_dir)
         qid = q.get("id") if isinstance(q, dict) else None
         if qid in seen:
             errors.append(f"{qid}: duplicate id")
@@ -174,10 +237,11 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
     path = sys.argv[1] if len(sys.argv) > 1 else bank_path()
     bank = load(path)
-    errors = validate(bank, dlc_names(bank.get("rulesetId") or DEFAULT_RULESET))
+    errors = validate(bank, dlc_names(bank.get("rulesetId") or DEFAULT_RULESET), WIKI_DIR)
     for e in errors:
         print(e)
-    print(f"{path}: {len(bank.get('questions', []))} questions, {len(errors)} errors")
+    wiki = sum(1 for q in bank.get("questions", []) if is_wiki(q))
+    print(f"{path}: {len(bank.get('questions', []))} questions ({wiki} from the wiki), {len(errors)} errors")
     return 1 if errors else 0
 
 

@@ -63,6 +63,13 @@ export function format(text, values) {
     return text.replace(/\{(\w+)\}/g, (match, name) => (name in values ? values[name] : match));
 }
 
+/** Source line of a question: game file and key, or the wiki article and section (GDD §5.3). */
+export function sourceText(question, lang) {
+    const source = question.source;
+    if (source.kind === "wiki") return format(t(lang, "tqSourceWiki"), { article: source.article, section: source.section });
+    return format(t(lang, "tqSource"), { file: source.file, key: source.key });
+}
+
 function readStorage(key, fallback) {
     try {
         const value = window.localStorage.getItem(key);
@@ -340,7 +347,7 @@ function renderFeedback() {
     if (lastResult.tierUp) lines.push(format(t(lang, "tqTierUp"), { tier: lastResult.tierUp, name: tierName(lastResult.tierUp) }));
     result.textContent = lines.join(" ");
     el("tq-feedback-explanation").textContent = question.explanation[lang];
-    el("tq-feedback-source").textContent = format(t(lang, "tqSource"), { file: question.source.file, key: question.source.key });
+    el("tq-feedback-source").textContent = sourceText(question, lang);
 }
 
 function pick(position) {
@@ -469,7 +476,7 @@ function renderFailed(failed) {
             ["tq-failed-yours", format(t(lang, "tqYourAnswer"), { answer: answerText(question, entry.chosen) })],
             ["tq-failed-right", format(t(lang, "tqRightAnswer"), { answer: answerText(question, question.correct) })],
             ["tq-failed-explanation", question.explanation[lang]],
-            ["tq-source", format(t(lang, "tqSource"), { file: question.source.file, key: question.source.key })],
+            ["tq-source", sourceText(question, lang)],
         ];
         item.append(...lines.map(([className, text]) => {
             const p = document.createElement("p");

@@ -11,12 +11,16 @@ whole and reports what a player would notice:
   answers repeat a text in one language once case and width are folded;
   (comparative templates, "which of these has the most…", are left out: see COMPARATIVE);
 - balance: questions per tier and per topic, per template, position of the correct answer, share of
-  DLC questions; tiers or topics far below the others are listed as warnings.
+  DLC questions; tiers or topics far below the others are listed as warnings;
+- wiki questions (T4401): counted apart (per tier, per topic, with a DLC, checked against the
+  extractor data) and, when the local wiki copy exists, compared with their article: an English
+  text, answer or explanation that repeats COPY_WORDS words in a row of the article is reported as
+  copied (questions are written in our own words, GDD §5.3).
 
 Run `python tools/testellaris/review_bank.py [bank.json] [--json report.json]`; it prints the count
-report and exits with 1 when it finds duplicates or ambiguous questions.
+report and exits with 1 when it finds duplicates, ambiguous or copied questions.
 """
-import argparse, collections, json, os, sys, unicodedata
+import argparse, collections, json, os, re, sys, unicodedata
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import question_bank as qb
@@ -34,6 +38,43 @@ COMPARATIVE = {
     "building_slowest", "job_most_output", "living_power_most", "living_upkeep_most",
     "tech_highest_cost", "tech_highest_tier",
 }
+
+# Words in a row shared with the wiki article that count as copied text (proposal T4401).
+COPY_WORDS = 8
+WORD_RE = re.compile(r"[a-z0-9]+(?:['’][a-z]+)?")
+# Markdown of the wiki copy that is not prose: images and link targets.
+MARKUP_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)|\]\([^)]*\)")
+
+
+def _words(text):
+    return WORD_RE.findall(MARKUP_RE.sub(" ", _fold(text)))
+
+
+def _runs(words, n=COPY_WORDS):
+    return {tuple(words[i:i + n]) for i in range(len(words) - n + 1)}
+
+
+def find_copied(questions, wiki_dir=qb.WIKI_DIR):
+    """[(id, problem)]: wiki questions whose English text repeats COPY_WORDS words of their article."""
+    out = []
+    if not wiki_dir or not os.path.isdir(wiki_dir):
+        return out
+    articles = {}
+    for q in questions:
+        if not qb.is_wiki(q):
+            continue
+        article = q["source"]["article"]
+        if article not in articles:
+            path = qb.wiki_article_path(article, wiki_dir)
+            articles[article] = set()
+            if os.path.exists(path):
+                with open(path, encoding="utf-8") as f:
+                    articles[article] = _runs(_words(f.read()))
+        runs = articles[article]
+        for field, texts in (("text", [q["text"]["en"]]), ("answers", q["answers"]["en"]), ("explanation", [q["explanation"]["en"]])):
+            if any(_runs(_words(t)) & runs for t in texts):
+                out.append((q["id"], f"{field} copies {COPY_WORDS} or more words in a row of the wiki article {article!r}"))
+    return out
 
 
 def _fold(text):
@@ -87,7 +128,7 @@ def find_ambiguous(questions):
     return out
 
 
-def report(bank):
+def report(bank, wiki_dir=qb.WIKI_DIR):
     questions = bank["questions"]
     n = len(questions)
     tiers = collections.Counter(q["tier"] for q in questions)
@@ -96,6 +137,9 @@ def report(bank):
     templates = collections.Counter(q["id"].split(".")[1] for q in questions)
     positions = collections.Counter(q["correct"] for q in questions)
     dlc = sum(1 for q in questions if q["dlc"])
+    wiki = [q for q in questions if qb.is_wiki(q)]
+    wiki_tiers = collections.Counter(q["tier"] for q in wiki)
+    wiki_topics = collections.Counter(q["topic"] for q in wiki)
     base = collections.Counter(q["tier"] for q in questions if not q["dlc"])
     warnings = []
     for t in qb.TIERS:
@@ -123,8 +167,16 @@ def report(bank):
         "templates": dict(sorted(templates.items())),
         "correctPosition": [positions[p] for p in range(4)],
         "dlcQuestions": dlc,
+        "wiki": {
+            "count": len(wiki),
+            "tiers": {t: wiki_tiers[t] for t in qb.TIERS},
+            "topics": dict(sorted(wiki_topics.items())),
+            "dlcQuestions": sum(1 for q in wiki if q["dlc"]),
+            "checkedAgainstData": sum(1 for q in wiki if "file" in q["source"]),
+        },
         "duplicates": [list(p) for p in find_duplicates(questions)],
         "ambiguous": [list(p) for p in find_ambiguous(questions)],
+        "copied": [list(p) for p in find_copied(questions, wiki_dir)],
         "warnings": warnings,
     }
 
@@ -138,13 +190,20 @@ def print_report(r):
     print(f"{'base game':<16}" + "".join(f"{r['baseGameTiers'][t]:>6}" for t in qb.TIERS))
     print("correct answer position: " + ", ".join(f"{p}: {v}" for p, v in enumerate(r["correctPosition"])))
     print(f"templates: {len(r['templates'])}")
+    w = r["wiki"]
+    print(f"wiki questions: {w['count']} (" + ", ".join(f"T{t}: {w['tiers'][t]}" for t in qb.TIERS)
+          + f"), {w['dlcQuestions']} need a DLC, {w['checkedAgainstData']} checked against the extractor data")
+    if w["topics"]:
+        print("wiki topics: " + ", ".join(f"{k}: {v}" for k, v in w["topics"].items()))
     for a, b in r["duplicates"]:
         print(f"DUPLICATE {b} repeats {a}")
     for qid, why in r["ambiguous"]:
         print(f"AMBIGUOUS {qid}: {why}")
+    for qid, why in r["copied"]:
+        print(f"COPIED {qid}: {why}")
     for w in r["warnings"]:
         print(f"warning: {w}")
-    print(f"{len(r['duplicates'])} duplicates, {len(r['ambiguous'])} ambiguous, {len(r['warnings'])} warnings")
+    print(f"{len(r['duplicates'])} duplicates, {len(r['ambiguous'])} ambiguous, {len(r['copied'])} copied, {len(r['warnings'])} warnings")
 
 
 def report_path(ruleset_id=qb.DEFAULT_RULESET):
@@ -169,7 +228,7 @@ def main(argv=None):
         with open(out, "w", encoding="utf-8", newline="\n") as f:
             f.write(dumps(r))
         print(f"report written to {out}")
-    return 1 if r["duplicates"] or r["ambiguous"] else 0
+    return 1 if r["duplicates"] or r["ambiguous"] or r["copied"] else 0
 
 
 if __name__ == "__main__":

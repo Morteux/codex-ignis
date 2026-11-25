@@ -85,6 +85,7 @@ No timer: the game is about knowledge, not reading speed, and a timer would need
 - The start screen (T4201) lists the DLCs of `dlc.json` that are installed with the game and `affects_gameplay` (26 in 4.5.4: expansions, story packs and species packs; the portrait packs do not change any question), grouped by category in release order, as the DLC bingo. All are checked by default, with "All" and "None" buttons; the choice is remembered in `localStorage`.
 - A question is asked only if **every** DLC of its `dlc` list is checked; questions without DLC (base game) are always in.
 - The `dlc` names of a question are the ones the extractor writes for its item (`host_has_dlc` triggers, the same strings as `dlc.json`'s `name`), so the filter needs no mapping table. A question about a DLC item whose data carries no DLC trigger (for example a building only reachable through a DLC origin) takes the DLC of the item that unlocks it, written by the generator or by hand with its source.
+- **Wiki questions** (§5.3) are tagged by hand with the same `dlc.json` names: the DLC of the item the fact is about when the extractor data has it (its `host_has_dlc`), otherwise the DLC the wiki article or section says the content needs ("Available only with the … DLC" notes, DLC icons in tables). A fact that needs two DLCs lists both; a base-game fact whose wiki section mentions no DLC has `[]`. When the wiki and the extractor data disagree on the DLC, the data wins **(proposal T4401)**.
 - If the filter leaves fewer than 20 questions in a tier **(proposal)**, the start screen warns that the game will finish early.
 - **(Proposal)** One shared hall of fame for every filter; each entry stores how many DLCs were checked, shown next to the score.
 
@@ -92,15 +93,15 @@ No timer: the game is about knowledge, not reading speed, and a timer would need
 
 ### 5.1 Format
 
-One JSON record per question, inside a bank `{rulesetId, gameVersion, count, questions: [...]}`. The schema and its validator live in `tools/testellaris/question_bank.py` (T4101; tests in `tests/testellaris/`): every field below is required except `icon`, no other field is allowed, ids are unique, `tier` is 1–5, `topic` is one of the validator's `TOPICS`, every `dlc` name is a `name` of `dlc.json`, `source` has `file` and `key` (and optionally `loc`), `text`, `explanation` and `answers` have es, en and jp, `answers` holds four distinct texts per language, `correct` is 0–3 and no text keeps a localisation code (`§`, `£`, `$var$`).
+One JSON record per question, inside a bank `{rulesetId, gameVersion, count, questions: [...]}`. The schema and its validator live in `tools/testellaris/question_bank.py` (T4101; tests in `tests/testellaris/`): every field below is required except `icon`, no other field is allowed, ids are unique, `tier` is 1–5, `topic` is one of the validator's `TOPICS`, every `dlc` name is a `name` of `dlc.json`, `source` has `file` and `key` (and optionally `loc`), or is a wiki source (`kind: "wiki"`, `article` and `section` of the local copy, optionally `file`/`key`/`loc`, only with the `wiki` template, §5.3), `text`, `explanation` and `answers` have es, en and jp, `answers` holds four distinct texts per language, `correct` is 0–3 and no text keeps a localisation code (`§`, `£`, `$var$`).
 
 | Field | Content |
 | --- | --- |
-| `id` | Unique, stable across regenerations: `<topic>.<template or "hand">.<game id>` (**proposal**), so the "recently asked" list (§3.2) and bug reports survive a new version. |
+| `id` | Unique, stable across regenerations: `<topic>.<template, "hand" or "wiki">.<game id or slug>` (**proposal**), so the "recently asked" list (§3.2) and bug reports survive a new version. |
 | `tier` | 1–5 (§3.1). |
 | `topic` | One of the topics of section 41: `origins`, `civics`, `ethics`, `government`, `technology`, `planets`, `economy`, `policies`, `shroud`… |
 | `dlc` | List of DLC names (§4); empty for the base game. |
-| `source` | Game file and key (`common/governments/civics/00_civics.txt`, `civic_corvee_system`), plus the localisation key when the fact is a text. |
+| `source` | Game file and key (`common/governments/civics/00_civics.txt`, `civic_corvee_system`), plus the localisation key when the fact is a text. Wiki questions: `{"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}`, plus `file` and `key` (and `loc`) of the extractor data the fact was checked against, when it has it (§5.3). |
 | `text`, `answers`, `explanation` | es/en/jp each: the question, its four answers and a one- or two-sentence explanation. |
 | `correct` | Index of the correct answer in `answers` (the page shuffles them). |
 | `icon` | Optional path of an icon in the assets repository (`STELLARIS_ASSETS_BASE`) shown with the question, when the question is about an item that has one and the icon does not give the answer away. |
@@ -112,10 +113,19 @@ One JSON record per question, inside a bank `{rulesetId, gameVersion, count, que
 - No negative questions ("which is NOT…") unless the four answers are clear; no "all of the above".
 - Numbers as the game shows them (percentages for multipliers: `0.15` → 15 %).
 - Hand-written questions follow the same format and cite their source the same way; a question without a source fails the validator.
+- Wiki questions are written **in our own words** in the three languages, never copied from the article: `review_bank.py` reports an English text, answer or explanation that repeats 8 or more words in a row of its article as copied and fails (**proposal T4401**).
 
 ### 5.3 Sources
 
-- **Only the extractor output** (owner): `data/generated/<rulesetId>/*.json` and its localisation, including the description texts. Never the wiki, never memory.
+Owner's decision of 2026-11-26 (section 44) replaces the former rule "only the extractor output, never the wiki". Never memory.
+
+- **Extractor output**: `data/generated/<rulesetId>/*.json` and its localisation, including the description texts. The generated questions (`generate_questions.py`) come only from here.
+- **Community wiki**, written by players: the local copy in `C:/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki` (`markdown/v4-5-2/<Article>.md`, version 4.5.2), for deeper questions than the numeric ones: lore, mechanics, events, crises, origins' stories, strategy, history of the game. Wiki questions are written by hand (template `wiki` in the id, kept by the generator like `hand`) and follow these rules:
+  - **Citation**: `source.kind` is `wiki`, `source.article` the article (the file name without `.md`, which is the wiki page title) and `source.section` the heading of the section that holds the fact (the article title for its introduction). The validator checks both against the local copy when it exists; the page shows "Source: Stellaris Wiki (4.5.2), <article> · <section>".
+  - **Checked against the data**: a fact that is a number or a game name (a cost, a duration, a modifier, the name of a civic, event or trait) is checked against the 4.5.4 extractor data when the data has it; the question then also cites that `file` and `key` and uses the data's value and the official localised names (§5.2). If the data says something else, the data wins and the question is rewritten or dropped.
+  - **Version**: the copy describes 4.5.2. Facts that changed after 4.5.2 (the 4.5.4 data differs, or the article marks them as changed in a later patch) are not used. Facts about the history of the game (which version or DLC added something) are fine when the article states them.
+  - **Own words**: never copied text (§5.2). Doubtful facts stay as drafts in `DECISIONS_TO_REVIEW.md` until the owner checks them.
+  - **Counted apart**: `review_bank.py` reports the wiki questions on their own (per tier, per topic, with a DLC, checked against the data) besides the totals, in `review.json` under `wiki`.
 - New topics need a new extractor first (T4110), added to `extract_all.py`.
 - When the data and what the game shows might differ (values changed by scripted effects or by other modifiers), the question is not asked.
 

@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4401 — Wiki questions in the Testellaris bank (2026-11-26)
+
+- **Source format**: `{"kind": "wiki", "article", "section"}` with optional `file`/`key`/`loc` when a number or name was checked against the extractor data; ids use the template `wiki` (`<topic>.wiki.<slug>`), and the validator requires the template and the wiki source to go together. Game-file sources keep their old shape (no `kind`), so the 2375 generated questions did not change.
+- **Article and section** are the Markdown file name and a heading of the local copy (`Codex Ignis Wiki/markdown/v4-5-2`); the validator checks them only when that folder exists, so the checks pass on a machine without the copy.
+- **Copy check**: `review_bank.py` fails on a wiki question whose English text, an answer or the explanation shares 8 words in a row with its article (words folded to lower case, image and link markup removed). 8 is a guess: short shared phrases like game names are allowed.
+- **DLC tagging**: the data's DLC when the extractor has the item, otherwise the DLC the wiki section names; on disagreement the data wins.
+- **Page**: the source line of a wiki question reads "Source: Stellaris Wiki (4.5.2), <article> · <section>" (new key `tqSourceWiki`).
+
 ## T3603 — Place of the tech tree detail card (2026-11-26)
 
 - [ ] **A panel floating over the top-right corner of the tree window** (23rem wide, as tall as the window at most, its own scroll), instead of a side drawer or an area under the tree: the tree window keeps its size and position when the card opens or closes, the card stays next to the tree it describes, and the window's scroll bar stays free. A fixed area under the tree would push the rest of the page and be out of sight with the 85 % tall window (T3602); a drawer over the whole tree would hide more of it.

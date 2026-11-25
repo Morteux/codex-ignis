@@ -82,8 +82,11 @@ class BankFactsTest(unittest.TestCase):
 
     def test_hand_questions_are_kept(self):
         hand = dict(self.bank["questions"][0], id="technology.hand.test_keep")
-        bank = dict(self.bank, questions=self.bank["questions"] + [hand])
-        self.assertIn(hand, gq.generate(DATA, bank)["questions"])
+        wiki = dict(self.bank["questions"][0], id="technology.wiki.test_keep", source={"kind": "wiki", "article": "Technology", "section": "Technology"})
+        bank = dict(self.bank, questions=self.bank["questions"] + [hand, wiki])
+        out = gq.generate(DATA, bank)["questions"]
+        self.assertIn(hand, out)
+        self.assertIn(wiki, out)
 
     def test_every_template_and_tier_present(self):
         templates = {q["id"].split(".")[1] for q in self.bank["questions"]}

@@ -346,8 +346,22 @@
   601
  ],
  "dlcQuestions": 600,
+ "wiki": {
+  "count": 0,
+  "tiers": {
+   "1": 0,
+   "2": 0,
+   "3": 0,
+   "4": 0,
+   "5": 0
+  },
+  "topics": {},
+  "dlcQuestions": 0,
+  "checkedAgainstData": 0
+ },
  "duplicates": [],
  "ambiguous": [],
+ "copied": [],
  "warnings": [
   "tier 1 has 213 questions (9% of the bank, below 10%)",
   "topic leaders has 0 questions",
