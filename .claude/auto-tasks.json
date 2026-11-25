@@ -1,6 +1,7 @@
 {
   "tasksFile": "tasks.md",
   "defaultModel": "opus",
+  "push": true,
   "verify": "Comprueba la sintaxis de cada archivo JS que hayas tocado con `node --check <archivo>`. Después ejecuta las pruebas de navegador desde la raíz con `BLOCK_REMOTE=1 python tests/policies-smoke.py` (o `python3`) y corrige los fallos hasta que no quede ninguno. Si la tarea añade funcionalidad, añade sus comprobaciones a `tests/policies-smoke.py`.",
   "allowedTools": [
     "Bash(node --check*)",
