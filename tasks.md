@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **130 / 146 tareas (89%)**
+> Progreso: **130 / 147 tareas (88%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -356,6 +356,14 @@ Owner's decision of 2026-11-26: besides the extractor output, Testellaris may al
 - [x] **T4402** (P44.2) First batch of wiki questions (about 150, all tiers, es/en/jp with the official game names): read wiki articles and write questions about lore, mechanics, events, crises, origins' stories and other details the game files do not give as data; each one cites its article; mark doubtful ones as drafts in `DECISIONS_TO_REVIEW.md`
   - Modelo: sonnet
   - Prueba manual: run `python tools/testellaris/review_bank.py`: "wiki questions: 156 (T1: 24, T2: 35, T3: 34, T4: 39, T5: 24)" and 0 duplicates, ambiguous or copied; in `testellaris.html` play a few games: some questions (origins, the Shroud, crises, leaders…) show "Source: Stellaris Wiki (4.5.2), <article> · <section>" after answering, in es/en/jp.
+- [ ] **T4403** (P44.3) Thematic categories of questions, named after the game's research areas plus unity (owner, 2026-11-26), each with its colour (the tech tree tints for the first three, the game's unity yellow for the last):
+  - **Engineering** (orange) — the numbers of the game: base costs and upkeep of buildings, districts and technologies, job outputs, technology tiers and research costs, ship component and megastructure figures, percentages of modifiers, policies and edicts.
+  - **Physics** (blue) — how the galaxy and its mechanics work: which technology unlocks what and prerequisite chains, planet classes and habitability, planetary features and blockers, anomalies, astral rifts and the Shroud as mechanics, combat, FTL and sensors, how crises play out.
+  - **Society** (green) — species and how empires are built: species traits, ethics, authorities and governments, civics and origins (requirements and effects), factions, leaders and the council, pops, strata and living standards.
+  - **Unity** (yellow) — the empire's identity and the story of the galaxy: traditions, ascension perks and ambitions, the lore of events, precursors, fallen empires, crises and the Shroud's entities, the stories of the origins, and the history of the game itself (DLCs and their content, from the wiki).
+  - Add a required `category` field to the question bank (validator, `TESTELLARIS_GDD.md`), filled by every template of the generator and every hand-written or wiki question (one category each; the topic gives the default, the template or the question may override it); `review_bank.py` reports category × tier and warns when a category is thin in a tier.
+  - In `testellaris.html`: each question shows its category (name and colour); the start screen lets the player choose the categories (all by default, remembered like the DLC filter, with the count of available questions); the game draws from the chosen ones keeping the tiers. Texts in es/en/jp; smoke tests; proposals in `DECISIONS_TO_REVIEW.md`.
+  - If a category ends with too few questions in some tier, add a new task (sonnet) with the questions it still needs, from the extractor data or the wiki.
 
 ## 15 · Official localization (all at once, before the final check)
 - [x] **T1501** (P15.1) Translation plan from the extractor localisation (T2503, T2520): every game name and text keyed by game id, which languages each page gets, how interface texts without an official string are handled
