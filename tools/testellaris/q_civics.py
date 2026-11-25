@@ -98,11 +98,11 @@ def groups(b, empires, civics):
         wrong = gq.pick(rng, it.names, cands, lambda k: civics[k].group == "regular" and it.group != "corporate", pool=80)
         if wrong:
             b.add("civics", "civic_group", key, it.tier, it.raw, it.dlc,
-                  _sentence(f"¿Cuál de estos principios es exclusivo de la autoridad {aname['es']}?",
+                  _sentence(f"¿Cuál de estos principios es exclusivo de la autoridad «{aname['es']}»?",
                             f"Which of these civics is exclusive to the {aname['en']} authority?",
                             f"統治形態「{aname['jp']}」専用の国是はどれ？"),
                   it.names, [w[1] for w in wrong],
-                  _sentence(f"{it.names['es']} exige la autoridad {aname['es']}; los otros tres no se pueden elegir con ella.",
+                  _sentence(f"{it.names['es']} exige la autoridad «{aname['es']}»; los otros tres no se pueden elegir con ella.",
                             f"{it.names['en']} requires the {aname['en']} authority; the other three cannot be taken with it.",
                             f"「{it.names['jp']}」には統治形態「{aname['jp']}」が必要で、他の3つはこの統治形態では選べません。"),
                   gq._icon(it.raw))
@@ -350,7 +350,7 @@ def combos(b, empires, items, set_name):
                         f"Which combination of authority and ethic allows {the[1]} {x.names['en']}?",
                         f"{the[2]}「{x.names['jp']}」を選べる統治形態と倫理観の組み合わせはどれ？"),
               joined(a, e), [w[1] for w in wrong],
-              _sentence(f"{x.names['es']} se puede elegir con la autoridad {anames[a]['es']} y la ética {enames[e]['es']}; las otras combinaciones no lo permiten.",
+              _sentence(f"{x.names['es']} se puede elegir con la autoridad «{anames[a]['es']}» y la ética {enames[e]['es']}; las otras combinaciones no lo permiten.",
                         f"{x.names['en']} can be taken with the {anames[a]['en']} authority and the ethic {enames[e]['en']}; the other combinations do not allow it.",
                         f"「{x.names['jp']}」は統治形態「{anames[a]['jp']}」と倫理観「{enames[e]['jp']}」で選べます。他の組み合わせでは選べません。"),
               gq._icon(x.raw))

@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4103 — Questions about ethics and government (2026-11-25)
+
+- [ ] **Done with the data the extractor has** (`q_government.py`): topic `ethics` (points, tier 1–2; legal and illegal pairs, 1–2; civics and origins an ethic rules out, 3) and topic `government` (authority facts, 1–2; which ethics and authorities go together, 2; term length, 4; civic allowed by an authority and an ethic, 4; authority variants, 4–5; the authority players cannot pick, 5). About 200 questions with the opposite ethics of T4111.
+- [ ] **Left blocked**: council positions, leader classes and traits, and government type names (`common/governments/*.txt`): no data set holds them, and the installed game is 4.6.0, so they cannot be extracted for 4.5.4 (T2526).
+- [ ] **Authority facts** are the fields of `common/governments/authorities` (heir, re-election, mandates, factions, reform, term years); civics or origins that change them are not considered.
+
 ## T4102 — Questions about origins and civics (2026-11-25)
 
 - [ ] **New templates** (`q_civics.py`) and tiers: "which is an origin / a civic" (1), megacorporation, hive and machine civics (3), allowed authority (2), civic that requires an ethic, incompatibilities and corporate version (3), origin ethics and starting world (2), authority + ethic combination (4), civics of non-player countries and origins not offered at empire creation (5). Each has its own cap per tier (12–25), so the two topics hold about 400 questions with those of T4111, more than the "about 150" per batch: lower the caps if the bank gets unbalanced (T4109).

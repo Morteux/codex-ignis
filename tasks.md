@@ -288,6 +288,7 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `civics.civic_combo.civic_imperial_cult`: "Which combination of authority and ethic allows the civic Imperial Cult?" (tier 4, correct "Imperial + Authoritarian"), with es and jp texts; `python -m unittest discover -s tests/testellaris` passes.
 - [ ] **T4103** (P41.3) Questions: ethics, government, authorities, council and leaders (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
+  - ❓ Bloqueada: Ethics and authority questions are done (`q_government.py`), but council, leaders and government type names are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 - [ ] **T4104** (P41.4) Questions: technology and research (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
 - [ ] **T4105** (P41.5) Questions: planets and colonies: planet classes, planetary features and modifiers, designations, districts, specializations, capital buildings (from the extractor output, written by hand where a template does not fit)
