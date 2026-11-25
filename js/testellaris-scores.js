@@ -2,12 +2,16 @@
  * Testellaris top 10 (TESTELLARIS_GDD.md §3.5, §7): the shared hall of fame when it can be
  * reached, else a local top 10 kept in localStorage (T4205). No DOM here.
  *
- * The shared board is a Vercel function (section 43). Until the game is connected to it (T4303),
- * `hallOfFame.client` is null and every call falls back to the local top 10. A client is an
- * object { load(rulesetId) → entries, submit(entry) → entries } whose promises reject when the
- * board cannot be reached; nothing is queued to be sent later (GDD §7.2).
+ * The shared board is the Vercel function api/hall-of-fame.js (section 43); `apiClient()` talks
+ * to it and the page sets it as `hallOfFame.client` when served over http(s) (T4303). While
+ * `hallOfFame.client` is null (file://) every call uses the local top 10. A client is an object
+ * { load(rulesetId) → entries, submit(entry) → entries or { entries, entry, saved } } whose
+ * promises reject when the board cannot be reached (then the local top 10 is used; nothing is
+ * queued to be sent later, GDD §7.2), or reject with a HallOfFameRejected when the board refuses
+ * the name (the player can change it).
  *
- * Entry: { name, score, maxTier, answered, correct, dlcs (DLCs checked), rulesetId, date (ISO) }.
+ * Entry: { name, score, maxTier, answered, correct, correctByTier (right answers of tiers 1–5),
+ * dlcs (DLCs checked), rulesetId, date (ISO) }.
  */
 
 export const TOP_SIZE = 10;
@@ -113,14 +117,69 @@ export async function loadBoard(rulesetId) {
     return { shared: false, entries: loadLocal(rulesetId) };
 }
 
-/** Sends an entry to the shared board, or keeps it in the local one when that cannot be reached. */
+/**
+ * Sends an entry to the shared board, or keeps it in the local one when that cannot be reached.
+ * Returns { shared, entries, entry (as saved: the shared board sets the date), saved (false when
+ * the score no longer enters the shared top 10) }, or { shared: true, rejected: "name" } when the
+ * shared board refuses the name.
+ */
 export async function submitEntry(entry) {
     if (hallOfFame.client) {
         try {
-            return { shared: true, entries: sortEntries(await hallOfFame.client.submit(entry)) };
+            const result = await hallOfFame.client.submit(entry);
+            const sent = Array.isArray(result) ? { entries: result } : result;
+            return { shared: true, entries: sortEntries(sent.entries), entry: sent.entry || entry, saved: sent.saved !== false };
         } catch (error) {
+            if (error instanceof HallOfFameRejected) return { shared: true, rejected: error.code };
             console.warn("Testellaris: hall of fame not reachable, local top 10", error);
         }
     }
-    return { shared: false, entries: saveLocal(entry) };
+    return { shared: false, entries: saveLocal(entry), entry, saved: true };
+}
+
+// ── Client of the shared board (api/hall-of-fame.js) ────────────────────────
+
+export const API_URL = "/api/hall-of-fame";
+/** Fields the API accepts, exactly (it sets the date itself and rejects any other field). */
+export const SUBMIT_FIELDS = ["name", "score", "maxTier", "answered", "correct", "correctByTier", "dlcs", "rulesetId"];
+/** A request that takes longer counts as "cannot be reached". */
+export const API_TIMEOUT_MS = 8000;
+
+/** The shared board refused the entry for a reason the player can fix (`code`: "name"). */
+export class HallOfFameRejected extends Error {
+    constructor(code) {
+        super(`hall of fame rejected: ${code}`);
+        this.code = code;
+    }
+}
+
+/** Client of the shared board; `fetchImpl` lets the tests answer without a server. */
+export function apiClient({ url = API_URL, fetchImpl = (...args) => fetch(...args), timeoutMs = API_TIMEOUT_MS } = {}) {
+    async function request(target, init) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const response = await fetchImpl(target, { ...init, signal: controller.signal, headers: { Accept: "application/json", ...init.headers } });
+            const body = await response.json().catch(() => null);
+            return { status: response.status, ok: response.ok, body };
+        } finally {
+            clearTimeout(timer);
+        }
+    }
+    const entriesOf = (reply, what) => {
+        if (!reply.ok || !Array.isArray(reply.body?.entries)) throw new Error(`hall of fame ${what}: ${reply.status}`);
+        return reply.body.entries.filter(isEntry);
+    };
+    return {
+        async load(rulesetId) {
+            return entriesOf(await request(`${url}?ruleset=${encodeURIComponent(rulesetId)}`, { method: "GET" }), "GET");
+        },
+        async submit(entry) {
+            const body = JSON.stringify(Object.fromEntries(SUBMIT_FIELDS.map((field) => [field, entry[field]])));
+            const reply = await request(url, { method: "POST", headers: { "Content-Type": "application/json" }, body });
+            if (reply.status === 400 && reply.body?.error === "name") throw new HallOfFameRejected("name");
+            const entries = entriesOf(reply, "POST");
+            return { entries, entry: isEntry(reply.body.entry) ? reply.body.entry : null, saved: reply.body.saved !== false };
+        },
+    };
 }

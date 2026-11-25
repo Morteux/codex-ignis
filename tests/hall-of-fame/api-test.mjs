@@ -154,4 +154,23 @@ function entry(name, byTier, { wrong = 0, half = 0, bonus = 0, ...extra } = {}) 
     check("hall of fame rate limit: the hash depends on the salt and on the first forwarded address", clientKey(req, "a") !== clientKey(req, "b") && clientKey(req, "a") === clientKey({ headers: { "x-real-ip": "192.0.2.1" } }, "a"));
 }
 
+// ── T4303: the game's client (js/testellaris-scores.js) against this handler ──
+{
+    const S = await import("../../js/testellaris-scores.js");
+    const handle = createHandler({ store: memoryStore(), now, salt: "s" });
+    const fetchImpl = async (url, init) => {
+        const parsed = new URL(url, "http://localhost");
+        const res = await call(handle, init.method, { query: Object.fromEntries(parsed.searchParams), body: init.body });
+        return new Response(JSON.stringify(res.body), { status: res.statusCode });
+    };
+    const client = S.apiClient({ fetchImpl });
+    const local = { ...entry("Ignis", [5, 3]), date: "2026-11-25T09:00:00.000Z" };
+    const sent = await client.submit(local);
+    const loaded = await client.load(RULESET);
+    let refused = null;
+    try { await client.submit({ ...local, name: "fuck" }); } catch (error) { refused = error instanceof S.HallOfFameRejected && error.code; }
+    check("hall of fame API + game client: the game's entry is accepted as sent (date replaced by the server's), listed by GET, and a refused name raises HallOfFameRejected",
+        sent.saved && sent.entry.name === "Ignis" && sent.entry.date !== local.date && loaded.length === 1 && loaded[0].score === 1100 && refused === "name", { sent, loaded, refused });
+}
+
 console.log(JSON.stringify(results));

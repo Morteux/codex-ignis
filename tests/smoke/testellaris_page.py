@@ -152,6 +152,20 @@ SCORES_JS = """async()=>{const S=await import('./js/testellaris-scores.js');cons
   S.hallOfFame.client={load:()=>Promise.reject(new Error('offline')),submit:()=>Promise.reject(new Error('offline'))};
   const off=await S.loadBoard('rs');const kept=await S.submitEntry(e('me',20));
   out.offline=[off.shared,kept.shared,kept.entries.map(x=>x.name).join(','),S.loadLocal('rs').length];
+  // the API client (T4303): requests, answers and every way the board cannot be reached
+  localStorage.removeItem(S.LOCAL_STORAGE_KEY);const calls=[];const reply=(status,body)=>new Response(body===undefined?'oops':JSON.stringify(body),{status});
+  const api=(answer)=>S.apiClient({url:'/api/hall-of-fame',timeoutMs:200,fetchImpl:async(url,init)=>{calls.push([url,init.method,init.body&&JSON.parse(init.body),init.headers['Content-Type']]);return answer(url,init)}});
+  const mine={...e('me',300,2,3),correctByTier:[2,1,0,0,0],date:'1999-01-01T00:00:00Z',extra:'x'};
+  S.hallOfFame.client=api((url,init)=>init.method==='GET'?reply(200,{rulesetId:'rs',entries:[e('srv',900),{name:'bad'}]}):reply(201,{saved:true,entry:{...mine,date:'2026-11-25T12:00:00.000Z'},entries:[e('srv',900),{...mine,date:'2026-11-25T12:00:00.000Z'}]}));
+  const got=await S.loadBoard('stellaris-pc-4.5.4');const put=await S.submitEntry(mine);
+  out.api=[got.shared,got.entries.map(x=>x.name).join(','),calls[0][0],calls[0][1],put.shared,put.saved,put.entry.date,Object.keys(calls[1][2]).join(','),calls[1][3],S.loadLocal('rs').length];
+  S.hallOfFame.client=api(()=>reply(400,{error:'name'}));const named=await S.submitEntry(mine);
+  S.hallOfFame.client=api(()=>reply(200,{saved:false,entries:[e('srv',900)]}));const late=await S.submitEntry(mine);
+  out.answers=[named.rejected,named.shared,S.loadLocal('rs').length,late.shared,late.saved];
+  const down=[];
+  for(const answer of [()=>reply(503,{error:'unavailable'}),()=>reply(429,{error:'rate'}),()=>reply(400,{error:'score'}),()=>reply(404),()=>Promise.reject(new TypeError('Failed to fetch')),(u,init)=>new Promise((_,no)=>init.signal.addEventListener('abort',()=>no(new Error('aborted'))))]){
+    S.hallOfFame.client=api(answer);down.push((await S.loadBoard('rs')).shared,(await S.submitEntry(e('me',20))).shared)}
+  out.down=[down.every(x=>x===false),S.loadLocal('rs').length];
   S.hallOfFame.client=null;localStorage.removeItem(S.LOCAL_STORAGE_KEY);
   return out}"""
 
@@ -164,6 +178,51 @@ async def scores_checks(pg):
           r["local"] == [10, "n11", "n2", 1] and r["broken"] == 0, (r["local"], r["broken"]))
     check("testellaris top 10: the shared board is used when it answers; the local top 10 when it cannot be reached (and the score is kept there)",
           r["none"] is False and r["remote"] == [True, "remote", True, 0] and r["offline"] == [False, False, "me", 1], (r["none"], r["remote"], r["offline"]))
+    check("testellaris hall of fame API client: GET /api/hall-of-fame?ruleset=…, POST JSON with exactly the API fields (no date), the server's entry and date kept, malformed entries dropped, nothing saved locally",
+          r["api"] == [True, "srv", "/api/hall-of-fame?ruleset=stellaris-pc-4.5.4", "GET", True, True, "2026-11-25T12:00:00.000Z",
+                       "name,score,maxTier,answered,correct,correctByTier,dlcs,rulesetId", "application/json", 0], r["api"])
+    check("testellaris hall of fame API client: a refused name is returned to the player (not saved locally); a score overtaken meanwhile says saved false",
+          r["answers"] == ["name", True, 0, True, False], r["answers"])
+    check("testellaris hall of fame API client: 503, 429, other 400s, 404, a network error and a timeout all fall back to the local top 10, where the score is kept",
+          r["down"] == [True, 6], r["down"])
+
+
+SHARED_JS = """async()=>{const S=await import('./js/testellaris-scores.js');
+  window.__hof={posts:[],answers:['name','ok'],board:[{name:'Srv',score:5000,maxTier:3,answered:12,correct:12,dlcs:26,rulesetId:'%s',date:'2026-11-01T00:00:00Z'}]};
+  S.hallOfFame.client=S.apiClient({fetchImpl:async(url,init)=>{const h=window.__hof;const json=(status,body)=>new Response(JSON.stringify(body),{status});
+    if(init.method==='GET')return json(200,{rulesetId:'%s',entries:h.board});
+    const b=JSON.parse(init.body);h.posts.push(b);
+    if(h.answers.shift()==='name')return json(400,{error:'name'});
+    const entry={...b,date:'2026-11-25T12:00:00.000Z'};delete entry.correctByTier;h.board=[...h.board,entry];
+    return json(201,{saved:true,entry,entries:h.board})}})}"""
+
+
+async def shared_board_checks(pg, small):
+    """With the API client (T4303): the shared top 10, a name the server refuses, then saved in the shared board."""
+    await pg.evaluate(SHARED_JS % (RULESET, RULESET))
+    await pg.evaluate("()=>localStorage.removeItem('testellaris-top10')")
+    await play_and_give_up(pg, small, 2)
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: with the API the end screen shows the shared top 10 (no 'cannot be reached' notice) and offers the name",
+          s["form"] and s["source"].startswith("The 10 best scores of every player") and [row[2] for row in s["rows"]] == ["Srv"], s)
+    await pg.fill("#tq-name", "Badword")
+    await pg.press("#tq-name", "Enter")
+    await pg.wait_for_function("()=>document.querySelector('#tq-name-error').textContent", timeout=10000)
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: a name the hall of fame refuses shows a generic message, keeps the form and the focus, and saves nothing locally",
+          s["form"] and s["error"] == "This name cannot be used in the hall of fame. Choose another one." and s["invalid"] == "true" and s["focus"] == "tq-name"
+          and await pg.evaluate("()=>localStorage.getItem('testellaris-top10')") is None, s)
+    await pg.fill("#tq-name", "Ignis")
+    await pg.press("#tq-name", "Enter")
+    await pg.wait_for_function("()=>!document.querySelector('#tq-saved').hidden", timeout=10000)
+    s = await pg.evaluate(END_TOP_JS)
+    posts = await pg.evaluate("()=>window.__hof.posts")
+    check("testellaris hall of fame: Save sends the entry with its right answers per tier and no date, says it is in the hall of fame and highlights the server's entry",
+          not s["form"] and s["saved"] == "Saved in the hall of fame." and [row[:3] for row in s["rows"]] == [[False, "1", "Srv"], [True, "2", "Ignis"]]
+          and len(posts) == 2 and posts[1]["name"] == "Ignis" and posts[1]["score"] == 200 and posts[1]["correctByTier"] == [2, 0, 0, 0, 0] and "date" not in posts[1]
+          and await pg.evaluate("()=>localStorage.getItem('testellaris-top10')") is None, (s, posts))
+    await pg.evaluate("async()=>{const S=await import('./js/testellaris-scores.js');S.hallOfFame.client=null;delete window.__hof}")
+    await pg.click("#tq-back-start")
 
 
 async def top_list_checks(pg):
@@ -252,6 +311,7 @@ async def name_checks(pg, small):
     await pg.wait_for_function("()=>document.querySelector('#tq-top-list li')", timeout=10000)
     start_rows = await pg.evaluate("()=>[...document.querySelectorAll('#tq-top-list li .tq-top-name')].map(n=>n.textContent)")
     check("testellaris hall of fame: the saved score is on the start screen top 10", start_rows == ["宇宙の 王"], start_rows)
+    await shared_board_checks(pg, small)
     # a full board of better scores: no name input
     full = [{"name": "p%d" % i, "score": 10000 - i, "maxTier": 5, "answered": 30, "correct": 30, "dlcs": 26, "rulesetId": RULESET, "date": "2026-11-01T00:00:00Z"} for i in range(10)]
     await pg.evaluate("(e)=>localStorage.setItem('testellaris-top10',JSON.stringify({'%s':e}))" % RULESET, full)

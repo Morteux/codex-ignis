@@ -14,7 +14,7 @@ import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.j
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
-import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX } from "./testellaris-scores.js";
+import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX, hallOfFame, apiClient } from "./testellaris-scores.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
     canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
@@ -385,7 +385,8 @@ async function loadEndBoard() {
 /** The top 10 entry of an ended game (GDD §7.1), without its name and date. */
 function entryOf(ended) {
     const result = summary(ended);
-    return { score: result.score, maxTier: result.maxTier, answered: result.answered, correct: result.correct, dlcs: ended.dlcCount, rulesetId: RULESET_ID };
+    const correctByTier = TIERS.map((tier) => ended.history.filter((item) => item.correct && item.tier === tier).length);
+    return { score: result.score, maxTier: result.maxTier, answered: result.answered, correct: result.correct, correctByTier, dlcs: ended.dlcCount, rulesetId: RULESET_ID };
 }
 
 function renderNameForm() {
@@ -414,8 +415,15 @@ async function saveName(event) {
     el("tq-name-save").disabled = true;
     const result = await submitEntry(entry);
     el("tq-name-save").disabled = false;
-    endState = { offer: false, saved: result.shared ? "tqSavedShared" : "tqSavedLocal", error: null };
-    board = { ...result, highlight: entry };
+    if (result.rejected) {
+        // the hall of fame refused the name (word filter): a generic message, the player can change it
+        endState.error = "rejected";
+        renderNameForm();
+        input.focus();
+        return;
+    }
+    endState = { offer: false, saved: !result.shared ? "tqSavedLocal" : result.saved ? "tqSavedShared" : "tqSavedNotTop", error: null };
+    board = { ...result, highlight: result.entry };
     renderNameForm();
     renderTop("tq-end-top");
     el("tq-saved").focus();
@@ -543,5 +551,7 @@ onLanguageChange((next) => {
     if (game && !screens.game.hidden) renderGame();
     if (game && !screens.end.hidden) renderEnd();
 });
+// The shared hall of fame is a Vercel function of the same site; from file:// there is none.
+if (/^https?:$/.test(window.location.protocol)) hallOfFame.client = apiClient();
 loadBank();
 refreshTop();

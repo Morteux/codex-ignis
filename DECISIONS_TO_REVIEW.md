@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4303 — Testellaris game connected to the hall of fame (2026-11-25)
+
+- [ ] **The API is used only when the page is served over http(s)** (same origin, `/api/hall-of-fame`); from `file://` the game keeps the local top 10 without trying.
+- [ ] **"Cannot be reached" covers** a network error, no answer in 8 s, any non-2xx answer other than a refused name (503, 429 rate limit, 404 on a static server, and a 400 for a score the server finds impossible): the local top 10 is used and the page says so, as in GDD §7.2.
+- [ ] **A refused name** (400 `name`, word filter) is not saved anywhere: the form stays open with a generic message (es "Este nombre no se puede usar en el salón de la fama. Elige otro.", en/jp drafts) so the player can change it.
+- [ ] **A score overtaken meanwhile** (the server answers `saved: false`) shows "Other players beat your score meanwhile: it no longer enters the hall of fame top 10." and is not saved locally.
+- [ ] **The new entry is highlighted with the server's copy** (its date is the server's).
+
 ## T4302 — Testellaris hall of fame anti-abuse (2026-11-25)
 
 - [ ] **New entry field `correctByTier`** (right answers of tiers 1–5), needed for the plausible-score check of GDD §7.3; it is stored but not returned by the API. The body must hold exactly `name, score, maxTier, answered, correct, correctByTier, dlcs, rulesetId` (the `date` is the server's); raw name at most 64 code units, `dlcs` at most 64 (sanity bound, not a game figure).
