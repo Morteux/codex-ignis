@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4304 — Hall of fame data in the privacy policy (2026-11-25)
+
+- [ ] **The es/en/jp texts of `privacy.html` are drafts** (not legal advice). They list everything the hall of fame database stores, beyond the items named in the task: also tier reached, questions answered, right answers (total and per tier), DLCs checked and game version. "The database does not store the IP address" says nothing about the hosting provider's own logs.
+- [ ] **A second new section, "Data stored in your browser"** (language, simulator empires and planets, tech tree and Testellaris preferences, local top 10), and the "current status" text no longer says the site has no forms.
+- [ ] **Removal on request:** the page tells players to use the contact channel to have their entry deleted (the owner deletes it in Atlas, GDD §7.3). The page still gives **no actual contact channel**, controller identity or legal basis: add them before publishing if the applicable law (e.g. GDPR) requires it.
+- [ ] **The privacy page has its own "last updated" date** (`privacyLastUpdatedNotice`); `cookies.html`, unchanged, keeps the old one.
+
 ## T4303 — Testellaris game connected to the hall of fame (2026-11-25)
 
 - [ ] **The API is used only when the page is served over http(s)** (same origin, `/api/hall-of-fame`); from `file://` the game keeps the local top 10 without trying.

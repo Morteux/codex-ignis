@@ -25,7 +25,17 @@ async def run(t):
         en, jp, es = (pages_texts[(page_name, l)] for l in ("en", "jp", "es"))
         raw_keys = [x for x in (en, jp, es) if "undefined" in x[4] or "undefined" in x[1]]
         check("simple pages: " + page_name + " title, heading and text follow es/en/jp", [en[0], jp[0], es[0]] == ["en", "ja", "es"] and en[4] != es[4] and jp[4] != es[4] and not raw_keys and (page_name == "404.html" or (en[3] and en[3] != jp[3])), [en[:4], jp[:4], es[:4]])
+    # T4304: the privacy page describes the hall of fame data in es/en/jp
+    hof_words = {"es": ["nombre", "puntuación", "fecha", "hash con sal", "dirección IP", "24 horas"],
+                 "en": ["name", "score", "date", "salted hash", "IP address", "24 hours"],
+                 "jp": ["名前", "スコア", "日付", "ソルト付きハッシュ", "IPアドレス", "24時間"]}
+    for lang, words in hof_words.items():
+        text = pages_texts[("privacy.html", lang)][4]
+        missing = [w for w in words + ["Vercel", "MongoDB Atlas"] if w.lower() not in text.lower()]
+        check("privacy: hall of fame data, 24 h IP hash and hosting described (" + lang + ")", not missing, missing)
     await simple.goto("file://" + ROOT + "/privacy.html")
+    section = await simple.evaluate("()=>[document.getElementById('testellaris-hall-of-fame')?.tagName,document.querySelector('[data-i18n=privacyLastUpdatedNotice]')?.textContent]")
+    check("privacy: hall of fame section and the page's own update date", section[0] == "H2" and "2026" in (section[1] or ""), section)
     await simple.click(".lang-btn[data-lang=en]")
     await simple.goto("file://" + ROOT + "/cookies.html")
     await simple.wait_for_timeout(150)
