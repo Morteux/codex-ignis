@@ -1,5 +1,6 @@
 """Shared helpers of the browser smoke tests (tests/policies-smoke.py runs every area)."""
 import os
+from http.server import ThreadingHTTPServer
 from types import SimpleNamespace
 
 ROOT = os.getcwd()
@@ -12,6 +13,15 @@ def check(name, cond, extra=""):
     print(("PASS " if cond else "FAIL ") + name + (" " + str(extra) if extra and not cond else ""))
     if not cond:
         failures.append(name)
+
+
+class LocalServer(ThreadingHTTPServer):
+    """Local HTTP server of the smoke tests. The server answers HTTP/1.0, so the browser opens one
+    connection per file and a page of ES modules asks for dozens at once; with the default listen
+    backlog of 5, Windows refuses the overflow (ERR_CONNECTION_REFUSED), a refused module makes the
+    whole module graph fail without a page error, and the page reaches readyState complete without
+    ever drawing (T3407)."""
+    request_queue_size = 128
 
 
 def approx(a, b):

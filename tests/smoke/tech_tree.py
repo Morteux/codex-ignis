@@ -2,8 +2,8 @@
 import glob, json, os, re, subprocess, sys, tempfile, threading, time
 from functools import partial
 from playwright.async_api import TimeoutError as PlaywrightTimeout
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
-from smoke.common import check, ROOT
+from http.server import SimpleHTTPRequestHandler
+from smoke.common import check, LocalServer, ROOT
 
 FIXTURE = "tests/fixtures/tech-tree/tech-data-fixture.js"
 # Local copy of the StellarisAssets repository (same default as tools/extract/pdx/icons.py)
@@ -161,7 +161,7 @@ async def run(t):
     check("tech tree icons: every icon of the 4.5.4 data file is listed under technologies/ in StellarisAssetsFileTree.txt",
           isinstance(icons, list) and len(icons) > 600 and not absent, absent[:10] if isinstance(absent, list) else absent)
     if os.path.isdir(os.path.join(ASSETS_DIR, "technologies")):
-        server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=ASSETS_DIR))
+        server = LocalServer(("127.0.0.1", 0), partial(QuietHandler, directory=ASSETS_DIR))
         threading.Thread(target=server.serve_forever, daemon=True).start()
         base = "http://127.0.0.1:%d/" % server.server_address[1]
         sample = [icons[0], "technologies/tech_archeology_lab.png", icons[-1]]
@@ -859,9 +859,11 @@ async def version_checks(t):
     await pg.close()
 
     # the fixture as a second version: a local server of the project and a rewritten registry that adds it
-    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(QuietHandler, directory=ROOT))
+    server = LocalServer(("127.0.0.1", 0), partial(QuietHandler, directory=ROOT))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base = "http://127.0.0.1:%d/" % server.server_address[1]
+    check("tech tree versions: the local test server queues the page's burst of module requests instead of refusing them (backlog ≥ 64, T3407)",
+          server.request_queue_size >= 64, server.request_queue_size)
     registry = open(os.path.join(ROOT, "js", "tech-versions.js"), encoding="utf-8").read()
     patched = registry.replace("export const TECH_VERSIONS = [", "export const TECH_VERSIONS = [\n  " + FIXTURE_VERSION, 1)
     ctx = await t.browser.new_context(locale="en-US")
@@ -1017,13 +1019,16 @@ async def compare_checks(t, base, registry, errors):
         await pg.select_option("#tech-compare-from", "fixture")
         await pg.click(".tech-compare-run")
         await pg.wait_for_timeout(300)
+        # a refused or failed local file leaves the page undrawn without a page error (T3407): report it
+        refused = []
+        pg.on("requestfailed", lambda r: refused.append((r.url.rsplit("/", 1)[-1], r.failure)) if r.url.startswith(base) else None)
         async with pg.expect_navigation():
             await pg.click(".tech-compare-link[data-tech-id=tech_fixture_found_beacon]")
         await wait_for_tree(pg, "fixture", 38, "tech_fixture_found_beacon")
         landed = await pg.evaluate("""()=>({search:location.search,hash:location.hash,version:document.getElementById('tech-data-version').dataset.rulesetId,
           selected:document.querySelector('.tech-node.is-selected')?.dataset.techId||null})""")
         check("tech tree compare: following a removed technology opens the older version with it selected",
-              landed == {"search": "?version=fixture", "hash": "#tech_fixture_found_beacon", "version": "fixture", "selected": "tech_fixture_found_beacon"}, landed)
+              landed == {"search": "?version=fixture", "hash": "#tech_fixture_found_beacon", "version": "fixture", "selected": "tech_fixture_found_beacon"}, (landed, refused))
         await pg.set_viewport_size({"width": 320, "height": 700})
         await pg.goto(base + "tech-tree.html?version=fixture-next")
         await wait_for_tree(pg, "fixture-next")

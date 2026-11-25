@@ -1,6 +1,6 @@
 """Legal pages, 404 and tech tree placeholder: links, languages, ads off, Vercel 404, shared page shell (P22.3, P23.2)."""
 import json, os
-from smoke.common import check, ROOT
+from smoke.common import check, LocalServer, ROOT
 
 
 async def run(t):
@@ -64,7 +64,7 @@ async def run(t):
 
         def log_message(self, *args):
             pass
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Vercel404, directory=ROOT))
+    server = LocalServer(("127.0.0.1", 0), functools.partial(Vercel404, directory=ROOT))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     base_url = "http://127.0.0.1:%d" % server.server_address[1]
     for path in ("/missing-page", "/a/b/c/missing"):

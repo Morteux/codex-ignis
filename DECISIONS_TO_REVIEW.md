@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3407 — Undrawn tech tree page in the smoke tests (2026-11-26)
+
+- **Cause found: the test server, not the data `import()`**. The local `ThreadingHTTPServer` of the smoke tests answers HTTP/1.0 (one connection per file) with Python's default listen backlog of 5; the tech tree asks for dozens of ES modules at once and Windows refuses the overflow (`ERR_CONNECTION_REFUSED`). A refused static module fails the whole module graph with no page error, so the page reaches `readyState` complete and never draws. Reproduced 4 times in 20 runs of the compare link; with a backlog of 1 the page never draws; with 128, 0 failures in 30 runs.
+- **Fix kept in the tests only**: a shared `LocalServer` (backlog 128) in `tests/smoke/common.py`, used by every local server of the smoke tests. The page itself is unchanged: on the real site (Vercel, HTTP/2) a refused module does not happen this way, so it does not show an error message for a failed module load.
+
 ## T4402 — First batch of wiki questions (2026-11-26)
 
 - **Batch**: 156 hand-written questions (`<topic>.wiki.<slug>`), 24/35/34/39/24 in tiers 1–5, from these articles of the local copy: Ambition, Astral threads, Celestial object, Colonization, Empire, Government, Jargon, Leaders, Minor artifacts, Origin, Planetary features, Population, Resources, Technology, The Shroud, Traditions. The copy has no articles of their own for events or fallen empires, so there are few events questions and no `fallen_empires` topic.
