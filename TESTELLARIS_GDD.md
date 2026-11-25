@@ -84,7 +84,7 @@ No timer: the game is about knowledge, not reading speed, and a timer would need
 
 ### 5.1 Format
 
-One JSON record per question (the exact schema and its validator are T4101):
+One JSON record per question, inside a bank `{rulesetId, gameVersion, count, questions: [...]}`. The schema and its validator live in `tools/testellaris/question_bank.py` (T4101; tests in `tests/testellaris/`): every field below is required except `icon`, no other field is allowed, ids are unique, `tier` is 1–5, `topic` is one of the validator's `TOPICS`, every `dlc` name is a `name` of `dlc.json`, `source` has `file` and `key` (and optionally `loc`), `text`, `explanation` and `answers` have es, en and jp, `answers` holds four distinct texts per language, `correct` is 0–3 and no text keeps a localisation code (`§`, `£`, `$var$`).
 
 | Field | Content |
 | --- | --- |

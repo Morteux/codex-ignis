@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **101 / 138 tareas (73%)**
+> Progreso: **102 / 138 tareas (74%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -277,7 +277,8 @@ Quiz game: consecutive questions of increasing difficulty by tiers, 3 lives, lif
 
 ## 41 · Testellaris: questions
 Source: only the extractor output (4.5.4 game files and their localisation, including the description texts). Game names inside the questions use the **official es/en/jp names from the game localisation** (owner, 2026-11-22; only Testellaris, the rest of the site keeps English until P15). Each batch aims at about 150 questions spread across all tiers.
-- [ ] **T4101** (P41.1) Question bank format and validator in the tests: id, tier, topic, DLC list, source (game file and key), text, four answers and a short explanation in es/en/jp, correct answer; unique ids, four distinct answers, every language present, source present, tier in range
+- [x] **T4101** (P41.1) Question bank format and validator in the tests: id, tier, topic, DLC list, source (game file and key), text, four answers and a short explanation in es/en/jp, correct answer; unique ids, four distinct answers, every language present, source present, tier in range
+  - Prueba manual: run `python -m unittest discover -s tests/testellaris -v`: the validator tests pass (duplicate ids, tier 0/6, three or repeated answers, a missing jp text, no source, unknown DLC and `§` codes are all rejected); `python tools/testellaris/question_bank.py <bank.json>` lists the errors of a bank.
 - [ ] **T4111** (P41.11) Question generator from the extractor data (`tools/`): templates in es/en/jp with the official names (which tier is X, what does Y require, which technology unlocks Z, base cost of W, which ethics a civic needs…), tier by how obscure the fact is (rules in the GDD), DLC from the data, source = game file; output into the question bank, validated; re-runnable for new versions
 - [ ] **T4102** (P41.2) Questions: origins and civics, including corporate, hive mind and machine civics (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet

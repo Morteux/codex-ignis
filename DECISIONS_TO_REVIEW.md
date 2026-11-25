@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4101 — Testellaris question bank format (2026-11-25)
+
+- [ ] **Bank file**: `data/testellaris/<rulesetId>/questions.json` (the path proposed in the GDD), a header `{rulesetId, gameVersion, count}` and the `questions` list; validator in `tools/testellaris/question_bank.py`, so the generator (T4111) and the tests share it.
+- [ ] **Strict schema**: unknown fields are errors (a typo such as `explantion` would otherwise pass); `source` may only hold `file`, `key` and `loc`.
+- [ ] **Topics**: the validator accepts `origins, civics, ethics, government, leaders, technology, planets, economy, policies, traditions, shroud, subjects, modifiers, species, ships, megastructures, crises, fallen_empires, events` (the topics of section 41 plus the new extractors of T4110); a new topic is added to `TOPICS`.
+- [ ] **Extra checks** beyond the task: the id starts with its topic, every `dlc` name exists in `dlc.json`, answers are distinct ignoring case, and no text keeps a game localisation code (`§`, `£`, `$var$`).
+
 ## T4001 — Testellaris design (2026-11-25)
 
 Every rule marked **(proposal)** in `TESTELLARIS_GDD.md`:
