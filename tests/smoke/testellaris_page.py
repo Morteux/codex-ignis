@@ -110,6 +110,11 @@ ENGINE_JS = """async(spec)=>{const E=await import('./js/testellaris-engine.js');
   out.shield=[r1.retry,h.current.removed.has(w1),r2.retry,r2.correct,h.lives,h.answered];
   h=E.createGame(bank({1:3}));E.nextQuestion(h);E.useShield(h);out.shieldRight=[E.answer(h,right(h)).points,h.lives];
   let threw=false;try{E.useShield(h)}catch(e){threw=true}out.shieldThrows=threw;
+  // a completed game adds 250 per life left; the summary lists the failed questions and the lifelines used
+  h=E.createGame(bank({1:3}));E.nextQuestion(h);E.answer(h,wrong(h));E.nextQuestion(h);E.useFifty(h);E.answer(h,right(h));E.nextQuestion(h);E.answer(h,right(h));
+  const done=E.nextQuestion(h);const s=E.summary(h);
+  out.completed=[done,s.endReason,s.bonus,s.score,s.failed.map(f=>f.id).length,s.lifelines.join(','),s.answered,s.correct];
+  h=E.createGame(bank({1:3}));E.nextQuestion(h);E.answer(h,right(h));E.endGame(h,'gaveUp');out.gaveUp=[E.summary(h).bonus,h.score];
   return out}"""
 
 
@@ -131,13 +136,18 @@ async def engine_checks(pg):
           r["skip"] == [True, 1, True, 50, 1, True, True, False] and r["skipEmpty"] is False, (r["skip"], r["skipEmpty"]))
     check("testellaris engine: Deflector Shields cross out the first wrong answer without losing a life; the second wrong answer costs it",
           r["shield"] == [True, True, False, False, 2, 1] and r["shieldRight"] == [100, 3], (r["shield"], r["shieldRight"]))
+    check("testellaris engine: a completed game adds 250 points per life left (2 lives: +500), a given-up one adds nothing; the summary has the failed questions and lifelines",
+          r["completed"] == [None, "completed", 500, 50 + 100 + 500, 1, "fifty", 3, 2] and r["gaveUp"] == [0, 100], (r["completed"], r["gaveUp"]))
 
 
 # Position of the right / a wrong answer of the question on screen, from the bank record.
 POSITIONS_JS = """(bank)=>{const id=document.querySelector('#tq-question').dataset.questionId,q=bank[id];const lang=document.documentElement.lang==='ja'?'jp':document.documentElement.lang;
   const texts=[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.querySelector('.tq-answer-text').textContent);
   const right=texts.indexOf(q.answers[lang][q.correct]);return {id,right,wrong:texts.findIndex((x,i)=>i!==right&&!document.querySelectorAll('#tq-answers .tq-answer')[i].disabled),texts}}"""
-HUD_JS = "()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:document.querySelector('#tq-hud-number').textContent,score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
+END_JS = """()=>{const dl=[...document.querySelectorAll('#tq-end-stats > *')];const stats={};for(let i=0;i<dl.length;i+=2)stats[dl[i].textContent]=dl[i+1].textContent;
+  return {game:document.querySelector('#tq-game').hidden,end:!document.querySelector('#tq-end').hidden,reason:document.querySelector('#tq-end-reason').textContent,stats,focus:document.activeElement.id,
+  none:document.querySelector('#tq-failed-none').hidden,failed:[...document.querySelectorAll('#tq-failed-list li')].map(li=>[li.dataset.questionId,...[...li.children].map(p=>p.textContent)])}}"""
+HUD_JS ="()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:document.querySelector('#tq-hud-number').textContent,score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
 
 
 async def game_checks(pg, by_id):
@@ -157,7 +167,7 @@ async def game_checks(pg, by_id):
     hud = await pg.evaluate(HUD_JS)
     marks = await pg.evaluate("()=>[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>[b.disabled,b.className])")
     check("testellaris game: the key of the right answer gives 100 points, shows Correct, the explanation and the source, and focuses Next",
-          hud["score"] == "Score: 100" and hud["feedback"] and "Correct!" in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and q1["source"]["key"] in hud["feedback"]
+          hud["score"] == "Score: 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and q1["source"]["key"] in hud["feedback"]
           and hud["announce"].startswith("Correct.") and hud["focus"] == "tq-next" and all(m[0] for m in marks) and "is-correct" in marks[first["right"]][1], (hud, marks))
     await pg.keyboard.press("Enter")
     second = await pg.evaluate(POSITIONS_JS, small)
@@ -178,14 +188,24 @@ async def game_checks(pg, by_id):
     recent = await pg.evaluate("()=>JSON.parse(localStorage.getItem('testellaris-recent'))")
     check("testellaris game: the asked questions are remembered for the next games", recent == [first["id"], second["id"]], recent)
     # two more wrong answers end the game
+    picks = [(second["id"], second["texts"][second["wrong"]])]
     for _ in range(2):
         await pg.click("#tq-next")
         pos = await pg.evaluate(POSITIONS_JS, small)
+        picks.append((pos["id"], pos["texts"][pos["wrong"]]))
         await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
     await pg.click("#tq-next")
-    end = await pg.evaluate("()=>({game:document.querySelector('#tq-game').hidden,end:!document.querySelector('#tq-end').hidden,reason:document.querySelector('#tq-end-reason').textContent,stats:document.querySelector('#tq-end-stats').innerText,focus:document.activeElement.id})")
-    check("testellaris game: the third wrong answer ends the game: end screen with the reason, score, tier and correct answers",
-          end["game"] and end["end"] and end["reason"] == "You have no lives left." and "100" in end["stats"] and "1 of 4" in end["stats"] and "Tier 1" in end["stats"] and end["focus"] == "tq-end-title", end)
+    end = await pg.evaluate(END_JS)
+    check("testellaris game: the third wrong answer ends the game: end screen with the reason, score, tier, correct answers and no lifelines",
+          end["game"] and end["end"] and end["reason"] == "You have no lives left." and end["stats"] == {"Score": "100", "Tier reached": "Tier 1 · Primitive", "Correct answers": "1 of 4", "Lifelines used": "none"}
+          and end["focus"] == "tq-end-title", end)
+    expected = [[qid, by_id[qid]["text"]["en"], "Your answer: " + chosen, "Correct answer: " + by_id[qid]["answers"]["en"][by_id[qid]["correct"]], by_id[qid]["explanation"]["en"],
+                 "Source: %s · %s" % (by_id[qid]["source"]["file"], by_id[qid]["source"]["key"])] for qid, chosen in picks]
+    check("testellaris end screen: every failed question with the answer given, the correct one, the explanation and the source", end["failed"] == expected and end["none"], (end["failed"], expected))
+    await pg.click(".lang-btn[data-lang=es]")
+    es = await pg.evaluate(END_JS)
+    check("testellaris end screen: follows the language (es)", es["failed"][0][1] == by_id[picks[0][0]]["text"]["es"] and es["failed"][0][3].startswith("Respuesta correcta: ") and "Puntos" in es["stats"], es)
+    await pg.click(".lang-btn[data-lang=en]")
     # Play again, then Give up through the confirmation dialog (Cancel keeps playing)
     await pg.click("#tq-play-again")
     again = await pg.evaluate(POSITIONS_JS, small)
@@ -200,6 +220,10 @@ async def game_checks(pg, by_id):
     await pg.click(".confirm-dialog .confirm-btn.is-danger")
     gave = await pg.evaluate("()=>[document.querySelector('#tq-end').hidden,document.querySelector('#tq-end-reason').textContent]")
     check("testellaris game: Give up asks first (Keep playing goes on), then ends the game", still and gave == [False, "You gave up."], (still, gave))
+    end = await pg.evaluate(END_JS)
+    check("testellaris end screen: a given-up game keeps its score, lists the lifelines used and says no question was failed",
+          end["stats"] == {"Score": "150", "Tier reached": "Tier 1 · Primitive", "Correct answers": "2 of 2", "Lifelines used": "Sensor Sweep, Hyperlane Jump, Deflector Shields"}
+          and end["failed"] == [] and not end["none"], end)
     await pg.click("#tq-back-start")
     check("testellaris game: Change the DLC filter goes back to the start screen", await pg.evaluate("()=>!document.querySelector('#tq-start').hidden&&document.querySelector('#tq-end').hidden"))
 

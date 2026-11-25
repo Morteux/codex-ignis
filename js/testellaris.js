@@ -16,7 +16,7 @@ import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
-    canUseLifeline, useFifty, useSkip, useShield,
+    canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
 } from "./testellaris-engine.js";
 
 export const RULESET_ID = "stellaris-pc-4.5.4";
@@ -48,6 +48,7 @@ const announceEl = el("tq-announce");
 
 let lang = getLang();
 let bank = null; // { rulesetId, questions } once loaded
+let questionsById = new Map();
 let loadFailed = false;
 let game = null; // the game in play or just ended (js/testellaris-engine.js)
 let lastResult = null; // result of the answer shown in the feedback, null while answering
@@ -279,7 +280,9 @@ function renderFeedback() {
     const { question } = game.current;
     const result = el("tq-feedback-result");
     result.className = `tq-feedback-result ${lastResult.correct ? "is-correct" : "is-wrong"}`;
-    const lines = [lastResult.correct ? t(lang, "tqCorrect") : format(t(lang, "tqWrong"), { answer: answerText(question, question.correct) })];
+    const lines = lastResult.correct
+        ? [t(lang, "tqCorrect"), format(t(lang, "tqPointsGained"), { points: lastResult.points })]
+        : [format(t(lang, "tqWrong"), { answer: answerText(question, question.correct) })];
     if (lastResult.tierUp) lines.push(format(t(lang, "tqTierUp"), { tier: lastResult.tierUp, name: tierName(lastResult.tierUp) }));
     result.textContent = lines.join(" ");
     el("tq-feedback-explanation").textContent = question.explanation[lang];
@@ -312,13 +315,18 @@ function showEnd() {
     el("tq-end-title").focus();
 }
 
+/** End screen (GDD §3.5): score, tier reached, right answers, lifelines used, completion bonus and the failed questions. */
 function renderEnd() {
-    el("tq-end-reason").textContent = t(lang, { lives: "tqEndLives", completed: "tqEndCompleted", gaveUp: "tqEndGaveUp" }[game.endReason]);
+    const result = summary(game);
+    el("tq-end-reason").textContent = t(lang, { lives: "tqEndLives", completed: "tqEndCompleted", gaveUp: "tqEndGaveUp" }[result.endReason]);
     const stats = [
-        ["tqStatScore", String(game.score)],
-        ["tqStatTier", format(t(lang, "tqTierLabel"), { tier: game.maxTier, name: tierName(game.maxTier) })],
-        ["tqStatCorrect", format(t(lang, "tqStatCorrectValue"), { correct: game.correct, answered: game.answered })],
+        ["tqStatScore", String(result.score)],
+        ["tqStatTier", format(t(lang, "tqTierLabel"), { tier: result.maxTier, name: tierName(result.maxTier) })],
+        ["tqStatCorrect", format(t(lang, "tqStatCorrectValue"), { correct: result.correct, answered: result.answered })],
+        ["tqStatLifelines", result.lifelines.length ? result.lifelines.map((name) => t(lang, `tqLifeline_${name}`)).join(", ") : t(lang, "tqStatNone")],
     ];
+    if (result.bonus) stats.push(["tqStatBonus", format(t(lang, "tqStatBonusValue"), { bonus: result.bonus, lives: game.lives, per: COMPLETION_BONUS_PER_LIFE })]);
+    renderFailed(result.failed);
     el("tq-end-stats").replaceChildren(...stats.flatMap(([key, value]) => {
         const term = document.createElement("dt");
         term.textContent = t(lang, key);
@@ -326,6 +334,34 @@ function renderEnd() {
         detail.textContent = value;
         detail.dataset.stat = key;
         return [term, detail];
+    }));
+}
+
+/** Each failed question: its text, the answer given, the right one, the explanation and the source. */
+function renderFailed(failed) {
+    el("tq-failed").hidden = false;
+    el("tq-failed-none").hidden = failed.length > 0;
+    const list = el("tq-failed-list");
+    list.hidden = failed.length === 0;
+    list.replaceChildren(...failed.map((entry) => {
+        const question = questionsById.get(entry.id);
+        const item = document.createElement("li");
+        item.className = "tq-failed-item";
+        item.dataset.questionId = entry.id;
+        const lines = [
+            ["tq-failed-question", question.text[lang]],
+            ["tq-failed-yours", format(t(lang, "tqYourAnswer"), { answer: answerText(question, entry.chosen) })],
+            ["tq-failed-right", format(t(lang, "tqRightAnswer"), { answer: answerText(question, question.correct) })],
+            ["tq-failed-explanation", question.explanation[lang]],
+            ["tq-source", format(t(lang, "tqSource"), { file: question.source.file, key: question.source.key })],
+        ];
+        item.append(...lines.map(([className, text]) => {
+            const p = document.createElement("p");
+            p.className = className;
+            p.textContent = text;
+            return p;
+        }));
+        return item;
     }));
 }
 
@@ -370,6 +406,7 @@ function getJson(url) {
 async function loadBank() {
     try {
         bank = await getJson(BANK_URL);
+        questionsById = new Map(bank.questions.map((question) => [question.id, question]));
     } catch (error) {
         loadFailed = true;
         console.warn("Testellaris: question bank not loaded", error);

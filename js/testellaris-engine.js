@@ -67,6 +67,7 @@ export function createGame(questions, { recent = [], rng = Math.random } = {}) {
         history: [], // { id, tier, correct, chosen, points } per answered question
         over: false,
         endReason: null, // "lives" | "completed" | "gaveUp"
+        bonus: 0, // completion bonus, added to the score when the game ends
     };
 }
 
@@ -200,10 +201,29 @@ export function answer(game, position) {
     return { correct, points, correctPosition, livesLost: correct ? 0 : 1, retry: false };
 }
 
+/** Bonus of a completed game (no question left) per life left (GDD §3.5). */
+export const COMPLETION_BONUS_PER_LIFE = 250;
+
 export function endGame(game, reason) {
     if (game.over) return;
     game.over = true;
     game.endReason = reason;
+    game.bonus = reason === "completed" ? COMPLETION_BONUS_PER_LIFE * game.lives : 0;
+    game.score += game.bonus;
+}
+
+/** Summary of an ended game for the end screen and the top 10 (GDD §3.5, §7.1). */
+export function summary(game) {
+    return {
+        score: game.score,
+        maxTier: game.maxTier,
+        answered: game.answered,
+        correct: game.correct,
+        bonus: game.bonus || 0,
+        endReason: game.endReason,
+        lifelines: LIFELINES.filter((name) => game.lifelines[name]),
+        failed: game.history.filter((entry) => !entry.correct),
+    };
 }
 
 /** Ids for the "recently asked" list: the ones of this game after the older ones, the last RECENT_LIMIT. */

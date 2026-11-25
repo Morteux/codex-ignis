@@ -109,6 +109,12 @@
             <button type="button" class="tq-btn is-primary" id="tq-play-again" data-i18n="tqPlayAgain">Jugar otra vez</button>
             <button type="button" class="tq-btn" id="tq-back-start" data-i18n="tqBackToStart">Cambiar el filtro de DLC</button>
           </div>
+          <!-- Failed questions with their correct answer, explanation and source (§3.5). -->
+          <section class="tq-failed" id="tq-failed" aria-labelledby="tq-failed-title" hidden>
+            <h3 class="tq-heading" id="tq-failed-title" data-i18n="tqFailedHeading">Preguntas falladas</h3>
+            <p class="tq-note" id="tq-failed-none" data-i18n="tqFailedNone" hidden>No has fallado ninguna pregunta.</p>
+            <ol class="tq-failed-list" id="tq-failed-list"></ol>
+          </section>
         </section>
       </main>
 

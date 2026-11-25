@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4204 — Testellaris scoring and end screen (2026-11-25)
+
+- [ ] **Scoring as in the GDD proposal** (§3.5): 100 × tier per right answer, half with Sensor Sweep, 0 for a skipped question, +250 per life left only when the game is completed; a given-up or lost game keeps its score. After each right answer the feedback says how many points it gave.
+- [ ] **"Tier reached"** is the highest tier a question was shown from (moving up after the 5th right answer of tier 5 is not possible, and moving up without seeing a question of the new tier does not count).
+- [ ] **Failed questions** on the end screen show the answer given as well as the right one, the explanation and the source; a question saved by the shields is not a failed one. When nothing was failed the screen says so.
+
 ## T4203 — Testellaris lifelines (2026-11-25)
 
 - [ ] **The three lifelines of the GDD proposal** (§3.4): Sensor Sweep (50 %), Hyperlane Jump (skip) and Deflector Shields (second chance), with the draft names in es (Barrido de sensores, Salto hiperespacial, Escudos deflectores) and jp (センサー掃引, ハイパーレーン・ジャンプ, 偏向シールド).
