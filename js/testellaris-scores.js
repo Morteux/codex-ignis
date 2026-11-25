@@ -36,6 +36,36 @@ export function qualifies(entries, entry) {
     return board.length < TOP_SIZE || compareEntries(entry, board[TOP_SIZE - 1]) < 0;
 }
 
+// ── Names (GDD §7.1) ────────────────────────────────────────────────────────
+
+/** Trimmed, NFC-normalised, inner spaces collapsed. */
+export function normalizeName(raw) {
+    return String(raw ?? "").normalize("NFC").trim().replace(/\s+/gu, " ");
+}
+
+/** Length in user-perceived characters, so 10 Japanese characters count as 10 like 10 Latin ones. */
+export function nameLength(name) {
+    if (typeof Intl !== "undefined" && Intl.Segmenter) return [...new Intl.Segmenter(undefined, { granularity: "grapheme" }).segment(name)].length;
+    return [...name].length;
+}
+
+/** Letters and digits of any script (with their combining marks), space, "-", "_" and ".": no emoji, no control or invisible characters. */
+const NAME_PATTERN = /^[\p{L}\p{N}\p{M} ._-]+$/u;
+
+/** null when the name is valid, else "empty", "long" or "chars". */
+export function nameError(raw) {
+    const name = normalizeName(raw);
+    if (!name) return "empty";
+    if (nameLength(name) > NAME_MAX) return "long";
+    if (!NAME_PATTERN.test(name)) return "chars";
+    return null;
+}
+
+/** Whether two entries are the same score (the shared board returns copies). */
+export function sameEntry(a, b) {
+    return Boolean(a && b) && a.name === b.name && a.score === b.score && a.date === b.date;
+}
+
 // ── Local top 10 ────────────────────────────────────────────────────────────
 
 function readAll() {

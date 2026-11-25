@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4206 — Testellaris hall of fame: name and top 10 (2026-11-25)
+
+- [ ] **Name rules in the browser** as the GDD proposal (§7.1): trimmed, NFC, inner spaces collapsed, 1–10 user-perceived characters (`Intl.Segmenter`), letters and digits of any script with their combining marks, space, `-`, `_` and `.`; emoji, symbols, control and invisible characters (such as zero-width spaces) are refused with a message. The input itself allows 40 code units so a name in any script can be typed and then checked; the word filter is server-side (T4302).
+- [ ] **The name is asked inline on the end screen**, not in a dialog, and only once per game; the end screen always shows the top 10 below, with the new entry highlighted.
+- [ ] **Whether a score enters** is decided against the board loaded at the end of the game (the local one until T4303).
+
 ## T4205 — Testellaris local top 10 (2026-11-25)
 
 - [ ] **Until T4303 connects the API, the game always uses the local top 10** and says so on the start screen ("The hall of fame cannot be reached: this is the top 10 of this browser"). `js/testellaris-scores.js` has the slot for the API client (`hallOfFame.client`, with `load` and `submit`); when it fails, the local board is used and the score is kept there, never queued (GDD §7.2).

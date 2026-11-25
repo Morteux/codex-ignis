@@ -4860,3 +4860,64 @@ body.has-tech-card .tech-board {
         grid-column: 2;
     }
 }
+
+.tq-name-form {
+    display: grid;
+    gap: .5rem;
+    padding: 1rem;
+    border: 1px solid var(--accent-dim);
+    background: var(--accent-faint);
+}
+
+.tq-name-form[hidden] {
+    display: none;
+}
+
+.tq-name-intro {
+    margin: 0;
+    color: var(--accent);
+    font: 700 .9rem/1.5 var(--mono);
+}
+
+.tq-name-label {
+    color: var(--text);
+    font: .8rem var(--mono);
+}
+
+.tq-name-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.tq-name-input {
+    flex: 1 1 12rem;
+    min-width: 0;
+    min-height: 44px;
+    padding: .4rem .7rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--background);
+    font: 1rem var(--mono);
+}
+
+.tq-name-input:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.tq-name-input[aria-invalid="true"] {
+    border-color: var(--danger);
+}
+
+.tq-name-form .tq-warning:empty {
+    display: none;
+}
+
+.tq-saved {
+    color: var(--accent);
+}
+
+.tq-saved:focus {
+    outline: none;
+}

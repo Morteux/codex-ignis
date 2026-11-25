@@ -70,6 +70,7 @@ async def run(t):
     await game_checks(pg, {q["id"]: q for q in bank})
     await scores_checks(pg)
     await top_list_checks(pg)
+    await name_checks(pg, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
     check("testellaris: no page errors", not errors, errors[:3])
     await ctx.close()
 
@@ -121,6 +122,84 @@ async def top_list_checks(pg):
     await pg.reload()
     await pg.wait_for_function("()=>!document.querySelector('#tq-top-empty').hidden", timeout=15000)
     check("testellaris top 10: an empty board says there are no scores yet", await pg.evaluate("()=>document.querySelector('#tq-top-list').children.length") == 0)
+
+
+NAMES_JS = """async()=>{const S=await import('./js/testellaris-scores.js');
+  return {norm:S.normalizeName('  Ignis   del \\t Vacío  '),nfc:S.normalizeName('e\\u0301mile')==='\\u00e9mile',len:[S.nameLength('宇宙の王'),S.nameLength('e\\u0301mile'),S.nameLength('Ignis')],
+    errors:['','   ','abcdefghijk','宇宙の王様です十文字だ','宇宙の王様です十文字','Ignis 🚀','x<y','bell\\u0007','zero\\u200bwidth','Émile-_. 9','Ωμέγα','e\\u0301mile'].map(n=>S.nameError(n))}}"""
+END_TOP_JS = """()=>({form:!document.querySelector('#tq-name-form').hidden,count:document.querySelector('#tq-name-count').textContent,error:document.querySelector('#tq-name-error').textContent,
+  invalid:document.querySelector('#tq-name').getAttribute('aria-invalid'),saved:document.querySelector('#tq-saved').hidden?null:document.querySelector('#tq-saved').textContent,
+  source:document.querySelector('#tq-end-top-source').textContent,rows:[...document.querySelectorAll('#tq-end-top-list li')].map(li=>[li.classList.contains('is-new'),...[...li.children].map(c=>c.textContent)]),focus:document.activeElement.id})"""
+
+
+async def play_and_give_up(pg, small, right_answers):
+    """Starts a game, answers `right_answers` questions right, then gives up; waits for the end-screen top 10."""
+    await pg.click("#tq-start-btn")
+    for _ in range(right_answers):
+        pos = await pg.evaluate(POSITIONS_JS, small)
+        await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
+        await pg.click("#tq-next")
+    await pg.click("#tq-give-up")
+    await pg.click(".confirm-dialog .confirm-btn.is-danger")
+    await pg.wait_for_function("()=>!/Loading/.test(document.querySelector('#tq-end-top-source').textContent)", timeout=10000)
+
+
+async def name_checks(pg, small):
+    """T4206: name rules, the name input when the score enters the top 10, and the top 10 list on the end screen."""
+    r = await pg.evaluate(NAMES_JS)
+    check("testellaris names: trimmed, inner spaces collapsed, NFC, length in user-perceived characters",
+          r["norm"] == "Ignis del Vacío" and r["nfc"] and r["len"] == [4, 5, 5], r)
+    check("testellaris names: 1 to 10 characters of any script, digits, space - _ .; no emoji, symbols, control or invisible characters",
+          r["errors"] == ["empty", "empty", "long", "long", None, "chars", "chars", "chars", "chars", None, None, None], r["errors"])
+    await pg.evaluate("()=>{localStorage.removeItem('testellaris-top10');localStorage.removeItem('testellaris-recent')}")
+    await pg.reload()
+    await pg.wait_for_function("()=>!document.querySelector('#tq-start-btn').disabled", timeout=15000)
+    # a game with 0 points never enters
+    await play_and_give_up(pg, small, 0)
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: a game with 0 points does not offer the name input; the end screen shows the (empty) top 10",
+          not s["form"] and s["rows"] == [] and s["source"].startswith("The hall of fame cannot be reached"), s)
+    await pg.click("#tq-back-start")
+    await play_and_give_up(pg, small, 2)
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: a score that enters the top 10 offers the name input (0/10 characters)", s["form"] and s["count"] == "0/10 characters" and s["saved"] is None, s)
+    await pg.click("#tq-name-save")
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: an empty name is refused with a message and the field marked invalid", s["form"] and s["error"] == "Write a name." and s["invalid"] == "true" and s["focus"] == "tq-name", s)
+    await pg.click(".lang-btn[data-lang=jp]")
+    jp = await pg.evaluate(END_TOP_JS)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("testellaris hall of fame: the name messages follow the language", jp["error"] == "名前を入力してください。" and jp["count"] == "0/10文字", jp)
+    await pg.fill("#tq-name", "abcdefghijk")
+    await pg.press("#tq-name", "Enter")
+    long_error = (await pg.evaluate(END_TOP_JS))["error"]
+    await pg.fill("#tq-name", "Ignis 🚀")
+    await pg.press("#tq-name", "Enter")
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: more than 10 characters or an emoji are refused", long_error == "At most 10 characters." and s["error"].startswith("Only letters, digits") and s["form"], (long_error, s))
+    await pg.fill("#tq-name", "  宇宙の  王 ")
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: the counter counts the normalised name", s["count"] == "5/10 characters" and s["error"] == "", s)
+    await pg.press("#tq-name", "Enter")
+    await pg.wait_for_function("()=>!document.querySelector('#tq-saved').hidden", timeout=10000)
+    s = await pg.evaluate(END_TOP_JS)
+    stored = await pg.evaluate("()=>JSON.parse(localStorage.getItem('testellaris-top10'))")
+    entry = (stored or {}).get(RULESET, [{}])[0]
+    check("testellaris hall of fame: Save keeps the score in the local top 10 (no hall of fame yet), says where, and lists it highlighted",
+          not s["form"] and s["saved"].startswith("Saved in the top 10 of this browser") and s["focus"] == "tq-saved" and len(s["rows"]) == 1 and s["rows"][0][:3] == [True, "1", "宇宙の 王"]
+          and s["rows"][0][3].startswith("200 points · tier 1 · 2/2 · 26 DLC")
+          and {k: entry.get(k) for k in ("name", "score", "maxTier", "answered", "correct", "dlcs", "rulesetId")} == {"name": "宇宙の 王", "score": 200, "maxTier": 1, "answered": 2, "correct": 2, "dlcs": 26, "rulesetId": RULESET}, (s, entry))
+    await pg.click("#tq-back-start")
+    await pg.wait_for_function("()=>document.querySelector('#tq-top-list li')", timeout=10000)
+    start_rows = await pg.evaluate("()=>[...document.querySelectorAll('#tq-top-list li .tq-top-name')].map(n=>n.textContent)")
+    check("testellaris hall of fame: the saved score is on the start screen top 10", start_rows == ["宇宙の 王"], start_rows)
+    # a full board of better scores: no name input
+    full = [{"name": "p%d" % i, "score": 10000 - i, "maxTier": 5, "answered": 30, "correct": 30, "dlcs": 26, "rulesetId": RULESET, "date": "2026-11-01T00:00:00Z"} for i in range(10)]
+    await pg.evaluate("(e)=>localStorage.setItem('testellaris-top10',JSON.stringify({'%s':e}))" % RULESET, full)
+    await play_and_give_up(pg, small, 1)
+    s = await pg.evaluate(END_TOP_JS)
+    check("testellaris hall of fame: a score below a full top 10 offers no name input and the list shows the 10 entries", not s["form"] and len(s["rows"]) == 10 and s["saved"] is None, s)
+    await pg.evaluate("()=>localStorage.removeItem('testellaris-top10')")
 
 
 # A small fake bank for the engine: `n` questions per tier, the correct answer always index 0.

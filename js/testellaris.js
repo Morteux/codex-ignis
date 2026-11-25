@@ -14,7 +14,7 @@ import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.j
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
-import { loadBoard } from "./testellaris-scores.js";
+import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX } from "./testellaris-scores.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
     canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
@@ -54,7 +54,9 @@ let loadFailed = false;
 let game = null; // the game in play or just ended (js/testellaris-engine.js)
 let lastResult = null; // result of the answer shown in the feedback, null while answering
 let board = null; // { shared, entries } of the top 10 shown, null while loading
-let lifelineStatus = null; // i18n key of the last lifeline message of the current question
+let lifelineStatus = null;
+/** Top 10 state of the ended game: the name form is offered once; `saved` is the i18n key of the saved message. */
+let endState = { offer: false, saved: null, error: null }; // i18n key of the last lifeline message of the current question
 
 /** Replaces {name} placeholders of an interface text. */
 export function format(text, values) {
@@ -181,7 +183,7 @@ function renderTop(prefix = "tq-top") {
     list.replaceChildren(...board.entries.map((entry, index) => {
         const item = document.createElement("li");
         item.className = "tq-top-entry";
-        if (entry === board.highlight) item.classList.add("is-new");
+        if (sameEntry(entry, board.highlight)) item.classList.add("is-new");
         const rank = document.createElement("span");
         rank.className = "tq-top-rank";
         rank.textContent = String(index + 1);
@@ -218,6 +220,9 @@ const answerText = (question, bankIndex) => question.answers[lang][bankIndex];
 function startGame() {
     if (!bank) return;
     game = createGame(filterBank(bank.questions, checkedDlcs()), { recent: readStorage(RECENT_STORAGE_KEY, []) });
+    game.dlcCount = checkedDlcs().size; // shown next to the score in the top 10 (GDD §4)
+    endState = { offer: false, saved: null, error: null };
+    el("tq-name").value = "";
     showScreen("game");
     advance();
 }
@@ -360,8 +365,60 @@ function pick(position) {
 
 function showEnd() {
     showScreen("end");
+    board = null;
     renderEnd();
     el("tq-end-title").focus();
+    loadEndBoard();
+}
+
+/** Loads the top 10 for the end screen and offers the name input when the score enters it (GDD §7.1). */
+async function loadEndBoard() {
+    const ended = game;
+    const loaded = await loadBoard(RULESET_ID);
+    if (ended !== game) return; // a new game started meanwhile
+    board = loaded;
+    endState.offer = !endState.saved && qualifies(board.entries, { ...entryOf(game), date: new Date().toISOString() });
+    renderNameForm();
+    renderTop("tq-end-top");
+}
+
+/** The top 10 entry of an ended game (GDD §7.1), without its name and date. */
+function entryOf(ended) {
+    const result = summary(ended);
+    return { score: result.score, maxTier: result.maxTier, answered: result.answered, correct: result.correct, dlcs: ended.dlcCount, rulesetId: RULESET_ID };
+}
+
+function renderNameForm() {
+    const form = el("tq-name-form");
+    form.hidden = !endState.offer;
+    const input = el("tq-name");
+    el("tq-name-count").textContent = format(t(lang, "tqNameCount"), { n: nameLength(normalizeName(input.value)), max: NAME_MAX });
+    el("tq-name-error").textContent = endState.error ? t(lang, `tqNameError_${endState.error}`) : "";
+    input.setAttribute("aria-invalid", String(Boolean(endState.error)));
+    const saved = el("tq-saved");
+    saved.hidden = !endState.saved;
+    saved.textContent = endState.saved ? t(lang, endState.saved) : "";
+}
+
+async function saveName(event) {
+    event.preventDefault();
+    if (!endState.offer || !game?.over) return;
+    const input = el("tq-name");
+    endState.error = nameError(input.value);
+    if (endState.error) {
+        renderNameForm();
+        input.focus();
+        return;
+    }
+    const entry = { name: normalizeName(input.value), ...entryOf(game), date: new Date().toISOString() };
+    el("tq-name-save").disabled = true;
+    const result = await submitEntry(entry);
+    el("tq-name-save").disabled = false;
+    endState = { offer: false, saved: result.shared ? "tqSavedShared" : "tqSavedLocal", error: null };
+    board = { ...result, highlight: entry };
+    renderNameForm();
+    renderTop("tq-end-top");
+    el("tq-saved").focus();
 }
 
 /** End screen (GDD §3.5): score, tier reached, right answers, lifelines used, completion bonus and the failed questions. */
@@ -376,6 +433,8 @@ function renderEnd() {
     ];
     if (result.bonus) stats.push(["tqStatBonus", format(t(lang, "tqStatBonusValue"), { bonus: result.bonus, lives: game.lives, per: COMPLETION_BONUS_PER_LIFE })]);
     renderFailed(result.failed);
+    renderNameForm();
+    renderTop("tq-end-top");
     el("tq-end-stats").replaceChildren(...stats.flatMap(([key, value]) => {
         const term = document.createElement("dt");
         term.textContent = t(lang, key);
@@ -475,6 +534,8 @@ LIFELINES.forEach((name) => el(`tq-lifeline-${name}`).addEventListener("click", 
 el("tq-play-again").addEventListener("click", startGame);
 el("tq-back-start").addEventListener("click", () => { showScreen("start"); refreshTop(); startButton.focus(); });
 document.addEventListener("keydown", onKeyDown);
+el("tq-name-form").addEventListener("submit", saveName);
+el("tq-name").addEventListener("input", () => { endState.error = null; renderNameForm(); });
 onLanguageChange((next) => {
     lang = next;
     renderAvailable();
