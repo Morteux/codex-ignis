@@ -41,7 +41,7 @@ async def run(t):
     # P11.3: deficit flags
     check("flags: consumer goods from 0 -> deficit, stockpile empty", cg is not None and cg[5] == "deficit: stockpile empty", cg)
     alert = await pg.evaluate("()=>{const a=document.querySelector('.planet-timeline-alert');return a?a.innerText:''}")
-    check("flags: alert names the resources in deficit", "Resources in deficit:" in alert and "Food (deficit: stockpile empty)" in alert and "Consumer goods (deficit: stockpile empty)" in alert and "not modelled" in alert, alert)
+    check("flags: alert names the resources in deficit", "Resources in deficit:" in alert and "Food (deficit: stockpile empty)" in alert and "Consumer Goods (deficit: stockpile empty)" in alert and "not modelled" in alert, alert)
     await pg.evaluate("()=>{const i=document.querySelector('.planet-timeline-row[data-id=consumer_goods] .planet-timeline-start');i.value='100';i.dispatchEvent(new Event('change'))}")
     cg = (await timeline()).get("consumer_goods")
     check("timeline: start 100 -> 97 / 64 / 0 / 0", cg is not None and cg[1:5] == ["97", "64", "0", "0"], cg)

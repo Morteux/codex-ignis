@@ -11,7 +11,7 @@ async def run(t):
     async def features():
         return await pg.evaluate("()=>({items:[...document.querySelectorAll('#celestial-deposit-features .celestial-feature')].map(e=>e.dataset.feature),count:document.querySelector('#celestial-deposit-features .celestial-feature-count')?.dataset.count,warning:document.querySelector('#celestial-feature-warning')?.innerText||null})")
     await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
-    await body("Continental")
+    await body("Continental World")
     await card_plus(2, 5)
     f = await features()
     # Continental mining: Rich Mountain (+3) and Prosperous Mesa (+2) = 2 features
@@ -26,20 +26,20 @@ async def run(t):
     await body("Ecumenopolis")
     na = await pg.evaluate("()=>document.querySelector('#celestial-deposit-features').innerText")
     check("Ecumenopolis: deposit features not applicable", "no deposit features" in na, na)
-    await body("Continental")
+    await body("Continental World")
 
     # 19. P10.8: strategic deposits (worst by default, user choice, saved), Rare Crystal Extraction swaps Miners, Betharian Processing
     await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
-    await body("Continental")
+    await body("Continental World")
     await card_plus(2, 2)
     await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[2].querySelector('select');s.value='rareCrystalExtraction';s.dispatchEvent(new Event('change'))}""")
     jobs = await pg.inner_text("#planet-summary")
     check("Rare Crystal Extraction: Crystal Miners replace Miners", "Crystal Miner" in jobs and "\nMiner" not in jobs, jobs[:600])
     f = await features()
     check("strategic deposit: Crystalline Caverns (worst) covers 2 mining districts", f["items"] == ["crystallineCaverns"] and f["count"] == "1", f)
-    rc0 = (await net()).get("Rare crystals", 0)
+    rc0 = (await net()).get("Rare Crystals", 0)
     await pg.evaluate("()=>{const s=document.querySelector('.celestial-strategic-select');s.value='crystalForest';s.dispatchEvent(new Event('change'))}")
-    rc1 = (await net()).get("Rare crystals", 0)
+    rc1 = (await net()).get("Rare Crystals", 0)
     # 6 Crystal Miners (2 districts x (200 + 100 specialization)): +0.05 more each
     check("Crystal Forest: +0.05 rare crystals per Miner more", rc1 > rc0 and abs((rc1 - rc0) - 0.3) < 0.02, (rc0, rc1))
     await pg.fill("#planet-summary-name", "Deposit planet")
@@ -53,9 +53,9 @@ async def run(t):
     await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[2].querySelector('select');s.value='betharianProcessing';s.dispatchEvent(new Event('change'))}""")
     n = await net()
     f = await features()
-    check("Betharian Processing: Betharian Fields, Miners back, energy from Miners", f["items"] == ["betharianFields"] and n.get("Energy", 0) > 0, (f, n))
+    check("Betharian Processing: Betharian Fields, Miners back, energy from Miners", f["items"] == ["betharianFields"] and n.get("Energy Credits", 0) > 0, (f, n))
     await body("Ecumenopolis")
-    await body("Continental")
+    await body("Continental World")
 
     # 20. P10.8: selectable blockers (Collapsed Spire locks the first slot, Blazing Scourge needs Fire Cult, Nanite Harvest Basin output)
     async def blocker(bid):
@@ -81,13 +81,13 @@ async def run(t):
     saved_b = [p.get("blockerIds") for p in planets if p.get("name") == "Blocker planet"]
     check("blockers saved with the planet", bool(saved_b) and saved_b[0] is not None and sorted(saved_b[0]) == ["chargedAtmosphere", "naniteHarvestBasin"], saved_b)
     await blocker("naniteHarvestBasin"); await blocker("chargedAtmosphere")
-    await body("Continental")
+    await body("Continental World")
 
     # 21. P10.8: planet modifiers (max districts change the required features, % from jobs, conditions rows, exclusions, saved)
     async def pmod(mid):
         await pg.evaluate("(m)=>document.querySelector(`#celestial-planet-modifiers [data-modifier=${m}] input`).click()", mid)
     await pg.evaluate("()=>localStorage.clear()"); await pg.reload(); await pg.wait_for_timeout(500)
-    await body("Continental")
+    await body("Continental World")
     await card_plus(2, 5)
     m0 = (await net()).get("Minerals", 0)
     await pmod("highQualityMinerals")
@@ -112,10 +112,10 @@ async def run(t):
     planets = await pg.evaluate("()=>JSON.parse(localStorage.getItem('codex-ignis-planets')||'[]')")
     saved_m = [p.get("planetModifierIds") for p in planets if p.get("name") == "Modifier planet"]
     check("planet modifiers saved with the planet", bool(saved_m) and saved_m[0] is not None and sorted(saved_m[0]) == ["highQualityMinerals", "localMycelialNetwork", "residentialMonument", "weakMagneticField"], saved_m)
-    await body("Volcanic")
+    await body("Volcanic World")
     vis = await pg.evaluate("()=>[!!document.querySelector('#celestial-planet-modifiers [data-modifier=lavafalls]'),!!document.querySelector('#celestial-planet-modifiers [data-modifier=lush]')]")
     check("Volcanic: Lavafalls listed, Lush (x0 on Volcanic) not", vis == [True, False], vis)
-    await body("Continental")
+    await body("Continental World")
 
     # P10.10: Anglers on a wet-climate world blocks Agricultural Focus and Agrarian Villages; other worlds keep them
     async def agri_opts():
@@ -125,7 +125,7 @@ async def run(t):
     await ethic("Gestalt Consciousness")
     await pg.evaluate("()=>[...document.querySelectorAll('#empire-authority-list button')].find(b=>b.innerText.startsWith('Machine Intelligence')).click()")
     await civic_toggle("Anglers / Marine Machines")
-    await body("Ocean")
+    await body("Ocean World")
     ao = {v: (d, txt) for v, d, txt in await agri_opts()}
     check("Anglers on Ocean: Agricultural Focus disabled with the reason", ao.get("agriculturalFocus", (False, ""))[0] and "Not available with: Anglers" in ao["agriculturalFocus"][1] and "Ocean" in ao["agriculturalFocus"][1], ao.get("agriculturalFocus"))
     check("Anglers on Ocean: Aquaculture available", ao.get("aquaculture", (True, ""))[0] is False, ao.get("aquaculture"))
@@ -133,13 +133,13 @@ async def run(t):
     await pg.evaluate("""()=>{const s=document.querySelectorAll('.planet-district-card')[3].querySelector('select');s.value='aquaculture';s.dispatchEvent(new Event('change'))}""")
     jobs = await pg.inner_text("#planet-summary")
     check("Anglers on Ocean: Anglers and Pearl Divers replace Farmers", "Angler" in jobs and "Pearl Diver" in jobs and "\nFarmer" not in jobs, jobs[:600])
-    await body("Arid")
+    await body("Arid World")
     jobs = await pg.inner_text("#planet-summary")
     check("Anglers on Arid: Farmers again, Aquaculture dropped", "Farmer" in jobs and "Angler" not in jobs, jobs[:600])
     ao = {v: d for v, d, _ in await agri_opts()}
     check("Anglers on Arid: Agricultural Focus available", ao.get("agriculturalFocus") is False, ao)
     await civic_toggle("Anglers / Marine Machines")
-    await body("Continental")
+    await body("Continental World")
 
     # P10.10: building requirement columns (Experimental Sentencing family, not Materialist; Uplink Node not Rogue Servitor)
     breq = await pg.evaluate("""async()=>{const r=await import('./js/building-requirements.js');const d=await import('./js/planet-data.js');

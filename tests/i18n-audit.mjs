@@ -80,5 +80,24 @@ for (const page of pages) {
   }
   console.log(page, 'areas', [...graph].filter(f => areaKeys[f]).map(f => f.slice(8, -3)).join(','), 'used keys', used.size);
 }
+// Official game names (P15): every js/game-names/<lang>.js has the same keys, each key of a
+// hand-written area, and the fallback list only names keys of the file.
+const gameNameFiles = fs.readdirSync(root + '/js/game-names').filter(f => f.endsWith('.js')).sort();
+let gameNameKeys = null;
+for (const file of gameNameFiles) {
+  const { names, fallback } = await import(pathToFileURL(root + '/js/game-names/' + file).href);
+  const keys = Object.keys(names);
+  if (!gameNameKeys) gameNameKeys = new Set(keys);
+  const missing = [...gameNameKeys].filter(k => !(k in names));
+  const extra = keys.filter(k => !gameNameKeys.has(k));
+  if (missing.length || extra.length) { problems++; console.log('GAME NAMES KEY PARITY', file, 'missing', missing.join(','), 'extra', extra.join(',')); }
+  const orphan = keys.filter(k => !owner.has(k));
+  if (orphan.length) { problems++; console.log('GAME NAME WITHOUT AREA KEY', file, orphan.join(',')); }
+  const empty = keys.filter(k => typeof names[k] !== 'string' || !names[k].trim());
+  if (empty.length) { problems++; console.log('EMPTY GAME NAME', file, empty.join(',')); }
+  const badFallback = fallback.filter(k => !(k in names));
+  if (badFallback.length) { problems++; console.log('FALLBACK KEY NOT IN FILE', file, badFallback.join(',')); }
+  console.log('js/game-names/' + file, 'names', keys.length, 'English fallback', fallback.length);
+}
 console.log('used keys', usedCount, 'problems', problems);
 process.exit(problems ? 1 : 0);

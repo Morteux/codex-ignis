@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1502 — Official es/en/jp game names (2026-11-25)
+
+- [ ] **992 names replaced in es, en and jp**, English included: the official English differs from the hand-written one in some 45 cases, e.g. planet types «Continental» → «Continental World», «Habitat» → «Orbital Habitat», resources «Energy» → «Energy Credits», «Physics» → «Physics Research», «Trade value» → «Trade», «Noble Researcher» → «Noble Scientist», the Decrees «Decree: Scientific Revolution», «Urban district» → «City District» (`district_city`). Longer names may need more room in narrow cards.
+- [ ] **Kept hand-written**: Colony Shelter (its game key `building_colony_shelter` reads «Reassembled Ship Shelter»), the grouped civic names «A / B» (T1504), and 16 names without a game string (`build_game_names.py --check`): Logistics Drone, Mutagenic Spa Attendant, the two Subterranean jobs, plain Ecumenopolis, Ringworld and Shattered Ringworld, Stellar Culture Shock, Wraith's Dispenser Sack, the two Court of Blossoms and Cheap Thrills variants, Funghi are Friends, Devouring Swarm and Dark Matter Unraveling.
+- [ ] **50 hand links** in `tools/extract/game_name_overrides.json` for names the matching misses (e.g. Science Director → `head_researcher`, Medical Worker → `healthcare`, diplomatic stances → `diplo_stance_*`, gestalt production policies → `drone_policy_*`, the minerals quality modifiers → `pm_mineral_*`); where the game has several items with that name, the first or regular one was chosen.
+- [ ] **The bingo also gets the official names** (it shares the civic, origin, ethic and authority keys with the simulator), which replaces the 7 base authority names left for P15 in T2405.
+- [ ] **Language switch draws at once** with the hand-written names and again when the new language's names arrive (one small module per language); the first draw already has them.
+
 ## T1501 — Official localisation plan (2026-11-25)
 
 - [ ] **Generated override modules** (`js/game-names/<code>.js`) on top of the hand-written texts, instead of rewriting the names inside `js/i18n-*.js`: one mechanism for the 10 languages, and the hand-written es/en/jp names stay as the fallback.

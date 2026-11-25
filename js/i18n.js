@@ -47,7 +47,7 @@ export function storeLang(lang) {
 export function detectInitialLang() {
     const stored = getStoredLang();
     if (stored) return stored;
-    let browserLang = (navigator.language || "").slice(0, 2).toLowerCase();
+    let browserLang = ((typeof navigator !== "undefined" && navigator.language) || "").slice(0, 2).toLowerCase();
     if (browserLang === "ja") browserLang = "jp"; // the site's code for Japanese
     return SUPPORTED_LANGS.includes(browserLang) ? browserLang : DEFAULT_LANG;
 }
@@ -74,7 +74,30 @@ export function syncSocialMeta(lang) {
     set('meta[property="og:locale"]', OG_LOCALES[lang] || OG_LOCALES[DEFAULT_LANG]);
 }
 
+/**
+ * Official game names (P15, LOCALISATION_PLAN.md): js/game-names.js adds the
+ * generated js/game-names/<lang>.js on top of the hand-written texts, which stay
+ * as the fallback. Kept apart so an area imported later does not overwrite them.
+ */
+const gameNames = {};
+export function addGameNames(lang, names) {
+    gameNames[lang] = { ...gameNames[lang], ...names };
+}
+
+/** Loaders of the extra texts of a language: each returns null if already loaded, else a promise (js/game-names.js registers one). */
+const languageLoaders = [];
+export function addLanguageLoader(loader) {
+    languageLoaders.push(loader);
+}
+/** null when every loader already has the language, else a promise of the loads. */
+export function loadLanguage(lang) {
+    const pending = languageLoaders.map((loader) => loader(lang)).filter(Boolean);
+    return pending.length ? Promise.all(pending) : null;
+}
+
 export function t(lang, key) {
+    const official = gameNames[lang]?.[key];
+    if (official !== undefined) return official;
     const dict = strings[lang] || strings[DEFAULT_LANG];
     return dict[key] ?? strings[DEFAULT_LANG][key];
 }

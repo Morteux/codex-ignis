@@ -128,10 +128,12 @@ function start() {
   window.addEventListener("hashchange", () => openSimDeepLink());
 }
 
-// Module scripts run before DOMContentLoaded: waiting for it lets the empire, celestial body and
-// library modules apply their state first, so the catalogue shows what the user will see.
-if (document.readyState === "loading" || document.readyState === "interactive") {
+// Waiting for the other page modules lets the empire, celestial body and library modules apply
+// their state first, so the catalogue shows what the user will see. page-shell.js awaits the
+// official game names (P15), so the modules may run after DOMContentLoaded: a task queued now
+// runs once every module waiting on it has run.
+if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", start, { once: true });
 } else {
-  start();
+  setTimeout(start, 0);
 }

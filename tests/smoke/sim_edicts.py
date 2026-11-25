@@ -41,7 +41,7 @@ async def run(t):
     await pg.click(".edict-card[data-edict-id=forgeSubsidies]")
     n1 = await net()
     check("Forge Subsidies: +10% alloys from Metallurgists", n0.get("Alloys", 0) > 0 and approx(n1.get("Alloys"), n0["Alloys"] * 1.1), (n0, n1))
-    check("Forge Subsidies: -1 trade per Metallurgist (2 jobs)", approx(n1.get("Trade value"), n0.get("Trade value") - 2), (n0, n1))
+    check("Forge Subsidies: -1 trade per Metallurgist (2 jobs)", approx(n1.get("Trade"), n0.get("Trade") - 2), (n0, n1))
     for e in ["informationQuarantine", "peaceFestivals", "trackingImplants"]:
         await pg.click(f".edict-card[data-edict-id={e}]")
     c1 = await cond()

@@ -33,24 +33,24 @@ async def run(t):
     # P9.4: stability 62 (see 6b) gives +7.2 % to everything jobs produce, trade included (before the trade conversion).
     S = 1.072
     T = 16.66 * S  # trade before the conversion
-    check("Wealth Creation: trade 8", approx(base.get("Trade value"), T / 2), base)
-    energy0 = base["Energy"]
-    check("consumer goods -2", approx(base.get("Consumer goods"), -3), base)
+    check("Wealth Creation: trade 8", approx(base.get("Trade"), T / 2), base)
+    energy0 = base["Energy Credits"]
+    check("consumer goods -2", approx(base.get("Consumer Goods"), -3), base)
     check("Wealth Creation: energy -6 + 8 converted", approx(energy0, -6 + T / 2), base)
     check("Consumer Benefits available", await pick_policy("Consumer Benefits"))
     n = await net()
-    check("Consumer Benefits: trade 8, goods +2, energy -8", approx(n["Trade value"], T / 2) and approx(n["Consumer goods"], -3 + T / 4) and approx(n["Energy"], energy0 - T / 2), n)
+    check("Consumer Benefits: trade 8, goods +2, energy -8", approx(n["Trade"], T / 2) and approx(n["Consumer Goods"], -3 + T / 4) and approx(n["Energy Credits"], energy0 - T / 2), n)
     check("Marketplace of Ideas available", await pick_policy("Marketplace of Ideas"))
     n = await net()
-    check("Marketplace: trade 8, unity +2", approx(n["Trade value"], T / 2) and approx(n.get("Unity"), T / 8), n)
+    check("Marketplace: trade 8, unity +2", approx(n["Trade"], T / 2) and approx(n.get("Unity"), T / 8), n)
     check("Trade League selectable", await pick_policy("Trade League"))
     n = await net()
-    check("Trade League: trade 8, energy +2.4, goods +2.4, unity +1.2", approx(n["Trade value"], T / 2) and approx(n["Energy"], energy0 - T / 2 + 0.15 * T) and approx(n["Consumer goods"], -3 + 0.15 * T) and approx(n.get("Unity"), 0.075 * T), n)
+    check("Trade League: trade 8, energy +2.4, goods +2.4, unity +1.2", approx(n["Trade"], T / 2) and approx(n["Energy Credits"], energy0 - T / 2 + 0.15 * T) and approx(n["Consumer Goods"], -3 + 0.15 * T) and approx(n.get("Unity"), 0.075 * T), n)
     fed_note = await pg.evaluate("""()=>{const c=[...document.querySelectorAll('.empire-policy-card')].find(x=>x.querySelector('strong').innerText==='Trade League');const p=c&&c.querySelector('.empire-policy-federation-note');return p?p.innerText:''}""")
     check("Trade League federation note", "Trade League federation" in fed_note, fed_note)
     check("Holy Covenant selectable", await pick_policy("Holy Covenant"))
     n = await net()
-    check("Holy Covenant: trade 8, unity +3", approx(n["Trade value"], T / 2) and approx(n.get("Unity"), 3 * T / 16), n)
+    check("Holy Covenant: trade 8, unity +3", approx(n["Trade"], T / 2) and approx(n.get("Unity"), 3 * T / 16), n)
     check("Mutual Aid disabled without Worker Cooperative", await policy_disabled("Mutual Aid") is True)
 
     # 3. Mutual Aid with Worker Cooperative, then fall back when the civic is removed
@@ -61,7 +61,7 @@ async def run(t):
     n = await net()
     # Egalitarian adds +5% specialist efficiency, so the 2 Traders give 16.8 trade (+0.66 living standard trade) before conversion.
     TM = (16.8 + 0.66) * S
-    check("Mutual Aid: trade 4.2, energy 16.8*0.2 - 6", approx(n["Trade value"], 0.25 * TM) and approx(n["Energy"], 0.2 * TM - 6), n)
+    check("Mutual Aid: trade 4.2, energy 16.8*0.2 - 6", approx(n["Trade"], 0.25 * TM) and approx(n["Energy Credits"], 0.2 * TM - 6), n)
     # P17.3: jobs "i" panel lists the current stratum efficiency (Egalitarian +5 % specialist)
     await tab("planet")
     await pg.evaluate("()=>document.querySelector('#planet-jobs-info-btn').click()")
@@ -130,7 +130,7 @@ async def run(t):
     mods = await pg.evaluate("()=>[...document.querySelectorAll('#planet-modifiers .planet-modifier-row')].map(r=>r.innerText)")
     check("modifiers panel lists the stability effect", any("Planetary condition" in m and "+7.2%" in m for m in mods), mods)
     await tab("planet")
-    await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>/Trade value/.test(r.innerText))?.click()")
+    await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-row')].find(r=>r.querySelector('.planet-resource-name')?.innerText.trim()==='Trade')?.click()")
     bd = await pg.evaluate("()=>document.querySelector('#planet-production-net')?.innerText")
     check("breakdown shows the stability effect line", "Stability effect on job output" in (bd or ""), bd)
     # P9.5: crime from low happiness (0.02 x (100 - 70) per pop; pops shown x100), display only
@@ -164,7 +164,7 @@ async def run(t):
     after = await net()
     pops_after = await pg.evaluate("()=>document.querySelector('#planet-conditions [data-condition=pops] .planet-resource-value')?.innerText")
     check("civilians: +200 pops", float(pops_after) - float(pops_before) == 200, (pops_before, pops_after))
-    check("civilians: trade and converted energy rise", after["Trade value"] > before["Trade value"] and after["Energy"] > before["Energy"], (before, after))
+    check("civilians: trade and converted energy rise", after["Trade"] > before["Trade"] and after["Energy Credits"] > before["Energy Credits"], (before, after))
     await pg.fill("#planet-summary-name", "Civilian planet")
     await pg.evaluate("()=>document.querySelector('#planet-summary-save').click()")
     await pg.wait_for_timeout(300)

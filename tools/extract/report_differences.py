@@ -131,7 +131,9 @@ def sim_items(sim):
         key = entry.get("i18nKey")
         if not key and set_name == "jobs":  # job swaps and special body jobs: jobScienceDirector
             key = "job" + "".join(w.capitalize() for w in sim_id.split("_"))
-        out[set_name].append(SimItem(sim_id, source, name(key), entry.get("img"), values))
+        item = SimItem(sim_id, source, name(key), entry.get("img"), values)
+        item.key = key  # the i18n key of the name (T1502 maps it to the official strings)
+        out[set_name].append(item)
 
     # jobs: the planet jobs, the special body jobs and the job swaps; outputs net of upkeep
     pd = m["planet-data.js"]

@@ -14,10 +14,14 @@
  * after the static markup has been translated.
  */
 
-import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta } from "./i18n.js";
+import { SUPPORTED_LANGS, DEFAULT_LANG, detectInitialLang, storeLang, t, htmlLangCode, syncSocialMeta, loadLanguage } from "./i18n.js";
 
 let currentLang = detectInitialLang();
 const listeners = [];
+
+// Pages that show game names (<html data-game-names>: planet simulator, bingo) load the
+// official names of the language before any page script draws (P15, js/game-names.js).
+if (document.documentElement.hasAttribute("data-game-names")) await import("./game-names.js");
 
 export function getLang() {
   return currentLang;
@@ -50,11 +54,27 @@ export function onLanguageChange(callback) {
   listeners.push(callback);
 }
 
+function redraw() {
+  applyPageTranslations();
+  listeners.forEach((callback) => callback(currentLang));
+}
+
+/**
+ * Switches at once; if the official game names of the language are not loaded
+ * yet (js/game-names.js), the page shows the hand-written ones and is drawn
+ * again when they arrive.
+ */
 function setLanguage(lang) {
   currentLang = SUPPORTED_LANGS.includes(lang) ? lang : DEFAULT_LANG;
   storeLang(currentLang);
-  applyPageTranslations();
-  listeners.forEach((callback) => callback(currentLang));
+  redraw();
+  const pending = loadLanguage(currentLang);
+  if (pending) {
+    const lang = currentLang;
+    pending.then(() => {
+      if (currentLang === lang) redraw();
+    });
+  }
 }
 
 document.querySelectorAll(".lang-btn").forEach((btn) => {
