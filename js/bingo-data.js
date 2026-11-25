@@ -29,6 +29,8 @@
  * - i18nKey: text key of the name, with the same key in es/en/jp (js/i18n*.js).
  * - id: identity of the cell inside its bingo (marks, `order`, `cells`); defaults to i18nKey.
  *   Needed when the identity must not depend on the name (e.g. two cells with the same name).
+ * - detailKey: optional text key shown after the name, after a dash, to tell apart cells that share
+ *   their game name ("Dictatorial Alignment – Commander (Dictatorial)").
  * - variantKey: optional text key shown after the name, in brackets ("Democratic Surrogacy (Democratic)").
  * - tags: optional list of free labels (e.g. "hive", "fanatic"), written on the card as data-tags.
  * - dlc: optional DLC id the item needs; null or missing = base game.
@@ -74,7 +76,8 @@ const ETHIC_BINGO = Object.keys(ETHIC_WHEEL).map((id) => ({
  * one of the game authority (or advanced_authority_swap) "auth_<id>"; a variant cell is named
  * with the game name of that swap, followed by its base authority in brackets (T2405).
  * "cyber_dictatorial_collectivist" has no game id of its own: the game splits it by ruler class
- * (_official, _commander, _scientist, _vacant), all named "Dictatorial Alignment" (T2406).
+ * (_official, _commander, _scientist, _vacant), all named "Dictatorial Alignment", one cell each
+ * after the generic icon, told apart by their ruler class (detailKey, T2406): 79 cells.
  */
 const AUTHORITY_BINGO = [
   { id: "democratic", img: "authorities/Auth_democratic.png", i18nKey: "authorityDemocratic" },
@@ -116,6 +119,14 @@ const AUTHORITY_BINGO = [
   { id: "cyber_oligarchic_collectivist", img: "authorities/Auth_cyber_oligarchic_collectivist.png", i18nKey: "authorityCyberOligarchicCollectivist", variantKey: "authorityOligarchic", tags: ["cybernetic"] },
   { id: "cyber_oligarchic_individualist", img: "authorities/Auth_cyber_oligarchic_individualist.png", i18nKey: "authorityCyberOligarchicIndividualist", variantKey: "authorityOligarchic", tags: ["cybernetic"] },
   { id: "cyber_dictatorial_collectivist", img: "authorities/Auth_cyber_dictatorial_collectivist.png", i18nKey: "authorityCyberDictatorialCollectivist", variantKey: "authorityDictatorial", tags: ["cybernetic"] },
+  ...["official", "commander", "scientist", "vacant"].map((ruler) => ({
+    id: `cyber_dictatorial_collectivist_${ruler}`,
+    img: `authorities/Auth_cyber_dictatorial_collectivist_${ruler}.png`,
+    i18nKey: "authorityCyberDictatorialCollectivist",
+    detailKey: `authorityRuler${ruler[0].toUpperCase()}${ruler.slice(1)}`,
+    variantKey: "authorityDictatorial",
+    tags: ["cybernetic"]
+  })),
   { id: "cyber_dictatorial_individualist", img: "authorities/Auth_cyber_dictatorial_individualist.png", i18nKey: "authorityCyberDictatorialIndividualist", variantKey: "authorityDictatorial", tags: ["cybernetic"] },
   { id: "cyber_imperial_collectivist", img: "authorities/Auth_cyber_imperial_collectivist.png", i18nKey: "authorityCyberImperialCollectivist", variantKey: "authorityImperial", tags: ["cybernetic"] },
   { id: "cyber_imperial_individualist", img: "authorities/Auth_cyber_imperial_individualist.png", i18nKey: "authorityCyberImperialIndividualist", variantKey: "authorityImperial", tags: ["cybernetic"] },

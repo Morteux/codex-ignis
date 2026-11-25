@@ -1,6 +1,7 @@
 """Tech tree data (section 30): the test fixture, the data validations and the data files."""
-import glob, json, os, re, subprocess, sys, tempfile, threading
+import glob, json, os, re, subprocess, sys, tempfile, threading, time
 from functools import partial
+from playwright.async_api import TimeoutError as PlaywrightTimeout
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from smoke.common import check, ROOT
 
@@ -36,11 +37,17 @@ TREE_READY_JS = """([version, nodes, selected]) => {
 
 async def wait_for_tree(pg, version, nodes=None, selected=None, timeout=15000):
     """Waits until the page shows `version` with its nodes drawn (and `selected` selected); on a
-    timeout it returns and lets the following check report the state it finds."""
-    try:
-        await pg.wait_for_function(TREE_READY_JS, arg=[version, nodes, selected], timeout=timeout)
-    except Exception:
-        pass
+    timeout it returns and lets the following check report the state it finds. A navigation while
+    waiting (the page reloading itself with the stored ?version=) restarts the wait (T2406)."""
+    deadline = time.monotonic() + timeout / 1000
+    while (left := deadline - time.monotonic()) > 0:
+        try:
+            await pg.wait_for_function(TREE_READY_JS, arg=[version, nodes, selected], timeout=left * 1000)
+            return
+        except PlaywrightTimeout:
+            return
+        except Exception:  # execution context destroyed by a navigation
+            await pg.wait_for_load_state("load")
 
 
 async def run(t):

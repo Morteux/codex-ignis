@@ -5,9 +5,6 @@ from smoke.common import check, ROOT
 
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
-# Icons of authorities/ exported from the game (T2524) that are not bingo cells yet (T2406).
-PENDING_AUTH_ICONS = {f"Auth_cyber_dictatorial_collectivist_{c}.png" for c in ("commander", "official", "scientist", "vacant")}
-
 # Diagnostics of a download that never came: icons still loading, button state, status text.
 DOWNLOAD_STATE_JS = "()=>({pending:[...document.querySelectorAll('#bingo-grid img')].filter(i=>!i.complete).map(i=>i.src.split('/').pop()),disabled:document.querySelector('#bingo-download').disabled,status:document.querySelector('#bingo-download-status').textContent})"
 
@@ -121,9 +118,9 @@ async def run(t):
     # P24.4: authorities bingo, one cell per icon of authorities/, base authorities first
     await bingo.select_option("#bingo-type", "authorities")
     auths = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.querySelector('img').src.split('/').pop(),c.dataset.tags||''])")
-    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l) - PENDING_AUTH_ICONS)
+    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l))
     names = [a[0] for a in auths]
-    check("bingo: authorities bingo has one cell per icon of authorities/ (75), each with its own name", len(auths) == 75 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 75
+    check("bingo: authorities bingo has one cell per icon of authorities/ (79), each with its own name", len(auths) == 79 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 79
           and not any("undefined" in n or n.startswith("authority") for n in names), (len(auths), names[:3]))
     check("bingo: authorities start with the 10 base ones, then the ascension variants named '<variant> (<base authority>)'",
           auths[0][1] == "Auth_democratic.png" and all("(" not in n for n in names[:10]) and all(n.endswith(")") and a[2] for n, a in zip(names[10:], auths[10:])) and names[10].endswith(" (" + names[0] + ")"), names[:12])
@@ -149,9 +146,14 @@ async def run(t):
             official[lang] = json.load(f)["sets"]["authorities"]
         # the other base cells share their names with the simulator (not replaced by T2405)
         wrong_names += [(lang, c["id"], c["names"][lang]) for c in cells if (c["base"] or c["id"] in ("mutualistic_intelligence", "memory_aggregator", "neural_chorus")) and c["names"][lang] != official[lang].get(game_id(c))]
-    check("bingo: authority variants (and Mutualistic Intelligence, Memory Aggregator, Neural Chorus) use the official es/en/jp names", len(cells) == 75 and not wrong_names, wrong_names[:5])
+    check("bingo: authority variants (and Mutualistic Intelligence, Memory Aggregator, Neural Chorus) use the official es/en/jp names", len(cells) == 79 and not wrong_names, wrong_names[:5])
     wrong_base = [(c["id"], c["base"]) for c in cells if c["base"] and c["base"] != official["en"][game_auths.get(game_id(c), ("", "auth_democratic"))[1]]]
     check("bingo: the base authority in brackets is the one the game variant belongs to", not wrong_base, wrong_base[:5])
+    # T2406: the 4 "Dictatorial Alignment" cells by ruler class, after the generic icon
+    ruler = [a for a in auths if "_dictatorial_collectivist" in a[1]]
+    check("bingo: Dictatorial Alignment has the generic cell and one per ruler class, told apart by name",
+          [a[1] for a in ruler] == ["Auth_cyber_dictatorial_collectivist" + s + ".png" for s in ("", "_official", "_commander", "_scientist", "_vacant")]
+          and all(a[0].startswith(official["en"]["auth_cyber_dictatorial_collectivist_official"] + " – ") for a in ruler[1:]) and ruler[2][0] == "Dictatorial Alignment – Commander (Dictatorial)", [a[0] for a in ruler])
     await bingo.click("#bingo-grid .bingo-card >> nth=10")
     await bingo.select_option("#bingo-type", "ethics")
     await bingo.select_option("#bingo-type", "authorities")

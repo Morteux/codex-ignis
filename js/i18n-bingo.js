@@ -94,6 +94,12 @@ export const strings = {
         authorityShroudHiveTranscendent: "Mente de éter trascendente",
         authorityShroudMachineCorporeal: "Red psiónica",
         authorityShroudMachineTranscendent: "Ordenador central trascendente",
+        // Ruler class of the "Dictatorial Alignment" variants (T2406): game leader class names;
+        // the vacant one has no game string (draft, see DECISIONS_TO_REVIEW.md, T2406)
+        authorityRulerOfficial: "Oficial",
+        authorityRulerCommander: "Comandante",
+        authorityRulerScientist: "Científico",
+        authorityRulerVacant: "Sin gobernante",
         a11yBingoGrid: "Casillas del bingo",
     },
     en: {
@@ -184,6 +190,10 @@ export const strings = {
         authorityShroudHiveTranscendent: "Transcendent Ethermind",
         authorityShroudMachineCorporeal: "Psionic Grid",
         authorityShroudMachineTranscendent: "Transcendent Mainframe",
+        authorityRulerOfficial: "Official",
+        authorityRulerCommander: "Commander",
+        authorityRulerScientist: "Scientist",
+        authorityRulerVacant: "No ruler",
         a11yBingoGrid: "Bingo squares",
     },
     jp: {
@@ -274,6 +284,10 @@ export const strings = {
         authorityShroudHiveTranscendent: "超越エーテル体",
         authorityShroudMachineCorporeal: "サイオニック・グリッド",
         authorityShroudMachineTranscendent: "超越メインフレーム",
+        authorityRulerOfficial: "役人",
+        authorityRulerCommander: "司令官",
+        authorityRulerScientist: "科学者",
+        authorityRulerVacant: "統治者不在",
         a11yBingoGrid: "ビンゴのマス",
     },
 };

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2406 — Dictatorial Alignment by ruler class (2026-11-25)
+
+- [ ] **Five cells**: the 4 icons (`_official`, `_commander`, `_scientist`, `_vacant`) are added after the old generic `Auth_cyber_dictatorial_collectivist.png` cell, which stays because the bingo has one cell per icon of `authorities/` (79 cells now). Alternative: drop the generic cell (it has no game texture in 4.5.4, see T2405) and keep 78.
+- [ ] **Names**: all four share the official name "Dictatorial Alignment", so each cell adds its ruler class after a dash, from a new optional `detailKey` of the bingo items: "Dictatorial Alignment – Commander (Dictatorial)". Official, Commander and Scientist are the game's leader class names (`official`, `commander`, `scientist` of `main_1_l_*.yml`: es "Oficial", "Comandante", "Científico"; jp 役人, 司令官, 科学者). **Draft**: the vacant variant (no ruler) has no game string; it reads es "Sin gobernante", en "No ruler", jp 統治者不在 (`authorityRulerVacant`) until the owner picks one.
+
 ## T2405 — Official names of the authorities bingo (2026-11-25)
 
 - [ ] **Cell names**: the game names every variant on its own, so the 13 generic labels (`authorityVariant*`) are gone and each variant cell has its own key with the official name, followed by its base authority in brackets ("Cordant Multiplicity (Democratic)"). The ascension path is no longer written in the name (it stays in the cell's tag). Alternative: the official name alone.

@@ -38,9 +38,10 @@ const markedState = new Map();
 /** Identity of an item inside its bingo: its `id`, or its i18n key when it has none. */
 const itemId = (item) => item.id ?? item.i18nKey;
 
-/** Name of an item: its i18n text, plus its variant in brackets when it has one. */
+/** Name of an item: its i18n text, its detail after a dash and its variant in brackets, when it has them. */
 function itemName(item) {
-    const name = t(currentLang, item.i18nKey);
+    const base = t(currentLang, item.i18nKey);
+    const name = item.detailKey ? `${base} – ${t(currentLang, item.detailKey)}` : base;
     return item.variantKey ? `${name} (${t(currentLang, item.variantKey)})` : name;
 }
 
