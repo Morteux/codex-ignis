@@ -1,16 +1,17 @@
 /**
- * Zoom and pan of the tech tree (T3204, TECH_TREE_GDD.md section 6).
+ * Zoom and pan of the tech tree (T3204, T3601, TECH_TREE_GDD.md section 6).
  *
- * Every area panel (`.tech-area-scroll`) keeps its own scroll, which is the pan: scroll bars,
- * mouse wheel, one finger on touch screens, and arrow keys once the panel has the focus (it is
- * focusable). On top of that:
+ * The three areas are stacked in one tree window (`.tech-areas`), whose scroll is the pan: scroll
+ * bars, mouse wheel, one finger on touch screens, and arrow keys once the window has the focus (it
+ * is focusable). On top of that:
  * - mouse: drag the empty space of the tree to pan; Ctrl + wheel zooms around the pointer;
  * - touch: pinch with two fingers zooms around the fingers;
  * - keyboard: `+` / `-` zoom and `0` goes back to 100 % while the focus is in the tree, and the
  *   zoom bar has buttons for the same.
- * The zoom is one level for the three areas. It scales each grid with a CSS transform (the nodes
- * and the SVG lines together, so the lines need no redraw) inside a wrapper sized to the scaled
- * grid, so the panel scrolls exactly over the visible tree. At 100 % nothing is transformed.
+ * The zoom scales the whole stack (`.tech-stack`: the three areas, their nodes and the SVG lines
+ * together, so the lines need no redraw) with a CSS transform inside a wrapper (`.tech-zoom`)
+ * sized to the scaled stack, so the window scrolls exactly over the visible tree. At 100 %
+ * nothing is transformed.
  */
 import { t } from "./i18n.js";
 
@@ -27,49 +28,32 @@ function nextStep(zoom, direction) {
 }
 
 /**
- * Sets up zoom and pan for every `.tech-area-scroll` under `root`, with its buttons in `bar`.
+ * Sets up zoom and pan of the tree window `root`, with its buttons in `bar`.
  * Returns `{ zoom(), setZoom(value, anchor?), relabel() }`.
  */
-export function createZoom(root, bar, getLang, areaLabel) {
+export function createZoom(root, bar, getLang) {
   let zoom = 1;
-  const scrolls = [...root.querySelectorAll(".tech-area-scroll")];
+  const scroll = root;
+  const wrap = root.querySelector(".tech-zoom");
+  const stack = root.querySelector(".tech-stack");
+  scroll.tabIndex = 0;
 
-  // wrap every grid once; the wrapper takes the scaled size
-  scrolls.forEach((scroll) => {
-    const grid = scroll.querySelector(".tech-grid");
-    if (!grid || grid.parentElement.classList.contains("tech-zoom")) return;
-    const wrap = document.createElement("div");
-    wrap.className = "tech-zoom";
-    grid.replaceWith(wrap);
-    wrap.append(grid);
-    scroll.tabIndex = 0;
-  });
-
-  function sizeWrappers() {
-    scrolls.forEach((scroll) => {
-      const wrap = scroll.querySelector(".tech-zoom");
-      const grid = wrap && wrap.querySelector(".tech-grid");
-      if (!grid) return;
-      if (zoom === 1) {
-        wrap.style.removeProperty("width");
-        wrap.style.removeProperty("height");
-        grid.style.removeProperty("transform");
-      } else {
-        wrap.style.width = grid.offsetWidth * zoom + "px";
-        wrap.style.height = grid.offsetHeight * zoom + "px";
-        grid.style.transform = `scale(${zoom})`;
-      }
-    });
+  function sizeWrapper() {
+    if (zoom === 1) {
+      wrap.style.removeProperty("width");
+      wrap.style.removeProperty("height");
+      stack.style.removeProperty("transform");
+    } else {
+      wrap.style.width = stack.offsetWidth * zoom + "px";
+      wrap.style.height = stack.offsetHeight * zoom + "px";
+      stack.style.transform = `scale(${zoom})`;
+    }
     root.classList.toggle("is-zoomed", zoom !== 1);
   }
 
-  const resize = new ResizeObserver(() => {
-    if (zoom !== 1) sizeWrappers();
-  });
-  scrolls.forEach((scroll) => {
-    const grid = scroll.querySelector(".tech-grid");
-    if (grid) resize.observe(grid);
-  });
+  new ResizeObserver(() => {
+    if (zoom !== 1) sizeWrapper();
+  }).observe(stack);
 
   const level = document.createElement("output");
   level.className = "tech-zoom-level";
@@ -101,10 +85,8 @@ export function createZoom(root, bar, getLang, areaLabel) {
     buttons.out.setAttribute("aria-label", t(lang, "techTreeZoomOut"));
     buttons.reset.setAttribute("aria-label", t(lang, "techTreeZoomReset"));
     hint.textContent = t(lang, "techTreeZoomHint");
-    scrolls.forEach((scroll) => {
-      scroll.setAttribute("role", "region");
-      scroll.setAttribute("aria-label", t(lang, "techTreePanelLabel").replace("{area}", areaLabel(scroll.closest(".tech-area").dataset.area)));
-    });
+    scroll.setAttribute("role", "region");
+    scroll.setAttribute("aria-label", t(lang, "techTreeWindowLabel"));
   }
 
   function paint() {
@@ -115,21 +97,20 @@ export function createZoom(root, bar, getLang, areaLabel) {
   }
 
   /**
-   * New zoom level. `anchor` = {scroll, x, y} (point in the panel's client box that stays put);
-   * without it every visible panel keeps its centre.
+   * New zoom level. `anchor` = {x, y} (point in the window's client box that stays put); without
+   * it the window keeps its centre.
    */
   function setZoom(value, anchor) {
     const next = Math.round(clamp(value) * 1000) / 1000;
     if (next === zoom) return;
     const ratio = next / zoom;
-    const targets = anchor ? [anchor] : scrolls.filter((scroll) => scroll.offsetWidth).map((scroll) => ({ scroll, x: scroll.clientWidth / 2, y: scroll.clientHeight / 2 }));
-    const before = targets.map(({ scroll, x, y }) => ({ scroll, x, y, left: (scroll.scrollLeft + x) * ratio - x, top: (scroll.scrollTop + y) * ratio - y }));
+    const { x, y } = anchor || { x: scroll.clientWidth / 2, y: scroll.clientHeight / 2 };
+    const left = (scroll.scrollLeft + x) * ratio - x;
+    const top = (scroll.scrollTop + y) * ratio - y;
     zoom = Math.abs(next - 1) < 0.001 ? 1 : next;
-    sizeWrappers();
-    before.forEach(({ scroll, left, top }) => {
-      scroll.scrollLeft = left;
-      scroll.scrollTop = top;
-    });
+    sizeWrapper();
+    scroll.scrollLeft = left;
+    scroll.scrollTop = top;
     paint();
     root.dispatchEvent(new CustomEvent("tech-zoom-change", { detail: zoom }));
   }
@@ -138,13 +119,13 @@ export function createZoom(root, bar, getLang, areaLabel) {
   buttons.out.addEventListener("click", () => setZoom(nextStep(zoom, -1)));
   buttons.reset.addEventListener("click", () => setZoom(1));
 
-  scrolls.forEach((scroll) => {
+  {
     // Ctrl + wheel (and the trackpad pinch, which browsers send as Ctrl + wheel): zoom at the pointer
     scroll.addEventListener("wheel", (event) => {
       if (!event.ctrlKey) return;
       event.preventDefault();
       const box = scroll.getBoundingClientRect();
-      setZoom(zoom * Math.exp(-event.deltaY * 0.0015), { scroll, x: event.clientX - box.left, y: event.clientY - box.top });
+      setZoom(zoom * Math.exp(-event.deltaY * 0.0015), { x: event.clientX - box.left, y: event.clientY - box.top });
     }, { passive: false });
 
     // mouse drag on the empty space pans
@@ -180,21 +161,19 @@ export function createZoom(root, bar, getLang, areaLabel) {
       const box = scroll.getBoundingClientRect();
       const x = (event.touches[0].clientX + event.touches[1].clientX) / 2 - box.left;
       const y = (event.touches[0].clientY + event.touches[1].clientY) / 2 - box.top;
-      setZoom(pinch.zoom * spread(event.touches) / pinch.distance, { scroll, x, y });
+      setZoom(pinch.zoom * spread(event.touches) / pinch.distance, { x, y });
     }, { passive: false });
     scroll.addEventListener("touchend", (event) => {
       if (event.touches.length < 2) pinch = null;
     });
-  });
+  }
 
   // keys while the focus is in the tree (a node or a panel)
   root.addEventListener("keydown", (event) => {
     if (event.ctrlKey || event.metaKey || event.altKey) return;
-    const scroll = event.target.closest(".tech-area-scroll");
-    const anchor = scroll ? { scroll, x: scroll.clientWidth / 2, y: scroll.clientHeight / 2 } : undefined;
-    if (event.key === "+" || event.key === "=") setZoom(nextStep(zoom, 1), anchor);
-    else if (event.key === "-" || event.key === "_") setZoom(nextStep(zoom, -1), anchor);
-    else if (event.key === "0") setZoom(1, anchor);
+    if (event.key === "+" || event.key === "=") setZoom(nextStep(zoom, 1));
+    else if (event.key === "-" || event.key === "_") setZoom(nextStep(zoom, -1));
+    else if (event.key === "0") setZoom(1);
     else return;
     event.preventDefault();
   });

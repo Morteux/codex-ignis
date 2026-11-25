@@ -93,14 +93,14 @@ Checked on `data/generated/stellaris-pc-4.5.4/technologies.json` (679 technologi
 
 ## 6. Page
 - Shared page shell (header, language selector, footer) of the rest of the site. The intro holds the version selector, the shown data version with its verification status, the legend of kind colours and states, and the selection status.
-- Three areas side by side (tabs below 700 px); inside each area, columns by tier (0–5) and one row per field. On phones, field names are vertical, nodes narrower and the tree scrolls sideways inside its panel, never the page.
-- Nodes: icon slot, name, tier and kind. Prerequisite lines are SVG curves between nodes of the same area, redrawn on resize; prerequisites in other areas have no line.
+- One tree window for the three areas (T3601): Physics, Society and Engineering are rows stacked one under the other, each on a slightly tinted, semi-transparent background (blue, green, orange) with its name kept at the left edge, and share one scroll, zoom and pan. Inside each area, columns by tier (0–5), aligned across the three areas, and one row per field. Buttons above the window jump to an area and mark the one at its top. Phones keep the same stacked layout (the old area tabs are gone: one tree, one scroll); field names are vertical, nodes narrower and the tree scrolls sideways inside its window, never the page.
+- Nodes: icon slot, name, tier and kind. Prerequisite lines are SVG curves in one layer under the three areas, also between areas (a prerequisite of another area gets a line too), redrawn on resize.
 - States: normal, selected, prerequisite of the selected, unlocked by the selected (whole chain in both directions and across areas, direct neighbours highlighted, the rest dimmed), and kind colours (starter, rare, dangerous, repeatable, event). A second click or Escape clears the selection.
 - Detail card: base cost, tier, kind, area and field, description, variants, prerequisites and "leads to" (buttons that select that technology), other requirements, unlocks (linked to the simulator where T3007 linked them; the link opens its entry in the simulator, `planet-sim.html#building=<id>` or `#district=<id>`, T3405), effects, draw weight as information, repeatable levels, DLC, version. Own column on desktop, bottom sheet on phones.
 - Search: by name, accent- and case-insensitive, all words; filters by area, field, tier, kind and DLC (base game included). Non-matches are dimmed and up to 30 results are listed as buttons.
-- Zoom and pan: buttons, Ctrl + wheel, two-finger pinch and + − 0 keys; drag the background or use the arrows on a focused panel.
+- Zoom and pan: buttons, Ctrl + wheel, two-finger pinch and + − 0 keys; drag the background or use the arrows on the focused tree window.
 - Deep link: `tech-tree.html#<tech id>` selects the technology, opens its card and scrolls to it; the selection rewrites the hash without adding history entries; an unknown id shows a notice.
-- Languages and accessibility: interface in es/en/jp, game names in English marked `lang="en"`; one Tab stop per area, arrows / Home / End between nodes, each node described by its field and state; text contrast 4.5:1 also on dimmed nodes.
+- Languages and accessibility: interface in es/en/jp, game names in English marked `lang="en"`; the tree window is one focusable region and each area one Tab stop, arrows / Home / End between nodes, each node described by its field and state; text contrast 4.5:1 also on dimmed nodes.
 - Links into the tree: wiki articles (`[text](tech-tree.html#<tech id>)`, "Enlaces útiles") and the "Researched with" line of the simulator's building catalogue (new tab), fed by `js/tech-unlock-links.js`.
 
 ## 7. Not modelled / ideas for later

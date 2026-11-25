@@ -65,24 +65,28 @@
 
       <section class="tech-board" aria-labelledby="tech-board-heading">
         <h2 class="visually-hidden" id="tech-board-heading" data-i18n="techTreeBoardHeading">Áreas de investigación</h2>
-        <div class="tech-area-tabs" role="tablist" aria-label="Áreas de investigación" data-i18n-attr="aria-label:techTreeBoardHeading">
-          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-physics" data-area="physics" aria-controls="tech-area-physics" aria-selected="true">Physics</button>
-          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-society" data-area="society" aria-controls="tech-area-society" aria-selected="false" tabindex="-1">Society</button>
-          <button type="button" class="tech-area-tab" role="tab" id="tech-tab-engineering" data-area="engineering" aria-controls="tech-area-engineering" aria-selected="false" tabindex="-1">Engineering</button>
-        </div>
+        <nav class="tech-area-jumps" aria-label="Ir a un área" data-i18n-attr="aria-label:techTreeJumpLabel">
+          <button type="button" class="tech-area-jump tech-area-jump--physics" id="tech-jump-physics" data-area="physics" aria-controls="tech-area-physics">Physics</button>
+          <button type="button" class="tech-area-jump tech-area-jump--society" id="tech-jump-society" data-area="society" aria-controls="tech-area-society">Society</button>
+          <button type="button" class="tech-area-jump tech-area-jump--engineering" id="tech-jump-engineering" data-area="engineering" aria-controls="tech-area-engineering">Engineering</button>
+        </nav>
         <div class="tech-areas">
-          <section class="tech-area tech-area--physics is-active" id="tech-area-physics" data-area="physics" role="tabpanel" aria-labelledby="tech-tab-physics">
-            <h3 class="tech-area-heading">Physics</h3>
-            <div class="tech-area-scroll"></div>
-          </section>
-          <section class="tech-area tech-area--society" id="tech-area-society" data-area="society" role="tabpanel" aria-labelledby="tech-tab-society">
-            <h3 class="tech-area-heading">Society</h3>
-            <div class="tech-area-scroll"></div>
-          </section>
-          <section class="tech-area tech-area--engineering" id="tech-area-engineering" data-area="engineering" role="tabpanel" aria-labelledby="tech-tab-engineering">
-            <h3 class="tech-area-heading">Engineering</h3>
-            <div class="tech-area-scroll"></div>
-          </section>
+          <div class="tech-zoom">
+            <div class="tech-stack">
+              <section class="tech-area tech-area--physics" id="tech-area-physics" data-area="physics" aria-labelledby="tech-area-heading-physics">
+                <h3 class="tech-area-heading" id="tech-area-heading-physics">Physics</h3>
+                <div class="tech-area-body"></div>
+              </section>
+              <section class="tech-area tech-area--society" id="tech-area-society" data-area="society" aria-labelledby="tech-area-heading-society">
+                <h3 class="tech-area-heading" id="tech-area-heading-society">Society</h3>
+                <div class="tech-area-body"></div>
+              </section>
+              <section class="tech-area tech-area--engineering" id="tech-area-engineering" data-area="engineering" aria-labelledby="tech-area-heading-engineering">
+                <h3 class="tech-area-heading" id="tech-area-heading-engineering">Engineering</h3>
+                <div class="tech-area-body"></div>
+              </section>
+            </div>
+          </div>
         </div>
         <aside class="tech-card" id="tech-card" aria-labelledby="tech-card-title" hidden></aside>
       </section>

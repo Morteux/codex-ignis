@@ -3446,55 +3446,89 @@ h1 {
     font: .7rem var(--mono);
 }
 
-.tech-area-tabs {
-    display: none;
+/* T3601: the three areas are rows stacked in one tree window (.tech-areas: one scroll, zoom and
+   pan), each on a tinted, semi-transparent background; the jump buttons scroll the window to an
+   area and mark the one at its top. */
+.tech-area-jumps {
+    display: flex;
     gap: .4rem;
-    margin-bottom: .8rem;
+    margin-bottom: .6rem;
 }
 
-.tech-area-tab {
-    flex: 1 1 0;
+.tech-area-jump {
+    flex: 0 1 10rem;
     min-height: 2.4rem;
     padding: .4rem .5rem;
-    color: var(--muted);
-    background: var(--surface);
+    color: var(--text);
+    background: var(--tech-area-tint, var(--surface));
     border: 1px solid var(--line);
+    border-left: 4px solid var(--tech-area-colour, var(--line));
     font: 700 .7rem var(--mono);
     text-transform: uppercase;
     cursor: pointer;
 }
 
-.tech-area-tab[aria-selected="true"] {
-    color: var(--background);
-    background: var(--accent);
-    border-color: var(--accent);
+.tech-area-jump[aria-current="true"] {
+    border-color: var(--tech-area-colour, var(--accent));
+}
+
+.tech-area-jump:hover,
+.tech-area-jump:focus-visible {
+    border-color: var(--accent-dim);
+    border-left-color: var(--tech-area-colour, var(--accent-dim));
+}
+
+.tech-area--physics,
+.tech-area-jump--physics {
+    --tech-area-colour: #4f8dff;
+    --tech-area-tint: rgba(79, 141, 255, .09);
+}
+
+.tech-area--society,
+.tech-area-jump--society {
+    --tech-area-colour: #4fd17a;
+    --tech-area-tint: rgba(79, 209, 122, .08);
+}
+
+.tech-area--engineering,
+.tech-area-jump--engineering {
+    --tech-area-colour: #ff9a3d;
+    --tech-area-tint: rgba(255, 154, 61, .08);
 }
 
 .tech-areas {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: .8rem;
-}
-
-.tech-area {
-    min-width: 0;
+    max-height: 75vh;
+    overflow: auto;
+    overscroll-behavior: contain;
     border: 1px solid var(--line);
     background: var(--panel-shade);
 }
 
-.tech-area-heading {
-    margin: 0;
-    padding: .6rem .8rem;
-    border-bottom: 1px solid var(--line-soft);
-    color: var(--accent);
-    font: 700 .78rem var(--mono);
-    text-transform: uppercase;
+.tech-stack {
+    position: relative;
+    width: max-content;
 }
 
-.tech-area-scroll {
-    max-height: 75vh;
-    overflow: auto;
-    overscroll-behavior: contain;
+.tech-area {
+    background: var(--tech-area-tint);
+    border-top: 2px solid var(--tech-area-colour, var(--line));
+}
+
+.tech-area + .tech-area {
+    margin-top: .6rem;
+}
+
+/* the heading keeps to the left edge of the window while it scrolls sideways */
+.tech-area-heading {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    display: inline-block;
+    margin: 0;
+    padding: .5rem .8rem;
+    color: var(--tech-area-colour, var(--accent));
+    font: 700 .78rem var(--mono);
+    text-transform: uppercase;
 }
 
 /* T3303: comparison between two data versions (js/tech-tree-compare.js). */
@@ -3611,7 +3645,6 @@ h1 {
 .tech-grid {
     --tech-node-width: 11rem;
     --tech-field-width: 6.5rem;
-    position: relative;
     display: grid;
     grid-template-columns: var(--tech-field-width) repeat(var(--tech-tiers), var(--tech-node-width));
     column-gap: 1.6rem;
@@ -3624,7 +3657,7 @@ h1 {
     position: sticky;
     left: 0;
     z-index: 2;
-    background: var(--surface);
+    background: linear-gradient(var(--tech-area-tint, transparent), var(--tech-area-tint, transparent)), var(--surface);
 }
 
 .tech-grid-corner {
@@ -3698,7 +3731,7 @@ h1 {
     font: .6rem var(--mono);
 }
 
-/* T3103: prerequisite lines (js/tech-tree-lines.js), one SVG under the nodes of each grid. */
+/* T3103, T3601: prerequisite lines (js/tech-tree-lines.js), one SVG under the nodes of the stack. */
 .tech-lines {
     position: absolute;
     top: 0;
@@ -3838,30 +3871,19 @@ h1 {
 }
 
 @media (max-width: 700px) {
-    .tech-area-tabs {
-        display: flex;
-    }
-
-    .tech-areas {
-        display: block;
-    }
-
-    .tech-area:not(.is-active),
-    .tech-area-heading {
-        display: none;
-    }
-
-    /* T3105: 320–375 px phones. Bigger tabs, narrower nodes and columns, field names written
-       vertically in a thin sticky column, so a tier column and a half fit on screen and the
-       panel scrolls sideways (with the finger) for the rest. The 40 px icon slot keeps its size. */
-    .tech-area-tab {
+    /* T3105, T3601: 320–375 px phones. The same stacked areas as on desktop; bigger jump
+       buttons, narrower nodes and columns, field names written vertically in a thin sticky column,
+       so a tier column and a half fit on screen and the window scrolls sideways (with the finger)
+       for the rest. The 40 px icon slot keeps its size. */
+    .tech-area-jump {
+        flex: 1 1 0;
         min-height: 44px;
         padding: .4rem .2rem;
         font-size: .62rem;
         overflow-wrap: anywhere;
     }
 
-    .tech-area-scroll {
+    .tech-areas {
         max-height: 70vh;
         -webkit-overflow-scrolling: touch;
     }
@@ -3908,6 +3930,16 @@ body.has-tech-card .tech-board {
     grid-template-columns: minmax(0, 1fr) 23rem;
     gap: .8rem;
     align-items: start;
+}
+
+body.has-tech-card .tech-board > .tech-area-jumps,
+body.has-tech-card .tech-board > .tech-areas {
+    grid-column: 1;
+}
+
+body.has-tech-card .tech-board > .tech-card {
+    grid-column: 2;
+    grid-row: 1 / span 2;
 }
 
 .tech-card {
@@ -4310,20 +4342,20 @@ body.has-tech-card .tech-board {
     font: .64rem var(--mono);
 }
 
-.tech-area-scroll {
+.tech-areas {
     cursor: grab;
 }
 
-.tech-area-scroll.is-panning {
+.tech-areas.is-panning {
     cursor: grabbing;
     user-select: none;
 }
 
-.tech-area-scroll .tech-node {
+.tech-areas .tech-node {
     cursor: pointer;
 }
 
-.tech-area-scroll:focus-visible {
+.tech-areas:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: -2px;
 }
@@ -4332,7 +4364,7 @@ body.has-tech-card .tech-board {
     overflow: clip;
 }
 
-.tech-grid {
+.tech-stack {
     transform-origin: 0 0;
 }
 

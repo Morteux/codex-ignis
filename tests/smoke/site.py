@@ -64,7 +64,7 @@ async def run(t):
         await lctx.close()
     # P22.5: mobile layout of the other pages at 320 and 375 px — no sideways scroll, usable controls
     mobile_js = """()=>{const w=document.documentElement.clientWidth;const out=(x)=>{const r=x.getBoundingClientRect();return r.width&&r.right>w+1};
-        const over=[...document.querySelectorAll('body *')].filter(e=>out(e)&&![...e.children].some(out)&&!e.closest('.entry-columns figure,.lightbox,.tech-area-scroll')).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+(e.textContent||'').trim().slice(0,30));
+        const over=[...document.querySelectorAll('body *')].filter(e=>out(e)&&![...e.children].some(out)&&!e.closest('.entry-columns figure,.lightbox,.tech-areas')).slice(0,6).map(e=>e.tagName+'.'+e.className+' '+(e.textContent||'').trim().slice(0,30));
         const small=[...document.querySelectorAll('a,button,input,select')].filter(e=>{const r=e.getBoundingClientRect();const img=e.querySelector('img');return r.width&&r.height&&(r.height<24||r.width<24)&&!(img&&!img.naturalWidth)&&!e.closest('.reader-body p,.reader-body li,.legal-content p,.tech-credits p,.intro-copy,.skip-link')}).slice(0,6).map(e=>e.tagName+' '+(e.textContent||e.id).trim().slice(0,20)+' '+Math.round(e.getBoundingClientRect().width)+'x'+Math.round(e.getBoundingClientRect().height));
         return {sw:document.documentElement.scrollWidth,w,over,small}}"""
     mctx = await browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)

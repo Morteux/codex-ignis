@@ -7,7 +7,7 @@
  * - Inside a grid: ← → move to the nearest node of the previous / next tier (skipping empty tiers),
  *   ↑ ↓ to the previous / next node of the same tier column (across fields), Home / End to the
  *   first / last node of the area. Enter or Space selects (the node is a button). The focused
- *   node is scrolled into view. The panel itself keeps its arrow keys for panning (T3204).
+ *   node is scrolled into view. The tree window itself keeps its arrow keys for panning (T3204).
  * - Every node is described by its field (the row label) and, while something is selected, by
  *   its state (selected / prerequisite chain / depends on the selected), through
  *   `aria-describedby` to hidden texts that follow the language.

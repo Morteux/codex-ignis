@@ -197,19 +197,26 @@ async def page_checks(t):
     await pg.wait_for_timeout(400)
     await pg.click(".lang-btn[data-lang=en]")  # earlier areas may leave another stored language
 
-    # T3101: shared shell, three areas side by side (tabs hidden), credits section, footer mention, data version
-    shell = await pg.evaluate("""()=>{const box=(e)=>{const r=e.getBoundingClientRect();return [Math.round(r.left),Math.round(r.top),Math.round(r.width)]};
-      const areas=[...document.querySelectorAll('.tech-area')];
+    # T3101, T3601: shared shell, three areas stacked as rows in one tree window, credits section, footer mention, data version
+    shell = await pg.evaluate("""()=>{const box=(e)=>{const r=e.getBoundingClientRect();return [Math.round(r.left),Math.round(r.top),Math.round(r.width),Math.round(r.bottom)]};
+      const areas=[...document.querySelectorAll('.tech-area')];const win=document.querySelector('.tech-areas');
       const links=(s)=>[...document.querySelectorAll(s+' a')].map(a=>a.href);
       return {shell:!!document.querySelector('.terminal-shell > .topbar .lang-switch')&&!!document.querySelector('.terminal-shell > footer.footer'),
         current:document.querySelector('.primary-nav a[aria-current=page]')?.getAttribute('href'),
-        areas:areas.map(a=>a.dataset.area),boxes:areas.map(box),tabsShown:getComputedStyle(document.querySelector('.tech-area-tabs')).display!=='none',
+        areas:areas.map(a=>a.dataset.area),boxes:areas.map(box),jumps:[...document.querySelectorAll('.tech-area-jump')].map(b=>[b.dataset.area,b.offsetHeight>0]),
+        oneWindow:areas.every(a=>a.closest('.tech-areas')===win)&&getComputedStyle(win).overflowY==='auto'&&win.scrollHeight>win.clientHeight,
+        tints:areas.map(a=>getComputedStyle(a).backgroundColor),
         version:document.getElementById('tech-data-version').textContent,credits:links('#tech-credits'),footer:links('footer.footer p'),
         footerCredits:!!document.querySelector('footer.footer a[href="#tech-credits"]')}}""")
     b = shell["boxes"]
-    check("tech tree page: shared shell, three areas side by side on desktop (Physics, Society, Engineering), tabs hidden",
+    check("tech tree page (T3601): shared shell, the three areas stacked as rows (Physics, Society, Engineering) in one scrolling tree window, with a jump button each",
           shell["shell"] and shell["current"] == "tech-tree.html" and shell["areas"] == ["physics", "society", "engineering"]
-          and len({x[1] for x in b}) == 1 and b[0][0] < b[1][0] < b[2][0] and min(x[2] for x in b) > 250 and not shell["tabsShown"], shell)
+          and len({x[0] for x in b}) == 1 and b[0][3] <= b[1][1] and b[1][3] <= b[2][1] and min(x[2] for x in b) > 1000 and shell["oneWindow"]
+          and shell["jumps"] == [["physics", True], ["society", True], ["engineering", True]], shell)
+    tints = [[float(v) for v in re.findall(r"[\d.]+", c)] for c in shell["tints"]]
+    check("tech tree page (T3601): each area on its own semi-transparent tint (blue Physics, green Society, orange Engineering)",
+          all(len(c) == 4 and 0 < c[3] < 0.3 for c in tints) and tints[0][2] > tints[0][0] and tints[1][1] > max(tints[1][0], tints[1][2])
+          and tints[2][0] > tints[2][1] > tints[2][2], shell["tints"])
     check("tech tree page: data version visible (4.5.4, game version, unverified)",
           "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "unverified" in shell["version"], shell["version"])
     bsc, tur = "https://bloodstainedcrow.github.io/stellaris-tech-tree/", "https://turanar.github.io/stellaris-tech-tree/index.html"
@@ -221,17 +228,18 @@ async def page_checks(t):
     check("tech tree page: the data version line follows the language", es_version.startswith("Versión de datos") and "stellaris-pc-4.5.4" in es_version, es_version)
     await pg.set_viewport_size({"width": 375, "height": 760})
     await pg.wait_for_timeout(150)
-    visible = "()=>[...document.querySelectorAll('.tech-area')].filter(a=>a.offsetParent).map(a=>a.dataset.area)"
-    first = await pg.evaluate(visible)
-    await pg.click("#tech-tab-society")
-    second = await pg.evaluate(visible)
-    await pg.focus("#tech-tab-society")
-    await pg.keyboard.press("ArrowRight")
-    third = await pg.evaluate("()=>[[...document.querySelectorAll('.tech-area')].filter(a=>a.offsetParent).map(a=>a.dataset.area)[0],document.activeElement.id,document.querySelector('#tech-tab-engineering').getAttribute('aria-selected')]")
-    tabs_shown = await pg.evaluate("()=>getComputedStyle(document.querySelector('.tech-area-tabs')).display!=='none'")
-    check("tech tree page: on mobile the areas are tabs (one visible panel, click and arrow keys switch it)",
-          tabs_shown and first == ["physics"] and second == ["society"] and third == ["engineering", "tech-tab-engineering", "true"], (first, second, third))
-    await pg.click("#tech-tab-physics")
+    at_top = """async ()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const w=document.querySelector('.tech-areas').getBoundingClientRect().top;
+      return [[...document.querySelectorAll('.tech-area')].filter(a=>a.offsetParent).map(a=>a.dataset.area),
+        [...document.querySelectorAll('.tech-area')].map(a=>Math.round(a.getBoundingClientRect().top-w)),document.querySelector('.tech-area-jump[aria-current=true]')?.dataset.area]}"""
+    first = await pg.evaluate(at_top)
+    await pg.click("#tech-jump-society")
+    second = await pg.evaluate(at_top)
+    await pg.click("#tech-jump-engineering")
+    third = await pg.evaluate(at_top)
+    check("tech tree page (T3601): on mobile the three areas stay stacked in the same window (no tabs); the jump buttons scroll it to an area and mark it",
+          first[0] == second[0] == ["physics", "society", "engineering"] and first[2] == "physics" and abs(second[1][1]) <= 2 and second[2] == "society"
+          and abs(third[1][2]) <= 2 and third[2] == "engineering", (first, second, third))
+    await pg.click("#tech-jump-physics")
     await pg.set_viewport_size({"width": 1280, "height": 900})
     await pg.wait_for_timeout(150)
 
@@ -266,42 +274,38 @@ async def page_checks(t):
     check("tech tree nodes: tier and kind follow the language, and so does the official technology name (P15: Láseres rojos)",
           es_meta == ["Nivel 2 · Rara", "Nivel 0", "Láseres rojos"], es_meta)
 
-    # T3103: SVG prerequisite lines between nodes of the same area, ends on the node edges, redrawn on resize
+    # T3103, T3601: one SVG of prerequisite lines for the three stacked areas (also between areas), ends on the node edges, redrawn on resize
     lines_js = """async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
       await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
       const byId=new Map(d.technologies.map(x=>[x.id,x]));
-      const expected=d.technologies.reduce((n,x)=>n+x.prerequisites.filter(p=>byId.get(p).area===x.area).length,0);
+      const expected=d.technologies.reduce((n,x)=>n+x.prerequisites.length,0);
       const cross=d.technologies.reduce((n,x)=>n+x.prerequisites.filter(p=>byId.get(p).area!==x.area).length,0);
-      const out={expected,cross,grids:[]};
-      document.querySelectorAll('.tech-grid').forEach(g=>{const svg=g.querySelector(':scope > svg.tech-lines');if(!g.offsetWidth){out.grids.push({area:g.dataset.area,hidden:true});return}
-        const node=(id)=>g.querySelector('.tech-node[data-tech-id="'+id+'"]');const bad=[];
-        const onEdge=(n,x,y)=>{const l=n.offsetLeft,r=l+n.offsetWidth,m=n.offsetTop+n.offsetHeight/2;return (Math.abs(x-l)<1||Math.abs(x-r)<1)&&Math.abs(y-m)<1};
-        const paths=svg?[...svg.querySelectorAll('path.tech-line')]:[];
-        paths.forEach(p=>{const nums=p.getAttribute('d').match(/-?[\\d.]+/g).map(Number);const a=node(p.dataset.from),b=node(p.dataset.to);
-          if(!a||!b||!byId.get(p.dataset.to).prerequisites.includes(p.dataset.from)||!onEdge(a,nums[0],nums[1])||!onEdge(b,nums[nums.length-2],nums[nums.length-1]))bad.push(p.dataset.from+'>'+p.dataset.to)});
-        out.grids.push({area:g.dataset.area,n:paths.length,bad:bad.slice(0,5),size:svg?[+svg.getAttribute('width'),+svg.getAttribute('height')]:null,grid:[g.offsetWidth,g.offsetHeight],
-          under:svg&&getComputedStyle(svg).zIndex==='0'&&getComputedStyle(g.querySelector('.tech-node')).zIndex==='1'&&svg.getAttribute('aria-hidden')==='true'})});
-      return out}"""
+      const st=document.querySelector('.tech-stack');const svgs=document.querySelectorAll('svg.tech-lines');const svg=st.querySelector(':scope > svg.tech-lines');
+      const node=(id)=>st.querySelector('.tech-node[data-tech-id="'+id+'"]');const bad=[];
+      const pos=(n)=>{const a=n.getBoundingClientRect(),b=st.getBoundingClientRect(),z=1;return {l:(a.left-b.left)/z,r:(a.right-b.left)/z,m:(a.top+a.height/2-b.top)/z}};
+      const onEdge=(n,x,y)=>{const p=pos(n);return (Math.abs(x-p.l)<1.5||Math.abs(x-p.r)<1.5)&&Math.abs(y-p.m)<1.5};
+      const paths=svg?[...svg.querySelectorAll('path.tech-line')]:[];
+      paths.forEach(p=>{const nums=p.getAttribute('d').match(/-?[\\d.]+/g).map(Number);const a=node(p.dataset.from),b=node(p.dataset.to);
+        if(!a||!b||!byId.get(p.dataset.to).prerequisites.includes(p.dataset.from)||!onEdge(a,nums[0],nums[1])||!onEdge(b,nums[nums.length-2],nums[nums.length-1]))bad.push(p.dataset.from+'>'+p.dataset.to)});
+      const crossed=paths.filter(p=>p.dataset.cross&&node(p.dataset.from).closest('.tech-area')!==node(p.dataset.to).closest('.tech-area')).length;
+      return {expected,cross,svgs:svgs.length,n:paths.length,crossed,bad:bad.slice(0,5),size:svg?[+svg.getAttribute('width'),+svg.getAttribute('height')]:null,stack:[st.offsetWidth,st.offsetHeight],
+        physicsW:document.querySelector('.tech-grid[data-area=physics]').offsetWidth,
+        under:!!svg&&getComputedStyle(svg).zIndex==='0'&&getComputedStyle(st.querySelector('.tech-node')).zIndex==='1'&&svg.getAttribute('aria-hidden')==='true'}}"""
     ln = await pg.evaluate(lines_js)
-    visible = [g for g in ln["grids"] if not g.get("hidden")]
-    check("tech tree lines: one SVG curve per prerequisite inside an area (cross-area ones left to the card), ends on the node edges, under the nodes",
-          len(visible) == 3 and sum(g["n"] for g in visible) == ln["expected"] > 400 and ln["cross"] > 0
-          and all(not g["bad"] and g["size"] == g["grid"] and g["under"] for g in visible), ln)
+    check("tech tree lines (T3601): one SVG under the nodes of the three areas with a curve per prerequisite, also between areas, ends on the node edges",
+          ln["svgs"] == 1 and ln["n"] == ln["expected"] > 400 and ln["crossed"] == ln["cross"] > 0 and not ln["bad"] and ln["size"] == ln["stack"] and ln["under"], ln)
     await pg.evaluate("()=>document.querySelector('.tech-grid[data-area=physics]').style.setProperty('--tech-node-width','15rem')")
     await pg.set_viewport_size({"width": 1100, "height": 900})
     await pg.wait_for_timeout(200)
     ln2 = await pg.evaluate(lines_js)
-    phys = next(g for g in ln2["grids"] if g["area"] == "physics")
     check("tech tree lines: redrawn when the grid or window changes size (wider physics nodes, narrower window)",
-          not phys["bad"] and phys["size"] == phys["grid"] and phys["grid"][0] > visible[0]["grid"][0], (phys, visible[0]["grid"]))
+          not ln2["bad"] and ln2["n"] == ln["n"] and ln2["size"] == ln2["stack"] and ln2["physicsW"] > ln["physicsW"], (ln2, ln["physicsW"]))
     await pg.evaluate("()=>document.querySelector('.tech-grid[data-area=physics]').style.removeProperty('--tech-node-width')")
     await pg.set_viewport_size({"width": 375, "height": 760})
-    await pg.click("#tech-tab-engineering")
+    await pg.wait_for_timeout(150)
     ln3 = await pg.evaluate(lines_js)
-    eng = next(g for g in ln3["grids"] if g["area"] == "engineering")
-    check("tech tree lines: a mobile tab shown again gets its lines drawn at the mobile size",
-          [g["area"] for g in ln3["grids"] if not g.get("hidden")] == ["engineering"] and eng["n"] > 100 and not eng["bad"] and eng["size"] == eng["grid"], eng)
-    await pg.click("#tech-tab-physics")
+    check("tech tree lines: redrawn at the mobile size (narrower stack, same lines)",
+          ln3["n"] == ln["n"] and not ln3["bad"] and ln3["size"] == ln3["stack"] and ln3["stack"][0] < ln["stack"][0], ln3)
     await pg.set_viewport_size({"width": 1280, "height": 900})
     await pg.wait_for_timeout(100)
 
@@ -423,7 +427,7 @@ async def page_checks(t):
     cross_btn = await pg.evaluate("(id)=>document.querySelector('#tech-card [data-section=prerequisites] button[data-tech-id='+id+'] .tech-card-link-meta')?.textContent", pick["crossPre"])
     await pg.click("#tech-card [data-section=prerequisites] button[data-tech-id=%s]" % pick["crossPre"])
     cross_sel = await pg.evaluate("()=>[document.querySelector('.tech-node.is-selected')?.dataset.techId,document.querySelector('.tech-node.is-selected')?.closest('.tech-area').dataset.area]")
-    check("tech tree card: a prerequisite of another area (no line) is listed with its area and selecting it jumps there",
+    check("tech tree card: a prerequisite of another area is listed with its area and selecting it jumps there",
           cross_btn and pick["crossArea"].capitalize() in cross_btn and cross_sel == [pick["crossPre"], pick["crossArea"]], (pick, cross_btn, cross_sel))
     await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", pick["notReq"])
     await pg.click(".tech-node[data-tech-id=%s]" % pick["notReq"])
@@ -530,7 +534,7 @@ async def page_checks(t):
           and es_search[3] == "blue lasers" and not f5["has"] and len(f5["kept"]) == 679 and f5["lineOut"] == 0 and f5["count"] == "", (pick, es_search, f5["has"]))
 
     # T3204: zoom and pan (buttons, keys, Ctrl + wheel, mouse drag, arrow keys)
-    zoom_js = """(area)=>{const sc=document.querySelector('#tech-area-'+area+' .tech-area-scroll');const g=sc.querySelector('.tech-grid');const w=sc.querySelector('.tech-zoom');
+    zoom_js = """(area)=>{const sc=document.querySelector('.tech-areas');const g=sc.querySelector('.tech-stack');const w=sc.querySelector('.tech-zoom');
       const n=g.querySelector('.tech-node');const svg=g.querySelector('.tech-lines');const r=(e)=>e.getBoundingClientRect();
       return {level:document.getElementById('tech-zoom-level').textContent,transform:g.style.transform,gridW:g.offsetWidth,gridVis:r(g).width,
         wrapW:w?w.getBoundingClientRect().width:0,scrollW:sc.scrollWidth,clientW:sc.clientWidth,left:sc.scrollLeft,top:sc.scrollTop,
@@ -538,31 +542,31 @@ async def page_checks(t):
         tab:sc.tabIndex,label:sc.getAttribute('aria-label'),
         disabled:[...document.querySelectorAll('.tech-zoom-btn')].map(b=>[b.dataset.zoom,b.disabled])}}"""
     z0 = await pg.evaluate(zoom_js, "physics")
-    check("tech tree zoom: zoom bar (−, level, +, 100 %) at 100 % with nothing scaled; each area panel is a focusable region with a name",
+    check("tech tree zoom: zoom bar (−, level, +, 100 %) at 100 % with nothing scaled; the tree window is one focusable region with a name",
           z0["level"] == "100 %" and z0["transform"] == "" and dict(z0["disabled"]) == {"out": False, "in": False, "reset": True}
-          and z0["tab"] == 0 and z0["label"] == "Physics tree", z0)
+          and z0["tab"] == 0 and z0["label"] == "Technology tree", z0)
     await pg.click(".tech-zoom-btn[data-zoom=in]")
     z1 = await pg.evaluate(zoom_js, "physics")
-    check("tech tree zoom: + scales nodes and lines together (115 %), the panel scrolls exactly over the scaled tree and the lines are not redrawn",
+    check("tech tree zoom: + scales the three areas, nodes and lines together (115 %), the window scrolls exactly over the scaled tree and the lines are not redrawn",
           z1["level"] == "115 %" and z1["transform"] == "scale(1.15)" and abs(z1["nodeW"] - z0["nodeOff"] * 1.15) < 1
           and abs(z1["svgVis"] - z1["gridW"] * 1.15) < 1 and abs(z1["wrapW"] - z1["gridW"] * 1.15) < 1 and z1["lines"] == z0["lines"]
           and abs(z1["scrollW"] - max(z1["clientW"], round(z1["wrapW"]))) <= 2, z1)
-    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.focus(".tech-areas")
     for _ in range(4):
         await pg.keyboard.press("-")
     z2 = await pg.evaluate(zoom_js, "physics")
     await pg.click(".lang-btn[data-lang=es]")
-    es_zoom = await pg.evaluate("()=>[document.querySelector('.tech-zoom-btn[data-zoom=in]').getAttribute('aria-label'),document.querySelector('#tech-area-physics .tech-area-scroll').getAttribute('aria-label')]")
+    es_zoom = await pg.evaluate("()=>[document.querySelector('.tech-zoom-btn[data-zoom=in]').getAttribute('aria-label'),document.querySelector('.tech-areas').getAttribute('aria-label')]")
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree zoom: the - key inside the tree zooms out step by step (60 %), with no empty scroll space; labels follow the language",
           z2["level"] == "60 %" and z2["transform"] == "scale(0.6)" and z2["scrollW"] <= max(z2["clientW"], round(z2["gridW"] * 0.6)) + 2
-          and es_zoom == ["Acercar", "Árbol de Física"], (z2, es_zoom))
-    await pg.focus("#tech-area-physics .tech-area-scroll")
+          and es_zoom == ["Acercar", "Árbol de tecnología"], (z2, es_zoom))
+    await pg.focus(".tech-areas")
     await pg.keyboard.press("0")
     z_reset = (await pg.evaluate(zoom_js, "physics"))["level"]
     check("tech tree zoom: the 0 key inside the tree goes back to 100 %", z_reset == "100 %", z_reset)
-    await pg.evaluate("()=>{const sc=document.querySelector('#tech-area-physics .tech-area-scroll');sc.scrollLeft=200;sc.scrollTop=100}")
-    box = await pg.evaluate("()=>{const r=document.querySelector('#tech-area-physics .tech-area-scroll').getBoundingClientRect();return [r.left,r.top,r.width,r.height]}")
+    await pg.evaluate("()=>{const sc=document.querySelector('.tech-areas');sc.scrollLeft=200;sc.scrollTop=100}")
+    box = await pg.evaluate("()=>{const r=document.querySelector('.tech-areas').getBoundingClientRect();return [r.left,r.top,r.width,r.height]}")
     px, py = box[0] + box[2] * 0.6, box[1] + box[3] * 0.5
     before = await pg.evaluate(zoom_js, "physics")
     await pg.mouse.move(px, py)
@@ -577,19 +581,19 @@ async def page_checks(t):
           za > 1 and abs((before["left"] + ax) - (after["left"] + ax) / za) < 3 and abs((before["top"] + ay) - (after["top"] + ay) / za) < 3, (before["left"], after["left"], za))
     await pg.click(".tech-zoom-btn[data-zoom=reset]")
     z3 = await pg.evaluate(zoom_js, "physics")
-    await pg.evaluate("()=>{const sc=document.querySelector('#tech-area-physics .tech-area-scroll');sc.scrollLeft=0;sc.scrollTop=0}")
+    await pg.evaluate("()=>{const sc=document.querySelector('.tech-areas');sc.scrollLeft=0;sc.scrollTop=0}")
     corner = await pg.evaluate("()=>{const r=document.querySelector('#tech-area-physics .tech-grid-corner').getBoundingClientRect();return [r.left+r.width/2,r.top+r.height/2]}")
     await pg.mouse.move(corner[0], corner[1] + 4)
     await pg.mouse.down()
     await pg.mouse.move(corner[0] - 120, corner[1] + 4, steps=5)
     await pg.mouse.up()
     dragged = (await pg.evaluate(zoom_js, "physics"))["left"]
-    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.focus(".tech-areas")
     await pg.keyboard.press("ArrowRight")
     await pg.keyboard.press("ArrowDown")
     await pg.wait_for_timeout(300)
     keyed = await pg.evaluate(zoom_js, "physics")
-    check("tech tree pan: 100 % removes the scale; dragging the empty space with the mouse pans the panel, and the arrow keys move it once it has the focus",
+    check("tech tree pan: 100 % removes the scale; dragging the empty space with the mouse pans the window, and the arrow keys move it once it has the focus",
           z3["level"] == "100 %" and z3["transform"] == "" and abs(dragged - 120) <= 2 and keyed["left"] > dragged and keyed["top"] > 0, (z3["level"], dragged, keyed["left"], keyed["top"]))
     await pg.click(".tech-zoom-btn[data-zoom=out]")
     await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').scrollIntoView({block:'center',inline:'center'})")
@@ -605,7 +609,7 @@ async def page_checks(t):
 
 
 async def mobile_checks(t):
-    """T3105: phone layout at 320 and 375 px (touch): tabs, compact grid, sideways scroll inside the panel, tap to select."""
+    """T3105, T3601: phone layout at 320 and 375 px (touch): stacked areas with jump buttons, compact grid, sideways scroll inside the window, tap to select."""
     mctx = await t.browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)
     await mctx.route("https://**/*", lambda r: r.abort())
     pg = await mctx.new_page()
@@ -620,26 +624,27 @@ async def mobile_checks(t):
         for lang in ("en", "jp"):
             await pg.click(".lang-btn[data-lang=" + lang + "]")
             for area in ("physics", "society", "engineering"):
-                await pg.tap("#tech-tab-" + area)
+                await pg.tap("#tech-jump-" + area)
                 await pg.wait_for_timeout(120)
                 m = await pg.evaluate("""(area)=>{const w=document.documentElement.clientWidth;const r=(e)=>e.getBoundingClientRect();
-                  const panel=document.querySelector('#tech-area-'+area);const sc=panel.querySelector('.tech-area-scroll');const g=sc.querySelector('.tech-grid');
-                  const tabs=[...document.querySelectorAll('.tech-area-tab')];const node=g.querySelector('.tech-cell[data-tier="0"] .tech-node')||g.querySelector('.tech-node');
-                  const label=g.querySelector('.tech-field-label');const svg=g.querySelector('.tech-lines');
-                  return {page:document.documentElement.scrollWidth<=w,panelIn:r(panel).left>=0&&r(panel).right<=w+0.5,
-                    tabs:tabs.map(b=>[Math.round(r(b).height),b.scrollWidth<=b.clientWidth+1]),
+                  const sc=document.querySelector('.tech-areas');const panel=document.querySelector('#tech-area-'+area);const g=panel.querySelector('.tech-grid');
+                  const jumps=[...document.querySelectorAll('.tech-area-jump')];const node=g.querySelector('.tech-cell[data-tier="0"] .tech-node')||g.querySelector('.tech-node');
+                  const label=g.querySelector('.tech-field-label');const svg=sc.querySelector('.tech-lines');const st=sc.querySelector('.tech-stack');
+                  return {page:document.documentElement.scrollWidth<=w,windowIn:r(sc).left>=0&&r(sc).right<=w+0.5,
+                    atTop:Math.abs(r(panel).top-r(sc).top)<=2||sc.scrollTop+sc.clientHeight>=sc.scrollHeight-2,
+                    jumps:jumps.map(b=>[Math.round(r(b).height),b.scrollWidth<=b.clientWidth+1]),
                     scrolls:sc.scrollWidth>sc.clientWidth&&getComputedStyle(sc).overflowX==='auto',
                     nodeW:Math.round(r(node).width),nodeH:Math.round(r(node).height),labelW:Math.round(r(label).width),
                     tier0Visible:r(node).left>=r(sc).left&&r(node).right<=r(sc).right,
                     icon:Math.round(r(node.querySelector('.tech-icon-slot')).width),
                     nameFits:[...g.querySelectorAll('.tech-node-name')].every(n=>n.scrollWidth<=n.clientWidth+1),
-                    lines:svg?svg.querySelectorAll('path').length:0,svgSize:svg?+svg.getAttribute('width')===g.offsetWidth:false}}""", area)
-                check("tech tree mobile %dpx (%s) %s: no page overflow, the panel fits, 44 px tabs, compact nodes, thin field labels, sideways scroll in the panel, lines drawn" % (width, lang, area),
-                      m["page"] and m["panelIn"] and all(h >= 44 and fits for h, fits in m["tabs"]) and m["scrolls"]
+                    lines:svg?svg.querySelectorAll('path').length:0,svgSize:svg?+svg.getAttribute('width')===st.offsetWidth:false}}""", area)
+                check("tech tree mobile %dpx (%s) %s: no page overflow, the window fits, its jump button scrolls to the area, 44 px buttons, compact nodes, thin field labels, sideways scroll in the window, lines drawn" % (width, lang, area),
+                      m["page"] and m["windowIn"] and m["atTop"] and all(h >= 44 and fits for h, fits in m["jumps"]) and m["scrolls"]
                       and m["nodeW"] < desktop_node and m["nodeH"] >= 44 and m["labelW"] <= 34 and m["tier0Visible"] and m["icon"] == 40
-                      and m["nameFits"] and m["lines"] > 50 and m["svgSize"], m)
+                      and m["nameFits"] and m["lines"] > 300 and m["svgSize"], m)
     await pg.click(".lang-btn[data-lang=en]")
-    await pg.tap("#tech-tab-physics")
+    await pg.tap("#tech-jump-physics")
     await pg.wait_for_timeout(100)
     await pg.evaluate("()=>document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').scrollIntoView({block:'center',inline:'center'})")
     await pg.wait_for_timeout(100)
@@ -653,12 +658,14 @@ async def mobile_checks(t):
     closed = await pg.evaluate("()=>document.getElementById('tech-card').hidden")
     check("tech tree mobile: the detail card is a bottom sheet inside the 320 px screen with a 44 px close button", all(card) and closed, (card, closed))
     await pg.select_option("#tech-filter-area", "engineering")
+    await pg.wait_for_timeout(100)
     mf = await pg.evaluate("""()=>{const w=document.documentElement.clientWidth;const r=(e)=>e.getBoundingClientRect();
-      return [document.getElementById('tech-tab-engineering').getAttribute('aria-selected'),document.documentElement.scrollWidth<=w,
+      const sc=document.querySelector('.tech-areas');
+      return [document.querySelector('.tech-area-jump[aria-current=true]')?.dataset.area,document.documentElement.scrollWidth<=w,
         [...document.querySelectorAll('.tech-filters input,.tech-filters select,.tech-filter-reset')].every(e=>r(e).right<=w+0.5&&r(e).height>=44)]}""")
     await pg.select_option("#tech-filter-area", "")
-    check("tech tree mobile: the area filter opens that area's tab; the filters fit the 320 px screen with 44 px controls", mf == ["true", True, True], mf)
-    pinch = await pg.evaluate("""async ()=>{const sc=document.querySelector('.tech-area.is-active .tech-area-scroll');const r=sc.getBoundingClientRect();
+    check("tech tree mobile: the area filter scrolls the tree window to that area; the filters fit the 320 px screen with 44 px controls", mf == ["engineering", True, True], mf)
+    pinch = await pg.evaluate("""async ()=>{const sc=document.querySelector('.tech-areas');const r=sc.getBoundingClientRect();
       const cx=r.left+r.width/2,cy=r.top+r.height/2;const touch=(id,x)=>new Touch({identifier:id,target:sc,clientX:x,clientY:cy});
       const fire=(type,d)=>{const list=type==='touchend'?[]:[touch(1,cx-d),touch(2,cx+d)];sc.dispatchEvent(new TouchEvent(type,{touches:list,targetTouches:list,changedTouches:list,bubbles:true,cancelable:true}))};
       fire('touchstart',30);fire('touchmove',45);fire('touchmove',60);const zin=document.getElementById('tech-zoom-level').textContent;fire('touchend',0);
@@ -679,7 +686,7 @@ async def deeplink_checks(t):
     pg.on("pageerror", lambda e: errors.append(str(e)))
     await pg.set_viewport_size({"width": 1280, "height": 900})
     url = "file://" + ROOT + "/tech-tree.html"
-    state_js = """()=>{const n=document.querySelector('.tech-node.is-selected');const r=n?n.getBoundingClientRect():null;const p=n?n.closest('.tech-area-scroll').getBoundingClientRect():null;
+    state_js = """()=>{const n=document.querySelector('.tech-node.is-selected');const r=n?n.getBoundingClientRect():null;const p=n?n.closest('.tech-areas').getBoundingClientRect():null;
       return {hash:location.hash,selected:n?.dataset.techId||null,card:document.getElementById('tech-card').hidden?null:document.getElementById('tech-card').dataset.techId,
         inView:!!r&&r.top>=0&&r.bottom<=innerHeight&&r.left>=p.left-1&&r.right<=p.right+1,history:history.length,
         permalink:document.querySelector('#tech-card .tech-card-permalink')?.getAttribute('href')||null,status:document.getElementById('tech-selection-status').textContent}}"""
@@ -986,7 +993,7 @@ I18N_SCAN_JS = r"""async()=>{const m=await import('./js/i18n-tech-tree.js');cons
   const esc=(x)=>x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
   const english=Object.keys(S.en).filter(k=>!/[{<]/.test(S.en[k])&&S.en[k]!==S[lang][k]&&S.en[k].length>3)
     .filter(k=>new RegExp('(^|[^A-Za-z])'+esc(S.en[k])+'([^A-Za-z]|$)').test(all));
-  const gameNames=[...document.querySelectorAll('.tech-node-name,.tech-field-label,#tech-card-title,.tech-area-tab,.tech-area-heading,.tech-card-description')];
+  const gameNames=[...document.querySelectorAll('.tech-node-name,.tech-field-label,#tech-card-title,.tech-area-jump,.tech-area-heading,.tech-card-description')];
   return {lang,keys:(all.match(/\btechTree[A-Z]\w+/g)||[]),english:english.map(k=>k+'='+S.en[k]),
     english_marked:gameNames.filter(e=>!e.classList.contains('tech-card-description')&&e.closest('[lang=en]')).length,gameNames:gameNames.length,
     description:[...document.querySelectorAll('.tech-card-description')].every(e=>e.closest('[lang=en]')),
@@ -1133,7 +1140,7 @@ NODE_CONTRAST_JS = r"""()=>{const rgb=(c)=>c.match(/[\d.]+/g).map(Number);
   const lum=(m)=>{const f=(v)=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2])};
   const bgOf=(e)=>{for(let x=e;x;x=x.parentElement){const a=rgb(getComputedStyle(x).backgroundColor);if(a.length<4||a[3]>.5)return a}return [7,17,12]};
   const alpha=(e)=>{let o=1;for(let x=e;x;x=x.parentElement)o*=+getComputedStyle(x).opacity;return o};
-  const low=[];const scroll=document.querySelector('.tech-area.is-active .tech-area-scroll')||document.querySelector('.tech-area-scroll');const box=scroll.getBoundingClientRect();
+  const low=[];const scroll=document.querySelector('.tech-areas');const box=scroll.getBoundingClientRect();
   for(const e of document.querySelectorAll('.tech-node-name,.tech-node-meta,.tech-field-label,.tech-tier-head')){const r=e.getBoundingClientRect();
     if(!r.width||r.bottom<box.top||r.top>box.bottom||r.right<box.left||r.left>box.right)continue;
     const bg=bgOf(e);const a=alpha(e);const fg=rgb(getComputedStyle(e).color).slice(0,3).map((v,i)=>v*a+bg[i]*(1-a));
@@ -1152,7 +1159,7 @@ async def a11y_checks(t):
     await pg.click(".lang-btn[data-lang=en]")
     # one Tab stop per area: Tab from the physics panel reaches its first node, the next Tab leaves the area
     stops = await pg.evaluate("()=>[...document.querySelectorAll('.tech-grid')].map(g=>[g.dataset.area,g.querySelectorAll('.tech-node[tabindex=\"0\"]').length,g.querySelectorAll('.tech-node').length])")
-    await pg.focus("#tech-area-physics .tech-area-scroll")
+    await pg.focus(".tech-areas")
     await pg.keyboard.press("Tab")
     first = await pg.evaluate("()=>[document.activeElement.dataset.techId,document.activeElement.closest('.tech-area')?.dataset.area]")
     await pg.keyboard.press("Tab")
@@ -1160,7 +1167,7 @@ async def a11y_checks(t):
     check("tech tree a11y (T3403): one Tab stop per area (roving tabindex) instead of one per node; Tab enters the area at its first node and leaves it with the next Tab",
           all(n == 1 and total > 100 for _, n, total in stops) and first[1] == "physics" and first[0] and after[1] != "physics", (stops, first, after))
 
-    focus_js = """()=>{const e=document.activeElement;const r=e.getBoundingClientRect();const p=e.closest('.tech-area-scroll').getBoundingClientRect();
+    focus_js = """()=>{const e=document.activeElement;const r=e.getBoundingClientRect();const p=e.closest('.tech-areas').getBoundingClientRect();
       return {id:e.dataset.techId,tier:+e.dataset.tier,field:e.closest('.tech-cell')?.dataset.field,top:Math.round(r.top),tab:e.tabIndex,
         inView:r.left>=p.left-1&&r.right<=p.right+1&&r.top>=p.top-1&&r.bottom<=p.bottom+1,stops:document.querySelectorAll('#tech-area-physics .tech-node[tabindex=\"0\"]').length}}"""
     await pg.focus(".tech-node[data-tech-id=tech_lasers_1]")

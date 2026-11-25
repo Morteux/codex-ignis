@@ -48,7 +48,7 @@ function el(tag, className, text) {
   return node;
 }
 
-/** Area names are game names: English in every language, like the area tabs. */
+/** Area names are game names: English in every language, like the area buttons. */
 
 /** Number with the thousands separator of the language ("12 000", "12,000"). */
 function formatNumber(value, lang) {

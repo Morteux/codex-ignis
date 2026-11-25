@@ -2,10 +2,10 @@
  * Page script of the tech tree (tech-tree.html, TECH_TREE_GDD.md section 6).
  *
  * The static markup (shell, area panels, credits, footer) is translated by the shared page shell
- * (js/page-shell.js). This script adds the dynamic parts: the data version line, the area tabs
- * (three areas side by side on desktop, one at a time behind tabs on mobile) and the tier × field
- * grid of nodes of every area (js/tech-tree-layout.js) with its prerequisite lines
- * (js/tech-tree-lines.js), the selection states (js/tech-tree-states.js) and their legend, and the
+ * (js/page-shell.js). This script adds the dynamic parts: the data version line, the buttons that
+ * jump to an area (the three areas are stacked as rows in one tree window, T3601) and the
+ * tier × field grid of nodes of every area (js/tech-tree-layout.js) with the prerequisite lines
+ * (js/tech-tree-lines.js, also between areas), the selection states (js/tech-tree-states.js) and their legend, and the
  * detail card of the selected technology (js/tech-tree-card.js), the search and filters
  * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
  * technology in the URL hash (js/tech-tree-link.js) and the comparison between two data versions
@@ -86,32 +86,36 @@ function setupVersionSelect(lang) {
   });
 }
 
-/** Area tabs (visible on mobile only): one active panel, arrow keys move between tabs. */
-function setupAreaTabs() {
-  const tabs = [...document.querySelectorAll(".tech-area-tab")];
-  const select = (tab, focus = false) => {
-    tabs.forEach((other) => {
-      const on = other === tab;
-      other.setAttribute("aria-selected", String(on));
-      other.tabIndex = on ? 0 : -1;
-      document.getElementById(other.getAttribute("aria-controls")).classList.toggle("is-active", on);
+/** Scrolls the tree window so that the area `area` starts at its top (any zoom). */
+function scrollToArea(area) {
+  const windowEl = document.querySelector(".tech-areas");
+  const section = document.getElementById("tech-area-" + area);
+  windowEl.scrollTop += section.getBoundingClientRect().top - windowEl.getBoundingClientRect().top;
+}
+
+/**
+ * Area jump buttons (T3601, desktop and mobile): each one scrolls the tree window to its area;
+ * the area at the top of the window is marked with aria-current.
+ */
+function setupAreaJumps() {
+  const windowEl = document.querySelector(".tech-areas");
+  const jumps = [...document.querySelectorAll(".tech-area-jump")];
+  jumps.forEach((jump) => jump.addEventListener("click", () => scrollToArea(jump.dataset.area)));
+  let frame = 0;
+  const mark = () => {
+    frame = 0;
+    const top = windowEl.getBoundingClientRect().top + 1;
+    const sections = [...windowEl.querySelectorAll(".tech-area")];
+    const current = sections.filter((section) => section.getBoundingClientRect().top <= top).pop() || sections[0];
+    jumps.forEach((jump) => {
+      if (jump.dataset.area === current.dataset.area) jump.setAttribute("aria-current", "true");
+      else jump.removeAttribute("aria-current");
     });
-    if (focus) tab.focus();
-    document.dispatchEvent(new CustomEvent("tech-area-change", { detail: tab.dataset.area }));
   };
-  tabs.forEach((tab, index) => {
-    tab.addEventListener("click", () => select(tab));
-    tab.addEventListener("keydown", (event) => {
-      const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key];
-      if (event.key === "Home" || event.key === "End") {
-        event.preventDefault();
-        select(tabs[event.key === "Home" ? 0 : tabs.length - 1], true);
-      } else if (step) {
-        event.preventDefault();
-        select(tabs[(index + step + tabs.length) % tabs.length], true);
-      }
-    });
-  });
+  windowEl.addEventListener("scroll", () => {
+    if (!frame) frame = requestAnimationFrame(mark);
+  }, { passive: true });
+  mark();
 }
 
 /**
@@ -141,17 +145,17 @@ function renderLegend(lang) {
 function renderTree(lang) {
   const nodes = new Map();
   document.querySelectorAll(".tech-area").forEach((panel) => {
-    renderAreaGrid(panel.querySelector(".tech-area-scroll"), TECH_DATA, panel.dataset.area, lang)
+    renderAreaGrid(panel.querySelector(".tech-area-body"), TECH_DATA, panel.dataset.area, lang)
       .forEach((node, id) => nodes.set(id, node));
   });
   return nodes;
 }
 
-/** Official names of the language on the data and the area tabs (P15). */
+/** Official names of the language on the data and the area buttons and headings (P15). */
 function localize(lang) {
   localizeTechData(TECH_DATA, lang);
-  document.querySelectorAll(".tech-area-tab").forEach((tab) => {
-    tab.textContent = areaName(tab.dataset.area);
+  document.querySelectorAll(".tech-area-jump").forEach((jump) => {
+    jump.textContent = areaName(jump.dataset.area);
   });
   document.querySelectorAll(".tech-area-heading").forEach((heading) => {
     heading.textContent = areaName(heading.closest(".tech-area").dataset.area);
@@ -160,7 +164,7 @@ function localize(lang) {
 
 localize(getLang());
 applyPageTranslations();
-setupAreaTabs();
+setupAreaJumps();
 setupVersionSelect(getLang());
 renderDataVersion(getLang());
 renderTree(getLang());
@@ -172,14 +176,11 @@ onLanguageChange((lang) => {
   relabelGrids(document.querySelector(".tech-areas"), TECH_DATA, lang);
   redrawLines();
 });
-document.addEventListener("tech-area-change", redrawLines);
 renderLegend(getLang());
-/** Shows the node of `id`: opens its area tab (mobile) and scrolls it into its panel. */
+/** Shows the node of `id`: scrolls it into the tree window (and the window into the page). */
 function revealNode(id) {
   const node = document.querySelector(`.tech-node[data-tech-id="${id}"]`);
   if (!node) return;
-  const panel = node.closest(".tech-area");
-  if (!panel.classList.contains("is-active")) document.getElementById("tech-tab-" + panel.dataset.area).click();
   node.scrollIntoView({ block: "center", inline: "center" });
 }
 
@@ -202,10 +203,7 @@ const search = createSearch(document.getElementById("tech-search-box"), document
     if (selection.selected() !== id) selection.select(id);
     revealNode(id);
   },
-  onAreaFilter: (area) => {
-    const tab = document.getElementById("tech-tab-" + area);
-    if (tab.getAttribute("aria-selected") !== "true") tab.click();
-  },
+  onAreaFilter: scrollToArea,
 });
 /**
  * Deep link (T3205): `#<technology id>` selects that technology, opens its card and scrolls to it,
@@ -253,7 +251,7 @@ if (document.fonts && document.fonts.ready) {
 }
 window.addEventListener("hashchange", openFromHash);
 
-const zoom = createZoom(document.querySelector(".tech-areas"), document.getElementById("tech-zoom-bar"), getLang, areaName);
+const zoom = createZoom(document.querySelector(".tech-areas"), document.getElementById("tech-zoom-bar"), getLang);
 const comparison = createCompare(document.getElementById("tech-compare-box"), VERSION, TECH_DATA, getLang);
 onLanguageChange((lang) => {
   comparison.relabel();
