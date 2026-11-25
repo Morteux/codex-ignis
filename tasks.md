@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **95 / 136 tareas (70%)**
+> Progreso: **96 / 137 tareas (70%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -254,12 +254,14 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
   - Prueba manual: open `README.md`: there is an "Árbol de tecnologías" section, a tech tree subsection under "Pruebas" and credits linking BloodStainedCrow and turanar; `TECH_TREE_GDD.md` says the tree is finished and its sections 6 and 8 describe the page and its tests.
 - [x] **T3405** (P34.5) Deep link into the planet simulator to a building or district (e.g. `planet-sim.html#building=<id>` opens its catalogue entry), and use it in the tech tree card's unlock links (today they open `planet-sim.html` only, T3201)
   - Prueba manual: open `tech-tree.html#tech_secrets_vultaum` and click "Vultaum Reality Computer" in the card's unlocks: the simulator opens with that building's category expanded and its entry outlined in green and scrolled into view; `planet-sim.html#district=mining` outlines the mining district card, and `#district=magmaConduit` on a regular planet shows a notice that it is not in the catalogue.
+- [ ] **T3406** (P34.6) Flaky tech tree smoke checks: "tech tree compare: following a removed technology opens the older version with it selected" and "tech tree versions: going back to the current version drops ?version= and draws the 4.5.4 data again" each failed once in separate full runs and passed in others (fixed `wait_for_timeout` after a navigation in `tests/smoke/tech_tree.py`); wait for the page state instead (found in T2405)
 
 ## 35 · Bingos from game data
 - [x] **T2402** (P24.2) Origins bingo in the in-game order (`ordered` layout), order taken from the T2511 output
   - Prueba manual: open `bingo.html` with the origins bingo: Prosperous Unification, Voidfarers, The Sacred Path… come first, in the order of `js/bingo-origin-order.js`; on the civics bingo "Download as image" gives the PNG within a few seconds.
-- [ ] **T2405** (P24.5) Authorities bingo: replace the draft names of `js/i18n-bingo.js` (Mutualistic Intelligence, Memory Aggregator, Neural Chorus and the 13 `authorityVariant*` labels) with the official es/en/jp names from the T2512 / T2520 output, and check that each `Auth_<path>_<authority>_<variant>.png` icon is the variant `js/bingo-data.js` says (see `DECISIONS_TO_REVIEW.md`, P24.4)
+- [x] **T2405** (P24.5) Authorities bingo: replace the draft names of `js/i18n-bingo.js` (Mutualistic Intelligence, Memory Aggregator, Neural Chorus and the 13 `authorityVariant*` labels) with the official es/en/jp names from the T2512 / T2520 output, and check that each `Auth_<path>_<authority>_<variant>.png` icon is the variant `js/bingo-data.js` says (see `DECISIONS_TO_REVIEW.md`, P24.4)
   - Modelo: sonnet
+  - Prueba manual: open `bingo.html`, choose the authorities bingo and hover the cells in es, en and jp: variants show the game name and their base authority (e.g. "Democratic Surrogacy (Democratic)"), and Neural Chorus reads 神経コーラス in Japanese.
 - [ ] **T2406** (P24.6) Authorities bingo: add the 4 icons the T2524 export added to `authorities/` (`Auth_cyber_dictatorial_collectivist_commander`, `_official`, `_scientist`, `_vacant`: the game's "Dictatorial Alignment" variants by ruler class, `auth_cyber_dictatorial_collectivist_*` in `authorities.json`) as cells with es/en/jp names, and remove them from `PENDING_AUTH_ICONS` of `tests/smoke/bingo.py`
 - [ ] **T3501** (P35.1) Rare and dangerous technologies bingo (purple = rare, red = dangerous) from the tech data, with reserved icon slots until T3008
 - [ ] **T3502** (P35.2) DLC bingo: list and icons from T2519, reserved icon slots

@@ -1,5 +1,5 @@
 """Bingo QA: every bingo of BINGOS, layouts, marking, languages, missing icons, PNG download (P22.2, P24.1)."""
-import os, subprocess, sys, tempfile
+import json, os, subprocess, sys, tempfile
 from playwright.async_api import TimeoutError as PlaywrightTimeout
 from smoke.common import check, ROOT
 
@@ -125,8 +125,33 @@ async def run(t):
     names = [a[0] for a in auths]
     check("bingo: authorities bingo has one cell per icon of authorities/ (75), each with its own name", len(auths) == 75 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 75
           and not any("undefined" in n or n.startswith("authority") for n in names), (len(auths), names[:3]))
-    check("bingo: authorities start with the 10 base ones, then the ascension variants named '<authority> (<variant>)'",
-          auths[0][1] == "Auth_democratic.png" and all("(" not in n for n in names[:10]) and all(n.endswith(")") and a[2] for n, a in zip(names[10:], auths[10:])) and names[10].startswith(names[0] + " ("), names[:12])
+    check("bingo: authorities start with the 10 base ones, then the ascension variants named '<variant> (<base authority>)'",
+          auths[0][1] == "Auth_democratic.png" and all("(" not in n for n in names[:10]) and all(n.endswith(")") and a[2] for n, a in zip(names[10:], auths[10:])) and names[10].endswith(" (" + names[0] + ")"), names[:12])
+    # T2405: each icon is the game authority "auth_<cell id>", and the names are the official ones
+    generated = os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4")
+    game_auths = {}  # game id -> (icon file, base authority id)
+    with open(os.path.join(generated, "authorities.json"), encoding="utf-8") as f:
+        for item in json.load(f)["items"]:
+            for entry in [item] + item["swaps"]:
+                if item["id"] != "auth_ancient_machine_intelligence":
+                    game_auths[entry["id"]] = (entry["icon"]["asset"], item["id"])
+    cells = await bingo.evaluate("""async()=>{const b=(await import('./js/bingo-data.js')).BINGOS.find(x=>x.id==='authorities'),s=(await import('./js/i18n-bingo.js')).strings,n=(await import('./js/i18n-empire-names.js')).strings;
+        return b.items.map(i=>({id:i.id,img:i.img,base:i.variantKey?n.en[i.variantKey]:null,
+          names:Object.fromEntries(['es','en','jp'].map(l=>[l,s[l][i.i18nKey]??(i.id==='mutualistic_intelligence'?n[l][i.i18nKey]:null)]))}))}""")
+    # The game splits this variant by ruler class (T2406); its own icon file is not in the game data.
+    split = {"cyber_dictatorial_collectivist": "auth_cyber_dictatorial_collectivist_official"}
+    game_id = lambda c: split.get(c["id"], "auth_" + c["id"])
+    wrong_icons = [c["id"] for c in cells if c["id"] not in split and game_auths.get(game_id(c), ("",))[0] != c["img"]]
+    check("bingo: each authority icon is the one of the game variant of its cell (authorities.json)", not wrong_icons, wrong_icons)
+    official, wrong_names = {}, []
+    for lang, language in (("es", "spanish"), ("en", "english"), ("jp", "japanese")):
+        with open(os.path.join(generated, "localisation", language + ".json"), encoding="utf-8") as f:
+            official[lang] = json.load(f)["sets"]["authorities"]
+        # the other base cells share their names with the simulator (not replaced by T2405)
+        wrong_names += [(lang, c["id"], c["names"][lang]) for c in cells if (c["base"] or c["id"] in ("mutualistic_intelligence", "memory_aggregator", "neural_chorus")) and c["names"][lang] != official[lang].get(game_id(c))]
+    check("bingo: authority variants (and Mutualistic Intelligence, Memory Aggregator, Neural Chorus) use the official es/en/jp names", len(cells) == 75 and not wrong_names, wrong_names[:5])
+    wrong_base = [(c["id"], c["base"]) for c in cells if c["base"] and c["base"] != official["en"][game_auths.get(game_id(c), ("", "auth_democratic"))[1]]]
+    check("bingo: the base authority in brackets is the one the game variant belongs to", not wrong_base, wrong_base[:5])
     await bingo.click("#bingo-grid .bingo-card >> nth=10")
     await bingo.select_option("#bingo-type", "ethics")
     await bingo.select_option("#bingo-type", "authorities")

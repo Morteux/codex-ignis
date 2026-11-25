@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2405 — Official names of the authorities bingo (2026-11-25)
+
+- [ ] **Cell names**: the game names every variant on its own, so the 13 generic labels (`authorityVariant*`) are gone and each variant cell has its own key with the official name, followed by its base authority in brackets ("Cordant Multiplicity (Democratic)"). The ascension path is no longer written in the name (it stays in the cell's tag). Alternative: the official name alone.
+- [ ] **Base names**: only Mutualistic Intelligence, Memory Aggregator and Neural Chorus were replaced (Mutualistic Intelligence also changes in the simulator, whose text it shares: jp 相利共生知性 → 共生的知識; es/en were already official). The other 7 base names are still the simulator's and differ from the game localisation in some cases (es "Democrática" / "Corporativa" / "Inteligencia de Máquina" vs "Democrático" / "Corporación" / "Inteligencia mecánica"; jp "帝政" / "ハイブマインド" / "企業制" vs "君主制" / "集合意識" / "企業"). They are left for P15 unless the owner wants them changed now.
+- [ ] **Official texts kept as they are**, even where they look odd: es "Junta de física" (en "Board of Psychics"), "Información imperial" ("Imperial Feedback"), "Manifiesto dictatorial" ("Dictatorial Manifold").
+- [ ] **Icon check**: 74 of the 75 icons are the game texture of the authority or swap `auth_<cell id>` (data of `authorities.json` and the T2524 export report), and that swap's trigger matches the path and variant of the cell. `Auth_cyber_dictatorial_collectivist.png` is the exception: 4.5.4 has no texture with that name, it splits the variant by ruler class (`_official`, `_commander`, `_scientist`, `_vacant`, all named "Dictatorial Alignment", images that look the same). The cell keeps the old icon and that name. **For T2406**: adding the 4 icons as cells would give five cells with the same picture and name; the options are to leave them out, or to replace the old cell by them and add the ruler class to the name.
+
 ## T2402 — Origins bingo in the in-game order (2026-11-25)
 
 - The order is a generated module, `js/bingo-origin-order.js` (`tools/extract/build_origin_order.py`, from `origins.json`'s `game_order`), and each origin cell carries its game id (`origin`). The cells keep their `i18nKey` as id, so nothing else (marks, simulator) changes. The in-game order is still the definition order assumed in P25.11 (to be checked in game); with 4.5.4 it is the same order the hand-written list already had.

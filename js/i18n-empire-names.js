@@ -948,7 +948,7 @@ export const strings = {
         authorityImperial: "帝政",
         authorityCorporate: "企業制",
         authorityMachineIntelligence: "機械知性",
-        authorityMutualisticIntelligence: "相利共生知性",
+        authorityMutualisticIntelligence: "共生的知識",
         authorityHiveMind: "ハイブマインド",
     },
 };
