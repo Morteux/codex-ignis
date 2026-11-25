@@ -3496,8 +3496,13 @@ h1 {
     --tech-area-tint: rgba(255, 154, 61, .08);
 }
 
+/* T3602: the window is most of the viewport tall (dvh where supported, so the phone toolbars do
+   not hide its bottom), never shorter than 24rem nor taller than 64rem; same width as the page. */
 .tech-areas {
-    max-height: 75vh;
+    height: 85vh;
+    height: 85dvh;
+    min-height: 24rem;
+    max-height: 64rem;
     overflow: auto;
     overscroll-behavior: contain;
     border: 1px solid var(--line);
@@ -3884,7 +3889,9 @@ h1 {
     }
 
     .tech-areas {
-        max-height: 70vh;
+        height: 80vh;
+        height: 80dvh;
+        min-height: 20rem;
         -webkit-overflow-scrolling: touch;
     }
 

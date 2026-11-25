@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **125 / 145 tareas (86%)**
+> Progreso: **126 / 145 tareas (87%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -341,7 +341,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 ## 36 · Tech tree: layout changes (owner, 2026-11-26)
 - [x] **T3601** (P36.1) Research areas as rows instead of columns: Physics, Society and Engineering stacked one under the other inside the same tree window (one scroll, zoom and pan for the three), each on a slightly tinted, semi-transparent background: blue for Physics, green for Society, orange for Engineering. Keep the tier columns and field rows inside each area, the prerequisite lines (also between areas), keyboard navigation, deep links and the mobile layout (decide whether the mobile area tabs stay); update `TECH_TREE_GDD.md` §6 and the smoke tests in `tests/smoke/tech_tree.py`
   - Prueba manual: open `tech-tree.html`: Physics, Society and Engineering appear one under the other in one scrolling window on blue, green and orange tints, with prerequisite lines also between areas; the buttons above the window jump to each area (also on a phone, where the old tabs are gone).
-- [ ] **T3602** (P36.2) Taller tree window: same width as now but much taller, so more of the tree is visible at once (e.g. most of the viewport height, with a sensible minimum and maximum); check desktop and mobile, update the smoke tests
+- [x] **T3602** (P36.2) Taller tree window: same width as now but much taller, so more of the tree is visible at once (e.g. most of the viewport height, with a sensible minimum and maximum); check desktop and mobile, update the smoke tests
+  - Prueba manual: open `tech-tree.html` on a desktop: the tree window keeps the page width and fills about 85 % of the window height (never under ~384 px nor over ~1024 px); on a phone it fills about 80 % of the screen height.
 - [ ] **T3603** (P36.3) Detail card in a place that does not move the tree: today it opens as a column at the right and opening or closing it shifts the whole tree window. Choose a more comfortable place (for example a panel floating over a corner of the tree window, a side drawer over the tree, or a fixed area under it) so the tree keeps its size and position and the selected node stays visible; record the choice in `DECISIONS_TO_REVIEW.md`, keep × / Escape, focus handling and the mobile layout, update `TECH_TREE_GDD.md` §6 and the smoke tests
 
 ## 44 · Testellaris: questions from the wiki (owner, 2026-11-26)

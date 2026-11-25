@@ -217,6 +217,16 @@ async def page_checks(t):
     check("tech tree page (T3601): each area on its own semi-transparent tint (blue Physics, green Society, orange Engineering)",
           all(len(c) == 4 and 0 < c[3] < 0.3 for c in tints) and tints[0][2] > tints[0][0] and tints[1][1] > max(tints[1][0], tints[1][2])
           and tints[2][0] > tints[2][1] > tints[2][2], shell["tints"])
+    # T3602: the tree window takes most of the viewport height (85 %), between 24rem and 64rem, at the full page width
+    win_js = "()=>{const w=document.querySelector('.tech-areas').getBoundingClientRect(),b=document.querySelector('.tech-board').getBoundingClientRect();return [Math.round(w.height),Math.round(w.width),Math.round(b.width),innerHeight]}"
+    sizes = {}
+    for height in (900, 400, 1600):
+        await pg.set_viewport_size({"width": 1280, "height": height})
+        await pg.wait_for_timeout(80)
+        sizes[height] = await pg.evaluate(win_js)
+    await pg.set_viewport_size({"width": 1280, "height": 900})
+    check("tech tree window (T3602): as wide as the page and much taller: 85 % of the viewport (765 px at 900), at least 24rem (384 px) and at most 64rem (1024 px)",
+          abs(sizes[900][0] - 765) <= 2 and sizes[400][0] == 384 and sizes[1600][0] == 1024 and all(v[1] == v[2] for v in sizes.values()), sizes)
     check("tech tree page: data version visible (4.5.4, game version, unverified)",
           "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "unverified" in shell["version"], shell["version"])
     bsc, tur = "https://bloodstainedcrow.github.io/stellaris-tech-tree/", "https://turanar.github.io/stellaris-tech-tree/index.html"
@@ -643,6 +653,8 @@ async def mobile_checks(t):
                       m["page"] and m["windowIn"] and m["atTop"] and all(h >= 44 and fits for h, fits in m["jumps"]) and m["scrolls"]
                       and m["nodeW"] < desktop_node and m["nodeH"] >= 44 and m["labelW"] <= 34 and m["tier0Visible"] and m["icon"] == 40
                       and m["nameFits"] and m["lines"] > 300 and m["svgSize"], m)
+    win = await pg.evaluate("()=>{const r=document.querySelector('.tech-areas').getBoundingClientRect();return [Math.round(r.height),innerHeight,r.left>=0&&r.right<=document.documentElement.clientWidth+0.5]}")
+    check("tech tree mobile (T3602): the tree window is 80 % of the screen height and fits its width", abs(win[0] - win[1] * 0.8) <= 2 and win[2], win)
     await pg.click(".lang-btn[data-lang=en]")
     await pg.tap("#tech-jump-physics")
     await pg.wait_for_timeout(100)
