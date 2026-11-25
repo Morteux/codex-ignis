@@ -2,6 +2,21 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4001 — Testellaris design (2026-11-25)
+
+Every rule marked **(proposal)** in `TESTELLARIS_GDD.md`:
+
+- [ ] **Tiers** (§3.1): five tiers (Primitive, Spacefaring, Galactic Power, Ascended, Fallen Empire; names are drafts), given by rule from the set, field and rarity of the fact (base game and empire creation → tier 1 … obscure, non-playable and description texts → tier 5).
+- [ ] **Advancing** (§3.2): 5 correct answers in a tier move the game up one tier; tier 5 has no ceiling; an empty tier takes questions from the next one; no repeats in a game and the last 200 ids asked kept in `localStorage` to avoid repeats between games; answers shuffled.
+- [ ] **Lives** (§3.3): 3 (owner) and no way to win them back.
+- [ ] **Lifelines** (§3.4): besides 50 % (owner), Skip ("Hyperlane Jump", another question of the same tier, no score) and Second chance ("Deflector Shields", a wrong answer does not cost a life once); 50 % named "Sensor Sweep". Each once per game, one per question. Rejected: ask the audience (no real statistics), a source hint, an extra life.
+- [ ] **Scoring** (§3.5): 100 × tier per correct answer, half with 50 %, 0 when skipped, +250 per life left when the bank is completed; Give up keeps the score; top 10 ties broken by tier reached, fewer questions, earlier date.
+- [ ] **No timer** (§3.6), for accessibility (WCAG 2.2.1); alternative: an optional timed mode with its own top 10.
+- [ ] **DLC filter** (§4): the 26 installed DLCs with `affects_gameplay` of `dlc.json`, all checked by default and remembered; a question needs all its DLCs checked; a warning under 20 questions in a tier; one shared hall of fame for every filter, each entry storing how many DLCs were checked.
+- [ ] **Format** (§5): bank in `data/testellaris/<rulesetId>/questions.json`, stable ids `<topic>.<template|hand>.<game id>`, optional icon; no negative or "all of the above" questions; numbers as the game shows them.
+- [ ] **Hall of fame** (§7): name of 1–10 user-perceived characters (owner) with letters and digits of any script, space, `-`, `_`, `.`, no emoji; one board per ruleset (old ones read-only); no queue of scores when the API is down; rate limit of 5 POST per 10 minutes per salted IP hash that expires in 24 h; moderation directly in MongoDB Atlas, no admin page.
+- [ ] **New task T4304** (section 43): the privacy page must describe the hall of fame data before it is published.
+
 ## T3502 — DLC bingo (2026-11-25)
 
 - [ ] **Which DLCs**: the 32 DLCs of `dlc.json` (4.5.4) installed with the game and with a category (13 expansions, 6 story packs, 7 species packs, 6 cosmetic/portrait packs, including Horizon Signal); store-only extras without a `dlc/` folder (soundtracks, art books) are left out. Order: by category, then release order (dlc id).

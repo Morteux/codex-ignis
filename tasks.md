@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **100 / 137 tareas (73%)**
+> Progreso: **101 / 138 tareas (73%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -272,7 +272,8 @@ Design: `TECH_TREE_GDD.md`. Data comes from the game files extractor (T2506). Un
 
 ## 40 · Testellaris: design
 Quiz game: consecutive questions of increasing difficulty by tiers, 3 lives, lifelines (50 % and others), shared top 10 "hall of fame" without accounts (MongoDB Atlas behind a Vercel function, decided by the owner on 2026-11-22). Questions in es/en/jp, each tagged with tier and DLC and citing its source; never invented.
-- [ ] **T4001** (P40.1) Write `TESTELLARIS_GDD.md`: rules (tiers and how the game advances through them, lives, lifelines: 50 % plus proposals, scoring, end of game), DLC filter, question format, sources, languages, hall of fame (top 10, name of at most 10 characters), anti-abuse; proposals recorded in `DECISIONS_TO_REVIEW.md`
+- [x] **T4001** (P40.1) Write `TESTELLARIS_GDD.md`: rules (tiers and how the game advances through them, lives, lifelines: 50 % plus proposals, scoring, end of game), DLC filter, question format, sources, languages, hall of fame (top 10, name of at most 10 characters), anti-abuse; proposals recorded in `DECISIONS_TO_REVIEW.md`
+  - Prueba manual: open `TESTELLARIS_GDD.md`: it describes the 5 tiers, advancing every 5 correct answers, 3 lives, the 50 %, Skip and Second chance lifelines, scoring, the DLC filter, the question format, the hall of fame and its anti-abuse rules; `DECISIONS_TO_REVIEW.md` lists its proposals under T4001.
 
 ## 41 · Testellaris: questions
 Source: only the extractor output (4.5.4 game files and their localisation, including the description texts). Game names inside the questions use the **official es/en/jp names from the game localisation** (owner, 2026-11-22; only Testellaris, the rest of the site keeps English until P15). Each batch aims at about 150 questions spread across all tiers.
@@ -308,6 +309,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 - [ ] **T4301** (P43.1) Vercel serverless function `api/hall-of-fame.js`: GET top 10, POST name and score; MongoDB Atlas through the `MONGODB_URI` environment variable (never in the repository); keeps only the top 10; local mock for the tests
 - [ ] **T4302** (P43.2) Anti-abuse: name rules (length, allowed characters, word filter), rate limit, plausible-score check, payload validation
 - [ ] **T4303** (P43.3) Connect the game to the API with fallback to the local top 10
+- [ ] **T4304** (P43.4) Describe the hall of fame data in `privacy.html` (es/en/jp: name, score, date, salted IP hash kept 24 h for the rate limit, MongoDB Atlas on Vercel) before it is published (`TESTELLARIS_GDD.md` §7.3)
+  - Modelo: sonnet
 - [ ] **T4304** (P43.4) Production setup: MongoDB Atlas free cluster, database user, `MONGODB_URI` in the Vercel project, deploy check
   - ❓ Bloqueada: The owner has to create the Atlas account and cluster and set the variable in Vercel (the loop cannot create accounts).
 
