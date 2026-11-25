@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **109 / 139 tareas (78%)**
+> Progreso: **110 / 139 tareas (79%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -310,7 +310,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - ❓ Bloqueada: The eight extractors are done and tested (`extract_species_traits.py` … `extract_events.py`, in `extract_all.py`; on the installed 4.6.0 they give 370 traits, 50 perks, 33 trees and 234 traditions, 1506 components, 173 megastructure stages, 6 crisis paths, 6 fallen empires and 7223 events), but their questions need the data of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 
 ## 42 · Testellaris: game page
-- [ ] **T4201** (P42.1) `testellaris.html` with the shared shell and a start screen (DLC filter), linked from the home page
+- [x] **T4201** (P42.1) `testellaris.html` with the shared shell and a start screen (DLC filter), linked from the home page
+  - Prueba manual: open `index.html` and click TESTELLARIS in the header: the start screen shows the rules, 26 DLCs in three groups (all checked) and "Questions available with this filter: 2375"; press None and the count drops to the base game questions, and the choice survives a reload.
 - [ ] **T4202** (P42.2) Game loop: increasing tiers, random questions without repeats, 3 lives, game over
 - [ ] **T4203** (P42.3) Lifelines: 50 % and the others agreed in the GDD, each usable once per game
 - [ ] **T4204** (P42.4) Scoring and end screen: score, tier reached, correct answers and the explanation of the failed questions

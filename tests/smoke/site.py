@@ -29,7 +29,7 @@ async def run(t):
     check("load budget: the browser loads every preloaded module and the WOFF2 font (not the TTF)", not not_used and fonts == ["Orbitron-VariableFont_wght.woff2"] and font_ok, (not_used, fonts, font_ok))
     await ppg.close()
     # P22.4: every page in es/en/jp — no page/console errors, no local resource that fails to load
-    site_pages = ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html", "cookies.html", "404.html")
+    site_pages = ("index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "testellaris.html", "privacy.html", "cookies.html", "404.html")
     for lang in ("es", "en", "jp"):
         lctx = await browser.new_context(locale={"es": "es-ES", "en": "en-US", "jp": "ja-JP"}[lang])
         if os.environ.get("BLOCK_REMOTE"): await lctx.route("https://**/*", lambda r: r.abort())
@@ -171,5 +171,4 @@ async def run(t):
     await jpg.goto("file://" + ROOT + "/privacy.html")
     await jpg.wait_for_timeout(200)
     check("i18n: a Japanese browser (ja-JP) opens the site in JP", await jpg.evaluate("()=>document.documentElement.lang") == "ja")
-    await jctx.close()
-    await browser.close()
+    await jctx.close()  # the browser stays open for the areas after this one (tests/policies-smoke.py closes it)

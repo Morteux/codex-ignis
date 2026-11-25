@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y tres comodines." data-i18n-attr="content:tqMetaDescription" />
+    <title data-i18n="tqPageTitle">Testellaris · Codex Ignis</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/png" href="img/Ignis Stellaris icon.png" />
+    <meta name="theme-color" content="#07110c" />
+    <link rel="canonical" href="testellaris" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Codex Ignis" />
+    <meta property="og:title" content="Testellaris · Codex Ignis" />
+    <meta property="og:description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y tres comodines." />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:image" content="img/Ignis Stellaris.png" />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <div class="terminal-shell">
+      <header class="topbar" aria-label="Cabecera del archivo" data-i18n-attr="aria-label:a11yTopbarLabel">
+        <div class="topbar-left">
+          <a class="brand" href="./" aria-label="Codex Ignis: inicio" data-i18n-attr="aria-label:a11yHomeLink"><span class="brand-mark" aria-hidden="true">✦</span><span>CODEX_IGNIS</span></a>
+          <nav class="primary-nav" aria-label="Proyectos del archivo" data-i18n-attr="aria-label:a11yProjectsNav">
+            <a href="bingo.html">BINGO</a>
+            <a href="planet-sim.html">PLANET_SIM</a>
+            <a href="tech-tree.html">TECH_TREE</a>
+            <a href="testellaris.html" aria-current="page">TESTELLARIS</a>
+          </nav>
+        </div>
+        <div class="lang-switch" role="group" aria-label="Selector de idioma" data-i18n-attr="aria-label:a11yLangSwitch">
+          <button type="button" class="lang-btn" data-lang="es" aria-pressed="true" aria-label="Español" lang="es">ES</button>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false" aria-label="English" lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="jp" aria-pressed="false" aria-label="日本語" lang="ja">JP</button>
+        </div>
+      </header>
+
+      <main class="tq-main">
+        <section class="terminal-intro">
+          <h1 data-i18n="tqHeading">Testellaris</h1>
+          <p class="intro-copy" data-i18n="tqIntro">El juego de preguntas de Stellaris: cada respuesta correcta te acerca al siguiente nivel.</p>
+        </section>
+
+        <!-- Start screen (TESTELLARIS_GDD.md §8.1): rules, DLC filter (§4), Start. -->
+        <section class="tq-screen tq-start" id="tq-start" aria-labelledby="tq-rules-heading">
+          <h2 class="tq-heading" id="tq-rules-heading" data-i18n="tqRulesHeading">Reglas</h2>
+          <ul class="tq-rules">
+            <li data-i18n="tqRule1">Cinco niveles de dificultad: subes de nivel tras 5 aciertos en el nivel actual.</li>
+            <li data-i18n="tqRule2">Tienes 3 vidas: cada fallo cuesta una.</li>
+            <li data-i18n="tqRule3">Tres comodines, cada uno una vez por partida y uno por pregunta.</li>
+            <li data-i18n="tqRule4">Sin límite de tiempo. Teclas 1–4 o A–D para responder, Intro para seguir.</li>
+          </ul>
+
+          <fieldset class="tq-dlc" id="tq-dlc" aria-describedby="tq-dlc-intro">
+            <legend class="tq-heading" data-i18n="tqDlcHeading">DLC</legend>
+            <p class="tq-note" id="tq-dlc-intro" data-i18n="tqDlcIntro">Solo salen preguntas de los DLC marcados (las del juego base salen siempre).</p>
+            <div class="tq-dlc-actions">
+              <button type="button" class="tq-btn" id="tq-dlc-all" data-i18n="tqDlcAll">Todos</button>
+              <button type="button" class="tq-btn" id="tq-dlc-none" data-i18n="tqDlcNone">Ninguno</button>
+            </div>
+            <!-- Groups and checkboxes built by js/testellaris.js from DLC_BINGO (js/bingo-game-items.js). -->
+            <div class="tq-dlc-groups" id="tq-dlc-groups"></div>
+          </fieldset>
+
+          <p class="tq-note" id="tq-available" role="status" data-i18n="tqLoading">Cargando preguntas…</p>
+          <p class="tq-warning" id="tq-few" hidden></p>
+          <button type="button" class="tq-btn is-primary tq-start-btn" id="tq-start-btn" data-i18n="tqStart" disabled>Empezar</button>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <a href="./" data-i18n="backToCodexLink">Volver al codex</a>
+      </footer>
+    </div>
+    <script type="module" src="js/testellaris.js"></script>
+  </body>
+</html>

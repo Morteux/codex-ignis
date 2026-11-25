@@ -57,7 +57,7 @@ function moduleGraph(entry, seen = new Set()) {
   for (const m of source.matchAll(/^\s*import\s+["'](\.[^"']+)["']/gm)) moduleGraph(normalize(join(dirname(entry), m[1])).replace(/\\/g, '/'), seen);
   return seen;
 }
-const pages = ['index.html', 'bingo.html', 'planet-sim.html', 'tech-tree.html', 'privacy.html', 'cookies.html', '404.html'];
+const pages = ['index.html', 'bingo.html', 'planet-sim.html', 'tech-tree.html', 'testellaris.html', 'privacy.html', 'cookies.html', '404.html'];
 let usedCount = 0;
 for (const page of pages) {
   const html = fs.readFileSync(root + '/' + page, 'utf8');

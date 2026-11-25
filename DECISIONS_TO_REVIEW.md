@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4201 — Testellaris page and start screen (2026-11-25)
+
+- [ ] **The page reads the bank JSON itself** (`data/testellaris/stellaris-pc-4.5.4/questions.json`, 2.9 MB, about 330 KB gzipped) after the page is usable, with `XMLHttpRequest` so the `file://` smoke tests can read it too. No minified copy or JS module was generated; if the size matters, the generator could write a compact copy.
+- [ ] **DLC filter list** taken from `DLC_BINGO` (`js/bingo-game-items.js`, generated from `dlc.json`) without the portrait packs: 13 expansions, 6 story packs and 7 species packs, with their big icons. The unchecked ones are stored (`testellaris-dlc-off`), so a DLC added later starts checked.
+- [ ] **Navigation:** a fourth link `TESTELLARIS` in the header of every page; on phones the links wrap onto a second line so 320 px has no sideways scroll.
+- [ ] **Tier names in jp** (原始文明, 宇宙進出, 銀河列強, アセンション, 堕落帝国) and es (Primitiva, Viajera espacial, Potencia galáctica, Ascendida, Imperio caído) are drafts: the extractor output has no localisation of these words, so a native review should check them.
+
 ## T4110 — Extractors for the new Testellaris topics (2026-11-25)
 
 - [ ] **Done: the eight extractors**, one script each, in `extract_all.py` and in `refresh_dlc.py`: `species_traits`, `ascension_perks`, `tradition_categories` + `traditions`, `ship_components`, `megastructures`, `crisis_paths` + `crisis_levels` + `menace_perks` + `crisis_objectives`, `fallen_empires` and `events`. **Not done: their questions.** The 4.5.4 data sets cannot be generated because the installed game is 4.6.0, and mixing 4.6.0 data into the 4.5.4 bank would break the "never invent figures" rule. The 4.6.0 output was only checked in a temporary folder and is not committed.

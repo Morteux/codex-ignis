@@ -13,7 +13,7 @@ import { join, dirname, normalize } from "node:path";
 import { gzipSync } from "node:zlib";
 
 const root = process.argv[2] || ".";
-const PAGES = ["index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "privacy.html", "cookies.html", "404.html"];
+const PAGES = ["index.html", "bingo.html", "planet-sim.html", "tech-tree.html", "testellaris.html", "privacy.html", "cookies.html", "404.html"];
 
 const kb = (n) => (n / 1024).toFixed(1);
 const sizes = new Map();

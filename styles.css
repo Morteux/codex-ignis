@@ -12,6 +12,7 @@
  *   8. Planet simulator mobile layout (≤ 700 px, last so it wins)
  *   9. Reduced motion (every page)
  *  10. Tech tree (tech-tree.html)
+ *  11. Testellaris (testellaris.html), with its mobile rules at the end
  * Colours come from the tokens of :root; a colour used once may stay literal.
  */
 
@@ -815,6 +816,13 @@ h1 {
     .topbar-left {
         flex-wrap: wrap;
         row-gap: .4rem;
+    }
+
+    /* Four project links (T4201) do not fit one 320 px line: they wrap. */
+    .primary-nav {
+        flex-wrap: wrap;
+        column-gap: .9rem;
+        row-gap: .2rem;
     }
 
     .workspace {
@@ -4305,4 +4313,161 @@ body.has-tech-card .tech-board {
         min-width: 44px;
         min-height: 44px;
     }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   11. Testellaris (testellaris.html)
+   ════════════════════════════════════════════════════════════════════ */
+
+.tq-screen {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    background: var(--panel-shade);
+}
+
+.tq-screen[hidden] {
+    display: none;
+}
+
+.tq-heading {
+    margin: 0;
+    color: var(--accent);
+    font: 700 .85rem var(--mono);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.tq-rules {
+    margin: 0;
+    padding-left: 1.2rem;
+    color: var(--text);
+    font: .85rem/1.6 var(--mono);
+}
+
+.tq-note {
+    margin: 0;
+    color: var(--muted);
+    font: .8rem/1.5 var(--mono);
+}
+
+.tq-warning {
+    margin: 0;
+    color: var(--warning);
+    font: .8rem/1.5 var(--mono);
+}
+
+.tq-btn {
+    min-height: 44px;
+    padding: .55rem 1rem;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--surface);
+    font: 700 .74rem var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.tq-btn:hover:not(:disabled) {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+}
+
+.tq-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.tq-btn.is-primary {
+    color: var(--background);
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+.tq-btn.is-primary:hover:not(:disabled) {
+    color: var(--background);
+    background: var(--focus);
+}
+
+.tq-btn:focus-visible,
+.tq-dlc-item:focus-within {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.tq-start-btn {
+    justify-self: start;
+    min-width: 10rem;
+}
+
+.tq-dlc {
+    display: grid;
+    gap: .8rem;
+    margin: 0;
+    padding: 1rem;
+    border: 1px solid var(--line-soft);
+    min-width: 0;
+}
+
+.tq-dlc legend {
+    padding: 0 .4rem;
+}
+
+.tq-dlc-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.tq-dlc-groups {
+    display: grid;
+    gap: 1rem;
+}
+
+.tq-dlc-group-title {
+    margin: 0 0 .5rem;
+    color: var(--muted);
+    font: 700 .72rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.tq-dlc-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+    gap: .4rem;
+}
+
+.tq-dlc-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    min-height: 44px;
+    padding: .3rem .5rem;
+    border: 1px solid var(--line-soft);
+    color: var(--text);
+    font: .78rem var(--mono);
+    cursor: pointer;
+}
+
+.tq-dlc-item:has(input:checked) {
+    border-color: var(--accent-dim);
+    background: var(--accent-tint);
+}
+
+.tq-dlc-item input {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    accent-color: var(--accent);
+}
+
+.tq-dlc-item img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
