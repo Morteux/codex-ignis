@@ -303,6 +303,7 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - ❓ Bloqueada: Policy, edict and ambition questions are done (`q_policies.py`), but traditions, ascension perks and decisions are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 - [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
+  - ❓ Bloqueada: Shroud, astral and artifact content, subject holdings and modifier questions are done (`q_shroud.py`), but relics, astral rifts, Shroud events and subject types are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 - [ ] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
 - [ ] **T4110** (P41.10) More topics to reach thousands of questions: new extractors (one script each, added to `extract_all.py`) for species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and event texts, and their questions
 

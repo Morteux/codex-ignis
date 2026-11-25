@@ -36,7 +36,7 @@ TIERS = range(1, 6)
 TOPICS = (
     "origins", "civics", "ethics", "government", "leaders", "technology", "planets", "economy",
     "policies", "traditions", "shroud", "subjects", "modifiers", "species", "ships",
-    "megastructures", "crises", "fallen_empires", "events",
+    "megastructures", "crises", "fallen_empires", "events", "astral", "artifacts",
 )
 FIELDS = {"id", "tier", "topic", "dlc", "source", "text", "answers", "correct", "explanation", "icon"}
 REQUIRED = FIELDS - {"icon"}

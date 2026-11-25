@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4108 — Questions about the Shroud, astral content, artifacts, subjects and modifiers (2026-11-25)
+
+- [ ] **Done with the data the extractor has** (`q_shroud.py`, about 270 questions) and tiers: holdings among ordinary buildings (1–2); archaeotechnologies (2); planetary features of one expansion, patron gifts, holdings that raise loyalty and the overlord's civic or origin (3); modifiers of one expansion, what a modifier raises, holding jobs and overlord technology (4); loyalty and modifier values (5).
+- [ ] **Left blocked**: relics, astral rifts, the Shroud events and patrons themselves, and subject types (agreements) have no data set in the 4.5.4 extractor output and the installed game is 4.6.0.
+- [ ] **New topics** `astral` and `artifacts` in the validator (the Shroud, subjects and modifiers ones already existed).
+- [ ] **Content of an expansion** is read from the name of the game file (`..._shroud`, `..._astral_planes`, `..._ancient_relics`, `..._overlord`); the question gets that DLC, and wrong answers come only from files of other content.
+- [ ] **Effect names** (stability, happiness, naval capacity, ship fire rate and speed, diplomatic weight, envoys, districts, habitability, command limit, loyalty) are written in plain words in es/en/jp, and "holding" as "edificio de dominador" / "保有施設": the data has no official names of modifiers, so a native review should check them.
+
 ## T4107 — Questions about policies and edicts (2026-11-25)
 
 - [ ] **Done with the data the extractor has** (`q_policies.py`, topic `policies`, about 175 questions) and tiers: options of a policy and policy of an option (2, options only non-player empires have 4); ethic and origin an edict requires (2); ethic that closes an option, civic that opens it, edicts sharing an upkeep resource, edict DLC and the technology of the ambitions (3); authority of an edict, base costs and wartime edicts (4); months an edict stays locked (5).
