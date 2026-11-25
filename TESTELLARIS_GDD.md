@@ -5,7 +5,7 @@ Design rules of Testellaris, the Stellaris quiz game of Codex Ignis. Pending wor
 - **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files with the extractor (`GAME_FILES_EXTRACTOR.md`).
 - **Owner decisions (2026-11-22):** consecutive questions of increasing difficulty by tiers, 3 lives, lifelines (50 % and others), a shared top 10 "hall of fame" without accounts (MongoDB Atlas behind a Vercel function), questions in es/en/jp tagged with tier and DLC and citing their source, game names in the questions with the **official es/en/jp names of the game localisation** (only Testellaris; the rest of the site keeps English until P15).
 - **Rule #1 (as in the simulator and the tech tree):** never invent facts, numbers or names. Every question comes from the extractor output (§5); a fact that cannot be traced to a game file and key is not a question.
-- **Status:** design (T4001). Question bank: section 41; page: section 42; hall of fame backend: section 43.
+- **Status:** design (T4001). Question bank: section 41; page: section 42 (done: `testellaris.html`, `js/testellaris*.js`; the top 10 is local until the backend is connected, T4303); hall of fame backend: section 43.
 
 ## 1. Goal
 

@@ -4332,6 +4332,10 @@ body.has-tech-card .tech-board {
     display: none;
 }
 
+.tq-main:focus {
+    outline: none; /* focused by the skip link */
+}
+
 .tq-heading {
     margin: 0;
     color: var(--accent);
@@ -4631,7 +4635,7 @@ body.has-tech-card .tech-board {
 }
 
 .tq-source {
-    color: var(--muted-dim);
+    color: var(--muted); /* --muted-dim is too dim for small text (WCAG 1.4.3) */
     font: .72rem/1.5 var(--mono);
     overflow-wrap: anywhere;
 }
@@ -4920,4 +4924,45 @@ body.has-tech-card .tech-board {
 
 .tq-saved:focus {
     outline: none;
+}
+
+/* T4207: phones — full-width actions, answers stacked, room for long Japanese lines. */
+@media (max-width: 700px) {
+    .tq-screen {
+        padding: .9rem .7rem;
+    }
+
+    .tq-dlc {
+        padding: .7rem .5rem;
+    }
+
+    .tq-start-btn,
+    .tq-feedback .tq-btn,
+    .tq-end-actions .tq-btn,
+    .tq-game-actions .tq-btn {
+        justify-self: stretch;
+        flex: 1 1 100%;
+    }
+
+    .tq-question-row {
+        gap: .6rem;
+    }
+
+    .tq-question-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .tq-answer {
+        min-height: 48px;
+    }
+
+    .tq-end-stats {
+        grid-template-columns: 1fr;
+        gap: .1rem;
+    }
+
+    .tq-end-stats dd {
+        margin-bottom: .4rem;
+    }
 }

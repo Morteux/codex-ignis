@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4207 — Testellaris mobile layout, accessibility and languages (2026-11-25)
+
+- [ ] **Phones (≤ 700 px):** the main buttons take the full width, answers stack in one column (at least 48 px tall), the question icon shrinks to 48 px and the end-screen figures go one under the other.
+- [ ] **Accessibility:** a "Skip to the game" link (es "Saltar al juego", jp "ゲームへ移動"), source lines in `--muted` instead of `--muted-dim` (too dim for small text), the hearts hidden from screen readers with the lives also in text, and the focus moved to the question, to Next after answering and to the end-screen title.
+- [ ] **Japanese and Spanish interface texts** of the page are Claude's drafts (game names come from the bank); a native review should check them.
+
 ## T4206 — Testellaris hall of fame: name and top 10 (2026-11-25)
 
 - [ ] **Name rules in the browser** as the GDD proposal (§7.1): trimmed, NFC, inner spaces collapsed, 1–10 user-perceived characters (`Intl.Segmenter`), letters and digits of any script with their combining marks, space, `-`, `_` and `.`; emoji, symbols, control and invisible characters (such as zero-width spaces) are refused with a message. The input itself allows 40 code units so a name in any script can be typed and then checked; the word filter is server-side (T4302).

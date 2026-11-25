@@ -99,6 +99,7 @@ export const strings = {
         tqNameError_chars: "Solo letras, números, espacios y - _ .",
         tqSavedShared: "Guardada en el salón de la fama.",
         tqSavedLocal: "Guardada en el top 10 de este navegador (no se puede conectar con el salón de la fama).",
+        tqSkipLink: "Saltar al juego",
     },
     en: {
         tqPageTitle: "Testellaris · Codex Ignis",
@@ -191,6 +192,7 @@ export const strings = {
         tqNameError_chars: "Only letters, digits, spaces and - _ .",
         tqSavedShared: "Saved in the hall of fame.",
         tqSavedLocal: "Saved in the top 10 of this browser (the hall of fame cannot be reached).",
+        tqSkipLink: "Skip to the game",
     },
     jp: {
         tqPageTitle: "Testellaris · Codex Ignis",
@@ -283,6 +285,7 @@ export const strings = {
         tqNameError_chars: "使用できるのは文字、数字、スペース、- _ . だけです。",
         tqSavedShared: "殿堂に保存しました。",
         tqSavedLocal: "このブラウザのトップ10に保存しました（殿堂に接続できません）。",
+        tqSkipLink: "ゲームへ移動",
     },
 };
 

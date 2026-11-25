@@ -73,6 +73,65 @@ async def run(t):
     await name_checks(pg, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
     check("testellaris: no page errors", not errors, errors[:3])
     await ctx.close()
+    await mobile_checks(t, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
+
+
+# T4207: every screen at 320 / 375 px — no sideways scroll, touch targets of 44 px (answers, lifelines, buttons, DLC boxes)
+LAYOUT_JS = """()=>{const w=document.documentElement.clientWidth;const vis=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0};
+  const over=[...document.querySelectorAll('main *')].filter(e=>vis(e)&&e.getBoundingClientRect().right>w+1).slice(0,4).map(e=>e.tagName+'.'+e.className);
+  const small=[...document.querySelectorAll('main button, main input[type=text], .tq-dlc-item')].filter(vis).filter(e=>e.getBoundingClientRect().height<44).slice(0,4).map(e=>(e.id||e.className)+' '+Math.round(e.getBoundingClientRect().height));
+  return {sw:document.documentElement.scrollWidth,w,over,small}}"""
+A11Y_JS = """()=>({lang:document.documentElement.lang,skip:document.querySelector('.skip-link').textContent,live:document.querySelector('#tq-announce').getAttribute('aria-live'),
+  answers:[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.textContent.trim().length>1),group:document.querySelector('#tq-answers').getAttribute('aria-labelledby'),
+  lives:document.querySelector('#tq-hud-lives').textContent,hearts:document.querySelector('.tq-hearts').getAttribute('aria-hidden'),
+  lifelines:document.querySelector('.tq-lifelines').getAttribute('aria-labelledby'),english:/\\b(Tier|Question|Score|Lives|Give up)\\b/.test(document.querySelector('#tq-game').innerText)})"""
+
+
+async def mobile_checks(t, small):
+    ctx = await t.browser.new_context(locale="en-US", viewport={"width": 320, "height": 700}, has_touch=True, is_mobile=True)
+    if os.environ.get("BLOCK_REMOTE"): await ctx.route("https://**/*", lambda r: r.abort())
+    pg = await ctx.new_page()
+    errors = []
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto(PAGE)
+    await pg.wait_for_function("()=>!document.querySelector('#tq-start-btn').disabled", timeout=15000)
+    for width in (320, 375):
+        await pg.set_viewport_size({"width": width, "height": 700})
+        for lang in ("es", "en", "jp"):
+            await pg.click(".lang-btn[data-lang=%s]" % lang)
+            if await pg.evaluate("()=>document.querySelector('#tq-start').hidden"):
+                await pg.click("#tq-back-start")
+            screens = {"start": await pg.evaluate(LAYOUT_JS)}
+            await pg.click("#tq-start-btn")
+            screens["question"] = await pg.evaluate(LAYOUT_JS)
+            a11y = await pg.evaluate(A11Y_JS)
+            pos = await pg.evaluate(POSITIONS_JS, small)
+            await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
+            screens["feedback"] = await pg.evaluate(LAYOUT_JS)
+            await pg.click("#tq-give-up")
+            await pg.click(".confirm-dialog .confirm-btn.is-danger")
+            await pg.wait_for_function("()=>!/Loading|読み込み中|Cargando/.test(document.querySelector('#tq-end-top-source').textContent)", timeout=10000)
+            screens["end"] = await pg.evaluate(LAYOUT_JS)
+            bad = {k: v for k, v in screens.items() if v["sw"] > v["w"] or v["over"] or v["small"]}
+            check("testellaris mobile %dpx (%s): start, question, feedback and end screens fit without sideways scroll, touch targets of 44 px" % (width, lang), not bad, bad)
+            if width == 320:
+                check("testellaris a11y (%s): skip link, live region for results, labelled answer group and lifelines, lives in text, interface in the language" % lang,
+                      a11y["lang"] == {"es": "es", "en": "en", "jp": "ja"}[lang] and a11y["skip"] and a11y["live"] == "assertive" and all(a11y["answers"]) and len(a11y["answers"]) == 4
+                      and a11y["group"] == "tq-question" and a11y["lifelines"] and a11y["hearts"] == "true" and any(ch.isdigit() for ch in a11y["lives"]) and (a11y["english"] == (lang == "en")), a11y)
+    await pg.click(".lang-btn[data-lang=en]")
+    # keyboard only: Tab reaches the answers from the question, Enter on a focused answer answers it
+    await pg.click("#tq-back-start")
+    await pg.focus("#tq-start-btn")
+    await pg.keyboard.press("Enter")
+    await pg.keyboard.press("Tab")
+    focused = await pg.evaluate("()=>document.activeElement.className")
+    await pg.keyboard.press("Enter")
+    answered = await pg.evaluate("()=>!document.querySelector('#tq-feedback').hidden&&document.activeElement.id")
+    check("testellaris a11y: keyboard only — Enter starts, Tab from the question reaches the first answer, Enter answers and the focus moves to Next",
+          "tq-answer" in focused and answered == "tq-next", (focused, answered))
+    check("testellaris mobile: no page errors", not errors, errors[:3])
+    await pg.evaluate("()=>{localStorage.removeItem('testellaris-top10');localStorage.removeItem('testellaris-recent')}")
+    await ctx.close()
 
 
 SCORES_JS = """async()=>{const S=await import('./js/testellaris-scores.js');const out={};
