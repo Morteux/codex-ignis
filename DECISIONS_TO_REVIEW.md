@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1501 — Official localisation plan (2026-11-25)
+
+- [ ] **Generated override modules** (`js/game-names/<code>.js`) on top of the hand-written texts, instead of rewriting the names inside `js/i18n-*.js`: one mechanism for the 10 languages, and the hand-written es/en/jp names stay as the fallback.
+- [ ] **Site codes of the new languages**: `pt` (Brazilian Portuguese, `pt-BR`), `fr`, `de`, `ko`, `pl`, `ru`, `zh` (Simplified Chinese, `zh-Hans`); the ES/EN/JP buttons stay and a selector lists the other seven, only on the simulator and the tech tree.
+- [ ] **Interface texts of the new languages show English** until T1505 translates them; a new-language visitor on the wiki, bingo or Testellaris gets English.
+- [ ] **Resource names come from the installed game folder** (4.6.0 today, T2526), because the 4.5.4 extractor output has no resource set; only names are read and the version is written in the generated file.
+- [ ] **Matches by icon are not used** for names (icons are shared), only by id and English name, plus a hand-kept override file.
+
 ## T4304 — Hall of fame data in the privacy policy (2026-11-25)
 
 - [ ] **The es/en/jp texts of `privacy.html` are drafts** (not legal advice). They list everything the hall of fame database stores, beyond the items named in the task: also tier reached, questions answered, right answers (total and per tier), DLCs checked and game version. "The database does not store the IP address" says nothing about the hosting provider's own logs.

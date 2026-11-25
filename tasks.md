@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **120 / 139 tareas (86%)**
+> Progreso: **121 / 140 tareas (86%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -339,10 +339,13 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - ❓ Bloqueada: The owner has to create the Atlas account and cluster and set the variable in Vercel (the loop cannot create accounts).
 
 ## 15 · Official localization (all at once, before the final check)
-- [ ] **T1501** (P15.1) Translation plan from the extractor localisation (T2503, T2520): every game name and text keyed by game id, which languages each page gets, how interface texts without an official string are handled
+- [x] **T1501** (P15.1) Translation plan from the extractor localisation (T2503, T2520): every game name and text keyed by game id, which languages each page gets, how interface texts without an official string are handled
+  - Prueba manual: open `LOCALISATION_PLAN.md`: it names the source (`data/generated/stellaris-pc-4.5.4/localisation/`), the key map `data/localisation/game-name-keys.json`, the generated `js/game-names/<code>.js` modules, the table of languages per page (simulator and tech tree in the 10 game languages, the rest es/en/jp) and the English fallback for interface texts.
 - [ ] **T1502** (P15.2) Replace es/en/jp game names (civics, buildings, jobs, resources, designations, ethics, authorities, planet types, policies) with official strings keyed by game ids
 - [ ] **T1503** (P15.3) All official Stellaris languages for the planet simulator and the tech tree only (wiki and bingo stay es/en/jp); key parity per language
 - [ ] **T1504** (P15.4) Review the civics with English placeholder names and the keys that group several civics under one icon
+- [ ] **T1505** (P15.5) Translate the interface texts of the planet simulator and the tech tree (`js/i18n-simulator.js`, `js/i18n-tech-tree.js`, `js/i18n-common.js` and the P13.8 "not modelled" lines) into the seven new languages (pt, fr, de, ko, pl, ru, zh), which show English until then (`LOCALISATION_PLAN.md` §5)
+  - Modelo: sonnet
 
 ## 14 · Final 4.5.4 data verification (last)
 - [ ] **T1401** (P14.1) Run `extract_all.py` on the installed game (check its version first) and use its output and the T2522 reports as the source of the final review
