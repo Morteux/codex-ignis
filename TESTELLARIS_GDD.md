@@ -35,6 +35,14 @@ Five tiers, from facts every player meets in their first games to the ones only 
 
 The generator gives the tier by rule (set, field and how rare the item is: `playable`, rare/dangerous flags, DLC, technology tier); a hand-written question gives it by the same table. T4109 checks the balance per tier.
 
+**Generator rules (T4111, `tools/testellaris/generate_questions.py`, proposal).** The tier of a question is the higher of the minimum of its template and the obscurity of its item:
+
+- Obscurity of a technology: dangerous or event → 5, rare → 4, otherwise tier 0–1 → 1, tier 2 → 2, tier 3–5 → 3. Of a civic or origin: needs gestalt consciousness or the corporate authority → 3, has a DLC → 2, otherwise 1. A building question takes its template minimum; "which technology a building requires" takes the obscurity of that technology when it is higher.
+- Templates and their minimum tier: tier of a technology (1), opposite of an ethic (1), which DLC adds an origin (2), which ethic meets a civic's requirement (2), which ethic a civic excludes (2), which technology a building requires (2), which job a building provides (2), prerequisite of a technology (3), what a building upgrades into (3), which DLC adds a civic (3), base cost of a technology (4).
+- At most 40 questions per template and tier (chosen by a hash of the id, so a new run keeps the same ones), so that no template fills a tier.
+- Not asked: items whose name is missing in a language, repeated inside its set or holds formatting codes; repeatable technologies; non-playable civics and authorities; items whose conditions use a scripted trigger the extractor does not resolve to its DLC (`has_lithoids = yes`, T2527); a building whose technology has the same name; ethics excluded or required only through nested conditions. Wrong answers are of the same kind and checkably wrong from the same data: never an ancestor or descendant of the technology asked, never a job the building gives under a condition, never an ethic that the civic's allowed authorities would exclude anyway.
+- The `dlc` of a question is the item's DLC list without the DLCs it only names negated (`NOT = { host_has_dlc = "Megacorp" }` is the non-Megacorp variant), plus the DLC of the second item of the question (the technology of a building…). DLC names are the game's (`dlc.json`), the same in every language.
+
 ### 3.2 How the game advances (proposal)
 
 - A game starts at tier 1. After **5 correct answers in the current tier** the game moves up one tier; wrong answers do not count towards that.

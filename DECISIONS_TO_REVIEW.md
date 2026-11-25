@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4111 — Testellaris question generator (2026-11-25)
+
+- [ ] **Tier rules** of the generator (`TESTELLARIS_GDD.md` §3.1, "Generator rules"): the higher of the template minimum (tech tier and opposite ethic 1; origin DLC, civic ethics, building technology and jobs 2; prerequisites, building upgrades and civic DLC 3; base cost 4) and the obscurity of the item (dangerous/event tech 5, rare 4, tech tier 3+ → 3; gestalt or corporate civics 3).
+- [ ] **Cap of 40 questions per template and tier**, chosen by a hash of the id: the uncapped run gives 1 350 questions, 426 of them "what tier is X" and 336 base costs; capped, 582 (tier 1: 48, 2: 174, 3: 193, 4: 73, 5: 94). `--cap 0` writes all of them. Tier 1 is short (only tech tiers and the 8 opposite ethics are that basic): hand-written questions (T4102–T4108) should add to it.
+- [ ] **Conservative skips**: every item whose conditions use a scripted trigger `has_… = yes/no` that the extractor does not resolve to a DLC is not asked (191 of 498 buildings and 166 of 679 technologies, mostly for `has_federation`, `has_upgraded_capital`, `has_branch_office`), because its DLC list might be incomplete; T2527 (new) resolves them in the extractor.
+- [ ] **DLC names** in the answers are the game's `name` of `dlc.json` (English titles: the localisation has no DLC names except Nomads), the same in es/en/jp.
+- [ ] **Wording** (drafts, es/en/jp): the terms of the rest of the site ("principio" / "国是" for civic, "ética" / "倫理観", "nivel" / "ティア", "prerrequisito" / "前提条件", "edificio" / "建造物", "empleo" / "職業", "coste base" / "基本コスト"); the base cost explanation says that the game scales it, as the tech tree does. The Japanese texts need a native review.
+- [ ] **Re-runs**: random choices are seeded by the question id, so a new run on the same data gives the same bank (the tests check it) and a new version only changes what its data changes; hand-written questions (`<topic>.hand.<id>`) are kept as they are.
+
 ## T4101 — Testellaris question bank format (2026-11-25)
 
 - [ ] **Bank file**: `data/testellaris/<rulesetId>/questions.json` (the path proposed in the GDD), a header `{rulesetId, gameVersion, count}` and the `questions` list; validator in `tools/testellaris/question_bank.py`, so the generator (T4111) and the tests share it.
