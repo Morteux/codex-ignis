@@ -1,0 +1,12 @@
+{
+  "name": "codex-ignis",
+  "private": true,
+  "type": "module",
+  "description": "Static Stellaris site; only the Testellaris hall of fame (api/) runs on the server.",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "mongodb": "^6.12.0"
+  }
+}

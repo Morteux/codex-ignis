@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4301 — Testellaris hall of fame API (2026-11-25)
+
+- [ ] **API shape:** `GET /api/hall-of-fame?ruleset=<rulesetId>` → `{ rulesetId, entries }`; `POST` → 201 `{ saved: true, entry, entries }` or 200 `{ saved: false, entries }` when the score does not enter the top 10 (nothing is written then). Errors as `{ error: <code> }`: 400, 405, 413 (body over 1 KB), 503 `unavailable` when there is no `MONGODB_URI` or the database fails (no details leak).
+- [ ] **The date is set by the server**, not by the browser, so it cannot be backdated to win ties.
+- [ ] **One board per ruleset** (GDD §7.1 proposal), and a ruleset is accepted only if its bank `data/testellaris/<id>/questions.json` exists (shipped with the function through `includeFiles` in `vercel.json`); its size per tier is used by the plausible-score check (T4302).
+- [ ] **`package.json` with `"type": "module"`** (every JS file of the site is already an ES module) and the `mongodb` driver `^6.12.0` as the only dependency; no lock file in the repository. The server reuses `js/testellaris-scores.js` (order, top 10, name rules), so browser and server cannot disagree.
+- [ ] **MongoDB:** database `testellaris` (`MONGODB_DB` to change it), collection `entries` with one compound index in board order; after an insert everything below the 10th of that ruleset is deleted.
+
 ## T4207 — Testellaris mobile layout, accessibility and languages (2026-11-25)
 
 - [ ] **Phones (≤ 700 px):** the main buttons take the full width, answers stack in one column (at least 48 px tall), the question icon shrinks to 48 px and the end-screen figures go one under the other.

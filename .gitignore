@@ -1,3 +1,5 @@
 .claude/auto-tasks/
 __pycache__/
 .scratch/
+node_modules/
+.vercel/
