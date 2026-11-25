@@ -6,9 +6,16 @@ import { sortEntries } from "../../js/testellaris-scores.js";
 
 export function memoryStore() {
     const entries = [];
+    const hits = []; // { key, at } of the rate limit
     const board = (rulesetId) => sortEntries(entries.filter((entry) => entry.rulesetId === rulesetId));
     return {
         entries,
+        hits,
+        async hit(key, since, at) {
+            const count = hits.filter((hit) => hit.key === key && hit.at > since).length;
+            hits.push({ key, at });
+            return count;
+        },
         async top(rulesetId, limit) {
             return board(rulesetId).slice(0, limit).map((entry) => ({ ...entry }));
         },

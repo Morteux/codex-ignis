@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4302 — Testellaris hall of fame anti-abuse (2026-11-25)
+
+- [ ] **New entry field `correctByTier`** (right answers of tiers 1–5), needed for the plausible-score check of GDD §7.3; it is stored but not returned by the API. The body must hold exactly `name, score, maxTier, answered, correct, correctByTier, dlcs, rulesetId` (the `date` is the server's); raw name at most 64 code units, `dlcs` at most 64 (sanity bound, not a game figure).
+- [ ] **Exact score check, stricter than "not above the maximum":** the score must be Σ right answers × 100 × tier, less half of one right answer's points (Sensor Sweep is once per game), plus 250 per life left only when the game could have completed. Counts also checked: right ≤ answered, at most 3 wrong, no right answer above the tier reached, no tier with more right answers than its questions, answered ≤ bank size.
+- [ ] **"Completed" is accepted only if `answered + 1 ≥` the number of base-game questions** of the bank (the DLC filter never removes them; one may be skipped with Hyperlane Jump). The tier-progression rule (5 right answers to move up) is not checked, because a tier emptied by the DLC filter is jumped over.
+- [ ] **Word filter is a draft list** (`api/_lib/blocked-words.js`) in two parts: words rejected anywhere in the name, and short words rejected only as a whole word (so Yamashita, Dickens, icono or Peacock pass). Known false positive kept on purpose: "puta" inside "disputa". The owner should review the list.
+- [ ] **Rejected names get the generic code `name`**, the same as a name that breaks §7.1, so the player cannot tell which word was found.
+- [ ] **Rate limit counts every POST, valid or not** (so the word filter cannot be probed); GET is not limited. Key: SHA-256 of salt + IP (`x-real-ip`, else the first `x-forwarded-for`); salt `HALL_OF_FAME_SALT`, or derived from the secret `MONGODB_URI` when not set, so no extra variable is needed. Collection `rate` with a TTL index of 24 h.
+
 ## T4301 — Testellaris hall of fame API (2026-11-25)
 
 - [ ] **API shape:** `GET /api/hall-of-fame?ruleset=<rulesetId>` → `{ rulesetId, entries }`; `POST` → 201 `{ saved: true, entry, entries }` or 200 `{ saved: false, entries }` when the score does not enter the top 10 (nothing is written then). Errors as `{ error: <code> }`: 400, 405, 413 (body over 1 KB), 503 `unavailable` when there is no `MONGODB_URI` or the database fails (no details leak).

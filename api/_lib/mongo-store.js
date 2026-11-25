@@ -9,6 +9,8 @@
 
 /** Same order as `compareEntries` of js/testellaris-scores.js (ISO dates sort as text). */
 export const BOARD_SORT = { score: -1, maxTier: -1, answered: 1, date: 1 };
+/** The rate limit hashes (collection `rate`: { key, at }) are deleted by a TTL index after 24 h. */
+export const RATE_TTL_SECONDS = 24 * 60 * 60;
 
 let connecting = null;
 
@@ -18,6 +20,8 @@ async function connect(uri, dbName) {
     await client.connect();
     const db = client.db(dbName);
     await db.collection("entries").createIndex({ rulesetId: 1, ...BOARD_SORT }, { name: "board" });
+    await db.collection("rate").createIndex({ at: 1 }, { name: "expire", expireAfterSeconds: RATE_TTL_SECONDS });
+    await db.collection("rate").createIndex({ key: 1, at: 1 }, { name: "key" });
     return db;
 }
 
@@ -30,10 +34,16 @@ export async function mongoStore(env = process.env) {
     });
     const db = await connecting;
     const entries = db.collection("entries");
+    const rate = db.collection("rate");
     const board = (rulesetId, limit, projection) => entries.find({ rulesetId }, { projection }).sort(BOARD_SORT).limit(limit).toArray();
     return {
         top: (rulesetId, limit) => board(rulesetId, limit, { _id: 0 }),
         insert: (entry) => entries.insertOne({ ...entry }),
+        async hit(key, since, at) {
+            const count = await rate.countDocuments({ key, at: { $gt: since } });
+            await rate.insertOne({ key, at });
+            return count;
+        },
         async trim(rulesetId, limit) {
             const keep = await board(rulesetId, limit, { _id: 1 });
             await entries.deleteMany({ rulesetId, _id: { $nin: keep.map((doc) => doc._id) } });

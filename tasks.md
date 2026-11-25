@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **117 / 139 tareas (84%)**
+> Progreso: **118 / 139 tareas (85%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -328,7 +328,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 ## 43 · Testellaris: hall of fame backend (MongoDB)
 - [x] **T4301** (P43.1) Vercel serverless function `api/hall-of-fame.js`: GET top 10, POST name and score; MongoDB Atlas through the `MONGODB_URI` environment variable (never in the repository); keeps only the top 10; local mock for the tests
   - Prueba manual: run `node tests/hall-of-fame/api-test.mjs`: every check prints `true`; once deployed with `MONGODB_URI`, `/api/hall-of-fame?ruleset=stellaris-pc-4.5.4` answers `{"rulesetId":…,"entries":[]}` (503 `unavailable` without the variable).
-- [ ] **T4302** (P43.2) Anti-abuse: name rules (length, allowed characters, word filter), rate limit, plausible-score check, payload validation
+- [x] **T4302** (P43.2) Anti-abuse: name rules (length, allowed characters, word filter), rate limit, plausible-score check, payload validation
+  - Prueba manual: run `node tests/hall-of-fame/api-test.mjs`: the "hall of fame rules" and "rate limit" checks print `true` (an insult with look-alike letters, a forged score and a 6th POST in 10 minutes are rejected).
 - [ ] **T4303** (P43.3) Connect the game to the API with fallback to the local top 10
 - [ ] **T4304** (P43.4) Describe the hall of fame data in `privacy.html` (es/en/jp: name, score, date, salted IP hash kept 24 h for the rate limit, MongoDB Atlas on Vercel) before it is published (`TESTELLARIS_GDD.md` §7.3)
   - Modelo: sonnet

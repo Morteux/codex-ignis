@@ -7,13 +7,20 @@
  *        → 201 { saved: true, entry, entries } when the score enters the top 10 (the date is set
  *          here), 200 { saved: false, entries } when it does not; only the top 10 is kept.
  *
- * Errors: 400 { error } for a bad request, 405 for another method, 503 { error: "unavailable" }
+ * Errors: 400 { error } for a bad request (codes of `entry-rules.js`), 405 for another method,
+ * 413 for a body over 1 KB, 429 { error: "rate" } over the rate limit, 503 { error: "unavailable" }
  * when the database cannot be reached (the game then uses its local top 10).
  *
- * A store is { top(rulesetId, limit), insert(entry), trim(rulesetId, limit) } (all async).
- * `createHandler({ store })` takes the store or an async function that returns it (null when
- * there is no database).
+ * Rate limit (GDD §7.3): at most RATE_LIMIT POSTs per RATE_WINDOW_MS per client, valid or not,
+ * keyed by a salted SHA-256 of the IP address; the raw IP is never stored and the store drops
+ * the hashes after 24 hours.
+ *
+ * A store is { top(rulesetId, limit), insert(entry), trim(rulesetId, limit),
+ * hit(key, since, at) → hits of `key` after `since` before this one (recorded at `at`) } (all
+ * async). `createHandler({ store, salt })` takes the store or an async function that returns it
+ * (null when there is no database), and the salt or a function that returns it.
  */
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { TOP_SIZE, qualifies } from "../../js/testellaris-scores.js";
 import { validateEntry } from "./entry-rules.js";
@@ -31,7 +38,7 @@ export function publicEntry(entry) {
 const bankCache = new Map();
 
 /**
- * { total, byTier: { 1: n, … 5: n } } of the question bank of a ruleset, or null when the ruleset
+ * { total, byTier: { 1: n, … 5: n }, baseTotal (questions without DLC) } of the question bank of a ruleset, or null when the ruleset
  * has no bank (unknown ruleset). Read once per instance from data/testellaris/<id>/questions.json.
  */
 export function readBankInfo(rulesetId) {
@@ -44,7 +51,8 @@ export function readBankInfo(rulesetId) {
             if (bank.rulesetId === rulesetId && Array.isArray(bank.questions)) {
                 const byTier = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
                 bank.questions.forEach((question) => { if (question.tier in byTier) byTier[question.tier] += 1; });
-                info = { total: bank.questions.length, byTier };
+                const baseTotal = bank.questions.filter((question) => !question.dlc?.length).length;
+                info = { total: bank.questions.length, byTier, baseTotal };
             }
         } catch (error) {
             info = null; // no bank for this ruleset
@@ -106,8 +114,40 @@ async function readBody(req) {
     return body;
 }
 
-export function createHandler({ store, now = () => new Date(), bankInfo = readBankInfo } = {}) {
+export const RATE_LIMIT = 5;
+export const RATE_WINDOW_MS = 10 * 60 * 1000;
+
+/** Client address as Vercel forwards it. */
+export function clientIp(req) {
+    const headers = req.headers || {};
+    const forwarded = String(headers["x-forwarded-for"] || "").split(",")[0].trim();
+    return String(headers["x-real-ip"] || "").trim() || forwarded || req.socket?.remoteAddress || "unknown";
+}
+
+export function clientKey(req, salt) {
+    return createHash("sha256").update(`${salt}\n${clientIp(req)}`).digest("hex");
+}
+
+/**
+ * Salt of the IP hashes: `HALL_OF_FAME_SALT` when set, else derived from the secret
+ * `MONGODB_URI`, so every function instance hashes an address the same way.
+ */
+export function defaultSalt(env = process.env) {
+    return env.HALL_OF_FAME_SALT || createHash("sha256").update(`testellaris-hall-of-fame\n${env.MONGODB_URI || ""}`).digest("hex");
+}
+
+export function createHandler({ store, now = () => new Date(), bankInfo = readBankInfo, salt = defaultSalt } = {}) {
     const openStore = async () => (typeof store === "function" ? store() : store);
+    const saltValue = () => (typeof salt === "function" ? salt() : salt);
+
+    async function rateLimit(req, res, db) {
+        const at = now();
+        const hits = await db.hit(clientKey(req, saltValue()), new Date(at.getTime() - RATE_WINDOW_MS), at);
+        if (hits >= RATE_LIMIT) {
+            res.setHeader("Retry-After", String(RATE_WINDOW_MS / 1000));
+            throw new BadRequest("rate", 429);
+        }
+    }
 
     async function getBoard(req, res, db) {
         const rulesetId = queryParam(req, "ruleset");
@@ -117,6 +157,7 @@ export function createHandler({ store, now = () => new Date(), bankInfo = readBa
     }
 
     async function postEntry(req, res, db) {
+        await rateLimit(req, res, db);
         const body = await readBody(req);
         const checked = validateEntry(body, { bankInfo });
         if (checked.error) throw new BadRequest(checked.error);
