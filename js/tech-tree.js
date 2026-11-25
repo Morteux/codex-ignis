@@ -6,7 +6,7 @@
  * jump to an area (the three areas are stacked as rows in one tree window, T3601) and the
  * tier × field grid of nodes of every area (js/tech-tree-layout.js) with the prerequisite lines
  * (js/tech-tree-lines.js, also between areas), the selection states (js/tech-tree-states.js) and their legend, and the
- * detail card of the selected technology (js/tech-tree-card.js), the search and filters
+ * detail card of the selected technology (js/tech-tree-card.js, floating over the tree window, T3603), the search and filters
  * (js/tech-tree-search.js), the zoom and pan (js/tech-tree-zoom.js) and the deep link to a
  * technology in the URL hash (js/tech-tree-link.js) and the comparison between two data versions
  * (js/tech-tree-compare.js, T3303), and the keyboard navigation between nodes with their
@@ -182,7 +182,41 @@ function revealNode(id) {
   const node = document.querySelector(`.tech-node[data-tech-id="${id}"]`);
   if (!node) return;
   node.scrollIntoView({ block: "center", inline: "center" });
+  requestAnimationFrame(() => keepClearOfCard(id));
 }
+
+/**
+ * T3603: the detail card floats over the tree window (bottom sheet on phones), so after it opens
+ * the selected node is scrolled out from under it: sideways inside the window when the card is a
+ * corner panel, upwards (window, then page) when it is a bottom sheet. The tree itself never moves.
+ */
+function keepClearOfCard(id) {
+  const node = document.querySelector(`.tech-node[data-tech-id="${id}"]`);
+  const cardEl = document.getElementById("tech-card");
+  if (!node || cardEl.hidden) return;
+  const windowEl = document.querySelector(".tech-areas");
+  const margin = 12;
+  const n = node.getBoundingClientRect();
+  const c = cardEl.getBoundingClientRect();
+  if (n.right <= c.left || n.left >= c.right || n.bottom <= c.top || n.top >= c.bottom) return;
+  const sheet = getComputedStyle(cardEl).position === "fixed";
+  if (sheet) {
+    const need = n.bottom - c.top + margin;
+    const before = windowEl.scrollTop;
+    windowEl.scrollTop += Math.min(need, n.top - windowEl.getBoundingClientRect().top - margin);
+    const rest = need - (windowEl.scrollTop - before);
+    if (rest > 0) window.scrollBy(0, rest);
+  } else {
+    windowEl.scrollLeft += n.right - c.left + margin;
+  }
+}
+
+/**
+ * Focus (T3603): closing the card from inside it (× button, Escape) puts the focus back on the
+ * node; choosing another technology from a card button keeps the focus on the (redrawn) card.
+ */
+document.getElementById("tech-card").tabIndex = -1;
+let lastSelected = null;
 
 const keyboard = createKeyboard(document.querySelector(".tech-areas"), getLang);
 const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, getLang, {
@@ -194,9 +228,15 @@ const card = createDetailCard(document.getElementById("tech-card"), TECH_DATA, g
 });
 const selection = createSelection(document.querySelector(".tech-areas"), TECH_DATA, document.getElementById("tech-selection-status"), getLang,
   (id) => {
+    const cardEl = document.getElementById("tech-card");
+    const hadFocus = cardEl.contains(document.activeElement);
     card.show(id);
     writeHash(id);
     keyboard.update(id);
+    if (id) requestAnimationFrame(() => keepClearOfCard(id));
+    if (hadFocus && id) cardEl.focus({ preventScroll: true });
+    else if (hadFocus && lastSelected) document.querySelector(`.tech-node[data-tech-id="${lastSelected}"]`)?.focus({ preventScroll: true });
+    lastSelected = id;
   });
 const search = createSearch(document.getElementById("tech-search-box"), document.querySelector(".tech-areas"), TECH_DATA, getLang, {
   onPick: (id) => {

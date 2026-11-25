@@ -410,11 +410,35 @@ async def page_checks(t):
         sim:[...c.querySelectorAll('.tech-card-sim-link')].map(a=>[a.getAttribute('href'),a.dataset.simCollection,a.dataset.simId,a.textContent]),
         unlocks:sec('unlocks')?sec('unlocks').querySelectorAll('li').length:0,linkedJobs:[...c.querySelectorAll('.tech-card-jobs code.is-linked')].map(x=>x.textContent),
         labels:[...c.querySelectorAll('.tech-card-label')].map(l=>l.textContent),inView:c.getBoundingClientRect().right<=document.documentElement.clientWidth+0.5}}"""
+    win_box = "()=>{const r=document.querySelector('.tech-areas').getBoundingClientRect();return [r.left,r.top,r.width,r.height].map(Math.round)}"
+    before_open = await pg.evaluate(win_box)
     await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
     c1 = await pg.evaluate(card_js)
     deps = sorted(s1["expDeps"])
-    board = await pg.evaluate("()=>{const r=(s)=>document.querySelector(s).getBoundingClientRect();return [r('#tech-card').left>=r('.tech-areas').right,r('.tech-area[data-area=engineering]').width>200]}")
-    check("tech tree card: on desktop the card has its own column next to the areas (it covers no node)", all(board), board)
+    # T3603: the card floats over the top-right corner of the tree window: the window keeps its size and place, its scroll bar stays free
+    board = await pg.evaluate("""()=>{const r=(s)=>document.querySelector(s).getBoundingClientRect();const c=r('#tech-card'),w=r('.tech-areas'),sc=document.querySelector('.tech-areas');
+      return {inside:c.top>=w.top&&c.right<=w.right-(sc.offsetWidth-sc.clientWidth)&&c.bottom<=w.bottom&&c.left>w.left+w.width/2,width:Math.round(c.width),
+        floating:getComputedStyle(document.getElementById('tech-card')).position==='absolute'}}""")
+    after_open = await pg.evaluate(win_box)
+    check("tech tree card (T3603): on desktop the card floats over the top-right corner of the tree window, clear of its scroll bar, and opening it does not move or resize the tree",
+          board["inside"] and board["floating"] and 300 <= board["width"] <= 370 and before_open == after_open, (board, before_open, after_open))
+    # a node under the card is scrolled out from under it when selected, without moving the window
+    clear_js = """async (id)=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const n=document.querySelector('.tech-node[data-tech-id='+id+']').getBoundingClientRect();
+      const c=document.getElementById('tech-card').getBoundingClientRect();const w=document.querySelector('.tech-areas').getBoundingClientRect();
+      return {covered:!(n.right<=c.left||n.left>=c.right||n.bottom<=c.top||n.top>=c.bottom),inWindow:n.left>=w.left-1&&n.right<=w.right+1&&n.top>=w.top-1&&n.bottom<=w.bottom+1}}"""
+    under = await pg.evaluate("""()=>{const c=document.getElementById('tech-card').getBoundingClientRect();const sc=document.querySelector('.tech-areas');
+      const n=[...document.querySelectorAll('.tech-node')].find(x=>{const r=x.getBoundingClientRect();return r.left>c.left+20&&r.right<c.right-20&&r.top>c.top+20&&r.bottom<c.bottom-20});
+      if(!n){sc.scrollLeft+=400;}return n?n.dataset.techId:null}""")
+    if not under:
+        under = await pg.evaluate("""()=>{const c=document.getElementById('tech-card').getBoundingClientRect();
+          const n=[...document.querySelectorAll('.tech-node')].find(x=>{const r=x.getBoundingClientRect();return r.left>c.left+20&&r.right<c.right-20&&r.top>c.top+20&&r.bottom<c.bottom-20});return n?n.dataset.techId:null}""")
+    await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').click()", under)
+    cleared = await pg.evaluate(clear_js, under)
+    after_clear = await pg.evaluate(win_box)
+    check("tech tree card (T3603): selecting a node hidden under the card scrolls the window sideways so the node stays visible next to the card; the window does not move",
+          bool(under) and not cleared["covered"] and cleared["inWindow"] and after_clear == before_open, (under, cleared, after_clear, before_open))
+    await pg.click(".tech-node[data-tech-id=tech_lasers_2]")
+    c1 = await pg.evaluate(card_js)
     check("tech tree card: clicking Blue Lasers opens its card (icon slot, name, id, tier · kind · area · field, base cost, DLC, version, description)",
           c1["shown"] and c1["id"] == "tech_lasers_2" and c1["name"] == "Blue Lasers" and c1["gameId"] == "tech_lasers_2" and c1["icon"]
           and c1["meta"] == "Tier 1 · Normal · Physics · Particles" and c1["cost"] == "1,250" and c1["dlc"] == "Base game"
@@ -466,13 +490,24 @@ async def page_checks(t):
     check("tech tree card: repeatable levels, and the labels and the official game names follow the language (es, jp)",
           c5["levels"] == "Unlimited" and c5es["levels"] == "Ilimitados" and "Prerrequisitos" in c5es["labels"] and "前提条件" in c5jp["labels"]
           and len({c5["name"], c5es["name"], c5jp["name"]}) == 3, (c5["levels"], c5es["labels"][:3], c5jp["labels"][:3], c5["name"], c5es["name"], c5jp["name"]))
-    await pg.click("#tech-card .tech-card-close")
+    open_id = await pg.evaluate("()=>document.getElementById('tech-card').dataset.techId")
+    before_close = await pg.evaluate(win_box)
+    await pg.focus("#tech-card .tech-card-close")
+    await pg.keyboard.press("Enter")
     c6 = await pg.evaluate(card_js)
-    sel6 = await pg.evaluate("()=>document.querySelectorAll('.tech-node.is-selected').length")
+    sel6 = await pg.evaluate("()=>[document.querySelectorAll('.tech-node.is-selected').length,document.activeElement.dataset.techId||document.activeElement.className]")
+    after_close = await pg.evaluate(win_box)
     await pg.click(".tech-node[data-tech-id=tech_lasers_1]")
+    await pg.focus("#tech-card [data-section=leadsTo] button")
+    await pg.keyboard.press("Enter")
+    in_card = await pg.evaluate("()=>[document.activeElement.id,document.getElementById('tech-card').dataset.techId]")
+    await pg.focus("#tech-card .tech-card-close")
     await pg.keyboard.press("Escape")
     c7 = await pg.evaluate(card_js)
-    check("tech tree card: the close button and Escape hide the card and clear the selection", c6["hidden"] and sel6 == 0 and c7["hidden"], (c6["hidden"], sel6, c7["hidden"]))
+    esc_focus = await pg.evaluate("()=>document.activeElement.dataset.techId||null")
+    check("tech tree card: the close button and Escape hide the card and clear the selection", c6["hidden"] and sel6[0] == 0 and c7["hidden"], (c6["hidden"], sel6, c7["hidden"]))
+    check("tech tree card (T3603): closing does not move the tree; closing from the card (× or Escape) puts the focus back on the node, and a card button keeps it on the redrawn card",
+          before_close == after_close and sel6[1] == open_id and in_card[0] == "tech-card" and in_card[1] != "tech_lasers_1" and esc_focus == in_card[1], (before_close, after_close, sel6, open_id, in_card, esc_focus))
 
     # T3203: accent-insensitive search by name and filters (area, field, tier, kind, DLC)
     search_js = """async ()=>{await new Promise(r=>setTimeout(r,60));const nodes=[...document.querySelectorAll('.tech-node')];
@@ -669,6 +704,14 @@ async def mobile_checks(t):
     await pg.tap("#tech-card .tech-card-close")
     closed = await pg.evaluate("()=>document.getElementById('tech-card').hidden")
     check("tech tree mobile: the detail card is a bottom sheet inside the 320 px screen with a 44 px close button", all(card) and closed, (card, closed))
+    # T3603: on phones the selected node is kept above the bottom sheet
+    await pg.evaluate("()=>{const sc=document.querySelector('.tech-areas');const n=document.querySelector('.tech-node[data-tech-id=tech_lasers_2]');sc.scrollTop+=n.getBoundingClientRect().bottom-sc.getBoundingClientRect().bottom+4;n.scrollIntoView({block:'end',inline:'nearest'})}")
+    await pg.wait_for_timeout(100)
+    await pg.tap(".tech-node[data-tech-id=tech_lasers_2]")
+    above = await pg.evaluate("""async ()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const n=document.querySelector('.tech-node[data-tech-id=tech_lasers_2]').getBoundingClientRect();
+      const c=document.getElementById('tech-card');const r=c.getBoundingClientRect();return [!c.hidden,n.bottom<=r.top+1,n.top>=0]}""")
+    await pg.tap("#tech-card .tech-card-close")
+    check("tech tree mobile (T3603): a node selected near the bottom is scrolled above the bottom sheet", above == [True, True, True], above)
     await pg.select_option("#tech-filter-area", "engineering")
     await pg.wait_for_timeout(100)
     mf = await pg.evaluate("""()=>{const w=document.documentElement.clientWidth;const r=(e)=>e.getBoundingClientRect();

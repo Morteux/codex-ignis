@@ -3929,32 +3929,31 @@ h1 {
     }
 }
 
-/* T3201: detail card of the selected technology (js/tech-tree-card.js). On desktop the board
-   gets a second column for it (sticky, so it stays in view and never covers a node); on phones
+/* T3201, T3603: detail card of the selected technology (js/tech-tree-card.js). On desktop it
+   floats over the top-right corner of the tree window (.tech-viewport holds both), leaving the
+   window's scroll bar free, so opening or closing it never moves or resizes the tree; while it is
+   open the window gets room on its right to scroll any node out from under the card. On phones
    it is a bottom sheet and the page gets room below to scroll the tree above it. */
-body.has-tech-card .tech-board {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 23rem;
-    gap: .8rem;
-    align-items: start;
+.tech-viewport {
+    position: relative;
 }
 
-body.has-tech-card .tech-board > .tech-area-jumps,
-body.has-tech-card .tech-board > .tech-areas {
-    grid-column: 1;
+body.has-tech-card .tech-areas {
+    padding-right: 24.5rem;
 }
 
-body.has-tech-card .tech-board > .tech-card {
-    grid-column: 2;
-    grid-row: 1 / span 2;
+.tech-zoom {
+    width: max-content;
 }
 
 .tech-card {
-    position: sticky;
+    position: absolute;
     top: .5rem;
+    right: 1.2rem;
     z-index: 40;
     box-sizing: border-box;
-    max-height: calc(100vh - 1rem);
+    width: min(23rem, calc(100% - 2.4rem));
+    max-height: calc(100% - 1.6rem);
     overflow: auto;
     overscroll-behavior: contain;
     padding: .9rem 1rem 1rem;
@@ -4143,8 +4142,8 @@ body.has-tech-card .tech-board > .tech-card {
 }
 
 @media (max-width: 700px) {
-    body.has-tech-card .tech-board {
-        display: block;
+    body.has-tech-card .tech-areas {
+        padding-right: 0;
     }
 
     body.has-tech-card .terminal-shell {

@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3603 — Place of the tech tree detail card (2026-11-26)
+
+- [ ] **A panel floating over the top-right corner of the tree window** (23rem wide, as tall as the window at most, its own scroll), instead of a side drawer or an area under the tree: the tree window keeps its size and position when the card opens or closes, the card stays next to the tree it describes, and the window's scroll bar stays free. A fixed area under the tree would push the rest of the page and be out of sight with the 85 % tall window (T3602); a drawer over the whole tree would hide more of it.
+- [ ] **The selected node is never left under the card**: if it would be, the window scrolls sideways just enough to show it beside the card; while the card is open the window gets 24.5rem of extra room on its right so even tier 5 nodes can be shown.
+- [ ] **Phones keep the bottom sheet** (55 % of the screen); a node selected near the bottom is scrolled above the sheet (window first, then the page).
+- [ ] **Focus**: × and Escape close the card and, if the focus was inside it, put it back on the node; a prerequisite / leads-to button of the card keeps the focus on the redrawn card (it is focusable with tabindex -1).
+
 ## T1504 — Civics with English placeholder names and grouped civic keys (2026-11-25)
 
 - [ ] **No English placeholders left**: after T1502 every civic and origin name of es and jp is an official string or a hand translation; the ones that were English (Trawling Operations / Maritime Robotics, Mutagenic Luxury / Luxury Lubrication Pools, Autonomous Drones / Autonomous Symbionts, Hyper Lubrication Basin / Mutagenic Spas, Mutagenic Spas / Lubrication Tanks) were all grouped keys and now take the official names. Gigacorp and Biodrones read the same in English and Spanish in the game itself.
