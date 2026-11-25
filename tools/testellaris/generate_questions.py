@@ -24,8 +24,10 @@ LOC_FILES = {"es": "spanish", "en": "english", "jp": "japanese"}
 CAP = 40  # questions per template and tier (GDD §3.1: the bank must not be one template)
 GENERATOR = "tools/testellaris/generate_questions.py"
 
-# Scripted triggers that are not resolved to DLC names by the extractor (it resolves host_has_dlc
-# and has_<dlc>_dlc only): `has_lithoids = yes` hides a DLC, so an item using one is not asked.
+# Scripted triggers that check a DLC ({name: [{dlc, negated, alternative}]}, `scripted_triggers` of
+# dlc.json, T2527), set by Data: `has_lithoids = yes` is read as the Lithoids pack. Without them
+# (data extracted before T2527) any `has_… = yes` trigger may hide a DLC, so such an item is not asked.
+DLC_TRIGGERS = None
 _SCRIPTED = re.compile(r"\b(has_[a-z0-9_]+)\s*=\s*(?:yes|no)\b")
 _DLC_KEY = re.compile(r"^has_[a-z0-9_]+_dlc$")
 _CODES = re.compile(r"[§£$]")
@@ -48,6 +50,8 @@ class Data:
         self.ruleset = self.manifest["rulesetId"]
         self.loc = {lang: self._json(f"localisation/{f}")["sets"] for lang, f in LOC_FILES.items()}
         self._sets, self._unique = {}, {}
+        global DLC_TRIGGERS
+        DLC_TRIGGERS = self.raw("dlc").get("scripted_triggers")
 
     def _json(self, name):
         with open(f"{self.folder}/{name}.json", encoding="utf-8") as f:
@@ -98,14 +102,19 @@ def _blocks(*texts):
     return out
 
 
-def dlc_mentions(item, fields):
-    """[(dlc name or scripted trigger, negated, alternative)] of the conditions of an item."""
+def dlc_mentions(item, fields, triggers=None):
+    """[(dlc name or unknown has_<x>_dlc trigger, negated, alternative)] of the conditions of an
+    item; the scripted triggers that check a DLC (`triggers`, default DLC_TRIGGERS) are expanded."""
     found = []
+    triggers = DLC_TRIGGERS if triggers is None else triggers
 
     def walk(block, neg, alt):
         for k, op, v in block.entries:
             if k == "host_has_dlc":
                 found.append((str(v), neg, alt))
+            elif triggers and k in triggers and isinstance(v, bool):
+                for m in triggers[k]:
+                    found.append((m["dlc"], bool(neg ^ (not v) ^ m["negated"]), bool(alt or m["alternative"])))
             elif isinstance(k, str) and _DLC_KEY.match(k):
                 found.append((k, neg != (v is False), alt))
             elif isinstance(v, Block):
@@ -119,24 +128,29 @@ def dlc_mentions(item, fields):
     return found
 
 
-def condition_check(item, fields):
-    """(reliable, positive DLC) of an item: reliable = its DLC list can be trusted (no unresolved
-    scripted trigger, readable conditions); positive = its `dlc` minus the DLCs only named negated
-    (`NOT = { host_has_dlc = "Megacorp" }` is the non-Megacorp variant of an item)."""
+def condition_check(item, fields, triggers=None):
+    """(reliable, positive DLC) of an item: reliable = its DLC list can be trusted (no unknown
+    has_<x>_dlc trigger, readable conditions; without a trigger map, no `has_… = yes` trigger at
+    all); positive = its `dlc` minus the DLCs only named negated (`NOT = { host_has_dlc = "Megacorp" }`
+    is the non-Megacorp variant of an item)."""
+    triggers = DLC_TRIGGERS if triggers is None else triggers
     texts = " ".join(item.get(f) or "" for f in fields if isinstance(item.get(f), str))
-    if any(not _DLC_KEY.match(m) for m in _SCRIPTED.findall(texts)):
+    used = _SCRIPTED.findall(texts)
+    if triggers is None and any(not _DLC_KEY.match(m) for m in used):
         return False, None
-    mentions = dlc_mentions(item, fields)
+    if triggers and any(_DLC_KEY.match(m) and m not in triggers for m in used):
+        return False, None
+    mentions = dlc_mentions(item, fields, triggers)
     if mentions is None:
         return False, None
     negated = {n for n, neg, _ in mentions if neg} - {n for n, neg, _ in mentions if not neg}
     return True, [d for d in item.get("dlc") or [] if d not in negated]
 
 
-def single_dlc(item, fields):
+def single_dlc(item, fields, triggers=None):
     """The one DLC an item certainly needs, or None (several, alternatives, negations)."""
-    reliable, dlc = condition_check(item, fields)
-    mentions = dlc_mentions(item, fields) if reliable else None
+    reliable, dlc = condition_check(item, fields, triggers)
+    mentions = dlc_mentions(item, fields, triggers) if reliable else None
     if not mentions or len(item.get("dlc") or []) != 1 or any(neg or alt for _, neg, alt in mentions):
         return None
     return item["dlc"][0]

@@ -19,6 +19,7 @@ tools/extract/
   extract_jobs.py
   ...
   extract_all.py            runs every extractor or a subset and writes the manifest
+  refresh_dlc.py            recomputes the `dlc` lists of generated data from its stored conditions (T2527)
 tests/extract/              unit tests (python -m unittest discover -s tests/extract)
 tests/fixtures/game-files/  small hand-written samples that mimic the game folder
 data/generated/<rulesetId>/ generated data (committed: the simulator will read it, T2523)
@@ -58,7 +59,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 - `name` / `desc` are the English localisation with `$key$` references resolved; colour codes and `£icon£` markers are kept as they are (the site renders them, see §5).
 - Numbers stay numbers; scripted variables (`@tier1cost3`) and inline maths are resolved; when a value cannot be resolved it is kept as a string and a warning is added.
 - Conditions (`potential`, `allow`, `possible`, `trigger`, weight `modifier` blocks...) are kept as **text** (the block re-printed in Paradox syntax), never interpreted.
-- `dlc`: the DLC names found in `host_has_dlc` / `has_*_dlc`-style triggers of the item (as the game writes them).
+- `dlc`: the DLC names (as the game writes them) of the `host_has_dlc` of the item's conditions and of every scripted trigger of `common/scripted_triggers` that checks a DLC, directly or through another trigger (`has_lithoids`, `has_ancrel`, `has_genetic_dlc`…; T2527), set to `yes` or `no`. A DLC named only inside a `NOT` or an `OR` is listed too; `dlc.json` keeps the map of those triggers (`scripted_triggers`: name → DLCs, each `negated` / `alternative`) for whoever needs the details. `refresh_dlc.py` recomputes the `dlc` lists of an already generated folder from its stored condition texts (used when the installed game is a newer version than the data).
 - `icon`: `{ "sprite": "GFX_...", "texture": "gfx/....dds", "asset": "jobs/job_miner.png" }` (`asset` = path inside StellarisAssets), or `null`.
 
 **Localisation of every language** (T2520): `data/generated/<rulesetId>/localisation/<language>.json` with `{ "rulesetId": ..., "language": ..., "sets": { "<set>": { "<id>": "name" } } }` (names only, `null` when the language has no text; swaps and options included) for the 10 game languages (`english`, `braz_por`, `french`, `german`, `japanese`, `korean`, `polish`, `russian`, `simp_chinese`, `spanish`). Not used by the site until phase P15 is unblocked.

@@ -243,7 +243,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archeology_lab.dds",
@@ -283,7 +285,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeostudies.dds",
@@ -335,7 +339,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_cybrex.dds",
@@ -375,7 +381,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_league.dds",
@@ -415,7 +423,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_irassian.dds",
@@ -455,7 +465,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_vultaum.dds",
@@ -495,7 +507,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_yuht.dds",
@@ -535,7 +549,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_baol.dds",
@@ -575,7 +591,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_secrets_zroni.dds",
@@ -617,7 +635,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeoshield.dds",
@@ -673,7 +693,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeoarmor.dds",
@@ -729,7 +751,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_detection_scrambler.dds",
@@ -771,7 +795,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_titan_beam.dds",
@@ -812,7 +838,8 @@
    "potential": "host_has_dlc = \"Apocalypse\"\nhas_ancrel = yes",
    "starting_potential": null,
    "dlc": [
-    "Apocalypse"
+    "Apocalypse",
+    "Ancient Relics Story Pack"
    ],
    "icon": {
     "sprite": null,
@@ -855,7 +882,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_mass_drivers.dds",
@@ -911,7 +940,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_lasers.dds",
@@ -967,7 +998,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_point_defence.dds",
@@ -1023,7 +1056,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_missiles.dds",
@@ -1065,7 +1100,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_mass_accelerator.dds",
@@ -1121,7 +1158,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_strike_crafts.dds",
@@ -1177,7 +1216,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes\nis_nomadic = no",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_rampart.dds",
@@ -1219,7 +1260,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_overcharger.dds",
@@ -1261,7 +1304,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = yes\nis_wilderness_empire = no",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archaeo_refinery.dds",
@@ -1579,7 +1624,9 @@
    "feature_flags": [],
    "potential": "has_nemesis = yes\nhas_ascension_perk = ap_become_the_crisis\nhas_country_flag = can_build_star_eaters",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Nemesis"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_btc_1.dds",
@@ -18367,7 +18414,9 @@
    "feature_flags": [],
    "potential": "has_ancrel = no",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_archeology_lab.dds",
@@ -25407,7 +25456,9 @@
    "feature_flags": [],
    "potential": "has_infernals = yes",
    "starting_potential": null,
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/technologies/tech_volcanic_terraforming.dds",

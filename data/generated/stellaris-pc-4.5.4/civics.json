@@ -1385,7 +1385,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_anglers",
     "texture": "gfx/interface/icons/governments/civics/civic_anglers.dds",
@@ -1415,7 +1417,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/governments/civics/civic_machine_anglers.dds",
@@ -1480,7 +1484,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_toxic_baths",
     "texture": "gfx/interface/icons/governments/civics/civic_toxic_baths.dds",
@@ -1510,7 +1516,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_relentless_industrialists",
     "texture": "gfx/interface/icons/governments/civics/civic_relentless_industrialists.dds",
@@ -1542,7 +1550,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_scavengers",
     "texture": "gfx/interface/icons/governments/civics/civic_scavengers.dds",
@@ -1855,7 +1865,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Lithoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_selective_kinship",
     "texture": "gfx/interface/icons/governments/civics/civic_selective_kinship.dds",
@@ -2022,7 +2034,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/governments/civics/civic_toxic_baths_individual_machine.dds",
@@ -2632,7 +2646,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_scorched_earth",
     "texture": "gfx/interface/icons/governments/civics/civic_scorched_earth.dds",
@@ -2663,7 +2679,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_world_forgers",
     "texture": "gfx/interface/icons/governments/civics/civic_world_forgers.dds",
@@ -2693,7 +2711,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_pyrolatry",
     "texture": "gfx/interface/icons/governments/civics/civic_pyrolatry.dds",
@@ -2723,7 +2743,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_galvanic_symbiosis",
     "texture": "gfx/interface/icons/governments/civics/civic_galvanic_symbiosis.dds",
@@ -5084,7 +5106,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_toxic_baths_hive",
     "texture": "gfx/interface/icons/governments/civics/civic_hive_toxic_baths.dds",
@@ -5166,7 +5190,9 @@
      "description": "civic_tooltip_cordyceptic_drones"
     }
    ],
-   "dlc": [],
+   "dlc": [
+    "Necroids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_cordyceptic_drones",
     "texture": "gfx/interface/icons/governments/civics/civic_hive_cordyceptic_drones.dds",
@@ -5317,7 +5343,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Lithoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_void_hive",
     "texture": "gfx/interface/icons/governments/civics/civic_void_hive.dds",
@@ -5970,7 +5998,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_hive_scorched_earth",
     "texture": "gfx/interface/icons/governments/civics/civic_hive_scorched_earth.dds",
@@ -6002,7 +6032,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_hive_world_forgers",
     "texture": "gfx/interface/icons/governments/civics/civic_hive_world_forgers.dds",
@@ -6033,7 +6065,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_hive_galvanic_symbiosis",
     "texture": "gfx/interface/icons/governments/civics/civic_hive_galvanic_symbiosis.dds",
@@ -6732,7 +6766,9 @@
      "description": "civic_machine_toxic_baths_servitor_effects"
     }
    ],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_toxic_baths_machine",
     "texture": "gfx/interface/icons/governments/civics/civic_machine_toxic_baths.dds",
@@ -7138,7 +7174,9 @@
      "description": "civic_machine_spybots_effects"
     }
    ],
-   "dlc": [],
+   "dlc": [
+    "Nemesis"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/governments/civics/civic_machine_spybots.dds",
@@ -7515,7 +7553,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_machine_world_forgers",
     "texture": "gfx/interface/icons/governments/civics/civic_machine_world_forgers.dds",
@@ -7546,7 +7586,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_machine_galvanic_symbiosis",
     "texture": "gfx/interface/icons/governments/civics/civic_machine_galvanic_symbiosis.dds",
@@ -8201,7 +8243,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_anglers_corporate",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_anglers.dds",
@@ -8231,7 +8275,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_machine_anglers.dds",
@@ -8323,7 +8369,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_relentless_industrialists_megacorp",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_relentless_industrialists.dds",
@@ -8353,7 +8401,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_toxic_baths_megacorp",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_toxic_baths.dds",
@@ -8385,7 +8435,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_scavengers_megacorp",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_scavengers.dds",
@@ -8862,7 +8914,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_toxic_baths_individual_machine.dds",
@@ -9341,7 +9395,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_corporate_world_forgers",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_world_forgers.dds",
@@ -9371,7 +9427,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
    "icon": {
     "sprite": "GFX_text_corporate_galvanic_symbiosis",
     "texture": "gfx/interface/icons/governments/civics/civic_corporate_galvanic_symbiosis.dds",

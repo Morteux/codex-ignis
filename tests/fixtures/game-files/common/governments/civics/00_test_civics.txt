@@ -20,4 +20,5 @@ origin_second = {
 origin_first = {
 	is_origin = yes
 	icon = "gfx/interface/icons/origins/origins_first.dds"
+	playable = { has_rocks = yes }
 }

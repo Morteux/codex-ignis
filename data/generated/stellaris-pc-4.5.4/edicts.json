@@ -2732,7 +2732,9 @@
    "potential": "has_country_flag = action_planar_mastery_activated\nhas_ancrel = yes",
    "allow": "NOT = {\n\tresource_stockpile_compare = {\n\t\tresource = astral_threads\n\t\tvalue < 10\n\t}\n}",
    "effect": null,
-   "dlc": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
    "icon": {
     "sprite": "GFX_edict_type_policy",
     "texture": "gfx/interface/icons/menu_icon_edicts.dds",

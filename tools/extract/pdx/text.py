@@ -5,7 +5,8 @@ from .parser import Block, Color, Quoted, to_python, to_text
 
 RESOURCE_PARTS = ("cost", "upkeep", "produces")
 _DLC_HOST = re.compile(r'host_has_dlc\s*=\s*"?([^"\n}]+?)"?\s*(?:[\n}]|$)')
-_DLC_TRIGGER = re.compile(r"\b(has_[a-z0-9_]+_dlc)\s*=\s*yes")
+_DLC_TRIGGER = re.compile(r"has_[a-z0-9_]+_dlc")
+_SCRIPTED = re.compile(r"(?<![\w.:@$])([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(yes|no)\b")
 
 
 def cond(value):
@@ -124,17 +125,23 @@ def simple_resources(res, part):
 
 
 def dlc(game, *blocks):
-    """DLC names (as host_has_dlc writes them) required by the blocks: host_has_dlc triggers and
-    has_<dlc>_dlc scripted triggers (resolved through common/scripted_triggers). A DLC only named
-    inside a NOT / NOR is still listed: the text of the condition tells the rest."""
+    """DLC names (as host_has_dlc writes them) named by the blocks: host_has_dlc triggers and every
+    scripted trigger of common/scripted_triggers that checks a DLC (has_lithoids, has_machine_age_dlc,
+    has_genetic_dlc...; game.dlc_triggers), set to yes or no. A DLC only named inside a NOT / NOR or
+    an OR is still listed: the text of the condition (or dlc.json's scripted_triggers) tells the rest.
+    An unknown has_<x>_dlc = yes is listed as it is."""
     found = []
+    triggers = game.dlc_triggers
     for b in blocks:
         if b is None:
             continue
         text = to_text(b) if isinstance(b, Block) else str(b)
         names = [m.strip() for m in _DLC_HOST.findall(text)]
-        for trig in _DLC_TRIGGER.findall(text):
-            names += game.dlc_triggers.get(trig) or [trig]
+        for trig, value in _SCRIPTED.findall(text):
+            if trig in triggers:
+                names += triggers[trig]
+            elif value == "yes" and _DLC_TRIGGER.fullmatch(trig):
+                names.append(trig)
         for m in names:
             if m not in found:
                 found.append(m)

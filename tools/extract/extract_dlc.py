@@ -1,7 +1,9 @@
 """DLC list, names and icons (dlc_metadata/dlc_info.txt, dlc/*/*.dlc, interface/dlc_icons.gfx) (T2519, for T3502):
 python tools/extract/extract_dlc.py [--game DIR] [--icons [DIR]]
 
-`name` is the name the game uses in host_has_dlc triggers (the `dlc` field of the other sets)."""
+`name` is the name the game uses in host_has_dlc triggers (the `dlc` field of the other sets).
+`scripted_triggers` lists every scripted trigger that checks a DLC (T2527): name → the DLCs it
+names, each negated (inside a NOT, or a nested trigger set to no) and / or alternative (inside an OR)."""
 import os
 from pdx.output import DataSet, main
 from pdx.parser import Block
@@ -53,7 +55,9 @@ def extract(game):
     for name, here in local.items():
         if name not in seen:
             warnings.append(f"{here['folder']}: {name} is not in dlc_metadata/dlc_info.txt")
-    return DataSet("dlc", ["dlc_metadata/dlc_info.txt", "dlc", "interface/dlc_icons.gfx"], items, warnings)
+    triggers = {k: [{"dlc": n, "negated": neg, "alternative": alt} for n, neg, alt in v] for k, v in game.dlc_trigger_mentions.items()}
+    return DataSet("dlc", ["dlc_metadata/dlc_info.txt", "dlc", "interface/dlc_icons.gfx", "common/scripted_triggers"], items, warnings,
+                   extra={"scripted_triggers": triggers})
 
 
 if __name__ == "__main__":

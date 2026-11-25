@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2527 — DLC of every scripted trigger (2026-11-25)
+
+- [ ] **Which triggers**: every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, plus the ones that reach it through another such trigger (`has_genetic_dlc` → `has_space_monster_dlc`, `can_embark_trigger` → `has_nomads_dlc`): 67 in the installed game, not only the `has_<x>` / `has_<x>_dlc` ones. A trigger that also checks other things (`is_disconnected_drone_pop`) still lists its DLC.
+- [ ] **Same listing rule as before**: a DLC named only inside a `NOT` / `OR` or through a trigger set to `no` (`has_megacorp_dlc = no`, before T2527 ignored) is listed in `dlc`, as `host_has_dlc` inside a `NOT` already was; `dlc.json` gains `scripted_triggers` (name → DLCs, each `negated` / `alternative`) so the Testellaris generator tells the variants apart.
+- [ ] **4.5.4 data refreshed, not re-extracted**: the installed game is now 4.6.0 (T2526, blocked), so instead of re-running the extractors (they would write `stellaris-pc-4.6.0`) the new `tools/extract/refresh_dlc.py` recomputed the `dlc` lists of `data/generated/stellaris-pc-4.5.4/` from the condition texts it already stores, with the trigger map read from the 4.6.0 `common/scripted_triggers`. Changed: 29 civics (e.g. `civic_selective_kinship` → Lithoids Species Pack), 7 origins, 26 technologies (Ancient Relics), 1 edict; then the tech tree data file, the tech bingo and the Testellaris bank (582 → 718 questions) were regenerated. The trigger → DLC map should be the same in 4.5.4, but it was not checked against 4.5.4 files.
+- [ ] **Testellaris**: the rule "skip every item with an unresolved `has_… = yes` trigger" is replaced by the trigger map; only an item with a `has_<x>_dlc` trigger the game does not define is still skipped (data without `scripted_triggers` keeps the old rule).
+
 ## T4111 — Testellaris question generator (2026-11-25)
 
 - [ ] **Tier rules** of the generator (`TESTELLARIS_GDD.md` §3.1, "Generator rules"): the higher of the template minimum (tech tier and opposite ethic 1; origin DLC, civic ethics, building technology and jobs 2; prerequisites, building upgrades and civic DLC 3; base cost 4) and the obscurity of the item (dangerous/event tech 5, rare 4, tech tier 3+ → 3; gestalt or corporate civics 3).

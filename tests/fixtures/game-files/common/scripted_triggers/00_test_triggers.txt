@@ -1,3 +1,33 @@
 has_test_dlc = {
 	host_has_dlc = "Second Test DLC"
 }
+
+# T2527: scripted triggers wrapping a DLC without the has_<name>_dlc form
+has_rocks = {
+	optimize_memory
+	host_has_dlc = "Test DLC"
+}
+
+has_any_test_dlc = {
+	OR = {
+		host_has_dlc = "Second Test DLC"
+		has_rocks = yes
+	}
+}
+
+has_not_rocks = {
+	has_rocks = no
+}
+
+is_rocky_empire = {
+	has_country_flag = rocky
+}
+
+loop_a = {
+	loop_b = yes
+	host_has_dlc = "Test DLC"
+}
+
+loop_b = {
+	loop_a = yes
+}

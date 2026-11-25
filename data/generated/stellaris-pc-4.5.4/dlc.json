@@ -5,9 +5,536 @@
  "sources": [
   "dlc_metadata/dlc_info.txt",
   "dlc",
-  "interface/dlc_icons.gfx"
+  "interface/dlc_icons.gfx",
+  "common/scripted_triggers"
  ],
  "count": 36,
+ "scripted_triggers": {
+  "has_leviathans": [
+   {
+    "dlc": "Leviathans Story Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_plantoids": [
+   {
+    "dlc": "Plantoids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_lithoids": [
+   {
+    "dlc": "Lithoids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_megacorp_dlc": [
+   {
+    "dlc": "Megacorp",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_not_megacorp_dlc": [
+   {
+    "dlc": "Megacorp",
+    "negated": true,
+    "alternative": false
+   }
+  ],
+  "has_federations_dlc": [
+   {
+    "dlc": "Federations",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_necroids": [
+   {
+    "dlc": "Necroids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_nemesis": [
+   {
+    "dlc": "Nemesis",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_aquatics": [
+   {
+    "dlc": "Aquatics Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_apocalypse_dlc": [
+   {
+    "dlc": "Apocalypse",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_space_monster_dlc": [
+   {
+    "dlc": "Leviathans Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Distant Stars Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Ancient Relics Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Aquatics Species Pack",
+    "negated": false,
+    "alternative": true
+   }
+  ],
+  "has_genetic_dlc": [
+   {
+    "dlc": "Plantoids Species Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Lithoids Species Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Leviathans Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Distant Stars Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Ancient Relics Story Pack",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Aquatics Species Pack",
+    "negated": false,
+    "alternative": true
+   }
+  ],
+  "has_overlord_dlc": [
+   {
+    "dlc": "Overlord",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_paragon_dlc": [
+   {
+    "dlc": "Galactic Paragons",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_toxoids": [
+   {
+    "dlc": "Toxoids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_first_contact_dlc": [
+   {
+    "dlc": "First Contact Story Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_astral_planes_dlc": [
+   {
+    "dlc": "Astral Planes",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_cosmic_storms_dlc": [
+   {
+    "dlc": "Cosmic Storms",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_machine_age_dlc": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_not_machine_age_dlc": [
+   {
+    "dlc": "The Machine Age",
+    "negated": true,
+    "alternative": false
+   }
+  ],
+  "has_grand_archive_dlc": [
+   {
+    "dlc": "Grand Archive",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_rick_the_cube_dlc": [
+   {
+    "dlc": "Rick The Cube Species Portrait",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_stargazer_dlc": [
+   {
+    "dlc": "Stargazer Species Portrait",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_season_10_dlc": [
+   {
+    "dlc": "Stargazer Species Portrait",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_vipra_the_vapor_dlc": [
+   {
+    "dlc": "Vipra the Vapor Species Portrait",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_biogenesis_dlc": [
+   {
+    "dlc": "BioGenesis",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_shroud_dlc": [
+   {
+    "dlc": "Shadows of the Shroud",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_shroud_dlc_not_machine_age": [
+   {
+    "dlc": "Shadows of the Shroud",
+    "negated": false,
+    "alternative": false
+   },
+   {
+    "dlc": "The Machine Age",
+    "negated": true,
+    "alternative": false
+   }
+  ],
+  "has_shroud_dlc_and_machine_age": [
+   {
+    "dlc": "Shadows of the Shroud",
+    "negated": false,
+    "alternative": false
+   },
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_infernals": [
+   {
+    "dlc": "Infernals Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_force_of_will_dlc": [
+   {
+    "dlc": "Willpower",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "is_lonely_hive_mind_pop": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "is_disconnected_drone_pop": [
+   {
+    "dlc": "BioGenesis",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_distar": [
+   {
+    "dlc": "Distant Stars Story Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_ancrel": [
+   {
+    "dlc": "Ancient Relics Story Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_mind_over_matter_anti_synergy": [
+   {
+    "dlc": "Shadows of the Shroud",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_sd_lit_robot": [
+   {
+    "dlc": "Lithoids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_sd_nec_robot": [
+   {
+    "dlc": "Necroids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_sd_aqu_robot": [
+   {
+    "dlc": "Aquatics Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_sd_tox_robot": [
+   {
+    "dlc": "Toxoids Species Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_01": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_02": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_03": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_04": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_05": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_06": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_07": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_08": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "use_robot_portrait_tma_synth_machine_09": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "biologist_is_archaeo_engineer_trigger": [
+   {
+    "dlc": "Ancient Relics Story Pack",
+    "negated": false,
+    "alternative": true
+   }
+  ],
+  "has_free_waystation_pact_with": [
+   {
+    "dlc": "Nomads",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_all_engineering_insights": [
+   {
+    "dlc": "Overlord",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "has_all_insights": [
+   {
+    "dlc": "Overlord",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "has_nemesis_or_control_fragment": [
+   {
+    "dlc": "Nemesis",
+    "negated": false,
+    "alternative": true
+   }
+  ],
+  "can_do_advanced_gene_modding": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_add_negative_organic_traits": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_remove_beneficial_genetic_traits": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_remove_presapient_genetic_traits": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_remove_overtuned_traits": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_add_or_remove_leviathan_traits": [
+   {
+    "dlc": "BioGenesis",
+    "negated": true,
+    "alternative": true
+   }
+  ],
+  "can_harvest_parts": [
+   {
+    "dlc": "The Machine Age",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "has_all_psionic_components": [
+   {
+    "dlc": "First Contact Story Pack",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "potential_shroudwalker_enclave": [
+   {
+    "dlc": "Overlord",
+    "negated": false,
+    "alternative": true
+   },
+   {
+    "dlc": "Shadows of the Shroud",
+    "negated": false,
+    "alternative": true
+   }
+  ],
+  "has_nomads_dlc": [
+   {
+    "dlc": "Nomads",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "nomad_can_settle_trigger": [
+   {
+    "dlc": "Nomads",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "can_embark_trigger": [
+   {
+    "dlc": "Nomads",
+    "negated": false,
+    "alternative": false
+   }
+  ],
+  "can_embark_no_tradition_check_trigger": [
+   {
+    "dlc": "Nomads",
+    "negated": false,
+    "alternative": false
+   }
+  ]
+ },
  "items": [
   {
    "id": "dlc001",

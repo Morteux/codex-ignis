@@ -1143,7 +1143,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origins_overtuned.dds",
@@ -1186,7 +1188,9 @@
      "description": "origin_toxic_knights_nomadic_effects"
     }
    ],
-   "dlc": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origins_toxic_knights.dds",
@@ -1476,7 +1480,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origin_here_be_dragons.dds",
@@ -1512,7 +1518,9 @@
    "starting_colony": "pc_ocean",
    "habitability_preference": "pc_ocean",
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origins_ocean_paradise.dds",
@@ -1548,7 +1556,9 @@
    "starting_colony": "pc_ocean",
    "habitability_preference": "pc_ocean",
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origins_ocean_paradise.dds",
@@ -1627,7 +1637,8 @@
    "habitability_preference": null,
    "swaps": [],
    "dlc": [
-    "Federations"
+    "Federations",
+    "Ancient Relics Story Pack"
    ],
    "icon": {
     "sprite": null,
@@ -2355,7 +2366,9 @@
    "starting_colony": null,
    "habitability_preference": null,
    "swaps": [],
-   "dlc": [],
+   "dlc": [
+    "Plantoids Species Pack"
+   ],
    "icon": {
     "sprite": null,
     "texture": "gfx/interface/icons/origins/origins_gardeners.dds",

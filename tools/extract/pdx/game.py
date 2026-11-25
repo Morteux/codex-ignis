@@ -16,6 +16,58 @@ def read_text(path):
         return f.read()
 
 
+NEGATE = ("NOT", "NOR")
+ALTERNATIVE = ("OR", "NAND")
+
+
+def condition_dlc_mentions(block, triggers):
+    """[[DLC name, negated, alternative], ...] of a condition block: its host_has_dlc and the
+    scripted triggers of `triggers` ({name: [[dlc, negated, alternative], ...]}) set to yes / no.
+    negated: inside a NOT / NOR or a trigger set to no; alternative: inside an OR / NAND (or a NOT
+    of several conditions), so the item does not need that DLC for sure."""
+    found = []
+
+    def walk(b, neg, alt):
+        for k, op, v in b.entries:
+            if k == "host_has_dlc":
+                found.append([str(v).strip(), neg, alt])
+            elif isinstance(k, str) and k in triggers and isinstance(v, bool):
+                for name, n, a in triggers[k]:
+                    found.append([name, bool(neg ^ (not v) ^ n), bool(alt or a)])
+            elif hasattr(v, "entries"):
+                walk(v, neg != (k in NEGATE), alt or k in ALTERNATIVE or (k in NEGATE and len(v.entries) > 1))
+
+    walk(block, False, False)
+    return [list(m) for m in dict.fromkeys(tuple(m) for m in found)]
+
+
+def dlc_trigger_mentions(definitions):
+    """{trigger name: block} of common/scripted_triggers → {name: DLC mentions} of the triggers
+    that check a DLC, directly or through other triggers (expanded, cycles ignored)."""
+    refs = {k: {e[0] for e in _walk_entries(b) if e[0] in definitions and isinstance(e[2], bool)} for k, b in definitions.items()}
+    direct = {k for k, b in definitions.items() if any(e[0] == "host_has_dlc" for e in _walk_entries(b))}
+    dlc_keys, changed = set(direct), True
+    while changed:
+        changed = False
+        for k, r in refs.items():
+            if k not in dlc_keys and r & dlc_keys:
+                dlc_keys.add(k)
+                changed = True
+    def resolve(k, path):
+        # no memo: a trigger met again on the path (a cycle) is skipped only on that path
+        known = {t: resolve(t, path | {t}) for t in refs[k] & dlc_keys if t not in path}
+        return condition_dlc_mentions(definitions[k], known)
+
+    return {k: resolve(k, {k}) for k in definitions if k in dlc_keys}
+
+
+def _walk_entries(block):
+    for e in block.entries:
+        yield e
+        if hasattr(e[2], "entries"):
+            yield from _walk_entries(e[2])
+
+
 class GameFiles:
     def __init__(self, root=None):
         self.root = game_dir(root)
@@ -79,14 +131,21 @@ class GameFiles:
         return self._sprites
 
     @property
+    def dlc_trigger_mentions(self):
+        """Every scripted trigger of common/scripted_triggers that checks a DLC, directly
+        (host_has_dlc) or through another such trigger (has_genetic_dlc → has_space_monster_dlc):
+        name → [[DLC name, negated, alternative], ...], nested triggers expanded."""
+        if getattr(self, "_dlc_trigger_mentions", None) is None:
+            self._dlc_trigger_mentions = dlc_trigger_mentions(
+                {k: v for _, k, v in self.folder("common/scripted_triggers") if hasattr(v, "entries")})
+        return self._dlc_trigger_mentions
+
+    @property
     def dlc_triggers(self):
-        """Scripted triggers such as has_machine_age_dlc → the DLC names of their host_has_dlc."""
+        """Scripted triggers that check a DLC (has_lithoids, has_machine_age_dlc...) → the DLC
+        names they name, negated ones included (like host_has_dlc inside a NOT)."""
         if getattr(self, "_dlc_triggers", None) is None:
-            self._dlc_triggers = {}
-            for _, key, value in self.folder("common/scripted_triggers"):
-                if re.fullmatch(r"has_\w+_dlc", key):
-                    names = re.findall(r'host_has_dlc\s*=\s*"?([^"\n}]+?)"?\s*(?:\n|}|$)', to_text(value) if hasattr(value, "entries") else str(value))
-                    self._dlc_triggers[key] = [n.strip() for n in names]
+            self._dlc_triggers = {k: list(dict.fromkeys(m[0] for m in v)) for k, v in self.dlc_trigger_mentions.items()}
         return self._dlc_triggers
 
     # -- scripted variables and inline scripts

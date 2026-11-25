@@ -23,8 +23,30 @@ class RulesTest(unittest.TestCase):
         self.assertIsNone(gq.single_dlc(either, ("playable",)))
 
     def test_unresolved_scripted_trigger_makes_an_item_unusable(self):
-        self.assertFalse(gq.condition_check({"dlc": [], "playable": "has_lithoids = yes"}, ("playable",))[0])
-        self.assertTrue(gq.condition_check({"dlc": ["Megacorp"], "playable": "has_megacorp_dlc = yes"}, ("playable",))[0])
+        """Data without the trigger map of dlc.json (before T2527): any has_… = yes may hide a DLC."""
+        saved, gq.DLC_TRIGGERS = gq.DLC_TRIGGERS, None
+        try:
+            self.assertFalse(gq.condition_check({"dlc": [], "playable": "has_lithoids = yes"}, ("playable",))[0])
+            self.assertTrue(gq.condition_check({"dlc": ["Megacorp"], "playable": "has_megacorp_dlc = yes"}, ("playable",))[0])
+        finally:
+            gq.DLC_TRIGGERS = saved
+
+    def test_scripted_dlc_triggers(self):
+        """T2527: the scripted triggers of dlc.json are expanded, negations and alternatives kept."""
+        t = {"has_lithoids": [{"dlc": "Lithoids Species Pack", "negated": False, "alternative": False}],
+             "has_not_megacorp_dlc": [{"dlc": "Megacorp", "negated": True, "alternative": False}],
+             "has_genetic_dlc": [{"dlc": "Plantoids Species Pack", "negated": False, "alternative": True},
+                                 {"dlc": "Lithoids Species Pack", "negated": False, "alternative": True}]}
+        lith = {"dlc": ["Lithoids Species Pack"], "playable": "has_lithoids = yes\nis_gestalt = no"}
+        self.assertEqual(gq.condition_check(lith, ("playable",), t), (True, ["Lithoids Species Pack"]))
+        self.assertEqual(gq.single_dlc(lith, ("playable",), t), "Lithoids Species Pack")
+        self.assertEqual(gq.condition_check({"dlc": ["Megacorp"], "playable": "has_not_megacorp_dlc = yes"}, ("playable",), t), (True, []))
+        self.assertEqual(gq.condition_check({"dlc": ["Megacorp"], "playable": "has_not_megacorp_dlc = no"}, ("playable",), t), (True, ["Megacorp"]))
+        self.assertIsNone(gq.single_dlc({"dlc": ["Lithoids Species Pack"], "playable": "NOT = { has_lithoids = yes }"}, ("playable",), t))
+        self.assertIsNone(gq.single_dlc({"dlc": ["Plantoids Species Pack", "Lithoids Species Pack"], "playable": "has_genetic_dlc = yes"}, ("playable",), t))
+        self.assertFalse(gq.condition_check({"dlc": ["has_unknown_dlc"], "playable": "has_unknown_dlc = yes"}, ("playable",), t)[0])
+        d = gq.Data(DATA)
+        self.assertEqual(gq.single_dlc(d.by_id("civics")["civic_selective_kinship"], gq.CIVIC_FIELDS), "Lithoids Species Pack")
 
     def test_ethics_rules(self):
         text = "ethics = {\n\tOR = {\n\t\ttext = x\n\t\tvalue = ethic_militarist\n\t\tvalue = ethic_fanatic_militarist\n\t}\n\tNOT = {\n\t\tvalue = ethic_fanatic_xenophile\n\t}\n}\ncivics = {\n\tNOT = {\n\t\tvalue = civic_x\n\t}\n}"

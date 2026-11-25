@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **103 / 139 tareas (74%)**
+> Progreso: **104 / 139 tareas (75%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -164,7 +164,8 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - ❓ Bloqueada: The owner has to review the T2522 reports first.
 - [ ] **T2526** (P25.26) The installed game is now 4.6.0 (Corona Borealis v4.6.0, `stellaris-pc-4.6.0`; found in T3008): every extractor run without `--game` now reads 4.6.0 (683 technologies, 4 new tech icons) while the project data is 4.5.4
   - ❓ Bloqueada: Does the project move to 4.6.0 (regenerate `data/generated/`, the reports and the tech data file as a new version) or stay on 4.5.4 (then the 4.5.4 game files must be kept in another folder and passed with `--game`)?
-- [ ] **T2527** (P25.27) DLC of every scripted trigger (found in T4111): `pdx.text.dlc()` only resolves `host_has_dlc` and `has_<name>_dlc`, so items using other scripted triggers that wrap a DLC (`has_lithoids`, `has_necroids`, `has_toxoids`, `has_infernals`, `has_ancrel`, `has_megacorp`, `has_nemesis`…) get an empty or incomplete `dlc` list (for example `civic_selective_kinship`, playable with `has_lithoids = yes`); resolve every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, with tests, and regenerate the data. Then the Testellaris generator can drop its rule of skipping every item with an unresolved `has_… = yes` trigger
+- [x] **T2527** (P25.27) DLC of every scripted trigger (found in T4111): `pdx.text.dlc()` only resolves `host_has_dlc` and `has_<name>_dlc`, so items using other scripted triggers that wrap a DLC (`has_lithoids`, `has_necroids`, `has_toxoids`, `has_infernals`, `has_ancrel`, `has_megacorp`, `has_nemesis`…) get an empty or incomplete `dlc` list (for example `civic_selective_kinship`, playable with `has_lithoids = yes`); resolve every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, with tests, and regenerate the data. Then the Testellaris generator can drop its rule of skipping every item with an unresolved `has_… = yes` trigger
+  - Prueba manual: open `data/generated/stellaris-pc-4.5.4/civics.json` and search `civic_selective_kinship`: its `dlc` is now `["Lithoids Species Pack"]`; `dlc.json` lists the 67 DLC scripted triggers in `scripted_triggers`, and `python tools/testellaris/generate_questions.py` now writes 718 questions instead of 582.
 
 ## 10 · Special planets
 Source: the 4.5.4 game files through the extractor (section 25); runs after it.

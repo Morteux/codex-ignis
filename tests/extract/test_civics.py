@@ -23,6 +23,8 @@ class Civics(unittest.TestCase):
         self.assertEqual(o["origin_second"]["icon"]["asset"], "origin_icons/origins_second.png")
         self.assertEqual(o["origin_second"]["picture"]["asset"], "origins/GFX_test_strip.png")  # named after the sprite
         self.assertIsNone(o["origin_first"]["icon"])
+        self.assertEqual(o["origin_first"]["dlc"], ["Test DLC"])  # through the has_rocks scripted trigger (T2527)
+        self.assertEqual(o["origin_second"]["dlc"], [])
         self.assertIn("origin_first: icon not found", civics.warnings)
 
 
