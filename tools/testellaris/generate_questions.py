@@ -38,6 +38,31 @@ _NEGATE = {"NOT", "NOR"}
 _ALTERNATIVE = {"OR", "NAND"}
 
 
+# Category of the templates that do not take the default of their topic (T4403, GDD §5.4,
+# question_bank.TOPIC_CATEGORY): numbers go to engineering, "what unlocks what" to physics,
+# strata and living standards to society, the DLC that adds an item to unity (history of the game).
+TEMPLATE_CATEGORY = {
+    **dict.fromkeys((
+        "tech_tier", "tech_cost", "tech_highest_cost", "tech_highest_tier", "tech_weight",
+        "blocker_time", "blocker_districts", "capital_housing", "capital_job_count",
+        "feature_district_amount", "designation_bonus", "holding_loyalty", "holding_loyalty_gain",
+    ), "engineering"),
+    **dict.fromkeys(("building_tech", "holding_technology", "ambition_technology"), "physics"),
+    **dict.fromkeys((
+        "job_stratum", "living_civic", "living_power", "living_power_most", "living_upkeep_most",
+        "edict_ethic", "edict_origin", "edict_authority", "option_ethic", "option_civic",
+    ), "society"),
+    **dict.fromkeys((
+        "civic_dlc", "origin_dlc", "tech_dlc", "edict_dlc", "content_feature", "content_modifier",
+        "patron_gift",
+    ), "unity"),
+}
+
+
+def category_of(topic, template):
+    return TEMPLATE_CATEGORY.get(template) or qb.TOPIC_CATEGORY[topic]
+
+
 def _hash(text):
     return hashlib.sha1(text.encode("utf-8")).hexdigest()
 
@@ -287,6 +312,7 @@ class Builder:
             "id": qid,
             "tier": max(1, min(5, tier)),
             "topic": topic,
+            "category": category_of(topic, template),
             "dlc": list(dict.fromkeys(dlc)),
             "source": {"file": item["file"], "key": item["id"]},
             "text": text,

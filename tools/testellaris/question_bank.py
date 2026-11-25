@@ -11,6 +11,7 @@ A bank is `data/testellaris/<rulesetId>/questions.json`:
           "id": "technology.tech_tier.tech_lasers_1",    # <topic>.<template or "hand">.<game id>
           "tier": 1,                                     # 1-5 (GDD §3.1)
           "topic": "technology",                         # one of TOPICS
+          "category": "engineering",                     # one of CATEGORIES (T4403)
           "dlc": [],                                     # host_has_dlc names (dlc.json "name"); [] = base game
           "source": {"file": "common/technology/00_phys_weapon_tech.txt", "key": "tech_lasers_1"},
           "text": {"es": "...", "en": "...", "jp": "..."},
@@ -34,6 +35,11 @@ plus "file", "key" (and "loc") of the extractor data a number or name was checke
 the data has it. Every "wiki" id has a wiki source and every wiki source a "wiki" id. When the
 local wiki copy exists, the article must be one of its files and the section one of its headings.
 
+Every question has one thematic `category` (T4403, GDD §5.4), named after the research areas of
+the game plus unity: engineering, physics, society or unity. TOPIC_CATEGORY gives the default of
+each topic; a generator template (generate_questions.TEMPLATE_CATEGORY) or a hand-written or wiki
+question may choose another one.
+
 Run `python tools/testellaris/question_bank.py [bank.json]` to validate a bank from the shell.
 """
 import json, os, re, sys
@@ -47,7 +53,20 @@ TOPICS = (
     "policies", "traditions", "shroud", "subjects", "modifiers", "species", "ships",
     "megastructures", "crises", "fallen_empires", "events", "astral", "artifacts",
 )
-FIELDS = {"id", "tier", "topic", "dlc", "source", "text", "answers", "correct", "explanation", "icon"}
+# Thematic categories (T4403, owner 2026-11-26), in the order the page shows them.
+CATEGORIES = ("engineering", "physics", "society", "unity")
+# Default category of each topic (GDD §5.4); templates and questions may override it.
+TOPIC_CATEGORY = {
+    "economy": "engineering", "policies": "engineering", "modifiers": "engineering",
+    "ships": "engineering", "megastructures": "engineering",
+    "technology": "physics", "planets": "physics", "shroud": "physics", "astral": "physics",
+    "origins": "society", "civics": "society", "ethics": "society", "government": "society",
+    "leaders": "society", "species": "society", "subjects": "society",
+    "traditions": "unity", "crises": "unity", "fallen_empires": "unity", "events": "unity",
+    "artifacts": "unity",
+}
+assert set(TOPIC_CATEGORY) == set(TOPICS) and set(TOPIC_CATEGORY.values()) <= set(CATEGORIES)
+FIELDS = {"id", "tier", "topic", "category", "dlc", "source", "text", "answers", "correct", "explanation", "icon"}
 REQUIRED = FIELDS - {"icon"}
 SOURCE_FIELDS = {"file", "key", "loc"}
 WIKI_SOURCE_FIELDS = {"kind", "article", "section"} | SOURCE_FIELDS
@@ -137,6 +156,8 @@ def validate_question(q, known_dlc=None, wiki_dir=None):
         err(f"unknown topic {topic!r}")
     elif m and m.group(1) != topic:
         err(f"id starts with {m.group(1)!r} but topic is {topic!r}")
+    if "category" in q and q["category"] not in CATEGORIES:
+        err(f"unknown category {q['category']!r} (one of {', '.join(CATEGORIES)})")
     dlc = q.get("dlc")
     if not isinstance(dlc, list) or not all(_text(d) for d in dlc):
         err("dlc must be a list of DLC names")

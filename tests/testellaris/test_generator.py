@@ -88,6 +88,18 @@ class BankFactsTest(unittest.TestCase):
         self.assertIn(hand, out)
         self.assertIn(wiki, out)
 
+    def test_categories(self):
+        """T4403: the topic gives the category, a template may override it; every template maps to a real one."""
+        self.assertEqual(gq.category_of("economy", "building_job"), "engineering")
+        self.assertEqual(gq.category_of("technology", "tech_prerequisite"), "physics")
+        self.assertEqual(gq.category_of("technology", "tech_cost"), "engineering")
+        self.assertEqual(gq.category_of("civics", "civic_dlc"), "unity")
+        self.assertLessEqual(set(gq.TEMPLATE_CATEGORY.values()), set(qb.CATEGORIES))
+        for q in self.bank["questions"]:
+            template = q["id"].split(".")[1]
+            if template not in ("hand", qb.WIKI_TEMPLATE):
+                self.assertEqual(q["category"], gq.category_of(q["topic"], template), q["id"])
+
     def test_every_template_and_tier_present(self):
         templates = {q["id"].split(".")[1] for q in self.bank["questions"]}
         self.assertTrue(BASE_TEMPLATES <= templates, templates)

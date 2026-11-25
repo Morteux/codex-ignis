@@ -347,6 +347,179 @@
   640
  ],
  "dlcQuestions": 674,
+ "categories": {
+  "engineering": {
+   "total": 901,
+   "tiers": [
+    61,
+    164,
+    153,
+    332,
+    191
+   ]
+  },
+  "physics": {
+   "total": 637,
+   "tiers": [
+    46,
+    134,
+    220,
+    121,
+    116
+   ]
+  },
+  "society": {
+   "total": 715,
+   "tiers": [
+    115,
+    187,
+    207,
+    133,
+    73
+   ]
+  },
+  "unity": {
+   "total": 278,
+   "tiers": [
+    15,
+    70,
+    103,
+    66,
+    24
+   ]
+  }
+ },
+ "categoryTolerance": 0.2,
+ "categoryBalance": [
+  {
+   "category": "engineering",
+   "tier": "all",
+   "count": 901,
+   "average": 632.8,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "unity",
+   "tier": "all",
+   "count": 278,
+   "average": 632.8,
+   "side": "below",
+   "add": 416
+  },
+  {
+   "category": "physics",
+   "tier": 1,
+   "count": 46,
+   "average": 59.2,
+   "side": "below",
+   "add": 44
+  },
+  {
+   "category": "society",
+   "tier": 1,
+   "count": 115,
+   "average": 59.2,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "unity",
+   "tier": 1,
+   "count": 15,
+   "average": 59.2,
+   "side": "below",
+   "add": 74
+  },
+  {
+   "category": "society",
+   "tier": 2,
+   "count": 187,
+   "average": 138.8,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "unity",
+   "tier": 2,
+   "count": 70,
+   "average": 138.8,
+   "side": "below",
+   "add": 66
+  },
+  {
+   "category": "physics",
+   "tier": 3,
+   "count": 220,
+   "average": 170.8,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "society",
+   "tier": 3,
+   "count": 207,
+   "average": 170.8,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "unity",
+   "tier": 3,
+   "count": 103,
+   "average": 170.8,
+   "side": "below",
+   "add": 50
+  },
+  {
+   "category": "engineering",
+   "tier": 4,
+   "count": 332,
+   "average": 163.0,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "physics",
+   "tier": 4,
+   "count": 121,
+   "average": 163.0,
+   "side": "below",
+   "add": 138
+  },
+  {
+   "category": "unity",
+   "tier": 4,
+   "count": 66,
+   "average": 163.0,
+   "side": "below",
+   "add": 192
+  },
+  {
+   "category": "engineering",
+   "tier": 5,
+   "count": 191,
+   "average": 101.0,
+   "side": "above",
+   "add": 0
+  },
+  {
+   "category": "society",
+   "tier": 5,
+   "count": 73,
+   "average": 101.0,
+   "side": "below",
+   "add": 76
+  },
+  {
+   "category": "unity",
+   "tier": 5,
+   "count": 24,
+   "average": 101.0,
+   "side": "below",
+   "add": 124
+  }
+ ],
  "wiki": {
   "count": 156,
   "tiers": {

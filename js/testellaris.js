@@ -16,7 +16,7 @@ import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
 import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX, hallOfFame, apiClient } from "./testellaris-scores.js";
 import {
-    TIERS, FEW_QUESTIONS, LIVES, LIFELINES, filterBank, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
+    TIERS, FEW_QUESTIONS, LIVES, LIFELINES, CATEGORIES, filterBank, filterCategories, categoryCounts, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
     canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
 } from "./testellaris-engine.js";
 
@@ -24,6 +24,8 @@ export const RULESET_ID = "stellaris-pc-4.5.4";
 const BANK_URL = `data/testellaris/${RULESET_ID}/questions.json`;
 /** Unchecked DLC names (so a DLC added later starts checked), GDD §4. */
 const DLC_STORAGE_KEY = "testellaris-dlc-off";
+/** Unchecked categories (T4403), remembered like the DLC filter. */
+const CATEGORY_STORAGE_KEY = "testellaris-categories-off";
 /** Ids of the questions asked in the last games (GDD §3.2). */
 const RECENT_STORAGE_KEY = "testellaris-recent";
 const ANSWER_KEYS = { 1: 0, 2: 1, 3: 2, 4: 3, a: 0, b: 1, c: 2, d: 3 };
@@ -37,6 +39,8 @@ const DLC_GROUPS = [
 
 const el = (id) => document.getElementById(id);
 const dlcGroups = el("tq-dlc-groups");
+const categoryList = el("tq-category-list");
+const categoryEl = el("tq-question-category");
 const availableEl = el("tq-available");
 const fewEl = el("tq-few");
 const startButton = el("tq-start-btn");
@@ -143,7 +147,70 @@ function saveDlcFilter() {
     writeStorage(DLC_STORAGE_KEY, dlcBoxes().filter((box) => !box.checked).map((box) => box.value));
 }
 
-/** Questions left by the filter, per tier, and the warning for the tiers with fewer than FEW_QUESTIONS. */
+// ── Start screen: categories (T4403) ────────────────────────────────────────
+
+function categoryBoxes() {
+    return [...categoryList.querySelectorAll("input[type=checkbox]")];
+}
+
+export function checkedCategories() {
+    return new Set(categoryBoxes().filter((box) => box.checked).map((box) => box.value));
+}
+
+/** One checkbox per category, with its colour, its name, what it asks and its count (renderCategories). */
+function buildCategoryFilter() {
+    const off = new Set(readStorage(CATEGORY_STORAGE_KEY, []));
+    categoryList.replaceChildren(...CATEGORIES.map((category) => {
+        const label = document.createElement("label");
+        label.className = `tq-category-item tq-category--${category}`;
+        label.dataset.category = category;
+        const box = document.createElement("input");
+        box.type = "checkbox";
+        box.value = category;
+        box.checked = !off.has(category);
+        box.setAttribute("aria-describedby", `tq-category-hint-${category}`);
+        const text = document.createElement("span");
+        text.className = "tq-category-text";
+        const name = document.createElement("span");
+        name.className = "tq-category-name";
+        const count = document.createElement("span");
+        count.className = "tq-category-count";
+        const hint = document.createElement("span");
+        hint.className = "tq-category-hint";
+        hint.id = `tq-category-hint-${category}`;
+        text.append(name, count, hint);
+        label.append(box, text);
+        return label;
+    }));
+}
+
+/** Names, hints and the questions each category has with the current DLC filter. */
+function renderCategories() {
+    const counts = bank ? categoryCounts(filterBank(bank.questions, checkedDlcs())) : null;
+    for (const label of categoryList.children) {
+        const { category } = label.dataset;
+        label.querySelector(".tq-category-name").textContent = t(lang, `tqCategory_${category}`);
+        label.querySelector(".tq-category-hint").textContent = t(lang, `tqCategoryHint_${category}`);
+        label.querySelector(".tq-category-count").textContent = counts ? format(t(lang, "tqCategoryCount"), { n: counts[category] }) : "";
+    }
+}
+
+function saveCategoryFilter() {
+    writeStorage(CATEGORY_STORAGE_KEY, categoryBoxes().filter((box) => !box.checked).map((box) => box.value));
+}
+
+function setAllCategories(checked) {
+    categoryBoxes().forEach((box) => { box.checked = checked; });
+    saveCategoryFilter();
+    renderAvailable();
+}
+
+/** The questions a game can ask: the DLC filter and the chosen categories. */
+export function playableQuestions() {
+    return filterCategories(filterBank(bank.questions, checkedDlcs()), checkedCategories());
+}
+
+/** Questions left by the filters, per tier, and the warning for the tiers with fewer than FEW_QUESTIONS. */
 function renderAvailable() {
     if (loadFailed) {
         availableEl.textContent = t(lang, "tqLoadError");
@@ -151,13 +218,15 @@ function renderAvailable() {
         startButton.disabled = true;
         return;
     }
+    renderCategories();
     if (!bank) return;
-    const counts = tierCounts(filterBank(bank.questions, checkedDlcs()));
+    const counts = tierCounts(playableQuestions());
     const total = TIERS.reduce((sum, tier) => sum + counts[tier], 0);
     availableEl.textContent = format(t(lang, "tqAvailable"), { total, tiers: TIERS.map((tier) => counts[tier]).join(" / ") });
-    const few = TIERS.filter((tier) => counts[tier] < FEW_QUESTIONS);
-    fewEl.hidden = few.length === 0;
-    fewEl.textContent = few.length ? format(t(lang, "tqFewWarning"), { tiers: few.join(", "), min: FEW_QUESTIONS }) : "";
+    const noCategory = checkedCategories().size === 0;
+    const few = noCategory ? [] : TIERS.filter((tier) => counts[tier] < FEW_QUESTIONS);
+    fewEl.hidden = few.length === 0 && !noCategory;
+    fewEl.textContent = noCategory ? t(lang, "tqCategoriesEmpty") : few.length ? format(t(lang, "tqFewWarning"), { tiers: few.join(", "), min: FEW_QUESTIONS }) : "";
     startButton.disabled = total === 0;
 }
 
@@ -226,7 +295,8 @@ const answerText = (question, bankIndex) => question.answers[lang][bankIndex];
 
 function startGame() {
     if (!bank) return;
-    game = createGame(filterBank(bank.questions, checkedDlcs()), { recent: readStorage(RECENT_STORAGE_KEY, []) });
+    if (!playableQuestions().length) return;
+    game = createGame(playableQuestions(), { recent: readStorage(RECENT_STORAGE_KEY, []) });
     game.dlcCount = checkedDlcs().size; // shown next to the score in the top 10 (GDD §4)
     endState = { offer: false, saved: null, error: null };
     el("tq-name").value = "";
@@ -302,6 +372,9 @@ function renderGame() {
     renderHud();
     questionEl.textContent = question.text[lang];
     questionEl.dataset.questionId = question.id;
+    categoryEl.className = `tq-category tq-category--${question.category}`;
+    categoryEl.dataset.category = question.category;
+    categoryEl.textContent = format(t(lang, "tqCategoryLabel"), { name: t(lang, `tqCategory_${question.category}`) });
     if (question.icon) {
         iconEl.onerror = () => { iconEl.hidden = true; };
         iconEl.src = IMAGE_BASE + question.icon;
@@ -472,6 +545,7 @@ function renderFailed(failed) {
         item.className = "tq-failed-item";
         item.dataset.questionId = entry.id;
         const lines = [
+            [`tq-category tq-category--${question.category}`, format(t(lang, "tqCategoryLabel"), { name: t(lang, `tqCategory_${question.category}`) })],
             ["tq-failed-question", question.text[lang]],
             ["tq-failed-yours", format(t(lang, "tqYourAnswer"), { answer: answerText(question, entry.chosen) })],
             ["tq-failed-right", format(t(lang, "tqRightAnswer"), { answer: answerText(question, question.correct) })],
@@ -539,7 +613,12 @@ async function loadBank() {
 
 applyPageTranslations();
 buildDlcFilter();
+buildCategoryFilter();
+renderCategories();
 dlcGroups.addEventListener("change", () => { saveDlcFilter(); renderAvailable(); });
+categoryList.addEventListener("change", () => { saveCategoryFilter(); renderAvailable(); });
+el("tq-categories-all").addEventListener("click", () => setAllCategories(true));
+el("tq-categories-none").addEventListener("click", () => setAllCategories(false));
 el("tq-dlc-all").addEventListener("click", () => setAllDlcs(true));
 el("tq-dlc-none").addEventListener("click", () => setAllDlcs(false));
 startButton.addEventListener("click", startGame);

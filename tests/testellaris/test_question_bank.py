@@ -9,6 +9,7 @@ GOOD = {
     "id": "technology.tech_tier.tech_lasers_1",
     "tier": 1,
     "topic": "technology",
+    "category": "engineering",
     "dlc": [],
     "source": {"file": "common/technology/00_phys_weapon_tech.txt", "key": "tech_lasers_1"},
     "text": {"es": "¿Pregunta?", "en": "Question?", "jp": "質問？"},
@@ -106,6 +107,13 @@ class ValidatorTest(unittest.TestCase):
     def test_localisation_codes_rejected(self):
         self.assertInvalid(bank(variant(text=dict(GOOD["text"], en="§YRed Lasers§!?"))), "localisation codes")
         self.assertInvalid(bank(variant(answers=dict(GOOD["answers"], es=["£unity£", "1", "2", "3"]))), "localisation codes")
+
+    def test_category(self):
+        """T4403: one of the four categories, required; every topic has a default category."""
+        self.assertInvalid(bank(variant(category=None)), "missing field category")
+        self.assertInvalid(bank(variant(category="military")), "unknown category")
+        self.assertEqual(set(qb.TOPIC_CATEGORY), set(qb.TOPICS))
+        self.assertEqual(qb.CATEGORIES, ("engineering", "physics", "society", "unity"))
 
     def test_unknown_field_and_count(self):
         self.assertInvalid(bank(variant(hint="x")), "unknown field hint")

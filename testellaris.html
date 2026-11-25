@@ -64,6 +64,17 @@
             <div class="tq-dlc-groups" id="tq-dlc-groups"></div>
           </fieldset>
 
+          <!-- Thematic categories (T4403, GDD §5.4), built by js/testellaris.js. -->
+          <fieldset class="tq-dlc tq-categories" id="tq-categories" aria-describedby="tq-categories-intro">
+            <legend class="tq-heading" data-i18n="tqCategoriesHeading">Categorías</legend>
+            <p class="tq-note" id="tq-categories-intro" data-i18n="tqCategoriesIntro">Solo salen preguntas de las categorías marcadas.</p>
+            <div class="tq-dlc-actions">
+              <button type="button" class="tq-btn" id="tq-categories-all" data-i18n="tqCategoriesAll">Todas</button>
+              <button type="button" class="tq-btn" id="tq-categories-none" data-i18n="tqCategoriesNone">Ninguna</button>
+            </div>
+            <div class="tq-category-list" id="tq-category-list"></div>
+          </fieldset>
+
           <p class="tq-note" id="tq-available" role="status" data-i18n="tqLoading">Cargando preguntas…</p>
           <p class="tq-warning" id="tq-few" hidden></p>
           <button type="button" class="tq-btn is-primary tq-start-btn" id="tq-start-btn" data-i18n="tqStart" disabled>Empezar</button>
@@ -92,6 +103,7 @@
             <button type="button" class="tq-lifeline" id="tq-lifeline-shield" data-lifeline="shield"></button>
           </div>
           <p class="tq-lifeline-status" id="tq-lifeline-status" role="status"></p>
+          <p class="tq-category" id="tq-question-category"></p>
           <div class="tq-question-row">
             <img class="tq-question-icon" id="tq-question-icon" alt="" width="64" height="64" hidden />
             <h2 class="tq-question" id="tq-question" tabindex="-1"></h2>

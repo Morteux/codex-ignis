@@ -66,6 +66,7 @@ async def run(t):
     jp = await pg.evaluate("()=>[document.documentElement.lang,document.querySelector('.tq-dlc-group-title').textContent,document.querySelector('#tq-available').textContent]")
     check("testellaris: the start screen follows the language (jp)", jp[0] == "ja" and jp[1] == "拡張パック" and str(len(bank)) in jp[2], jp)
     await pg.click(".lang-btn[data-lang=en]")
+    await category_checks(pg, bank)
     await engine_checks(pg)
     await game_checks(pg, {q["id"]: q for q in bank})
     await scores_checks(pg)
@@ -76,10 +77,51 @@ async def run(t):
     await mobile_checks(t, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
 
 
+# T4403: thematic categories on the start screen, remembered, and drawn evenly by the engine
+CATEGORIES_JS = """()=>[...document.querySelectorAll('#tq-category-list .tq-category-item')].map(l=>({value:l.querySelector('input').value,checked:l.querySelector('input').checked,
+  name:l.querySelector('.tq-category-name').textContent,count:l.querySelector('.tq-category-count').textContent,hint:l.querySelector('.tq-category-hint').textContent.length>20,
+  colour:getComputedStyle(l.querySelector('.tq-category-name')).color}))"""
+CATEGORY_COLOURS = {"engineering": "rgb(255, 154, 61)", "physics": "rgb(79, 141, 255)", "society": "rgb(79, 209, 122)", "unity": "rgb(242, 201, 76)"}
+EVEN_JS = """async()=>{const E=await import('./js/testellaris-engine.js');let seed=7;const rng=()=>((seed=(seed*16807)%2147483647)/2147483647);
+  const pool=[...Array.from({length:90},(_,i)=>({id:'e'+i,category:'engineering'})),...Array.from({length:10},(_,i)=>({id:'u'+i,category:'unity'}))];
+  let unity=0;for(let i=0;i<2000;i+=1)if(E.drawQuestion(pool,rng).category==='unity')unity+=1;
+  const m=await import('./js/testellaris.js');const only=m.playableQuestions();
+  return {unity,onlyUnity:only.length>0&&only.every(q=>q.category==='unity'),counts:E.categoryCounts(pool),empty:E.drawQuestion([],rng)}}"""
+
+
+async def category_checks(pg, bank):
+    counts = {c: sum(1 for q in bank if q["category"] == c) for c in CATEGORY_EN}
+    cats = await pg.evaluate(CATEGORIES_JS)
+    check("testellaris categories: four categories (Engineering, Physics, Society, Unity), all checked by default, with their colour, what they ask and their count of questions",
+          [c["value"] for c in cats] == list(CATEGORY_EN) and all(c["checked"] and c["hint"] for c in cats) and [c["name"] for c in cats] == list(CATEGORY_EN.values())
+          and [c["count"] for c in cats] == ["%d questions" % counts[c] for c in CATEGORY_EN] and [c["colour"] for c in cats] == list(CATEGORY_COLOURS.values()), cats)
+    check("testellaris categories: every question of the bank has one of the four categories", all(q["category"] in CATEGORY_EN for q in bank))
+    await pg.uncheck("#tq-category-list input[value=unity]")
+    left = await pg.evaluate("()=>document.querySelector('#tq-available').textContent")
+    check("testellaris categories: unchecking one leaves only the questions of the others", ("%d (per tier" % (len(bank) - counts["unity"])) in left, left)
+    await pg.reload()
+    await pg.wait_for_function("()=>/\\d/.test(document.querySelector('#tq-available').textContent)", timeout=15000)
+    kept = await pg.evaluate("()=>[...document.querySelectorAll('#tq-category-list input:checked')].map(b=>b.value)")
+    check("testellaris categories: the choice is remembered in localStorage", kept == ["engineering", "physics", "society"], kept)
+    await pg.click("#tq-categories-none")
+    none = await pg.evaluate("()=>[document.querySelector('#tq-start-btn').disabled,document.querySelector('#tq-few').hidden,document.querySelector('#tq-few').textContent]")
+    check("testellaris categories: None disables Start and asks for one category", none[0] and not none[1] and "at least one category" in none[2], none)
+    await pg.check("#tq-category-list input[value=unity]")
+    even = await pg.evaluate(EVEN_JS)
+    check("testellaris categories: with only Unity checked the game draws only Unity questions", even["onlyUnity"], even)
+    check("testellaris engine: the category is drawn evenly among the ones left (10 % of the pool, about half of the draws)",
+          850 < even["unity"] < 1150 and even["counts"] == {"engineering": 90, "physics": 0, "society": 0, "unity": 10} and even["empty"] is None, even)
+    await pg.click("#tq-categories-all")
+    await pg.click(".lang-btn[data-lang=jp]")
+    jp = await pg.evaluate(CATEGORIES_JS)
+    check("testellaris categories: names in jp are the game's (工学, 物理学, 社会学, 統合力)", [c["name"] for c in jp] == ["工学", "物理学", "社会学", "統合力"], jp)
+    await pg.click(".lang-btn[data-lang=en]")
+
+
 # T4207: every screen at 320 / 375 px — no sideways scroll, touch targets of 44 px (answers, lifelines, buttons, DLC boxes)
 LAYOUT_JS = """()=>{const w=document.documentElement.clientWidth;const vis=e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0};
   const over=[...document.querySelectorAll('main *')].filter(e=>vis(e)&&e.getBoundingClientRect().right>w+1).slice(0,4).map(e=>e.tagName+'.'+e.className);
-  const small=[...document.querySelectorAll('main button, main input[type=text], .tq-dlc-item')].filter(vis).filter(e=>e.getBoundingClientRect().height<44).slice(0,4).map(e=>(e.id||e.className)+' '+Math.round(e.getBoundingClientRect().height));
+  const small=[...document.querySelectorAll('main button, main input[type=text], .tq-dlc-item, .tq-category-item')].filter(vis).filter(e=>e.getBoundingClientRect().height<44).slice(0,4).map(e=>(e.id||e.className)+' '+Math.round(e.getBoundingClientRect().height));
   return {sw:document.documentElement.scrollWidth,w,over,small}}"""
 A11Y_JS = """()=>({lang:document.documentElement.lang,skip:document.querySelector('.skip-link').textContent,live:document.querySelector('#tq-announce').getAttribute('aria-live'),
   answers:[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.textContent.trim().length>1),group:document.querySelector('#tq-answers').getAttribute('aria-labelledby'),
@@ -399,6 +441,9 @@ END_JS = """()=>{const dl=[...document.querySelectorAll('#tq-end-stats > *')];co
 HUD_JS ="()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:document.querySelector('#tq-hud-number').textContent,score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
 
 
+CATEGORY_EN = {"engineering": "Engineering", "physics": "Physics", "society": "Society", "unity": "Unity"}
+
+
 def source_en(q):
     src = q["source"]
     if src.get("kind") == "wiki":
@@ -421,6 +466,10 @@ async def game_checks(pg, by_id):
     first = await pg.evaluate(POSITIONS_JS, small)
     hud = await pg.evaluate(HUD_JS)
     q1 = by_id.get(first["id"])
+    badge = await pg.evaluate("()=>{const b=document.querySelector('#tq-question-category');return [b.textContent,b.dataset.category,getComputedStyle(b).color]}")
+    if q1:
+        check("testellaris game: the question shows its category, with its name and colour (T4403)",
+              badge == ["Category: " + CATEGORY_EN[q1["category"]], q1["category"], CATEGORY_COLOURS[q1["category"]]], badge)
     if not q1:
         check("testellaris game: Start shows a question", False, (first, hud))
         return
@@ -463,12 +512,12 @@ async def game_checks(pg, by_id):
     check("testellaris game: the third wrong answer ends the game: end screen with the reason, score, tier, correct answers and no lifelines",
           end["game"] and end["end"] and end["reason"] == "You have no lives left." and end["stats"] == {"Score": "100", "Tier reached": "Tier 1 · Primitive", "Correct answers": "1 of 4", "Lifelines used": "none"}
           and end["focus"] == "tq-end-title", end)
-    expected = [[qid, by_id[qid]["text"]["en"], "Your answer: " + chosen, "Correct answer: " + by_id[qid]["answers"]["en"][by_id[qid]["correct"]], by_id[qid]["explanation"]["en"],
+    expected = [[qid, "Category: " + CATEGORY_EN[by_id[qid]["category"]], by_id[qid]["text"]["en"], "Your answer: " + chosen, "Correct answer: " + by_id[qid]["answers"]["en"][by_id[qid]["correct"]], by_id[qid]["explanation"]["en"],
                  source_en(by_id[qid])] for qid, chosen in picks]
     check("testellaris end screen: every failed question with the answer given, the correct one, the explanation and the source", end["failed"] == expected and end["none"], (end["failed"], expected))
     await pg.click(".lang-btn[data-lang=es]")
     es = await pg.evaluate(END_JS)
-    check("testellaris end screen: follows the language (es)", es["failed"][0][1] == by_id[picks[0][0]]["text"]["es"] and es["failed"][0][3].startswith("Respuesta correcta: ") and "Puntos" in es["stats"], es)
+    check("testellaris end screen: follows the language (es)", es["failed"][0][2] == by_id[picks[0][0]]["text"]["es"] and es["failed"][0][4].startswith("Respuesta correcta: ") and "Puntos" in es["stats"], es)
     await pg.click(".lang-btn[data-lang=en]")
     # Play again, then Give up through the confirmation dialog (Cancel keeps playing)
     await pg.click("#tq-play-again")

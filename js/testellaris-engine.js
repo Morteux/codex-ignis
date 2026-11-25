@@ -26,6 +26,21 @@ export function filterBank(questions, checkedDlcs) {
     return questions.filter((question) => passesFilter(question, checkedDlcs));
 }
 
+/** Thematic categories (T4403, GDD §5.4), in the order the start screen lists them. */
+export const CATEGORIES = ["engineering", "physics", "society", "unity"];
+
+/** Questions of the chosen categories only. */
+export function filterCategories(questions, chosen) {
+    return questions.filter((question) => chosen.has(question.category));
+}
+
+/** Number of questions per category, as { engineering: n, … }. */
+export function categoryCounts(questions) {
+    const counts = Object.fromEntries(CATEGORIES.map((category) => [category, 0]));
+    for (const question of questions) counts[question.category] += 1;
+    return counts;
+}
+
 /** Number of questions per tier, as { 1: n, …, 5: n }. */
 export function tierCounts(questions) {
     const counts = Object.fromEntries(TIERS.map((tier) => [tier, 0]));
@@ -71,6 +86,23 @@ export function createGame(questions, { recent = [], rng = Math.random } = {}) {
     };
 }
 
+/**
+ * One question of `pool` at random. The category is drawn first, evenly among the categories that
+ * still have a question in the pool, so a big category does not take over the game while the bank
+ * is not balanced (T4403, GDD §3.2); then a question of that category.
+ */
+export function drawQuestion(pool, rng = Math.random) {
+    const groups = new Map();
+    for (const question of pool) {
+        if (!groups.has(question.category)) groups.set(question.category, []);
+        groups.get(question.category).push(question);
+    }
+    const categories = [...groups.keys()].sort();
+    if (!categories.length) return null;
+    const group = groups.get(categories[Math.floor(rng() * categories.length)]);
+    return group[Math.floor(rng() * group.length)];
+}
+
 /** Unasked questions of a tier, the ones not asked in recent games first. */
 function candidates(game, tier) {
     const unasked = game.byTier[tier].filter((q) => !game.asked.has(q.id));
@@ -93,7 +125,7 @@ function showQuestion(game, question) {
 }
 
 /**
- * Draws the next question: a random unasked one of the current tier; when the tier has run out,
+ * Draws the next question: a random unasked one of the current tier (category first, drawQuestion); when the tier has run out,
  * the game moves up to the next tier that has questions (GDD §3.2). Returns null and ends the
  * game as completed when no tier from the current one up has any question left.
  */
@@ -107,7 +139,7 @@ export function nextQuestion(game) {
             game.correctInTier = 0;
         }
         game.maxTier = Math.max(game.maxTier, tier);
-        return showQuestion(game, pool[Math.floor(game.rng() * pool.length)]);
+        return showQuestion(game, drawQuestion(pool, game.rng));
     }
     endGame(game, "completed");
     return null;
@@ -151,7 +183,7 @@ export function useSkip(game) {
     game.skipped.push(id);
     const pool = candidates(game, tier);
     game.number -= 1; // the new question takes the number of the skipped one
-    const question = showQuestion(game, pool[Math.floor(game.rng() * pool.length)]);
+    const question = showQuestion(game, drawQuestion(pool, game.rng));
     game.current.lifeline = "skip";
     return question;
 }
@@ -192,7 +224,7 @@ export function answer(game, position) {
     } else {
         game.lives -= 1;
     }
-    game.history.push({ id: question.id, tier: question.tier, correct, chosen, points, lifeline: current.lifeline });
+    game.history.push({ id: question.id, tier: question.tier, category: question.category, correct, chosen, points, lifeline: current.lifeline });
     if (game.lives <= 0) endGame(game, "lives");
     else if (correct && game.correctInTier >= CORRECT_TO_ADVANCE && game.tier < MAX_TIER) {
         game.tier += 1;

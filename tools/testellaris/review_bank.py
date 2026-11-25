@@ -12,6 +12,9 @@ whole and reports what a player would notice:
   (comparative templates, "which of these has the most…", are left out: see COMPARATIVE);
 - balance: questions per tier and per topic, per template, position of the correct answer, share of
   DLC questions; tiers or topics far below the others are listed as warnings;
+- categories (T4403): questions per category and tier; a category further than CATEGORY_TOLERANCE
+  from the average of the four categories, in the whole bank or in a tier, is flagged, with how
+  many questions it would still need (only adding questions) to enter the target;
 - wiki questions (T4401): counted apart (per tier, per topic, with a DLC, checked against the
   extractor data) and, when the local wiki copy exists, compared with their article: an English
   text, answer or explanation that repeats COPY_WORDS words in a row of the article is reported as
@@ -38,6 +41,28 @@ COMPARATIVE = {
     "building_slowest", "job_most_output", "living_power_most", "living_upkeep_most",
     "tech_highest_cost", "tech_highest_tier",
 }
+
+# Balance of the categories (owner, T4403, GDD §5.4): each within ±20 % of the average of the four,
+# in the whole bank and in every tier.
+CATEGORY_TOLERANCE = 0.20
+
+
+def within(counts, tolerance=CATEGORY_TOLERANCE):
+    avg = sum(counts.values()) / len(counts)
+    return all(abs(v - avg) <= tolerance * avg for v in counts.values())
+
+
+def balance_needs(counts, tolerance=CATEGORY_TOLERANCE):
+    """{category: questions to add} so that every category ends within the tolerance of the
+    average, only adding questions (never removing): one at a time to the smallest category."""
+    now = dict(counts)
+    if not sum(now.values()):
+        return {c: 0 for c in now}
+    while not within(now, tolerance):
+        smallest = min(now, key=lambda c: (now[c], c))
+        now[smallest] += 1
+    return {c: now[c] - counts[c] for c in counts}
+
 
 # Words in a row shared with the wiki article that count as copied text (proposal T4401).
 COPY_WORDS = 8
@@ -141,6 +166,17 @@ def report(bank, wiki_dir=qb.WIKI_DIR):
     wiki_tiers = collections.Counter(q["tier"] for q in wiki)
     wiki_topics = collections.Counter(q["topic"] for q in wiki)
     base = collections.Counter(q["tier"] for q in questions if not q["dlc"])
+    cats = collections.Counter(q["category"] for q in questions)
+    cat_grid = collections.Counter((q["category"], q["tier"]) for q in questions)
+    balance = []
+    for scope in ("all",) + tuple(qb.TIERS):
+        counts = {c: (cats[c] if scope == "all" else cat_grid[(c, scope)]) for c in qb.CATEGORIES}
+        avg = sum(counts.values()) / len(counts)
+        needs = balance_needs(counts)
+        for c in qb.CATEGORIES:
+            if abs(counts[c] - avg) > CATEGORY_TOLERANCE * avg:
+                balance.append({"category": c, "tier": scope, "count": counts[c], "average": round(avg, 1),
+                                "side": "below" if counts[c] < avg else "above", "add": needs[c]})
     warnings = []
     for t in qb.TIERS:
         if base[t] < 25:  # a game asks 5 questions per tier; keep several games without repeats
@@ -167,6 +203,9 @@ def report(bank, wiki_dir=qb.WIKI_DIR):
         "templates": dict(sorted(templates.items())),
         "correctPosition": [positions[p] for p in range(4)],
         "dlcQuestions": dlc,
+        "categories": {c: {"total": cats[c], "tiers": [cat_grid[(c, t)] for t in qb.TIERS]} for c in qb.CATEGORIES},
+        "categoryTolerance": CATEGORY_TOLERANCE,
+        "categoryBalance": balance,
         "wiki": {
             "count": len(wiki),
             "tiers": {t: wiki_tiers[t] for t in qb.TIERS},
@@ -188,6 +227,16 @@ def print_report(r):
         print(f"{topic:<16}" + "".join(f"{v:>6}" for v in row["tiers"]) + f"{row['total']:>8}")
     print(f"{'total':<16}" + "".join(f"{r['tiers'][t]:>6}" for t in qb.TIERS) + f"{r['count']:>8}")
     print(f"{'base game':<16}" + "".join(f"{r['baseGameTiers'][t]:>6}" for t in qb.TIERS))
+    print(f"{'category':<16}" + "".join(f"{'T' + str(t):>6}" for t in qb.TIERS) + f"{'total':>8}")
+    for c, row in r["categories"].items():
+        print(f"{c:<16}" + "".join(f"{v:>6}" for v in row["tiers"]) + f"{row['total']:>8}")
+    tol = f"±{r['categoryTolerance']:.0%}"
+    if not r["categoryBalance"]:
+        print(f"categories balanced: every category within {tol} of the average, overall and in every tier")
+    for b in r["categoryBalance"]:
+        where = "overall" if b["tier"] == "all" else f"in tier {b['tier']}"
+        need = f", needs {b['add']} more" if b["add"] else ""
+        print(f"CATEGORY {b['category']} {where}: {b['count']} questions, {b['side']} {tol} of the average {b['average']}{need}")
     print("correct answer position: " + ", ".join(f"{p}: {v}" for p, v in enumerate(r["correctPosition"])))
     print(f"templates: {len(r['templates'])}")
     w = r["wiki"]

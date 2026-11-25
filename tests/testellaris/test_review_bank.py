@@ -9,7 +9,7 @@ import review_bank as rb  # noqa: E402
 
 def question(qid, answers, correct=0, text="Which of these is a thing?"):
     return {
-        "id": qid, "tier": 1, "topic": qid.split(".")[0], "dlc": [],
+        "id": qid, "tier": 1, "topic": qid.split(".")[0], "category": qb.TOPIC_CATEGORY[qid.split(".")[0]], "dlc": [],
         "source": {"file": "common/x.txt", "key": qid.split(".")[2]},
         "text": {lang: text for lang in qb.LANGS},
         "answers": {lang: list(answers) for lang in qb.LANGS},
@@ -57,7 +57,7 @@ class ReviewTest(unittest.TestCase):
     def test_report_counts(self):
         a = question("economy.hand.a", ["A", "B", "C", "D"])
         b = copy.deepcopy(a)
-        b.update(id="technology.hand.b", topic="technology", tier=5, correct=2, dlc=["Utopia"])
+        b.update(id="technology.hand.b", topic="technology", category="physics", tier=5, correct=2, dlc=["Utopia"])
         r = rb.report(bank(a, b))
         self.assertEqual(r["count"], 2)
         self.assertEqual(r["tiers"][1], 1)
@@ -67,6 +67,22 @@ class ReviewTest(unittest.TestCase):
         self.assertEqual(r["dlcQuestions"], 1)
         self.assertTrue(any("tier 2" in w for w in r["warnings"]))
         self.assertEqual(r["wiki"]["count"], 0)
+        self.assertEqual(r["categories"]["engineering"]["tiers"], [1, 0, 0, 0, 0])
+        self.assertEqual(r["categories"]["physics"]["tiers"], [0, 0, 0, 0, 1])
+
+    def test_category_balance(self):
+        """T4403: a category further than ±20 % from the average is flagged, with what it needs."""
+        self.assertTrue(rb.within({"a": 10, "b": 11, "c": 9, "d": 12}))
+        self.assertFalse(rb.within({"a": 10, "b": 10, "c": 10, "d": 2}))
+        needs = rb.balance_needs({"a": 10, "b": 10, "c": 10, "d": 2})
+        self.assertEqual(needs["a"] + needs["b"] + needs["c"], 0)
+        self.assertTrue(rb.within({"a": 10, "b": 10, "c": 10, "d": 2 + needs["d"]}))
+        self.assertFalse(rb.within({"a": 10, "b": 10, "c": 10, "d": 1 + needs["d"]}))
+        qs = [question(f"economy.hand.e{i}", ["A", "B", "C", "D"], text=f"Q{i}?") for i in range(4)]
+        qs.append(question("technology.hand.p", ["A", "B", "C", "D"], text="P?"))
+        flagged = {(b["category"], b["tier"]) for b in rb.report(bank(*qs))["categoryBalance"]}
+        self.assertIn(("engineering", "all"), flagged)
+        self.assertIn(("unity", 1), flagged)
 
     def test_wiki_questions_counted_apart(self):
         a = question("economy.hand.a", ["A", "B", "C", "D"])

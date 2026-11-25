@@ -4542,6 +4542,85 @@ body.has-tech-card .tech-areas {
     object-fit: contain;
 }
 
+/* T4403: thematic categories, with the tech tree tints for the three research areas and a unity
+   yellow (proposal, DECISIONS_TO_REVIEW.md T4403). */
+.tq-category--engineering { --tq-category-colour: #ff9a3d; --tq-category-tint: rgba(255, 154, 61, .1); }
+.tq-category--physics { --tq-category-colour: #4f8dff; --tq-category-tint: rgba(79, 141, 255, .1); }
+.tq-category--society { --tq-category-colour: #4fd17a; --tq-category-tint: rgba(79, 209, 122, .1); }
+.tq-category--unity { --tq-category-colour: #f2c94c; --tq-category-tint: rgba(242, 201, 76, .1); }
+
+.tq-category-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+    gap: .5rem;
+}
+
+.tq-category-item {
+    display: flex;
+    align-items: flex-start;
+    gap: .6rem;
+    min-height: 44px;
+    padding: .5rem .6rem;
+    border: 1px solid var(--line-soft);
+    border-left: 4px solid var(--tq-category-colour);
+    color: var(--text);
+    font: .78rem var(--mono);
+    cursor: pointer;
+}
+
+.tq-category-item:has(input:checked) {
+    background: var(--tq-category-tint);
+    border-color: var(--tq-category-colour);
+}
+
+.tq-category-item:focus-within {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+}
+
+.tq-category-item input {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    accent-color: var(--tq-category-colour);
+}
+
+.tq-category-text {
+    display: grid;
+    gap: .2rem;
+}
+
+.tq-category-name {
+    color: var(--tq-category-colour);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.tq-category-count {
+    color: var(--muted);
+}
+
+.tq-category-hint {
+    color: var(--muted);
+    font-size: .72rem;
+    line-height: 1.4;
+}
+
+p.tq-category {
+    justify-self: start;
+    margin: 0;
+    padding: .15rem .5rem;
+    border: 1px solid var(--tq-category-colour);
+    border-left-width: 4px;
+    background: var(--tq-category-tint);
+    color: var(--tq-category-colour);
+    font: 700 .72rem var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
 .tq-hud {
     display: flex;
     flex-wrap: wrap;

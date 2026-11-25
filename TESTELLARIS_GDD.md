@@ -47,7 +47,7 @@ The generator gives the tier by rule (set, field and how rare the item is: `play
 
 - A game starts at tier 1. After **5 correct answers in the current tier** the game moves up one tier; wrong answers do not count towards that.
 - Tier 5 has no ceiling: the game stays there until the lives run out or no question is left.
-- Each question is drawn at random from the unasked questions of the current tier that pass the DLC filter (§4); a question is never repeated in the same game. **(Proposal)** The ids of the last 200 questions asked are kept in `localStorage` and avoided while others remain, so that consecutive games do not repeat the same questions.
+- Each question is drawn at random from the unasked questions of the current tier that pass the DLC filter (§4) and the chosen categories (§5.4); the **category is drawn first, evenly among the chosen categories that still have a question in the tier**, then a question of that category, so a big category does not take over the game while the bank is not balanced (owner, T4403; kept after the balance, where it changes little, **proposal**); a question is never repeated in the same game. **(Proposal)** The ids of the last 200 questions asked are kept in `localStorage` and avoided while others remain, so that consecutive games do not repeat the same questions.
 - If the current tier runs out, the next question comes from the next tier up; if all the tiers from the current one up run out, the game ends as a **completed game** (§3.5).
 - The four answers are shuffled every time a question is shown.
 
@@ -93,13 +93,14 @@ No timer: the game is about knowledge, not reading speed, and a timer would need
 
 ### 5.1 Format
 
-One JSON record per question, inside a bank `{rulesetId, gameVersion, count, questions: [...]}`. The schema and its validator live in `tools/testellaris/question_bank.py` (T4101; tests in `tests/testellaris/`): every field below is required except `icon`, no other field is allowed, ids are unique, `tier` is 1–5, `topic` is one of the validator's `TOPICS`, every `dlc` name is a `name` of `dlc.json`, `source` has `file` and `key` (and optionally `loc`), or is a wiki source (`kind: "wiki"`, `article` and `section` of the local copy, optionally `file`/`key`/`loc`, only with the `wiki` template, §5.3), `text`, `explanation` and `answers` have es, en and jp, `answers` holds four distinct texts per language, `correct` is 0–3 and no text keeps a localisation code (`§`, `£`, `$var$`).
+One JSON record per question, inside a bank `{rulesetId, gameVersion, count, questions: [...]}`. The schema and its validator live in `tools/testellaris/question_bank.py` (T4101; tests in `tests/testellaris/`): every field below is required except `icon`, no other field is allowed, ids are unique, `tier` is 1–5, `topic` is one of the validator's `TOPICS`, `category` one of the four `CATEGORIES` (§5.4), every `dlc` name is a `name` of `dlc.json`, `source` has `file` and `key` (and optionally `loc`), or is a wiki source (`kind: "wiki"`, `article` and `section` of the local copy, optionally `file`/`key`/`loc`, only with the `wiki` template, §5.3), `text`, `explanation` and `answers` have es, en and jp, `answers` holds four distinct texts per language, `correct` is 0–3 and no text keeps a localisation code (`§`, `£`, `$var$`).
 
 | Field | Content |
 | --- | --- |
 | `id` | Unique, stable across regenerations: `<topic>.<template, "hand" or "wiki">.<game id or slug>` (**proposal**), so the "recently asked" list (§3.2) and bug reports survive a new version. |
 | `tier` | 1–5 (§3.1). |
 | `topic` | One of the topics of section 41: `origins`, `civics`, `ethics`, `government`, `technology`, `planets`, `economy`, `policies`, `shroud`… |
+| `category` | `engineering`, `physics`, `society` or `unity` (§5.4). |
 | `dlc` | List of DLC names (§4); empty for the base game. |
 | `source` | Game file and key (`common/governments/civics/00_civics.txt`, `civic_corvee_system`), plus the localisation key when the fact is a text. Wiki questions: `{"kind": "wiki", "article": "Ambition", "section": "Galactic Nemesis"}`, plus `file` and `key` (and `loc`) of the extractor data the fact was checked against, when it has it (§5.3). |
 | `text`, `answers`, `explanation` | es/en/jp each: the question, its four answers and a one- or two-sentence explanation. |
@@ -128,6 +129,21 @@ Owner's decision of 2026-11-26 (section 44) replaces the former rule "only the e
   - **Counted apart**: `review_bank.py` reports the wiki questions on their own (per tier, per topic, with a DLC, checked against the data) besides the totals, in `review.json` under `wiki`.
 - New topics need a new extractor first (T4110), added to `extract_all.py`.
 - When the data and what the game shows might differ (values changed by scripted effects or by other modifiers), the question is not asked.
+
+### 5.4 Categories (T4403)
+
+Owner's decision of 2026-11-26: every question belongs to one thematic **category**, named after the research areas of the game plus unity, each with its colour (the tech tree tints for the first three, a unity yellow for the last). The names are the game's own (`physics`, `society`, `engineering` and `resourceUnity` of the official localisation: Física / 物理学, Sociedad / 社会学, Ingeniería / 工学, Unidad / 統合力).
+
+| Category | Colour | What it asks |
+| --- | --- | --- |
+| Engineering | orange `#ff9a3d` | The numbers of the game: base costs and upkeep of buildings, districts and technologies, job outputs, technology tiers and research costs, ship component and megastructure figures, percentages of modifiers, policies and edicts. |
+| Physics | blue `#4f8dff` | How the galaxy and its mechanics work: which technology unlocks what and prerequisite chains, planet classes and habitability, planetary features and blockers, anomalies, astral rifts and the Shroud as mechanics, combat, FTL and sensors, how crises play out. |
+| Society | green `#4fd17a` | Species and how empires are built: species traits, ethics, authorities and governments, civics and origins (requirements and effects), factions, leaders and the council, pops, strata and living standards. |
+| Unity | yellow `#f2c94c` (**proposal**) | The empire's identity and the story of the galaxy: traditions, ascension perks and ambitions, the lore of events, precursors, fallen empires, crises and the Shroud's entities, the stories of the origins, and the history of the game itself (DLCs and their content, from the wiki). |
+
+- **Who gives it (proposal T4403):** the topic gives the default (`question_bank.TOPIC_CATEGORY`: economy, policies, modifiers, ships and megastructures → engineering; technology, planets, shroud and astral → physics; origins, civics, ethics, government, leaders, species and subjects → society; traditions, crises, fallen empires, events and artifacts → unity). A generator template may override it (`generate_questions.TEMPLATE_CATEGORY`: tiers, costs, weights, durations and amounts → engineering; "which technology a building, holding or ambition needs" → physics; strata, living standards and the ethics, origins or authorities an edict or policy needs → society; "which DLC adds…", the content of a DLC and the Shroud patrons' gifts → unity). Hand-written and wiki questions carry their own (wiki origin stories, ambitions, Shroud patrons and community history → unity; numbers → engineering).
+- **Balance rule (owner):** the four categories end with a roughly balanced number of questions, **overall and in every tier**: each category within **±20 % of the average of the four** in that scope (`review_bank.CATEGORY_TOLERANCE`). `review_bank.py` prints the category × tier table and flags every category outside the target, with how many questions it would still need to enter it **only adding questions** (one at a time to the smallest category of the scope until it is balanced; the needs of one scope assume the other categories stay as they are). The bank is balanced by adding questions to the thin categories (extractor data or wiki), never by deleting good ones from the big ones.
+- **Page:** each question shows its category (name and colour) above the text and in the failed questions; the start screen lists the four categories with their colour, what they ask and how many questions each has with the current DLC filter, all checked by default and remembered in `localStorage` (`testellaris-categories-off`), with "All" and "None"; with none checked the game cannot start.
 
 ## 6. Languages
 
@@ -162,8 +178,8 @@ The game runs in the browser, so a determined player can always forge a score; t
 
 ## 8. Page (section 42)
 
-1. **Start screen:** title, short rules, DLC filter (§4), Start button, the top 10.
-2. **Question screen:** tier and its name, question number, score, lives (3 icons with text), the three lifelines (used ones disabled), the question (and its icon), four answer buttons, Give up.
+1. **Start screen:** title, short rules, DLC filter (§4), categories (§5.4), Start button, the top 10.
+2. **Question screen:** tier and its name, question number, score, lives (3 icons with text), the three lifelines (used ones disabled), the category (§5.4), the question (and its icon), four answer buttons, Give up.
 3. **After each answer:** correct/wrong, the correct answer and the short explanation; Next button (keyboard: Enter).
 4. **End screen:** §3.5, then the name input if the score enters the top 10 (§7.1), and Play again.
 
