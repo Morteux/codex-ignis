@@ -27,6 +27,15 @@ FIELDS = {
     "deposits": [((), ("potential",))],
     "policies": [((), ("potential",)), (("options",), ("potential", "valid"))],
     "technologies": [((), ("potential",))],
+    "species_traits": [((), ("species_potential_add", "species_possible_add"))],
+    "ascension_perks": [((), ("potential", "possible"))],
+    "tradition_categories": [((), ("potential", "possible"))],
+    "traditions": [((), ("possible",))],
+    "ship_components": [((), ("potential",))],
+    "megastructures": [((), ("potential", "possible"))],
+    "menace_perks": [((), ("potential",))],
+    "fallen_empires": [((), ("possible", "weight_modifier"))],
+    "events": [((), ("trigger", "pre_triggers"))],
 }
 
 

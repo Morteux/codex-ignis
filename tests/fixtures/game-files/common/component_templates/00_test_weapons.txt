@@ -1,0 +1,25 @@
+weapon_component_template = {
+	key = "SMALL_TEST_LASER"
+	size = small
+	type = instant
+	power = -2
+	resources = {
+		category = ship_components
+		cost = { alloys = 3 }
+	}
+	prerequisites = { "tech_test" }
+	component_set = "TEST_LASER"
+	upgrades_to = "MEDIUM_TEST_LASER"
+	tags = { weapon_type_energy }
+}
+weapon_component_template = {
+	key = "MEDIUM_TEST_LASER"
+	size = medium
+	type = instant
+	potential = { host_has_dlc = "Test DLC" }
+}
+utility_component_template = {
+	key = "TEST_SHIELD"
+	size = small
+	modifier = { ship_shield_add = 10 }
+}

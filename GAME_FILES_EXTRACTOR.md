@@ -87,6 +87,14 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 | `living_standards` (+ `species_upkeep`) | `extract_living_standards.py` | `common/species_rights/living_standards`, `common/pop_categories` (trade per living standard), `common/traits` (species type upkeep) | none |
 | `economic_categories` | `extract_economic_categories.py` | `common/economic_categories` | none |
 | `dlc` | `extract_dlc.py` | `dlc/*/*.dlc`, `interface/dlc_icons.gfx` | `gfx/interface/icons/dlc` → `dlc/` (new) |
+| `species_traits` (T4110) | `extract_species_traits.py` | `common/traits` (leader traits, with a `leader_class`, left out) | `gfx/interface/icons/traits` → `species_traits/` (new) |
+| `ascension_perks` (T4110) | `extract_ascension_perks.py` | `common/ascension_perks` | `gfx/interface/icons/ascension_perks` → `ascension_perks/` (new) |
+| `tradition_categories`, `traditions` (T4110) | `extract_traditions.py` | `common/tradition_categories`, `common/traditions` | `gfx/interface/icons/traditions` → `traditions/` (new) |
+| `ship_components` (T4110) | `extract_ship_components.py` | `common/component_templates` (`*_component_template` blocks by `key`; the `*.csv` weapon stats override the `.txt` values) | the component sprite → `ship_components/` (new) |
+| `megastructures` (T4110) | `extract_megastructures.py` | `common/megastructures` (every stage) | the `portrait` sprite → `megastructures/` (new) |
+| `crisis_paths`, `crisis_levels`, `menace_perks`, `crisis_objectives` (T4110) | `extract_crises.py` | `common/crisis_paths`, `common/crisis_levels`, `common/menace_perks`, `common/crisis_objectives` | none |
+| `fallen_empires` (T4110) | `extract_fallen_empires.py` | `common/fallen_empires` (authority, ethics, civics, origin and traits of `create_country_effect`) | none |
+| `events` (T4110) | `extract_events.py` | `events/**` (every `*_event` with a window and an English title: title, descriptions, option names) | none |
 | `resources` (icons only, T2525) | `extract_economic_categories.py` | `common/strategic_resources` | `gfx/interface/icons/resources` → `resources/` |
 
 Shared inputs, read by the library for every set:

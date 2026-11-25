@@ -1,0 +1,20 @@
+trait_test_strong = {
+	cost = 2
+	category = normal
+	opposites = { "trait_test_weak" }
+	allowed_archetypes = { BIOLOGICAL LITHOID }
+	tags = { organic positive }
+	species_potential_add = { host_has_dlc = "Test DLC" }
+	modifier = {
+		pop_bonus_workforce_mult = 0.05
+	}
+}
+trait_test_weak = {
+	cost = -1
+	initial = no
+	opposites = { "trait_test_strong" }
+}
+leader_trait_test = {
+	leader_class = { scientist }
+	cost = 1
+}

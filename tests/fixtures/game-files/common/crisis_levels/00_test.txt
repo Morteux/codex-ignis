@@ -1,0 +1,8 @@
+crisis_level_test_1 = {
+	required_crisis_currency = 0
+	perks = { menp_test }
+}
+crisis_level_test_2 = {
+	required_crisis_currency = 1000
+	perks = { }
+}

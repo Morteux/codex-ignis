@@ -1,0 +1,26 @@
+namespace = test
+
+country_event = {
+	id = test.1
+	title = test.1.name
+	desc = {
+		text = test.1.desc
+		trigger = { host_has_dlc = "Test DLC" }
+	}
+	desc = test.1.desc_b
+	is_triggered_only = yes
+	trigger = { host_has_dlc = "Test DLC" }
+	option = { name = test.1.a }
+	option = { name = test.1.b }
+}
+
+country_event = {
+	id = test.2
+	title = test.1.name
+	hide_window = yes
+}
+
+ship_event = {
+	id = test.3
+	title = test.no_text
+}

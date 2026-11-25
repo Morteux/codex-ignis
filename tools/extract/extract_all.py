@@ -24,6 +24,14 @@ EXTRACTORS = {
     "economic_categories": ["economic_categories"],
     "dlc": ["dlc"],
     "living_standards": ["living_standards"],
+    "species_traits": ["species_traits"],
+    "ascension_perks": ["ascension_perks"],
+    "traditions": ["tradition_categories", "traditions"],
+    "ship_components": ["ship_components"],
+    "megastructures": ["megastructures"],
+    "crises": ["crisis_paths", "crisis_levels", "menace_perks", "crisis_objectives"],
+    "fallen_empires": ["fallen_empires"],
+    "events": ["events"],
 }
 
 

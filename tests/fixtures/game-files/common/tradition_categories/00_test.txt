@@ -1,0 +1,14 @@
+tradition_test = {
+	desc = {
+		trigger = { is_gestalt = no }
+		text = tradition_test_desc
+	}
+	tree_template = "tree_12_11"
+	adoption_bonus = "tr_test_adopt"
+	finish_bonus = "tr_test_finish"
+	traditions = {
+		"tr_test_one"
+		"tr_test_two"
+	}
+	potential = { host_has_dlc = "Test DLC" }
+}

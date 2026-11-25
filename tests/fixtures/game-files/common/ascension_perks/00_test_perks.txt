@@ -1,0 +1,6 @@
+ap_test_perk = {
+	potential = { has_test_dlc = yes }
+	possible = { num_ascension_perks > 2 }
+	modifier = { country_unity_produces_mult = 0.1 }
+	on_enabled = { set_country_flag = test_perk }
+}

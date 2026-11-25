@@ -1,0 +1,5 @@
+test_path = {
+	crisis_currency = "menace"
+	levels = { crisis_level_test_1 crisis_level_test_2 }
+	objectives = { crisobj_test }
+}

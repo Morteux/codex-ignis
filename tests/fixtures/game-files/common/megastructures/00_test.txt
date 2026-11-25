@@ -1,0 +1,15 @@
+test_mega_0 = {
+	build_time = 1800
+	resources = {
+		category = megastructures
+		cost = { unity = 5000 }
+		upkeep = { energy = 5 }
+	}
+	prerequisites = { "tech_test" }
+	potential = { has_rocks = yes }
+}
+test_mega_1 = {
+	build_time = 3600
+	upgrade_from = { test_mega_0 }
+	country_modifier = { country_physics_research_produces_mult = 0.1 }
+}

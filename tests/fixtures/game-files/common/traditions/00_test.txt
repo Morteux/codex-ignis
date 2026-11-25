@@ -1,0 +1,19 @@
+tr_test_adopt = {
+	modifier = { planet_colony_development_speed_mult = 0.25 }
+}
+tr_test_one = {
+	modifier = { country_unity_produces_mult = 0.05 }
+	tradition_swap = {
+		name = tr_test_one_hive
+		trigger = { is_hive_empire = yes }
+		modifier = { country_unity_produces_mult = 0.1 }
+	}
+}
+tr_test_two = {
+	triggered_modifier = {
+		potential = { is_nomadic = no }
+		starbases_upkeep_mult = -0.2
+	}
+}
+tr_test_finish = { }
+tr_test_orphan = { }

@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4110 — Extractors for the new Testellaris topics (2026-11-25)
+
+- [ ] **Done: the eight extractors**, one script each, in `extract_all.py` and in `refresh_dlc.py`: `species_traits`, `ascension_perks`, `tradition_categories` + `traditions`, `ship_components`, `megastructures`, `crisis_paths` + `crisis_levels` + `menace_perks` + `crisis_objectives`, `fallen_empires` and `events`. **Not done: their questions.** The 4.5.4 data sets cannot be generated because the installed game is 4.6.0, and mixing 4.6.0 data into the 4.5.4 bank would break the "never invent figures" rule. The 4.6.0 output was only checked in a temporary folder and is not committed.
+- [ ] **Species traits only**: traits with a `leader_class` (or `leader_trait`) are leader traits and are left out; a leader traits set would belong with the leaders topic (T4103).
+- [ ] **Ship components**: each component is identified by its `key` (the same component can be redefined in a later file, and the last one wins). The `*.csv` weapon stats override the `.txt` values, as the game's own note says, and `power` is taken from the CSV when it is there.
+- [ ] **Events**: only events with a window (`hide_window` not set) and an English title are kept, since a question can only quote what a player sees. Every top-level `*_event` type counts (`carrier_event`, `situation_event`, …), and subfolders of `events/` are read.
+- [ ] **Crisis paths have no localised name** (the game names them through their ascension perk); objectives use the `<id>_name` key.
+- [ ] **Fallen empires**: authority, ethics, civics and origin come from the `create_country` inside `create_country_effect`. The hive fallen empire creates its country in a scripted effect, so only its species traits and DLC are read.
+- [ ] **New StellarisAssets folders** for when the icons get exported: `species_traits/`, `ascension_perks/`, `traditions/`, `ship_components/`, `megastructures/`. No icons were exported in this task.
+
 ## T4109 — Review of the whole bank (2026-11-25)
 
 - [ ] **Review tool** `tools/testellaris/review_bank.py` writes `data/testellaris/stellaris-pc-4.5.4/review.json` (count per topic and tier, base-game count per tier, templates, position of the correct answer, DLC share, duplicates, ambiguous questions, warnings); a test keeps it current and fails on any duplicate or ambiguous question.

@@ -1,0 +1,3 @@
+crisobj_test = {
+	potential = { always = yes }
+}

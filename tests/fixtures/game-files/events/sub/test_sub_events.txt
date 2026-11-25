@@ -1,0 +1,5 @@
+namespace = test_sub
+carrier_event = {
+	id = test_sub.1
+	title = test_sub.1.name
+}

@@ -1,0 +1,26 @@
+fallen_test = {
+	graphical_culture = "fallen_empire_02"
+	initializer = "fallen_test"
+	create_country_effect = {
+		create_species = { name = random traits = random }
+		last_created_species = { modify_species = { species = this add_trait = trait_test_strong } }
+		create_country = {
+			name = random
+			type = fallen_empire
+			authority = auth_imperial
+			civics = {
+				civic = civic_test_one
+				civic = civic_test_two
+			}
+			ethos = { ethic = ethic_fanatic_test }
+			origin = "origin_fallen_empire"
+		}
+	}
+}
+fallen_scripted = {
+	possible = { host_has_dlc = "Test DLC" }
+	create_country_effect = {
+		create_species = { traits = { trait = trait_test_weak trait = random_traits } }
+		create_scripted_fallen = yes
+	}
+}

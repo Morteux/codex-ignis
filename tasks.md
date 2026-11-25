@@ -307,6 +307,7 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
 - [x] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
   - Prueba manual: run `python tools/testellaris/review_bank.py`: it prints the table of 21 topics × 5 tiers (2375 questions, base game per tier 211 / 371 / 424 / 481 / 288), "0 duplicates, 0 ambiguous" and the balance warnings, and writes `data/testellaris/stellaris-pc-4.5.4/review.json`.
 - [ ] **T4110** (P41.10) More topics to reach thousands of questions: new extractors (one script each, added to `extract_all.py`) for species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and event texts, and their questions
+  - ❓ Bloqueada: The eight extractors are done and tested (`extract_species_traits.py` … `extract_events.py`, in `extract_all.py`; on the installed 4.6.0 they give 370 traits, 50 perks, 33 trees and 234 traditions, 1506 components, 173 megastructure stages, 6 crisis paths, 6 fallen empires and 7223 events), but their questions need the data of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
 
 ## 42 · Testellaris: game page
 - [ ] **T4201** (P42.1) `testellaris.html` with the shared shell and a start screen (DLC filter), linked from the home page
