@@ -12,7 +12,9 @@ hand-written questions already in the bank (template "hand") are kept as they ar
 
 --check regenerates in memory and fails if the bank on disk differs (used by the tests).
 """
-import argparse, hashlib, json, os, random, re, sys
+import argparse, hashlib, importlib, json, os, random, re, sys
+
+sys.modules.setdefault("generate_questions", sys.modules[__name__])  # the q_* modules import this one
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -559,9 +561,57 @@ def civic_obscurity(c):
     return 2 if c.get("dlc") else 1
 
 
+def country_restricted(c):
+    """True if the item is only for country types other than the players' (`default`)."""
+    for b in _blocks(c.get("potential")) or []:
+        for k, _, v in b.entries:
+            if k != "country_type" or not isinstance(v, Block):
+                continue
+            allowed = set()
+            for kk, _, vv in v.entries:
+                if kk == "value":
+                    allowed.add(str(vv))
+                elif kk == "OR" and isinstance(vv, Block):
+                    allowed |= {str(v3) for k3, _, v3 in vv.entries if k3 == "value"}
+            if allowed and "default" not in allowed:
+                return True
+    return False
+
+
+def own_requirement(c):
+    """True if the item is only offered to an empire that already has it (granted by events)."""
+    def values(block):
+        for k, _, v in block.entries:
+            if k == "value":
+                yield str(v)
+            elif k == "OR" and isinstance(v, Block):
+                yield from values(v)
+    return any(c.get("id") in values(v) for b in _blocks(c.get("potential")) or []
+               for k, _, v in b.entries if k in ("civics", "origin") and isinstance(v, Block))
+
+
 def playable(c):
+    """True if an empire can pick the civic or origin when it is created."""
+    if own_requirement(c):
+        return False
     text = " ".join(c.get(f) or "" for f in ("playable", "potential"))
-    return "always = no" not in text and "is_country_type" not in text
+    return "always = no" not in text and "is_country_type" not in text and not country_restricted(c)
+
+
+def _words(name):
+    return {w for w in re.findall(r"\w+", name.casefold()) if len(w) >= 5}
+
+
+def gives_away(a, b):
+    """True if one name points at the other ({es, en, jp} names): one holds the other, or they
+    share a word of five letters or more (their first five, for plurals and genders)."""
+    for lang in LOC_FILES:
+        x, y = a[lang].casefold(), b[lang].casefold()
+        if x in y or y in x:
+            return True
+        if {w[:5] for w in _words(x)} & {w[:5] for w in _words(y)} and lang != "jp":
+            return True
+    return False
 
 
 def gen_civics(b):
@@ -648,18 +698,22 @@ def gen_civics(b):
 
 
 TEMPLATES = (gen_technologies, gen_buildings, gen_ethics, gen_civics)
+# One module per batch of section 41, each with `generate(builder)` and `CAPS` ({template: cap})
+MODULES = ("q_civics",)
 
 
 # ---------------------------------------------------------------- bank
 
-def capped(questions, cap):
-    """At most `cap` questions per (template, tier), chosen by the hash of their id (stable)."""
+def capped(questions, cap, caps=None):
+    """At most `cap` questions per (template, tier), or the lower cap of the template in `caps`,
+    chosen by the hash of their id (stable). `cap` 0 keeps everything."""
     groups = {}
     for q in questions:
         groups.setdefault((q["id"].split(".")[1], q["tier"]), []).append(q)
     out = []
     for key in sorted(groups):
-        out += sorted(groups[key], key=lambda q: _hash(q["id"]))[:cap] if cap else groups[key]
+        limit = min(cap, (caps or {}).get(key[0], cap))
+        out += sorted(groups[key], key=lambda q: _hash(q["id"]))[:limit] if cap else groups[key]
     return out
 
 
@@ -668,7 +722,12 @@ def generate(data_dir, existing=None, cap=CAP):
     b = Builder(d)
     for fn in TEMPLATES:
         fn(b)
-    questions = capped(b.out, cap)
+    caps = {}
+    for name in MODULES:
+        module = importlib.import_module(name)
+        module.generate(b)
+        caps.update(module.CAPS)
+    questions = capped(b.out, cap, caps)
     hand = [q for q in (existing or {}).get("questions", []) if q.get("id", "").split(".")[1:2] == ["hand"]]
     ids = {q["id"] for q in hand}
     questions = sorted(hand + [q for q in questions if q["id"] not in ids], key=lambda q: q["id"])

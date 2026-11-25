@@ -7,6 +7,8 @@ import generate_questions as gq  # noqa: E402
 import question_bank as qb  # noqa: E402
 
 DATA = f"{ROOT}/data/generated/{qb.DEFAULT_RULESET}"
+BASE_TEMPLATES = {"tech_tier", "tech_cost", "tech_prerequisite", "building_tech", "building_job", "building_upgrade",
+                  "ethic_opposite", "civic_ethic_required", "civic_ethic_forbidden", "civic_dlc", "origin_dlc"}
 
 
 class RulesTest(unittest.TestCase):
@@ -85,15 +87,20 @@ class BankFactsTest(unittest.TestCase):
 
     def test_every_template_and_tier_present(self):
         templates = {q["id"].split(".")[1] for q in self.bank["questions"]}
-        self.assertTrue({"tech_tier", "tech_cost", "tech_prerequisite", "building_tech", "building_job", "building_upgrade",
-                         "ethic_opposite", "civic_ethic_required", "civic_ethic_forbidden", "civic_dlc", "origin_dlc"} <= templates, templates)
+        self.assertTrue(BASE_TEMPLATES <= templates, templates)
         self.assertEqual({q["tier"] for q in self.bank["questions"]}, set(qb.TIERS))
 
     def test_facts_match_the_data(self):
         techs, buildings = self.d.by_id("technologies"), self.d.by_id("buildings")
         tech_by_name = {self.d.name("technologies", k)["en"]: k for k in techs if self.d.name("technologies", k)}
+        sources = {(x.get("file"), x["id"]) for s in self.d.manifest["sets"] for x in self.d.items(s)}
+        for q in self.bank["questions"]:
+            with self.subTest(q["id"]):
+                self.assertIn((q["source"]["file"], q["source"]["key"]), sources)
         for q in self.bank["questions"]:
             topic, template, key = q["id"].split(".", 2)
+            if template not in BASE_TEMPLATES:
+                continue  # the other templates have their own test file
             with self.subTest(q["id"]):
                 self.assertEqual(q["source"]["key"], key)
                 if template == "tech_tier":

@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4102 — Questions about origins and civics (2026-11-25)
+
+- [ ] **New templates** (`q_civics.py`) and tiers: "which is an origin / a civic" (1), megacorporation, hive and machine civics (3), allowed authority (2), civic that requires an ethic, incompatibilities and corporate version (3), origin ethics and starting world (2), authority + ethic combination (4), civics of non-player countries and origins not offered at empire creation (5). Each has its own cap per tier (12–25), so the two topics hold about 400 questions with those of T4111, more than the "about 150" per batch: lower the caps if the bank gets unbalanced (T4109).
+- [ ] **Incompatibilities** are proved with the rules of the game files (`rules.py`): a wrong answer is a civic that some legal player empire can take together with the other one (3 ethics points, authority, species archetype, nomadic or not). Civics that require a species class, appearance, trait, planet class or another civic are never used as wrong answers, since compatibility with them is not checked.
+- [ ] **Event-granted items** (their `potential` requires the civic or origin itself, or an origin nobody can pick, such as Diadochus) are no longer treated as pickable; "non-player" civics are the ones whose `country_type` excludes `default`.
+- [ ] **Not asked**: civic and origin modifier values (the data has no official es/en/jp names of modifiers) and description texts (the extractor only keeps the English ones), so tier 5 uses availability instead.
+- [ ] **Wording** drafts, to review (Japanese by a native speaker): "autoridad" / "統治形態" for authority.
+
 ## T2527 — DLC of every scripted trigger (2026-11-25)
 
 - [ ] **Which triggers**: every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, plus the ones that reach it through another such trigger (`has_genetic_dlc` → `has_space_monster_dlc`, `can_embark_trigger` → `has_nomads_dlc`): 67 in the installed game, not only the `has_<x>` / `has_<x>_dlc` ones. A trigger that also checks other things (`is_disconnected_drone_pop`) still lists its DLC.
