@@ -23,6 +23,26 @@ def node_json(script):
         return {"error": out.stdout[-300:] + out.stderr[-300:]}
 
 
+# The page loads its data file with a top-level await, so the load event of a navigation can come
+# before the tree is drawn: wait for the drawn state instead of a fixed delay (T3406).
+TREE_READY_JS = """([version, nodes, selected]) => {
+  const line = document.getElementById('tech-data-version');
+  if (!line || line.dataset.rulesetId !== version) return false;
+  const count = document.querySelectorAll('.tech-node').length;
+  if (nodes ? count !== nodes : !count) return false;
+  return !selected || document.querySelector('.tech-node.is-selected')?.dataset.techId === selected;
+}"""
+
+
+async def wait_for_tree(pg, version, nodes=None, selected=None, timeout=15000):
+    """Waits until the page shows `version` with its nodes drawn (and `selected` selected); on a
+    timeout it returns and lets the following check report the state it finds."""
+    try:
+        await pg.wait_for_function(TREE_READY_JS, arg=[version, nodes, selected], timeout=timeout)
+    except Exception:
+        pass
+
+
 async def run(t):
     # T3001: the fixture covers every area, kind and tier, has prerequisite chains and requirements, and no page loads it
     fx = node_json("import {TECH_DATA as d} from './%s'; const T=d.technologies;"
@@ -780,11 +800,15 @@ async def version_checks(t):
     pg.on("pageerror", lambda e: errors.append(str(e)))
     try:
         await pg.goto(base + "tech-tree.html#tech_lasers_2")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "stellaris-pc-4.5.4", 679, "tech_lasers_2")
         s3 = await pg.evaluate(state_js)
         async with pg.expect_navigation():
             await pg.select_option("#tech-version-select", "fixture")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "fixture", 38)
+        try:
+            await pg.wait_for_function("()=>document.getElementById('tech-selection-status').textContent.includes('tech_lasers_2')", timeout=5000)
+        except Exception:
+            pass
         s4 = await pg.evaluate(state_js)
         check("tech tree versions: choosing another version reloads the page with ?version= and only that data file (the fixture's 38 fake technologies), keeping the hash",
               [o[0] for o in s3["options"]] == ["fixture", "stellaris-pc-4.5.4"] and s3["selected"] == "tech_lasers_2"
@@ -796,13 +820,13 @@ async def version_checks(t):
         await pg.click(".tech-node[data-tech-id=tech_fixture_spark_counting]")
         s5 = await pg.evaluate(state_js)
         await pg.goto(base + "tech-tree.html")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "fixture", 38)
         s6 = await pg.evaluate(state_js)
         check("tech tree versions: the card shows the fixture version, and the stored choice is used when the URL names no version",
               s5["cardVersion"] == "fixture · Fixture v0.0.1" and s6["version"] == "fixture" and s6["nodes"] == 38, (s5["cardVersion"], s6["version"], s6["nodes"]))
         async with pg.expect_navigation():
             await pg.select_option("#tech-version-select", "stellaris-pc-4.5.4")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "stellaris-pc-4.5.4", 679)
         s7 = await pg.evaluate(state_js)
         check("tech tree versions: going back to the current version drops ?version= and draws the 4.5.4 data again",
               s7["search"] == "" and s7["version"] == "stellaris-pc-4.5.4" and s7["nodes"] == 679 and s7["stored"] == "stellaris-pc-4.5.4", s7["search"])
@@ -877,7 +901,7 @@ async def compare_checks(t, base, registry, errors):
     pg.on("request", lambda r: loaded.append(r.url.rsplit("/", 1)[-1]) if "tech-data" in r.url else None)
     try:
         await pg.goto(base + "tech-tree.html?version=fixture-next")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "fixture-next")
         c2 = await pg.evaluate(state_js)
         before = list(loaded)
         # (the next fixture imports the fixture itself, so the file that must not load early is the 4.5.4 one)
@@ -924,14 +948,14 @@ async def compare_checks(t, base, registry, errors):
         await pg.wait_for_timeout(300)
         async with pg.expect_navigation():
             await pg.click(".tech-compare-link[data-tech-id=tech_fixture_found_beacon]")
-        await pg.wait_for_timeout(500)
+        await wait_for_tree(pg, "fixture", 38, "tech_fixture_found_beacon")
         landed = await pg.evaluate("""()=>({search:location.search,hash:location.hash,version:document.getElementById('tech-data-version').dataset.rulesetId,
           selected:document.querySelector('.tech-node.is-selected')?.dataset.techId||null})""")
         check("tech tree compare: following a removed technology opens the older version with it selected",
               landed == {"search": "?version=fixture", "hash": "#tech_fixture_found_beacon", "version": "fixture", "selected": "tech_fixture_found_beacon"}, landed)
         await pg.set_viewport_size({"width": 320, "height": 700})
         await pg.goto(base + "tech-tree.html?version=fixture-next")
-        await pg.wait_for_timeout(400)
+        await wait_for_tree(pg, "fixture-next")
         await pg.click(".tech-compare-run")
         await pg.wait_for_timeout(400)
         small = await pg.evaluate(state_js)
