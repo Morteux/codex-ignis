@@ -31,7 +31,7 @@
     "Todo texto nuevo de la interfaz va en `js/i18n.js` con las mismas claves en es, en y jp.",
     "Si cambias la estructura, los archivos o lo que cubren las pruebas, actualiza `README.md`.",
     "La sección 14 (verificación final de datos) va siempre la última.",
-    "StellarisAssets es otro repositorio git en `C:/Users/ignis/OneDrive/Documentos/StellarisAssets` (publicado en `STELLARIS_ASSETS_BASE`): los iconos exportados van ahí, en la carpeta que ya use ese tipo; haz commit ahí con `git -C \"C:/Users/ignis/OneDrive/Documentos/StellarisAssets\"` (nunca push: el dueño hace el push) y regenera `StellarisAssetsFileTree.txt` en este proyecto.",
+    "StellarisAssets es otro repositorio git en `C:/Users/ignis/OneDrive/Documentos/StellarisAssets` (publicado en `STELLARIS_ASSETS_BASE`): los iconos exportados van ahí, en la carpeta que ya use ese tipo; haz commit ahí con `git -C \"C:/Users/ignis/OneDrive/Documentos/StellarisAssets\"` y después `git -C \"C:/Users/ignis/OneDrive/Documentos/StellarisAssets\" push`, igual que en este repositorio (si el remoto tiene commits nuevos, `pull --rebase` y vuelve a intentarlo; nunca fuerces el push) y regenera `StellarisAssetsFileTree.txt` en este proyecto.",
     "Una tarea que depende de otra anterior del mismo archivo no se bloquea por eso: el orden del archivo ya la respeta. Bloquea solo lo que necesita al dueño."
   ]
 }
