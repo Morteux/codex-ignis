@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4105 — Questions about planets and colonies (2026-11-25)
+
+- [ ] **New templates** (`q_planets.py`, topic `planets`, about 275 questions) and tiers: shared climate and "which is a blocker" (1–2); features that raise a district maximum and district jobs (2); where a feature appears, designations, specialization and capital jobs (3); blocker days and lost districts, district amounts, workforce bonuses, capital housing and job counts (4); which planet modifier can spawn on a world (5).
+- [ ] **Jobs of districts, specializations and capitals** are asked with "can provide": the right answer is a job an ordinary empire (no special civic, tradition or event) gets from it, and no wrong answer is a job it can give under any condition.
+- [ ] **Values are the base ones** of the game files (blocker days "before modifiers"); "housing" is written in plain words in es/en/jp (住居), as it is not an item of the data.
+
 ## T4104 — Questions about technology and research (2026-11-25)
 
 - [ ] **New templates** (`q_technology.py`) and tiers: starting technology (1); building, district, blocker or edict that needs a technology (2); same research area (2); technology unlocked by another (3); DLC (3); rare (4), highest base cost (4), the two prerequisites (4); dangerous, repeatable with a level limit and base draw weight (5); highest tier (2–5). About 330 new questions on top of the 400 of T4111.

@@ -76,6 +76,14 @@ class Data:
             self._sets[key] = {x["id"]: x for x in self.items(name)}
         return self._sets[key]
 
+    def label(self, set_name, item_id):
+        """{es, en, jp} names of an item used to name something in a question, even if another item
+        shares them (the variants of a job or a district), or None if missing or with codes."""
+        names = {lang: self.loc[lang].get(set_name, {}).get(item_id) for lang in LOC_FILES}
+        if not all(v and not _CODES.search(v) for v in names.values()):
+            return None
+        return {lang: v.strip() for lang, v in names.items()}
+
     def name(self, set_name, item_id):
         """{es, en, jp} official names of an item, or None if one is missing, repeated in its set
         (the question would be ambiguous) or holds formatting codes."""
@@ -702,7 +710,7 @@ def gen_civics(b):
 
 TEMPLATES = (gen_technologies, gen_buildings, gen_ethics, gen_civics)
 # One module per batch of section 41, each with `generate(builder)` and `CAPS` ({template: cap})
-MODULES = ("q_civics", "q_government", "q_technology")
+MODULES = ("q_civics", "q_government", "q_technology", "q_planets")
 
 
 # ---------------------------------------------------------------- bank
