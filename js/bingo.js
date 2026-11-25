@@ -16,6 +16,7 @@
 
 import { t } from "./i18n.js";
 import "./i18n-bingo.js";
+import "./i18n-bingo-game.js";
 import "./i18n-empire-names.js";
 import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
@@ -82,8 +83,10 @@ function buildCard(bingo, item, position) {
         card.style.gridRow = String(position[0]);
         card.style.gridColumn = String(position[1]);
     }
+    card.dataset.id = itemId(item);
     if (item.tags?.length) card.dataset.tags = item.tags.join(" ");
     if (item.dlc) card.dataset.dlc = item.dlc;
+    if (item.frame) card.dataset.frame = item.frame;
 
     const key = cardKey(bingo, item);
     const isMarked = markedState.get(key) || false;
@@ -257,6 +260,8 @@ async function buildBingoCanvas() {
     const text = readThemeColor("--text", "#e1f2df");
     const muted = readThemeColor("--muted", "#91af99");
     const accent = readThemeColor("--accent", "#a7f56a");
+    // Border of framed cells (item.frame), the colours of the tech tree kinds.
+    const frames = { rare: "#b98cff", dangerous: readThemeColor("--danger", "#ff8a7a") };
 
     // A stalled icon request (slow network, CDN that never answers) must not block the download.
     const iconsReady = Promise.all(Array.from(cards).map((card) => waitForImage(card.querySelector("img"))));
@@ -294,8 +299,9 @@ async function buildBingoCanvas() {
 
         ctx.fillStyle = surface;
         ctx.fillRect(x, y, cellWidth, cellHeight);
-        ctx.lineWidth = isMarked ? 3 : 1;
-        ctx.strokeStyle = isMarked ? accent : line;
+        const frame = frames[card.dataset.frame];
+        ctx.lineWidth = isMarked || frame ? 3 : 1;
+        ctx.strokeStyle = isMarked ? accent : frame || line;
         ctx.strokeRect(x + 1, y + 1, cellWidth - 2, cellHeight - 2);
 
         if (img && img.complete && img.naturalWidth > 0) {

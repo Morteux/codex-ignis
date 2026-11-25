@@ -40,7 +40,7 @@ async def run(t):
         await area_page.wait_for_timeout(300)
         loaded[page_name] = sorted(set(area_files))
         await area_page.close()
-    expected = {"index.html": ["i18n-common.js", "i18n-wiki.js"], "bingo.html": ["i18n-bingo.js", "i18n-common.js", "i18n-empire-names.js"],
+    expected = {"index.html": ["i18n-common.js", "i18n-wiki.js"], "bingo.html": ["i18n-bingo-game.js", "i18n-bingo.js","i18n-common.js", "i18n-empire-names.js"],
                 "planet-sim.html": ["i18n-common.js", "i18n-empire-names.js", "i18n-simulator.js"], "tech-tree.html": ["i18n-common.js", "i18n-tech-tree.js"],
                 "privacy.html": ["i18n-common.js", "i18n-legal.js"]}
     check("i18n: every page downloads only the text areas it uses", loaded == expected, loaded)

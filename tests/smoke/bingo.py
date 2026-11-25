@@ -158,6 +158,37 @@ async def run(t):
     await bingo.select_option("#bingo-type", "ethics")
     await bingo.select_option("#bingo-type", "authorities")
     check("bingo: a variant cell is marked on its own (not its base authority)", await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map((c,i)=>c.classList.contains('is-marked')?i:-1).filter(i=>i>=0)") == [10])
+    # T3501: rare and dangerous technologies bingo, generated from technologies.json
+    fresh_items, fresh_strings = (os.path.join(tempfile.gettempdir(), n) for n in ("bingo-game-items-smoke.js", "i18n-bingo-game-smoke.js"))
+    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_bingo_game_items.py"), "--out-items", fresh_items, "--out-strings", fresh_strings], capture_output=True, text=True)
+    same = build.returncode == 0 and all(open(a, encoding="utf-8").read() == open(os.path.join(ROOT, "js", b), encoding="utf-8").read()
+                                         for a, b in ((fresh_items, "bingo-game-items.js"), (fresh_strings, "i18n-bingo-game.js")))
+    for path in (fresh_items, fresh_strings):
+        if os.path.exists(path):
+            os.remove(path)
+    check("bingo: js/bingo-game-items.js and js/i18n-bingo-game.js equal a fresh build from the game data", same, build.stderr[-500:])
+    sys.path.insert(0, os.path.join(ROOT, "tools", "extract"))
+    from build_tech_data import kind as tech_kind
+    with open(os.path.join(generated, "technologies.json"), encoding="utf-8") as f:
+        game_techs = {i["id"]: tech_kind(i["flags"]) for i in json.load(f)["items"]}
+    expected = {i: k for i, k in game_techs.items() if k in ("rare", "dangerous")}
+    with open(os.path.join(generated, "localisation", "english.json"), encoding="utf-8") as f:
+        tech_names = json.load(f)["sets"]["technologies"]
+    tree_techs = set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if l.strip(" │├└─\n").startswith("tech_"))
+    await bingo.select_option("#bingo-type", "technologies")
+    techs = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>({id:c.dataset.id,name:c.getAttribute('aria-label'),frame:c.dataset.frame,img:c.querySelector('img').src.split('/').pop(),border:getComputedStyle(c).borderTopColor,tags:c.dataset.tags}))")
+    ids = [c["id"] for c in techs]  # two technologies may share an icon (tech_mega_assembly.png)
+    check("bingo: technologies bingo has every rare and dangerous technology of technologies.json, once, rare first",
+          sorted(ids) == sorted(expected) and len(set(ids)) == len(ids) and [c["frame"] for c in techs] == sorted((c["frame"] for c in techs), key=["rare", "dangerous"].index)
+          and all(c["frame"] == expected.get(i) and c["tags"].startswith(c["frame"]) for c, i in zip(techs, ids)), (len(techs), len(expected)))
+    check("bingo: technology cells use the official names and the technologies/ icons of StellarisAssets",
+          all(c["name"] == tech_names.get(i) for c, i in zip(techs, ids)) and all(c["img"] in tree_techs for c in techs), [(c["name"], c["img"]) for c, i in zip(techs, ids) if c["name"] != tech_names.get(i) or c["img"] not in tree_techs][:5])
+    borders = {c["frame"]: c["border"] for c in techs}
+    check("bingo: rare technologies have a purple frame and dangerous ones a red frame", borders.get("rare") == "rgb(185, 140, 255)" and borders.get("dangerous") == "rgb(255, 138, 122)", borders)
+    await bingo.click("#bingo-grid .bingo-card[data-frame=dangerous]")
+    got = await download_png(bingo, "PNG download of the technologies bingo (12 columns)")
+    if got:
+        check("bingo: PNG download of the technologies bingo (12 columns)", got[0][:8] == PNG_SIGNATURE and png_width(got[0]) == (24 * 2 + 12 * 150) * 2 and got[1] == "bingo-tecnologias-stellaris.png" and not got[2], (got[1], png_width(got[0])))
     # P24.1: a "shape" bingo with an item without image (test-only entry added to BINGOS)
     await bingo.evaluate("async()=>{const m=await import('./js/bingo-data.js');m.BINGOS.push({id:'smokeShape',titleKey:'bingoTypeOrigins',fileSlug:'smoke',iconSize:70,showNames:false,layout:{type:'shape',rows:3,columns:3,cells:{originDefault:[1,1],originRemnants:[2,2],originTree:[3,3]}},items:[{img:'origins/GFX_origin_remnants.png',i18nKey:'originRemnants'},{img:null,i18nKey:'originTree'},{img:'origins/GFX_origin_scion.png',i18nKey:'originScion'}]})}")
     await bingo.click(".lang-btn[data-lang=es]")

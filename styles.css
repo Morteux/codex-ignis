@@ -1049,6 +1049,17 @@ h1 {
     filter: none;
 }
 
+/* Framed cells (item.frame of js/bingo-data.js): rare (purple) and dangerous (red) technologies,
+   the colours of the tech tree kinds. The frame stays when the cell is marked. */
+.bingo-card[data-frame="rare"] { --bingo-frame: #b98cff; }
+.bingo-card[data-frame="dangerous"] { --bingo-frame: var(--danger); }
+.bingo-card[data-frame] {
+    border: 2px solid var(--bingo-frame);
+}
+.bingo-card[data-frame].is-marked {
+    box-shadow: inset 0 0 0 2px var(--accent);
+}
+
 /* Item without icon (img: null): an empty slot of the same size as an icon. */
 .bingo-card-slot {
     display: block;

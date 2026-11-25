@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3501 — Rare and dangerous technologies bingo (2026-11-25)
+
+- [ ] **Which technologies**: the 166 technologies of `technologies.json` (4.5.4) that the tech tree draws as rare or dangerous (`build_tech_data.kind`: a dangerous flag wins over rare), including event, story-pack and ascension ones. Order: rare first, then dangerous, each by area (physics, society, engineering), tier and English name.
+- [ ] **Icons**: T3008 is already done, so every cell points at its `technologies/` icon (none is `null`); an icon that does not load keeps the empty slot of its cell with the name. Two technologies share `tech_mega_assembly.png` (Robotic Assembly Systems and the robot assembly complex); both stay as cells.
+- [ ] **Frame**: purple `#b98cff` (rare) and the red `--danger` (dangerous), the colours of the tech tree kinds, 2 px on screen and 3 px in the PNG; a marked cell keeps its frame and adds the green inner line. 70 px cells, names as tooltip only, 12 columns in the PNG.
+- [ ] **Texts**: the 166 official names (es/en/jp, extractor localisation) go to a generated module `js/i18n-bingo-game.js` instead of `js/i18n.js`, like the other generated data. Title and description (`bingoTypeTechnologies`, `bingoTechnologiesDescription` of `js/i18n-bingo.js`) are **drafts**.
+
 ## T2406 — Dictatorial Alignment by ruler class (2026-11-25)
 
 - [ ] **Five cells**: the 4 icons (`_official`, `_commander`, `_scientist`, `_vacant`) are added after the old generic `Auth_cyber_dictatorial_collectivist.png` cell, which stays because the bingo has one cell per icon of `authorities/` (79 cells now). Alternative: drop the generic cell (it has no game texture in 4.5.4, see T2405) and keep 78.
