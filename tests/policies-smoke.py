@@ -21,7 +21,7 @@ from smoke.common import URL, failures, sim_helpers  # noqa: E402
 
 AREAS = [
     "sim_economy", "sim_edicts", "sim_living_standards", "sim_bodies", "sim_features", "sim_branches_swaps", "sim_wilderness", "sim_scenarios",
-    "sim_ui", "i18n", "localisation", "sim_icons_mobile", "wiki", "bingo", "legal", "tech_tree", "site", "extractor", "testellaris", "testellaris_page", "hall_of_fame_api",
+    "sim_build_time", "sim_ui", "i18n", "localisation", "sim_icons_mobile", "wiki", "bingo", "legal", "tech_tree", "site", "extractor", "testellaris", "testellaris_page", "hall_of_fame_api",
 ]
 
 

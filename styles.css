@@ -2460,6 +2460,90 @@ h1 {
     font: 700 .82rem var(--mono);
 }
 
+/* T2601: total build time of the planet, with its breakdown in a drop-down panel. */
+.planet-build-time {
+    position: relative;
+}
+
+.planet-build-time-summary {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+}
+
+.planet-build-time-summary::-webkit-details-marker {
+    display: none;
+}
+
+.planet-build-time-panel {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + .4rem);
+    left: 0;
+    width: min(26rem, 90vw);
+    padding: .7rem .9rem;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--text);
+    font-size: .8rem;
+}
+
+.planet-build-time:not([open]) .planet-build-time-panel {
+    display: none;
+}
+
+.planet-build-time-list li > span:first-child {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+    .planet-build-time-panel {
+        position: fixed;
+        top: auto;
+        left: .5rem;
+        right: .5rem;
+        width: auto;
+    }
+}
+
+.planet-build-time-heading {
+    margin: 0 0 .5rem;
+    font-size: .85rem;
+    color: var(--accent);
+}
+
+.planet-build-time-list {
+    margin: 0 0 .5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.planet-build-time-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .15rem 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+
+.planet-build-time-days {
+    font-family: var(--mono);
+    white-space: nowrap;
+}
+
+.planet-build-time-panel p,
+.planet-build-time-speed {
+    margin: .4rem 0 0;
+}
+
+.planet-build-time-missing,
+.planet-build-time-note,
+.planet-build-time-source {
+    opacity: .85;
+}
+
 .planet-summary-name-input {
     padding: .3rem .4rem;
     border: 1px solid var(--line);

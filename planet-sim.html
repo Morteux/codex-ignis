@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles.css" />
     <!-- Modules the browser would only find after two levels of imports (P23.8); tests/load-budget.mjs checks they are in the page's graph -->
     <link rel="modulepreload" href="js/building-requirements.js" />
+    <link rel="modulepreload" href="js/build-time-data.js" />
+    <link rel="modulepreload" href="js/planet-sim-build-time.js" />
     <link rel="modulepreload" href="js/civic-rules.js" />
     <link rel="modulepreload" href="js/ethic-wheel.js" />
     <link rel="modulepreload" href="js/branch-office-data.js" />
@@ -89,6 +91,13 @@
         </div>
         <div class="planet-summary-item">
           <img class="ui-icon" src="img/ui/Pop_job.png" alt="" /><span class="planet-summary-value" id="planet-summary-population">—</span>
+        </div>
+        <div class="planet-summary-item">
+          <!-- T2601: total build time of the planet; the panel holds its breakdown (js/planet-sim-build-time.js). -->
+          <details class="planet-build-time" id="planet-build-time">
+            <summary class="planet-build-time-summary" id="planet-build-time-summary"><img class="ui-icon" id="planet-build-time-icon" src="" alt="" /><span class="planet-summary-value" id="planet-build-time-total">—</span></summary>
+            <div class="planet-build-time-panel" id="planet-build-time-panel"></div>
+          </details>
         </div>
         <div class="planet-summary-item planet-summary-item-end">
           <select id="planet-summary-empire" class="planet-empire-select"></select>

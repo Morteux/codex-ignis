@@ -52,6 +52,7 @@ import { applyPageTranslations } from "./page-shell.js";
 import { updatePlanetState } from "./planet-state.js";
 import { renderDepositFeatures, renderBlockers, renderPlanetModifiers } from "./planet-sim-body-tab.js";
 import { renderBranchTab } from "./planet-sim-branch-tab.js";
+import { renderBuildTime } from "./planet-sim-build-time.js";
 import { renderConditions, renderModifiers } from "./planet-sim-conditions-ui.js";
 import { computeTotals } from "./planet-sim-economy.js";
 import { syncPlanetSize, renderSlots, renderDesignationSelect } from "./planet-sim-planet-ui.js";
@@ -84,6 +85,7 @@ export function refresh() {
   renderBlockers();
   renderPlanetModifiers();
   renderBranchTab(totals);
+  renderBuildTime();
   updatePlanetState({ planetSize: sim.planetSize });
 }
 

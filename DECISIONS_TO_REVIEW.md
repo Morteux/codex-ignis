@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2601 — Total build time of the planet (2026-11-27)
+
+- **Sequential total only.** The game builds a planet's buildings, districts and zones in one queue whose base "Build Queue Capacity" is engine-coded (not in the game files; only bonuses such as Wilderness +5 are), and a web search found no reliable figure, so the panel shows everything one after another and says the parallel time is not computed. If the owner knows the base capacity (and how a queue of capacity N splits the work), the parallel time can be added.
+- **No build speed applied.** The simulator models no build speed modifier and the files do not say how the engine applies `planet_building_build_speed_mult` (divide by 1 + speed, or multiply by 1 − speed) nor whether "Infrastructure Build Speed" also covers districts and zones. The current civics, origin and designation that have one are listed in the panel, not applied.
+- **What counts:** capital tiers up to the current one (each tier = one upgrade; tier I has no time in the data and is listed as left out), active buildings with the earlier tiers of an upgrade chain (an Alloy Nano-Plant counts Foundry + Mega-Forge + Nano-Plant), every district copy, every chosen specialization once. Branch office buildings (another empire builds them) and blocker clearing are left out.
+- **Placement:** in the fixed planet summary (visible on every tab) as icon + "days (years)" that opens a breakdown panel; years shown to one decimal there and as "X years and Y days" in the panel and tooltip. The icon is `mod_planet_building_time_mult` from StellarisAssets (T2602 may pick another).
+- **Matching:** districts of the simulator are mapped to game districts by a hand-kept table in `tools/extract/build_build_times.py` (City / Hive / Nexus by authority, Arcology / Ring World / Hive / Nexus secondary sets 1–3, Habitat, Volcanic, Synaptic Lathe, Wilderness); `paradise_domes` and `habitat_administration` have no game match and are left out.
+
 ## T3701 — Tech tree field labels while zoomed (2026-11-26)
 
 - **Fix taken: the column stays stuck at every zoom** (not the fallback of freezing it). Cause: the zoom scales the stack with a CSS transform, and the browser applies the sticky shift before the scale, so the labels moved `zoom` times as fast as the scroll. At 100 % they keep `position: sticky`; at any other zoom they (with the grid corners and the area headings, which had the same bug) switch to `position: relative` and `js/tech-tree-zoom.js` sets their `left` to `scrollLeft / zoom` on every scroll, clamped to their parent box like sticky.

@@ -146,6 +146,10 @@ The exact folders of the "…" icon rows are confirmed by the task of each set (
 - Compared: job outputs (produces minus upkeep, research as `physics` / `society` / `engineering`, job amenities divided by 100), building and district jobs, cost, build time, upkeep and housing, ethic cost, edict cost and upkeep, the name and the icon (same folder only). Game values under a condition are shown as `(conditional: ...)` and a simulator value equal to one of them is not a difference.
 - Sets the simulator does not model (`zones`, `zone_slots`, `static_modifiers`, `economic_categories`, `dlc`) only appear in the summary.
 
+## 6c. Build times of the simulator (T2601)
+
+`python tools/extract/build_build_times.py [--data DIR] [--simulator FILE] [--check]` writes `js/build-time-data.js`: the `base_buildtime` of every simulator building and capital (T2522 matching, with the `upgrades` chain of each building), district (hand-kept table simulator district → game district in the script) and specialization (zones matched by icon), plus the civics, origins and designations of the simulator whose game modifier changes the build speed or the Build Queue Capacity. Items with no game time stay `null` and the script prints them. See `PLANET_SIM_GDD.md` §6.2.
+
 ## 7. What stays unmodelled
 
 - Triggers and effects (`potential`, `allow`, `possible`, `destroy_trigger`, `on_built`, `triggered_*_modifier` conditions, `weight_modifier` / `ai_weight` modifiers, `convert_to`...): kept as Paradox text, never evaluated. The site keeps deciding what applies with its own rules.
