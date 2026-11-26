@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **131 / 150 tareas (87%)**
+> Progreso: **131 / 159 tareas (82%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -371,6 +371,34 @@ Owner's decision of 2026-11-26: besides the extractor output, Testellaris may al
 - [ ] **T4405** (P44.5) Balance the Physics category (GDD §5.4): first classification 637 questions; outside the target in tier 1 (46 against an average of 59: about **+44**) and tier 4 (121 against 163: about **+138**). Sources: wiki articles on planet classes and habitability, celestial objects, anomalies, astral rifts, combat, FTL and sensors, crises as mechanics (tier 1: first-game facts); extractor data of planet classes, ship components and megastructures for "what unlocks what" templates (tier 4: rarer technologies' unlocks and prerequisite chains). Re-run `review_bank.py` after each batch
   - Modelo: sonnet
 - [ ] **T4406** (P44.6) Balance the Society category (GDD §5.4): first classification 715 questions; outside the target only in tier 5 (73 against an average of 101: about **+76**). Sources: obscure species traits, non-playable or event civics and authorities, factions, council positions, leader traits and their requirements (extractor species traits from T4110, wiki Leaders, Factions, Species traits). Re-run `review_bank.py` after each batch
+  - Modelo: sonnet
+
+## 37 · Tech tree: zoom fixes (owner, 2026-11-26)
+- [ ] **T3701** (P37.1) Field label column (the left bar with the field names of each area) when zoomed: zoomed in and scrolled sideways it comes off the left edge and floats in the middle of the panel following the scrollbar; zoomed out it comes off and slides to the left, hiding little by little. It must stay stuck to the left edge of the tree window at every zoom level, aligned with its rows. If there is no workable fix, at any zoom other than 100 % the column simply stays where it is and does not move (record which one in `DECISIONS_TO_REVIEW.md`). Check zoom in, zoom out, horizontal and vertical scroll, Ctrl + wheel, pinch on mobile and the rows layout of T3601; smoke tests in `tests/smoke/tech_tree.py`
+
+## 26 · Planet simulator: build time and icons (owner, 2026-11-26)
+- [ ] **T2601** (P26.1) Total build time of the planet: how many days (and years, 360 days a year) it would take to build everything the planet has (buildings, districts and anything else with a build time in the simulator), from `base_buildtime` and the district build times of the 4.5.4 extractor data. First find out from the game files (and the wiki if needed) how construction works: whether buildings and districts share one queue or have their own, and the build speed modifiers the simulator already models (empire, civics, policies, edicts…); show the total and its breakdown where it fits best (e.g. the planet summary), es/en/jp, GDD and smoke tests. Never invent a figure: anything not in the data is left out and said so
+- [ ] **T2602** (P26.2) Icon review of the planet simulator (and later of the other pages): there is too much text where the game has an icon for the same concept. List every concept shown as text in `planet-sim.html` that has an in-game icon (resource upkeep, resource bonus, resource efficiency/production modifiers, pop upkeep, stability, amenities, housing, crime, jobs and strata, build time, districts, zones…), find each icon in the game files (`interface/*.gfx`, `gfx/interface/`), export the missing ones to StellarisAssets with the extractor (commit and push there, regenerate `StellarisAssetsFileTree.txt`) and write the list (concept → icon → where it is used) in `PLANET_SIM_GDD.md` or a new `ICONS.md`; then add a task per page area that still needs them
+- [ ] **T2603** (P26.3) Net resource drop-downs with icons: in each resource's net breakdown, show upkeep, bonuses, efficiency and pop upkeep with their game icons (from T2602) instead of words, keeping the text as tooltip / screen-reader name. The explanation in brackets repeated in every resource's drop-down is written once, in the info panel of resource production (grouped legend of the icons and what each line means). es/en/jp, smoke tests
+- [ ] **T2604** (P26.4) Apply the icons of T2602 to the rest of the planet simulator (tabs, summaries, catalogue, modifiers, tooltips) and to the other pages that show those concepts as text without an icon (wiki, tech tree card, Testellaris, bingo), keeping text as tooltip / accessible name; add tasks for anything too big for one
+
+## 45 · Testellaris: question screen redesign (owner, 2026-11-26)
+- [ ] **T4501** (P45.1) Question screen layout:
+  - The panel background is tinted with the colour of the question's category (besides its name).
+  - The four answers in a 2 × 2 grid (today a row of 3 and a row of 1), also on mobile when it fits.
+  - When the question has an image, its text is vertically centred with the image (today it sticks to the image's top edge).
+  - Top bar: the lives stuck to the right end of the bar; question number and score centred and a little bigger.
+  - Lives: only the 3 heart icons, no text; losing a life only changes its icon, as now (keep an accessible name such as "2 lives left").
+  - Score and current question: only the numbers, each with an icon (from the game: e.g. a score/unity or research icon, chosen in T2602 style; proposals in `DECISIONS_TO_REVIEW.md`).
+  - es/en/jp, GDD §6 (question screen), smoke tests
+- [ ] **T4502** (P45.2) Four lifelines, one per category, each in its category colour and with the icon of the technology (or tradition for Unity) it is named after, from the game files (export to StellarisAssets if missing). Same effects as now, new names (official es/en/jp names of the game):
+  - Engineering: **World Cracker** (the colossus weapon technology) — removes two wrong answers (replaces Sensor Sweep).
+  - Society: **Galactic Administration** — replaces the question with another of the same tier (replaces Hyperlane Jump).
+  - Physics: **Deflector Shields** — second chance, as now.
+  - Unity: a tradition or other unity concept with its image (choose one fitting, e.g. a tradition about adaptability or renewal) — gives back one of the lifelines already spent, at random (disabled while none is spent; it cannot give itself back).
+  - Check which category each of today's lifelines belongs to and adjust if a name fits another category better; rules in GDD §3.4, score and hall of fame plausibility check (T4302) updated if the number of lifelines changes anything; es/en/jp, smoke tests
+- [ ] **T4503** (P45.3) Readable source of a question: instead of "Source: common/deposits/12_wilderness_deposits.txt · d_wilderness_generator_2", an explanatory sentence ("Taken from the game files of Stellaris 4.5.4", "Taken from the Stellaris Wiki (4.5.2), article …") and then, smaller or in a detail line, the exact file with its path and key. es/en/jp, smoke tests
+- [ ] **T4504** (P45.4) Unity category colour: change it from yellow to the light sky blue unity has in game (take the exact colour from the game files, e.g. the unity resource colour of `interface/` or `common/`, and record the source); update GDD §5.4, the start screen, the question panel tint of T4501 and the lifeline of T4502
   - Modelo: sonnet
 
 ## 15 · Official localization (all at once, before the final check)
