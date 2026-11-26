@@ -5,7 +5,9 @@
 
 import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
-import { JOBS, JOB_STRATA, STRATUM_I18N_KEYS, HEADER_ICONS, EFFECT_SCALE } from "./planet-data.js";
+import { JOBS, JOB_STRATA, STRATUM_I18N_KEYS, EFFECT_SCALE } from "./planet-data.js";
+import { ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
+import { conceptIcon, conceptIconUrl, stratumConcept } from "./concept-icons.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { BLOCKERS } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
@@ -37,10 +39,21 @@ const netEl = document.querySelector("#planet-production-net");
 
 const districtsUsedLabel = document.querySelector("#planet-districts-used-label");
 
-// Iconos de cabecera (vivienda/servicios): estáticos, no dependen del
-// idioma ni del estado, así que se fijan una única vez al cargar.
-if (statHousingIcon) statHousingIcon.src = "img/ui/Housing.png";
-if (statAmenitiesIcon) statAmenitiesIcon.src = `${IMAGE_BASE}${HEADER_ICONS.amenities}`;
+/** T2605: gestalt empires (no happiness) use the gestalt amenities and stratum sprites. */
+function isGestaltEmpire() {
+  return ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id);
+}
+
+// T2605: header housing / amenities game text icons (ICONS.md); the visible short label is the accessible name.
+function syncHeaderIcons() {
+  const gestalt = isGestaltEmpire();
+  if (statHousingIcon) { statHousingIcon.src = conceptIconUrl("housing"); statHousingIcon.dataset.concept = "housing"; }
+  if (statAmenitiesIcon) {
+    statAmenitiesIcon.src = conceptIconUrl("amenities", { gestalt });
+    statAmenitiesIcon.dataset.concept = gestalt ? "amenitiesGestalt" : "amenities";
+  }
+}
+syncHeaderIcons();
 
 export function renderSummary(totals) {
   if (!summaryEl) return;
@@ -60,10 +73,17 @@ export function renderSummary(totals) {
   }
 
   // Los empleos se agrupan por estrato (ver JOB_STRATA en planet-data.js).
+  // T2605: each stratum heading starts with its game pop category icon (gestalt: drone categories); the text stays.
+  const gestalt = isGestaltEmpire();
   JOB_STRATA.forEach((stratum) => {
     const heading = document.createElement("h3");
     heading.className = "planet-stratum-heading";
-    heading.textContent = t(getLang(), STRATUM_I18N_KEYS[stratum]);
+    heading.dataset.stratum = stratum;
+    const label = t(getLang(), STRATUM_I18N_KEYS[stratum]);
+    const icon = conceptIcon(stratumConcept(stratum, { gestalt }), { label, decorative: true, className: "concept-icon planet-stratum-icon" });
+    const text = document.createElement("span");
+    text.textContent = label;
+    heading.append(...(icon ? [icon] : []), text);
     summaryEl.append(heading);
 
     const stratumJobIds = Object.keys(JOBS).filter((jobId) => JOBS[jobId].stratum === stratum && jobIds.includes(jobId));
@@ -439,6 +459,7 @@ function renderComparison(totals) {
 }
 
 export function renderStats(totals) {
+  syncHeaderIcons();
   if (statHousing) {
     statHousing.textContent = formatAmount(totals.housing * EFFECT_SCALE, true);
     // P7.10: tooltip con el desglose de vivienda; cada tecnología aplicada sale en su propia línea.

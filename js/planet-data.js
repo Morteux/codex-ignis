@@ -900,12 +900,6 @@ export const STAT_EFFECTS = {
   navalCapacity: { i18nKey: "statNavalCapacity", img: "modifiers/mod_navy_size_add.png" }
 };
 
-/** Iconos genéricos (carpeta "modifiers/") para decorar la barra de estadísticas de la colonia. */
-export const HEADER_ICONS = {
-  housing: "modifiers/mod_planet_housing_add.png",
-  amenities: "modifiers/mod_planet_amenities_add.png"
-};
-
 /**
  * Reglas de requisitos de los edificios (ver js/building-requirements.js).
  */

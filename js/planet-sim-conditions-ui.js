@@ -21,6 +21,7 @@ import { refreshEconomyOnly } from "./planet-sim-production-ui.js";
 import { primaryOption, branchBuildingName, sanitizeCivilians } from "./planet-sim-rules.js";
 import { buildingsById, MANUAL_CONDITION_LIMIT, manualConditions, sim } from "./planet-sim-state.js";
 import { buildingDisplayName, jobName, resourceName, formatAmount } from "./planet-sim-text.js";
+import { conceptIcon } from "./concept-icons.js";
 
 const modifiersEl = document.querySelector("#planet-modifiers");
 
@@ -351,10 +352,35 @@ export function renderConditions(totals) {
   decorateConditionRows();
 }
 
+/** T2605: concept of each Conditions row (ICONS.md); its game icon goes before the label. */
+function conditionConcept(key) {
+  if (key === "civilians") return "civilian";
+  if (key === "neuralChips" || key === "pops") return "pop";
+  if (key.startsWith("housing")) return "housing";
+  if (key.startsWith("amenities")) return "amenities";
+  if (key.startsWith("happiness")) return "happiness";
+  if (key.startsWith("stability")) return "stability";
+  if (key.startsWith("crime")) return "crime";
+  return null;
+}
+
+/** Concept word of each icon: tooltip of the icon (the row label stays visible and is the accessible name). */
+const CONCEPT_LABEL_KEYS = {
+  civilian: "conditionsCivilians", pop: "conditionsPops", housing: "planetSimStatHousingShort", amenities: "planetSimStatAmenitiesShort",
+  happiness: "conditionsHappiness", stability: "conditionsStability", crime: "conditionsCrime"
+};
+
 /** P9.7: etiqueta de origen de cada valor y campos de los valores manuales. */
 function decorateConditionRows() {
+  const gestalt = ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   conditionsEl.querySelectorAll(".planet-resource-row[data-condition]").forEach((row) => {
     const key = row.dataset.condition;
+    const concept = conditionConcept(key);
+    if (concept) {
+      const labelKey = concept === "crime" && gestalt ? "conditionsDeviancy" : concept === "pop" && key === "neuralChips" ? "conditionsNeuralChips" : CONCEPT_LABEL_KEYS[concept];
+      const icon = conceptIcon(concept, { label: t(getLang(), labelKey), gestalt, decorative: true, className: "concept-icon planet-condition-icon" });
+      if (icon) row.querySelector(".planet-resource-name").prepend(icon);
+    }
     const source = CONDITION_SOURCES[key];
     if (!source) return;
     const badge = document.createElement("span");

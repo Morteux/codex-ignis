@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2605 — Icons in the header stats, Conditions and jobs summary (2026-11-27)
+
+- **Icon before the word, word kept visible** in the header stats, Conditions rows and stratum headings: those labels are short and carry the value's meaning ("Housing provided", "Housing missing"), so the icon groups them instead of replacing them; the icon is decorative for screen readers (`alt=""`) and its `title` gives the concept word.
+- **Special stratum** (colonists, civilians, criminals, test subjects, servants) uses the game's civilian pop category icon; gestalt rulers and specialists use the complex drone icon, workers the simple drone icon, civilians the maintenance drone icon. Deviancy (gestalt crime) uses the crime icon (the game has no separate text icon).
+- **Shared helper** `js/concept-icons.js` (concept → StellarisAssets path, gestalt variants) for T2606–T2609; `HEADER_ICONS` of `planet-data.js` (the old `mod_planet_*` header icons) was removed.
+
 ## T2604 — Icons in the rest of the planet simulator (2026-11-27)
 
 - **Scope kept to the general pass:** the main tabs, catalogue tabs, fixed summary and most panel headings already had icons; T2604 adds the game's empire modifier icon to the Active modifiers heading and the upgrade icon to the capital Upgrade button (Downgrade has no game icon). Header stats, Conditions and strata (T2605), the modifiers panel, catalogue cards and tooltips (T2606) and the other pages (T2607–T2609) were too big for one task and have their own (added by T2602). Native `title` tooltips cannot hold images, so tooltips keep text.
