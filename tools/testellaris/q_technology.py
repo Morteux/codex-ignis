@@ -6,7 +6,7 @@ CAPS = {
     "tech_unlocks": 15, "tech_unlocks_building": 15, "tech_for_blocker": 12, "tech_for_edict": 15,
     "tech_for_district": 12, "tech_same_area": 8, "tech_starting": 20, "tech_rare": 15, "tech_dangerous": 20,
     "tech_highest_cost": 10, "tech_highest_tier": 8, "tech_two_prerequisites": 20, "tech_dlc": 32,
-    "tech_limited_levels": 10, "tech_weight": 20,
+    "tech_limited_levels": 10, "tech_weight": 20, "tech_chain": 40, "tech_not_needed": 24,
 }
 
 
@@ -222,6 +222,48 @@ class Technology:
                                f"{names['en']} requires {self.techs[pre[0]][1]['en']} and {self.techs[pre[1]][1]['en']}.",
                                f"「{names['jp']}」には「{self.techs[pre[0]][1]['jp']}」と「{self.techs[pre[1]][1]['jp']}」が必要です。"))
 
+    def chains(self):
+        """Tier 4 (T4405): indirect prerequisites, further back than one step in the tree."""
+        for tid, (t, names, dlc) in self.techs.items():
+            if gq.tech_obscurity(t) > 4:
+                continue
+            ancestors = self.ancestors(tid)
+            behind = sorted(k for k in ancestors if k in self.techs and not (self.techs[k][0].get("flags") or {}).get("start")
+                            and not gq.gives_away(self.techs[k][1], names))
+            indirect = [k for k in behind if k not in t["prerequisites"]]
+            excluded = ancestors | self.descendants(tid) | {tid}
+            outside = [(k, x[1]) for k, x in self.techs.items()
+                       if k not in excluded and not (x[0].get("flags") or {}).get("start") and not gq.gives_away(x[1], names)]
+            if indirect:
+                aid = self.b.rng("technology", "tech_chain", tid).choice(indirect)
+                a = self.techs[aid]
+                wrong = self.pick("tech_chain", tid, a[1], outside, self.near(aid), pool=20)
+                if wrong:
+                    self.add("tech_chain", tid, 4, t, dlc + a[2],
+                             _sentence(f"¿Cuál de estas tecnologías es un requisito indirecto de {names['es']} (más atrás en el árbol, sin ser prerrequisito directo)?",
+                                       f"Which of these technologies is an indirect requirement of {names['en']} (further back in the tree, not a direct prerequisite)?",
+                                       f"技術「{names['jp']}」の間接的な前提（直接の前提条件より前の段階）はどれ？"),
+                             a[1], wrong,
+                             _sentence(f"El camino del árbol hasta {names['es']} pasa por {a[1]['es']}.",
+                                       f"The path of the tree to {names['en']} goes through {a[1]['en']}.",
+                                       f"「{names['jp']}」までの研究経路には「{a[1]['jp']}」が含まれます。"))
+            if len(behind) >= 3:
+                rng = self.b.rng("technology", "tech_not_needed", tid)
+                needed = rng.sample(behind, 3)
+                ranked = sorted((c for c in outside if gq.distinct([c[1]] + [self.techs[k][1] for k in needed])),
+                                key=lambda c: (self.near(needed[0])(c[0]), c[0]))[:20]
+                if not ranked:
+                    continue
+                oid, other = rng.choice(ranked)
+                self.add("tech_not_needed", tid, 4, t, dlc + self.techs[oid][2],
+                         _sentence(f"¿Cuál de estas tecnologías NO hace falta en el camino del árbol hasta {names['es']}?",
+                                   f"Which of these technologies is NOT needed on the tree path to {names['en']}?",
+                                   f"技術「{names['jp']}」までの研究経路に必要ないのはどれ？"),
+                         other, [self.techs[k][1] for k in needed],
+                         _sentence(f"{other['es']} queda fuera; las otras tres se investigan antes de llegar a {names['es']}.",
+                                   f"{other['en']} is off the path; the other three come before {names['en']}.",
+                                   f"「{other['jp']}」は経路外で、他の3つは「{names['jp']}」より前に研究します。"))
+
     def dlcs(self):
         dlcs = [x for x in self.d.items("dlc") if x["installed"] and x["affects_gameplay"]]
         shown = {x["name"]: x.get("localised_name") or x["name"] for x in dlcs}
@@ -290,6 +332,7 @@ def generate(b):
     t.flagged()
     t.highest()
     t.two_prerequisites()
+    t.chains()
     t.dlcs()
     t.repeatables()
     t.weights()

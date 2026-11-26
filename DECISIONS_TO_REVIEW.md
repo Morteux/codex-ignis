@@ -2,6 +2,18 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4405 — Physics questions (2026-11-26)
+
+- **Batch**: 156 wiki questions with category `physics` (tier 1: planet climates and habitability, celestial objects, research fields, first steps with astral threads, debris and policies; tier 4: stars, special worlds, terraforming, astral actions, the Shroud's mechanics, military policies; tier 5: obscure figures of the same articles) and 64 tier 4 questions from two new generator templates on the technology tree (`tech_chain`: an indirect requirement, 40; `tech_not_needed`: the technology off the path, 24).
+- **No new extractors**: the task mentions ship components and megastructures, but the project has no extractor output for them (T4110 is blocked); crises as mechanics only have the facts of the "Celestial object" article, since the local wiki copy has no crisis article.
+- **Also tier 5** (about 30 added questions): Physics would have fallen below the target there once Society grows (T4406).
+- **Names**: es/jp names the 4.5.4 data does not hold come from the localisation of the installed 4.6.0 game, matched by their English name. **Tiers** chosen by hand (GDD §3.1).
+- **Correct answer position**: spread evenly over all the wiki questions (the bank test requires it).
+- **Left out**: the Attunement that unlocks a Covenant power after Shaping the Shroud (the article says both 600 and 800).
+- **Drafts to check** (they are in the bank and are asked; delete or fix the ones that fail):
+  - [ ] DLC tags inferred where the article names none: the cracked egg world of the Voidspawn is tagged Distant Stars Story Pack, the Shroudwalkers question also needs Overlord.
+  - [ ] Questions about the base game Shroud (`shroud.wiki.eotc_chance`) say "without Shadows of the Shroud" and carry no DLC tag, as the T4402 ones.
+
 ## T4404 — Unity questions (2026-11-26)
 
 - **Batch**: 494 wiki questions with category `unity` from the articles Traditions, Ascension perks, Ambition, Empire modifiers and Origin (tradition trees and their effects and members, ascension perk effects, requirements, tiers, DLC and Shroud patrons, ambition perks, origin stories, which event, dig site or rift gives an empire modifier), plus 24 more generated "which DLC adds this technology" questions (cap of `tech_dlc` raised from 8 to 32 per tier). The new generator templates the task mentions (traditions, ascension perks, crises, fallen empires, events) were not written: the project has no 4.5.4 extractor output for those sets (T4110 is blocked).

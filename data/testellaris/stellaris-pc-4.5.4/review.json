@@ -1,19 +1,19 @@
 {
  "rulesetId": "stellaris-pc-4.5.4",
- "count": 3080,
+ "count": 3300,
  "tiers": {
-  "1": 319,
+  "1": 369,
   "2": 630,
   "3": 760,
-  "4": 842,
-  "5": 529
+  "4": 983,
+  "5": 558
  },
  "baseGameTiers": {
-  "1": 279,
+  "1": 325,
   "2": 429,
   "3": 453,
-  "4": 572,
-  "5": 315
+  "4": 668,
+  "5": 332
  },
  "topics": {
   "origins": {
@@ -67,23 +67,23 @@
    ]
   },
   "technology": {
-   "total": 764,
+   "total": 854,
    "tiers": [
-    54,
+    73,
     94,
     145,
-    232,
+    303,
     239
    ]
   },
   "planets": {
-   "total": 298,
+   "total": 367,
    "tiers": [
-    31,
+    55,
     48,
     95,
-    101,
-    23
+    132,
+    37
    ]
   },
   "economy": {
@@ -117,13 +117,13 @@
    ]
   },
   "shroud": {
-   "total": 61,
+   "total": 86,
    "tiers": [
-    1,
+    3,
     0,
     8,
-    23,
-    29
+    39,
+    36
    ]
   },
   "subjects": {
@@ -157,13 +157,13 @@
    ]
   },
   "ships": {
-   "total": 1,
+   "total": 19,
    "tiers": [
+    3,
     0,
     0,
-    0,
-    1,
-    0
+    12,
+    4
    ]
   },
   "megastructures": {
@@ -177,12 +177,12 @@
    ]
   },
   "crises": {
-   "total": 95,
+   "total": 99,
    "tiers": [
     8,
     8,
     5,
-    46,
+    50,
     28
    ]
   },
@@ -207,13 +207,13 @@
    ]
   },
   "astral": {
-   "total": 12,
+   "total": 26,
    "tiers": [
-    0,
+    2,
     1,
     4,
-    5,
-    2
+    13,
+    6
    ]
   },
   "artifacts": {
@@ -318,6 +318,7 @@
   "origin_start_planet": 9,
   "patron_gift": 4,
   "policy_option": 32,
+  "tech_chain": 40,
   "tech_cost": 80,
   "tech_dangerous": 20,
   "tech_dlc": 79,
@@ -327,6 +328,7 @@
   "tech_highest_cost": 20,
   "tech_highest_tier": 32,
   "tech_limited_levels": 5,
+  "tech_not_needed": 24,
   "tech_prerequisite": 120,
   "tech_rare": 15,
   "tech_same_area": 32,
@@ -336,17 +338,17 @@
   "tech_unlocks": 42,
   "tech_unlocks_building": 33,
   "tech_weight": 20,
-  "wiki": 650,
+  "wiki": 806,
   "world_climate": 9,
   "zone_job": 25
  },
  "correctPosition": [
-  762,
-  782,
-  758,
-  778
+  818,
+  834,
+  811,
+  837
  ],
- "dlcQuestions": 1032,
+ "dlcQuestions": 1093,
  "categories": {
   "engineering": {
    "total": 901,
@@ -359,13 +361,13 @@
    ]
   },
   "physics": {
-   "total": 637,
+   "total": 857,
    "tiers": [
-    46,
+    96,
     134,
     220,
-    121,
-    116
+    262,
+    145
    ]
   },
   "society": {
@@ -395,31 +397,15 @@
    "category": "engineering",
    "tier": 1,
    "count": 61,
-   "average": 79.8,
+   "average": 92.2,
    "side": "below",
-   "add": 25
-  },
-  {
-   "category": "physics",
-   "tier": 1,
-   "count": 46,
-   "average": 79.8,
-   "side": "below",
-   "add": 40
+   "add": 16
   },
   {
    "category": "society",
    "tier": 1,
    "count": 115,
-   "average": 79.8,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "unity",
-   "tier": 1,
-   "count": 97,
-   "average": 79.8,
+   "average": 92.2,
    "side": "above",
    "add": 0
   },
@@ -427,39 +413,23 @@
    "category": "engineering",
    "tier": 4,
    "count": 332,
-   "average": 210.5,
+   "average": 245.8,
    "side": "above",
    "add": 0
-  },
-  {
-   "category": "physics",
-   "tier": 4,
-   "count": 121,
-   "average": 210.5,
-   "side": "below",
-   "add": 138
   },
   {
    "category": "society",
    "tier": 4,
    "count": 133,
-   "average": 210.5,
+   "average": 245.8,
    "side": "below",
-   "add": 125
-  },
-  {
-   "category": "unity",
-   "tier": 4,
-   "count": 256,
-   "average": 210.5,
-   "side": "above",
-   "add": 2
+   "add": 124
   },
   {
    "category": "engineering",
    "tier": 5,
    "count": 191,
-   "average": 132.2,
+   "average": 139.5,
    "side": "above",
    "add": 0
   },
@@ -467,39 +437,39 @@
    "category": "society",
    "tier": 5,
    "count": 73,
-   "average": 132.2,
+   "average": 139.5,
    "side": "below",
    "add": 75
   }
  ],
  "wiki": {
-  "count": 650,
+  "count": 806,
   "tiers": {
-   "1": 106,
+   "1": 156,
    "2": 110,
    "3": 104,
-   "4": 205,
-   "5": 125
+   "4": 282,
+   "5": 154
   },
   "topics": {
    "artifacts": 4,
-   "astral": 4,
-   "crises": 95,
+   "astral": 18,
+   "crises": 99,
    "economy": 8,
    "events": 59,
    "government": 4,
    "leaders": 12,
    "origins": 61,
-   "planets": 24,
-   "ships": 1,
-   "shroud": 41,
+   "planets": 93,
+   "ships": 19,
+   "shroud": 66,
    "species": 3,
    "subjects": 4,
-   "technology": 7,
+   "technology": 33,
    "traditions": 323
   },
-  "dlcQuestions": 377,
-  "checkedAgainstData": 123
+  "dlcQuestions": 429,
+  "checkedAgainstData": 167
  },
  "duplicates": [],
  "ambiguous": [],
@@ -507,17 +477,15 @@
  "warnings": [
   "topic leaders has 12 questions",
   "topic species has 3 questions",
-  "topic ships has 1 questions",
+  "topic ships has 19 questions",
   "topic megastructures has 0 questions",
   "topic fallen_empires has 0 questions",
-  "topic astral has 12 questions",
-  "topic astral has no questions in tier 1",
   "topic ethics has no questions in tier 4, 5",
   "topic events has no questions in tier 1, 3",
   "topic leaders has no questions in tier 5",
   "topic modifiers has no questions in tier 1, 2, 3",
   "topic policies has no questions in tier 1",
-  "topic ships has no questions in tier 1, 2, 3, 5",
+  "topic ships has no questions in tier 2, 3",
   "topic shroud has no questions in tier 2",
   "topic species has no questions in tier 1, 4"
  ]
