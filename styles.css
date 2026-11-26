@@ -1446,6 +1446,19 @@ h1 {
     cursor: pointer;
 }
 
+/* T2604: button with a game icon before its text (capital Upgrade). */
+.planet-capital-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: .3rem;
+}
+
+.planet-capital-btn-icon .ui-icon {
+    width: 1rem;
+    height: 1rem;
+    margin: 0;
+}
+
 .planet-capital-btn:hover:not(:disabled) {
     border-color: var(--focus);
     color: var(--focus);

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2604 — Icons in the rest of the planet simulator (2026-11-27)
+
+- **Scope kept to the general pass:** the main tabs, catalogue tabs, fixed summary and most panel headings already had icons; T2604 adds the game's empire modifier icon to the Active modifiers heading and the upgrade icon to the capital Upgrade button (Downgrade has no game icon). Header stats, Conditions and strata (T2605), the modifiers panel, catalogue cards and tooltips (T2606) and the other pages (T2607–T2609) were too big for one task and have their own (added by T2602). Native `title` tooltips cannot hold images, so tooltips keep text.
+- The A/B comparison and stockpile timeline headings stay without a game icon (site features, no game equivalent).
+
 ## T2603 — Net breakdown icons (2026-11-27)
 
 - **What gets an icon:** only the lines that are an upkeep, a bonus, an efficiency / % of output, an upkeep change or a pop upkeep; the sign decides for the capital, districts, buildings and branch office buildings (negative = upkeep, positive = bonus). The other lines (stability effect, trade conversion, civilians, blockers, designation, Neural Chips, job swaps, workforce scaling) keep their full text.

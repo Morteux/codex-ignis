@@ -34,3 +34,9 @@ async def run(t):
         got = await pg.evaluate("()=>[...document.querySelectorAll('#planet-production-net .planet-resource-detail-line[data-kind=upkeep]')].map(l=>[l.querySelector('img').alt,l.querySelector('span').innerText])")
         check(f"breakdown icons: {lang} kind name and short label", [alt, short] in got, got)
     await pg.click(".lang-btn[data-lang=en]"); await pg.wait_for_timeout(300)
+
+    # T2604: game icons on the Active modifiers heading and the capital Upgrade button; the text stays visible and is the name.
+    ui = await pg.evaluate("""()=>{const h=document.querySelector('#planet-modifiers-heading-icon');const b=document.querySelector('#planet-capital-upgrade');
+        return [h&&h.getAttribute('src'),h&&h.alt,b.querySelector('img')?.getAttribute('src'),b.innerText.trim()]}""")
+    check("T2604: modifiers heading and capital Upgrade button show their game icons, text kept",
+          ui[0].endswith("text_icons/empire_modifier.png") and ui[1] == "" and ui[2].endswith("text_icons/tooltip_upgrade.png") and ui[3].lower() == "upgrade", ui)

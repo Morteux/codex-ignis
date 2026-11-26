@@ -49,7 +49,7 @@ No game icon was found for: "Gross" / "Costs" / "Net" totals, "per job" / "per p
 | Area | Task |
 |---|---|
 | Planet simulator — net resource breakdown and production info panel | T2603 |
-| Planet simulator — main tabs, panel headings, fixed planet summary, catalogue tabs | T2604 |
+| Planet simulator — main tabs, panel headings, fixed planet summary, catalogue tabs, capital buttons | T2604 (done: Active modifiers heading `text_icons/empire_modifier.png`, Upgrade button `text_icons/tooltip_upgrade.png`) |
 | Planet simulator — header stats, Conditions panel, jobs summary (strata) | T2605 |
 | Planet simulator — Active modifiers panel, catalogue cards, building / district / capital tooltips | T2606 |
 | Wiki (resources, jobs and buildings articles) | T2607 |
