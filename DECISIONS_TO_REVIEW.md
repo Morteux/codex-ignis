@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2603 — Net breakdown icons (2026-11-27)
+
+- **What gets an icon:** only the lines that are an upkeep, a bonus, an efficiency / % of output, an upkeep change or a pop upkeep; the sign decides for the capital, districts, buildings and branch office buildings (negative = upkeep, positive = bonus). The other lines (stability effect, trade conversion, civilians, blockers, designation, Neural Chips, job swaps, workforce scaling) keep their full text.
+- **Short labels** drop the kind word and the bracketed explanation ("Districts (upkeep)" → upkeep icon + "Districts"); the full label stays as tooltip and accessible name.
+- **Amenities** have no per-resource upkeep icon in the game: their lines use `mod_planet_amenities_add` (upkeep, bonus) and `mod_planet_amenities_mult` (efficiency, upkeep change).
+- **Legend** in the production "i" panel shows the Energy version of each icon as the example.
+
 ## T2602 — Icons of the site's concepts (2026-11-27)
 
 - **New StellarisAssets folders** `text_icons/` (the game's tooltip icons, `GFX_text_*`) and `pop_categories/` (strata), with the game texture names (`tooltip_stability.png`, `pop_cat_worker.png`): no existing folder held these kinds. The missing resource modifier icons went to the existing `modifiers/`.

@@ -104,40 +104,85 @@ export function refreshEconomyOnly() {
   renderNonResourceEffects(jobIds, totals.conditions);
 }
 
-/** Fuentes del desglose por recurso (P8.1), en el orden en que se muestran. `pos`/`neg` son las claves i18n según el signo del importe. */
+/**
+ * Fuentes del desglose por recurso (P8.1), en el orden en que se muestran. `pos`/`neg` son las claves i18n según el
+ * signo del importe (nombre completo: tooltip y nombre accesible). T2603: `kind` (o `posKind`/`negKind`) es el icono
+ * del juego de la línea (upkeep, bonus, efficiency, upkeepChange, popUpkeep; ICONS.md) y `short` la etiqueta corta
+ * que se ve junto al icono (sin la explicación entre paréntesis, que está una sola vez en el panel "i").
+ */
 const BREAKDOWN_SOURCES = [
-  { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg" },
+  { id: "jobsBase", pos: "breakdownJobsBasePos", neg: "breakdownJobsBaseNeg", negKind: "upkeep", short: "breakdownShortJobsBase" },
   { id: "jobSwapStack", pos: "breakdownJobSwapStack", neg: "breakdownJobSwapStack" },
-  { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg" },
+  { id: "jobsBonus", pos: "breakdownJobsBonusPos", neg: "breakdownJobsBonusNeg", posKind: "bonus", negKind: "upkeep", short: "breakdownShortJobsBuildings" },
   { id: "jobWorkforceScaling", pos: "breakdownJobWorkforceScaling", neg: "breakdownJobWorkforceScaling" },
-  { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat" },
-  { id: "branchJobFlat", pos: "breakdownBranchJobFlat", neg: "breakdownBranchJobFlat" },
-  { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg" },
-  { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult" },
-  { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult" },
-  { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult" },
-  { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult" },
-  { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult" },
-  { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult" },
-  { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult" },
-  { id: "branchJobMult", pos: "breakdownBranchJobMult", neg: "breakdownBranchJobMult" },
+  { id: "edictJobFlat", pos: "breakdownEdictJobFlat", neg: "breakdownEdictJobFlat", posKind: "bonus", negKind: "upkeep", short: "breakdownShortJobsEdicts" },
+  { id: "branchJobFlat", pos: "breakdownBranchJobFlat", neg: "breakdownBranchJobFlat", posKind: "bonus", negKind: "upkeep", short: "breakdownShortJobsBranch" },
+  { id: "jobsModifier", pos: "breakdownJobsModifierPos", neg: "breakdownJobsModifierNeg", posKind: "efficiency", negKind: "upkeepChange", short: "breakdownShortJobs" },
+  { id: "jobBuildingMult", pos: "breakdownJobBuildingMult", neg: "breakdownJobBuildingMult", kind: "efficiency", short: "breakdownShortBuildings" },
+  { id: "policyJobMult", pos: "breakdownPolicyJobMult", neg: "breakdownPolicyJobMult", kind: "efficiency", short: "breakdownShortPolicies" },
+  { id: "celestialJobMult", pos: "breakdownCelestialJobMult", neg: "breakdownCelestialJobMult", kind: "efficiency", short: "breakdownShortCelestial" },
+  { id: "jobJobMult", pos: "breakdownJobJobMult", neg: "breakdownJobJobMult", kind: "efficiency", short: "breakdownShortJobs" },
+  { id: "designationJobMult", pos: "breakdownDesignationJobMult", neg: "breakdownDesignationJobMult", kind: "efficiency", short: "breakdownShortDesignation" },
+  { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult", kind: "efficiency", short: "breakdownShortSpecializations" },
+  { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult", kind: "efficiency", short: "breakdownShortPlanetModifiers" },
+  { id: "branchJobMult", pos: "breakdownBranchJobMult", neg: "breakdownBranchJobMult", kind: "efficiency", short: "breakdownShortBranch" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "livingStandardOutput", pos: "breakdownLivingStandardOutput", neg: "breakdownLivingStandardOutput" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },
   { id: "stabilityEffect", pos: "breakdownStabilityEffect", neg: "breakdownStabilityEffect" },
   { id: "tradeConversion", pos: "breakdownTradeConversionPos", neg: "breakdownTradeConversionNeg" },
-  { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat" },
+  { id: "buildingFlat", pos: "breakdownBuildingFlat", neg: "breakdownBuildingFlat", posKind: "bonus", negKind: "upkeep", short: "breakdownShortBuildings" },
   { id: "blockers", pos: "breakdownBlockers", neg: "breakdownBlockers" },
   { id: "designation", pos: "breakdownDesignation", neg: "breakdownDesignation" },
-  { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult" },
-  { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital" },
-  { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts" },
-  { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings" },
-  { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings" },
-  { id: "popUpkeepSpecies", pos: "breakdownPopUpkeepSpecies", neg: "breakdownPopUpkeepSpecies" },
-  { id: "popUpkeepLivingStandard", pos: "breakdownPopUpkeepLivingStandard", neg: "breakdownPopUpkeepLivingStandard" },
-  { id: "popUpkeepEdicts", pos: "breakdownPopUpkeepEdicts", neg: "breakdownPopUpkeepEdicts" }
+  { id: "empireMult", pos: "breakdownEmpireMult", neg: "breakdownEmpireMult", kind: "efficiency", short: "breakdownShortEmpire" },
+  { id: "capital", pos: "breakdownCapital", neg: "breakdownCapital", posKind: "bonus", negKind: "upkeep", short: "breakdownCapital" },
+  { id: "districts", pos: "breakdownDistricts", neg: "breakdownDistricts", posKind: "bonus", negKind: "upkeep", short: "breakdownShortDistricts" },
+  { id: "buildings", pos: "breakdownBuildings", neg: "breakdownBuildings", posKind: "bonus", negKind: "upkeep", short: "breakdownShortBuildings" },
+  { id: "branchBuildings", pos: "breakdownBranchBuildings", neg: "breakdownBranchBuildings", posKind: "bonus", negKind: "upkeep", short: "breakdownShortBranchBuildings" },
+  { id: "popUpkeepSpecies", pos: "breakdownPopUpkeepSpecies", neg: "breakdownPopUpkeepSpecies", kind: "popUpkeep", short: "breakdownShortSpecies" },
+  { id: "popUpkeepLivingStandard", pos: "breakdownPopUpkeepLivingStandard", neg: "breakdownPopUpkeepLivingStandard", kind: "popUpkeep", short: "breakdownShortLivingStandard" },
+  { id: "popUpkeepEdicts", pos: "breakdownPopUpkeepEdicts", neg: "breakdownPopUpkeepEdicts", kind: "popUpkeep", short: "breakdownShortEdicts" }
 ];
+
+/** T2603: game icon kinds of the breakdown lines (ICONS.md): i18n key of the kind name and modifier icon suffix. */
+const BREAKDOWN_KINDS = {
+  upkeep: { i18nKey: "breakdownKindUpkeep", legendKey: "breakdownLegendUpkeep", suffix: "upkeep_add" },
+  bonus: { i18nKey: "breakdownKindBonus", legendKey: "breakdownLegendBonus", suffix: "produces_add" },
+  efficiency: { i18nKey: "breakdownKindEfficiency", legendKey: "breakdownLegendEfficiency", suffix: "produces_mult" },
+  upkeepChange: { i18nKey: "breakdownKindUpkeepChange", legendKey: "breakdownLegendUpkeepChange", suffix: "upkeep_mult" },
+  popUpkeep: { i18nKey: "breakdownKindPopUpkeep", legendKey: "breakdownLegendPopUpkeep", asset: "text_icons/pop_modifier.png" }
+};
+
+/** Game resource key of the modifier icons (StellarisAssets modifiers/mod_<key>_<suffix>.png); amenities use the planet amenities modifier. */
+const MODIFIER_RESOURCE_KEYS = {
+  energy: "energy", minerals: "minerals", food: "food", alloys: "alloys", consumer_goods: "consumer_goods", unity: "unity",
+  physics: "physics_research", society: "society_research", engineering: "engineering_research", trade: "trade", influence: "influence",
+  volatile_motes: "volatile_motes", rare_crystals: "rare_crystals", exotic_gases: "exotic_gases", minor_artifacts: "minor_artifacts",
+  astral_threads: "astral_threads", advanced_logic: "advanced_logic", nanites: "nanites", zro: "sr_zro", biomass: "biomass"
+};
+
+/** StellarisAssets path of the icon of a breakdown kind for a resource, or null. */
+export function breakdownIconAsset(kind, resourceId) {
+  const info = BREAKDOWN_KINDS[kind];
+  if (!info) return null;
+  if (info.asset) return info.asset;
+  if (resourceId === "amenities") return `modifiers/mod_planet_amenities_${info.suffix.endsWith("mult") ? "mult" : "add"}.png`;
+  const key = MODIFIER_RESOURCE_KEYS[resourceId];
+  return key ? `modifiers/mod_${key}_${info.suffix}.png` : null;
+}
+
+function breakdownKindIcon(kind, resourceId) {
+  const asset = breakdownIconAsset(kind, resourceId);
+  if (!asset) return null;
+  const img = document.createElement("img");
+  img.className = "planet-breakdown-icon";
+  img.src = `${IMAGE_BASE}${asset}`;
+  img.alt = t(getLang(), BREAKDOWN_KINDS[kind].i18nKey);
+  img.title = img.alt;
+  img.dataset.kind = kind;
+  img.loading = "lazy";
+  return img;
+}
 
 // Recursos de la columna "Netos" con el desglose desplegado (se conserva entre repintados).
 const expandedBreakdowns = new Set();
@@ -163,11 +208,24 @@ function renderBreakdownDetail(resourceId, sources) {
   detail.className = "planet-resource-detail";
   let gross = 0;
   let costs = 0;
-  const addLine = (label, amount, extraClass) => {
+  // T2603: a line with a game icon shows the icon and the short label; the full label stays as tooltip and accessible name.
+  const addLine = (label, amount, extraClass, kind, shortLabel) => {
     const line = document.createElement("div");
     line.className = `planet-resource-detail-line${extraClass ? ` ${extraClass}` : ""}${amount < 0 ? " is-negative" : ""}`;
     const text = document.createElement("span");
-    text.textContent = label;
+    const icon = kind ? breakdownKindIcon(kind, resourceId) : null;
+    if (icon) {
+      text.className = "planet-breakdown-label";
+      const words = document.createElement("span");
+      words.textContent = shortLabel || label;
+      text.append(icon, words);
+      text.setAttribute("aria-label", label);
+      line.title = label;
+      line.dataset.kind = kind;
+    } else {
+      text.textContent = shortLabel || label;
+      if (shortLabel) line.title = label;
+    }
     const number = document.createElement("span");
     number.textContent = formatAmount(displayAmount(resourceId, amount), true);
     line.append(text, number);
@@ -182,10 +240,11 @@ function renderBreakdownDetail(resourceId, sources) {
     if (source.id === "tradeConversion" && lastTotals && lastTotals.tradeConversion) {
       label += ` (${t(getLang(), getPolicyOption("trade", lastTotals.tradeConversion.optionId).i18nKey)})`;
     }
-    addLine(label, amount);
+    const kind = source.kind || (amount > 0 ? source.posKind : source.negKind);
+    addLine(label, amount, "", kind, kind && source.short ? t(getLang(), source.short) : null);
   });
-  addLine(t(getLang(), "breakdownGross"), gross, "is-total");
-  addLine(t(getLang(), "breakdownCosts"), costs, "is-total");
+  addLine(t(getLang(), "breakdownGross"), gross, "is-total", null, t(getLang(), "breakdownShortGross"));
+  addLine(t(getLang(), "breakdownCosts"), costs, "is-total", null, t(getLang(), "breakdownShortCosts"));
   addLine(t(getLang(), "breakdownNet"), gross + costs, "is-total");
   // Comercio: tasas de cambio de la política comercial elegida.
   if (resourceId === "trade" && lastTotals && lastTotals.tradeConversion) {
@@ -303,6 +362,24 @@ function renderProductionInfo(totals) {
   };
   addLine(t(getLang(), "productionInfoColumns"));
   addLine(t(getLang(), "productionInfoBreakdown"));
+  // T2603: grouped legend of the breakdown icons (shown here once instead of in every resource's drop-down).
+  const legendHeading = document.createElement("p");
+  legendHeading.className = "planet-modifier-stacking planet-breakdown-legend-heading";
+  legendHeading.textContent = t(getLang(), "breakdownLegendHeading");
+  const legend = document.createElement("ul");
+  legend.className = "planet-breakdown-legend";
+  Object.entries(BREAKDOWN_KINDS).forEach(([kind, info]) => {
+    const item = document.createElement("li");
+    item.dataset.kind = kind;
+    const name = document.createElement("strong");
+    name.textContent = t(getLang(), info.i18nKey);
+    const text = document.createElement("span");
+    text.textContent = ` — ${t(getLang(), info.legendKey)}`;
+    item.append(breakdownKindIcon(kind, "energy"), name, text);
+    legend.append(item);
+  });
+  info.append(legendHeading, legend);
+  addLine(t(getLang(), "breakdownLegendNote"));
   const policyId = getPlanetState().policyIds && getPlanetState().policyIds.trade;
   const conversion = totals.tradeConversion;
   if (conversion) {

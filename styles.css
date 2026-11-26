@@ -3054,6 +3054,39 @@ h1 {
     color: var(--danger);
 }
 
+/* T2603: game icon of the breakdown line kind (upkeep, bonus, efficiency, upkeep change, pop upkeep). */
+.planet-breakdown-label {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    min-width: 0;
+}
+
+.planet-breakdown-icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex: none;
+    object-fit: contain;
+}
+
+.planet-breakdown-legend {
+    margin: .2rem 0 .5rem;
+    padding: 0;
+    list-style: none;
+}
+
+.planet-breakdown-legend li {
+    display: flex;
+    align-items: flex-start;
+    gap: .35rem;
+    padding: .15rem 0;
+}
+
+.planet-breakdown-legend li span {
+    flex: 1;
+    min-width: 0;
+}
+
 .planet-resource-detail-line.is-total {
     color: var(--muted);
 }
