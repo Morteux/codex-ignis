@@ -2,6 +2,18 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4404 — Unity questions (2026-11-26)
+
+- **Batch**: 494 wiki questions with category `unity` from the articles Traditions, Ascension perks, Ambition, Empire modifiers and Origin (tradition trees and their effects and members, ascension perk effects, requirements, tiers, DLC and Shroud patrons, ambition perks, origin stories, which event, dig site or rift gives an empire modifier), plus 24 more generated "which DLC adds this technology" questions (cap of `tech_dlc` raised from 8 to 32 per tier). The new generator templates the task mentions (traditions, ascension perks, crises, fallen empires, events) were not written: the project has no 4.5.4 extractor output for those sets (T4110 is blocked).
+- **Target used**: not the category's share at this moment but the end state of T4404–T4406 together (about 98 / 140 / 180 / 259 / 149 unity questions in tiers 1–5), so tier 4 reads slightly above the target until Physics and Society grow.
+- **Repetitive blocks**: about 150 "which tradition tree includes X?" questions (up to 49 in one tier, above the generator's cap of 40 per template). Delete part of them if they feel repetitive.
+- **Names**: es/jp names the 4.5.4 data does not hold (traditions, perks, ambition perks, places and characters of events) come from the localisation of the installed 4.6.0 game, matched by their English name; empire modifiers and origins use the 4.5.4 data and cite its file and key.
+- **Tiers** chosen by hand (GDD §3.1).
+- **Drafts to check** (they are in the bank and are asked; delete or fix the ones that fail):
+  - [ ] DLC tags inferred where the wiki table names none: the archaeology modifiers are tagged Ancient Relics Story Pack, the Curators' advice Leviathans Story Pack, the paragon and Under One Rule modifiers Galactic Paragons (`events.wiki.modsrc_*`); Mind Over Matter and Synthetic Evolution are left as base game because the article names no DLC.
+  - [ ] Defender of the Galaxy is tagged with the Nomads DLC, as in the T4402 batch.
+  - [ ] Origin stories are our own summaries of the origin's description (`origins.wiki.tale_*`); check that only one of the four answers fits each.
+
 ## T4403 — Thematic categories of Testellaris questions (2026-11-26)
 
 - **Unity colour `#f2c94c`**: the owner asked for "the game's unity yellow", but the 4.5.4 data has no colour for the unity resource (`common/strategic_resources` holds none) and the exported icon `resources/Unity.png` of StellarisAssets is mostly cyan. The yellow is a proposal; the three research areas reuse the tech tree tints exactly.

@@ -1,26 +1,26 @@
 {
  "rulesetId": "stellaris-pc-4.5.4",
- "count": 2531,
+ "count": 3080,
  "tiers": {
-  "1": 237,
-  "2": 555,
-  "3": 683,
-  "4": 652,
-  "5": 404
+  "1": 319,
+  "2": 630,
+  "3": 760,
+  "4": 842,
+  "5": 529
  },
  "baseGameTiers": {
-  "1": 227,
-  "2": 388,
-  "3": 442,
-  "4": 503,
-  "5": 297
+  "1": 279,
+  "2": 429,
+  "3": 453,
+  "4": 572,
+  "5": 315
  },
  "topics": {
   "origins": {
-   "total": 143,
+   "total": 173,
    "tiers": [
-    14,
-    78,
+    28,
+    94,
     35,
     4,
     12
@@ -67,13 +67,13 @@
    ]
   },
   "technology": {
-   "total": 709,
+   "total": 764,
    "tiers": [
     54,
     94,
-    138,
-    208,
-    215
+    145,
+    232,
+    239
    ]
   },
   "planets": {
@@ -107,23 +107,23 @@
    ]
   },
   "traditions": {
-   "total": 5,
+   "total": 323,
    "tiers": [
-    2,
-    2,
-    0,
-    1,
-    0
+    65,
+    61,
+    70,
+    101,
+    26
    ]
   },
   "shroud": {
-   "total": 38,
+   "total": 61,
    "tiers": [
     1,
     0,
     8,
     23,
-    6
+    29
    ]
   },
   "subjects": {
@@ -177,13 +177,13 @@
    ]
   },
   "crises": {
-   "total": 26,
+   "total": 95,
    "tiers": [
-    3,
+    8,
     8,
     5,
-    6,
-    4
+    46,
+    28
    ]
   },
   "fallen_empires": {
@@ -197,13 +197,13 @@
    ]
   },
   "events": {
-   "total": 5,
+   "total": 59,
    "tiers": [
     0,
     1,
     0,
-    1,
-    3
+    27,
+    31
    ]
   },
   "astral": {
@@ -320,7 +320,7 @@
   "policy_option": 32,
   "tech_cost": 80,
   "tech_dangerous": 20,
-  "tech_dlc": 24,
+  "tech_dlc": 79,
   "tech_for_blocker": 11,
   "tech_for_district": 5,
   "tech_for_edict": 9,
@@ -336,17 +336,17 @@
   "tech_unlocks": 42,
   "tech_unlocks_building": 33,
   "tech_weight": 20,
-  "wiki": 156,
+  "wiki": 650,
   "world_climate": 9,
   "zone_job": 25
  },
  "correctPosition": [
-  623,
-  650,
-  618,
-  640
+  762,
+  782,
+  758,
+  778
  ],
- "dlcQuestions": 674,
+ "dlcQuestions": 1032,
  "categories": {
   "engineering": {
    "total": 901,
@@ -379,13 +379,13 @@
    ]
   },
   "unity": {
-   "total": 278,
+   "total": 827,
    "tiers": [
-    15,
-    70,
-    103,
-    66,
-    24
+    97,
+    145,
+    180,
+    256,
+    149
    ]
   }
  },
@@ -393,89 +393,41 @@
  "categoryBalance": [
   {
    "category": "engineering",
-   "tier": "all",
-   "count": 901,
-   "average": 632.8,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "unity",
-   "tier": "all",
-   "count": 278,
-   "average": 632.8,
+   "tier": 1,
+   "count": 61,
+   "average": 79.8,
    "side": "below",
-   "add": 416
+   "add": 25
   },
   {
    "category": "physics",
    "tier": 1,
    "count": 46,
-   "average": 59.2,
+   "average": 79.8,
    "side": "below",
-   "add": 44
+   "add": 40
   },
   {
    "category": "society",
    "tier": 1,
    "count": 115,
-   "average": 59.2,
+   "average": 79.8,
    "side": "above",
    "add": 0
   },
   {
    "category": "unity",
    "tier": 1,
-   "count": 15,
-   "average": 59.2,
-   "side": "below",
-   "add": 74
-  },
-  {
-   "category": "society",
-   "tier": 2,
-   "count": 187,
-   "average": 138.8,
+   "count": 97,
+   "average": 79.8,
    "side": "above",
    "add": 0
-  },
-  {
-   "category": "unity",
-   "tier": 2,
-   "count": 70,
-   "average": 138.8,
-   "side": "below",
-   "add": 66
-  },
-  {
-   "category": "physics",
-   "tier": 3,
-   "count": 220,
-   "average": 170.8,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "society",
-   "tier": 3,
-   "count": 207,
-   "average": 170.8,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "unity",
-   "tier": 3,
-   "count": 103,
-   "average": 170.8,
-   "side": "below",
-   "add": 50
   },
   {
    "category": "engineering",
    "tier": 4,
    "count": 332,
-   "average": 163.0,
+   "average": 210.5,
    "side": "above",
    "add": 0
   },
@@ -483,23 +435,31 @@
    "category": "physics",
    "tier": 4,
    "count": 121,
-   "average": 163.0,
+   "average": 210.5,
    "side": "below",
    "add": 138
   },
   {
+   "category": "society",
+   "tier": 4,
+   "count": 133,
+   "average": 210.5,
+   "side": "below",
+   "add": 125
+  },
+  {
    "category": "unity",
    "tier": 4,
-   "count": 66,
-   "average": 163.0,
-   "side": "below",
-   "add": 192
+   "count": 256,
+   "average": 210.5,
+   "side": "above",
+   "add": 2
   },
   {
    "category": "engineering",
    "tier": 5,
    "count": 191,
-   "average": 101.0,
+   "average": 132.2,
    "side": "above",
    "add": 0
   },
@@ -507,60 +467,49 @@
    "category": "society",
    "tier": 5,
    "count": 73,
-   "average": 101.0,
+   "average": 132.2,
    "side": "below",
-   "add": 76
-  },
-  {
-   "category": "unity",
-   "tier": 5,
-   "count": 24,
-   "average": 101.0,
-   "side": "below",
-   "add": 124
+   "add": 75
   }
  ],
  "wiki": {
-  "count": 156,
+  "count": 650,
   "tiers": {
-   "1": 24,
-   "2": 35,
-   "3": 34,
-   "4": 39,
-   "5": 24
+   "1": 106,
+   "2": 110,
+   "3": 104,
+   "4": 205,
+   "5": 125
   },
   "topics": {
    "artifacts": 4,
    "astral": 4,
-   "crises": 26,
+   "crises": 95,
    "economy": 8,
-   "events": 5,
+   "events": 59,
    "government": 4,
    "leaders": 12,
-   "origins": 31,
+   "origins": 61,
    "planets": 24,
    "ships": 1,
-   "shroud": 18,
+   "shroud": 41,
    "species": 3,
    "subjects": 4,
    "technology": 7,
-   "traditions": 5
+   "traditions": 323
   },
-  "dlcQuestions": 74,
-  "checkedAgainstData": 39
+  "dlcQuestions": 377,
+  "checkedAgainstData": 123
  },
  "duplicates": [],
  "ambiguous": [],
  "copied": [],
  "warnings": [
-  "tier 1 has 237 questions (9% of the bank, below 10%)",
   "topic leaders has 12 questions",
-  "topic traditions has 5 questions",
   "topic species has 3 questions",
   "topic ships has 1 questions",
   "topic megastructures has 0 questions",
   "topic fallen_empires has 0 questions",
-  "topic events has 5 questions",
   "topic astral has 12 questions",
   "topic astral has no questions in tier 1",
   "topic ethics has no questions in tier 4, 5",
@@ -570,7 +519,6 @@
   "topic policies has no questions in tier 1",
   "topic ships has no questions in tier 1, 2, 3, 5",
   "topic shroud has no questions in tier 2",
-  "topic species has no questions in tier 1, 4",
-  "topic traditions has no questions in tier 3, 5"
+  "topic species has no questions in tier 1, 4"
  ]
 }

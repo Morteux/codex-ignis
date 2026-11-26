@@ -5,7 +5,7 @@ import generate_questions as gq
 CAPS = {
     "tech_unlocks": 15, "tech_unlocks_building": 15, "tech_for_blocker": 12, "tech_for_edict": 15,
     "tech_for_district": 12, "tech_same_area": 8, "tech_starting": 20, "tech_rare": 15, "tech_dangerous": 20,
-    "tech_highest_cost": 10, "tech_highest_tier": 8, "tech_two_prerequisites": 20, "tech_dlc": 8,
+    "tech_highest_cost": 10, "tech_highest_tier": 8, "tech_two_prerequisites": 20, "tech_dlc": 32,
     "tech_limited_levels": 10, "tech_weight": 20,
 }
 
