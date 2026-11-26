@@ -648,6 +648,41 @@ async def page_checks(t):
     await pg.click(".tech-zoom-btn[data-zoom=reset]")
     check("tech tree zoom: nodes can still be clicked while zoomed out", zsel == ["tech_lasers_2", "90 %"], zsel)
 
+    # T3701: the field label column stays stuck to the left edge of the window at every zoom level,
+    # aligned with its rows, for any horizontal and vertical scroll
+    pin_js = """async ([left,top])=>{const sc=document.querySelector('.tech-areas');sc.scrollLeft=left;sc.scrollTop=top;
+      await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const box=sc.getBoundingClientRect();const r=(e)=>e.getBoundingClientRect();
+      const visible=[...sc.querySelectorAll('.tech-field-label')].filter(l=>r(l).bottom>box.top&&r(l).top<box.bottom);
+      const off=visible.map(l=>Math.round((r(l).left-box.left)*10)/10);
+      const rows=visible.every(l=>{const g=l.closest('.tech-grid');const c=g.querySelector('.tech-cell[data-field="'+l.dataset.field+'"]');
+        return !!c&&Math.abs(r(c).top-r(l).top)<1.5});
+      const heads=[...sc.querySelectorAll('.tech-area-heading')].filter(h=>r(h).bottom>box.top&&r(h).top<box.bottom).map(h=>Math.round(r(h).left-box.left));
+      return {level:document.getElementById('tech-zoom-level').textContent,left:sc.scrollLeft,count:visible.length,off,rows,heads}}"""
+    pinned = []
+    for steps, key in ((4, "+"), (9, "-")):
+        await pg.focus(".tech-areas")
+        for _ in range(steps):
+            await pg.keyboard.press(key)
+        for pos in ((0, 0), (300, 0), (900, 600), (100000, 1500)):
+            pinned.append(await pg.evaluate(pin_js, list(pos)))
+    await pg.click(".tech-zoom-btn[data-zoom=reset]")
+    pinned.append(await pg.evaluate(pin_js, [600, 300]))
+    check("tech tree zoom (T3701): at 160 %, 40 % and 100 % the field labels and area headings stay at the left edge of the window, aligned with their rows, for any horizontal and vertical scroll",
+          all(p["count"] > 0 and all(abs(o) <= 1 for o in p["off"]) and p["rows"] and all(abs(h) <= 1 for h in p["heads"]) for p in pinned)
+          and [p["level"] for p in pinned] == ["160 %"] * 4 + ["40 %"] * 4 + ["100 %"] and all(p["left"] > 0 for p in pinned[1:4]), pinned)
+    await pg.evaluate("()=>{const sc=document.querySelector('.tech-areas');sc.scrollLeft=400;sc.scrollTop=0}")
+    box = await pg.evaluate("()=>{const r=document.querySelector('.tech-areas').getBoundingClientRect();return [r.left,r.top,r.width,r.height]}")
+    await pg.mouse.move(box[0] + box[2] * 0.7, box[1] + box[3] * 0.4)
+    await pg.keyboard.down("Control")
+    await pg.mouse.wheel(0, -200)
+    await pg.keyboard.up("Control")
+    await pg.wait_for_timeout(150)
+    wheeled = await pg.evaluate("async ()=>{const sc=document.querySelector('.tech-areas');await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const b=sc.getBoundingClientRect().left;"
+                                "return [document.getElementById('tech-zoom-level').textContent,[...sc.querySelectorAll('.tech-field-label')].slice(0,4).map(l=>Math.round(l.getBoundingClientRect().left-b))]}")
+    await pg.click(".tech-zoom-btn[data-zoom=reset]")
+    check("tech tree zoom (T3701): after Ctrl + wheel the field labels are still at the left edge of the window",
+          wheeled[0] != "100 %" and all(abs(o) <= 1 for o in wheeled[1]), wheeled)
+
     check("tech tree page: no page errors", not errors, errors[:3])
     await pg.close()
     await mobile_checks(t)
@@ -723,13 +758,19 @@ async def mobile_checks(t):
     pinch = await pg.evaluate("""async ()=>{const sc=document.querySelector('.tech-areas');const r=sc.getBoundingClientRect();
       const cx=r.left+r.width/2,cy=r.top+r.height/2;const touch=(id,x)=>new Touch({identifier:id,target:sc,clientX:x,clientY:cy});
       const fire=(type,d)=>{const list=type==='touchend'?[]:[touch(1,cx-d),touch(2,cx+d)];sc.dispatchEvent(new TouchEvent(type,{touches:list,targetTouches:list,changedTouches:list,bubbles:true,cancelable:true}))};
+      const frame=()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+      const pinned=async()=>{sc.scrollLeft+=250;await frame();const b=sc.getBoundingClientRect();
+        return [...sc.querySelectorAll('.tech-field-label')].filter(l=>{const q=l.getBoundingClientRect();return q.bottom>b.top&&q.top<b.bottom}).map(l=>Math.round(l.getBoundingClientRect().left-b.left))};
       fire('touchstart',30);fire('touchmove',45);fire('touchmove',60);const zin=document.getElementById('tech-zoom-level').textContent;fire('touchend',0);
+      const pinIn=await pinned();
       fire('touchstart',60);fire('touchmove',30);const zout=document.getElementById('tech-zoom-level').textContent;fire('touchend',0);
+      const pinOut=await pinned();
       const btns=[...document.querySelectorAll('.tech-zoom-btn')].map(b=>Math.round(b.getBoundingClientRect().height));
       document.querySelector('.tech-zoom-btn[data-zoom=reset]').click();
-      return {zin,zout,btns,fits:document.documentElement.scrollWidth<=document.documentElement.clientWidth}}""")
-    check("tech tree mobile: a two-finger pinch zooms in (fingers apart) and out (together); 44 px zoom buttons; no page overflow",
-          pinch["zin"] == "160 %" and pinch["zout"] == "80 %" and min(pinch["btns"]) >= 44 and pinch["fits"], pinch)
+      return {zin,zout,btns,pinIn,pinOut,fits:document.documentElement.scrollWidth<=document.documentElement.clientWidth}}""")
+    check("tech tree mobile: a two-finger pinch zooms in (fingers apart) and out (together); 44 px zoom buttons; no page overflow; the field labels stay at the left edge after the pinch (T3701)",
+          pinch["zin"] == "160 %" and pinch["zout"] == "80 %" and min(pinch["btns"]) >= 44 and pinch["fits"]
+          and pinch["pinIn"] and pinch["pinOut"] and all(abs(o) <= 1 for o in pinch["pinIn"] + pinch["pinOut"]), pinch)
     check("tech tree mobile: no page errors", not errors, errors[:3])
     await mctx.close()
 

@@ -2,6 +2,11 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T3701 — Tech tree field labels while zoomed (2026-11-26)
+
+- **Fix taken: the column stays stuck at every zoom** (not the fallback of freezing it). Cause: the zoom scales the stack with a CSS transform, and the browser applies the sticky shift before the scale, so the labels moved `zoom` times as fast as the scroll. At 100 % they keep `position: sticky`; at any other zoom they (with the grid corners and the area headings, which had the same bug) switch to `position: relative` and `js/tech-tree-zoom.js` sets their `left` to `scrollLeft / zoom` on every scroll, clamped to their parent box like sticky.
+- **Trade-off**: while zoomed the position is set from the `scroll` event, so on fast scrolls a browser may show the column one frame late (a slight wobble) before it settles at the edge.
+
 ## T4407 — Engineering questions in tier 1 (2026-11-26)
 
 - **Batch**: 27 generated questions, all tier 1, from four new templates of `q_economy.py`: base output of a job (11), base upkeep of a job (7), base construction cost (5) and base upkeep (4) of a building. All values come from the 4.5.4 extractor data; no wiki questions. Engineering tier 1 goes from 61 to 88 (average 99), so every category is now inside ±20 % overall and in every tier.

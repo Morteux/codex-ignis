@@ -4374,6 +4374,14 @@ body.has-tech-card .tech-areas {
     transform-origin: 0 0;
 }
 
+/* T3701: inside the scaled stack sticky moves at the wrong speed; js/tech-tree-zoom.js sets
+   `left` from the scroll instead. */
+.is-zoomed .tech-grid-corner,
+.is-zoomed .tech-field-label,
+.is-zoomed .tech-area-heading {
+    position: relative;
+}
+
 @media (max-width: 700px) {
     .tech-zoom-btn {
         min-width: 44px;

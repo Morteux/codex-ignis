@@ -38,17 +38,52 @@ export function createZoom(root, bar, getLang) {
   const stack = root.querySelector(".tech-stack");
   scroll.tabIndex = 0;
 
+  /*
+   * T3701: the field labels, the grid corners and the area headings stick to the left edge of the
+   * window with `position: sticky` at 100 %. Inside the scaled stack the browser applies the
+   * sticky shift before the scale, so it moves `zoom` times as fast as the scroll (zoomed in the
+   * column floats into the panel, zoomed out it slides off to the left). While zoomed they are
+   * `position: relative` instead (`.is-zoomed` in styles.css) and their `left` is set here from
+   * the scroll: scrollLeft / zoom in stack pixels, kept inside the box of their parent like sticky.
+   */
+  let pins = [];
+  function measurePins() {
+    pins = [];
+    if (zoom === 1) return;
+    const origin = stack.getBoundingClientRect().left;
+    const els = [...stack.querySelectorAll(".tech-field-label, .tech-grid-corner, .tech-area-heading")];
+    els.forEach((el) => el.style.removeProperty("left"));
+    els.forEach((el) => {
+      const box = el.getBoundingClientRect();
+      const natural = (box.left - origin) / zoom;
+      const room = (el.parentElement.getBoundingClientRect().right - box.right) / zoom;
+      pins.push({ el, natural, room: Math.max(0, room) });
+    });
+  }
+  function placePins() {
+    const x = scroll.scrollLeft / zoom;
+    pins.forEach((pin) => {
+      pin.el.style.left = Math.min(pin.room, Math.max(0, x - pin.natural)) + "px";
+    });
+  }
+  scroll.addEventListener("scroll", () => {
+    if (zoom !== 1) placePins();
+  }, { passive: true });
+
   function sizeWrapper() {
     if (zoom === 1) {
       wrap.style.removeProperty("width");
       wrap.style.removeProperty("height");
       stack.style.removeProperty("transform");
+      stack.querySelectorAll(".tech-field-label, .tech-grid-corner, .tech-area-heading").forEach((el) => el.style.removeProperty("left"));
     } else {
       wrap.style.width = stack.offsetWidth * zoom + "px";
       wrap.style.height = stack.offsetHeight * zoom + "px";
       stack.style.transform = `scale(${zoom})`;
     }
     root.classList.toggle("is-zoomed", zoom !== 1);
+    measurePins();
+    placePins();
   }
 
   new ResizeObserver(() => {
@@ -111,6 +146,7 @@ export function createZoom(root, bar, getLang) {
     sizeWrapper();
     scroll.scrollLeft = left;
     scroll.scrollTop = top;
+    if (zoom !== 1) placePins();
     paint();
     root.dispatchEvent(new CustomEvent("tech-zoom-change", { detail: zoom }));
   }
