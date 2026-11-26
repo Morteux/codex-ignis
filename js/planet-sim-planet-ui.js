@@ -18,6 +18,8 @@ import { requirementContext, currentCapital, currentCapitalSet, inactiveReason, 
 import { builtMap, buildingsById, districtState, sim } from "./planet-sim-state.js";
 import { openDistrictsTab } from "./planet-sim-tabs.js";
 import { requirementOptionLabel, buildingDisplayName, zoneIcon, formatPlainCost } from "./planet-sim-text.js";
+import { renderStatPills } from "./planet-sim-stat-pills.js";
+import { buildingBuildDays } from "./planet-sim-build-time.js";
 
 const slotsVisualEl = document.querySelector("#planet-slots-visual");
 
@@ -104,6 +106,13 @@ function renderCapital() {
     }
   }
   if (capitalTierEl) capitalTierEl.textContent = `${capital.tier} / 5`;
+  // T2606: housing, amenities, upkeep and build time of the current capital tier with their game icons.
+  const capitalInfo = capitalNameEl?.closest(".planet-capital-info");
+  if (capitalInfo) {
+    capitalInfo.querySelector(".planet-capital-stats")?.remove();
+    const stats = renderStatPills({ housing: capital.housing, amenities: capital.amenities, upkeep: capital.upkeep, days: buildingBuildDays(capital.id) });
+    if (stats) { stats.classList.add("planet-capital-stats"); capitalInfo.append(stats); }
+  }
   if (capitalUpgradeBtn) {
     capitalUpgradeBtn.disabled = sim.capitalTierIndex >= capitalSet.length - 1;
     capitalUpgradeBtn.title = capitalUpgradeBtn.disabled ? t(getLang(), "planetSimCapitalMaxTier") : requirementNote(capitalSet[sim.capitalTierIndex + 1]);

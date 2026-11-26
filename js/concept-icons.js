@@ -53,9 +53,27 @@ export function conceptIconUrl(concept, options) {
   return path ? `${STELLARIS_ASSETS_BASE}${path}` : null;
 }
 
-/** Modifier icon of a resource (`modifiers/mod_<res>_<kind>.png`); kind: upkeep_add, upkeep_mult, produces_add, produces_mult. */
-export function resourceModifierIconUrl(resourceKey, kind) {
-  return `${STELLARIS_ASSETS_BASE}modifiers/mod_${resourceKey}_${kind}.png`;
+/** Game resource key of the modifier icons (StellarisAssets modifiers/mod_<key>_<suffix>.png) for each simulator resource id. */
+export const MODIFIER_RESOURCE_KEYS = {
+  energy: "energy", minerals: "minerals", food: "food", alloys: "alloys", consumer_goods: "consumer_goods", unity: "unity",
+  physics: "physics_research", society: "society_research", engineering: "engineering_research", trade: "trade", influence: "influence",
+  volatile_motes: "volatile_motes", rare_crystals: "rare_crystals", exotic_gases: "exotic_gases", minor_artifacts: "minor_artifacts",
+  astral_threads: "astral_threads", advanced_logic: "advanced_logic", nanites: "nanites", zro: "sr_zro", biomass: "biomass"
+};
+
+/**
+ * StellarisAssets path of the modifier icon of a resource (simulator id or game key); kind: upkeep_add, upkeep_mult,
+ * produces_add, produces_mult. Amenities use the planet amenities modifier; null for an unknown resource.
+ */
+export function resourceModifierIconPath(resource, kind) {
+  if (resource === "amenities") return `modifiers/mod_planet_amenities_${kind.endsWith("mult") ? "mult" : "add"}.png`;
+  const key = MODIFIER_RESOURCE_KEYS[resource] || (Object.values(MODIFIER_RESOURCE_KEYS).includes(resource) ? resource : null);
+  return key ? `modifiers/mod_${key}_${kind}.png` : null;
+}
+
+export function resourceModifierIconUrl(resource, kind) {
+  const path = resourceModifierIconPath(resource, kind);
+  return path ? `${STELLARIS_ASSETS_BASE}${path}` : null;
 }
 
 export function stratumConcept(stratum, { gestalt = false } = {}) {

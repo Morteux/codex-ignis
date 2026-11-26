@@ -7,7 +7,7 @@ import { t } from "./i18n.js";
 import { getLang } from "./page-shell.js";
 import { JOBS, JOB_STRATA, STRATUM_I18N_KEYS, EFFECT_SCALE } from "./planet-data.js";
 import { ethicsSatisfy, GESTALT_CONSCIOUSNESS } from "./empire-data.js";
-import { conceptIcon, conceptIconUrl, stratumConcept } from "./concept-icons.js";
+import { conceptIcon, conceptIconUrl, stratumConcept, resourceModifierIconPath } from "./concept-icons.js";
 import { PLANET_MODIFIERS } from "./planet-modifier-data.js";
 import { BLOCKERS } from "./planetary-features-data.js";
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
@@ -173,22 +173,11 @@ const BREAKDOWN_KINDS = {
   popUpkeep: { i18nKey: "breakdownKindPopUpkeep", legendKey: "breakdownLegendPopUpkeep", asset: "text_icons/pop_modifier.png" }
 };
 
-/** Game resource key of the modifier icons (StellarisAssets modifiers/mod_<key>_<suffix>.png); amenities use the planet amenities modifier. */
-const MODIFIER_RESOURCE_KEYS = {
-  energy: "energy", minerals: "minerals", food: "food", alloys: "alloys", consumer_goods: "consumer_goods", unity: "unity",
-  physics: "physics_research", society: "society_research", engineering: "engineering_research", trade: "trade", influence: "influence",
-  volatile_motes: "volatile_motes", rare_crystals: "rare_crystals", exotic_gases: "exotic_gases", minor_artifacts: "minor_artifacts",
-  astral_threads: "astral_threads", advanced_logic: "advanced_logic", nanites: "nanites", zro: "sr_zro", biomass: "biomass"
-};
-
 /** StellarisAssets path of the icon of a breakdown kind for a resource, or null. */
 export function breakdownIconAsset(kind, resourceId) {
   const info = BREAKDOWN_KINDS[kind];
   if (!info) return null;
-  if (info.asset) return info.asset;
-  if (resourceId === "amenities") return `modifiers/mod_planet_amenities_${info.suffix.endsWith("mult") ? "mult" : "add"}.png`;
-  const key = MODIFIER_RESOURCE_KEYS[resourceId];
-  return key ? `modifiers/mod_${key}_${info.suffix}.png` : null;
+  return info.asset || resourceModifierIconPath(resourceId, info.suffix);
 }
 
 function breakdownKindIcon(kind, resourceId) {

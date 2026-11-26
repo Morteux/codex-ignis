@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2606 — Icons in the modifiers panel, catalogue cards and capital (2026-11-27)
+
+- **Native tooltips cannot hold images**, so the building / district / capital tooltips keep their text; the icons go into visible pills on the catalogue cards, district cards and the capital control (housing, amenities, upkeep per resource, build time), each with its full words as tooltip and alt.
+- **Build time of the pills comes from the 4.5.4 game data** (`js/build-time-data.js`, T2601: the building's own tier, the district of the current body), not from the wiki 4.5.2 `cost.time` the cost tooltip still shows; they differ for about 20 buildings (e.g. Alloy Nano-Plant 480 → 600 days) until T2523 moves the simulator data to 4.5.4.
+- **District housing has no pill**: the per-copy housing depends on authority, body, civics and technologies (computed in the economy), so only the fixed upkeep and build time are shown on the card.
+- **Active modifiers icons**: pop upkeep categories use the pop modifier icon, stability effect the stability icon, trade conversion the trade value icon; otherwise the resource modifier icon of the category kind (bonus `produces_add`, efficiency `produces_mult`, upkeep change `upkeep_mult`), then the stratum or condition icon. Rows with none (building / district upkeep targets) keep text only.
+
 ## T2605 — Icons in the header stats, Conditions and jobs summary (2026-11-27)
 
 - **Icon before the word, word kept visible** in the header stats, Conditions rows and stratum headings: those labels are short and carry the value's meaning ("Housing provided", "Housing missing"), so the icon groups them instead of replacing them; the icon is decorative for screen readers (`alt=""`) and its `title` gives the concept word.

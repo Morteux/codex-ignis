@@ -16,6 +16,8 @@ import { renderDesignationSelect } from "./planet-sim-planet-ui.js";
 import { chainBuildingCount, slotAcceptsBuilding, resolveSelectedSlot, requirementContext, isBuildingAvailable, buildingCount, isLimited, slotSpecInfo, secondaryDistrictDef, primaryDistrictDef, districtBaseJobs, primaryMinCount, canAddDistrict, primaryOption, firstSpecializationLocked, scaleJobs, specializationJobs, specializationJobMultiplier, specializationNotes, secondaryOption, districtDisplayName, canAddResourceDistrict, districtHasNoFeature, districtCap } from "./planet-sim-rules.js";
 import { districtState, builtMap, sim } from "./planet-sim-state.js";
 import { buildingDisplayName, formatBuildingCost, formatPlainCost, formatAmount, requirementOptionLabel } from "./planet-sim-text.js";
+import { renderStatPills } from "./planet-sim-stat-pills.js";
+import { buildingBuildDays, districtBuildDays } from "./planet-sim-build-time.js";
 
 /** ¿Este edificio no se puede construir ahora mismo (límite de colonia, sin ranuras libres, o incompatible con la ranura objetivo)? Se usa tanto para desactivar el botón como para decidir si su categoría sale desplegada. */
 function isBuildingDisabled(building, slotsFull, targetKey) {
@@ -145,17 +147,9 @@ function renderCatalogItem(building, slotsFull, targetKey) {
   }
   item.append(name);
 
-  if (Object.keys(building.jobs || {}).length) {
-    item.append(renderJobsMini(building.jobs));
-  } else if (building.housing || building.amenities) {
-    const extra = document.createElement("span");
-    extra.className = "planet-catalog-extra";
-    const parts = [];
-    if (building.housing) parts.push(t(getLang(), "planetSimHousingLabel")(formatAmount(building.housing)));
-    if (building.amenities) parts.push(t(getLang(), "planetSimAmenitiesLabel")(formatAmount(building.amenities)));
-    extra.textContent = parts.join(" · ");
-    item.append(extra);
-  }
+  if (Object.keys(building.jobs || {}).length) item.append(renderJobsMini(building.jobs));
+  const stats = renderStatPills({ housing: building.housing, amenities: building.amenities, upkeep: building.upkeep, days: buildingBuildDays(building.id) });
+  if (stats) item.append(stats);
 
   item.addEventListener("click", () => {
     if (disabled || !targetKey) return;
@@ -250,6 +244,8 @@ function renderUrbanDistrictCard() {
   card.append(note);
   const primaryJobs = districtBaseJobs(def);
   if (Object.keys(primaryJobs).length) card.append(renderJobsMini(primaryJobs));
+  const primaryStats = renderStatPills({ upkeep: def.upkeep, days: districtBuildDays("urban") });
+  if (primaryStats) card.append(primaryStats);
 
   card.append(renderCountControl(
     districtState.urban.count,
@@ -367,6 +363,8 @@ function renderResourceDistrictCard(cat) {
   card.append(header);
 
   card.append(renderJobsMini(districtBaseJobs(def)));
+  const stats = renderStatPills({ upkeep: def.upkeep, days: districtBuildDays(cat) });
+  if (stats) card.append(stats);
 
   card.append(renderCountControl(
     state.count,

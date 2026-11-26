@@ -54,6 +54,19 @@ function secondaryDistrictKey(rules, cat) {
   return usesWildernessDistricts() ? `wilderness.${cat}` : cat;
 }
 
+/** T2606: game build time (days) of one copy of a building or capital (its own tier only), or null when not in the data. */
+export function buildingBuildDays(id) {
+  return BUILDING_BUILD_TIMES[id]?.steps?.at(-1)?.[1] ?? null;
+}
+
+/** T2606: game build time (days) of one district of a group ("urban" or a RESOURCE_DISTRICT_ORDER key) on the current body, or null. */
+export function districtBuildDays(group) {
+  const rules = bodyRules();
+  if (group === "urban") return districtEntry(primaryDistrictKey(rules), { authorityId: getPlanetState().authorityId })?.days ?? null;
+  const key = secondaryDistrictKey(rules, group);
+  return key ? districtEntry(key, { setIndex: secondaryDistrictDef(group).setIndex })?.days ?? null : null;
+}
+
 /**
  * Build time of the planet: { totalDays, lines: [{ kind, id|district, count, days, i18nKey?, missing? }], missing:
  * [{ kind, id }], speedSources: [{ kind, key, modifiers }] }. `lines` days are already multiplied by `count`.

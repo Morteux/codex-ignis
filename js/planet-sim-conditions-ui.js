@@ -21,7 +21,7 @@ import { refreshEconomyOnly } from "./planet-sim-production-ui.js";
 import { primaryOption, branchBuildingName, sanitizeCivilians } from "./planet-sim-rules.js";
 import { buildingsById, MANUAL_CONDITION_LIMIT, manualConditions, sim } from "./planet-sim-state.js";
 import { buildingDisplayName, jobName, resourceName, formatAmount } from "./planet-sim-text.js";
-import { conceptIcon } from "./concept-icons.js";
+import { conceptIcon, resourceModifierIconUrl, stratumConcept } from "./concept-icons.js";
 
 const modifiersEl = document.querySelector("#planet-modifiers");
 
@@ -86,6 +86,28 @@ function modifierTargetName(modifier) {
   return parts.join(" · ");
 }
 
+/** T2606: modifier icon suffix of each category (ICONS.md): bonus, efficiency / % of output or upkeep change of its resource. */
+const CATEGORY_RESOURCE_ICON = {
+  jobFlat: "produces_add", resourceFlat: "produces_add", popOutput: "produces_add", flat: "produces_add",
+  jobEfficiency: "produces_mult", jobResourceMult: "produces_mult", resourceMult: "produces_mult", stratumEfficiency: "produces_mult", stratumOutput: "produces_mult",
+  jobUpkeep: "upkeep_mult", upkeepMult: "upkeep_mult"
+};
+const CONDITION_STAT_CONCEPTS = { happiness: "happiness", stability: "stability", crime: "crime", housing: "housing", amenities: "amenities" };
+
+/** T2606: game icon of an Active modifiers row (resource modifier, stratum, condition or category concept), or null. */
+function modifierIcon(modifier, category, label, gestalt) {
+  const className = "concept-icon planet-modifier-icon";
+  const categoryConcept = { stabilityEffect: "stability", tradeConversion: "tradeValue", popUpkeep: "popUpkeep", popUpkeepMult: "popUpkeep" }[category.id];
+  const resource = modifier.resource || (RESOURCES[modifier.stat] ? modifier.stat : null);
+  const suffix = CATEGORY_RESOURCE_ICON[category.id];
+  if (!categoryConcept && resource && suffix) {
+    const src = resourceModifierIconUrl(resource, suffix);
+    if (src) return Object.assign(document.createElement("img"), { src, alt: "", title: label, loading: "lazy", className });
+  }
+  const concept = categoryConcept || (modifier.stratum ? stratumConcept(modifier.stratum, { gestalt }) : CONDITION_STAT_CONCEPTS[modifier.stat]);
+  return concept ? conceptIcon(concept, { label, gestalt, decorative: true, className }) : null;
+}
+
 /** Panel de modificadores activos (P8.2): origen, categoría afectada, valor y cómo se apila. */
 export function renderModifiers(totals) {
   if (!modifiersEl) return;
@@ -133,6 +155,7 @@ export function renderModifiers(totals) {
     modifiersEl.append(empty);
     return;
   }
+  const gestalt = ethicsSatisfy(getPlanetState().ethicIds || [], GESTALT_CONSCIOUSNESS.id);
   MODIFIER_CATEGORIES.forEach((category) => {
     const items = list.filter((modifier) => modifier.category === category.id);
     if (!items.length) return;
@@ -152,6 +175,8 @@ export function renderModifiers(totals) {
       const target = document.createElement("span");
       target.className = "planet-modifier-target";
       target.textContent = modifierTargetName(modifier);
+      const icon = modifierIcon(modifier, category, target.textContent || t(getLang(), category.label), gestalt);
+      if (icon) target.prepend(icon);
       const value = document.createElement("span");
       value.className = `planet-modifier-value ${modifier.value < 0 ? "is-negative" : "is-positive"}`;
       const shown = category.unit === "percent" ? modifier.value * 100 : modifier.value;
