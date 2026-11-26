@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2602 — Icons of the site's concepts (2026-11-27)
+
+- **New StellarisAssets folders** `text_icons/` (the game's tooltip icons, `GFX_text_*`) and `pop_categories/` (strata), with the game texture names (`tooltip_stability.png`, `pop_cat_worker.png`): no existing folder held these kinds. The missing resource modifier icons went to the existing `modifiers/`.
+- **Icon choice per concept** (`ICONS.md`): upkeep = `mod_<res>_upkeep_add`, bonus = `mod_<res>_produces_add`, efficiency / % of output = `mod_<res>_produces_mult`, upkeep change = `mod_<res>_upkeep_mult`, pop upkeep = the game's pop modifier text icon (`pop_modifier.png`; the game has no dedicated "pop upkeep" icon), strata = the pop category icons. Owner may prefer other icons for pop upkeep and build time.
+- **Tasks per area**: T2604 keeps the simulator tabs, headings and summary; the new T2605 (header stats, Conditions, jobs summary), T2606 (modifiers, catalogue, tooltips), T2607 (wiki), T2608 (tech tree card) and T2609 (Testellaris, bingo) split the rest.
+
 ## T2601 — Total build time of the planet (2026-11-27)
 
 - **Sequential total only.** The game builds a planet's buildings, districts and zones in one queue whose base "Build Queue Capacity" is engine-coded (not in the game files; only bonuses such as Wilderness +5 are), and a web search found no reliable figure, so the panel shows everything one after another and says the parallel time is not computed. If the owner knows the base capacity (and how a queue of capacity N splits the work), the parallel time can be added.

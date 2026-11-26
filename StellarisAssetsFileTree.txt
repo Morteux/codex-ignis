@@ -2438,6 +2438,10 @@ StellarisAssets/
 │   ├── mod_shipclass_military_station_damage_mult.png
 │   ├── mod_shipclass_military_station_hull_mult.png
 │   ├── mod_shroud_unavailable.png
+│   ├── mod_society_research_produces_add.png
+│   ├── mod_society_research_produces_mult.png
+│   ├── mod_society_research_upkeep_add.png
+│   ├── mod_society_research_upkeep_mult.png
 │   ├── mod_speed_mult.png
 │   ├── mod_spirit_of_our_ancestors.png
 │   ├── mod_spy_network_levels_add.png
@@ -2461,20 +2465,36 @@ StellarisAssets/
 │   ├── mod_sr_neutronium_produces_mult.png
 │   ├── mod_sr_neutronium_upkeep_add.png
 │   ├── mod_sr_neutronium_upkeep_mult.png
+│   ├── mod_sr_zro_produces_add.png
+│   ├── mod_sr_zro_produces_mult.png
+│   ├── mod_sr_zro_upkeep_add.png
+│   ├── mod_sr_zro_upkeep_mult.png
 │   ├── mod_star.png
 │   ├── mod_stuffed_toy.png
 │   ├── mod_tech_cost_empire_size_mult.png
 │   ├── mod_the_beholder_energy_big.png
 │   ├── mod_the_beholder_energy_medium.png
 │   ├── mod_the_beholder_energy_small.png
+│   ├── mod_trade_produces_add.png
+│   ├── mod_trade_produces_mult.png
+│   ├── mod_trade_upkeep_add.png
+│   ├── mod_trade_upkeep_mult.png
 │   ├── mod_trade_value_add.png
 │   ├── mod_trade_value_mult_negative.png
 │   ├── mod_trade_value_mult.png
 │   ├── mod_treasure_trove_reward_mult.png
+│   ├── mod_unity_produces_add.png
+│   ├── mod_unity_produces_mult.png
+│   ├── mod_unity_upkeep_add.png
+│   ├── mod_unity_upkeep_mult.png
 │   ├── mod_unknown.png
 │   ├── mod_upkeep_add.png
 │   ├── mod_upkeep_mult.png
 │   ├── mod_veto_cost_mult.png
+│   ├── mod_volatile_motes_produces_add.png
+│   ├── mod_volatile_motes_produces_mult.png
+│   ├── mod_volatile_motes_upkeep_add.png
+│   ├── mod_volatile_motes_upkeep_mult.png
 │   ├── mod_war_economy_defensive.png
 │   ├── mod_war_economy_offensive.png
 │   ├── mod_weapon_damage_mult.png
@@ -2929,6 +2949,16 @@ StellarisAssets/
 │   ├── Trait_pc_dry_preference.png
 │   ├── Trait_pc_volcanic_preference.png
 │   └── Trait_pc_wet_preference.png
+├── pop_categories/
+│   ├── pop_cat_bio_trophy.png
+│   ├── pop_cat_civilian.png
+│   ├── pop_cat_complex_drone.png
+│   ├── pop_cat_maintenance_drone.png
+│   ├── pop_cat_ruler.png
+│   ├── pop_cat_simple_drone.png
+│   ├── pop_cat_slave.png
+│   ├── pop_cat_specialist.png
+│   └── pop_cat_worker.png
 ├── resources/
 │   ├── Advanced_logic.png
 │   ├── Alloys.png
@@ -3772,6 +3802,29 @@ StellarisAssets/
 │   ├── tech_xeno_tourism_agency.png
 │   ├── tech_zero_point_power.png
 │   └── tech_zro_launcher.png
+├── text_icons/
+│   ├── districtadd.png
+│   ├── empire_modifier.png
+│   ├── icon_text_pop.png
+│   ├── pop_modifier.png
+│   ├── text_icon_ruler.png
+│   ├── time.png
+│   ├── tooltip_amenities_no_happiness.png
+│   ├── tooltip_amenities.png
+│   ├── tooltip_building.png
+│   ├── tooltip_crime.png
+│   ├── tooltip_decision.png
+│   ├── tooltip_district.png
+│   ├── tooltip_economy.png
+│   ├── tooltip_happiness.png
+│   ├── tooltip_housing.png
+│   ├── tooltip_job.png
+│   ├── tooltip_pop.png
+│   ├── tooltip_stability.png
+│   ├── tooltip_upgrade.png
+│   ├── tooltip_zone.png
+│   ├── trade_value.png
+│   └── unemployed.png
 ├── app.js
 ├── Ignis Stellaris Contingency.png
 ├── index.html
