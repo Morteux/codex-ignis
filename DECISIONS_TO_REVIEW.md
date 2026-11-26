@@ -2,6 +2,17 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4406 — Society questions (2026-11-26)
+
+- **Batch**: 145 wiki questions with category `society` (topic `leaders`): "which civic adds this council position?" (85, tier 4), "which leader class can hold it?" (30, tier 5), veteran classes, leader pool, experience, ethics attraction, ministers and gestalt nodes (articles Council and Leaders); plus 62 generated questions from raised caps of templates that already existed (`civic_combo`, `ethic_authority_civic`, `authority_variant_base` in tier 4; `civic_not_playable`, `authority_variant`, `living_power` in tier 5).
+- **Also tier 4** (the task only names tier 5): Society fell below the target there once Unity and Physics grew.
+- **No species traits or factions**: the project has no 4.5.4 extractor output for species traits (T4110 is blocked) and the local wiki copy has no Factions or Species traits article.
+- **Repetitive block**: the 115 council position questions share two sentences (above the generator's cap of 40 per template). Delete part of them if they feel repetitive; positions whose name two civics share, or that has no single official es/jp name, were left out.
+- **Engineering tier 1** is now below the target (the other categories grew): new task T4407.
+- **Drafts to check** (they are in the bank and are asked; delete or fix the ones that fail):
+  - [ ] Every council position question is tagged Galactic Paragons plus the civic's DLC, following the article's note on additional council positions.
+  - [ ] Council position names in es/jp come from the localisation of the installed 4.6.0 game (key `councilor_*`), matched by their English name.
+
 ## T4405 — Physics questions (2026-11-26)
 
 - **Batch**: 156 wiki questions with category `physics` (tier 1: planet climates and habitability, celestial objects, research fields, first steps with astral threads, debris and policies; tier 4: stars, special worlds, terraforming, astral actions, the Shroud's mechanics, military policies; tier 5: obscure figures of the same articles) and 64 tier 4 questions from two new generator templates on the technology tree (`tech_chain`: an indirect requirement, 40; `tech_not_needed`: the technology off the path, 24).

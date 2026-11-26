@@ -9,8 +9,8 @@ import rules as rl
 CAPS = {
     "ethic_points": 17, "ethic_combination": 20, "ethic_combination_illegal": 20,
     "authority_feature": 10, "authority_term": 5, "ethic_authority": 20, "authority_ethic": 20,
-    "ethic_civic_forbidden": 20, "ethic_origin_forbidden": 15, "ethic_authority_civic": 25,
-    "authority_variant_base": 30, "authority_variant": 20, "authority_not_playable": 5,
+    "ethic_civic_forbidden": 20, "ethic_origin_forbidden": 15, "ethic_authority_civic": 40,
+    "authority_variant_base": 40, "authority_variant": 40, "authority_not_playable": 5,
 }
 
 

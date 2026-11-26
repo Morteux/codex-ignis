@@ -1,19 +1,19 @@
 {
  "rulesetId": "stellaris-pc-4.5.4",
- "count": 3300,
+ "count": 3507,
  "tiers": {
   "1": 369,
   "2": 630,
   "3": 760,
-  "4": 983,
-  "5": 558
+  "4": 1109,
+  "5": 639
  },
  "baseGameTiers": {
   "1": 325,
   "2": 429,
   "3": 453,
-  "4": 668,
-  "5": 332
+  "4": 695,
+  "5": 382
  },
  "topics": {
   "origins": {
@@ -27,13 +27,13 @@
    ]
   },
   "civics": {
-   "total": 281,
+   "total": 309,
    "tiers": [
     27,
     72,
     132,
-    25,
-    25
+    40,
+    38
    ]
   },
   "ethics": {
@@ -47,23 +47,23 @@
    ]
   },
   "government": {
-   "total": 112,
+   "total": 133,
    "tiers": [
     5,
     26,
     2,
-    58,
-    21
+    65,
+    35
    ]
   },
   "leaders": {
-   "total": 12,
+   "total": 157,
    "tiers": [
     3,
     4,
     3,
-    2,
-    0
+    106,
+    41
    ]
   },
   "technology": {
@@ -87,13 +87,13 @@
    ]
   },
   "economy": {
-   "total": 422,
+   "total": 435,
    "tiers": [
     37,
     119,
     137,
     95,
-    34
+    47
    ]
   },
   "policies": {
@@ -234,8 +234,8 @@
   "authority_feature": 7,
   "authority_not_playable": 1,
   "authority_term": 3,
-  "authority_variant": 20,
-  "authority_variant_base": 30,
+  "authority_variant": 34,
+  "authority_variant_base": 34,
   "blocker_districts": 15,
   "blocker_time": 15,
   "branch_office": 20,
@@ -251,7 +251,7 @@
   "capital_job": 15,
   "capital_job_count": 14,
   "civic_authority": 21,
-  "civic_combo": 25,
+  "civic_combo": 40,
   "civic_corporate_version": 16,
   "civic_dlc": 40,
   "civic_ethic_forbidden": 15,
@@ -259,7 +259,7 @@
   "civic_group": 45,
   "civic_incompatible": 25,
   "civic_kind": 12,
-  "civic_not_playable": 25,
+  "civic_not_playable": 38,
   "civic_requires_ethic": 15,
   "content_feature": 26,
   "content_modifier": 40,
@@ -276,7 +276,7 @@
   "edict_same_resource": 25,
   "edict_wartime": 5,
   "ethic_authority": 12,
-  "ethic_authority_civic": 25,
+  "ethic_authority_civic": 28,
   "ethic_civic_forbidden": 20,
   "ethic_combination": 20,
   "ethic_combination_illegal": 20,
@@ -298,7 +298,7 @@
   "job_same_upkeep": 20,
   "job_stratum": 26,
   "living_civic": 2,
-  "living_power": 15,
+  "living_power": 28,
   "living_power_most": 18,
   "living_upkeep_most": 20,
   "modifier_amount": 25,
@@ -338,17 +338,17 @@
   "tech_unlocks": 42,
   "tech_unlocks_building": 33,
   "tech_weight": 20,
-  "wiki": 806,
+  "wiki": 951,
   "world_climate": 9,
   "zone_job": 25
  },
  "correctPosition": [
-  818,
-  834,
-  811,
-  837
+  866,
+  889,
+  866,
+  886
  ],
- "dlcQuestions": 1093,
+ "dlcQuestions": 1223,
  "categories": {
   "engineering": {
    "total": 901,
@@ -371,13 +371,13 @@
    ]
   },
   "society": {
-   "total": 715,
+   "total": 922,
    "tiers": [
     115,
     187,
     207,
-    133,
-    73
+    259,
+    154
    ]
   },
   "unity": {
@@ -408,48 +408,16 @@
    "average": 92.2,
    "side": "above",
    "add": 0
-  },
-  {
-   "category": "engineering",
-   "tier": 4,
-   "count": 332,
-   "average": 245.8,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "society",
-   "tier": 4,
-   "count": 133,
-   "average": 245.8,
-   "side": "below",
-   "add": 124
-  },
-  {
-   "category": "engineering",
-   "tier": 5,
-   "count": 191,
-   "average": 139.5,
-   "side": "above",
-   "add": 0
-  },
-  {
-   "category": "society",
-   "tier": 5,
-   "count": 73,
-   "average": 139.5,
-   "side": "below",
-   "add": 75
   }
  ],
  "wiki": {
-  "count": 806,
+  "count": 951,
   "tiers": {
    "1": 156,
    "2": 110,
    "3": 104,
-   "4": 282,
-   "5": 154
+   "4": 386,
+   "5": 195
   },
   "topics": {
    "artifacts": 4,
@@ -458,7 +426,7 @@
    "economy": 8,
    "events": 59,
    "government": 4,
-   "leaders": 12,
+   "leaders": 157,
    "origins": 61,
    "planets": 93,
    "ships": 19,
@@ -468,21 +436,19 @@
    "technology": 33,
    "traditions": 323
   },
-  "dlcQuestions": 429,
-  "checkedAgainstData": 167
+  "dlcQuestions": 554,
+  "checkedAgainstData": 282
  },
  "duplicates": [],
  "ambiguous": [],
  "copied": [],
  "warnings": [
-  "topic leaders has 12 questions",
   "topic species has 3 questions",
   "topic ships has 19 questions",
   "topic megastructures has 0 questions",
   "topic fallen_empires has 0 questions",
   "topic ethics has no questions in tier 4, 5",
   "topic events has no questions in tier 1, 3",
-  "topic leaders has no questions in tier 5",
   "topic modifiers has no questions in tier 1, 2, 3",
   "topic policies has no questions in tier 1",
   "topic ships has no questions in tier 2, 3",

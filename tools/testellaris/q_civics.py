@@ -8,7 +8,7 @@ CAPS = {
     "civic_kind": 12, "origin_kind": 12, "civic_group": 15, "civic_authority": 20, "civic_requires_ethic": 15,
     "civic_incompatible": 25, "origin_incompatible_civic": 25, "origin_ethic_required": 20,
     "origin_ethic_forbidden": 15, "origin_authority": 15, "origin_start_planet": 15, "civic_corporate_version": 20,
-    "civic_combo": 25, "origin_combo": 15, "civic_not_playable": 25, "origin_not_playable": 15,
+    "civic_combo": 40, "origin_combo": 15, "civic_not_playable": 40, "origin_not_playable": 15,
 }
 SINGULAR = {"civics": "civic", "origins": "origin"}
 THE = {"civics": ("el principio", "the civic", "国是"), "origins": ("el origen", "the origin", "起源")}

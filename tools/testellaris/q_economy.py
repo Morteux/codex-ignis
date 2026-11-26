@@ -10,7 +10,7 @@ CAPS = {
     "job_stratum": 15, "job_same_output": 25, "job_same_upkeep": 20, "job_most_output": 20,
     "branch_office": 20, "branch_office_criminal": 15, "branch_office_job": 25, "branch_office_requirement": 10,
     "building_slowest": 20, "building_days": 15,
-    "living_power_most": 20, "living_upkeep_most": 20, "living_power": 15, "living_civic": 10,
+    "living_power_most": 20, "living_upkeep_most": 20, "living_power": 40, "living_civic": 10,
 }
 STRATA = ("ruler", "specialist", "worker", "complex_drone", "simple_drone")
 # The stratum keys of the living standards: `political_power` / `pop_upkeep` → the stratum label id
