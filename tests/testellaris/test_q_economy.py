@@ -71,6 +71,17 @@ class EconomyFactsTest(BankCase):
         for q in self.questions("building_days", 10):
             self.assertEqual(self.correct(q), str(self.source(q, "buildings")["base_buildtime"]))
 
+    def test_basic_numbers(self):
+        for template, set_name, field, at_least in (
+                ("job_base_output", "jobs", "produces", 10), ("job_base_upkeep", "jobs", "upkeep", 6),
+                ("building_base_cost", "buildings", "cost", 4), ("building_base_upkeep", "buildings", "upkeep", 3)):
+            for q in self.questions(template, at_least):
+                item = self.source(q, set_name)
+                self.assertEqual((q["tier"], q["category"], q["dlc"]), (1, "engineering", []), q["id"])
+                self.assertEqual(len(item[field]), 1, q["id"])
+                self.assertEqual(float(self.correct(q)), next(iter(item[field].values())), q["id"])
+                self.assert_named(q, set_name, item["id"])
+
     def test_living_standards(self):
         def power(a, stratum):
             return self.item("living_standards", a)["political_power"][stratum]

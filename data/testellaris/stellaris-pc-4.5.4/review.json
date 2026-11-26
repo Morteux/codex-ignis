@@ -1,15 +1,15 @@
 {
  "rulesetId": "stellaris-pc-4.5.4",
- "count": 3507,
+ "count": 3534,
  "tiers": {
-  "1": 369,
+  "1": 396,
   "2": 630,
   "3": 760,
   "4": 1109,
   "5": 639
  },
  "baseGameTiers": {
-  "1": 325,
+  "1": 352,
   "2": 429,
   "3": 453,
   "4": 695,
@@ -87,9 +87,9 @@
    ]
   },
   "economy": {
-   "total": 435,
+   "total": 462,
    "tiers": [
-    37,
+    64,
     119,
     137,
     95,
@@ -242,6 +242,8 @@
   "branch_office_criminal": 11,
   "branch_office_job": 25,
   "branch_office_requirement": 4,
+  "building_base_cost": 5,
+  "building_base_upkeep": 4,
   "building_days": 15,
   "building_job": 40,
   "building_slowest": 20,
@@ -293,6 +295,8 @@
   "holding_loyalty_gain": 3,
   "holding_overlord": 8,
   "holding_technology": 2,
+  "job_base_output": 11,
+  "job_base_upkeep": 7,
   "job_most_output": 20,
   "job_same_output": 25,
   "job_same_upkeep": 20,
@@ -343,17 +347,17 @@
   "zone_job": 25
  },
  "correctPosition": [
-  866,
-  889,
-  866,
-  886
+  874,
+  893,
+  873,
+  894
  ],
  "dlcQuestions": 1223,
  "categories": {
   "engineering": {
-   "total": 901,
+   "total": 928,
    "tiers": [
-    61,
+    88,
     164,
     153,
     332,
@@ -392,24 +396,7 @@
   }
  },
  "categoryTolerance": 0.2,
- "categoryBalance": [
-  {
-   "category": "engineering",
-   "tier": 1,
-   "count": 61,
-   "average": 92.2,
-   "side": "below",
-   "add": 16
-  },
-  {
-   "category": "society",
-   "tier": 1,
-   "count": 115,
-   "average": 92.2,
-   "side": "above",
-   "add": 0
-  }
- ],
+ "categoryBalance": [],
  "wiki": {
   "count": 951,
   "tiers": {

@@ -1,6 +1,7 @@
 """Economy templates (T4106): strata, outputs and upkeep of jobs, branch office buildings, build
-times and living standards. The data holds no official es/en/jp names of the resources, so the
-questions compare resources ("the same resource as") instead of naming them."""
+times and living standards, plus the numbers of first-game jobs and buildings (T4407, tier 1). The
+data holds no official es/en/jp names of the resources, so the questions compare resources ("the
+same resource as") or ask for the amount of an item that has a single one, without naming it."""
 import re
 
 import generate_questions as gq
@@ -11,6 +12,31 @@ CAPS = {
     "branch_office": 20, "branch_office_criminal": 15, "branch_office_job": 25, "branch_office_requirement": 10,
     "building_slowest": 20, "building_days": 15,
     "living_power_most": 20, "living_upkeep_most": 20, "living_power": 40, "living_civic": 10,
+    "job_base_output": 15, "job_base_upkeep": 15, "building_base_cost": 10, "building_base_upkeep": 10,
+}
+# The first-game jobs and buildings whose numbers are asked in tier 1 (T4407, GDD §3.1). A job or
+# building is only asked when the data gives it a single resource in that field.
+BASIC_JOBS = (
+    "technician", "miner", "farmer", "clerk", "artisan", "foundry", "trader", "bureaucrat", "physicist",
+    "biologist", "engineer", "politician", "healthcare", "soldier",
+)
+BASIC_COSTS = (
+    "building_resource_silo", "building_research_lab_1", "building_foundry_1", "building_factory_1",
+    "building_robot_assembly_plant",
+)
+BASIC_UPKEEPS = (
+    "building_resource_silo", "building_holo_theatres", "building_stronghold", "building_robot_assembly_plant",
+)
+# Jobs of pre-FTL worlds and overlord holdings that share the name of a basic job: the player's job
+# is the one asked. A basic job sharing its name with any other job (Trader and Merchant in es) is
+# not asked.
+VARIANT_PREFIXES = ("primitive_", "low_tech_", "overlord_")
+# Plausible values the wrong answers are taken from.
+BASIC_VALUES = {
+    "job_base_output": (1, 2, 3, 4, 5, 6, 8, 10, 12),
+    "job_base_upkeep": (0.5, 1, 1.5, 2, 3, 4, 5),
+    "building_base_cost": (100, 200, 300, 400, 500, 600, 800),
+    "building_base_upkeep": (1, 2, 3, 4, 5, 8),
 }
 STRATA = ("ruler", "specialist", "worker", "complex_drone", "simple_drone")
 # The stratum keys of the living standards: `political_power` / `pop_upkeep` → the stratum label id
@@ -294,6 +320,61 @@ class Economy:
                                    f"{names['en']} takes {t} days before modifiers.",
                                    f"「{names['jp']}」の建設は補正前で{t}日です。"))
 
+    # -- first-game numbers
+
+    def basic_jobs(self):
+        """{id: (job, official names, DLC)} of BASIC_JOBS, named even when only the variants of
+        VARIANT_PREFIXES share a name with them."""
+        out = {}
+        for key in BASIC_JOBS:
+            x = self.d.by_id("jobs").get(key)
+            names = x and self.d.label("jobs", key)
+            if not names:
+                continue
+            twins = {k for lang, n in names.items() for k, v in self.d.loc[lang]["jobs"].items()
+                     if k != key and v and v.strip().casefold() == n.casefold()}
+            reliable, dlc = gq.condition_check(x, ("possible", "possible_pre_triggers"))
+            if reliable and all(k.startswith(VARIANT_PREFIXES) for k in twins):
+                out[key] = (x, names, dlc)
+        return out
+
+    def basics(self):
+        jobs = self.basic_jobs()
+        buildings = self.named("buildings", ("potential", "allow"))
+        self.basic_number("job_base_output", jobs, BASIC_JOBS, "produces", lambda n: (
+            f"¿Cuál es la producción base del empleo {n['es']}, sin bonificaciones?",
+            f"What is the base output of the job {n['en']}, before any bonus?",
+            f"職業「{n['jp']}」の基本生産量（ボーナスなし）は？"), ("La producción base", "The base output", "基本生産量"))
+        self.basic_number("job_base_upkeep", jobs, BASIC_JOBS, "upkeep", lambda n: (
+            f"¿Cuál es el mantenimiento base del empleo {n['es']}, sin bonificaciones?",
+            f"What is the base upkeep of the job {n['en']}, before any bonus?",
+            f"職業「{n['jp']}」の基本維持費（ボーナスなし）は？"), ("El mantenimiento base", "The base upkeep", "基本維持費"))
+        self.basic_number("building_base_cost", buildings, BASIC_COSTS, "cost", lambda n: (
+            f"¿Cuál es el coste base de construcción del edificio {n['es']}?",
+            f"What is the base construction cost of the building {n['en']}?",
+            f"建造物「{n['jp']}」の基本建設コストは？"), ("El coste base de construcción", "The base construction cost", "基本建設コスト"))
+        self.basic_number("building_base_upkeep", buildings, BASIC_UPKEEPS, "upkeep", lambda n: (
+            f"¿Cuál es el mantenimiento base del edificio {n['es']}?",
+            f"What is the base upkeep of the building {n['en']}?",
+            f"建造物「{n['jp']}」の基本維持費は？"), ("El mantenimiento base", "The base upkeep", "基本維持費"))
+
+    def basic_number(self, template, items, asked, field, text, noun):
+        for key in asked:
+            if key not in items:
+                continue
+            x, names, dlc = items[key]
+            values = x.get(field) or {}
+            if dlc or len(values) != 1:
+                continue
+            value = next(iter(values.values()))
+            near = sorted((v for v in BASIC_VALUES[template] if v != value), key=lambda v: (abs(v - value), v))[:5]
+            wrong = self.b.rng("economy", template, key).sample(near, 3)
+            self.add(template, key, 1, x, dlc, _sentence(*text(names)),
+                     gq.same(amount(value)), [gq.same(amount(v)) for v in wrong],
+                     _sentence(f"{noun[0]} de {names['es']} es {amount(value)}.",
+                               f"{noun[1]} of {names['en']} is {amount(value)}.",
+                               f"「{names['jp']}」の{noun[2]}は{amount(value)}です。"))
+
     # -- living standards
 
     def living_standards(self):
@@ -379,3 +460,4 @@ def generate(b):
     e.jobs()
     e.buildings()
     e.living_standards()
+    e.basics()

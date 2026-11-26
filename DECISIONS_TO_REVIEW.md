@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4407 — Engineering questions in tier 1 (2026-11-26)
+
+- **Batch**: 27 generated questions, all tier 1, from four new templates of `q_economy.py`: base output of a job (11), base upkeep of a job (7), base construction cost (5) and base upkeep (4) of a building. All values come from the 4.5.4 extractor data; no wiki questions. Engineering tier 1 goes from 61 to 88 (average 99), so every category is now inside ±20 % overall and in every tier.
+- **Numbers in tier 1**: GDD §3.1 puts base costs and job outputs in tier 4; these first-game ones are tier 1, as the task asks (hand-picked lists `BASIC_JOBS`, `BASIC_COSTS`, `BASIC_UPKEEPS`).
+- **Resources are not named** ("base output of the job Miner"): the extractor has no official resource names, so only items with one resource in that field are asked. The values are the ones before bonuses, job variants and, for buildings, the nomadic cost.
+- **Shared names**: Technician, Miner, Farmer, Bureaucrat, Medical Worker and Soldier share their name only with pre-FTL or overlord jobs and are asked as the player's job; Trader is left out because Merchant has the same Spanish name.
+- **Drafts to check** (they are in the bank and are asked; delete or fix the ones that fail):
+  - [ ] The base values match what the job and building tooltips show in game (4.x outputs count per job, of 100 workforce; the texts do not say so).
+
 ## T4406 — Society questions (2026-11-26)
 
 - **Batch**: 145 wiki questions with category `society` (topic `leaders`): "which civic adds this council position?" (85, tier 4), "which leader class can hold it?" (30, tier 5), veteran classes, leader pool, experience, ethics attraction, ministers and gestalt nodes (articles Council and Leaders); plus 62 generated questions from raised caps of templates that already existed (`civic_combo`, `ethic_authority_civic`, `authority_variant_base` in tier 4; `civic_not_playable`, `authority_variant`, `living_power` in tier 5).

@@ -2,7 +2,7 @@
  "rulesetId": "stellaris-pc-4.5.4",
  "gameVersion": "Cygnus v4.5.4 (1b4f)",
  "generator": "tools/testellaris/generate_questions.py",
- "count": 3507,
+ "count": 3534,
  "questions": [
   {
    "id": "artifacts.archaeotech.tech_archaeo_mass_accelerator",
@@ -23220,6 +23220,393 @@
    "icon": "buildings/building_temple_of_prosperity.png"
   },
   {
+   "id": "economy.building_base_cost.building_factory_1",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/04_manufacturing_buildings.txt",
+    "key": "building_factory_1"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de construcción del edificio Industrias civiles?",
+    "en": "What is the base construction cost of the building Civilian Industries?",
+    "jp": "建造物「民需工場」の基本建設コストは？"
+   },
+   "answers": {
+    "es": [
+     "300",
+     "100",
+     "400",
+     "500"
+    ],
+    "en": [
+     "300",
+     "100",
+     "400",
+     "500"
+    ],
+    "jp": [
+     "300",
+     "100",
+     "400",
+     "500"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de construcción de Industrias civiles es 400.",
+    "en": "The base construction cost of Civilian Industries is 400.",
+    "jp": "「民需工場」の基本建設コストは400です。"
+   },
+   "icon": "buildings/building_factory_1.png"
+  },
+  {
+   "id": "economy.building_base_cost.building_foundry_1",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/04_manufacturing_buildings.txt",
+    "key": "building_foundry_1"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de construcción del edificio Fundiciones de aleación?",
+    "en": "What is the base construction cost of the building Alloy Foundries?",
+    "jp": "建造物「合金工場」の基本建設コストは？"
+   },
+   "answers": {
+    "es": [
+     "600",
+     "100",
+     "300",
+     "400"
+    ],
+    "en": [
+     "600",
+     "100",
+     "300",
+     "400"
+    ],
+    "jp": [
+     "600",
+     "100",
+     "300",
+     "400"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El coste base de construcción de Fundiciones de aleación es 400.",
+    "en": "The base construction cost of Alloy Foundries is 400.",
+    "jp": "「合金工場」の基本建設コストは400です。"
+   },
+   "icon": "buildings/building_foundry_1.png"
+  },
+  {
+   "id": "economy.building_base_cost.building_research_lab_1",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/05_research_buildings.txt",
+    "key": "building_research_lab_1"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de construcción del edificio Laboratorios de investigación?",
+    "en": "What is the base construction cost of the building Research Labs?",
+    "jp": "建造物「研究所」の基本建設コストは？"
+   },
+   "answers": {
+    "es": [
+     "600",
+     "200",
+     "400",
+     "500"
+    ],
+    "en": [
+     "600",
+     "200",
+     "400",
+     "500"
+    ],
+    "jp": [
+     "600",
+     "200",
+     "400",
+     "500"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de construcción de Laboratorios de investigación es 400.",
+    "en": "The base construction cost of Research Labs is 400.",
+    "jp": "「研究所」の基本建設コストは400です。"
+   },
+   "icon": "buildings/building_research_lab_1.png"
+  },
+  {
+   "id": "economy.building_base_cost.building_resource_silo",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/03_resource_buildings.txt",
+    "key": "building_resource_silo"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de construcción del edificio Silos de recursos?",
+    "en": "What is the base construction cost of the building Resource Silos?",
+    "jp": "建造物「資源サイロ」の基本建設コストは？"
+   },
+   "answers": {
+    "es": [
+     "600",
+     "200",
+     "100",
+     "300"
+    ],
+    "en": [
+     "600",
+     "200",
+     "100",
+     "300"
+    ],
+    "jp": [
+     "600",
+     "200",
+     "100",
+     "300"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El coste base de construcción de Silos de recursos es 200.",
+    "en": "The base construction cost of Resource Silos is 200.",
+    "jp": "「資源サイロ」の基本建設コストは200です。"
+   },
+   "icon": "buildings/building_resource_silo.png"
+  },
+  {
+   "id": "economy.building_base_cost.building_robot_assembly_plant",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/01_pop_assembly_buildings.txt",
+    "key": "building_robot_assembly_plant"
+   },
+   "text": {
+    "es": "¿Cuál es el coste base de construcción del edificio Plantas de montaje robóticas?",
+    "en": "What is the base construction cost of the building Robot Assembly Plants?",
+    "jp": "建造物「ロボット製造プラント」の基本建設コストは？"
+   },
+   "answers": {
+    "es": [
+     "800",
+     "500",
+     "600",
+     "400"
+    ],
+    "en": [
+     "800",
+     "500",
+     "600",
+     "400"
+    ],
+    "jp": [
+     "800",
+     "500",
+     "600",
+     "400"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El coste base de construcción de Plantas de montaje robóticas es 600.",
+    "en": "The base construction cost of Robot Assembly Plants is 600.",
+    "jp": "「ロボット製造プラント」の基本建設コストは600です。"
+   },
+   "icon": "buildings/building_robot_assembly_plant.png"
+  },
+  {
+   "id": "economy.building_base_upkeep.building_holo_theatres",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/07_amenity_buildings.txt",
+    "key": "building_holo_theatres"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del edificio Holocines?",
+    "en": "What is the base upkeep of the building Holo-Theatres?",
+    "jp": "建造物「ホロ・シアター」の基本維持費は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "8",
+     "5",
+     "4"
+    ],
+    "en": [
+     "2",
+     "8",
+     "5",
+     "4"
+    ],
+    "jp": [
+     "2",
+     "8",
+     "5",
+     "4"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El mantenimiento base de Holocines es 2.",
+    "en": "The base upkeep of Holo-Theatres is 2.",
+    "jp": "「ホロ・シアター」の基本維持費は2です。"
+   },
+   "icon": "buildings/building_holo_theatres.png"
+  },
+  {
+   "id": "economy.building_base_upkeep.building_resource_silo",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/03_resource_buildings.txt",
+    "key": "building_resource_silo"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del edificio Silos de recursos?",
+    "en": "What is the base upkeep of the building Resource Silos?",
+    "jp": "建造物「資源サイロ」の基本維持費は？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "8",
+     "5",
+     "4"
+    ],
+    "en": [
+     "1",
+     "8",
+     "5",
+     "4"
+    ],
+    "jp": [
+     "1",
+     "8",
+     "5",
+     "4"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El mantenimiento base de Silos de recursos es 1.",
+    "en": "The base upkeep of Resource Silos is 1.",
+    "jp": "「資源サイロ」の基本維持費は1です。"
+   },
+   "icon": "buildings/building_resource_silo.png"
+  },
+  {
+   "id": "economy.building_base_upkeep.building_robot_assembly_plant",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/01_pop_assembly_buildings.txt",
+    "key": "building_robot_assembly_plant"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del edificio Plantas de montaje robóticas?",
+    "en": "What is the base upkeep of the building Robot Assembly Plants?",
+    "jp": "建造物「ロボット製造プラント」の基本維持費は？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "4",
+     "8",
+     "5"
+    ],
+    "en": [
+     "3",
+     "4",
+     "8",
+     "5"
+    ],
+    "jp": [
+     "3",
+     "4",
+     "8",
+     "5"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mantenimiento base de Plantas de montaje robóticas es 5.",
+    "en": "The base upkeep of Robot Assembly Plants is 5.",
+    "jp": "「ロボット製造プラント」の基本維持費は5です。"
+   },
+   "icon": "buildings/building_robot_assembly_plant.png"
+  },
+  {
+   "id": "economy.building_base_upkeep.building_stronghold",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/buildings/09_army_buildings.txt",
+    "key": "building_stronghold"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del edificio Bastión?",
+    "en": "What is the base upkeep of the building Stronghold?",
+    "jp": "建造物「駐屯地」の基本維持費は？"
+   },
+   "answers": {
+    "es": [
+     "8",
+     "2",
+     "3",
+     "1"
+    ],
+    "en": [
+     "8",
+     "2",
+     "3",
+     "1"
+    ],
+    "jp": [
+     "8",
+     "2",
+     "3",
+     "1"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mantenimiento base de Bastión es 1.",
+    "en": "The base upkeep of Stronghold is 1.",
+    "jp": "「駐屯地」の基本維持費は1です。"
+   },
+   "icon": "buildings/building_stronghold.png"
+  },
+  {
    "id": "economy.building_days.building_astral_siphon_1",
    "tier": 5,
    "topic": "economy",
@@ -32183,6 +32570,780 @@
     "jp": "「野生生物保護区」は「上級保護区」にアップグレードできます。"
    },
    "icon": "buildings/wildlife_sanctuary.png"
+  },
+  {
+   "id": "economy.job_base_output.artisan",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "artisan"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Artesano, sin bonificaciones?",
+    "en": "What is the base output of the job Artisan, before any bonus?",
+    "jp": "職業「職人」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "6",
+     "4",
+     "3",
+     "2"
+    ],
+    "en": [
+     "6",
+     "4",
+     "3",
+     "2"
+    ],
+    "jp": [
+     "6",
+     "4",
+     "3",
+     "2"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "La producción base de Artesano es 6.",
+    "en": "The base output of Artisan is 6.",
+    "jp": "「職人」の基本生産量は6です。"
+   },
+   "icon": "jobs/job_artisan.png"
+  },
+  {
+   "id": "economy.job_base_output.biologist",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "biologist"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Biólogo, sin bonificaciones?",
+    "en": "What is the base output of the job Biologist, before any bonus?",
+    "jp": "職業「生物学者」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "4",
+     "2",
+     "3",
+     "6"
+    ],
+    "en": [
+     "4",
+     "2",
+     "3",
+     "6"
+    ],
+    "jp": [
+     "4",
+     "2",
+     "3",
+     "6"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La producción base de Biólogo es 3.",
+    "en": "The base output of Biologist is 3.",
+    "jp": "「生物学者」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_biologist.png"
+  },
+  {
+   "id": "economy.job_base_output.bureaucrat",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "bureaucrat"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Burócrata, sin bonificaciones?",
+    "en": "What is the base output of the job Bureaucrat, before any bonus?",
+    "jp": "職業「官僚」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "6",
+     "1",
+     "3"
+    ],
+    "en": [
+     "2",
+     "6",
+     "1",
+     "3"
+    ],
+    "jp": [
+     "2",
+     "6",
+     "1",
+     "3"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "La producción base de Burócrata es 3.",
+    "en": "The base output of Bureaucrat is 3.",
+    "jp": "「官僚」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_bureaucrat.png"
+  },
+  {
+   "id": "economy.job_base_output.clerk",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/03_worker_jobs.txt",
+    "key": "clerk"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Administrativo, sin bonificaciones?",
+    "en": "What is the base output of the job Clerk, before any bonus?",
+    "jp": "職業「事務員」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "4",
+     "3",
+     "5",
+     "6"
+    ],
+    "en": [
+     "4",
+     "3",
+     "5",
+     "6"
+    ],
+    "jp": [
+     "4",
+     "3",
+     "5",
+     "6"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La producción base de Administrativo es 3.",
+    "en": "The base output of Clerk is 3.",
+    "jp": "「事務員」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_clerk.png"
+  },
+  {
+   "id": "economy.job_base_output.engineer",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "engineer"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Ingeniero, sin bonificaciones?",
+    "en": "What is the base output of the job Engineer, before any bonus?",
+    "jp": "職業「エンジニア」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "6",
+     "5",
+     "3",
+     "4"
+    ],
+    "en": [
+     "6",
+     "5",
+     "3",
+     "4"
+    ],
+    "jp": [
+     "6",
+     "5",
+     "3",
+     "4"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La producción base de Ingeniero es 3.",
+    "en": "The base output of Engineer is 3.",
+    "jp": "「エンジニア」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_engineer.png"
+  },
+  {
+   "id": "economy.job_base_output.farmer",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/03_worker_jobs.txt",
+    "key": "farmer"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Granjero, sin bonificaciones?",
+    "en": "What is the base output of the job Farmer, before any bonus?",
+    "jp": "職業「農民」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "5",
+     "6",
+     "2"
+    ],
+    "en": [
+     "3",
+     "5",
+     "6",
+     "2"
+    ],
+    "jp": [
+     "3",
+     "5",
+     "6",
+     "2"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "La producción base de Granjero es 6.",
+    "en": "The base output of Farmer is 6.",
+    "jp": "「農民」の基本生産量は6です。"
+   },
+   "icon": "jobs/job_farmer.png"
+  },
+  {
+   "id": "economy.job_base_output.foundry",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "foundry"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Metalúrgico, sin bonificaciones?",
+    "en": "What is the base output of the job Metallurgist, before any bonus?",
+    "jp": "職業「冶金技師」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "3",
+     "5",
+     "1",
+     "4"
+    ],
+    "en": [
+     "3",
+     "5",
+     "1",
+     "4"
+    ],
+    "jp": [
+     "3",
+     "5",
+     "1",
+     "4"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "La producción base de Metalúrgico es 3.",
+    "en": "The base output of Metallurgist is 3.",
+    "jp": "「冶金技師」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_foundry.png"
+  },
+  {
+   "id": "economy.job_base_output.miner",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/03_worker_jobs.txt",
+    "key": "miner"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Minero, sin bonificaciones?",
+    "en": "What is the base output of the job Miner, before any bonus?",
+    "jp": "職業「鉱山労働者」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "4",
+     "6",
+     "1",
+     "3"
+    ],
+    "en": [
+     "4",
+     "6",
+     "1",
+     "3"
+    ],
+    "jp": [
+     "4",
+     "6",
+     "1",
+     "3"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "La producción base de Minero es 4.",
+    "en": "The base output of Miner is 4.",
+    "jp": "「鉱山労働者」の基本生産量は4です。"
+   },
+   "icon": "jobs/job_miner.png"
+  },
+  {
+   "id": "economy.job_base_output.physicist",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "physicist"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Físico, sin bonificaciones?",
+    "en": "What is the base output of the job Physicist, before any bonus?",
+    "jp": "職業「物理学者」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "5",
+     "2",
+     "3"
+    ],
+    "en": [
+     "1",
+     "5",
+     "2",
+     "3"
+    ],
+    "jp": [
+     "1",
+     "5",
+     "2",
+     "3"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "La producción base de Físico es 3.",
+    "en": "The base output of Physicist is 3.",
+    "jp": "「物理学者」の基本生産量は3です。"
+   },
+   "icon": "jobs/job_physicist.png"
+  },
+  {
+   "id": "economy.job_base_output.politician",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/01_ruler_jobs.txt",
+    "key": "politician"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Político, sin bonificaciones?",
+    "en": "What is the base output of the job Politician, before any bonus?",
+    "jp": "職業「政治家」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "5",
+     "3",
+     "8",
+     "6"
+    ],
+    "en": [
+     "5",
+     "3",
+     "8",
+     "6"
+    ],
+    "jp": [
+     "5",
+     "3",
+     "8",
+     "6"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "La producción base de Político es 5.",
+    "en": "The base output of Politician is 5.",
+    "jp": "「政治家」の基本生産量は5です。"
+   },
+   "icon": "jobs/job_politician.png"
+  },
+  {
+   "id": "economy.job_base_output.technician",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/03_worker_jobs.txt",
+    "key": "technician"
+   },
+   "text": {
+    "es": "¿Cuál es la producción base del empleo Técnico, sin bonificaciones?",
+    "en": "What is the base output of the job Technician, before any bonus?",
+    "jp": "職業「技術者」の基本生産量（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "6",
+     "3",
+     "5"
+    ],
+    "en": [
+     "2",
+     "6",
+     "3",
+     "5"
+    ],
+    "jp": [
+     "2",
+     "6",
+     "3",
+     "5"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "La producción base de Técnico es 6.",
+    "en": "The base output of Technician is 6.",
+    "jp": "「技術者」の基本生産量は6です。"
+   },
+   "icon": "jobs/job_technician.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.biologist",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "biologist"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Biólogo, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Biologist, before any bonus?",
+    "jp": "職業「生物学者」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "1",
+     "3",
+     "1.5"
+    ],
+    "en": [
+     "2",
+     "1",
+     "3",
+     "1.5"
+    ],
+    "jp": [
+     "2",
+     "1",
+     "3",
+     "1.5"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mantenimiento base de Biólogo es 1.5.",
+    "en": "The base upkeep of Biologist is 1.5.",
+    "jp": "「生物学者」の基本維持費は1.5です。"
+   },
+   "icon": "jobs/job_biologist.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.bureaucrat",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "bureaucrat"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Burócrata, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Bureaucrat, before any bonus?",
+    "jp": "職業「官僚」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "1",
+     "4",
+     "3"
+    ],
+    "en": [
+     "2",
+     "1",
+     "4",
+     "3"
+    ],
+    "jp": [
+     "2",
+     "1",
+     "4",
+     "3"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El mantenimiento base de Burócrata es 2.",
+    "en": "The base upkeep of Bureaucrat is 2.",
+    "jp": "「官僚」の基本維持費は2です。"
+   },
+   "icon": "jobs/job_bureaucrat.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.engineer",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "engineer"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Ingeniero, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Engineer, before any bonus?",
+    "jp": "職業「エンジニア」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "0.5",
+     "1.5",
+     "3",
+     "2"
+    ],
+    "en": [
+     "0.5",
+     "1.5",
+     "3",
+     "2"
+    ],
+    "jp": [
+     "0.5",
+     "1.5",
+     "3",
+     "2"
+    ]
+   },
+   "correct": 1,
+   "explanation": {
+    "es": "El mantenimiento base de Ingeniero es 1.5.",
+    "en": "The base upkeep of Engineer is 1.5.",
+    "jp": "「エンジニア」の基本維持費は1.5です。"
+   },
+   "icon": "jobs/job_engineer.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.healthcare",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "healthcare"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Obrero médico, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Medical Worker, before any bonus?",
+    "jp": "職業「医療従事者」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "2",
+     "0.5",
+     "3",
+     "1"
+    ],
+    "en": [
+     "2",
+     "0.5",
+     "3",
+     "1"
+    ],
+    "jp": [
+     "2",
+     "0.5",
+     "3",
+     "1"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mantenimiento base de Obrero médico es 1.",
+    "en": "The base upkeep of Medical Worker is 1.",
+    "jp": "「医療従事者」の基本維持費は1です。"
+   },
+   "icon": "jobs/job_healthcare.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.physicist",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "physicist"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Físico, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Physicist, before any bonus?",
+    "jp": "職業「物理学者」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "4",
+     "1",
+     "2",
+     "1.5"
+    ],
+    "en": [
+     "4",
+     "1",
+     "2",
+     "1.5"
+    ],
+    "jp": [
+     "4",
+     "1",
+     "2",
+     "1.5"
+    ]
+   },
+   "correct": 3,
+   "explanation": {
+    "es": "El mantenimiento base de Físico es 1.5.",
+    "en": "The base upkeep of Physicist is 1.5.",
+    "jp": "「物理学者」の基本維持費は1.5です。"
+   },
+   "icon": "jobs/job_physicist.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.politician",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/01_ruler_jobs.txt",
+    "key": "politician"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Político, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Politician, before any bonus?",
+    "jp": "職業「政治家」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "5",
+     "1.5",
+     "3",
+     "4"
+    ],
+    "en": [
+     "5",
+     "1.5",
+     "3",
+     "4"
+    ],
+    "jp": [
+     "5",
+     "1.5",
+     "3",
+     "4"
+    ]
+   },
+   "correct": 2,
+   "explanation": {
+    "es": "El mantenimiento base de Político es 3.",
+    "en": "The base upkeep of Politician is 3.",
+    "jp": "「政治家」の基本維持費は3です。"
+   },
+   "icon": "jobs/job_politician.png"
+  },
+  {
+   "id": "economy.job_base_upkeep.soldier",
+   "tier": 1,
+   "topic": "economy",
+   "category": "engineering",
+   "dlc": [],
+   "source": {
+    "file": "common/pop_jobs/02_specialist_jobs.txt",
+    "key": "soldier"
+   },
+   "text": {
+    "es": "¿Cuál es el mantenimiento base del empleo Soldado, sin bonificaciones?",
+    "en": "What is the base upkeep of the job Soldier, before any bonus?",
+    "jp": "職業「兵士」の基本維持費（ボーナスなし）は？"
+   },
+   "answers": {
+    "es": [
+     "1",
+     "2",
+     "3",
+     "1.5"
+    ],
+    "en": [
+     "1",
+     "2",
+     "3",
+     "1.5"
+    ],
+    "jp": [
+     "1",
+     "2",
+     "3",
+     "1.5"
+    ]
+   },
+   "correct": 0,
+   "explanation": {
+    "es": "El mantenimiento base de Soldado es 1.",
+    "en": "The base upkeep of Soldier is 1.",
+    "jp": "「兵士」の基本維持費は1です。"
+   },
+   "icon": "jobs/job_soldier.png"
   },
   {
    "id": "economy.job_most_output.astrogarbage_collector_gestalt",
