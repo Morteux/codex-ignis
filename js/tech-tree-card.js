@@ -6,13 +6,15 @@
  * another area, which have no line), other requirements (Paradox script text, `NOT` ones marked),
  * the technologies it leads to, its unlocks (buildings and districts linked to the planet
  * simulator where T3007 linked them, with the jobs they give), effects, draw weight (information
- * only), repeatable levels, DLC and the data version. Game names and script texts stay in English
+ * only), repeatable levels, DLC and the data version. T2608: building / district unlocks show the game type icon
+ * and their build time (4.5.4 data), effect lines the icon of their concept (ICONS.md), word as tooltip and alt. Game names and script texts stay in English
  * (GDD §4.3); the labels are translated.
  */
 import { t, htmlLangCode } from "./i18n.js";
 import { createTechIconSlot } from "./tech-tree-icons.js";
 import { KIND_KEYS, gameNameSpan } from "./tech-tree-layout.js";
 import { areaName, byLocalName } from "./tech-tree-names.js";
+import { buildTimePill, effectIcon, unlockTypeIcon } from "./tech-tree-concepts.js";
 
 export { areaName };
 
@@ -102,7 +104,10 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
 
   function unlockItem(unlock, lang) {
     const item = document.createDocumentFragment();
-    item.append(el("span", "tech-card-unlock-type", t(lang, UNLOCK_TYPE_KEYS[unlock.type] || "techTreeUnlockOther") + ": "));
+    const type = el("span", "tech-card-unlock-type");
+    const typeIcon = unlockTypeIcon(unlock.type, lang);
+    type.append(typeIcon || t(lang, UNLOCK_TYPE_KEYS[unlock.type] || "techTreeUnlockOther"), ": ");
+    item.append(type);
     if (unlock.sim) {
       const link = el("a", "tech-card-sim-link", unlock.name);
       link.href = simulatorUrl(unlock.sim);
@@ -113,6 +118,8 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
     } else {
       item.append(gameNameSpan(unlock.name));
     }
+    const buildTime = (unlock.type === "building" || unlock.type === "district") && buildTimePill(unlock.id, lang);
+    if (buildTime) item.append(" ", buildTime);
     if (unlock.jobs && unlock.jobs.length) {
       const jobs = el("span", "tech-card-jobs", " · " + t(lang, "techTreeUnlockJobs") + ": ");
       unlock.jobs.forEach((job, index) => {
@@ -209,7 +216,13 @@ export function createDetailCard(container, data, getLang, { onSelect, onClose }
       blocks.push(section("techTreeUnlocks", "unlocks", list(tech.unlocks.map((unlock) => unlockItem(unlock, lang)))));
     }
     if (tech.effects.length) {
-      blocks.push(section("techTreeEffects", "effects", list(tech.effects.map((line) => el("code", "", line)))));
+      blocks.push(section("techTreeEffects", "effects", list(tech.effects.map((line) => {
+        const item = document.createDocumentFragment();
+        const icon = effectIcon(line, lang);
+        if (icon) item.append(icon);
+        item.append(el("code", "", line));
+        return item;
+      }))));
     }
     const weight = section("techTreeDrawWeight", "drawWeight",
       el("p", "tech-card-weight", t(lang, "techTreeWeightBase").replace("{base}", tech.drawWeight.base === null ? t(lang, "techTreeNoWeight") : tech.drawWeight.base)));

@@ -5271,6 +5271,18 @@ p.tq-category {
     height: 1.1rem;
 }
 
+/* T2608: concept icons of the tech tree card (unlock type, build time, effect lines). */
+.tech-card-build-time {
+    display: inline-flex;
+    align-items: center;
+    gap: .2rem;
+    white-space: nowrap;
+}
+
+.tech-card-build-time .concept-icon {
+    margin: 0;
+}
+
 /* T2607: game concept icons inside wiki article texts ([[icon:…]] tokens, js/wiki-icons.js). */
 .wiki-concept-icon {
     display: inline-block;

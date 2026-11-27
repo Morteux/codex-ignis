@@ -451,6 +451,41 @@ async def page_checks(t):
     sel2 = await pg.evaluate("()=>document.querySelector('.tech-node.is-selected')?.dataset.techId")
     check("tech tree card: a prerequisite button selects that technology and its card (Red Lasers, starter: base cost 500, game flag)",
           sel2 == "tech_lasers_1" and c2["name"] == "Red Lasers" and c2["cost"] == "500" and "Starter" in (c2["flags"] or ""), [sel2, c2["cost"], c2["flags"]])
+    # T2608: concept icons of the card (ICONS.md): unlock type, build time (4.5.4 data) and effect modifiers, word as tooltip and alt
+    icon_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const c=await import('./js/tech-tree-concepts.js');
+      const has=(x)=>!!document.querySelector('.tech-node[data-tech-id='+x.id+']');const T=d.technologies.filter(has);
+      const b=T.find(x=>x.unlocks.some(u=>u.type==='building'&&c.gameBuildDays(u.id)!==null));const di=T.find(x=>x.unlocks.some(u=>u.type==='district'));
+      const sp=T.find(x=>x.effects.some(l=>l.startsWith('planet_building_build_speed_mult')));const res=T.find(x=>x.effects.some(l=>/^planet_jobs_energy_produces_mult/.test(l)));
+      const bu=b.unlocks.find(u=>u.type==='building'&&c.gameBuildDays(u.id)!==null);
+      return {b:b.id,bDays:c.gameBuildDays(bu.id),di:di&&di.id,sp:sp.id,res:res.id,
+        none:[c.effectConcept('army_damage_mult = 0.1'),c.effectConcept('shipsize_corvette_build_speed_mult = 0.25'),c.effectConcept('custom_tooltip = x')],
+        some:[c.effectConcept('planet_jobs_energy_produces_mult = 0.1'),c.effectConcept('planet_miners_minerals_produces_mult = 0.1'),c.effectConcept('planet_jobs_produces_mult = 0.05')]}}""")
+    card_icons_js = """()=>{const c=document.getElementById('tech-card');const im=(s)=>[...c.querySelectorAll(s)].map(i=>({c:i.dataset.concept,alt:i.alt,title:i.title||i.parentElement.title,src:i.getAttribute('src')}));
+      return {types:im('[data-section=unlocks] .tech-card-unlock-type img'),time:[...c.querySelectorAll('.tech-card-build-time')].map(p=>[p.textContent,p.title]),effects:im('[data-section=effects] img')}}"""
+    async def card_icons(tech_id):
+        await pg.evaluate("(id)=>{const n=document.querySelector('.tech-node[data-tech-id='+id+']');n.scrollIntoView({block:'center',inline:'center'});n.click()}", tech_id)
+        await pg.wait_for_timeout(60)
+        return await pg.evaluate(card_icons_js)
+    ib = await card_icons(icon_pick["b"])
+    check("tech tree card (T2608): an unlocked building shows the game building icon (word as alt / tooltip) and its 4.5.4 build time with the clock icon",
+          ib["types"] and all(i["c"] == "building" and i["alt"] == "Building" and i["title"] == "Building" and i["src"].endswith("text_icons/tooltip_building.png") for i in ib["types"] if i["c"] == "building")
+          and any(t[0] == "%d d" % icon_pick["bDays"] and t[1] == "Build time: %d days" % icon_pick["bDays"] for t in ib["time"]), (icon_pick, ib))
+    if icon_pick["di"]:
+        idi = await card_icons(icon_pick["di"])
+        check("tech tree card (T2608): an unlocked district shows the game district icon", any(i["c"] == "district" and i["alt"] == "District" for i in idi["types"]), idi)
+    isp = await card_icons(icon_pick["sp"])
+    ires = await card_icons(icon_pick["res"])
+    check("tech tree card (T2608): effect lines show the icon of their concept (build speed, energy job efficiency) with the word as alt and tooltip",
+          any(i["c"] == "buildSpeed" and i["alt"] == "Build speed" and i["title"] == "Build speed" for i in isp["effects"])
+          and any(i["c"] == "produces_mult:energy" and i["alt"] == "Production efficiency" and i["src"].endswith("modifiers/mod_energy_produces_mult.png") for i in ires["effects"]), (isp, ires))
+    check("tech tree card (T2608): only planet concepts get an icon (ship build speed, army and tooltip lines do not); job efficiency without a resource uses the job icon",
+          icon_pick["none"] == [None, None, None] and icon_pick["some"] == [{"resource": "energy", "kind": "produces_mult"}, {"resource": "minerals", "kind": "produces_mult"}, {"concept": "job"}], icon_pick)
+    await pg.click(".lang-btn[data-lang=es]")
+    await pg.wait_for_timeout(80)
+    ies = await pg.evaluate(card_icons_js)
+    await pg.click(".lang-btn[data-lang=en]")
+    await pg.wait_for_timeout(80)
+    check("tech tree card (T2608): the icon words follow the language (es)", any(i["alt"] == "Eficiencia de producción" for i in ies["effects"]), ies)
     pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const T=d.technologies;const byId=new Map(T.map(x=>[x.id,x]));
       const cross=T.find(x=>x.prerequisites.some(p=>byId.get(p).area!==x.area));const notReq=T.find(x=>x.requirements.some(r=>r.not)&&x.dlc.length);
       const rep=T.find(x=>x.repeatable&&x.repeatable.levels===null);const free=T.find(x=>x.baseCost===null);

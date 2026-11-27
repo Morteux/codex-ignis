@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2608 — Concept icons in the tech tree card (2026-11-27)
+
+- **Unlock type**: building and district unlocks show the game's building / district text icon instead of the word (word as alt and tooltip); other unlock types (deposits, decisions…) keep the word.
+- **Build time of an unlock** comes from the 4.5.4 game data (`js/build-time-data.js`, T2601) matched by game id; buildings and districts with no `base_buildtime` there show no time (never a guessed figure).
+- **Effect lines** keep the raw game key text and get an icon before it only for planet concepts: build speed, housing, amenities, stability, crime, pop upkeep, per-resource upkeep / production (`modifiers/mod_<res>_*`) and job efficiency without a resource (job icon). Ship, army, leader and country modifiers get none: the T2602 list has no icon for them.
+
 ## T2607 — Concept icons in the wiki (2026-11-27)
 
 - **The wiki has no resources, jobs, buildings or districts articles yet** (only ship, fleet and combat articles), so T2607 adds the mechanism and a **draft glossary article** "Planet economy concepts" (`conceptos-economia-planetaria`, es/en/jp, marked as proposal in its first note, no figures) showing every T2602 icon with a one-line explanation. Please review or rewrite its texts; future economy articles can use the same tokens.
