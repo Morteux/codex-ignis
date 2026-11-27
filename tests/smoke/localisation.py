@@ -30,6 +30,13 @@ async def run(t):
             const es={...s.es,...e.es},en={...s.en,...e.en},jp={...s.jp,...e.jp};
             console.log(JSON.stringify(Object.keys(en).filter(k=>/^(civic|origin)[A-Z]/.test(k)&&typeof en[k]==='string'&&!(k in names&&k in jn)&&(es[k]===en[k]||jp[k]===en[k]))))"""), "placeholders")
 
+    # T1506: the P13.8 data texts are written in es and jp ("Ix Belèn" is the same name in Spanish)
+    data = node_json("""const {strings:s}=await import('./js/i18n-simulator.js');
+      const keys=Object.keys(s.en).filter(k=>/^(planetModifier\\w*(NotModelled\\d+|Source)|bodyInfo\\w+\\d|swapReq\\w+|swapNotModelled\\w+)$/.test(k)&&k!=='planetModifierSource');
+      console.log(JSON.stringify({count:keys.length,es:keys.filter(k=>s.es[k]===s.en[k]),jp:keys.filter(k=>s.jp[k]===s.en[k])}))""")
+    check("data texts (T1506): the P13.8 texts (not-modelled lines, sources, body type notes, swap conditions) are translated in es and jp",
+          data.get("count", 0) >= 240 and data.get("es") == ["planetModifierTheMemorexSource"] and data.get("jp") == [], data)
+
     pg = await t.ctx.new_page()
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))

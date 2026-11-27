@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1506 — P13.8 data texts of the simulator in es and jp (2026-11-27)
+
+- [ ] **The es and jp texts are drafts (proposal)** written by Claude, not reviewed by a native speaker. Game terms and names follow the official strings of the installed game folder (4.6.0, T2526), read only as terminology; every figure is the one of the English text.
+- [ ] **Stat lines use the game's tooltip order, "Name: value"** («Máx. de distritos: −30%», 「最大区域数：−30%」), so the official modifier name appears as the game writes it (English keeps "−30% Max Districts").
+- [ ] **No official string, own wording**: "Paradise is a Place" (es «El paraíso es un lugar», jp 「楽園という場所」), the outcomes of the Sentinels («Dejarlos en paz», «Purgar y reutilizar», «Cobayas»…), "Holo-Museum" (from the game's «Holomuseo de …»), "Species Habitability Cap" («Tope de habitabilidad de las especies» / 種族の居住性上限). "Migration Pull" uses the game's Immigration Pull («Tirón de inmigración» / 流入魅力). "Ancient Relics" stays in English (DLC name).
+- [ ] **Spanish game spellings kept**: «nébula», and «Fauna protegida» once where the game gives that name to two jobs (Conserved Fauna and Protected Fauna).
+- [ ] **The three labels shown with these lines** are translated too ("Not modelled:", "Source:" as «Origen:» / 「入手元：」, "Not computed by the simulator:").
+- [ ] **About 330 other texts of the simulator are still English in es and jp** (outside this task: new task T1507).
+
 ## T1505 — Interface of the simulator and the tech tree in the seven new languages (2026-11-27)
 
 - [ ] **The translations are drafts (proposal)** written by Claude for pt, fr, de, ko, pl, ru and zh (1286 texts each), not reviewed by native speakers.

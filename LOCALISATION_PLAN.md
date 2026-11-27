@@ -81,8 +81,8 @@ else to Spanish (the site default).
 - Texts that mix interface and game names ("Cost: {cost}") keep their template in the interface
   texts and insert the official name.
 - Draft English texts for data the simulator models but the game does not name (the P13.8
-  "not modelled" lines) are translated in the seven new languages (T1505); es and jp still show them
-  in English (T1506).
+  "not modelled" lines) are translated in the seven new languages (T1505) and in es and jp (T1506,
+  in `js/i18n-simulator.js`), with the game's own terms.
 
 ## 6. Checks
 
