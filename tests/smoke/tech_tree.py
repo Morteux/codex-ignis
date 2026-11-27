@@ -108,14 +108,17 @@ async def run(t):
           and mat.get("sim") == {"collection": "buildings", "id": "materials_workshop"} and {"id": "engineer", "sim": "engineer"} in mat.get("jobs", []),
           {"bad": bad[:10], "mat": mat})
 
-    # T3006: the technologies collection is registered, unverified, with its own version, outside the simulator summary
+    # T3006: the technologies collection is registered with its own version, outside the simulator summary;
+    # T1406: verified against the game files, in data-version.js and in js/tech-versions.js
+    ver = node_json("import {currentTechVersion as c} from './js/tech-versions.js'; console.log(JSON.stringify({v:c().verification}))")
+    check("tech tree data (T1406): the current tech version is game-data-verified", ver.get("v") == "game-data-verified", ver)
     reg = node_json("import * as v from './js/data-version.js'; import {TECH_DATA as d} from './%s'; const c=v.DATA_COLLECTIONS.technologies||{};"
                     "const sim=Object.values(v.DATA_COLLECTIONS).filter(x=>!x.tool).length;"
                     "console.log(JSON.stringify({file:c.file,status:c.verification,rule:c.rulesetId===d.rulesetId,tool:c.tool,"
                     "simCount:Object.values(v.verificationSummary()).reduce((a,b)=>a+b,0),sim,tech:v.verificationSummary('tech-tree')}))" % real)
-    check("tech tree data: technologies registered in data-version.js as unverified 4.5.4, not counted in the simulator summary",
-          reg.get("file") == real and reg.get("status") == "unverified" and reg.get("rule") and reg.get("tool") == "tech-tree"
-          and reg.get("simCount") == reg.get("sim") and reg.get("tech") == {"unverified": 1}, reg)
+    check("tech tree data: technologies registered in data-version.js as game-data-verified 4.5.4, not counted in the simulator summary",
+          reg.get("file") == real and reg.get("status") == "game-data-verified" and reg.get("rule") and reg.get("tool") == "tech-tree"
+          and reg.get("simCount") == reg.get("sim") and reg.get("tech") == {"game-data-verified": 1}, reg)
 
     # T3003: reserved icon slot — fixed-size frame, lazy image, a missing file leaves it empty with no layout shift
     pg = await t.ctx.new_page()
@@ -227,8 +230,8 @@ async def page_checks(t):
     await pg.set_viewport_size({"width": 1280, "height": 900})
     check("tech tree window (T3602): as wide as the page and much taller: 85 % of the viewport (765 px at 900), at least 24rem (384 px) and at most 64rem (1024 px)",
           abs(sizes[900][0] - 765) <= 2 and sizes[400][0] == 384 and sizes[1600][0] == 1024 and all(v[1] == v[2] for v in sizes.values()), sizes)
-    check("tech tree page: data version visible (4.5.4, game version, unverified)",
-          "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "unverified" in shell["version"], shell["version"])
+    check("tech tree page: data version visible (4.5.4, game version, verified against the game files)",
+          "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "verified against the game files" in shell["version"], shell["version"])
     bsc, tur = "https://bloodstainedcrow.github.io/stellaris-tech-tree/", "https://turanar.github.io/stellaris-tech-tree/index.html"
     check("tech tree page: credits section links both inspirations; the footer mentions BloodStainedCrow and links the credits",
           bsc in shell["credits"] and tur in shell["credits"] and bsc in shell["footer"] and shell["footerCredits"], shell)

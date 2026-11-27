@@ -16,7 +16,9 @@ export const TECH_VERSIONS = [
     id: "stellaris-pc-4.5.4",
     label: "Stellaris PC 4.5.4",
     file: "./tech-data/stellaris-pc-4.5.4.js",
-    verification: "unverified",
+    // T1406: rebuilt from data/generated/stellaris-pc-4.5.4/ byte for byte; every technology
+    // matches the extractor output (name, area, field, tier, cost, prerequisites, DLC, icon).
+    verification: "game-data-verified",
     isCurrent: true,
   },
 ];
