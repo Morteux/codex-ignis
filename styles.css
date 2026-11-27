@@ -4964,6 +4964,17 @@ p.tq-category {
     overflow-wrap: anywhere;
 }
 
+/* T4503: the source sentence, then the exact file and key smaller on its own line. */
+.tq-source-text {
+    display: block;
+}
+
+.tq-source-detail {
+    display: block;
+    color: var(--muted);
+    font-size: .66rem;
+}
+
 .tq-feedback .tq-btn {
     justify-self: start;
 }

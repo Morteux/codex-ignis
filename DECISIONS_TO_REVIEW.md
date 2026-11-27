@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4503 — Testellaris: readable source of a question (2026-11-27)
+
+- **Wording (proposal)**: es «Sacada de los archivos del juego de Stellaris 4.5.4.» / «Sacada de la wiki de Stellaris (4.5.2), artículo «…».» (feminine, it agrees with «la pregunta»); en "Taken from…"; jp 「Stellaris 4.5.4のゲームファイルより。」. The detail line reads `File: … · key: …` and, for wiki questions, `Section: …` first.
+- **Wiki questions checked against the data** (282 of them also cite a file and key, GDD §5.3) get a third sentence, "…, and checked against the game files of Stellaris 4.5.4.", and their detail line holds the section, the file and the key.
+- **The detail line** is the same muted colour, at .66 rem (the sentence is .72 rem), on its own line; screen readers read both.
+
 ## T4502 — Testellaris: four lifelines, one per category (2026-11-27)
 
 - **Unity lifeline: Enhanced Recycling** (`tr_adaptability_recycling`, Adaptability tradition: Reciclaje mejorado / 再利用強化), chosen because recycling fits "gives back a spent lifeline". Alternatives of the same tree: Adaptability itself (`tradition_adaptability`), Survival of the Fittest.

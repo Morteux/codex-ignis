@@ -126,11 +126,16 @@ Owner's decision of 2026-11-26 (section 44) replaces the former rule "only the e
 
 - **Extractor output**: `data/generated/<rulesetId>/*.json` and its localisation, including the description texts. The generated questions (`generate_questions.py`) come only from here.
 - **Community wiki**, written by players: the local copy in `C:/Users/ignis/OneDrive/Documentos/Codex Ignis Wiki` (`markdown/v4-5-2/<Article>.md`, version 4.5.2), for deeper questions than the numeric ones: lore, mechanics, events, crises, origins' stories, strategy, history of the game. Wiki questions are written by hand (template `wiki` in the id, kept by the generator like `hand`) and follow these rules:
-  - **Citation**: `source.kind` is `wiki`, `source.article` the article (the file name without `.md`, which is the wiki page title) and `source.section` the heading of the section that holds the fact (the article title for its introduction). The validator checks both against the local copy when it exists; the page shows "Source: Stellaris Wiki (4.5.2), <article> · <section>".
+  - **Citation**: `source.kind` is `wiki`, `source.article` the article (the file name without `.md`, which is the wiki page title) and `source.section` the heading of the section that holds the fact (the article title for its introduction). The validator checks both against the local copy when it exists; the page shows the source as in "Source on the page" below.
   - **Checked against the data**: a fact that is a number or a game name (a cost, a duration, a modifier, the name of a civic, event or trait) is checked against the 4.5.4 extractor data when the data has it; the question then also cites that `file` and `key` and uses the data's value and the official localised names (§5.2). If the data says something else, the data wins and the question is rewritten or dropped.
   - **Version**: the copy describes 4.5.2. Facts that changed after 4.5.2 (the 4.5.4 data differs, or the article marks them as changed in a later patch) are not used. Facts about the history of the game (which version or DLC added something) are fine when the article states them.
   - **Own words**: never copied text (§5.2). Doubtful facts stay as drafts in `DECISIONS_TO_REVIEW.md` until the owner checks them.
   - **Counted apart**: `review_bank.py` reports the wiki questions on their own (per tier, per topic, with a DLC, checked against the data) besides the totals, in `review.json` under `wiki`.
+- **Source on the page (owner, T4503):** after each answer and in the failed questions, a readable sentence and then, smaller on its own line, the exact detail:
+  - game data: "Taken from the game files of Stellaris 4.5.4." / `File: common/deposits/12_wilderness_deposits.txt · key: d_wilderness_generator_2`;
+  - wiki: "Taken from the Stellaris Wiki (4.5.2), article “<article>”." / `Section: <section>`;
+  - wiki checked against the data (it also cites file and key): "Taken from the Stellaris Wiki (4.5.2), article “<article>”, and checked against the game files of Stellaris 4.5.4." / `Section: <section> · File: <file> · key: <key>`.
+  The game version comes from the ruleset id of the bank, the wiki version is the one of the local copy; es/en/jp in `js/i18n-testellaris.js` (`tqSourceGame`, `tqSourceWiki`, `tqSourceWikiChecked`, `tqSourceSection`, `tqSourceFile`).
 - New topics need a new extractor first (T4110), added to `extract_all.py`.
 - When the data and what the game shows might differ (values changed by scripted effects or by other modifiers), the question is not asked.
 

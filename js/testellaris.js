@@ -68,11 +68,42 @@ export function format(text, values) {
     return text.replace(/\{(\w+)\}/g, (match, name) => (name in values ? values[name] : match));
 }
 
-/** Source line of a question: game file and key, or the wiki article and section (GDD §5.3). */
-export function sourceText(question, lang) {
+/** Game version of the bank (the ruleset id without its prefix) and version of the local wiki copy (GDD §5.3). */
+export const GAME_VERSION = RULESET_ID.replace(/^stellaris-pc-/, "");
+export const WIKI_VERSION = "4.5.2";
+
+/**
+ * Source of a question (T4503, GDD §5.3): an explanatory sentence ("Taken from the game files of
+ * Stellaris 4.5.4", "Taken from the Stellaris Wiki (4.5.2), article …") and a detail line with the
+ * wiki section and the exact file and key. Returns { text, detail }.
+ */
+export function sourceParts(question, lang) {
     const source = question.source;
-    if (source.kind === "wiki") return format(t(lang, "tqSourceWiki"), { article: source.article, section: source.section });
-    return format(t(lang, "tqSource"), { file: source.file, key: source.key });
+    const wiki = source.kind === "wiki";
+    const sentenceKey = wiki ? (source.file ? "tqSourceWikiChecked" : "tqSourceWiki") : "tqSourceGame";
+    const text = format(t(lang, sentenceKey), { article: source.article, game: GAME_VERSION, wiki: WIKI_VERSION });
+    const details = [];
+    if (wiki) details.push(format(t(lang, "tqSourceSection"), { section: source.section }));
+    if (source.file) details.push(format(t(lang, "tqSourceFile"), { file: source.file, key: source.key }));
+    return { text, detail: details.join(" · ") };
+}
+
+/** The source as plain text: the sentence, then the detail line. */
+export function sourceText(question, lang) {
+    const { text, detail } = sourceParts(question, lang);
+    return `${text} ${detail}`;
+}
+
+/** The source as nodes for a `.tq-source` paragraph: the sentence and, smaller, the detail line. */
+function sourceNodes(question, lang) {
+    const { text, detail } = sourceParts(question, lang);
+    const sentence = document.createElement("span");
+    sentence.className = "tq-source-text";
+    sentence.textContent = text;
+    const small = document.createElement("span");
+    small.className = "tq-source-detail";
+    small.textContent = detail;
+    return [sentence, " ", small];
 }
 
 function readStorage(key, fallback) {
@@ -477,7 +508,7 @@ function renderFeedback() {
     if (lastResult.tierUp) lines.push(format(t(lang, "tqTierUp"), { tier: lastResult.tierUp, name: tierName(lastResult.tierUp) }));
     result.textContent = lines.join(" ");
     el("tq-feedback-explanation").replaceChildren(...explanationNodes(question, lang));
-    el("tq-feedback-source").textContent = sourceText(question, lang);
+    el("tq-feedback-source").replaceChildren(...sourceNodes(question, lang));
 }
 
 function pick(position) {
@@ -607,7 +638,7 @@ function renderFailed(failed) {
             ["tq-failed-yours", answerLine("tqYourAnswer", question, entry.chosen)],
             ["tq-failed-right", answerLine("tqRightAnswer", question, question.correct)],
             ["tq-failed-explanation", explanationNodes(question, lang)],
-            ["tq-source", sourceText(question, lang)],
+            ["tq-source", sourceNodes(question, lang)],
         ];
         item.append(...lines.map(([className, content]) => {
             const p = document.createElement("p");

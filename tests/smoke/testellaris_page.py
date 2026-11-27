@@ -525,22 +525,43 @@ ANSWER_GRID_JS = "()=>{const r=[...document.querySelectorAll('#tq-answers .tq-an
 CATEGORY_EN = {"engineering": "Engineering", "physics": "Physics", "society": "Society", "unity": "Unity"}
 
 
-def source_en(q):
+def source_parts_en(q):
+    """T4503: the sentence and the detail line of a question's source, in English."""
     src = q["source"]
+    detail = ["Section: %s" % src["section"]] if src.get("kind") == "wiki" else []
+    if src.get("file"):
+        detail.append("File: %s · key: %s" % (src["file"], src["key"]))
     if src.get("kind") == "wiki":
-        return "Source: Stellaris Wiki (4.5.2), %s · %s" % (src["article"], src["section"])
-    return "Source: %s · %s" % (src["file"], src["key"])
+        text = "Taken from the Stellaris Wiki (4.5.2), article “%s”" % src["article"]
+        text += ", and checked against the game files of Stellaris 4.5.4." if src.get("file") else "."
+    else:
+        text = "Taken from the game files of Stellaris 4.5.4."
+    return text, " · ".join(detail)
+
+
+def source_en(q):
+    return "%s %s" % source_parts_en(q)
+
+
+def source_in(q, shown):
+    """The sentence and the detail line are both in the shown text (innerText puts them on two lines)."""
+    text, detail = source_parts_en(q)
+    return text in shown and detail in shown
 
 
 SOURCE_JS = """async()=>{const m=await import('./js/testellaris.js');const w={source:{kind:'wiki',article:'Ambition',section:'Galactic Nemesis'}};const g={source:{file:'common/x.txt',key:'k'}};
-  return [m.sourceText(w,'en'),m.sourceText(w,'es'),m.sourceText(w,'jp'),m.sourceText(g,'en')]}"""
+  const wf={source:{kind:'wiki',article:'Astral threads',section:'Astral actions',file:'common/technology/00_phys_tech.txt',key:'tech_wormhole_stabilization'}};
+  return [m.sourceText(w,'en'),m.sourceText(w,'es'),m.sourceText(w,'jp'),m.sourceText(g,'en'),m.sourceText(g,'es'),m.sourceText(g,'jp'),m.sourceParts(wf,'en')]}"""
 
 
 async def game_checks(pg, by_id):
     texts = await pg.evaluate(SOURCE_JS)
-    check("testellaris page: a wiki question cites the wiki article and section in every language, a game question its file and key (T4401)",
-          texts == ["Source: Stellaris Wiki (4.5.2), Ambition · Galactic Nemesis", "Fuente: wiki de Stellaris (4.5.2), Ambition · Galactic Nemesis",
-                    "出典：Stellaris Wiki（4.5.2）、Ambition・Galactic Nemesis", "Source: common/x.txt · k"], texts)
+    check("testellaris page (T4503): the source is a sentence (game files of Stellaris 4.5.4, or the Stellaris Wiki 4.5.2 and its article) and then the section, file and key, in every language",
+          texts[:6] == ["Taken from the Stellaris Wiki (4.5.2), article “Ambition”. Section: Galactic Nemesis", "Sacada de la wiki de Stellaris (4.5.2), artículo «Ambition». Sección: Galactic Nemesis",
+                        "Stellaris Wiki（4.5.2）の記事「Ambition」より。 節：Galactic Nemesis", "Taken from the game files of Stellaris 4.5.4. File: common/x.txt · key: k",
+                        "Sacada de los archivos del juego de Stellaris 4.5.4. Archivo: common/x.txt · clave: k", "Stellaris 4.5.4のゲームファイルより。 ファイル：common/x.txt・キー：k"]
+          and texts[6] == {"text": "Taken from the Stellaris Wiki (4.5.2), article “Astral threads”, and checked against the game files of Stellaris 4.5.4.",
+                           "detail": "Section: Astral actions · File: common/technology/00_phys_tech.txt · key: tech_wormhole_stabilization"}, texts)
     small = {k: {"answers": v["answers"], "correct": v["correct"]} for k, v in by_id.items()}
     await pg.evaluate("()=>localStorage.removeItem('testellaris-recent')")
     await pg.click("#tq-start-btn")
@@ -568,8 +589,12 @@ async def game_checks(pg, by_id):
     hud = await pg.evaluate(HUD_JS)
     marks = await pg.evaluate("()=>[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>[b.disabled,b.className])")
     check("testellaris game: the key of the right answer gives 100 points, shows Correct, the explanation and the source, and focuses Next",
-          hud["score"] == "Score 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and source_en(q1) in hud["feedback"]
+          hud["score"] == "Score 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and source_in(q1, hud["feedback"])
           and hud["announce"].startswith("Correct.") and hud["focus"] == "tq-next" and all(m[0] for m in marks) and "is-correct" in marks[first["right"]][1], (hud, marks))
+    src = await pg.evaluate("""()=>{const t=document.querySelector('#tq-feedback-source .tq-source-text'),d=document.querySelector('#tq-feedback-source .tq-source-detail');
+      return [t.textContent,d.textContent,parseFloat(getComputedStyle(d).fontSize)<parseFloat(getComputedStyle(t).fontSize),d.getBoundingClientRect().top>=t.getBoundingClientRect().bottom-1]}""")
+    check("testellaris game (T4503): the feedback shows the source sentence and, smaller on its own line, the exact file and key (or wiki section)",
+          src[:2] == list(source_parts_en(q1)) and src[2] and src[3], src)
     await pg.keyboard.press("Enter")
     second = await pg.evaluate(POSITIONS_JS, small)
     check("testellaris game: Enter goes to the next question, a different one", second["id"] != first["id"] and await pg.evaluate("()=>document.querySelector('#tq-feedback').hidden"), second["id"])
