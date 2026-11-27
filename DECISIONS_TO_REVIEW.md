@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1509 — Remaining jp game terms of the simulator (2026-11-27)
+
+- [ ] **職業, 建造物, 区域, 開発構想, 惑星補正 and 民間人** replace 雇用, 建物, 地区, 指定, 惑星修正 (and one 惑星の修正) and civilian 市民 in every jp text of `js/i18n-simulator.js`; terms checked in the localisation of the installed game folder (4.6.0, T2526).
+- [ ] **指定 / 市民 left where they are another word**: the official modifier name 自動移住確率 (指定), 指定された (designated, specified), 市民POP (Citizen Pop), citizens of a democracy (authority blurb) and 完全市民権 (full citizenship).
+- [ ] **District names follow the game**: the mining district is 鉱業区域 (before 採掘地区); the other three only change 地区 to 区域.
+- [ ] **専門化 stays** for "specialization" (the game writes 特化 and some texts already use it): outside the task's list.
+
 ## T1508 — One wording per game term in the es and jp simulator texts (2026-11-27)
 
 - [ ] **The game's words win**: es «población» and «trabajos» replace «pops» and «empleos»; jp 志向, 統治形態, 快適度 and POP replace エシック, 権威 (権威主義 is the ethic and stays), 快適さ / アメニティ and 人口. Terms checked in the localisation of the installed game folder (4.6.0, T2526).

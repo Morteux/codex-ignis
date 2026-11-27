@@ -55,6 +55,12 @@ async def run(t):
       const re={es:/\\bpops?\\b|\\bempleos?\\b/i,jp:/エシック|権威(?!主義)|快適さ|アメニティ|人口/};
       console.log(JSON.stringify(Object.fromEntries(Object.entries(re).map(([l,r])=>[l,Object.keys(s[l]).filter(k=>r.test(String(s[l][k]).replace(/\\$\\{[^}]*\\}/g,'').replace(/^\\([^)]*\\) =>/,'')))]))))""")
     check("interface texts (T1508): es and jp use the game terms (población, trabajos; POP, 志向, 統治形態, 快適度) in every simulator text", old == {"es": [], "jp": []}, old)
+    # T1509: jp 職業, 建造物, 区域, 開発構想, 惑星補正 and 民間人. The phrases removed first keep the old word: the official
+    # modifier name, "designated" as a verb, Citizen Pop, citizens of a democracy and full citizenship
+    old = node_json("""const {strings:s}=await import('./js/i18n-simulator.js');
+      const keep=/自動移住確率 \\(指定\\)|指定され|市民POP|すべての市民|完全市民権/g,re=/雇用|建物|地区|指定|惑星の?修正|市民/;
+      console.log(JSON.stringify(Object.keys(s.jp).filter(k=>re.test(String(s.jp[k]).replace(keep,'')))))""")
+    check("interface texts (T1509): jp uses the game terms for jobs, buildings, districts, designations, planet modifiers and civilians", old == [], old)
     zones = node_json("const o={};for(const l of ['es','jp','fr']){const {names:n}=await import('./js/game-names/'+l+'.js');o[l]=[n.specializationUrbanExpansion,n.districtHollowMountain,n.policyGroupTrade,n.jobMaintenanceDrone]}console.log(JSON.stringify(o))")
     check("game names (T1507): district specializations, wilderness districts, policy groups and jobs take the official names",
           zones.get("es") == ["Expansión urbana", "Montaña hueca", "Política comercial", "Dron de mantenimiento"]
