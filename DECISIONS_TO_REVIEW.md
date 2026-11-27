@@ -2,6 +2,10 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4504 — Testellaris: unity category colour (2026-11-27)
+
+- **Exact value `#b2f8f7`**: the 4.5.4 files declare no colour for unity (`common/strategic_resources` holds none, and `interface/fonts.gfx` has no unity text colour; the concept texts use the generic yellow highlight), so it is read from the resource icon `gfx/interface/icons/resources/unity.dds` (18 × 18): the value of its most opaque light pixels (rgb 178, 248, 247, alpha 252–253). The rest of the icon goes down to a darker turquoise (e.g. `#4ab8b1`); if that reads closer to the game's unity, it is a one-line change in `styles.css` (`.tq-category--unity`). The tint stays at 10 % like the other categories.
+
 ## T4503 — Testellaris: readable source of a question (2026-11-27)
 
 - **Wording (proposal)**: es «Sacada de los archivos del juego de Stellaris 4.5.4.» / «Sacada de la wiki de Stellaris (4.5.2), artículo «…».» (feminine, it agrees with «la pregunta»); en "Taken from…"; jp 「Stellaris 4.5.4のゲームファイルより。」. The detail line reads `File: … · key: …` and, for wiki questions, `Section: …` first.
@@ -159,7 +163,7 @@ Decisions Claude took on its own while implementing tasks, pending the owner's r
 
 ## T4403 — Thematic categories of Testellaris questions (2026-11-26)
 
-- **Unity colour `#f2c94c`**: the owner asked for "the game's unity yellow", but the 4.5.4 data has no colour for the unity resource (`common/strategic_resources` holds none) and the exported icon `resources/Unity.png` of StellarisAssets is mostly cyan. The yellow is a proposal; the three research areas reuse the tech tree tints exactly.
+- **Research area colours**: the three research areas reuse the tech tree tints exactly (the unity colour is T4504's).
 - **Names**: the official names of the game localisation (Física / Physics / 物理学…, Unidad / Unity / 統合力 from `resourceUnity`), not translated by hand.
 - **Default category per topic** (`question_bank.TOPIC_CATEGORY`) and **template overrides** (`generate_questions.TEMPLATE_CATEGORY`), GDD §5.4. Debatable ones: `policies` → engineering as a whole (the owner lists "policies and edicts" under the numbers), except the templates about which ethic, civic, origin or authority a policy or edict needs (→ society); `crises`, `artifacts` and `events` → unity (ambitions, precursors and lore); `shroud` → physics, but the patrons, Covenants and the Reckoning wiki questions → unity; `technology` → physics, but tier, cost, highest tier/cost and draw weight → engineering; every "which DLC adds X" and "which belongs to the content of DLC Y" template → unity (history of the game and its DLCs); jobs of buildings, districts and zones stay in their topic (engineering for economy, physics for planets).
 - **Wiki questions** classified one by one: origin stories → unity (except the three about who can lead, the second species and the ruler's trait → society); community slang (AAR, tall, monohull, vassal shelling, diplo-annex) → unity; numeric facts (artifact uses, Behemoth growth, Horizon Needle days, debris progress, research cost per empire size, tradition cost size, Astral Thread storage) → engineering.

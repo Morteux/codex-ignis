@@ -130,7 +130,7 @@ async def icon_checks(pg, bank):
 CATEGORIES_JS = """()=>[...document.querySelectorAll('#tq-category-list .tq-category-item')].map(l=>({value:l.querySelector('input').value,checked:l.querySelector('input').checked,
   name:l.querySelector('.tq-category-name').textContent,count:l.querySelector('.tq-category-count').textContent,hint:l.querySelector('.tq-category-hint').textContent.length>20,
   colour:getComputedStyle(l.querySelector('.tq-category-name')).color}))"""
-CATEGORY_COLOURS = {"engineering": "rgb(255, 154, 61)", "physics": "rgb(79, 141, 255)", "society": "rgb(79, 209, 122)", "unity": "rgb(242, 201, 76)"}
+CATEGORY_COLOURS = {"engineering": "rgb(255, 154, 61)", "physics": "rgb(79, 141, 255)", "society": "rgb(79, 209, 122)", "unity": "rgb(178, 248, 247)"}  # unity: T4504, from the game's unity icon
 EVEN_JS = """async()=>{const E=await import('./js/testellaris-engine.js');let seed=7;const rng=()=>((seed=(seed*16807)%2147483647)/2147483647);
   const pool=[...Array.from({length:90},(_,i)=>({id:'e'+i,category:'engineering'})),...Array.from({length:10},(_,i)=>({id:'u'+i,category:'unity'}))];
   let unity=0;for(let i=0;i<2000;i+=1)if(E.drawQuestion(pool,rng).category==='unity')unity+=1;

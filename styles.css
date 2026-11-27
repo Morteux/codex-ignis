@@ -4680,12 +4680,12 @@ body.has-tech-card .tech-areas {
     object-fit: contain;
 }
 
-/* T4403: thematic categories, with the tech tree tints for the three research areas and a unity
-   yellow (proposal, DECISIONS_TO_REVIEW.md T4403). */
+/* T4403: thematic categories, with the tech tree tints for the three research areas and, for unity
+   (T4504), the light sky blue of the game's unity resource icon (TESTELLARIS_GDD.md §5.4). */
 .tq-category--engineering { --tq-category-colour: #ff9a3d; --tq-category-tint: rgba(255, 154, 61, .1); }
 .tq-category--physics { --tq-category-colour: #4f8dff; --tq-category-tint: rgba(79, 141, 255, .1); }
 .tq-category--society { --tq-category-colour: #4fd17a; --tq-category-tint: rgba(79, 209, 122, .1); }
-.tq-category--unity { --tq-category-colour: #f2c94c; --tq-category-tint: rgba(242, 201, 76, .1); }
+.tq-category--unity { --tq-category-colour: #b2f8f7; --tq-category-tint: rgba(178, 248, 247, .1); }
 
 .tq-category-list {
     display: grid;
