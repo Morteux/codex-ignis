@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2703 — Full export of the game images to StellarisAssets (2026-11-27)
+
+- **The images come from the installed game, 4.6.0** (Corona Borealis v4.6.0, T2526): there is no copy of the 4.5.4 files, and images carry no figures, so the export was not blocked; `manifest.json` (and the T2704 `index.json`) write `stellaris-pc-4.6.0`. If the project stays on 4.5.4, run `python tools/extract/export_assets.py --game <4.5.4 copy>` again: it rewrites only the files that differ.
+- **56 existing files got new pixels** (same size; `resources/Astral_threads.png` grows from 24 to 32 px): 5 `modifiers/`, 39 `planet_modifiers/`, 8 `technologies/` icons whose older copies did not match the game texture. Their names and links did not change.
+- **Six pushes**, none above ~110 MB: portrait backgrounds; event pictures; the rest of `interface/`; loading screens, wallpapers, flags, DLC thumbnails and key icons; the icon folders `achievements`–`leaders`; and `megastructure_modules`–`zones` with `manifest.json`.
+
 ## T2701 — Plan of the full export of the game images (2026-11-27)
 
 - **What is in**: every image of `gfx/interface/` (icons and the rest of the interface), event pictures, loading screens, flags, the 2D portrait backgrounds of `gfx/portraits/` (city sets, environments, arkships, leader and species preview backgrounds), key icons, DLC thumbnails and wallpapers: 15 099 game files, 18 286 PNG files once strips are split, about 450 MB. The DLC `.zip` files hold only music and sound, so "DLC folders" are just their thumbnails.

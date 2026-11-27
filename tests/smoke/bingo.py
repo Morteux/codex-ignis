@@ -1,5 +1,5 @@
 """Bingo QA: every bingo of BINGOS, layouts, marking, languages, missing icons, PNG download (P22.2, P24.1)."""
-import json, os, subprocess, sys, tempfile
+import json, os, re, subprocess, sys, tempfile
 from playwright.async_api import TimeoutError as PlaywrightTimeout
 from smoke.common import check, ROOT
 
@@ -118,7 +118,7 @@ async def run(t):
     # P24.4: authorities bingo, one cell per icon of authorities/, base authorities first
     await bingo.select_option("#bingo-type", "authorities")
     auths = await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map(c=>[c.getAttribute('aria-label'),c.querySelector('img').src.split('/').pop(),c.dataset.tags||''])")
-    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l))
+    tree_icons = sorted(set(l.strip(" │├└─\n") for l in open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8") if "Auth_" in l and not re.search(r"_\d+x\d+\.png", l)))  # T2703: the game's small _35x35 copies are not cells
     names = [a[0] for a in auths]
     check("bingo: authorities bingo has one cell per icon of authorities/ (79), each with its own name", len(auths) == 79 and sorted(a[1] for a in auths) == tree_icons and len(set(names)) == 79
           and not any("undefined" in n or n.startswith("authority") for n in names), (len(auths), names[:3]))
