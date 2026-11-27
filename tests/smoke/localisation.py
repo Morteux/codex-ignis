@@ -49,6 +49,12 @@ async def run(t):
                "jp": same | {"libraryDialogAccept"}}
     extra = {l: sorted(set(left.get(l, ["?"])) - allowed[l]) for l in allowed}
     check("interface and data texts (T1507): every es and jp text of the simulator and the tech tree is translated", extra == {"es": [], "jp": []}, extra)
+    # T1508: one wording per game term (es población / trabajos; jp POP, 志向, 統治形態, 快適度; 権威主義 is the ethic).
+    # Functions are searched as source, so the ${pops} placeholders are removed first
+    old = node_json("""const {strings:s}=await import('./js/i18n-simulator.js');
+      const re={es:/\\bpops?\\b|\\bempleos?\\b/i,jp:/エシック|権威(?!主義)|快適さ|アメニティ|人口/};
+      console.log(JSON.stringify(Object.fromEntries(Object.entries(re).map(([l,r])=>[l,Object.keys(s[l]).filter(k=>r.test(String(s[l][k]).replace(/\\$\\{[^}]*\\}/g,'').replace(/^\\([^)]*\\) =>/,'')))]))))""")
+    check("interface texts (T1508): es and jp use the game terms (población, trabajos; POP, 志向, 統治形態, 快適度) in every simulator text", old == {"es": [], "jp": []}, old)
     zones = node_json("const o={};for(const l of ['es','jp','fr']){const {names:n}=await import('./js/game-names/'+l+'.js');o[l]=[n.specializationUrbanExpansion,n.districtHollowMountain,n.policyGroupTrade,n.jobMaintenanceDrone]}console.log(JSON.stringify(o))")
     check("game names (T1507): district specializations, wilderness districts, policy groups and jobs take the official names",
           zones.get("es") == ["Expansión urbana", "Montaña hueca", "Política comercial", "Dron de mantenimiento"]
