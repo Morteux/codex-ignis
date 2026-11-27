@@ -7,6 +7,7 @@ import { highlightWords } from "./highlight-config.js";
 import { resolveAssetUrl } from "./asset-config.js";
 import { openModal } from "./modal.js";
 import { formatTechLinks, isTechTreeUrl } from "./tech-tree-link.js";
+import { formatWikiIcons, wikiIconText } from "./wiki-icons.js";
 
 const searchInput = document.querySelector("#knowledge-search");
 const searchStatus = document.querySelector("#search-status");
@@ -115,11 +116,14 @@ function applyWordHighlights(html) {
 /**
  * Escapa el texto, convierte **negrita** en <strong> y [texto](url) en enlaces, y colorea palabras clave.
  * [texto](tech-tree.html#tech_id) enlaza con una tecnología del árbol en la misma pestaña (T3205).
+ * [texto](planet-sim.html) enlaza con el simulador en la misma pestaña (T2607).
+ * [[icon:concepto]] muestra el icono del juego del concepto, con la palabra como tooltip y alt (T2607, js/wiki-icons.js).
  */
 function formatText(text) {
-  let html = escapeHtml(text);
+  let html = formatWikiIcons(escapeHtml(text), currentLang);
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   html = formatTechLinks(html);
+  html = html.replace(/\[(.+?)\]\((planet-sim\.html[^\s)]*)\)/g, '<a href="$2">$1</a>');
   html = html.replace(/\[(.+?)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
   return applyWordHighlights(html);
 }
@@ -420,7 +424,7 @@ function collectBlockText(block) {
 
 /** Comprueba si algún bloque de la entrada contiene la query buscada. */
 function entryBlocksMatch(blocks, normalizedQuery) {
-  return blocks.some((block) => normalize(collectBlockText(block)).includes(normalizedQuery));
+  return blocks.some((block) => normalize(wikiIconText(collectBlockText(block), currentLang)).includes(normalizedQuery));
 }
 
 function updateEntryCount() {

@@ -2770,6 +2770,139 @@ export const knowledgeBase = [
             }
         }
     },
+    {   // Conceptos de la economía planetaria (T2607, borrador: propuesta pendiente de revisión del dueño)
+        slug: "conceptos-economia-planetaria",
+        title: "Conceptos de la economía planetaria",
+        icon: "⚙",
+        blocks: [
+            { type: "note", text: "Borrador (propuesta): artículo pendiente de revisión. Glosario de los iconos que el juego usa para la economía de un planeta; las cifras de cada edificio, distrito y empleo están en el [simulador de planetas](planet-sim.html)." },
+            { type: "heading", text: "Recursos" },
+            {
+                type: "list", items: [
+                    "[[icon+:upkeep:energy]]: lo que un edificio, distrito o empleo consume cada mes (aquí, energía).",
+                    "[[icon+:production:minerals]]: una cantidad fija que se suma a lo que produce el planeta (aquí, minerales).",
+                    "[[icon+:efficiency:minerals]]: un porcentaje que aumenta o reduce la producción del recurso.",
+                    "[[icon+:upkeepChange:energy]]: un porcentaje que aumenta o reduce el mantenimiento del recurso.",
+                    "[[icon+:popUpkeep]]: lo que consume cada pop según su estrato (alimentos, bienes de consumo…)."
+                ]
+            },
+            { type: "heading", text: "Condiciones del planeta" },
+            {
+                type: "list", items: [
+                    "[[icon+:housing]]: cuántos pops caben en el planeta; la dan los distritos, la capital y algunos edificios.",
+                    "[[icon+:amenities]]: los producen algunos empleos y edificios y los consumen los pops; si faltan, bajan la felicidad y la estabilidad. Los imperios gestalt no tienen felicidad y usan [[icon:amenitiesGestalt|Servicios (gestalt)]].",
+                    "[[icon+:stability]]: con estabilidad alta el planeta produce más; con estabilidad baja sufre penalizaciones y disturbios.",
+                    "[[icon+:crime]]: la generan los pops; los empleos de orden la reducen y, si es alta, baja la estabilidad.",
+                    "[[icon+:happiness]]: el ánimo de los pops, que influye en la estabilidad."
+                ]
+            },
+            { type: "heading", text: "Empleos y estratos" },
+            {
+                type: "list", items: [
+                    "[[icon+:job]] y [[icon+:unemployed]]: cada pop trabaja en un empleo de su estrato; los que no tienen empleo no producen lo mismo.",
+                    "[[icon+:ruler]], [[icon+:specialist]] y [[icon+:worker]]: los estratos de los imperios normales, de más a menos cualificado.",
+                    "[[icon+:civilian]], [[icon+:slave]] y [[icon+:bioTrophy]]: otros estratos según la especie y los derechos que tenga.",
+                    "[[icon+:complexDrone]] y [[icon+:simpleDrone]]: los estratos de los imperios gestalt."
+                ]
+            },
+            { type: "heading", text: "Construcción" },
+            {
+                type: "list", items: [
+                    "[[icon+:district]], [[icon+:zone]] y [[icon+:building]]: los distritos amplían el planeta, las zonas lo especializan y los edificios ocupan sus huecos de construcción.",
+                    "[[icon+:buildTime]]: los días que tarda en construirse algo; [[icon+:buildSpeed]] los acorta.",
+                    "[[icon+:upgrade]]: mejora un edificio o la capital a su siguiente nivel."
+                ]
+            }
+        ],
+        i18n: {
+            en: {
+                title: "Planet economy concepts",
+                blocks: [
+                    { type: "note", text: "Draft (proposal): article pending review. Glossary of the icons the game uses for a planet's economy; the figures of each building, district and job are in the [planet simulator](planet-sim.html)." },
+                    { type: "heading", text: "Resources" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:upkeep:energy]]: what a building, district or job consumes every month (here, energy).",
+                            "[[icon+:production:minerals]]: a flat amount added to what the planet produces (here, minerals).",
+                            "[[icon+:efficiency:minerals]]: a percentage that raises or lowers the output of the resource.",
+                            "[[icon+:upkeepChange:energy]]: a percentage that raises or lowers the upkeep of the resource.",
+                            "[[icon+:popUpkeep]]: what each pop consumes according to its stratum (food, consumer goods…)."
+                        ]
+                    },
+                    { type: "heading", text: "Planet conditions" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:housing]]: how many pops fit on the planet; districts, the capital and some buildings provide it.",
+                            "[[icon+:amenities]]: some jobs and buildings produce them and pops consume them; a shortage lowers happiness and stability. Gestalt empires have no happiness and use [[icon:amenitiesGestalt|Amenities (gestalt)]].",
+                            "[[icon+:stability]]: with high stability the planet produces more; with low stability it suffers penalties and unrest.",
+                            "[[icon+:crime]]: pops generate it; law enforcement jobs reduce it and, when it is high, stability drops.",
+                            "[[icon+:happiness]]: the mood of the pops, which affects stability."
+                        ]
+                    },
+                    { type: "heading", text: "Jobs and strata" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:job]] and [[icon+:unemployed]]: each pop works a job of its stratum; those without a job do not produce the same.",
+                            "[[icon+:ruler]], [[icon+:specialist]] and [[icon+:worker]]: the strata of regular empires, from most to least skilled.",
+                            "[[icon+:civilian]], [[icon+:slave]] and [[icon+:bioTrophy]]: other strata depending on the species and its rights.",
+                            "[[icon+:complexDrone]] and [[icon+:simpleDrone]]: the strata of gestalt empires."
+                        ]
+                    },
+                    { type: "heading", text: "Construction" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:district]], [[icon+:zone]] and [[icon+:building]]: districts expand the planet, zones specialize it and buildings fill its building slots.",
+                            "[[icon+:buildTime]]: the days something takes to build; [[icon+:buildSpeed]] shortens them.",
+                            "[[icon+:upgrade]]: upgrades a building or the capital to its next level."
+                        ]
+                    }
+                ]
+            },
+            jp: {
+                title: "惑星経済の概念",
+                blocks: [
+                    { type: "note", text: "下書き（提案）：レビュー待ちの記事です。ゲームが惑星経済に使うアイコンの用語集です。各建造物・区域・職業の数値は[惑星シミュレーター](planet-sim.html)にあります。" },
+                    { type: "heading", text: "資源" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:upkeep:energy]]：建造物・区域・職業が毎月消費するもの（ここではエネルギー）。",
+                            "[[icon+:production:minerals]]：惑星の生産に加算される固定量（ここでは鉱物）。",
+                            "[[icon+:efficiency:minerals]]：資源の産出を増減させる割合。",
+                            "[[icon+:upkeepChange:energy]]：資源の維持費を増減させる割合。",
+                            "[[icon+:popUpkeep]]：各人口が階層に応じて消費するもの（食料、消費財など）。"
+                        ]
+                    },
+                    { type: "heading", text: "惑星の状態" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:housing]]：惑星に住める人口の数。区域、首都、一部の建造物が提供します。",
+                            "[[icon+:amenities]]：一部の職業と建造物が生み出し、人口が消費します。不足すると幸福度と安定度が下がります。集合意識の帝国には幸福度がなく、[[icon:amenitiesGestalt|アメニティ（集合意識）]]を使います。",
+                            "[[icon+:stability]]：安定度が高いと惑星の生産が増え、低いとペナルティや騒乱が起きます。",
+                            "[[icon+:crime]]：人口が生み出し、治安職が減らします。高いと安定度が下がります。",
+                            "[[icon+:happiness]]：人口の気分で、安定度に影響します。"
+                        ]
+                    },
+                    { type: "heading", text: "職業と階層" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:job]]と[[icon+:unemployed]]：各人口は自分の階層の職業に就きます。職のない人口は同じようには生産しません。",
+                            "[[icon+:ruler]]、[[icon+:specialist]]、[[icon+:worker]]：通常の帝国の階層（熟練度の高い順）。",
+                            "[[icon+:civilian]]、[[icon+:slave]]、[[icon+:bioTrophy]]：種族とその権利によるその他の階層。",
+                            "[[icon+:complexDrone]]と[[icon+:simpleDrone]]：集合意識の帝国の階層。"
+                        ]
+                    },
+                    { type: "heading", text: "建設" },
+                    {
+                        type: "list", items: [
+                            "[[icon+:district]]、[[icon+:zone]]、[[icon+:building]]：区域は惑星を広げ、ゾーンは惑星を特化させ、建造物は建設スロットを埋めます。",
+                            "[[icon+:buildTime]]：建設にかかる日数。[[icon+:buildSpeed]]で短くなります。",
+                            "[[icon+:upgrade]]：建造物や首都を次の段階にアップグレードします。"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
     {   // Enlaces útiles
         slug: "enlaces-utiles",
         title: "Enlaces útiles",

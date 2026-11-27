@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2607 — Concept icons in the wiki (2026-11-27)
+
+- **The wiki has no resources, jobs, buildings or districts articles yet** (only ship, fleet and combat articles), so T2607 adds the mechanism and a **draft glossary article** "Planet economy concepts" (`conceptos-economia-planetaria`, es/en/jp, marked as proposal in its first note, no figures) showing every T2602 icon with a one-line explanation. Please review or rewrite its texts; future economy articles can use the same tokens.
+- **Token syntax in `js/content.js` texts** (`js/wiki-icons.js`): `[[icon:<concept>]]` puts the icon instead of the word (word as alt and tooltip), `[[icon+:<concept>]]` puts it next to the visible word (decorative icon, word as tooltip), `[[icon:<kind>:<resource>]]` for upkeep / production / efficiency / upkeep change of a resource, optional `|label`. Unknown concepts fall back to the word. Search matches the words, not the token.
+- **The two ship upkeep mentions** (Ambition ships article) were left as text: ship upkeep mixes energy and alloys and the game shows it without a concept icon.
+- **`[text](planet-sim.html)` links** now render in article texts (same tab), like the tech tree links.
+
 ## T2606 — Icons in the modifiers panel, catalogue cards and capital (2026-11-27)
 
 - **Native tooltips cannot hold images**, so the building / district / capital tooltips keep their text; the icons go into visible pills on the catalogue cards, district cards and the capital control (housing, amenities, upkeep per resource, build time), each with its full words as tooltip and alt.

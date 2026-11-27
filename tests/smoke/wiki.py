@@ -60,8 +60,8 @@ async def run(t):
         for q in ("https", "stellaris", "color", "amp"):
             await search(q)
             bad = await wiki.evaluate(bad_markup_js)
-            hrefs = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body a')].map(a=>a.getAttribute('href')).filter(h=>!/^https:\\/\\/[^\\s<>\\[\\]]+$/.test(h)&&!/^tech-tree\\.html(#tech_\\w+)?$/.test(h))")
-            check("wiki links (" + lang + ", search " + q + "): hrefs are clean URLs (or the tech tree page, T3402), no markup inside attributes", not bad and not hrefs, (bad, hrefs))
+            hrefs = await wiki.evaluate("()=>[...document.querySelectorAll('#reader-body a')].map(a=>a.getAttribute('href')).filter(h=>!/^https:\\/\\/[^\\s<>\\[\\]]+$/.test(h)&&!/^tech-tree\\.html(#tech_\\w+)?$/.test(h)&&h!=='planet-sim.html')")
+            check("wiki links (" + lang + ", search " + q + "): hrefs are clean URLs (or the tech tree page, T3402, or the simulator, T2607), no markup inside attributes", not bad and not hrefs, (bad, hrefs))
     await wiki.click(".lang-btn[data-lang=es]")
     await wiki.goto("file://" + ROOT + "/index.html#/" + "diseño-flotas-biologicas")
     await wiki.wait_for_timeout(300)
@@ -97,6 +97,31 @@ async def run(t):
     check("wiki: a missing image shows a notice with its alt text", notice[1] and notice[0] in notice[1] and "Image not available" in notice[1], notice)
     mug = await wiki.evaluate("async()=>{location.hash='#/MUGANI';await new Promise(r=>setTimeout(r,60));return !!document.querySelector('#reader-body .entry-quote-portrait')}")
     check("wiki: translated quotes keep their portrait", mug)
+    # T2607: [[icon:…]] tokens show the game concept icons (ICONS.md) with the word as tooltip / alt text
+    gloss = "conceptos-economia-planetaria"
+    icons_js = """()=>[...document.querySelectorAll('#reader-body img.wiki-concept-icon')].map(i=>({c:i.dataset.concept,alt:i.alt,title:i.title,src:i.getAttribute('src'),
+        next:(i.nextSibling&&i.nextSibling.textContent||'').trim()}))"""
+    for lang, housing in (("es", "Vivienda"), ("en", "Housing"), ("jp", "住宅")):
+        await wiki.click(".lang-btn[data-lang=" + lang + "]")
+        await wiki.evaluate("(s)=>{location.hash='#/'+encodeURIComponent(s)}", gloss)
+        await wiki.wait_for_timeout(80)
+        icons = await wiki.evaluate(icons_js)
+        text = await wiki.evaluate("()=>document.querySelector('#reader-body').innerText")
+        h = next((i for i in icons if i["c"] == "housing"), {})
+        check("wiki icons (" + lang + "): the glossary shows the game icons of upkeep, production, housing, amenities, stability, crime, strata and build time",
+              len(icons) >= 27 and {"upkeep:energy", "production:minerals", "efficiency:minerals", "housing", "amenities", "stability", "crime", "ruler", "worker", "buildTime", "district"} <= {i["c"] for i in icons}, [i["c"] for i in icons])
+        check("wiki icons (" + lang + "): every icon has its translated word as tooltip and loads from StellarisAssets",
+              all(i["title"] and not i["title"].startswith("wikiIcon") and "/" in i["src"] and i["src"].endswith(".png") for i in icons) and h.get("title") == housing, [i for i in icons if not i["title"] or i["title"].startswith("wikiIcon")][:3] or h)
+        check("wiki icons (" + lang + "): [[icon+:…]] keeps the word visible next to a decorative icon, [[icon:…]] uses the word as alt",
+              h.get("alt") == "" and h.get("next", "").startswith(housing) and any(i["c"] == "amenitiesGestalt" and i["alt"] for i in icons), [h, [i for i in icons if i["c"] == "amenitiesGestalt"]])
+        check("wiki icons (" + lang + "): no raw [[icon tokens in the text", "[[icon" not in text and "]]" not in text)
+    await wiki.click(".lang-btn[data-lang=es]")
+    found = await search("vivienda")
+    leak = await search("icon+")
+    await search("")
+    check("wiki icons: search matches the concept words of the icons, not the token syntax", any("economía planetaria" in b for b in found) and not any("economía planetaria" in b for b in leak), (found, leak))
+    unit = await wiki.evaluate("""async()=>{const m=await import('./js/wiki-icons.js');return [m.formatWikiIcons('[[icon:stability]] y [[icon:nope|Algo]] [[icon:upkeep:unknown_res]]','es'),m.wikiIconText('[[icon+:buildTime]] 360','en')]}""")
+    check("wiki icons: an unknown concept or resource falls back to its plain word", 'alt="Estabilidad"' in unit[0] and "Algo" in unit[0] and unit[0].count("<img") == 1 and unit[1] == "Build time 360", unit)
     check("wiki: no page errors", not wiki_errors, wiki_errors)
     check("wiki: no local resource failed to load", not [u for u in wiki_missing if "Base%20estelar" not in u], wiki_missing)
     await wiki.close()

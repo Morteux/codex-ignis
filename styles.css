@@ -5271,6 +5271,16 @@ p.tq-category {
     height: 1.1rem;
 }
 
+/* T2607: game concept icons inside wiki article texts ([[icon:…]] tokens, js/wiki-icons.js). */
+.wiki-concept-icon {
+    display: inline-block;
+    width: 1.15em;
+    height: 1.15em;
+    object-fit: contain;
+    vertical-align: -.2em;
+    margin: 0 .2em 0 0;
+}
+
 /* T2606: housing, amenities, upkeep and build time pills of the catalogue cards and the capital. */
 .planet-catalog-stat-pill .concept-icon {
     margin: 0;

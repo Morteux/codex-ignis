@@ -52,6 +52,6 @@ No game icon was found for: "Gross" / "Costs" / "Net" totals, "per job" / "per p
 | Planet simulator — main tabs, panel headings, fixed planet summary, catalogue tabs, capital buttons | T2604 (done: Active modifiers heading `text_icons/empire_modifier.png`, Upgrade button `text_icons/tooltip_upgrade.png`) |
 | Planet simulator — header stats, Conditions panel, jobs summary (strata) | T2605 (done; shared helper `js/concept-icons.js`) |
 | Planet simulator — Active modifiers panel, catalogue cards, building / district / capital tooltips | T2606 (done: icon pills on cards and capital, `js/planet-sim-stat-pills.js`; native tooltips keep text) |
-| Wiki (resources, jobs and buildings articles) | T2607 |
+| Wiki (resources, jobs and buildings articles) | T2607 (done: `[[icon:<concept>]]` / `[[icon+:<concept>]]` / `[[icon:<kind>:<resource>]]` tokens of `js/content.js` texts, `js/wiki-icons.js`; draft glossary article "Planet economy concepts") |
 | Tech tree card (unlocked buildings, districts and modifiers) | T2608 |
 | Testellaris and bingo (question texts, item tooltips) | T2609 |
