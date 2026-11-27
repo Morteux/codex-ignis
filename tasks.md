@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **143 / 165 tareas (86%)**
+> Progreso: **143 / 169 tareas (85%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -400,6 +400,13 @@ Owner's decision of 2026-11-26: besides the extractor output, Testellaris may al
   - Prueba manual: in `index.html` open "Conceptos de la economía planetaria": every list line starts with the game icon of its concept (upkeep, production, housing, amenities, stability, crime, strata, build time…) and the word, which also appears on hover; switch to EN / JP and the hover words follow the language.
 - [ ] **T2608** (P26.8) Tech tree card: icons of the T2602 list for the unlocked buildings, districts and modifiers (build time, build speed, upkeep, housing, amenities, stability, job efficiency), text kept as tooltip / accessible name; smoke tests in `tests/smoke/tech_tree.py`
 - [ ] **T2609** (P26.9) Testellaris and bingo: the T2602 icons in question texts, answers and item tooltips that name those concepts (upkeep, output, housing, amenities, stability, build time, strata), text kept as tooltip / accessible name; smoke tests
+
+## 27 · Game assets: full export to StellarisAssets (owner, 2026-11-27)
+Goal: every 2D image of the game available in StellarisAssets, sorted in folders and indexed, so any page can use any icon at any time without a new export (T2602 did it only for the icons it needed).
+- [ ] **T2701** (P27.1) Inventory and plan: list every 2D image of the 4.5.4 game files (`gfx/interface/`, every `interface/*.gfx` sprite, event pictures, portraits, flags, backgrounds, loading screens, ship and building icons, DLC folders…) with counts and sizes; choose the folder layout (keep the folders StellarisAssets already uses, e.g. `buildings/`, `jobs/`, `modifiers/`, `text_icons/`, and add one per new type), file naming (sprite key from the `.gfx`, frames of sprite strips split as `<key>_<frame>.png`), what stays out (3D meshes and their textures, videos, sounds, fonts) and a size budget that fits a GitHub repository (no file over 100 MB, push in batches); write it in `GAME_FILES_EXTRACTOR.md` and the choices in `DECISIONS_TO_REVIEW.md`
+- [ ] **T2702** (P27.2) Asset export script in the extractor (`tools/extract/`): all images or one category at a time, DDS / TGA → PNG, sprite strips split into frames, idempotent (rewrites only changed files, removes nothing by hand), a manifest with the game version and warnings; tests on small samples under `tests/fixtures/game-files/`
+- [ ] **T2703** (P27.3) Run the export for every category of T2701: commit and push in StellarisAssets one category (or a few small ones) at a time, so no push is too big; regenerate `StellarisAssetsFileTree.txt` in this project
+- [ ] **T2704** (P27.4) Index: an `index.json` in StellarisAssets (sprite key → file, category, size, source `.gfx` / game file, game version, localised name where the game has one) and the StellarisAssets site (`index.html` / `app.js`) to browse by folder and search by key or name; point `ICONS.md` and `README.md` of this project to it; smoke test that the files the site uses exist in the index
 
 ## 45 · Testellaris: question screen redesign (owner, 2026-11-26)
 - [ ] **T4501** (P45.1) Question screen layout:
