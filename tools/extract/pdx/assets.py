@@ -319,7 +319,9 @@ class AssetExport:
                 self.report["unchanged"].append(out["file"])
             else:
                 todo.append((key, out))
-        if not todo:
+        if not todo:  # unchanged texture: its warnings come from the cache, so a re-run keeps them
+            for text in self.cache.get("warnings", {}).get(entry.texture, []):
+                self.warn(entry.category, text)
             return
         from PIL import Image
         try:
@@ -332,8 +334,12 @@ class AssetExport:
             for _, out in todo:
                 out["file"] = None
             return
+        cached = self.cache.setdefault("warnings", {})
+        cached.pop(entry.texture, None)
         if entry.frames > 1 and img.width % entry.frames:
-            self.warn(entry.category, f"{entry.texture}: width {img.width} is not a multiple of its {entry.frames} frames")
+            text = f"{entry.texture}: width {img.width} is not a multiple of its {entry.frames} frames"
+            self.warn(entry.category, text)
+            cached[entry.texture] = [text]
         w = img.width // entry.frames
         for key, out in todo:
             part = img if out["frame"] is None else img.crop((w * out["frame"], 0, w * (out["frame"] + 1), img.height))
@@ -423,8 +429,139 @@ def manifest(game, export, entries, only=None, previous=None):
             "categories": dict(sorted(cats.items())), "warnings": dict(sorted(warnings.items()))}
 
 
+# -- index (T2704) ----------------------------------------------------------------------------------
+
+def data_set_names(data_dir):
+    """(texture → English name, sprite → English name) of the icons of the generated data sets."""
+    import json
+    by_tex, by_sprite = {}, {}
+    if not data_dir or not os.path.isdir(data_dir):
+        return by_tex, by_sprite
+    for n in sorted(os.listdir(data_dir)):
+        if not n.endswith(".json") or n == "manifest.json":
+            continue
+        try:
+            with open(os.path.join(data_dir, n), encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        for item in data.get("items", []) if isinstance(data, dict) else []:
+            icon = item.get("icon") if isinstance(item, dict) else None
+            if not isinstance(icon, dict) or not isinstance(item.get("name"), str):
+                continue
+            if icon.get("sprite"):
+                by_sprite.setdefault(icon["sprite"].lower(), item["name"])
+            if icon.get("texture") and not icon.get("_frames"):
+                by_tex.setdefault(_norm(icon["texture"]), item["name"])
+    return by_tex, by_sprite
+
+
+def english_name(game, keys, cache={}):  # noqa: B006 (per-process cache of the English table)
+    """English text (colours and icons removed) of the first localisation key that exists, or None."""
+    from .localisation import plain
+    table = game.localisation.language("english")
+    lower = cache.get(id(table))
+    if lower is None:
+        lower = cache[id(table)] = {k.lower(): k for k in table}
+    for k in keys:
+        real = k if k in table else lower.get(k.lower())
+        if real:
+            text = plain(game.localisation.get(real))
+            if text and "$" not in text:
+                return text
+    return None
+
+
+def index_items(game, entries, data_dir=None):
+    """One index row per exported file: file, category, size, source texture, frame, sprites, .gfx files, name."""
+    tex_names, sprite_names = data_set_names(data_dir)
+    rows = {}
+    for e in entries:
+        for out in e.outputs:
+            if not out.get("file"):
+                continue
+            if out["frame"] is None:
+                sprites = e.sprites
+            else:
+                sprites = [s for s in e.sheet_sprites if s.frame == out["frame"]] + (e.sprites if out["frame"] == 0 else [])
+            keys = [s.name for s in sprites]
+            stem = os.path.splitext(os.path.basename(e.texture))[0]
+            name = next((sprite_names[k.lower()] for k in keys if k.lower() in sprite_names), None)
+            if name is None and out["frame"] is None:
+                name = tex_names.get(_norm(e.texture))
+            if name is None:
+                name = english_name(game, [strip_gfx(k) for k in keys] + keys + ([stem] if out["frame"] is None else []))
+            row = rows.get(out["file"])
+            if row:  # an older file holding the same pixels as another texture
+                row["sprites"] = sorted(set(row["sprites"]) | set(keys), key=str.lower)
+                continue
+            row = {"file": out["file"], "category": e.category, "w": out["size"][0], "h": out["size"][1],
+                   "source": e.texture}
+            if out["frame"] is not None:
+                row["frame"], row["frames"] = out["frame"] + 1, e.frames
+            row["sprites"] = keys
+            gfx = sorted({s.source for s in sprites if s.source})
+            if gfx:
+                row["gfx"] = gfx
+            if name:
+                row["name"] = name
+            rows[out["file"]] = row
+    return rows
+
+
+def other_files(assets_dir, known):
+    """Index rows of the images of StellarisAssets no game texture gives (older exports, hand-made files)."""
+    from PIL import Image
+    rows = {}
+    for d, dirs, names in os.walk(assets_dir):
+        dirs[:] = [x for x in dirs if not x.startswith(".")]
+        for n in names:
+            if not n.lower().endswith((".png", ".jpg", ".jpeg", ".webp", ".gif")):
+                continue
+            rel = os.path.relpath(os.path.join(d, n), assets_dir).replace("\\", "/")
+            if rel in known:
+                continue
+            try:
+                with Image.open(os.path.join(d, n)) as im:
+                    w, h = im.size
+            except OSError:
+                continue
+            rows[rel] = {"file": rel, "category": rel.split("/")[0] if "/" in rel else "", "w": w, "h": h,
+                         "source": None, "sprites": []}
+    return rows
+
+
+def write_index(path, game, items):
+    """index.json: header, then one item per line (readable diffs), sorted by file."""
+    import json
+    head = {"generator": GENERATOR, "rulesetId": game.ruleset_id, "gameVersion": game.version, "count": len(items)}
+    lines = [json.dumps(items[k], ensure_ascii=False, separators=(",", ":")) for k in sorted(items, key=str.lower)]
+    text = json.dumps(head, ensure_ascii=False)[:-1] + ',"items":[\n' + ",\n".join(lines) + "\n]}\n"
+    if os.path.isfile(path):
+        with open(path, encoding="utf-8") as fh:
+            if fh.read() == text:
+                return False
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(text)
+    return True
+
+
+def build_index(game, export, entries, data_dir=None, only=None):
+    """Rows of every image of StellarisAssets: the exported ones (with --only, the other categories come
+    from the previous index.json) and the other files already there."""
+    previous = read_json(export.path("index.json")) or {}
+    items = {}
+    if only:
+        items = {r["file"]: r for r in previous.get("items", []) if r.get("source") and r.get("category") not in only}
+    items.update(index_items(game, entries, data_dir))
+    items = {k: v for k, v in items.items() if os.path.isfile(export.path(k))}
+    items.update(other_files(export.dir, items))
+    return items
+
+
 def export(game, assets_dir, only=None, data_dir=None, cache_path=None, progress=None):
-    """Export the planned textures and write `manifest.json` in StellarisAssets. Returns (export, entries, manifest)."""
+    """Export the planned textures and write `manifest.json` and `index.json` in StellarisAssets.
+    Returns (export, entries, manifest)."""
     entries = plan(game, only, data_dir, assets_dir)
     ex = AssetExport(game, assets_dir, cache_path)
     for i, e in enumerate(entries):
@@ -436,4 +573,5 @@ def export(game, assets_dir, only=None, data_dir=None, cache_path=None, progress
     path = ex.path("manifest.json")
     data = manifest(game, ex, entries, only, read_json(path))
     write_json_if_changed(path, data)
+    write_index(ex.path("index.json"), game, build_index(game, ex, entries, data_dir, only))
     return ex, entries, data

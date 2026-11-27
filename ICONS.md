@@ -2,6 +2,8 @@
 
 Concepts the site shows as text where Stellaris has an icon for the same idea. Every icon comes from the game files 4.5.4 (`interface/*.gfx` sprite → `gfx/interface/...dds` texture) and is served from StellarisAssets (`STELLARIS_ASSETS_BASE`, folder/file below). The export is `python tools/extract/export_ui_icons.py` (`--check` lists the icons without writing): it converts the textures with the extractor's icon exporter (§6 of `GAME_FILES_EXTRACTOR.md`) and only replaces a file when it changed.
 
+**Every other game image** is in StellarisAssets too (section 27, `GAME_FILES_EXTRACTOR.md` §6e): look it up in its browser (`STELLARIS_ASSETS_BASE`, the `index.html` page: by folder, or search by English game name, sprite key `GFX_…` or file) or in `index.json` at its root (one item per file: `file`, `category`, `w` / `h`, `source` game texture, `frame` / `frames` of strips, `sprites`, `gfx` files and `name`). A new icon for a page needs no new export: take its `file` from the index.
+
 Rule for the pages (T2603, T2604 and the tasks below): the icon replaces the word, the word stays as the icon's `title` (tooltip) and accessible name (`alt` or `aria-label`), so screen readers and hover still give the text.
 
 ## 1. Icons

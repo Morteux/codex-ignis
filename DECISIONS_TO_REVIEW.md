@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2704 — Index and browser of StellarisAssets (2026-11-27)
+
+- **Names are English only**: the data-set name when one uses the icon, else the English localisation of the sprite key (without `GFX_`), the key or the texture name; 5 054 of 18 486 files have one. Localised es/jp names were left out to keep `index.json` small (4 MB); the site's own pages already have them in `js/game-names/`.
+- **Index of every image**, also the older or hand-made files no game texture gives (`source: null`, 425 files), so the browser lists the whole repository; the GitHub tree API stays only as a fallback when `index.json` cannot be loaded.
+- **The page shows 240 cards at a time** ("Show more") because 18 000 thumbnails at once froze the browser; the search, folder and sort run over the whole index.
+- **The smoke test skips comments** of `js/` (examples such as `civics/Civic_x.png`) and accepts the few game sprites without the `GFX_` prefix (`button_left`, `cursor`…).
+- **A cached re-run kept no frame warnings** in `manifest.json` (found while writing the index): the cache now stores them per texture.
+
 ## T2703 — Full export of the game images to StellarisAssets (2026-11-27)
 
 - **The images come from the installed game, 4.6.0** (Corona Borealis v4.6.0, T2526): there is no copy of the 4.5.4 files, and images carry no figures, so the export was not blocked; `manifest.json` (and the T2704 `index.json`) write `stellaris-pc-4.6.0`. If the project stays on 4.5.4, run `python tools/extract/export_assets.py --game <4.5.4 copy>` again: it rewrites only the files that differ.

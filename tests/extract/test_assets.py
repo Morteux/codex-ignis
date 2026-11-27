@@ -106,6 +106,56 @@ class Export(unittest.TestCase):
         self.assertEqual(self.files(entries), {"gfx/interface/icons/jobs/job_x.dds": ["jobs/Old_name.png"]})
         self.assertFalse(os.path.isfile(os.path.join(self.assets, "jobs/job_x.png")))
 
+    def test_rerun_keeps_frame_warnings(self):
+        game_dir = os.path.join(self.tmp, "game")
+        shutil.copytree(FIXTURES, game_dir)
+        Image.new("RGBA", (7, 2), (0, 0, 255, 255)).save(os.path.join(game_dir, "gfx/interface/icons/samples/sample_strip.dds"))
+        game = GameFiles(game_dir)
+        def warning():
+            with open(os.path.join(self.assets, "manifest.json"), encoding="utf-8") as fh:
+                return json.load(fh)["warnings"]["samples"]
+        export(game, self.assets, cache_path=self.cache)
+        first = warning()
+        self.assertTrue(any("not a multiple of its 3 frames" in w for w in first))
+        export(game, self.assets, cache_path=self.cache)  # every texture cached: same warnings
+        self.assertEqual(warning(), first)
+
+
+class Index(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.assets = os.path.join(self.tmp, "assets").replace("\\", "/")
+        os.makedirs(os.path.join(self.assets, "old"))
+        Image.new("RGBA", (5, 4)).save(os.path.join(self.assets, "old/hand_made.png"))
+        self.cache = os.path.join(self.tmp, "cache.json")
+        self.game = GameFiles(FIXTURES)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def items(self):
+        with open(os.path.join(self.assets, "index.json"), encoding="utf-8") as fh:
+            data = json.load(fh)
+        self.assertEqual(data["rulesetId"], self.game.ruleset_id)
+        self.assertEqual(data["count"], len(data["items"]))
+        return {i["file"]: i for i in data["items"]}
+
+    def test_index(self):
+        export(self.game, self.assets, cache_path=self.cache)
+        items = self.items()
+        strip = items["samples/sample_strip_2.png"]
+        self.assertEqual((strip["category"], strip["w"], strip["h"], strip["frame"], strip["frames"]), ("samples", 2, 2, 2, 3))
+        self.assertEqual(strip["source"], "gfx/interface/icons/samples/sample_strip.dds")
+        self.assertIn("GFX_sample_second", strip["sprites"])
+        self.assertEqual(strip["gfx"], ["interface/assets_samples.gfx"])
+        self.assertEqual(items["samples/Sample_Plain.png"]["sprites"], [])
+        self.assertEqual(items["old/hand_made.png"], {"file": "old/hand_made.png", "category": "old", "w": 5, "h": 4, "source": None, "sprites": []})
+        self.assertNotIn("manifest.json", items)
+        stamp = os.path.getmtime(os.path.join(self.assets, "index.json"))
+        export(self.game, self.assets, only={"flags"}, cache_path=self.cache)  # other categories kept from the old index
+        self.assertEqual(self.items().keys(), items.keys())
+        self.assertEqual(os.path.getmtime(os.path.join(self.assets, "index.json")), stamp)
+
 
 if __name__ == "__main__":
     unittest.main()
