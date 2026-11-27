@@ -53,5 +53,5 @@ No game icon was found for: "Gross" / "Costs" / "Net" totals, "per job" / "per p
 | Planet simulator — header stats, Conditions panel, jobs summary (strata) | T2605 (done; shared helper `js/concept-icons.js`) |
 | Planet simulator — Active modifiers panel, catalogue cards, building / district / capital tooltips | T2606 (done: icon pills on cards and capital, `js/planet-sim-stat-pills.js`; native tooltips keep text) |
 | Wiki (resources, jobs and buildings articles) | T2607 (done: `[[icon:<concept>]]` / `[[icon+:<concept>]]` / `[[icon:<kind>:<resource>]]` tokens of `js/content.js` texts, `js/wiki-icons.js`; draft glossary article "Planet economy concepts") |
-| Tech tree card (unlocked buildings, districts and modifiers) | T2608 |
-| Testellaris and bingo (question texts, item tooltips) | T2609 |
+| Tech tree card (unlocked buildings, districts and modifiers) | T2608 (done: unlock type icon, build time pill and effect line icons, `js/tech-tree-concepts.js`) |
+| Testellaris and bingo (question texts, item tooltips) | T2609 (done in Testellaris: per-template rules of `js/testellaris-icons.js`; bingo items are game names only, nothing to change) |

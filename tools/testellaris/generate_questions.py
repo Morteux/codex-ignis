@@ -300,7 +300,7 @@ class Builder:
         self.d = data
         self.out = []
 
-    def add(self, topic, template, key, tier, item, dlc, text, correct, wrong, explanation, icon=None):
+    def add(self, topic, template, key, tier, item, dlc, text, correct, wrong, explanation, icon=None, resource=None):
         qid = f"{topic}.{template}.{key}"
         rng = random.Random(_hash(qid))
         answers = [correct] + list(wrong)
@@ -322,6 +322,8 @@ class Builder:
         }
         if icon:
             q["icon"] = icon
+        if resource:
+            q["resource"] = resource  # T2609: the page shows the upkeep / output icon of that resource
         self.out.append(q)
 
     @staticmethod

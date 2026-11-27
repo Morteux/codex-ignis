@@ -23475,7 +23475,8 @@
     "en": "The base upkeep of Holo-Theatres is 2.",
     "jp": "「ホロ・シアター」の基本維持費は2です。"
    },
-   "icon": "buildings/building_holo_theatres.png"
+   "icon": "buildings/building_holo_theatres.png",
+   "resource": "energy"
   },
   {
    "id": "economy.building_base_upkeep.building_resource_silo",
@@ -23518,7 +23519,8 @@
     "en": "The base upkeep of Resource Silos is 1.",
     "jp": "「資源サイロ」の基本維持費は1です。"
    },
-   "icon": "buildings/building_resource_silo.png"
+   "icon": "buildings/building_resource_silo.png",
+   "resource": "energy"
   },
   {
    "id": "economy.building_base_upkeep.building_robot_assembly_plant",
@@ -23561,7 +23563,8 @@
     "en": "The base upkeep of Robot Assembly Plants is 5.",
     "jp": "「ロボット製造プラント」の基本維持費は5です。"
    },
-   "icon": "buildings/building_robot_assembly_plant.png"
+   "icon": "buildings/building_robot_assembly_plant.png",
+   "resource": "energy"
   },
   {
    "id": "economy.building_base_upkeep.building_stronghold",
@@ -23604,7 +23607,8 @@
     "en": "The base upkeep of Stronghold is 1.",
     "jp": "「駐屯地」の基本維持費は1です。"
    },
-   "icon": "buildings/building_stronghold.png"
+   "icon": "buildings/building_stronghold.png",
+   "resource": "energy"
   },
   {
    "id": "economy.building_days.building_astral_siphon_1",
@@ -32612,7 +32616,8 @@
     "en": "The base output of Artisan is 6.",
     "jp": "「職人」の基本生産量は6です。"
    },
-   "icon": "jobs/job_artisan.png"
+   "icon": "jobs/job_artisan.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_output.biologist",
@@ -32655,7 +32660,8 @@
     "en": "The base output of Biologist is 3.",
     "jp": "「生物学者」の基本生産量は3です。"
    },
-   "icon": "jobs/job_biologist.png"
+   "icon": "jobs/job_biologist.png",
+   "resource": "society_research"
   },
   {
    "id": "economy.job_base_output.bureaucrat",
@@ -32698,7 +32704,8 @@
     "en": "The base output of Bureaucrat is 3.",
     "jp": "「官僚」の基本生産量は3です。"
    },
-   "icon": "jobs/job_bureaucrat.png"
+   "icon": "jobs/job_bureaucrat.png",
+   "resource": "unity"
   },
   {
    "id": "economy.job_base_output.clerk",
@@ -32741,7 +32748,8 @@
     "en": "The base output of Clerk is 3.",
     "jp": "「事務員」の基本生産量は3です。"
    },
-   "icon": "jobs/job_clerk.png"
+   "icon": "jobs/job_clerk.png",
+   "resource": "trade"
   },
   {
    "id": "economy.job_base_output.engineer",
@@ -32784,7 +32792,8 @@
     "en": "The base output of Engineer is 3.",
     "jp": "「エンジニア」の基本生産量は3です。"
    },
-   "icon": "jobs/job_engineer.png"
+   "icon": "jobs/job_engineer.png",
+   "resource": "engineering_research"
   },
   {
    "id": "economy.job_base_output.farmer",
@@ -32827,7 +32836,8 @@
     "en": "The base output of Farmer is 6.",
     "jp": "「農民」の基本生産量は6です。"
    },
-   "icon": "jobs/job_farmer.png"
+   "icon": "jobs/job_farmer.png",
+   "resource": "food"
   },
   {
    "id": "economy.job_base_output.foundry",
@@ -32870,7 +32880,8 @@
     "en": "The base output of Metallurgist is 3.",
     "jp": "「冶金技師」の基本生産量は3です。"
    },
-   "icon": "jobs/job_foundry.png"
+   "icon": "jobs/job_foundry.png",
+   "resource": "alloys"
   },
   {
    "id": "economy.job_base_output.miner",
@@ -32913,7 +32924,8 @@
     "en": "The base output of Miner is 4.",
     "jp": "「鉱山労働者」の基本生産量は4です。"
    },
-   "icon": "jobs/job_miner.png"
+   "icon": "jobs/job_miner.png",
+   "resource": "minerals"
   },
   {
    "id": "economy.job_base_output.physicist",
@@ -32956,7 +32968,8 @@
     "en": "The base output of Physicist is 3.",
     "jp": "「物理学者」の基本生産量は3です。"
    },
-   "icon": "jobs/job_physicist.png"
+   "icon": "jobs/job_physicist.png",
+   "resource": "physics_research"
   },
   {
    "id": "economy.job_base_output.politician",
@@ -32999,7 +33012,8 @@
     "en": "The base output of Politician is 5.",
     "jp": "「政治家」の基本生産量は5です。"
    },
-   "icon": "jobs/job_politician.png"
+   "icon": "jobs/job_politician.png",
+   "resource": "unity"
   },
   {
    "id": "economy.job_base_output.technician",
@@ -33042,7 +33056,8 @@
     "en": "The base output of Technician is 6.",
     "jp": "「技術者」の基本生産量は6です。"
    },
-   "icon": "jobs/job_technician.png"
+   "icon": "jobs/job_technician.png",
+   "resource": "energy"
   },
   {
    "id": "economy.job_base_upkeep.biologist",
@@ -33085,7 +33100,8 @@
     "en": "The base upkeep of Biologist is 1.5.",
     "jp": "「生物学者」の基本維持費は1.5です。"
    },
-   "icon": "jobs/job_biologist.png"
+   "icon": "jobs/job_biologist.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.bureaucrat",
@@ -33128,7 +33144,8 @@
     "en": "The base upkeep of Bureaucrat is 2.",
     "jp": "「官僚」の基本維持費は2です。"
    },
-   "icon": "jobs/job_bureaucrat.png"
+   "icon": "jobs/job_bureaucrat.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.engineer",
@@ -33171,7 +33188,8 @@
     "en": "The base upkeep of Engineer is 1.5.",
     "jp": "「エンジニア」の基本維持費は1.5です。"
    },
-   "icon": "jobs/job_engineer.png"
+   "icon": "jobs/job_engineer.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.healthcare",
@@ -33214,7 +33232,8 @@
     "en": "The base upkeep of Medical Worker is 1.",
     "jp": "「医療従事者」の基本維持費は1です。"
    },
-   "icon": "jobs/job_healthcare.png"
+   "icon": "jobs/job_healthcare.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.physicist",
@@ -33257,7 +33276,8 @@
     "en": "The base upkeep of Physicist is 1.5.",
     "jp": "「物理学者」の基本維持費は1.5です。"
    },
-   "icon": "jobs/job_physicist.png"
+   "icon": "jobs/job_physicist.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.politician",
@@ -33300,7 +33320,8 @@
     "en": "The base upkeep of Politician is 3.",
     "jp": "「政治家」の基本維持費は3です。"
    },
-   "icon": "jobs/job_politician.png"
+   "icon": "jobs/job_politician.png",
+   "resource": "consumer_goods"
   },
   {
    "id": "economy.job_base_upkeep.soldier",
@@ -33343,7 +33364,8 @@
     "en": "The base upkeep of Soldier is 1.",
     "jp": "「兵士」の基本維持費は1です。"
    },
-   "icon": "jobs/job_soldier.png"
+   "icon": "jobs/job_soldier.png",
+   "resource": "alloys"
   },
   {
    "id": "economy.job_most_output.astrogarbage_collector_gestalt",

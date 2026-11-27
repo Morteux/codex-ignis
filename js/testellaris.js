@@ -14,6 +14,7 @@ import { getLang, applyPageTranslations, onLanguageChange } from "./page-shell.j
 import { STELLARIS_ASSETS_BASE as IMAGE_BASE } from "./asset-config.js";
 import { DLC_BINGO } from "./bingo-game-items.js";
 import { confirmChoice } from "./confirm-dialog.js";
+import { questionNodes, explanationNodes, answerIcon } from "./testellaris-icons.js";
 import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX, hallOfFame, apiClient } from "./testellaris-scores.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, CATEGORIES, filterBank, filterCategories, categoryCounts, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
@@ -370,7 +371,7 @@ function onLifeline(name) {
 function renderGame() {
     const { question, order, removed, answered, chosenPosition } = game.current;
     renderHud();
-    questionEl.textContent = question.text[lang];
+    questionEl.replaceChildren(...questionNodes(question, lang)); // T2609: concept icons, word kept
     questionEl.dataset.questionId = question.id;
     categoryEl.className = `tq-category tq-category--${question.category}`;
     categoryEl.dataset.category = question.category;
@@ -396,6 +397,8 @@ function renderGame() {
         const label = document.createElement("span");
         label.className = "tq-answer-text";
         label.textContent = answerText(question, bankIndex);
+        const icon = answerIcon(question, bankIndex, lang);
+        if (icon) label.prepend(icon);
         button.append(letter, label);
         const isRemoved = removed.has(position);
         if (isRemoved) button.classList.add("is-removed");
@@ -406,6 +409,13 @@ function renderGame() {
         return button;
     }));
     renderFeedback();
+}
+
+/** "Your answer: …" / "Right answer: …" line of the end screen, with the stratum icon of the answer (T2609). */
+function answerLine(key, question, bankIndex) {
+    const [before, after] = t(lang, key).split("{answer}");
+    const icon = answerIcon(question, bankIndex, lang);
+    return [before, ...(icon ? [icon] : []), answerText(question, bankIndex), after || ""];
 }
 
 function renderFeedback() {
@@ -419,7 +429,7 @@ function renderFeedback() {
         : [format(t(lang, "tqWrong"), { answer: answerText(question, question.correct) })];
     if (lastResult.tierUp) lines.push(format(t(lang, "tqTierUp"), { tier: lastResult.tierUp, name: tierName(lastResult.tierUp) }));
     result.textContent = lines.join(" ");
-    el("tq-feedback-explanation").textContent = question.explanation[lang];
+    el("tq-feedback-explanation").replaceChildren(...explanationNodes(question, lang));
     el("tq-feedback-source").textContent = sourceText(question, lang);
 }
 
@@ -546,16 +556,16 @@ function renderFailed(failed) {
         item.dataset.questionId = entry.id;
         const lines = [
             [`tq-category tq-category--${question.category}`, format(t(lang, "tqCategoryLabel"), { name: t(lang, `tqCategory_${question.category}`) })],
-            ["tq-failed-question", question.text[lang]],
-            ["tq-failed-yours", format(t(lang, "tqYourAnswer"), { answer: answerText(question, entry.chosen) })],
-            ["tq-failed-right", format(t(lang, "tqRightAnswer"), { answer: answerText(question, question.correct) })],
-            ["tq-failed-explanation", question.explanation[lang]],
+            ["tq-failed-question", questionNodes(question, lang)],
+            ["tq-failed-yours", answerLine("tqYourAnswer", question, entry.chosen)],
+            ["tq-failed-right", answerLine("tqRightAnswer", question, question.correct)],
+            ["tq-failed-explanation", explanationNodes(question, lang)],
             ["tq-source", sourceText(question, lang)],
         ];
-        item.append(...lines.map(([className, text]) => {
+        item.append(...lines.map(([className, content]) => {
             const p = document.createElement("p");
             p.className = className;
-            p.textContent = text;
+            p.replaceChildren(...(Array.isArray(content) ? content : [content]));
             return p;
         }));
         return item;

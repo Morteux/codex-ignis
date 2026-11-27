@@ -88,8 +88,8 @@ class Economy:
     def __init__(self, b):
         self.b, self.d = b, b.d
 
-    def add(self, template, key, tier, item, dlc, text, correct, wrong, why):
-        self.b.add("economy", template, key, tier, item, dlc, text, correct, wrong, why, gq._icon(item))
+    def add(self, template, key, tier, item, dlc, text, correct, wrong, why, resource=None):
+        self.b.add("economy", template, key, tier, item, dlc, text, correct, wrong, why, gq._icon(item), resource)
 
     def pick(self, template, key, correct, candidates, closeness=lambda k: 0, pool=30):
         rng = self.b.rng("economy", template, key)
@@ -366,14 +366,15 @@ class Economy:
             values = x.get(field) or {}
             if dlc or len(values) != 1:
                 continue
-            value = next(iter(values.values()))
+            resource, value = next(iter(values.items()))
             near = sorted((v for v in BASIC_VALUES[template] if v != value), key=lambda v: (abs(v - value), v))[:5]
             wrong = self.b.rng("economy", template, key).sample(near, 3)
             self.add(template, key, 1, x, dlc, _sentence(*text(names)),
                      gq.same(amount(value)), [gq.same(amount(v)) for v in wrong],
                      _sentence(f"{noun[0]} de {names['es']} es {amount(value)}.",
                                f"{noun[1]} of {names['en']} is {amount(value)}.",
-                               f"「{names['jp']}」の{noun[2]}は{amount(value)}です。"))
+                               f"「{names['jp']}」の{noun[2]}は{amount(value)}です。"),
+                     resource if field in ("produces", "upkeep") else None)
 
     # -- living standards
 

@@ -18,7 +18,8 @@ A bank is `data/testellaris/<rulesetId>/questions.json`:
           "answers": {"es": [4 strings], "en": [...], "jp": [...]},
           "correct": 0,                                  # index in answers (same in every language)
           "explanation": {"es": "...", "en": "...", "jp": "..."},
-          "icon": "technologies/tech_lasers_1.png"       # optional, path inside StellarisAssets
+          "icon": "technologies/tech_lasers_1.png",      # optional, path inside StellarisAssets
+          "resource": "energy"                           # optional (T2609): game resource of the one upkeep / output asked
         }
       ]
     }
@@ -66,8 +67,8 @@ TOPIC_CATEGORY = {
     "artifacts": "unity",
 }
 assert set(TOPIC_CATEGORY) == set(TOPICS) and set(TOPIC_CATEGORY.values()) <= set(CATEGORIES)
-FIELDS = {"id", "tier", "topic", "category", "dlc", "source", "text", "answers", "correct", "explanation", "icon"}
-REQUIRED = FIELDS - {"icon"}
+FIELDS = {"id", "tier", "topic", "category", "dlc", "source", "text", "answers", "correct", "explanation", "icon", "resource"}
+REQUIRED = FIELDS - {"icon", "resource"}
 SOURCE_FIELDS = {"file", "key", "loc"}
 WIKI_SOURCE_FIELDS = {"kind", "article", "section"} | SOURCE_FIELDS
 WIKI_TEMPLATE = "wiki"
@@ -232,6 +233,8 @@ def validate_question(q, known_dlc=None, wiki_dir=None):
         err(f"correct {correct!r} must be the index 0-3 of an answer")
     if "icon" in q and not _text(q["icon"]):
         err("icon must be a path")
+    if "resource" in q and not (isinstance(q["resource"], str) and re.fullmatch(r"[a-z_]+", q["resource"])):
+        err("resource must be a game resource key")
     return errors
 
 

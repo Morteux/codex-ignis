@@ -5293,6 +5293,13 @@ p.tq-category {
     margin: 0 .2em 0 0;
 }
 
+/* T2609: concept icons in Testellaris question texts, explanations and stratum answers (js/testellaris-icons.js). */
+.tq-concept-icon {
+    width: 1.15em;
+    height: 1.15em;
+    margin: 0 .2em 0 0;
+}
+
 /* T2606: housing, amenities, upkeep and build time pills of the catalogue cards and the capital. */
 .planet-catalog-stat-pill .concept-icon {
     margin: 0;

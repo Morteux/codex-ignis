@@ -72,9 +72,58 @@ async def run(t):
     await scores_checks(pg)
     await top_list_checks(pg)
     await name_checks(pg, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
+    await icon_checks(pg, bank)
     check("testellaris: no page errors", not errors, errors[:3])
     await ctx.close()
     await mobile_checks(t, {q["id"]: {"answers": q["answers"], "correct": q["correct"]} for q in bank})
+
+
+# T2609: concept icons (ICONS.md) in question texts, explanations and stratum answers; the word stays, the icon repeats it as tooltip
+ICON_NODES_JS = """async ({qs, lang})=>{const m=await import('./js/testellaris-icons.js');const box=document.createElement('div');
+  const info=(nodes)=>{box.replaceChildren(...nodes);const img=[...box.querySelectorAll('img')];return {text:box.textContent,icons:img.map(i=>({c:i.dataset.concept,alt:i.alt,title:i.title,src:i.getAttribute('src'),next:(i.nextSibling&&i.nextSibling.textContent||'').slice(0,12)}))}};
+  const out={};for(const q of qs){const a=q.answers.en.map((x,k)=>m.answerIcon(q,k,lang)).map(i=>i&&{c:i.dataset.concept,alt:i.alt,title:i.title});
+    out[q.id]={text:info(m.questionNodes(q,lang)),expl:info(m.explanationNodes(q,lang)),answers:a}}return out}"""
+
+
+async def icon_checks(pg, bank):
+    first = lambda prefix, cond=lambda q: True: next(q for q in bank if q["id"].startswith(prefix) and cond(q))
+    picks = {
+        "upkeep": first("economy.job_base_upkeep.", lambda q: "resource" in q),
+        "output": first("economy.job_base_output.", lambda q: q.get("resource") == "consumer_goods"),
+        "days": first("economy.building_days."),
+        "housing": first("planets.capital_housing."),
+        "stability": first("modifiers.modifier_amount.", lambda q: q["id"].endswith(".stability")),
+        "speed": first("modifiers.modifier_amount.", lambda q: q["id"].endswith(".speed")),
+        "living": first("economy.living_upkeep_most.", lambda q: q["id"].endswith(".worker")),
+        "stratum": first("economy.job_stratum."),
+        "same": first("economy.job_same_output."),
+        "name": first("subjects.holding."),
+    }
+    qs = list(picks.values())
+    res = {lang: await pg.evaluate(ICON_NODES_JS, {"qs": qs, "lang": lang}) for lang in ("en", "es", "jp")}
+    en = {k: res["en"][q["id"]] for k, q in picks.items()}
+    keeps = all(res[lang][q["id"]]["text"]["text"] == q["text"][lang] and res[lang][q["id"]]["expl"]["text"] == q["explanation"][lang] for lang in res for q in qs)
+    check("testellaris (T2609): the icons keep every question and explanation text as it is (es/en/jp)", keeps, en)
+    up, out = en["upkeep"]["text"]["icons"], en["output"]["text"]["icons"]
+    check("testellaris (T2609): base upkeep / output questions show the game upkeep / output icon of their one resource before the word, word as tooltip, empty alt",
+          len(up) == 1 and up[0]["src"].endswith("modifiers/mod_%s_upkeep_add.png" % picks["upkeep"]["resource"]) and up[0]["next"].startswith("upkeep") and up[0]["title"] == "Upkeep" and up[0]["alt"] == ""
+          and len(out) == 1 and out[0]["src"].endswith("modifiers/mod_consumer_goods_produces_add.png") and out[0]["next"].startswith("output") and out[0]["title"] == "Output", (up, out))
+    check("testellaris (T2609): build days show the clock icon in the question and the explanation, capital housing the housing icon, a stability modifier the stability icon",
+          [i["c"] for i in en["days"]["text"]["icons"]] == ["buildTime"] and [i["c"] for i in en["days"]["expl"]["icons"]] == ["buildTime"]
+          and en["days"]["text"]["icons"][0]["src"].endswith("text_icons/time.png") and en["days"]["text"]["icons"][0]["title"] == "Build time"
+          and [i["c"] for i in en["housing"]["text"]["icons"]] == ["housing"] and [i["c"] for i in en["stability"]["text"]["icons"]] == ["stability"], en)
+    check("testellaris (T2609): living standard questions show the stratum icon before 'stratum' and the pop upkeep icon before 'upkeep'",
+          [(i["c"], i["next"][:7]) for i in en["living"]["text"]["icons"]] == [("worker", "stratum"), ("popUpkeep", "upkeep?")], en["living"])
+    sa = en["stratum"]["answers"]
+    check("testellaris (T2609): job stratum answers show their stratum icon (word as tooltip), the question text none (it would be the answer)",
+          all(a and a["alt"] == "" and a["title"] for a in sa) and not en["stratum"]["text"]["icons"]
+          and {"Specialist": "specialist", "Worker": "worker", "Elite": "ruler", "Complex Drone": "complexDrone", "Menial Drone": "simpleDrone"}.get(picks["stratum"]["answers"]["en"][picks["stratum"]["correct"]]) == en["stratum"]["expl"]["icons"][0]["c"], en["stratum"])
+    check("testellaris (T2609): no icon for ship speed, 'same resource as' questions (it would hint the answer) or game names holding a concept word (Communal Housing Outreach)",
+          not en["speed"]["text"]["icons"] and not en["same"]["text"]["icons"] and not en["name"]["text"]["icons"] and not any(en["name"]["answers"]), (en["speed"], en["same"], en["name"]))
+    es, jp = res["es"][picks["upkeep"]["id"]]["text"]["icons"], res["jp"][picks["living"]["id"]]["text"]["icons"]
+    check("testellaris (T2609): the icons and their tooltips follow the language (es: mantenimiento, jp: 階層 / 維持費)",
+          len(es) == 1 and es[0]["next"].startswith("mantenimient") and es[0]["title"] == "Mantenimiento"
+          and [(i["c"], i["next"][:2]) for i in jp] == [("worker", "階層"), ("popUpkeep", "維持")] and jp[0]["title"] == "労働者階層", (es, jp))
 
 
 # T4403: thematic categories on the start screen, remembered, and drawn evenly by the engine

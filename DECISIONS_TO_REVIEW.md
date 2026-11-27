@@ -2,6 +2,14 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2609 — Concept icons in Testellaris and bingo (2026-11-27)
+
+- **Bingo has nothing to change**: its items and tooltips are only game names (origins, civics, technologies, DLC); none names upkeep, output, housing, amenities, stability, build time or strata.
+- **Per-template rules, not free word matching** (`js/testellaris-icons.js`): only the templates that ask about a concept get an icon, so game names holding the word ("Communal Housing Outreach", "Improved Production") never do. The icon goes before the visible word (empty alt, word as tooltip), in the question, the explanation and the end-screen list.
+- **Upkeep / output icons are per resource** in the game, so only the base upkeep / output questions with one resource get one; the bank now carries that resource (`resource`, new optional field written by `q_economy.py`, 22 questions). The "same resource as…" and "highest output" questions get no icon: the resource icon would give half of the answer away.
+- **Job stratum questions**: the stratum icon is on each answer (Elite → ruler, Menial Drone → simple drone…), not in the question text; the explanation shows the right one after answering.
+- **Blocker clearing days** use the clock icon too (the game uses the same time icon). Amenities: no template asks about them yet.
+
 ## T2608 — Concept icons in the tech tree card (2026-11-27)
 
 - **Unlock type**: building and district unlocks show the game's building / district text icon instead of the word (word as alt and tooltip); other unlock types (deposits, decisions…) keep the word.
