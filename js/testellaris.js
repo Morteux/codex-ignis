@@ -320,16 +320,38 @@ function advance() {
     questionEl.focus();
 }
 
+/** T4501: game icons of the HUD counters (proposal, DECISIONS_TO_REVIEW.md T4501), paths in StellarisAssets. */
+export const HUD_ICONS = { number: "text_icons/text_research.png", score: "concepts/concept_unity.png" };
+
+/** A HUD counter: the game icon (its word as alt text and tooltip, so the accessible name stays "Score 100") and the number. */
+function hudCounter(id, icon, labelKey, value) {
+    const img = document.createElement("img");
+    img.className = "tq-hud-icon";
+    img.src = IMAGE_BASE + icon;
+    img.alt = t(lang, labelKey);
+    img.title = t(lang, labelKey);
+    img.width = 20;
+    img.height = 20;
+    const number = document.createElement("span");
+    number.className = "tq-hud-value";
+    number.textContent = String(value);
+    el(id).replaceChildren(img, number);
+}
+
 function renderHud() {
     const { tier } = game.current.question;
     el("tq-hud-tier").textContent = format(t(lang, "tqTierLabel"), { tier, name: tierName(tier) });
-    el("tq-hud-number").textContent = format(t(lang, "tqQuestionNumber"), { n: game.number });
-    el("tq-hud-score").textContent = format(t(lang, "tqScore"), { score: game.score });
+    hudCounter("tq-hud-number", HUD_ICONS.number, "tqQuestionLabel", game.number);
+    hudCounter("tq-hud-score", HUD_ICONS.score, "tqScoreLabel", game.score);
+    // only the hearts are seen; screen readers get "2 lives left" (T4501)
     const hearts = document.createElement("span");
     hearts.className = "tq-hearts";
     hearts.setAttribute("aria-hidden", "true");
     hearts.textContent = "♥".repeat(game.lives) + "♡".repeat(LIVES - game.lives);
-    el("tq-hud-lives").replaceChildren(hearts, " ", livesText());
+    const label = document.createElement("span");
+    label.className = "visually-hidden";
+    label.textContent = format(t(lang, game.lives === 1 ? "tqLivesLeftOne" : "tqLivesLeft"), { lives: game.lives });
+    el("tq-hud-lives").replaceChildren(hearts, label);
     renderLifelines();
 }
 
@@ -373,6 +395,8 @@ function renderGame() {
     renderHud();
     questionEl.replaceChildren(...questionNodes(question, lang)); // T2609: concept icons, word kept
     questionEl.dataset.questionId = question.id;
+    screens.game.dataset.category = question.category; // T4501: the panel tinted with the category colour
+    screens.game.className = `tq-screen tq-game tq-category--${question.category}`;
     categoryEl.className = `tq-category tq-category--${question.category}`;
     categoryEl.dataset.category = question.category;
     categoryEl.textContent = format(t(lang, "tqCategoryLabel"), { name: t(lang, `tqCategory_${question.category}`) });

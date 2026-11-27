@@ -195,6 +195,8 @@ async def mobile_checks(t, small):
             screens = {"start": await pg.evaluate(LAYOUT_JS)}
             await pg.click("#tq-start-btn")
             screens["question"] = await pg.evaluate(LAYOUT_JS)
+            rows = await pg.evaluate(ANSWER_GRID_JS)
+            check("testellaris mobile %dpx (%s): answers in a 2 × 2 grid from 360 px, stacked below (T4501)" % (width, lang), rows == (4 if width < 360 else 2), rows)
             a11y = await pg.evaluate(A11Y_JS)
             pos = await pg.evaluate(POSITIONS_JS, small)
             await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
@@ -487,8 +489,23 @@ POSITIONS_JS = """(bank)=>{const id=document.querySelector('#tq-question').datas
 END_JS = """()=>{const dl=[...document.querySelectorAll('#tq-end-stats > *')];const stats={};for(let i=0;i<dl.length;i+=2)stats[dl[i].textContent]=dl[i+1].textContent;
   return {game:document.querySelector('#tq-game').hidden,end:!document.querySelector('#tq-end').hidden,reason:document.querySelector('#tq-end-reason').textContent,stats,focus:document.activeElement.id,
   none:document.querySelector('#tq-failed-none').hidden,failed:[...document.querySelectorAll('#tq-failed-list li')].map(li=>[li.dataset.questionId,...[...li.children].map(p=>p.textContent)])}}"""
-HUD_JS ="()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:document.querySelector('#tq-hud-number').textContent,score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
+HUD_JS ="()=>({tier:document.querySelector('#tq-hud-tier').textContent,n:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-number')),score:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-score')),lives:document.querySelector('#tq-hud-lives .visually-hidden').textContent,feedback:document.querySelector('#tq-feedback').hidden?null:document.querySelector('#tq-feedback').innerText,announce:document.querySelector('#tq-announce').textContent,focus:document.activeElement.id})"
 
+
+# T4501: the question screen layout (panel tint, 2 × 2 answers, centred text, HUD).
+SCREEN_JS = """()=>{const g=document.querySelector('#tq-game'),cs=getComputedStyle(g);
+  const tops=[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.getBoundingClientRect());
+  const uniq=a=>new Set(a.map(Math.round)).size;
+  const hud=document.querySelector('.tq-hud').getBoundingClientRect(),lives=document.querySelector('#tq-hud-lives').getBoundingClientRect();
+  const centre=document.querySelector('.tq-hud-centre').getBoundingClientRect();
+  const counts=[...document.querySelectorAll('.tq-hud-count')];
+  return {category:g.dataset.category,bg:cs.backgroundImage,border:cs.borderTopColor,rows:uniq(tops.map(r=>r.top)),cols:uniq(tops.map(r=>r.left)),
+    align:getComputedStyle(document.querySelector('.tq-question-row')).alignItems,livesRight:Math.abs(hud.right-lives.right),
+    hearts:document.querySelector('.tq-hearts').textContent,livesVisible:[...document.querySelector('#tq-hud-lives').children].filter(c=>!c.classList.contains('visually-hidden')).map(c=>c.textContent).join(''),
+    icons:counts.map(c=>c.querySelector('img').getAttribute('src').replace(/^.*?(text_icons|concepts)\\//,'$1/')),values:counts.map(c=>c.querySelector('.tq-hud-value').textContent),
+    bigger:parseFloat(getComputedStyle(counts[0]).fontSize)>parseFloat(getComputedStyle(document.querySelector('#tq-hud-tier')).fontSize),
+    centred:Math.abs((centre.left+centre.right)/2-(hud.left+hud.right)/2)}}"""
+ANSWER_GRID_JS = "()=>{const r=[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>Math.round(b.getBoundingClientRect().top));return new Set(r).size}"
 
 CATEGORY_EN = {"engineering": "Engineering", "physics": "Physics", "society": "Society", "unity": "Unity"}
 
@@ -524,12 +541,19 @@ async def game_checks(pg, by_id):
         return
     check("testellaris game: Start shows a tier 1 question with four answers, question 1, score 0 and 3 lives",
           q1["tier"] == 1 and len(first["texts"]) == 4 and sorted(first["texts"]) == sorted(q1["answers"]["en"]) and hud["tier"] == "Tier 1 · Primitive"
-          and hud["n"] == "Question 1" and hud["score"] == "Score: 0" and hud["lives"].endswith("Lives: 3 of 3") and hud["feedback"] is None and hud["focus"] == "tq-question", hud)
+          and hud["n"] == "Question 1" and hud["score"] == "Score 0" and hud["lives"] == "3 lives left" and hud["feedback"] is None and hud["focus"] == "tq-question", hud)
+    screen = await pg.evaluate(SCREEN_JS)
+    check("testellaris question screen (T4501): panel tinted with the category colour, answers 2 × 2, text centred with the image, lives at the right end",
+          screen["category"] == q1["category"] and "gradient" in screen["bg"] and screen["border"] == CATEGORY_COLOURS[q1["category"]]
+          and screen["rows"] == 2 and screen["cols"] == 2 and screen["align"] == "center" and screen["livesRight"] <= 2, screen)
+    check("testellaris question screen (T4501): only 3 hearts in sight with an accessible name; number and score only numbers with a game icon, centred and bigger than the tier",
+          screen["hearts"] == "♥♥♥" and screen["livesVisible"] == "♥♥♥" and screen["icons"] == ["text_icons/text_research.png", "concepts/concept_unity.png"]
+          and screen["values"] == ["1", "0"] and screen["bigger"] and screen["centred"] <= 4, screen)
     await pg.keyboard.press(str(first["right"] + 1))
     hud = await pg.evaluate(HUD_JS)
     marks = await pg.evaluate("()=>[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>[b.disabled,b.className])")
     check("testellaris game: the key of the right answer gives 100 points, shows Correct, the explanation and the source, and focuses Next",
-          hud["score"] == "Score: 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and source_en(q1) in hud["feedback"]
+          hud["score"] == "Score 100" and hud["feedback"] and "Correct! +100 points." in hud["feedback"] and q1["explanation"]["en"] in hud["feedback"] and source_en(q1) in hud["feedback"]
           and hud["announce"].startswith("Correct.") and hud["focus"] == "tq-next" and all(m[0] for m in marks) and "is-correct" in marks[first["right"]][1], (hud, marks))
     await pg.keyboard.press("Enter")
     second = await pg.evaluate(POSITIONS_JS, small)
@@ -545,7 +569,7 @@ async def game_checks(pg, by_id):
     hud = await pg.evaluate(HUD_JS)
     marks = await pg.evaluate("()=>[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.className)")
     check("testellaris game: a wrong answer (letter key) costs a life and shows the correct answer and the explanation",
-          hud["lives"].endswith("Lives: 2 of 3") and hud["score"] == "Score: 100" and ("The correct answer is: " + q2["answers"]["en"][q2["correct"]]) in hud["feedback"]
+          hud["lives"] == "2 lives left" and hud["score"] == "Score 100" and ("The correct answer is: " + q2["answers"]["en"][q2["correct"]]) in hud["feedback"]
           and q2["explanation"]["en"] in hud["feedback"] and "is-wrong" in marks[second["wrong"]] and "is-correct" in marks[second["right"]] and "Lives: 2 of 3" in hud["announce"], (hud, marks))
     recent = await pg.evaluate("()=>JSON.parse(localStorage.getItem('testellaris-recent'))")
     check("testellaris game: the asked questions are remembered for the next games", recent == [first["id"], second["id"]], recent)
@@ -592,7 +616,7 @@ async def game_checks(pg, by_id):
 
 LIFELINES_JS = """()=>({buttons:[...document.querySelectorAll('.tq-lifeline')].map(b=>[b.dataset.lifeline,b.disabled,b.className.replace('tq-lifeline','').trim(),[...b.children].map(c=>c.textContent).join(' ')]),
   status:document.querySelector('#tq-lifeline-status').textContent,removed:[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.disabled&&b.classList.contains('is-removed')),
-  score:document.querySelector('#tq-hud-score').textContent,lives:document.querySelector('#tq-hud-lives').textContent,n:document.querySelector('#tq-hud-number').textContent,
+  score:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-score')),lives:document.querySelector('#tq-hud-lives .visually-hidden').textContent,n:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-number')),
   answered:!document.querySelector('#tq-feedback').hidden,focus:document.activeElement.className})"""
 
 
@@ -612,7 +636,7 @@ async def lifeline_checks(pg, small):
     still = await pg.evaluate(LIFELINES_JS)
     await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: a removed answer cannot be picked; the right answer with Sensor Sweep is worth half (50 at tier 1)", not still["answered"] and s["answered"] and s["score"] == "Score: 50", (still["answered"], s["score"]))
+    check("testellaris lifelines: a removed answer cannot be picked; the right answer with Sensor Sweep is worth half (50 at tier 1)", not still["answered"] and s["answered"] and s["score"] == "Score 50", (still["answered"], s["score"]))
     await pg.click("#tq-next")
     s = await pg.evaluate(LIFELINES_JS)
     check("testellaris lifelines: on the next question Sensor Sweep stays used and the other two are available",
@@ -624,11 +648,11 @@ async def lifeline_checks(pg, small):
     await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
     s = await pg.evaluate(LIFELINES_JS)
     check("testellaris lifelines: with the shields a wrong answer is crossed out, costs no life and the player picks again",
-          not s["answered"] and s["removed"][pos["wrong"]] and s["lives"].endswith("Lives: 3 of 3") and "absorbed" in s["status"]
+          not s["answered"] and s["removed"][pos["wrong"]] and s["lives"] == "3 lives left" and "absorbed" in s["status"]
           and "absorbed" in await pg.evaluate("()=>document.querySelector('#tq-announce').textContent"), s)
     await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: then the right answer scores as usual (100 at tier 1)", s["answered"] and s["score"] == "Score: 150" and s["lives"].endswith("Lives: 3 of 3"), s)
+    check("testellaris lifelines: then the right answer scores as usual (100 at tier 1)", s["answered"] and s["score"] == "Score 150" and s["lives"] == "3 lives left", s)
     await pg.click("#tq-next")
     before = await pg.evaluate(POSITIONS_JS, small)
     n = (await pg.evaluate(LIFELINES_JS))["n"]
@@ -636,4 +660,4 @@ async def lifeline_checks(pg, small):
     after = await pg.evaluate(POSITIONS_JS, small)
     s = await pg.evaluate(LIFELINES_JS)
     check("testellaris lifelines: Hyperlane Jump shows another question with the same number and score, and every lifeline is now used",
-          after["id"] != before["id"] and s["n"] == n == "Question 3" and s["score"] == "Score: 150" and not s["answered"] and all(b[1] for b in s["buttons"]) and "Hyperlane Jump" in s["status"], (before["id"], after["id"], s))
+          after["id"] != before["id"] and s["n"] == n == "Question 3" and s["score"] == "Score 150" and not s["answered"] and all(b[1] for b in s["buttons"]) and "Hyperlane Jump" in s["status"], (before["id"], after["id"], s))

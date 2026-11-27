@@ -4759,10 +4759,19 @@ p.tq-category {
     text-transform: uppercase;
 }
 
+/* T4501: the question panel tinted with the colour of its category. */
+.tq-game[data-category] {
+    border-color: var(--tq-category-colour);
+    border-top-width: 3px;
+    background: linear-gradient(var(--tq-category-tint), var(--tq-category-tint)), var(--panel-shade);
+}
+
+/* T4501: tier on the left, question number and score centred, the hearts at the right end. */
 .tq-hud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .4rem 1.4rem;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: .4rem 1rem;
     padding-bottom: .8rem;
     border-bottom: 1px solid var(--line-soft);
 }
@@ -4778,14 +4787,39 @@ p.tq-category {
     color: var(--accent);
 }
 
+.tq-hud-centre {
+    display: flex;
+    gap: 1.4rem;
+    justify-content: center;
+}
+
+.tq-hud-count {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    color: var(--text);
+    font-size: 1.05rem;
+}
+
+.tq-hud-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+}
+
+.tq-lives {
+    justify-self: end;
+}
+
 .tq-hearts {
     color: var(--danger);
+    font-size: 1.15rem;
     letter-spacing: .15em;
 }
 
 .tq-question-row {
     display: flex;
-    align-items: flex-start;
+    align-items: center; /* T4501: the text centred with the image */
     gap: 1rem;
 }
 
@@ -4812,10 +4846,17 @@ p.tq-category {
     outline-offset: 4px;
 }
 
+/* T4501: the four answers in a 2 × 2 grid, also on phones down to 360 px. */
 .tq-answers {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .6rem;
+}
+
+@media (max-width: 359px) {
+    .tq-answers {
+        grid-template-columns: 1fr;
+    }
 }
 
 .tq-answer {
@@ -5238,6 +5279,18 @@ p.tq-category {
 
     .tq-answer {
         min-height: 48px;
+        gap: .5rem;
+        padding: .5rem;
+        font-size: .82rem;
+    }
+
+    .tq-hud {
+        grid-template-columns: 1fr auto;
+    }
+
+    .tq-hud-centre {
+        grid-column: 1 / -1;
+        grid-row: 2;
     }
 
     .tq-end-stats {

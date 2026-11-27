@@ -92,8 +92,11 @@
         <section class="tq-screen tq-game" id="tq-game" aria-labelledby="tq-question" hidden>
           <div class="tq-hud">
             <p class="tq-hud-item tq-hud-tier" id="tq-hud-tier"></p>
-            <p class="tq-hud-item" id="tq-hud-number"></p>
-            <p class="tq-hud-item" id="tq-hud-score"></p>
+            <!-- T4501: question number and score centred, numbers only with a game icon; the 3 hearts at the right end. -->
+            <div class="tq-hud-centre">
+              <p class="tq-hud-item tq-hud-count" id="tq-hud-number"></p>
+              <p class="tq-hud-item tq-hud-count" id="tq-hud-score"></p>
+            </div>
             <p class="tq-hud-item tq-lives" id="tq-hud-lives"></p>
           </div>
           <div class="tq-lifelines" role="group" aria-labelledby="tq-lifelines-title">

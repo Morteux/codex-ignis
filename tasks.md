@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **149 / 170 tareas (88%)**
+> Progreso: **150 / 170 tareas (88%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -417,7 +417,7 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
   - ❓ Bloqueada: should the species portrait layers (bodies per colour, clothes, hair; ~600 MB as PNG) go to another repository (e.g. `StellarisPortraits`), only a subset (e.g. one colour per species) to StellarisAssets, or not be exported at all?
 
 ## 45 · Testellaris: question screen redesign (owner, 2026-11-26)
-- [ ] **T4501** (P45.1) Question screen layout:
+- [x] **T4501** (P45.1) Question screen layout:
   - The panel background is tinted with the colour of the question's category (besides its name).
   - The four answers in a 2 × 2 grid (today a row of 3 and a row of 1), also on mobile when it fits.
   - When the question has an image, its text is vertically centred with the image (today it sticks to the image's top edge).
@@ -425,6 +425,7 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
   - Lives: only the 3 heart icons, no text; losing a life only changes its icon, as now (keep an accessible name such as "2 lives left").
   - Score and current question: only the numbers, each with an icon (from the game: e.g. a score/unity or research icon, chosen in T2602 style; proposals in `DECISIONS_TO_REVIEW.md`).
   - es/en/jp, GDD §6 (question screen), smoke tests
+  - Prueba manual: abre `testellaris.html`, pulsa Empezar: el panel se tiñe del color de la categoría, las respuestas salen en 2 × 2, el número y los puntos van centrados con su icono y a la derecha solo se ven 3 corazones (uno se vacía al fallar).
 - [ ] **T4502** (P45.2) Four lifelines, one per category, each in its category colour and with the icon of the technology (or tradition for Unity) it is named after, from the game files (export to StellarisAssets if missing). Same effects as now, new names (official es/en/jp names of the game):
   - Engineering: **World Cracker** (the colossus weapon technology) — removes two wrong answers (replaces Sensor Sweep).
   - Society: **Galactic Administration** — replaces the question with another of the same tier (replaces Hyperlane Jump).
