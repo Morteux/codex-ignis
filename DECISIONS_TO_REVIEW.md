@@ -2,6 +2,12 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1404 — GDD §9 reviewed against the 4.5.4 game files (2026-11-27)
+
+- [ ] **Source of the review**: the 4.5.4 extractor output already in `data/generated/stellaris-pc-4.5.4/` (the installed game is now 4.6.0, so T1401 could not rerun it on 4.5.4). Findings in `PLANET_SIM_GDD.md` §9.1.
+- [ ] **No simulator value changed**: the four differences found (Chemical/Synthetic Crystal Plants 600 minerals, Waste Reprocessing Center and Baol Organic Plant building sets, gestalt Production Policy as job output % instead of efficiency) go to the new task T2528, after the owner reviews the T2522 reports (T2523).
+- [ ] **Stacking rules stay unverified**: the game files do not describe how the engine adds modifiers.
+
 ## T1509 — Remaining jp game terms of the simulator (2026-11-27)
 
 - [ ] **職業, 建造物, 区域, 開発構想, 惑星補正 and 民間人** replace 雇用, 建物, 地区, 指定, 惑星修正 (and one 惑星の修正) and civilian 市民 in every jp text of `js/i18n-simulator.js`; terms checked in the localisation of the installed game folder (4.6.0, T2526).

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **158 / 174 tareas (91%)**
+> Progreso: **159 / 175 tareas (91%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -166,6 +166,7 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - ❓ Bloqueada: Does the project move to 4.6.0 (regenerate `data/generated/`, the reports and the tech data file as a new version) or stay on 4.5.4 (then the 4.5.4 game files must be kept in another folder and passed with `--game`)?
 - [x] **T2527** (P25.27) DLC of every scripted trigger (found in T4111): `pdx.text.dlc()` only resolves `host_has_dlc` and `has_<name>_dlc`, so items using other scripted triggers that wrap a DLC (`has_lithoids`, `has_necroids`, `has_toxoids`, `has_infernals`, `has_ancrel`, `has_megacorp`, `has_nemesis`…) get an empty or incomplete `dlc` list (for example `civic_selective_kinship`, playable with `has_lithoids = yes`); resolve every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, with tests, and regenerate the data. Then the Testellaris generator can drop its rule of skipping every item with an unresolved `has_… = yes` trigger
   - Prueba manual: open `data/generated/stellaris-pc-4.5.4/civics.json` and search `civic_selective_kinship`: its `dlc` is now `["Lithoids Species Pack"]`; `dlc.json` lists the 67 DLC scripted triggers in `scripted_triggers`, and `python tools/testellaris/generate_questions.py` now writes 718 questions instead of 582.
+- [ ] **T2528** (P25.28) Apply the GDD §9.1 findings of T1404 with the switch to the generated data (T2523): Chemical Plants and Synthetic Crystal Plants cost 600 minerals; Waste Reprocessing Center in the `urban` and `generator` building sets and Baol Organic Plant in `farming` and `factory`; the gestalt Production Policy (Extraction / Manufacturing Focus) as ±20 % job output of simple / complex drones (step 4) instead of stratum efficiency (step 3), with its smoke checks
 
 ## 10 · Special planets
 Source: the 4.5.4 game files through the extractor (section 25); runs after it.
@@ -466,8 +467,12 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
 
 ## 14 · Final 4.5.4 data verification (last)
 - [ ] **T1401** (P14.1) Run `extract_all.py` on the installed game (check its version first) and use its output and the T2522 reports as the source of the final review
+  - ❓ Bloqueada: The installed game is `Corona Borealis v4.6.0` (`launcher-settings.json`), not 4.5.4, so a run now would give 4.6.0 data. Does the final review stay on 4.5.4 (then give a copy of the 4.5.4 game files for `--game`, or accept the 4.5.4 output already in `data/generated/stellaris-pc-4.5.4/` as the source) or move to 4.6.0 (T2526)?
 - [ ] **T1402** (P14.2) Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources, policies, edicts, branch offices) against them
+  - ❓ Bloqueada: Needs the source of T1401, and the values that differ (T2522 reports: 107 buildings, 46 jobs, 30 civics, 6 districts, 5 deposits…) are fixed by the switch to the generated data (T2523), which waits for the owner's review of those reports.
 - [ ] **T1403** (P14.3) Update `verification` statuses (`unverified` → verified against the game files; add that status to `js/data-version.js` if missing)
-- [ ] **T1404** (P14.4) Review GDD §9 (assumptions and stacking rules)
+  - ❓ Bloqueada: A simulator collection can only be `game-data-verified` once T1402 and T2523 have made its values match the game; the status already exists in `js/data-version.js` (`game-data-verified`).
+- [x] **T1404** (P14.4) Review GDD §9 (assumptions and stacking rules)
+  - Prueba manual: open `PLANET_SIM_GDD.md` §9.1: it lists what the 4.5.4 game files confirm (Agrarian Utopias +200, Optimized Nexus / Extended Hives are traditions, habitat designation locks) and what differs (crystal and chemical plants 600 minerals, Production Policy as job output), with the fixes in the new task T2528.
 - [ ] **T1405** (P14.5) Deliver the final data files
 - [ ] **T1406** (P14.6) Review the tech tree data against the extractor output and set its `verification` status
