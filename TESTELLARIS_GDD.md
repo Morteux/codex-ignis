@@ -59,13 +59,16 @@ The generator gives the tier by rule (set, field and how rare the item is: `play
 
 ### 3.4 Lifelines (proposal for all but 50 %)
 
-Each lifeline can be used **once per game**, only before answering, and only one per question **(proposal)**. Names are drafts with a Stellaris flavour:
+Each lifeline can be used **once per game**, only before answering, and only one per question **(proposal)**. Owner, T4502: **four lifelines, one per category** (§5.4), each shown in its category colour with the icon of the technology (or, for Unity, the tradition) it is named after; the names are the official ones of the game localisation (es / en / jp), the icons the game's (StellarisAssets):
 
-| Lifeline | Name (en, draft) | Effect |
-| --- | --- | --- |
-| 50 % | Sensor Sweep | Removes two wrong answers (owner). |
-| Skip | Hyperlane Jump | Replaces the question with another unasked one of the same tier; it counts neither as correct nor as wrong. |
-| Second chance | Deflector Shields | After a wrong answer, that answer is crossed out and the player picks again without losing a life; a second wrong answer costs the life as usual. It is activated before answering. |
+| Lifeline | Category | Name (game key) | Icon | Effect |
+| --- | --- | --- | --- | --- |
+| 50 % | Engineering | Fracturador de mundo / World Cracker / 惑星破砕砲 (`PLANET_KILLER_CRACKER`, the colossus weapon of `tech_colossus`) | `technologies/tech_colossus.png` | Removes two wrong answers (owner); the question is worth half. |
+| Skip | Society | Administración galáctica / Galactic Administration / 銀河規模の行政機構 (`tech_galactic_administration`) | `technologies/tech_galactic_administration.png` | Replaces the question with another unasked one of the same tier; it counts neither as correct nor as wrong. |
+| Second chance | Physics | Deflectores / Deflectors / デフレクター (`tech_shields_1`) | `technologies/tech_shields_1.png` | After a wrong answer, that answer is crossed out and the player picks again without losing a life; a second wrong answer costs the life as usual. It is activated before answering. |
+| Recycle | Unity | Reciclaje mejorado / Enhanced Recycling / 再利用強化 (`tr_adaptability_recycling`, Adaptability tradition; **proposal**) | `traditions/tr_adaptability_recycling.png` | Gives back one of the other three lifelines already spent, at random; disabled while none is spent; it cannot give itself back. It acts on the lifelines, not on the question, so it can be used on a question where another lifeline was already used (that one still cannot be used twice on the same question). |
+
+The game technologies match the categories: `tech_colossus` is an engineering technology, `tech_galactic_administration` a society one and `tech_shields_1` a physics one (`technologies.json`, `area`), so the three former lifelines keep their effect and only change their name. With Enhanced Recycling one of the other three can be used twice in a game: at most two World Cracker halves, or two Galactic Administration skips (never both), which the hall of fame plausibility check accepts (§7.3).
 
 Rejected for now: "ask the audience" or "ask a friend" (there are no real answer statistics and inventing them would break rule #1), a hint with the source file (it gives the answer away in most generated questions), an extra life (§3.3).
 
@@ -172,7 +175,7 @@ The game runs in the browser, so a determined player can always forge a score; t
 
 - **Payload validation:** fixed fields and types, body under 1 KB, unknown fields rejected.
 - **Name rules:** §7.1, plus a word filter (insults and slurs in es/en/jp, kept in a server-side list, matched after removing accents, spaces and look-alike characters). A rejected name gets a generic message and can be changed.
-- **Plausible score:** the server recomputes the maximum score from the reported counts (correct answers per tier, 5 needed per tier to move up, 50 % halves one answer, completion bonus only with no question left) and rejects any score above it or any count above the bank size of the ruleset.
+- **Plausible score:** the server recomputes the maximum score from the reported counts (correct answers per tier, 5 needed per tier to move up, 50 % halves one answer, or two after Enhanced Recycling gave it back, completion bonus only with no question left, up to one question skipped, or two after Enhanced Recycling, but not together with two halves) and rejects any score above it or any count above the bank size of the ruleset.
 - **Rate limit (proposal):** at most 5 `POST` per 10 minutes per client, keyed by a salted hash of the IP address that expires after 24 hours (TTL index); the raw IP is never stored.
 - **Moderation:** the owner can delete an entry directly in MongoDB Atlas; no admin page in this version **(proposal)**.
 - **Privacy:** the stored data (name, score, date, hashed IP for 24 h) must be described in `privacy.html` before the hall of fame is published (T4304).
@@ -180,7 +183,11 @@ The game runs in the browser, so a determined player can always forge a score; t
 ## 8. Page (section 42)
 
 1. **Start screen:** title, short rules, DLC filter (§4), categories (§5.4), Start button, the top 10.
-2. **Question screen:** tier and its name, question number, score, lives (3 icons with text), the three lifelines (used ones disabled), the category (§5.4), the question (and its icon), four answer buttons, Give up.
+2. **Question screen:** tier and its name, question number, score, lives (3 icons with text), the three lifelines (used ones disabled), the category (§5.4), the question (and its icon), four answer buttons, Give up. Layout (owner, T4501):
+   - The panel background is tinted with the category colour (and its border takes it), besides the category label.
+   - The four answers in a **2 × 2 grid**, also on phones from 360 px wide; below that they stack in one column.
+   - The question text is vertically centred with its image.
+   - Top bar: the tier on the left; the question number and the score centred and a little bigger, **only the numbers**, each with a game icon (the word as alt text and tooltip; **proposal**: research `text_icons/text_research.png` for the question number, unity `concepts/concept_unity.png` for the score); the lives at the right end, **only the 3 heart icons** (losing a life turns one into an empty heart), with an accessible name such as "2 lives left" for screen readers.
 3. **After each answer:** correct/wrong, the correct answer and the short explanation; Next button (keyboard: Enter).
 4. **End screen:** §3.5, then the name input if the score enters the top 10 (§7.1), and Play again.
 

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **150 / 170 tareas (88%)**
+> Progreso: **151 / 170 tareas (89%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -426,12 +426,13 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
   - Score and current question: only the numbers, each with an icon (from the game: e.g. a score/unity or research icon, chosen in T2602 style; proposals in `DECISIONS_TO_REVIEW.md`).
   - es/en/jp, GDD §6 (question screen), smoke tests
   - Prueba manual: abre `testellaris.html`, pulsa Empezar: el panel se tiñe del color de la categoría, las respuestas salen en 2 × 2, el número y los puntos van centrados con su icono y a la derecha solo se ven 3 corazones (uno se vacía al fallar).
-- [ ] **T4502** (P45.2) Four lifelines, one per category, each in its category colour and with the icon of the technology (or tradition for Unity) it is named after, from the game files (export to StellarisAssets if missing). Same effects as now, new names (official es/en/jp names of the game):
+- [x] **T4502** (P45.2) Four lifelines, one per category, each in its category colour and with the icon of the technology (or tradition for Unity) it is named after, from the game files (export to StellarisAssets if missing). Same effects as now, new names (official es/en/jp names of the game):
   - Engineering: **World Cracker** (the colossus weapon technology) — removes two wrong answers (replaces Sensor Sweep).
   - Society: **Galactic Administration** — replaces the question with another of the same tier (replaces Hyperlane Jump).
   - Physics: **Deflector Shields** — second chance, as now.
   - Unity: a tradition or other unity concept with its image (choose one fitting, e.g. a tradition about adaptability or renewal) — gives back one of the lifelines already spent, at random (disabled while none is spent; it cannot give itself back).
   - Check which category each of today's lifelines belongs to and adjust if a name fits another category better; rules in GDD §3.4, score and hall of fame plausibility check (T4302) updated if the number of lifelines changes anything; es/en/jp, smoke tests
+  - Prueba manual: empieza una partida en `testellaris.html`: salen cuatro comodines (Fracturador de mundo, Administración galáctica, Deflectores, Reciclaje mejorado) con su icono y el color de su categoría; tras usar uno, Reciclaje mejorado se activa y lo devuelve.
 - [ ] **T4503** (P45.3) Readable source of a question: instead of "Source: common/deposits/12_wilderness_deposits.txt · d_wilderness_generator_2", an explanatory sentence ("Taken from the game files of Stellaris 4.5.4", "Taken from the Stellaris Wiki (4.5.2), article …") and then, smaller or in a detail line, the exact file with its path and key. es/en/jp, smoke tests
 - [ ] **T4504** (P45.4) Unity category colour: change it from yellow to the light sky blue unity has in game (take the exact colour from the game files, e.g. the unity resource colour of `interface/` or `common/`, and record the source); update GDD §5.4, the start screen, the question panel tint of T4501 and the lifeline of T4502
   - Modelo: sonnet

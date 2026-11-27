@@ -457,6 +457,14 @@ ENGINE_JS = """async(spec)=>{const E=await import('./js/testellaris-engine.js');
   const done=E.nextQuestion(h);const s=E.summary(h);
   out.completed=[done,s.endReason,s.bonus,s.score,s.failed.map(f=>f.id).length,s.lifelines.join(','),s.answered,s.correct];
   h=E.createGame(bank({1:3}));E.nextQuestion(h);E.answer(h,right(h));E.endGame(h,'gaveUp');out.gaveUp=[E.summary(h).bonus,h.score];
+  // T4502: Enhanced Recycling is off while nothing is spent, gives back a spent one at random (never itself), takes no question slot
+  h=E.createGame(bank({1:10}));E.nextQuestion(h);out.recycleNone=E.canUseLifeline(h,'recycle');
+  E.useFifty(h);const onSame=E.canUseLifeline(h,'recycle');const back=E.useRecycle(h);
+  out.recycle=[onSame,back,h.lifelines.fifty,h.lifelines.recycle,E.canUseLifeline(h,'fifty'),E.canUseLifeline(h,'recycle'),h.current.lifeline];
+  E.answer(h,right(h));E.nextQuestion(h);out.recycleAgain=[E.canUseLifeline(h,'fifty'),E.useFifty(h).length,E.answer(h,right(h)).points,E.summary(h).lifelines.join(',')];
+  const backs=new Set();for(let k=0;k<30;k++){const r=E.createGame(bank({1:10}),{rng:Math.random});E.nextQuestion(r);E.useShield(r);E.answer(r,right(r));E.nextQuestion(r);E.useSkip(r);backs.add(E.useRecycle(r))}
+  out.recycleBacks=[...backs].sort().join(',');
+  out.categories=E.LIFELINES.map(n=>E.LIFELINE_CATEGORY[n]).join(',');
   return out}"""
 
 
@@ -471,15 +479,22 @@ async def engine_checks(pg):
     check("testellaris engine: questions asked in recent games are avoided and the list keeps the last 200",
           r["recent"][0] == "t1.2" and r["recent"][1] == 200 and r["recent"][2] == "a,t1.2", r["recent"])
     check("testellaris engine: the four answers are shuffled", r["orders"] > 6, r["orders"])
-    check("testellaris engine: Sensor Sweep removes two wrong answers, blocks other lifelines on that question and halves the points (50 at tier 1)",
+    check("testellaris engine: World Cracker removes two wrong answers, blocks other lifelines on that question and halves the points (50 at tier 1)",
           r["fifty"] == [2, True, False, False, False, 50], r["fifty"])
     check("testellaris engine: each lifeline once per game", r["fiftyAgain"] is False and r["shieldThrows"], (r["fiftyAgain"], r["shieldThrows"]))
-    check("testellaris engine: Hyperlane Jump swaps in another unasked question of the same tier, keeps the number, gives no points, and is off when the tier has nothing else",
+    check("testellaris engine: Galactic Administration swaps in another unasked question of the same tier, keeps the number, gives no points, and is off when the tier has nothing else",
           r["skip"] == [True, 1, True, 50, 1, True, True, False] and r["skipEmpty"] is False, (r["skip"], r["skipEmpty"]))
-    check("testellaris engine: Deflector Shields cross out the first wrong answer without losing a life; the second wrong answer costs it",
+    check("testellaris engine: Deflectors cross out the first wrong answer without losing a life; the second wrong answer costs it",
           r["shield"] == [True, True, False, False, 2, 1] and r["shieldRight"] == [100, 3], (r["shield"], r["shieldRight"]))
     check("testellaris engine: a completed game adds 250 points per life left (2 lives: +500), a given-up one adds nothing; the summary has the failed questions and lifelines",
           r["completed"] == [None, "completed", 500, 50 + 100 + 500, 1, "fifty", 3, 2] and r["gaveUp"] == [0, 100], (r["completed"], r["gaveUp"]))
+    check("testellaris engine (T4502): four lifelines, one per category (World Cracker engineering, Galactic Administration society, Deflectors physics, Enhanced Recycling unity)",
+          r["categories"] == "engineering,society,physics,unity", r["categories"])
+    check("testellaris engine (T4502): Enhanced Recycling is off while no lifeline is spent; it gives back the spent one (not itself), takes no question slot, and the one given back cannot be used twice on the same question",
+          r["recycleNone"] is False and r["recycle"] == [True, "fifty", False, True, False, False, "fifty"], (r["recycleNone"], r["recycle"]))
+    check("testellaris engine (T4502): the lifeline given back works again on a later question (50 again) and the summary lists it twice",
+          r["recycleAgain"] == [True, 2, 50, "fifty,fifty,recycle"], r["recycleAgain"])
+    check("testellaris engine (T4502): with two lifelines spent Enhanced Recycling gives back either of them at random", r["recycleBacks"] == "shield,skip", r["recycleBacks"])
 
 
 # Position of the right / a wrong answer of the question on screen, from the bank record.
@@ -608,13 +623,13 @@ async def game_checks(pg, by_id):
     check("testellaris game: Give up asks first (Keep playing goes on), then ends the game", still and gave == [False, "You gave up."], (still, gave))
     end = await pg.evaluate(END_JS)
     check("testellaris end screen: a given-up game keeps its score, lists the lifelines used and says no question was failed",
-          end["stats"] == {"Score": "150", "Tier reached": "Tier 1 · Primitive", "Correct answers": "2 of 2", "Lifelines used": "Sensor Sweep, Hyperlane Jump, Deflector Shields"}
+          end["stats"] == {"Score": "150", "Tier reached": "Tier 1 · Primitive", "Correct answers": "2 of 2", "Lifelines used": "World Cracker, Galactic Administration, Deflectors, Enhanced Recycling"}
           and end["failed"] == [] and not end["none"], end)
     await pg.click("#tq-back-start")
     check("testellaris game: Change the DLC filter goes back to the start screen", await pg.evaluate("()=>!document.querySelector('#tq-start').hidden&&document.querySelector('#tq-end').hidden"))
 
 
-LIFELINES_JS = """()=>({buttons:[...document.querySelectorAll('.tq-lifeline')].map(b=>[b.dataset.lifeline,b.disabled,b.className.replace('tq-lifeline','').trim(),[...b.children].map(c=>c.textContent).join(' ')]),
+LIFELINES_JS = """()=>({buttons:[...document.querySelectorAll('.tq-lifeline')].map(b=>[b.dataset.lifeline,b.disabled,b.className.replace('tq-lifeline','').trim(),b.querySelector('.tq-lifeline-name').textContent+' '+b.querySelector('.tq-lifeline-hint').textContent,b.dataset.category,b.querySelector('img').getAttribute('src').replace(/^.*?(technologies|traditions)\\//,'$1/'),getComputedStyle(b.querySelector('.tq-lifeline-name')).color]),
   status:document.querySelector('#tq-lifeline-status').textContent,removed:[...document.querySelectorAll('#tq-answers .tq-answer')].map(b=>b.disabled&&b.classList.contains('is-removed')),
   score:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-score')),lives:document.querySelector('#tq-hud-lives .visually-hidden').textContent,n:(e=>e.querySelector('img').alt+' '+e.querySelector('.tq-hud-value').textContent)(document.querySelector('#tq-hud-number')),
   answered:!document.querySelector('#tq-feedback').hidden,focus:document.activeElement.className})"""
@@ -623,27 +638,32 @@ LIFELINES_JS = """()=>({buttons:[...document.querySelectorAll('.tq-lifeline')].m
 async def lifeline_checks(pg, small):
     """T4203, on question 1 of a fresh game (score 0, 3 lives)."""
     start = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: three lifelines with their names and effects, all available at the start",
-          [b[0] for b in start["buttons"]] == ["fifty", "skip", "shield"] and not any(b[1] for b in start["buttons"])
-          and start["buttons"][0][3].startswith("Sensor Sweep 50 %") and start["buttons"][1][3].startswith("Hyperlane Jump") and start["buttons"][2][3].startswith("Deflector Shields"), start["buttons"])
+    check("testellaris lifelines (T4502): four lifelines with their game names and effects; Enhanced Recycling is off at the start (nothing spent), the other three available",
+          [b[0] for b in start["buttons"]] == ["fifty", "skip", "shield", "recycle"] and [b[1] for b in start["buttons"]] == [False, False, False, True]
+          and start["buttons"][0][3].startswith("World Cracker 50 %") and start["buttons"][1][3].startswith("Galactic Administration") and start["buttons"][2][3].startswith("Deflectors")
+          and start["buttons"][3][3].startswith("Enhanced Recycling Gives back"), start["buttons"])
+    check("testellaris lifelines (T4502): each one in its category colour with the icon of its technology or tradition",
+          [b[4] for b in start["buttons"]] == ["engineering", "society", "physics", "unity"]
+          and [b[5] for b in start["buttons"]] == ["technologies/tech_colossus.png", "technologies/tech_galactic_administration.png", "technologies/tech_shields_1.png", "traditions/tr_adaptability_recycling.png"]
+          and [b[6] for b in start["buttons"]] == [CATEGORY_COLOURS[c] for c in ("engineering", "society", "physics", "unity")], start["buttons"])
     await pg.click("#tq-lifeline-fifty")
     s = await pg.evaluate(LIFELINES_JS)
     pos = await pg.evaluate(POSITIONS_JS, small)
-    check("testellaris lifelines: Sensor Sweep takes away two wrong answers (never the right one), says so, and locks the other lifelines for this question",
+    check("testellaris lifelines: World Cracker takes away two wrong answers (never the right one), says so, and locks the other lifelines for this question (Enhanced Recycling stays available)",
           s["removed"].count(True) == 2 and not s["removed"][pos["right"]] and "removed two wrong answers" in s["status"]
-          and [b[1] for b in s["buttons"]] == [True, True, True] and "used" in s["buttons"][0][3] and "tq-answer" in s["focus"], s)
+          and [b[1] for b in s["buttons"]] == [True, True, True, False] and "used" in s["buttons"][0][3] and "tq-answer" in s["focus"], s)
     await pg.keyboard.press(str(next(i for i, r in enumerate(s["removed"]) if r) + 1))  # a removed answer cannot be picked
     still = await pg.evaluate(LIFELINES_JS)
     await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["right"])
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: a removed answer cannot be picked; the right answer with Sensor Sweep is worth half (50 at tier 1)", not still["answered"] and s["answered"] and s["score"] == "Score 50", (still["answered"], s["score"]))
+    check("testellaris lifelines: a removed answer cannot be picked; the right answer with World Cracker is worth half (50 at tier 1)", not still["answered"] and s["answered"] and s["score"] == "Score 50", (still["answered"], s["score"]))
     await pg.click("#tq-next")
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: on the next question Sensor Sweep stays used and the other two are available",
-          [b[1] for b in s["buttons"]] == [True, False, False] and "is-used" in s["buttons"][0][2] and s["status"] == "", s["buttons"])
+    check("testellaris lifelines: on the next question World Cracker stays used and the other three are available",
+          [b[1] for b in s["buttons"]] == [True, False, False, False] and "is-used" in s["buttons"][0][2] and s["status"] == "", s["buttons"])
     await pg.click("#tq-lifeline-shield")
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: Deflector Shields show as active before answering", "is-active" in s["buttons"][2][2] and "active" in s["buttons"][2][3] and "Shields up" in s["status"], s)
+    check("testellaris lifelines: Deflectors show as active before answering", "is-active" in s["buttons"][2][2] and "active" in s["buttons"][2][3] and "Deflectors up" in s["status"], s)
     pos = await pg.evaluate(POSITIONS_JS, small)
     await pg.click("#tq-answers .tq-answer[data-position='%d']" % pos["wrong"])
     s = await pg.evaluate(LIFELINES_JS)
@@ -659,5 +679,17 @@ async def lifeline_checks(pg, small):
     await pg.click("#tq-lifeline-skip")
     after = await pg.evaluate(POSITIONS_JS, small)
     s = await pg.evaluate(LIFELINES_JS)
-    check("testellaris lifelines: Hyperlane Jump shows another question with the same number and score, and every lifeline is now used",
-          after["id"] != before["id"] and s["n"] == n == "Question 3" and s["score"] == "Score 150" and not s["answered"] and all(b[1] for b in s["buttons"]) and "Hyperlane Jump" in s["status"], (before["id"], after["id"], s))
+    check("testellaris lifelines: Galactic Administration shows another question with the same number and score; the other three are spent, Enhanced Recycling is left",
+          after["id"] != before["id"] and s["n"] == n == "Question 3" and s["score"] == "Score 150" and not s["answered"] and [b[1] for b in s["buttons"]] == [True, True, True, False]
+          and "Galactic Administration" in s["status"], (before["id"], after["id"], s))
+    await pg.click("#tq-lifeline-recycle")
+    s = await pg.evaluate(LIFELINES_JS)
+    back = next((b[0] for b in s["buttons"][:3] if "is-used" not in b[2]), None)
+    check("testellaris lifelines (T4502): Enhanced Recycling gives back one spent lifeline and says which; it cannot be used on this question again (Galactic Administration was), and Recycling itself is spent",
+          back in ("fifty", "skip", "shield") and [b[0] for b in s["buttons"] if "is-used" in b[2]] == [x for x in ("fifty", "skip", "shield", "recycle") if x != back]
+          and all(b[1] for b in s["buttons"]) and s["status"] == "Enhanced Recycling: %s is back." % {"fifty": "World Cracker", "skip": "Galactic Administration", "shield": "Deflectors"}.get(back), s)
+    await pg.click(".lang-btn[data-lang=jp]")
+    jp = await pg.evaluate(LIFELINES_JS)
+    await pg.click(".lang-btn[data-lang=en]")
+    check("testellaris lifelines (T4502): the official names follow the language (jp: 惑星破砕砲, 銀河規模の行政機構, デフレクター, 再利用強化) and so does the message",
+          [b[3].split(" ")[0] for b in jp["buttons"]] == ["惑星破砕砲", "銀河規模の行政機構", "デフレクター", "再利用強化"] and jp["status"].startswith("再利用強化："), jp)

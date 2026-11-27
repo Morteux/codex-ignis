@@ -2,6 +2,23 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T4502 — Testellaris: four lifelines, one per category (2026-11-27)
+
+- **Unity lifeline: Enhanced Recycling** (`tr_adaptability_recycling`, Adaptability tradition: Reciclaje mejorado / 再利用強化), chosen because recycling fits "gives back a spent lifeline". Alternatives of the same tree: Adaptability itself (`tradition_adaptability`), Survival of the Fittest.
+- **Physics lifeline name: "Deflectors"** (Deflectores / デフレクター), the official name of `tech_shields_1`: the game has no technology called "Deflector Shields", the name the task used.
+- **Engineering lifeline: World Cracker** is the colossus weapon (`PLANET_KILLER_CRACKER`); its icon is the one of the technology that unlocks it, `tech_colossus` (Colossi).
+- **Enhanced Recycling does not take the question's lifeline slot** (one lifeline per question): it acts on the lifelines, so it can be used on any question before answering while one is spent; the one it gives back still cannot be used twice on the same question. The lifeline it gives back is drawn at random among the spent ones.
+- **The names come from the localisation of the installed game** (4.6.0, T2526); `PLANET_KILLER_CRACKER`, `tech_galactic_administration`, `tech_shields_1` and `tr_adaptability_recycling` exist with the same keys in the 4.5.4 data. No new export was needed: the four icons were already in StellarisAssets.
+- **Hall of fame check**: with Enhanced Recycling a game can halve two right answers (World Cracker twice) or skip two questions (Galactic Administration twice), never both; `possibleScores` accepts exactly that.
+- **End screen**: a lifeline used twice is listed twice under "Lifelines used".
+
+## T4501 — Testellaris question screen layout (2026-11-27)
+
+- **HUD icons (proposal, T2602 style: game icon before the number, the word as alt text and tooltip):** question number → research `text_icons/text_research.png` (`GFX_text_research`, the game's text icon for research: one more question "researched"); score → unity `concepts/concept_unity.png` (the game's unity concept icon: points accumulate like unity). Alternatives: `text_icons/text_traditions.png` for the score, `technologies/` icons for the number.
+- **2 × 2 grid from 360 px wide**: at 320 px two columns leave about 130 px per answer and long Japanese answers wrapped into 5–6 lines, so below 360 px they stack in one column.
+- **Panel tint**: the category tint (10 % of its colour) over the panel background plus a border in the category colour, 3 px on top; the label above the question stays.
+- **Lives**: the ♥ / ♡ characters stay as the heart icons (no game heart icon was found); a visually hidden "2 lives left" text gives the accessible name. On phones the tier and the hearts share the first line and the counters go centred on a second one.
+
 ## T2704 — Index and browser of StellarisAssets (2026-11-27)
 
 - **Names are English only**: the data-set name when one uses the icon, else the English localisation of the sprite key (without `GFX_`), the key or the texture name; 5 054 of 18 486 files have one. Localised es/jp names were left out to keep `index.json` small (4 MB); the site's own pages already have them in `js/game-names/`.

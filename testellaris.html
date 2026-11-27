@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y tres comodines." data-i18n-attr="content:tqMetaDescription" />
+    <meta name="description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y cuatro comodines." data-i18n-attr="content:tqMetaDescription" />
     <title data-i18n="tqPageTitle">Testellaris · Codex Ignis</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="icon" type="image/png" href="img/Ignis Stellaris icon.png" />
@@ -12,7 +12,7 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Codex Ignis" />
     <meta property="og:title" content="Testellaris · Codex Ignis" />
-    <meta property="og:description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y tres comodines." />
+    <meta property="og:description" content="Testellaris: el juego de preguntas de Stellaris. Responde preguntas cada vez más difíciles, con 3 vidas y cuatro comodines." />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:image" content="img/Ignis Stellaris.png" />
     <meta name="twitter:card" content="summary" />
@@ -49,7 +49,7 @@
           <ul class="tq-rules">
             <li data-i18n="tqRule1">Cinco niveles de dificultad: subes de nivel tras 5 aciertos en el nivel actual.</li>
             <li data-i18n="tqRule2">Tienes 3 vidas: cada fallo cuesta una.</li>
-            <li data-i18n="tqRule3">Tres comodines, cada uno una vez por partida y uno por pregunta.</li>
+            <li data-i18n="tqRule3">Cuatro comodines, uno por categoría: cada uno una vez por partida y uno por pregunta; Reciclaje mejorado te devuelve uno ya usado.</li>
             <li data-i18n="tqRule4">Sin límite de tiempo. Teclas 1–4 o A–D para responder, Intro para seguir.</li>
           </ul>
 
@@ -99,11 +99,13 @@
             </div>
             <p class="tq-hud-item tq-lives" id="tq-hud-lives"></p>
           </div>
+          <!-- T4502: one lifeline per category, with the icon of its technology or tradition. -->
           <div class="tq-lifelines" role="group" aria-labelledby="tq-lifelines-title">
             <h3 class="visually-hidden" id="tq-lifelines-title" data-i18n="tqLifelinesHeading">Comodines</h3>
             <button type="button" class="tq-lifeline" id="tq-lifeline-fifty" data-lifeline="fifty"></button>
             <button type="button" class="tq-lifeline" id="tq-lifeline-skip" data-lifeline="skip"></button>
             <button type="button" class="tq-lifeline" id="tq-lifeline-shield" data-lifeline="shield"></button>
+            <button type="button" class="tq-lifeline" id="tq-lifeline-recycle" data-lifeline="recycle"></button>
           </div>
           <p class="tq-lifeline-status" id="tq-lifeline-status" role="status"></p>
           <p class="tq-category" id="tq-question-category"></p>

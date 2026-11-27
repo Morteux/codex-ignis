@@ -33,19 +33,35 @@ function wellFormed(body) {
         && Array.isArray(body.correctByTier) && body.correctByTier.length === MAX_TIER && body.correctByTier.every(isCount);
 }
 
+/** Points lost to `count` World Cracker halves (0, 1 or 2) on right answers: every sum the counts allow. */
+function halfLosses(correctByTier, count) {
+    const half = (tier) => pointsFor(tier) - pointsFor(tier, true);
+    const tiers = TIERS.filter((tier) => correctByTier[tier - 1] > 0);
+    if (count === 0) return [0];
+    if (count === 1) return tiers.map(half);
+    return tiers.flatMap((a) => tiers.filter((b) => b > a || (b === a && correctByTier[a - 1] > 1)).map((b) => half(a) + half(b)));
+}
+
 /**
  * Every score a game with these counts can end with (GDD §3.5): the points of the right answers
- * of each tier, less half of one of them when Sensor Sweep was used on a right answer, plus the
- * completion bonus (250 per life left) only when the game answered every base-game question
- * (the DLC filter never removes those, so no game completes with fewer; one may be skipped).
+ * of each tier, less half of the ones World Cracker was used on, plus the completion bonus (250 per
+ * life left) only when the game answered every base-game question (the DLC filter never removes
+ * those, so no game completes with fewer) but the skipped ones. Each lifeline is used once, and
+ * Enhanced Recycling (T4502) can give one back: so up to two halves and one skip, or one half and
+ * up to two skips.
  */
 export function possibleScores({ maxTier, answered, correct, correctByTier }, bank) {
     const base = TIERS.reduce((sum, tier) => sum + correctByTier[tier - 1] * pointsFor(tier), 0);
-    const halves = [0, ...TIERS.filter((tier) => correctByTier[tier - 1] > 0).map((tier) => pointsFor(tier) - pointsFor(tier, true))];
     const livesLeft = LIVES - (answered - correct);
-    const bonuses = [0];
-    if (livesLeft > 0 && answered + 1 >= bank.baseTotal) bonuses.push(COMPLETION_BONUS_PER_LIFE * livesLeft);
-    return new Set(halves.flatMap((half) => bonuses.map((bonus) => base - half + bonus)));
+    const scores = new Set();
+    for (const [halves, skips] of [[0, 2], [1, 2], [2, 1]]) {
+        const bonuses = [0];
+        if (livesLeft > 0 && answered + skips >= bank.baseTotal) bonuses.push(COMPLETION_BONUS_PER_LIFE * livesLeft);
+        for (let count = 0; count <= halves; count += 1) {
+            for (const loss of halfLosses(correctByTier, count)) bonuses.forEach((bonus) => scores.add(base - loss + bonus));
+        }
+    }
+    return scores;
 }
 
 /** null when the counts fit a game of the bank, else "score". */

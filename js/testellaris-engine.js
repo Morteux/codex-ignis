@@ -76,8 +76,9 @@ export function createGame(questions, { recent = [], rng = Math.random } = {}) {
         answered: 0,
         correct: 0,
         number: 0, // questions shown so far (the current one included; a skipped one is replaced, not counted)
-        lifelines: Object.fromEntries(LIFELINES.map((name) => [name, false])), // true once used
-        skipped: [], // ids replaced with Hyperlane Jump
+        lifelines: Object.fromEntries(LIFELINES.map((name) => [name, false])), // true while spent (Enhanced Recycling can make one false again)
+        lifelineUses: Object.fromEntries(LIFELINES.map((name) => [name, 0])), // times each one was used
+        skipped: [], // ids replaced with Galactic Administration
         current: null,
         history: [], // { id, tier, correct, chosen, points } per answered question
         over: false,
@@ -116,9 +117,9 @@ function showQuestion(game, question) {
     game.current = {
         question,
         order: shuffle([0, 1, 2, 3], game.rng),
-        removed: new Set(), // shown positions taken away by Sensor Sweep or crossed out by the shields
+        removed: new Set(), // shown positions taken away by World Cracker or crossed out by the shields
         lifeline: null, // the lifeline used on this question (one per question)
-        shield: false, // Deflector Shields up: the next wrong answer is crossed out instead of costing a life
+        shield: false, // Deflectors up: the next wrong answer is crossed out instead of costing a life
         answered: false,
     };
     return question;
@@ -145,29 +146,54 @@ export function nextQuestion(game) {
     return null;
 }
 
-/** Points of a right answer at `tier`, half of them with Sensor Sweep on the question (GDD §3.5). */
+/** Points of a right answer at `tier`, half of them with World Cracker on the question (GDD §3.5). */
 export function pointsFor(tier, fifty = false) {
     return fifty ? 50 * tier : 100 * tier;
 }
 
 // ── Lifelines (GDD §3.4): each once per game, only before answering, one per question ──
 
-/** fifty = Sensor Sweep (50 %), skip = Hyperlane Jump, shield = Deflector Shields (second chance). */
-export const LIFELINES = ["fifty", "skip", "shield"];
+/**
+ * One lifeline per category (T4502), named after a technology or tradition of the game:
+ * fifty = World Cracker (engineering, 50 %), skip = Galactic Administration (society, another question),
+ * shield = Deflectors (physics, second chance), recycle = Enhanced Recycling (unity, gives back a spent one).
+ */
+export const LIFELINES = ["fifty", "skip", "shield", "recycle"];
+export const LIFELINE_CATEGORY = { fifty: "engineering", skip: "society", shield: "physics", recycle: "unity" };
+/** The lifelines Enhanced Recycling can give back (never itself). */
+const RECYCLABLE = ["fifty", "skip", "shield"];
+
+/** Spent lifelines Enhanced Recycling could give back now. */
+export function spentLifelines(game) {
+    return RECYCLABLE.filter((name) => game.lifelines[name]);
+}
 
 export function canUseLifeline(game, name) {
     const current = game.current;
-    if (game.over || !current || current.answered || current.lifeline || game.lifelines[name]) return false;
+    if (game.over || !current || current.answered || game.lifelines[name]) return false;
+    // Enhanced Recycling acts on the lifelines, not on the question: it does not take the question's slot
+    if (name === "recycle") return spentLifelines(game).length > 0;
+    if (current.lifeline) return false;
     return name !== "skip" || candidates(game, current.question.tier).length > 0;
 }
 
 function spendLifeline(game, name) {
     if (!canUseLifeline(game, name)) throw new Error(`lifeline ${name} not available`);
     game.lifelines[name] = true;
-    game.current.lifeline = name;
+    game.lifelineUses[name] += 1;
+    if (name !== "recycle") game.current.lifeline = name;
 }
 
-/** Sensor Sweep: takes away two wrong answers at random; returns their shown positions. */
+/** Enhanced Recycling: gives back one spent lifeline at random (not itself); returns its name. */
+export function useRecycle(game) {
+    spendLifeline(game, "recycle");
+    const spent = spentLifelines(game);
+    const name = spent[Math.floor(game.rng() * spent.length)];
+    game.lifelines[name] = false;
+    return name;
+}
+
+/** World Cracker: takes away two wrong answers at random; returns their shown positions. */
 export function useFifty(game) {
     spendLifeline(game, "fifty");
     const { order, question, removed } = game.current;
@@ -176,7 +202,7 @@ export function useFifty(game) {
     return wrong;
 }
 
-/** Hyperlane Jump: replaces the question with another unasked one of the same tier; no points either way. */
+/** Galactic Administration: replaces the question with another unasked one of the same tier; no points either way. */
 export function useSkip(game) {
     const { tier, id } = game.current.question;
     spendLifeline(game, "skip");
@@ -188,7 +214,7 @@ export function useSkip(game) {
     return question;
 }
 
-/** Deflector Shields: raised before answering; the next wrong answer of this question is crossed out without losing a life. */
+/** Deflectors: raised before answering; the next wrong answer of this question is crossed out without losing a life. */
 export function useShield(game) {
     spendLifeline(game, "shield");
     game.current.shield = true;
@@ -253,7 +279,7 @@ export function summary(game) {
         correct: game.correct,
         bonus: game.bonus || 0,
         endReason: game.endReason,
-        lifelines: LIFELINES.filter((name) => game.lifelines[name]),
+        lifelines: LIFELINES.flatMap((name) => Array(game.lifelineUses[name]).fill(name)), // a recycled one may appear twice
         failed: game.history.filter((entry) => !entry.correct),
     };
 }

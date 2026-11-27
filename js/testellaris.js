@@ -18,7 +18,7 @@ import { questionNodes, explanationNodes, answerIcon } from "./testellaris-icons
 import { loadBoard, submitEntry, qualifies, normalizeName, nameLength, nameError, sameEntry, NAME_MAX, hallOfFame, apiClient } from "./testellaris-scores.js";
 import {
     TIERS, FEW_QUESTIONS, LIVES, LIFELINES, CATEGORIES, filterBank, filterCategories, categoryCounts, tierCounts, createGame, nextQuestion, answer, endGame, mergeRecent,
-    canUseLifeline, useFifty, useSkip, useShield, summary, COMPLETION_BONUS_PER_LIFE,
+    canUseLifeline, useFifty, useSkip, useShield, useRecycle, LIFELINE_CATEGORY, summary, COMPLETION_BONUS_PER_LIFE,
 } from "./testellaris-engine.js";
 
 export const RULESET_ID = "stellaris-pc-4.5.4";
@@ -355,37 +355,60 @@ function renderHud() {
     renderLifelines();
 }
 
-/** The three lifeline buttons: name, what it does, and whether it is used, active or available. */
+/** T4502: game icon of each lifeline (the technology or tradition it is named after), paths in StellarisAssets. */
+export const LIFELINE_ICONS = {
+    fifty: "technologies/tech_colossus.png",
+    skip: "technologies/tech_galactic_administration.png",
+    shield: "technologies/tech_shields_1.png",
+    recycle: "traditions/tr_adaptability_recycling.png",
+};
+
+/** The four lifeline buttons: icon, name, what it does, and whether it is used, active or available, in its category colour. */
 function renderLifelines() {
     for (const name of LIFELINES) {
         const button = el(`tq-lifeline-${name}`);
         const used = game.lifelines[name];
         const active = name === "shield" && game.current.shield;
+        button.className = `tq-lifeline tq-category--${LIFELINE_CATEGORY[name]}`;
+        button.dataset.category = LIFELINE_CATEGORY[name];
+        const icon = document.createElement("img");
+        icon.className = "tq-lifeline-icon";
+        icon.src = IMAGE_BASE + LIFELINE_ICONS[name];
+        icon.alt = "";
+        icon.width = 32;
+        icon.height = 32;
+        icon.addEventListener("error", () => { icon.hidden = true; });
         const title = document.createElement("span");
         title.className = "tq-lifeline-name";
         title.textContent = t(lang, `tqLifeline_${name}`);
         const hint = document.createElement("span");
         hint.className = "tq-lifeline-hint";
         hint.textContent = active ? t(lang, "tqLifelineActive") : used ? t(lang, "tqLifelineUsed") : t(lang, `tqLifelineHint_${name}`);
-        button.replaceChildren(title, hint);
+        const text = document.createElement("span");
+        text.className = "tq-lifeline-text";
+        text.append(title, hint);
+        button.replaceChildren(icon, text);
         button.disabled = !canUseLifeline(game, name);
         button.classList.toggle("is-used", used && !active);
         button.classList.toggle("is-active", active);
     }
-    el("tq-lifeline-status").textContent = lifelineStatus ? t(lang, lifelineStatus) : "";
+    const status = typeof lifelineStatus === "string" ? { key: lifelineStatus } : lifelineStatus;
+    el("tq-lifeline-status").textContent = status ? format(t(lang, status.key), status.back ? { name: t(lang, `tqLifeline_${status.back}`) } : {}) : "";
 }
 
-const LIFELINE_ACTIONS = { fifty: [useFifty, "tqFiftyDone"], skip: [useSkip, "tqSkipDone"], shield: [useShield, "tqShieldOn"] };
+const LIFELINE_ACTIONS = { fifty: [useFifty, "tqFiftyDone"], skip: [useSkip, "tqSkipDone"], shield: [useShield, "tqShieldOn"], recycle: [useRecycle, "tqRecycleDone"] };
 
 function onLifeline(name) {
     if (!game || !canUseLifeline(game, name)) return;
     const [use, message] = LIFELINE_ACTIONS[name];
-    use(game);
-    lifelineStatus = message;
+    const result = use(game);
+    // Enhanced Recycling names the lifeline it gave back, in the language shown when it is redrawn
+    lifelineStatus = name === "recycle" ? { key: message, back: result } : message;
     if (name === "skip") writeStorage(RECENT_STORAGE_KEY, mergeRecent(readStorage(RECENT_STORAGE_KEY, []), game));
     renderGame();
-    // the focus goes on: to the question after a jump, else to the first answer left
+    // the focus goes on: to the question after a jump, to the lifeline given back, else to the first answer left
     if (name === "skip") questionEl.focus();
+    else if (name === "recycle" && !el(`tq-lifeline-${result}`).disabled) el(`tq-lifeline-${result}`).focus();
     else answersEl.querySelector(".tq-answer:not(:disabled)")?.focus();
 }
 
@@ -461,7 +484,7 @@ function pick(position) {
     if (!game || game.over || !game.current || game.current.answered || game.current.removed.has(position)) return;
     const tierBefore = game.tier;
     const result = answer(game, position);
-    if (result.retry) { // Deflector Shields: that answer is crossed out, pick again
+    if (result.retry) { // Deflectors: that answer is crossed out, pick again
         lifelineStatus = "tqShieldHit";
         renderGame();
         announceEl.textContent = t(lang, "tqShieldHit");

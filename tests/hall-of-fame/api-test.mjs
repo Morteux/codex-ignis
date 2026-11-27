@@ -120,8 +120,10 @@ function entry(name, byTier, { wrong = 0, half = 0, bonus = 0, ...extra } = {}) 
 
     const score = (body) => verdict(body) === "score";
     check("hall of fame rules: a score above the counts is rejected", score({ ...good, score: good.score + 50 }) && score({ ...good, score: good.score + 100000 }));
-    check("hall of fame rules: Sensor Sweep halves one right answer (the score less half of one tier's points is accepted, two halves are not)",
-        verdict(entry("Ana", [5, 5, 2], { half: 150 })) === "ok" && verdict(entry("Ana", [5, 5, 2], { half: 50 })) === "ok" && score(entry("Ana", [5, 5, 2], { half: 200 })) && score(entry("Ana", [5, 5], { half: 150 })));
+    check("hall of fame rules: World Cracker halves one right answer, or two after Enhanced Recycling (T4502); three halves or a half of a tier without right answers are rejected",
+        verdict(entry("Ana", [5, 5, 2], { half: 150 })) === "ok" && verdict(entry("Ana", [5, 5, 2], { half: 50 })) === "ok" && verdict(entry("Ana", [5, 5, 2], { half: 200 })) === "ok"
+        && verdict(entry("Ana", [5, 5, 2], { half: 300 })) === "ok" && score(entry("Ana", [5, 5, 2], { half: 350 })) && score(entry("Ana", [5, 5], { half: 250 }))
+        && score(entry("Ana", [5, 5, 1], { half: 300 })) && score(entry("Ana", [5, 5], { half: 75 })));
     check("hall of fame rules: counts that no game can reach are rejected (more right than answered, 4 wrong, right answers above the tier reached, more than the bank)",
         score({ ...good, correct: 13 }) && score(entry("Ana", [5, 5, 2], { wrong: 4 })) && score({ ...good, maxTier: 2 }) && score({ ...good, maxTier: 6 }) && score({ ...entry("Ana", [bank.byTier[1] + 1]) }) && score({ ...good, answered: bank.total + 1, correct: bank.total + 1 }));
     check("hall of fame rules: the completion bonus needs every base-game question answered and 250 per life left",
@@ -129,6 +131,13 @@ function entry(name, byTier, { wrong = 0, half = 0, bonus = 0, ...extra } = {}) 
         && possibleScores(entry("x", [bank.baseTotal - 1], { wrong: 1 }), bank).has(100 * (bank.baseTotal - 1) + 500)
         && !possibleScores(entry("x", [bank.baseTotal - 1], { wrong: 1 }), bank).has(100 * (bank.baseTotal - 1) + 750)
         && !possibleScores(entry("x", [bank.baseTotal - 3], { wrong: 3 }), bank).has(100 * (bank.baseTotal - 3) + 250), bank.baseTotal);
+    // T4502: Galactic Administration twice (given back by Enhanced Recycling) leaves two base questions unanswered, never three,
+    // and then World Cracker could only have been used once
+    const twoSkips = entry("x", [bank.baseTotal - 2]);
+    check("hall of fame rules: the completion bonus allows two skipped questions (Enhanced Recycling), not three, and two skips go with one half at most",
+        possibleScores(twoSkips, bank).has(100 * (bank.baseTotal - 2) + 750) && possibleScores(twoSkips, bank).has(100 * (bank.baseTotal - 2) - 50 + 750)
+        && !possibleScores(twoSkips, bank).has(100 * (bank.baseTotal - 2) - 100 + 750) && possibleScores(twoSkips, bank).has(100 * (bank.baseTotal - 2) - 100)
+        && !possibleScores(entry("x", [bank.baseTotal - 3]), bank).has(100 * (bank.baseTotal - 3) + 750), bank.baseTotal);
 
     const store = memoryStore();
     const handle = createHandler({ store, now, salt: "test-salt" });

@@ -5015,16 +5015,18 @@ p.tq-category {
 
 .tq-lifelines {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
     gap: .5rem;
 }
 
 .tq-lifeline {
-    display: grid;
-    gap: .2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
     min-height: 44px;
     padding: .5rem .7rem;
-    border: 1px solid var(--slot-limited);
+    border: 1px solid var(--tq-category-colour, var(--slot-limited));
+    border-left-width: 4px;
     color: var(--text);
     background: var(--surface);
     font: .72rem/1.4 var(--mono);
@@ -5033,7 +5035,21 @@ p.tq-category {
 }
 
 .tq-lifeline:hover:not(:disabled) {
-    background: var(--surface-raised);
+    background: var(--tq-category-tint, var(--surface-raised));
+}
+
+/* T4502: icon of the technology or tradition the lifeline is named after. */
+.tq-lifeline-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.tq-lifeline-text {
+    display: grid;
+    gap: .2rem;
+    min-width: 0;
 }
 
 .tq-lifeline:focus-visible {
@@ -5057,7 +5073,7 @@ p.tq-category {
 }
 
 .tq-lifeline-name {
-    color: var(--slot-limited);
+    color: var(--tq-category-colour, var(--slot-limited));
     font-weight: 700;
     letter-spacing: .04em;
     text-transform: uppercase;
