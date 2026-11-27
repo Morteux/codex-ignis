@@ -191,6 +191,15 @@ Icon folders (`gfx/interface/icons/<folder>` → StellarisAssets): the folders S
 
 **Out**: 3D meshes and every texture of a 3D model, map, particle or shader, videos, sounds and music, fonts, cursors, the launcher and the development tools.
 
+**Export script (T2702)**: `python tools/extract/export_assets.py [--game DIR] [--assets DIR] [--only CAT,CAT] [--list] [--report FILE]`.
+
+- `--only` takes category names (the StellarisAssets folder: `buildings`, `flags`, `interface`, `event_pictures`…; `--list` prints them with their sizes in the game files). Names are always chosen over every category, so exporting one category at a time gives the same files as exporting all.
+- DDS (DXT1/3/5, BC7, uncompressed), TGA, PNG and BMP → RGBA PNG (Pillow, `optimize`). Strips are cut into `width / frames` columns (a width that is not a multiple is a warning).
+- **Idempotent**: a planned file that exists with the same pixels is left untouched; with other pixels it is replaced, unless the old one is larger (kept, like §6); nothing is ever deleted. A cache outside both repositories (`.cache/asset_export_<rulesetId>.json`, git-ignored: size and date of each game file and the file written for each frame, plus the pixel hashes of the older folders) skips decoding unchanged textures; without it the pixels are compared, with the same result.
+- **Manifest**: `manifest.json` at the root of StellarisAssets, rewritten only when it changes: `generator`, `rulesetId`, `gameVersion`, per category `textures`, `files`, `bytes`, and `warnings` per category (unreadable files, strips whose width is not a multiple of the frames) plus `sprites` (sprites whose texture is not in the game files). With `--only`, the other categories keep what the manifest had.
+- Report: counts of `new`, `replaced`, `unchanged`, `reused` (an older file with the same pixels), `kept_larger`, `failed`; `--report FILE` writes the lists.
+- Tests: `tests/extract/test_assets.py` on the samples of `tests/fixtures/game-files/` (`interface/assets_samples.gfx`, a 3-frame strip and a sprite sheet sprite, two textures with the same name, a TGA flag, an event picture with two sprites, a DLC thumbnail, a 3D texture left out and an unreadable file).
+
 ## 7. What stays unmodelled
 
 - Triggers and effects (`potential`, `allow`, `possible`, `destroy_trigger`, `on_built`, `triggered_*_modifier` conditions, `weight_modifier` / `ai_weight` modifiers, `convert_to`...): kept as Paradox text, never evaluated. The site keeps deciding what applies with its own rules.

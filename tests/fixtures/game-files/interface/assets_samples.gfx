@@ -1,0 +1,25 @@
+# Samples of the full image export (T2702)
+spriteTypes = {
+	spriteType = {
+		name = "GFX_sample_strip"
+		texturefile = "gfx/interface/icons/samples/sample_strip.dds"
+		noOfFrames = 3
+	}
+	spriteType = {
+		name = "GFX_sample_second"
+		sprite_sheet_sprite_type = "GFX_sample_strip"
+		default_frame = 2
+	}
+	spriteType = {
+		name = "GFX_evt_sample"
+		texturefile = "gfx/event_pictures/sample/evt_sample.dds"
+	}
+	spriteType = {
+		name = "GFX_evt_sample_alias"
+		texturefile = "gfx/event_pictures/sample/evt_sample.dds"
+	}
+	spriteType = {
+		name = "GFX_sample_missing"
+		texturefile = "gfx/interface/icons/samples/nope.dds"
+	}
+}

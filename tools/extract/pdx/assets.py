@@ -146,3 +146,294 @@ def inventory(game):
     missing = sum(1 for t in by_tex if not game.sprites.texture_path(t))
     return {"rulesetId": game.ruleset_id, "files": total, "bytes": total_bytes, "sprites": len(game.sprites.by_name),
             "sprites_missing_texture": missing, "categories": cats}
+
+
+# -- export (T2702) ---------------------------------------------------------------------------------
+
+# Folders StellarisAssets had before the full export (written by the data sets or by hand): an image
+# already there under another name but with the same pixels is reused instead of written twice.
+LEGACY_FOLDERS = {
+    "authorities", "buildings", "civics", "designations", "diplomatic_stances", "districs", "districts_specialization",
+    "dlc", "edicts", "ethics", "jobs", "modifiers", "origin_icons", "origins", "planet_modifiers", "planetary_features",
+    "planets", "pop_categories", "resources", "technologies", "text_icons",
+}
+GENERATOR = "tools/extract/export_assets.py"
+
+
+def safe_name(name):
+    return "".join(c if c.isalnum() or c in "_-." else "_" for c in str(name)).strip("._") or "image"
+
+
+def strip_gfx(key):
+    return key[4:] if key.lower().startswith("gfx_") else key
+
+
+def data_set_assets(data_dir):
+    """Normalised texture → StellarisAssets path a generated data set already gives it (whole textures only)."""
+    import json
+    out = {}
+    if not data_dir or not os.path.isdir(data_dir):
+        return out
+    for n in sorted(os.listdir(data_dir)):
+        if not n.endswith(".json") or n == "manifest.json":
+            continue
+        try:
+            with open(os.path.join(data_dir, n), encoding="utf-8") as fh:
+                data = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        for item in data.get("items", []) if isinstance(data, dict) else []:
+            icon = item.get("icon") if isinstance(item, dict) else None
+            if isinstance(icon, dict) and icon.get("texture") and icon.get("asset") and not icon.get("_frames"):
+                out.setdefault(_norm(icon["texture"]), icon["asset"])
+    return out
+
+
+class Entry:
+    """One game texture and the StellarisAssets files it gives (one per frame)."""
+
+    def __init__(self, texture, category, folder, frames, sprites, sheet_sprites):
+        self.texture, self.category, self.folder, self.frames = texture, category, folder, frames
+        self.sprites = sprites              # [Sprite] naming this texture (sprite sheet frames excluded)
+        self.sheet_sprites = sheet_sprites  # [Sprite] of sprite sheets using it; sprite.frame is 0-based
+        self.outputs = []                   # [{"frame": 0-based or None, "file": path in StellarisAssets, "size": [w, h]}]
+
+    def __repr__(self):
+        return f"Entry({self.texture!r} → {[o['file'] for o in self.outputs]})"
+
+
+def plan(game, only=None, data_dir=None, assets_dir=None):
+    """Entries of every included texture (of the `only` categories), with their output file names."""
+    from .icons import AssetFolder
+    assets_dir = (assets_dir or "").replace("\\", "/").rstrip("/")
+    by_tex = sprites_by_texture(game)
+    forced = data_set_assets(data_dir)
+    folders, used, entries = {}, set(), []
+
+    def folder_of(name):
+        if name not in folders:
+            folders[name] = AssetFolder(os.path.join(assets_dir, name) if assets_dir else "")
+        return folders[name]
+
+    for rel in image_files(game):
+        cat, base, flat = classify(rel)
+        if not cat:
+            continue
+        sprites = by_tex.get(_norm(rel), [])
+        own = [s for s in sprites if not s.sheet]
+        frames = max([s.frames for s in own] or [1])
+        stem = os.path.splitext(os.path.basename(rel))[0]
+        primary = next((s for s in own if strip_gfx(s.name).lower() == stem.lower()), own[0] if own else None)
+        sub = os.path.dirname(rel)[len(base):].strip("/") if len(os.path.dirname(rel)) > len(base) else ""
+        folder = cat if flat or not sub else cat + "/" + sub
+        forced_asset = forced.get(_norm(rel)) if frames == 1 else None
+        if forced_asset and forced_asset.rsplit("/", 1)[0] == folder:
+            name = os.path.splitext(forced_asset.rsplit("/", 1)[1])[0]
+        elif cat == "dlc_thumbnails":
+            name = rel.split("/")[1]
+        else:
+            name = strip_gfx(primary.name) if primary else stem
+        name = safe_name(name)
+        parent = safe_name(os.path.basename(os.path.dirname(rel)))
+        for candidate in [name, parent + "_" + name] + [f"{name}__{n}" for n in range(2, 1000)]:
+            if frames == 1:
+                files = [folder + "/" + (folder_of(folder).file_name(candidate) if flat else candidate + ".png")]
+            else:
+                files = [f"{folder}/{candidate}_{i + 1}.png" for i in range(frames)]
+            if not any(f.lower() in used for f in files):
+                break
+        used.update(f.lower() for f in files)  # every category takes part, so names never depend on --only
+        if only and cat not in only:
+            continue
+        entry = Entry(rel, cat, folder, frames, own, [s for s in sprites if s.sheet])
+        entry.outputs = [{"frame": None if frames == 1 else i, "file": f} for i, f in enumerate(files)]
+        entries.append(entry)
+    return entries
+
+
+def _pixels_key(img):
+    import hashlib
+    return hashlib.sha1(f"{img.width}x{img.height}".encode() + img.tobytes()).hexdigest()
+
+
+class AssetExport:
+    """Writes the planned PNG files into StellarisAssets, rewriting only what changed; never deletes.
+
+    `cache_path` (a JSON file kept out of both repositories) remembers, for every texture frame, the size
+    and date of the game file and the file written for it, so an unchanged texture is not decoded again."""
+
+    def __init__(self, game, assets_dir, cache_path=None, replace_smaller=False):
+        import json
+        self.game, self.dir = game, assets_dir.replace("\\", "/").rstrip("/")
+        self.cache_path, self.replace_smaller = cache_path, replace_smaller
+        self.cache = {"entries": {}, "hashes": {}}
+        if cache_path and os.path.isfile(cache_path):
+            try:
+                with open(cache_path, encoding="utf-8") as fh:
+                    self.cache = json.load(fh)
+            except (OSError, ValueError):
+                pass
+        self.report = {k: [] for k in ("new", "replaced", "unchanged", "reused", "kept_larger", "failed")}
+        self.warnings = {}
+        self._legacy = {}
+
+    def warn(self, category, text):
+        self.warnings.setdefault(category, []).append(text)
+
+    def path(self, asset):
+        return os.path.join(self.dir, asset).replace("\\", "/")
+
+    def legacy_index(self, folder):
+        """Pixel hash → file of the images of a folder StellarisAssets already had."""
+        if folder not in self._legacy:
+            from PIL import Image
+            index, d = {}, self.path(folder)
+            for n in sorted(os.listdir(d)) if os.path.isdir(d) else []:
+                p = os.path.join(d, n)
+                if not n.lower().endswith(".png") or not os.path.isfile(p):
+                    continue
+                st, rel = os.stat(p), folder + "/" + n
+                known = self.cache["hashes"].get(rel)
+                if known and known[:2] == [st.st_size, int(st.st_mtime)]:
+                    h = known[2]
+                else:
+                    try:
+                        with Image.open(p) as im:
+                            h = _pixels_key(im.convert("RGBA"))
+                    except OSError:
+                        continue
+                    self.cache["hashes"][rel] = [st.st_size, int(st.st_mtime), h]
+                index.setdefault(h, rel)
+            self._legacy[folder] = index
+        return self._legacy[folder]
+
+    def export_entry(self, entry):
+        st = os.stat(self.game.path(entry.texture))
+        stamp, todo = [st.st_size, int(st.st_mtime)], []
+        for out in entry.outputs:
+            key = f"{entry.texture}|{out['frame']}"
+            known = self.cache["entries"].get(key)
+            if known and known["src"] == stamp and os.path.isfile(self.path(known["file"])) and (
+                    known["file"] == out["file"] or not os.path.isfile(self.path(out["file"]))):
+                out["file"], out["size"] = known["file"], known["size"]
+                self.report["unchanged"].append(out["file"])
+            else:
+                todo.append((key, out))
+        if not todo:
+            return
+        from PIL import Image
+        try:
+            with Image.open(self.game.path(entry.texture)) as im:
+                im.load()
+                img = im.convert("RGBA")
+        except Exception as e:  # noqa: BLE001 (any decoder error of Pillow)
+            self.warn(entry.category, f"{entry.texture}: cannot be read ({e})")
+            self.report["failed"] += [out["file"] for _, out in todo]
+            for _, out in todo:
+                out["file"] = None
+            return
+        if entry.frames > 1 and img.width % entry.frames:
+            self.warn(entry.category, f"{entry.texture}: width {img.width} is not a multiple of its {entry.frames} frames")
+        w = img.width // entry.frames
+        for key, out in todo:
+            part = img if out["frame"] is None else img.crop((w * out["frame"], 0, w * (out["frame"] + 1), img.height))
+            out["file"] = self.write(entry, out["file"], part)
+            out["size"] = [part.width, part.height]
+            self.cache["entries"][key] = {"src": stamp, "file": out["file"], "size": out["size"]}
+
+    def write(self, entry, asset, img):
+        """Write one PNG; returns the StellarisAssets file that holds the image."""
+        from PIL import Image
+        dest = self.path(asset)
+        if os.path.isfile(dest):
+            with Image.open(dest) as old:
+                old = old.convert("RGBA")
+            if old.size == img.size and old.tobytes() == img.tobytes():
+                self.report["unchanged"].append(asset)
+                return asset
+            if not self.replace_smaller and old.width * old.height > img.width * img.height:
+                self.report["kept_larger"].append(asset)
+                return asset
+            status = "replaced"
+        else:
+            folder = asset.rsplit("/", 1)[0]
+            if folder in LEGACY_FOLDERS and entry.frames == 1:
+                same = self.legacy_index(folder).get(_pixels_key(img))
+                if same:
+                    self.report["reused"].append(same)
+                    return same
+            status = "new"
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        img.save(dest, optimize=True)
+        self.report[status].append(asset)
+        return asset
+
+    def save_cache(self):
+        if self.cache_path:
+            import json
+            os.makedirs(os.path.dirname(self.cache_path) or ".", exist_ok=True)
+            with open(self.cache_path, "w", encoding="utf-8") as fh:
+                json.dump(self.cache, fh, ensure_ascii=False)
+
+
+def write_json_if_changed(path, data):
+    """Write a JSON file only when its text changes. Returns True when written."""
+    import json
+    text = json.dumps(data, indent=1, ensure_ascii=False) + "\n"
+    if os.path.isfile(path):
+        with open(path, encoding="utf-8") as fh:
+            if fh.read() == text:
+                return False
+    with open(path, "w", encoding="utf-8", newline="\n") as fh:
+        fh.write(text)
+    return True
+
+
+def read_json(path):
+    import json
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh)
+    except (OSError, ValueError):
+        return None
+
+
+def manifest(game, export, entries, only=None, previous=None):
+    """StellarisAssets manifest: game version, files, textures and bytes per category, warnings.
+
+    With `only`, the other categories are kept from the previous manifest."""
+    keep = lambda part: {k: v for k, v in ((previous or {}).get(part) or {}).items() if only and k not in only}  # noqa: E731
+    cats, warnings, seen = keep("categories"), keep("warnings"), set()
+    for e in entries:
+        row = cats.setdefault(e.category, {"textures": 0, "files": 0, "bytes": 0})
+        row["textures"] += 1
+        for out in e.outputs:
+            if out.get("file") and out["file"] not in seen and os.path.isfile(export.path(out["file"])):
+                seen.add(out["file"])
+                row["files"] += 1
+                row["bytes"] += os.path.getsize(export.path(out["file"]))
+    for cat, items in export.warnings.items():
+        warnings[cat] = sorted(set(items))
+    missing = sorted({s.texture for s in game.sprites.by_name.values()
+                      if s.texture and not s.sheet and not game.sprites.texture_path(s.texture)})
+    warnings["sprites"] = [f"texture of a sprite not in the game files: {t}" for t in missing]
+    if not warnings["sprites"]:
+        del warnings["sprites"]
+    return {"generator": GENERATOR, "rulesetId": game.ruleset_id, "gameVersion": game.version,
+            "categories": dict(sorted(cats.items())), "warnings": dict(sorted(warnings.items()))}
+
+
+def export(game, assets_dir, only=None, data_dir=None, cache_path=None, progress=None):
+    """Export the planned textures and write `manifest.json` in StellarisAssets. Returns (export, entries, manifest)."""
+    entries = plan(game, only, data_dir, assets_dir)
+    ex = AssetExport(game, assets_dir, cache_path)
+    for i, e in enumerate(entries):
+        ex.export_entry(e)
+        if progress and i % 500 == 0:
+            progress(i, len(entries))
+            ex.save_cache()
+    ex.save_cache()
+    path = ex.path("manifest.json")
+    data = manifest(game, ex, entries, only, read_json(path))
+    write_json_if_changed(path, data)
+    return ex, entries, data
