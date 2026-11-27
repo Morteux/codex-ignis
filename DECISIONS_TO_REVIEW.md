@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1507 — Remaining texts of the simulator and the tech tree in es and jp (2026-11-27)
+
+- [ ] **The es and jp texts are drafts (proposal)** written by Claude, not reviewed by a native speaker. Game terms inside sentences follow the official strings of the installed game folder (4.6.0, T2526), read only as terminology; every figure is the one of the English text.
+- [ ] **43 keys that name one game item now take the official name** through `tools/extract/game_name_overrides.json` (district specializations, wilderness districts, policy groups, some jobs and modifiers), from the 4.5.4 extractor data, in the 10 languages; their own translations were removed from `js/ui-texts/`.
+- [ ] **English labels changed with the official names**: "Subterranean Liaison" and "Subterranean Liaison Drone" (before "… Officer" and "… Contact Drone"), "Fungi are Friends", "Dark Matter Unravelling".
+- [ ] **No game-data entry, translated by hand**: Wraith's Dispenser Sack (the game string is "Wraith's Disperser Sack"; the English label is unchanged), the Court of Blossoms and Cheap Thrills qualifiers, the planet modifier groups and the edict kinds (wiki categories), the Zero-G Research District (es «distrito de investigación en gravedad 0», jp 無重力研究区域).
+- [ ] **Same wording as the older interface where the game differs**: es keeps «pops» and «empleos» (game: «población», «trabajos») and jp keeps 人口 for pops; the new texts use the game's 志向, 統治形態 and 快適度, while some older ones say エシック, 権威 and 快適さ (new task T1508).
+- [ ] **Left as in English on purpose** (same word in the language): Natural, Artificial, Total, Infernal, Legal, Manual, Pops, Normal, Zoom, DLC, Cookies, OK, "Planet_Sim" and "Ix Belèn". The tech tree heading is now «Árbol tecnológico» / テクノロジーツリー, and the credit link "Stellaris Tech Tree" is marked `lang="en"`.
+
 ## T1506 — P13.8 data texts of the simulator in es and jp (2026-11-27)
 
 - [ ] **The es and jp texts are drafts (proposal)** written by Claude, not reviewed by a native speaker. Game terms and names follow the official strings of the installed game folder (4.6.0, T2526), read only as terminology; every figure is the one of the English text.

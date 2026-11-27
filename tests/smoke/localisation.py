@@ -37,6 +37,23 @@ async def run(t):
     check("data texts (T1506): the P13.8 texts (not-modelled lines, sources, body type notes, swap conditions) are translated in es and jp",
           data.get("count", 0) >= 240 and data.get("es") == ["planetModifierTheMemorexSource"] and data.get("jp") == [], data)
 
+    # T1507: no other es or jp text of the simulator, the tech tree or the shared texts is still English, apart from
+    # the ones that are written the same (proper names, symbols, loanwords); game names come from js/game-names/
+    left = node_json("""const out={};const {names:es}=await import('./js/game-names/es.js');const {names:jp}=await import('./js/game-names/jp.js');
+      for(const f of ['i18n-simulator','i18n-tech-tree','i18n-common']){const {strings:s}=await import('./js/'+f+'.js');
+      for(const [l,n] of [['es',es],['jp',jp]])(out[l]??=[]).push(...Object.keys(s.en).filter(k=>!(k in n)&&String(s[l][k])===String(s.en[k])))}
+      console.log(JSON.stringify(out))""")
+    same = {"planetSimPageTitle", "buildTimeLineCount", "compareScenarioA", "compareNotApplicable", "techTreeDlc"}
+    allowed = {"es": same | {"planetModifierTheMemorexSource", "celestialNaturalHeading", "celestialArtificialHeading", "buildTimeDays", "planetSimTotalLabel",
+                             "speciesInfernal", "branchLegal", "comparePops", "conditionsSourceManual", "techTreeKindNormal", "techTreeZoomLabel", "techTreeDaysShort", "techTreeWeightBase", "cookiesLink"},
+               "jp": same | {"libraryDialogAccept"}}
+    extra = {l: sorted(set(left.get(l, ["?"])) - allowed[l]) for l in allowed}
+    check("interface and data texts (T1507): every es and jp text of the simulator and the tech tree is translated", extra == {"es": [], "jp": []}, extra)
+    zones = node_json("const o={};for(const l of ['es','jp','fr']){const {names:n}=await import('./js/game-names/'+l+'.js');o[l]=[n.specializationUrbanExpansion,n.districtHollowMountain,n.policyGroupTrade,n.jobMaintenanceDrone]}console.log(JSON.stringify(o))")
+    check("game names (T1507): district specializations, wilderness districts, policy groups and jobs take the official names",
+          zones.get("es") == ["Expansión urbana", "Montaña hueca", "Política comercial", "Dron de mantenimiento"]
+          and zones.get("jp") == ["都市の拡張", "空洞の山", "交易政策", "メンテナンスドローン"] and all(zones.get("fr", [None])), zones)
+
     pg = await t.ctx.new_page()
     errors = []
     pg.on("pageerror", lambda e: errors.append(str(e)))
@@ -48,8 +65,11 @@ async def run(t):
         await pg.click(f".lang-btn[data-lang={lang}]")
         await pg.wait_for_timeout(400)  # the names module of a language not loaded yet arrives after the first redraw
         seen[lang] = await pg.evaluate(rows)
+        seen[lang + "-panels"] = await pg.evaluate("()=>['celestialPlanetModifiersHeading','edictsHeading'].map(k=>document.querySelector(`[data-i18n=${k}]`)?.textContent)")
     check("game names (T1502): the simulator shows the official resource names in every language and after switching",
           "Créditos energéticos" in seen["es"] and "エネルギー通貨" in seen["jp"] and "Energy Credits" in seen["en"], seen)
+    check("interface texts (T1507): the planet modifier and edict headings are Spanish and Japanese in the simulator",
+          seen["es-panels"] == ["Modificadores de planeta", "Edictos"] and seen["jp-panels"] == ["惑星補正", "布告"], (seen["es-panels"], seen["jp-panels"]))
     check("game names (T1502): simulator without page errors", not errors, errors)
     await pg.close()
 

@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **155 / 172 tareas (90%)**
+> Progreso: **156 / 173 tareas (90%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -454,7 +454,10 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
 - [x] **T1506** (P15.6) Translate into es and jp the P13.8 data texts of the planet simulator that are still English (about 250 keys of `js/i18n-simulator.js`: "not modelled" lines, modifier sources, body type notes and job swap conditions), with the official game names where the game has them
   - Modelo: sonnet
   - Prueba manual: open `planet-sim.html` in ES, Celestial body tab: the Tidal Locked modifier reads «No modelado: Máx. de distritos: −30%; Desbloquea la decisión «Construcción de granja diurna»»; in JP it reads 未モデル化：最大区域数：−30%.
-- [ ] **T1507** (P15.7) Translate into es and jp the remaining interface and data texts of the planet simulator that are still English (about 330 keys of `js/i18n-simulator.js` outside the P13.8 block: planet modifier panel and groups, info "i" texts, blockers, features, policies, edicts, branch offices, requirements, district and specialization names the game names), with the official game names where the game has them; check the few identical keys of `js/i18n-tech-tree.js` and `js/i18n-common.js` too
+- [x] **T1507** (P15.7) Translate into es and jp the remaining interface and data texts of the planet simulator that are still English (about 330 keys of `js/i18n-simulator.js` outside the P13.8 block: planet modifier panel and groups, info "i" texts, blockers, features, policies, edicts, branch offices, requirements, district and specialization names the game names), with the official game names where the game has them; check the few identical keys of `js/i18n-tech-tree.js` and `js/i18n-common.js` too
+  - Modelo: sonnet
+  - Prueba manual: open `planet-sim.html` in ES: the Celestial body tab shows «Modificadores de planeta», «Barreras» and the «i» panels in Spanish, and the Edicts tab is in Spanish; in JP the same read 惑星補正, 障害物 and 布告, and `tech-tree.html` is headed テクノロジーツリー.
+- [ ] **T1508** (P15.8) Harmonise the older es and jp interface texts of the planet simulator with the game terms used by the newer ones (jp エシック → 志向, 権威 → 統治形態, 快適さ → 快適度, 人口 → POP; es «pops» and «empleos» against the game's «población» and «trabajos»: pick one wording and apply it to every text of `js/i18n-simulator.js`)
   - Modelo: sonnet
 
 ## 14 · Final 4.5.4 data verification (last)

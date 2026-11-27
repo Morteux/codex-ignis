@@ -6,14 +6,14 @@
 
 import { addStrings } from "./i18n.js";
 
-const BSC = '<a href="https://bloodstainedcrow.github.io/stellaris-tech-tree/" rel="noopener">Stellaris Tech Tree</a>';
+const BSC = '<a href="https://bloodstainedcrow.github.io/stellaris-tech-tree/" rel="noopener" lang="en">Stellaris Tech Tree</a>';
 const TURANAR = '<a href="https://turanar.github.io/stellaris-tech-tree/index.html" rel="noopener">turanar</a>';
 
 export const strings = {
     es: {
-        techTreePageTitle: "Tech Tree · Codex Ignis",
+        techTreePageTitle: "Árbol tecnológico · Codex Ignis",
         techTreeMetaDescription: "Árbol de tecnología de Stellaris.",
-        techTreeHeading: "Tech Tree",
+        techTreeHeading: "Árbol tecnológico",
         techTreeIntro: "Árbol de tecnología de Stellaris por área, campo y nivel, leído de los archivos del juego.",
         techTreeBoardHeading: "Áreas de investigación",
         techTreeDataVersion: "Versión de datos: {label} · {game} · {status}",
@@ -249,9 +249,9 @@ export const strings = {
         techTreeFooterNav: "Footer links",
     },
     jp: {
-        techTreePageTitle: "Tech Tree · Codex Ignis",
+        techTreePageTitle: "テクノロジーツリー · Codex Ignis",
         techTreeMetaDescription: "Stellarisの技術ツリー。",
-        techTreeHeading: "Tech Tree",
+        techTreeHeading: "テクノロジーツリー",
         techTreeIntro: "ゲームファイルから読み込んだ、分野・カテゴリー・ティア別のStellaris技術ツリーです。",
         techTreeBoardHeading: "研究分野",
         techTreeDataVersion: "データバージョン：{label} · {game} · {status}",
