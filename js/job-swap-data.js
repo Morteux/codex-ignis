@@ -58,7 +58,7 @@
  *  - withZone: { zone, output } output change while that specialization is
  *    chosen (Angler under Exotic Gas Capture, already modelled in P10.10).
  *  - notModelledKeys: i18n keys of the effects listed on the wiki but not
- *    computed (P13.8: English until P15).
+ *    computed (P13.8).
  */
 
 import { ANGLERS_WET_CLIMATE, WILDERNESS_ORIGIN } from "./planet-data.js";

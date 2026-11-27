@@ -78,8 +78,31 @@ async def run(t):
       tab:document.querySelector('.planet-main-tab[data-main-tab=planet]')?.innerText.trim()})""")
     check("game languages (T1503): the simulator offers the 7 other game languages in a selector next to ES/EN/JP",
           options == [":", "pt:pt-BR", "fr:fr", "de:de", "ko:ko", "pl:pl", "ru:ru", "zh:zh-Hans"], options)
-    check("game languages (T1503): French in the simulator: <html lang=fr>, official French resource names, English interface (T1505)",
-          fr["lang"] == "fr" and fr["select"] == "fr" and fr["active"] and fr["pressed"] == 0 and official["fr"]["energy"] in fr["rows"] and (fr["tab"] or "").lower() == "planet", fr)
+    check("game languages (T1503): French in the simulator: <html lang=fr>, official French resource names, French interface (T1505)",
+          fr["lang"] == "fr" and fr["select"] == "fr" and fr["active"] and fr["pressed"] == 0 and official["fr"]["energy"] in fr["rows"] and (fr["tab"] or "").lower() == "planète", fr)
+    # T1505: the interface of every game language, with only the current language's texts downloaded
+    ui = node_json("""const out={en:(await import('./js/i18n-simulator.js')).strings.en.planetSimHeading,texts:{}};
+      for(const l of ['pt','fr','de','ko','pl','ru','zh']){const {strings:s}=await import('./js/ui-texts/'+l+'.js');
+      out.texts[l]=[s.planetSimHeading,s.planetModifierTidalLockedNotModelled2,s.techTreeHeading]}console.log(JSON.stringify(out))""")
+    shown, downloads = {}, []
+    pg.on("request", lambda r: "/js/ui-texts/" in r.url and downloads.append(r.url.rsplit("/", 1)[1]))
+    for lang in ui.get("texts", {}):
+        await pg.select_option(".lang-select", lang)
+        await pg.wait_for_timeout(500)
+        shown[lang] = await pg.evaluate("""()=>[document.querySelector('[data-i18n=planetSimHeading]').textContent,
+          document.querySelector('#celestial-planet-modifiers [data-modifier=tidalLocked] small')?.textContent||'',
+          document.querySelector('main').textContent]""")
+    check("interface texts (T1505): the simulator shows the heading and the not-modelled lines in each of the 7 game languages",
+          len(shown) == 7 and all(shown[l][0] == ui["texts"][l][0] != ui["en"] and ui["texts"][l][1] in shown[l][1] and "undefined" not in shown[l][2] for l in shown),
+          {l: (v[0], v[1][:80]) for l, v in shown.items()} or ui)
+    check("interface texts (T1505): each language module is downloaded once, when first chosen (French was loaded before)",
+          sorted(downloads) == ["de.js", "ko.js", "pl.js", "pt.js", "ru.js", "zh.js"], downloads)
+    await pg.select_option(".lang-select", "fr")
+    await pg.wait_for_timeout(200)
+    await pg.reload()
+    await pg.wait_for_timeout(600)
+    again = await pg.evaluate("()=>document.querySelector('[data-i18n=planetSimHeading]').textContent")
+    check("interface texts (T1505): a stored French choice draws the French interface on load", again == ui.get("texts", {}).get("fr", [None])[0], again)
     await pg.goto("file://" + ROOT + "/index.html")
     await pg.wait_for_timeout(300)
     wiki = await pg.evaluate("()=>[document.documentElement.lang,document.querySelectorAll('.lang-select').length]")
@@ -90,6 +113,8 @@ async def run(t):
     await pg.select_option(".lang-select", "de")
     await pg.wait_for_timeout(500)
     tree_de = await pg.evaluate("()=>[document.documentElement.lang,document.querySelector('.tech-node[data-tech-id=tech_lasers_1] .tech-node-name').textContent,document.getElementById('tech-jump-physics').textContent]")
+    heading_de = await pg.evaluate("()=>document.querySelector('[data-i18n=techTreeHeading]').textContent")
+    check("interface texts (T1505): the tech tree interface is German", heading_de == ui.get("texts", {}).get("de", [None] * 3)[2], heading_de)
     await pg.select_option(".lang-select", "zh")
     await pg.wait_for_timeout(500)
     tree_zh = await pg.evaluate("()=>[document.documentElement.lang,document.getElementById('tech-jump-physics').textContent]")

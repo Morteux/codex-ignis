@@ -20,8 +20,9 @@ let currentLang = detectInitialLang();
 const listeners = [];
 
 // Pages that show game names (<html data-game-names>: planet simulator, tech tree, bingo) load the
-// official names of the language before any page script draws (P15, js/game-names.js).
-if (document.documentElement.hasAttribute("data-game-names")) await import("./game-names.js");
+// official names of the language (js/game-names.js) and, for the languages the site is not written
+// in, its interface texts (js/ui-texts.js) before any page script draws (P15).
+if (document.documentElement.hasAttribute("data-game-names")) await Promise.all([import("./game-names.js"), import("./ui-texts.js")]);
 
 export function getLang() {
   return currentLang;
@@ -66,9 +67,9 @@ function redraw() {
 }
 
 /**
- * Switches at once; if the official game names of the language are not loaded
- * yet (js/game-names.js), the page shows the hand-written ones and is drawn
- * again when they arrive.
+ * Switches at once; if the official game names or the interface texts of the
+ * language are not loaded yet (js/game-names.js, js/ui-texts.js), the page
+ * shows the hand-written or English ones and is drawn again when they arrive.
  */
 function setLanguage(lang) {
   currentLang = pageLangs().includes(lang) ? lang : DEFAULT_LANG;

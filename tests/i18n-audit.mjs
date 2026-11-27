@@ -1,7 +1,8 @@
 // i18n audit (T2207, split by area in T2304): node tests/i18n-audit.mjs .
 // Lists articles of content.js missing a language, keys of es/en/jp that do not
 // match in each js/i18n-<area>.js, keys defined in two areas, and keys a page
-// uses (data-i18n*, t('key'), i18nKey fields) that are not in the areas it loads.
+// uses (data-i18n*, t('key'), i18nKey fields) that are not in the areas it loads,
+// and checks the official game names and the translated interface texts (P15).
 import fs from 'fs';
 import { join, dirname, normalize } from 'path';
 import { pathToFileURL } from 'url';
@@ -103,6 +104,33 @@ for (const file of gameNameFiles) {
   const badFallback = fallback.filter(k => { const [g, id] = k.includes(':') ? k.split(/:(.*)/) : ['names', k]; return !(module[g] && id in module[g]); });
   if (badFallback.length) { problems++; console.log('FALLBACK KEY NOT IN FILE', file, badFallback.join(',')); }
   console.log('js/game-names/' + file, GAME_NAME_GROUPS.map(g => g + ' ' + Object.keys(module[g] || {}).length).join(', '), 'English fallback', fallback.length);
+}
+// Interface texts of the other game languages (T1505): js/ui-texts/<lang>.js translates the keys of
+// the common, simulator and tech tree areas that have no official game name, with the type, the
+// parameters, the {placeholders} and the HTML tags of the English text. A key a language does not
+// have yet shows English: it is listed, not a problem.
+const english = {};
+for (const area of ['common', 'simulator', 'tech-tree']) Object.assign(english, (await import(pathToFileURL(root + '/js/i18n-' + area + '.js').href)).strings.en);
+const officialKeys = (await import(pathToFileURL(root + '/js/game-names/en.js').href)).names;
+const translatable = Object.keys(english).filter(k => !(k in officialKeys));
+const marks = s => (s.match(/<[^>]+>|(?<!\$)\{[A-Za-z]+\}/g) || []).sort().join(' ');
+const params = f => String(f).split('=>')[0].replace(/[()\s]/g, '');
+for (const lang of ['pt', 'fr', 'de', 'ko', 'pl', 'ru', 'zh']) {
+  const file = 'js/ui-texts/' + lang + '.js';
+  if (!fs.existsSync(root + '/' + file)) { problems++; console.log('NO UI TEXTS', file); continue; }
+  const { strings } = await import(pathToFileURL(root + '/' + file).href);
+  const extra = Object.keys(strings).filter(k => !translatable.includes(k));
+  const wrong = Object.keys(strings).filter(k => {
+    const a = english[k], b = strings[k];
+    if (a === undefined) return false;
+    if (typeof a !== typeof b) return true;
+    if (typeof a === 'function') return params(a) !== params(b);
+    return !b.trim() || marks(a) !== marks(b);
+  });
+  const untranslated = translatable.filter(k => !(k in strings));
+  if (extra.length) { problems++; console.log('UI TEXT WITHOUT ENGLISH KEY OR WITH OFFICIAL NAME', file, extra.join(',')); }
+  if (wrong.length) { problems++; console.log('UI TEXT DOES NOT MATCH ENGLISH', file, wrong.join(',')); }
+  console.log(file, 'texts', Object.keys(strings).length, 'of', translatable.length, 'shown in English:', untranslated.join(',') || '-');
 }
 console.log('used keys', usedCount, 'problems', problems);
 process.exit(problems ? 1 : 0);

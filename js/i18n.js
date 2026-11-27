@@ -10,12 +10,14 @@
  * Languages (P15, LOCALISATION_PLAN.md §4): the site is written in es, en and jp
  * (SITE_LANGS). The planet simulator and the tech tree also offer the other
  * official game languages (GAME_LANGS): their game names are official
- * (js/game-names.js) and their interface texts are English until translated
- * (T1505). A page offers the languages of its own selector (pageLangs()).
+ * (js/game-names.js) and their interface texts are in js/ui-texts/<lang>.js
+ * (js/ui-texts.js, T1505). A page offers the languages of its own selector
+ * (pageLangs()).
  *
- * To translate the interface into a game language: add its block (e.g. "fr") to
- * every area file the simulator and the tech tree load. Article translations live
- * in content.js, inside `i18n`.
+ * A new interface text of the simulator or the tech tree goes in es, en and jp in
+ * its area file and, translated, in js/ui-texts/<lang>.js (English is shown while
+ * a language does not have it). Article translations live in content.js, inside
+ * `i18n`.
  */
 
 import { strings as commonStrings } from "./i18n-common.js";

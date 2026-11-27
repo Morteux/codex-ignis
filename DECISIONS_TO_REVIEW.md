@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T1505 — Interface of the simulator and the tech tree in the seven new languages (2026-11-27)
+
+- [ ] **The translations are drafts (proposal)** written by Claude for pt, fr, de, ko, pl, ru and zh (1286 texts each), not reviewed by native speakers.
+- [ ] **One module per language, `js/ui-texts/<code>.js`**, loaded only when that language is shown, instead of seven more blocks inside `js/i18n-*.js` (which every visitor would download).
+- [ ] **A new interface text without a translation shows English** and does not fail the tests; `tests/i18n-audit.mjs` lists those keys.
+- [ ] **Game terms and names** inside the texts (Habitability, Amenities, civics, traditions, jobs…) follow the official strings of the installed game folder (4.6.0, T2526), read only as terminology. A few names the lookup did not find have our own translation (e.g. Dark Matter Unraveling, Logistics Drone, Subterranean Liaison Officer, Wraith's Dispenser Sack, Funghi are Friends, the Cheap Thrills qualifiers).
+- [ ] **Counts are phrased without plural forms** where a language needs several (pl, ru: "Zmienione wartości: 3"); figures keep the English format (decimal point), because the numbers the page computes are shown that way.
+- [ ] **The "More" selector** no longer says "(English interface)" in its accessible name.
+- [ ] **es and jp still show the 249 P13.8 data texts in English** (outside this task: new task T1506).
+
 ## T4504 — Testellaris: unity category colour (2026-11-27)
 
 - **Exact value `#b2f8f7`**: the 4.5.4 files declare no colour for unity (`common/strategic_resources` holds none, and `interface/fonts.gfx` has no unity text colour; the concept texts use the generic yellow highlight), so it is read from the resource icon `gfx/interface/icons/resources/unity.dds` (18 × 18): the value of its most opaque light pixels (rgb 178, 248, 247, alpha 252–253). The rest of the icon goes down to a darker turquoise (e.g. `#4ab8b1`); if that reads closer to the game's unity, it is a one-line change in `styles.css` (`.tq-category--unity`). The tint stays at 10 % like the other categories.

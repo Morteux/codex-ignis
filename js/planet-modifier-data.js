@@ -18,7 +18,7 @@
  * - stratumOutput / stratumEfficiency: worker / specialist output or job efficiency; jobUpkeepPct: "Upkeep from jobs";
  *   popHousingUsagePct: pop housing usage.
  * notModelledKeys: i18n keys of the remaining effects, as written on the wiki (shown, never computed). sourceKey: i18n
- * key of where the modifier comes from (event, origin, unique world...), shown as information (P13.8: English until P15).
+ * key of where the modifier comes from (event, origin, unique world...), shown as information (P13.8).
  * bodies / notBodies: spawn weight ×0 on the wiki ("×0 if not Volcanic World", "×0 if Gaia World"); excludes: modifiers
  * that never appear together (×0 if the other modifier is present). Spawn weights are otherwise ignored.
  */

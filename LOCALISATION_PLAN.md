@@ -73,17 +73,23 @@ else to Spanish (the site default).
 
 - Game names: the official string of the language, else the official English one.
 - Interface texts of es / en / jp: the hand-written texts in `js/i18n-<area>.js`, as now.
-- Interface texts of the seven new languages: English until they are translated (`t()` falls back to
-  English, then Spanish). Translating the simulator and tech tree interface into those languages is a
-  separate task (T1505); it is text work only.
+- Interface texts of the seven new languages (planet simulator and tech tree, T1505): translated in
+  `js/ui-texts/<code>.js` (every key of `js/i18n-common.js`, `-simulator.js` and `-tech-tree.js` that has
+  no official game name, with the game's own terms). `js/ui-texts.js` downloads only the current
+  language. A key a module does not have shows English (`t()` falls back to English, then Spanish).
+  The translations are machine-written drafts, not reviewed by native speakers.
 - Texts that mix interface and game names ("Cost: {cost}") keep their template in the interface
   texts and insert the official name.
 - Draft English texts for data the simulator models but the game does not name (the P13.8
-  "not modelled" lines) stay English in every language until T1505.
+  "not modelled" lines) are translated in the seven new languages (T1505); es and jp still show them
+  in English (T1506).
 
 ## 6. Checks
 
 - `tests/i18n-audit.mjs`: every `js/game-names/<code>.js` has the same keys, and every key exists in
   the area that owns it.
 - `tests/policies-smoke.py`: switching the planet simulator and the tech tree to a new language shows
-  official names (for example the Miner job in French, a technology name in German).
+  official names (for example the Miner job in French, a technology name in German) and the translated
+  interface. `tests/i18n-audit.mjs` also checks every `js/ui-texts/<code>.js`: only keys without an
+  official name, with the type, parameters, `{placeholders}` and links of the English text; it lists
+  (without failing) the keys still shown in English.

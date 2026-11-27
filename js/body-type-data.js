@@ -34,7 +34,7 @@
  * - secondarySpecializations: which secondary (resource-like) specializations a
  *   secondary urban district may pick (see GDD §4.1 Q3 for the reading of the
  *   wiki's "Requirements" column).
- * - infoOnlyKeys: i18n keys of the effects shown on the card but not computed (P13.8: English until P15).
+ * - infoOnlyKeys: i18n keys of the effects shown on the card but not computed (P13.8).
  */
 export const BODY_TYPE_RULES = {
   volcanic: {

@@ -7,7 +7,7 @@ import { addStrings } from "./i18n.js";
 
 export const strings = {
     es: {
-        // P13.8: data texts (planet modifiers, body types, job swaps); English in every language until P15
+        // P13.8: data texts (planet modifiers, body types, job swaps); English in es and jp (T1506), translated in js/ui-texts/
         planetModifierTidalLockedNotModelled1: "−30% Max Districts",
         planetModifierTidalLockedNotModelled2: "Enables the Day Farm Construction decision",
         planetModifierWeakMagneticFieldNotModelled1: "−5% Habitability",
@@ -1878,7 +1878,7 @@ export const strings = {
         planetSimSpecializationResetNotice: (n) => `La especialización «${n}» ya no cumple sus requisitos y se ha quitado. Sus edificios quedan inactivos.`,
     },
     en: {
-        // P13.8: data texts (planet modifiers, body types, job swaps); English in every language until P15
+        // P13.8: data texts (planet modifiers, body types, job swaps); English in es and jp (T1506), translated in js/ui-texts/
         planetModifierTidalLockedNotModelled1: "−30% Max Districts",
         planetModifierTidalLockedNotModelled2: "Enables the Day Farm Construction decision",
         planetModifierWeakMagneticFieldNotModelled1: "−5% Habitability",
@@ -3749,7 +3749,7 @@ export const strings = {
         planetSimSpecializationResetNotice: (n) => `The “${n}” specialization no longer meets its requirements and was removed. Its buildings are now inactive.`,
     },
     jp: {
-        // P13.8: data texts (planet modifiers, body types, job swaps); English in every language until P15
+        // P13.8: data texts (planet modifiers, body types, job swaps); English in es and jp (T1506), translated in js/ui-texts/
         planetModifierTidalLockedNotModelled1: "−30% Max Districts",
         planetModifierTidalLockedNotModelled2: "Enables the Day Farm Construction decision",
         planetModifierWeakMagneticFieldNotModelled1: "−5% Habitability",
