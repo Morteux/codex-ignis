@@ -11,6 +11,7 @@ tools/extract/
     parser.py               Paradox script parser (§4)
     localisation.py         localisation reader (§5)
     icons.py                sprites of interface/*.gfx and DDS → PNG export (§6)
+    assets.py               full export of the game's 2D images: categories, names, export, index (§6e)
     game.py                 GameFiles: game folder, rulesetId, scripted variables, inline scripts,
                             cached parsing of a common/ folder, localisation, icon lookup
     output.py               JSON writing, warnings, manifest
@@ -153,6 +154,42 @@ The exact folders of the "…" icon rows are confirmed by the task of each set (
 ## 6d. Interface icons of the site's concepts (T2602)
 
 `python tools/extract/export_ui_icons.py [--game DIR] [--assets DIR] [--check]` exports the tooltip text icons (`GFX_text_*` → StellarisAssets `text_icons/`, named after the game texture), the pop category (stratum) icons (`gfx/interface/icons/pop_categories/` → `pop_categories/`) and the four resource modifier icons of every simulator resource (`GFX_mod_<res>_produces_add|produces_mult|upkeep_add|upkeep_mult` → `modifiers/`). The concept → icon → page list is `ICONS.md`.
+
+## 6e. Full export of the game's 2D images (section 27)
+
+Goal: every 2D image of the game in StellarisAssets, sorted in folders and indexed, so any page can use any icon without a new export. The rules live in `tools/extract/pdx/assets.py` (`classify`); `python tools/extract/inventory_assets.py [--game DIR] [--json FILE]` prints the inventory below.
+
+**Inventory (4.5.4, T2701)**: 23 484 image files (`.dds`, `.tga`, `.png`, `.bmp`; 19.1 GB). The DLC folders hold only their `thumbnail.png`: their `.zip` files have music and sound, no image. 8 955 sprites in `interface/**/*.gfx` (15 name a texture that does not exist); 1 089 textures are strips of 2 to 70 frames (most are 3-frame buttons).
+
+| Category (StellarisAssets folder) | Game folder | Files | DDS MB | Output PNG files |
+|---|---|---:|---:|---:|
+| one folder per `gfx/interface/icons/<folder>` (61 folders, see below) | `gfx/interface/icons/` | 9 777 | 201 | 11 337 |
+| `interface/<folder>/` | the other `gfx/interface/` folders (buttons, tiles, planetview, council_view, fleet_view, shroud…) | 2 680 | 460 | 4 307 |
+| `event_pictures/` | `gfx/event_pictures` | 662 | 153 | 662 |
+| `loading_screens/` | `gfx/loadingscreens` | 21 | 78 | 21 |
+| `flags/<folder>/` | `flags/` (emblems by set + `backgrounds/`) | 1 259 | 128 | 1 259 |
+| `portraits/<folder>/` | `gfx/portraits/` (city sets, environments, arkships, leader and species preview backgrounds) | 587 | 678 | 587 |
+| `key_icons/` | `gfx/keyicons` | 72 | 0.1 | 72 |
+| `dlc_thumbnails/` | `dlc/<dlc>/thumbnail.png` | 33 | 3 | 33 |
+| `wallpapers/` | `wallpaper/` | 8 | 5 | 8 |
+| **included** | | **15 099** | **1 705** | **18 286** |
+| left out: species portrait layers | `gfx/models/portraits` | 3 221 | 1 517 | (T2705) |
+| left out: 3D textures | `gfx/models` (ships, planets, effects, 3D UI scenes), `gfx/map`, `gfx/particles`, `gfx/FX`, `gfx/worldgfx`, `gfx/arrows` | 4 944 | 15 834 | — |
+| left out: other | `gfx/fonts`, `gfx/cursors`, `gfx/portraits/misc` (colour tables), launcher and tool folders (`pdx_launcher`, `pdx_online_assets`, `previewer_assets`, `tweakergui_assets`, `assets`), `ebook`, `soundtrack`, `gfx/*.dds` | 220 | 42 | — |
+
+Icon folders (`gfx/interface/icons/<folder>` → StellarisAssets): the folders StellarisAssets already uses keep their names (`buildings`, `jobs`, `districts` → `districs`, `districts/district_specialization_icons` → `districts_specialization`, `governments/civics` → `civics`, `governments/authorities` → `authorities`, `origins` → `origin_icons`, `ethics`, `modifiers`, `planet_modifiers`, `deposits` → `planetary_features`, `planet_backgrounds` → `planets`, `pop_categories`, `resources`, `technologies`, `text_icons`, `dlc`, `diplomatic_stance` → `diplomatic_stances`); the data-set folders planned in §3 too (`traits` → `species_traits`, `ship_parts` → `ship_components`, `ascension_perks`, `traditions`, `megastructures`); every other one gets a folder of its own name (`achievements`, `patrons`, `specimens`, `relics`, `mutations`, `situation_log`, `message`, `crisis`…; spaces become `_`), and the loose files of `gfx/interface/icons/` go to `icons/`. The StellarisAssets folders not fed by a game folder (`designations`, `origins`, `edicts`) are left as they are.
+
+**Layout and names**:
+
+- Icon folders are **flat** (like the existing ones): `<folder>/<name>.png`, whatever game sub-folder the texture is in. The other categories keep the game's sub-folders below their folder (`interface/buttons/…`, `flags/human/…`, `portraits/city_sets/…`).
+- `<name>`: the name a generated data set already gives the icon (`icon.asset` of `data/generated/<rulesetId>/*.json`), else the **sprite key** of the `.gfx` without its `GFX_` prefix (the sprite named after the texture when several share it, else the first by name), else the texture's file name (most building, job, modifier, technology and flag textures have no sprite: the game finds them by convention). Characters other than letters, digits, `_`, `-` and `.` become `_`.
+- In the folders StellarisAssets already had, an existing file with the same name (case-insensitive) or the same pixels is reused, and new files follow the folder's capitalisation (§6).
+- **Sprite strips** (`noOfFrames` > 1) are split: one file per frame, `<name>_<frame>.png` with the frame **1-based** like the game's `£icon|frame£` and `default_frame`. The sprites of a sprite sheet (`sprite_sheet_sprite_type`) get no file of their own: the index (T2704) points them to the frame file. A texture is written once even if several sprites use it; the other sprite keys are aliases in the index.
+- Two textures that would get the same name in a flat folder: the second (path order) is prefixed with its game sub-folder (`<sub>_<name>`), then numbered.
+
+**Size budget**: StellarisAssets is served by GitHub Pages, whose published site must stay **under 1 GB**; GitHub also refuses files over 100 MB and recommends repositories under 1 GB. The included categories, converted to PNG, are about 450 MB (sampled ratios PNG / DDS: icons 0.42, event pictures 0.5, loading screens 0.62, portrait backgrounds 0.16, flags 0.08, interface 0.05–0.25), the largest file a few MB. The species portrait layers alone would add about 600 MB and push the site over 1 GB, so they wait for the owner (T2705). Pushes go in batches of at most about 200 MB: one category per commit and push, or several small ones together (T2703).
+
+**Out**: 3D meshes and every texture of a 3D model, map, particle or shader, videos, sounds and music, fonts, cursors, the launcher and the development tools.
 
 ## 7. What stays unmodelled
 

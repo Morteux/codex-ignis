@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2701 — Plan of the full export of the game images (2026-11-27)
+
+- **What is in**: every image of `gfx/interface/` (icons and the rest of the interface), event pictures, loading screens, flags, the 2D portrait backgrounds of `gfx/portraits/` (city sets, environments, arkships, leader and species preview backgrounds), key icons, DLC thumbnails and wallpapers: 15 099 game files, 18 286 PNG files once strips are split, about 450 MB. The DLC `.zip` files hold only music and sound, so "DLC folders" are just their thumbnails.
+- **Species portrait layers left out for now** (`gfx/models/portraits`, 3 221 files, about 600 MB as PNG): they are parts (bodies per colour, clothes, hair) the game stacks at run time, not finished portraits, and with them StellarisAssets would pass the 1 GB limit of a GitHub Pages site. New task T2705 asks the owner (another repository, a size cap or skip them).
+- **Out**: every texture of a 3D model, galaxy map, particle or shader (ships, planets, effects, the 3D UI scenes of `gfx/models/ui`), the galaxy map arrows, fonts, cursors, the portrait colour tables, the launcher and development tool folders, the ebook and soundtrack covers.
+- **Folders**: one StellarisAssets folder per `gfx/interface/icons/` folder, flat like the existing ones, reusing every existing folder name (`districs`, `origin_icons`, `planetary_features`, `planets`…) and the data-set folders planned in §3 (`species_traits`, `ship_components`); the rest keeps the game's sub-folders under `interface/`, `event_pictures/`, `loading_screens/`, `flags/`, `portraits/`, `key_icons/`, `dlc_thumbnails/`, `wallpapers/`.
+- **Names**: the name a generated data set already uses for the icon, else the sprite key without `GFX_`, else the texture file name (many icon textures have no sprite). Strips give `<name>_<frame>.png` with 1-based frames, as in the game's `£icon|frame£`. Existing files are reused by name or identical pixels and never removed, so the site's current links keep working; the first-frame files earlier exports wrote for strips stay next to the new frame files.
+- **Batches**: one commit and push per category, several small ones together, at most about 200 MB per push.
+
 ## T2609 — Concept icons in Testellaris and bingo (2026-11-27)
 
 - **Bingo has nothing to change**: its items and tooltips are only game names (origins, civics, technologies, DLC); none names upkeep, output, housing, amenities, stability, build time or strata.

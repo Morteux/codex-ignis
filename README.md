@@ -101,6 +101,7 @@ python tools/extract/build_bingo_game_items.py                    # casillas de 
 python tools/extract/build_game_names.py                          # nombres oficiales del juego por clave (js/game-names/<idioma>.js); --check lista los que cambian
 python tools/extract/build_build_times.py                         # tiempos de construcción del simulador (js/build-time-data.js); --check solo lista los que faltan
 python tools/extract/export_ui_icons.py                           # iconos del juego de los conceptos del sitio (estabilidad, vivienda, estratos, mantenimiento…) a StellarisAssets; lista en ICONS.md
+python tools/extract/inventory_assets.py                          # inventario de todas las imágenes 2D del juego por categoría de StellarisAssets (archivos, MB, sprites) y lo que queda fuera
 ```
 
 - **Carpeta del juego**: `--game CARPETA`, si no la variable `STELLARIS_GAME_DIR`, si no `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`. La versión sale de `launcher-settings.json` (`rulesetId`, los datos del proyecto son `stellaris-pc-4.5.4`; si la instalación ya es de otra versión, como la 4.6.0, hay que pasar con `--game` una copia de la 4.5.4 mientras no se decida cambiar de versión, T2526 en `tasks.md`).
