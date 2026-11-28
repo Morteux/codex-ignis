@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "Ringwelt",
     designationCategoryHabitat: "Habitat",
     designationCategorySynapticLathe: "Synapsenschmiede",
-    designationEcumenopolis: "Ökumenopolis",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "Simulator für Stellaris-Planetenvorlagen: Wähle Gebäude und prüfe ihre Jobs und Ressourcen.",
     planetSimHeading: "Planetensimulator",

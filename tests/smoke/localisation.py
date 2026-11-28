@@ -29,6 +29,15 @@ async def run(t):
           not node_json("""const {strings:e}=await import('./js/i18n-empire-names.js');const {strings:s}=await import('./js/i18n-simulator.js');const {names}=await import('./js/game-names/es.js');const {names:jn}=await import('./js/game-names/jp.js');
             const es={...s.es,...e.es},en={...s.en,...e.en},jp={...s.jp,...e.jp};
             console.log(JSON.stringify(Object.keys(en).filter(k=>/^(civic|origin)[A-Z]/.test(k)&&typeof en[k]==='string'&&!(k in names&&k in jn)&&(es[k]===en[k]||jp[k]===en[k]))))"""), "placeholders")
+    # T2531: scripted localisation ([GetCulturalEnvoyNamePlural], [owner.ideology.GetEthicNoun]) resolved
+    scripted = node_json("""const re=/\\[[A-Za-z_.?]+\\]/;const o={raw:[]};for(const l of ['es','en','jp','de','fr','ko','pl','pt','ru','zh']){const {names,technologies,unlocks}=await import('./js/game-names/'+l+'.js');
+      for(const [k,v] of Object.entries({...names,...technologies,...unlocks})) if(typeof v==='string'&&re.test(v)) o.raw.push(l+':'+k);if(['es','en','jp'].includes(l))o[l]=[technologies.tech_cultural_envoys,unlocks['building/building_ideological_citadel']]}
+      console.log(JSON.stringify(o))""")
+    tech = open(os.path.join(ROOT, "js", "tech-data", "stellaris-pc-4.6.0.js"), encoding="utf-8").read()
+    check("game names (T2531): no game name keeps raw scripted localisation; Cultural Envoys and Citadel of Ideology in es/en/jp, and the 4.6.0 tech tree names hold no [Get...] code",
+          scripted.get("raw") == [] and scripted.get("en") == ["Cultural Envoys", "Citadel of Ideology"]
+          and scripted.get("es") == ["Enviados culturales", "Ciudadela del Ideología"] and scripted.get("jp", [None])[0] == "文化使節"
+          and "[GetCulturalEnvoyNamePlural]" not in tech and "ideology.GetEthicNoun" not in tech, scripted)
 
     # T1506: the P13.8 data texts are written in es and jp ("Ix Belèn" is the same name in Spanish)
     data = node_json("""const {strings:s}=await import('./js/i18n-simulator.js');

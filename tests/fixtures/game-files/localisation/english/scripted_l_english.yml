@@ -1,0 +1,11 @@
+l_english:
+ scripted_tech:0 "[GetTestEnvoyPlural]"
+ test_envoy_default_plural:0 "Test Envoys"
+ test_envoy_egalitarian_plural:0 "Free Envoys"
+ test_alias_text:0 "Alias $job_test$"
+ scripted_alias:0 "[Root.GetTestAlias] Office"
+ scripted_ideology:0 "Citadel of [owner.ideology.GetEthicNoun]"
+ scripted_ideology_name:0 "Church of [owner.ideology?.GetName]"
+ scripted_engine:0 "Raid on [From.GetName], [GetTestBlank] [GetTestNoDefault] ['concept_test']"
+ BLANK_STRING:0 ""
+ IDEOLOGY:0 "Ideology"

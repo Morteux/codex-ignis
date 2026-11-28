@@ -11597,7 +11597,7 @@
    "id": "planet_food_boost",
    "file": "common/static_modifiers/08_static_modifiers_megacorp.txt",
    "name": "Growth Encouraged",
-   "desc": "This [GetPlanetArkship] is currently encouraging growth via the generous distribution of proper nutrition.",
+   "desc": "This Planet is currently encouraging growth via the generous distribution of proper nutrition.",
    "modifier": {
     "logistic_growth_mult": 0.25
    },
@@ -13521,7 +13521,7 @@
    "id": "resolution_ecology_recycling_initiatives",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Pangalactic Recycling Initiatives",
-   "desc": "We all benefit from reducing waste and reusing what we can. Sharing recycling protocols between the nations of the [global_event_country.GetGalCommunityOrGalImperium] will help all of us.",
+   "desc": "We all benefit from reducing waste and reusing what we can. Sharing recycling protocols between the nations of the Galactic Community will help all of us.",
    "modifier": {
     "diplo_weight_economy_mult": -0.2,
     "planet_clear_blocker_time_mult": 0.1
@@ -13674,7 +13674,7 @@
    "id": "resolution_commerce_leveraged_privateering",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Leveraged Privateering",
-   "desc": "Trade is the lifeblood of the galaxy. All members of the [global_event_country.GetGalCommunityOrGalImperium] should contribute to a multinational space force to combat piracy and other threats to free commerce.",
+   "desc": "Trade is the lifeblood of the galaxy. All members of the Galactic Community should contribute to a multinational space force to combat piracy and other threats to free commerce.",
    "modifier": {
     "diplo_weight_economy_mult": 0.2,
     "planet_jobs_trade_produces_mult": 0.05,
@@ -13779,7 +13779,7 @@
    "id": "resolution_industry_environmental_ordinance_waivers",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Environmental Ordinance Waivers",
-   "desc": "The [global_event_country.GetGalCommunityOrGalImperium] should empower local councils to suspend antiquated rules that do not serve the public good and are simply blocking progress.",
+   "desc": "The Galactic Community should empower local councils to suspend antiquated rules that do not serve the public good and are simply blocking progress.",
    "modifier": {
     "diplo_weight_economy_mult": 0.2,
     "planet_jobs_worker_produces_mult": 0.025,
@@ -13937,7 +13937,7 @@
    "id": "resolution_mutualdefense_the_readied_shield",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "The Readied Shield",
-   "desc": "The universe is a dangerous place, and all members of the [global_event_country.GetGalCommunityOrGalImperium] should be ready to defend their worlds whether it be against pirates, space creatures, or the unknown.",
+   "desc": "The universe is a dangerous place, and all members of the Galactic Community should be ready to defend their worlds whether it be against pirates, space creatures, or the unknown.",
    "modifier": {
     "diplo_weight_naval_mult": 0.2,
     "country_naval_cap_mult": 0.1,
@@ -14038,7 +14038,7 @@
    "id": "resolution_galacticstudies_cooperative_research_channels",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Cooperative Research Channels",
-   "desc": "We should establish protocols that permit the scientists of the [global_event_country.GetGalCommunityOrGalImperium] to share and review discoveries more easily.",
+   "desc": "We should establish protocols that permit the scientists of the Galactic Community to share and review discoveries more easily.",
    "modifier": {
     "diplo_weight_technology_mult": 0.2,
     "station_researchers_produces_mult": 0.1,
@@ -14331,7 +14331,7 @@
    "id": "resolution_sanctions_tech",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Research Sanctions",
-   "desc": "We have been sanctioned by the [global_event_country.GetGalCommunityOrGalImperium] for being §RDenounced§! or in §RBreach of Galactic Law§!.",
+   "desc": "We have been sanctioned by the Galactic Community for being §RDenounced§! or in §RBreach of Galactic Law§!.",
    "modifier": {
     "all_technology_research_speed": -0.05,
     "diplo_weight_technology_mult": -0.2
@@ -14344,7 +14344,7 @@
    "id": "resolution_sanctions_economic",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Economic Sanctions",
-   "desc": "We have been sanctioned by the [global_event_country.GetGalCommunityOrGalImperium] for being §RDenounced§! or in §RBreach of Galactic Law§!.",
+   "desc": "We have been sanctioned by the Galactic Community for being §RDenounced§! or in §RBreach of Galactic Law§!.",
    "modifier": {
     "country_trade_fee": 0.1,
     "diplo_weight_economy_mult": -0.2
@@ -14357,7 +14357,7 @@
    "id": "resolution_sanctions_military",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Military Sanctions",
-   "desc": "We have been sanctioned by the [global_event_country.GetGalCommunityOrGalImperium] for being §RDenounced§! or in §RBreach of Galactic Law§!.",
+   "desc": "We have been sanctioned by the Galactic Community for being §RDenounced§! or in §RBreach of Galactic Law§!.",
    "modifier": {
     "country_naval_cap_mult": -0.1,
     "diplo_weight_naval_mult": -0.2
@@ -14370,7 +14370,7 @@
    "id": "resolution_sanctions_administrative",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Administrative Sanctions",
-   "desc": "We have been sanctioned by the [global_event_country.GetGalCommunityOrGalImperium] for being §RDenounced§! or in §RBreach of Galactic Law§!.",
+   "desc": "We have been sanctioned by the Galactic Community for being §RDenounced§! or in §RBreach of Galactic Law§!.",
    "modifier": {
     "country_unity_produces_mult": -0.1,
     "diplomacy_upkeep_mult": 0.25
@@ -15381,7 +15381,7 @@
    "id": "resolution_passed_diplomatic_weight",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Resolution Passed",
-   "desc": "A resolution proposed by this empire has been passed by the [global_event_country.GetGalCommunityOrGalImperium], demonstrating the strength of the nation's diplomatic clout.",
+   "desc": "A resolution proposed by this empire has been passed by the Galactic Community, demonstrating the strength of the nation's diplomatic clout.",
    "modifier": {
     "diplo_weight_mult": 0.05
    },
@@ -15393,7 +15393,7 @@
    "id": "resolution_failed_diplomatic_weight",
    "file": "common/static_modifiers/11_static_modifiers_federations.txt",
    "name": "Resolution Failed",
-   "desc": "A resolution proposed by this empire was rejected by the [global_event_country.GetGalCommunityOrGalImperium] - a severe blow for the nation's diplomatic standing.",
+   "desc": "A resolution proposed by this empire was rejected by the Galactic Community - a severe blow for the nation's diplomatic standing.",
    "modifier": {
     "diplo_weight_mult": -0.05
    },
@@ -15707,7 +15707,7 @@
    "id": "resolution_custodian_council",
    "file": "common/static_modifiers/13_static_modifiers_nemesis.txt",
    "name": "Empower the Council",
-   "desc": "The burden of leadership is heavy, but by collaborating with other members of the [global_event_country.GetCommunityOrImperium], we can allocate extraordinary resources to help the members of the Galactic Council so that they may help everyone in turn.",
+   "desc": "The burden of leadership is heavy, but by collaborating with other members of the Community, we can allocate extraordinary resources to help the members of the Galactic Council so that they may help everyone in turn.",
    "modifier": {
     "diplo_weight_mult": -0.2,
     "all_technology_research_speed": 0.1,
@@ -15942,7 +15942,7 @@
    "id": "spynetwork_toxic_field",
    "file": "common/static_modifiers/13_static_modifiers_nemesis.txt",
    "name": "Toxic Field Work",
-   "desc": "The [toxic_field_country.GetAdj] [toxic_field_country.GetGestaltEntityName] is mildly toxic to our own operatives. There will be an impairment of function until we can develop adequate antibodies.",
+   "desc": "The [toxic_field_country.GetAdj] Collective is mildly toxic to our own operatives. There will be an impairment of function until we can develop adequate antibodies.",
    "modifier": {
     "espionage_operation_difficulty_add": 3
    },
@@ -18138,7 +18138,7 @@
    "id": "resolution_defenseprivatization_defense_contracts",
    "file": "common/static_modifiers/16_static_modifiers_overlord.txt",
    "name": "Security Contractors",
-   "desc": "In the interest of galactic security, we should invest resources in independent security agencies. These highly-trained and non-political professionals will help organize defense for the members of the [global_event_country.GetGalCommunityOrGalImperium].",
+   "desc": "In the interest of galactic security, we should invest resources in independent security agencies. These highly-trained and non-political professionals will help organize defense for the members of the Galactic Community.",
    "modifier": {
     "country_enclave_capacity_add": 1,
     "planet_jobs_trade_produces_mult": 0.05,
@@ -18164,7 +18164,7 @@
    "id": "resolution_defenseprivatization_private_support_troops",
    "file": "common/static_modifiers/16_static_modifiers_overlord.txt",
    "name": "High Consequence Protection",
-   "desc": "As the scale of conflicts increases, private security outfits must be empowered to keep doing what they do best: keep the [global_event_country.GetGalCommunityOrGalImperium] safe.",
+   "desc": "As the scale of conflicts increases, private security outfits must be empowered to keep doing what they do best: keep the Galactic Community safe.",
    "modifier": {
     "country_naval_cap_mult": -0.15,
     "planet_jobs_trade_produces_mult": 0.05
@@ -18189,7 +18189,7 @@
    "id": "resolution_defenseprivatization_condottieri",
    "file": "common/static_modifiers/16_static_modifiers_overlord.txt",
    "name": "Neutral Defenders",
-   "desc": "War might be inevitable, but collateral damage is not. By placing its trust in the hands of defense specialists, the [global_event_country.GetGalCommunityOrGalImperium] is certain to dramatically reduce the number of reported war atrocities.",
+   "desc": "War might be inevitable, but collateral damage is not. By placing its trust in the hands of defense specialists, the Galactic Community is certain to dramatically reduce the number of reported war atrocities.",
    "modifier": {
     "country_naval_cap_mult": -0.15,
     "planet_jobs_trade_produces_mult": 0.05
@@ -20664,7 +20664,7 @@
    "id": "agenda_confidence_in_variance_finish",
    "file": "common/static_modifiers/16_static_modifiers_paragon.txt",
    "name": "Civil Exclusion Agenda",
-   "desc": "We can comfortably wield a degree of deviancy among our [GetIndividualNamePlural] in order to permit novel bursts of productivity.",
+   "desc": "We can comfortably wield a degree of deviancy among our individuals in order to permit novel bursts of productivity.",
    "modifier": {
     "planet_jobs_productive_produces_mult": 0.15,
     "planet_crime_no_happiness_add": 10
@@ -20956,7 +20956,7 @@
    "id": "agenda_pioneer_politics_finish",
    "file": "common/static_modifiers/16_static_modifiers_paragon.txt",
    "name": "Pioneer Politics Agenda",
-   "desc": "The [global_event_country.GetGalCommunityOrGalImperium] will recognize and praise our absolute commitment to them.",
+   "desc": "The Galactic Community will recognize and praise our absolute commitment to them.",
    "modifier": {
     "resolutions_cost_mult": -0.2,
     "veto_cooldown_mult": -0.2
@@ -21118,7 +21118,7 @@
    "id": "agenda_gestalt_boost_growth_finish",
    "file": "common/static_modifiers/16_static_modifiers_paragon.txt",
    "name": "Growth Revision Agenda",
-   "desc": "Coordinating our [GetIndividualNamePlural] and colonies must be prioritized.",
+   "desc": "Coordinating our individuals and colonies must be prioritized.",
    "modifier": {
     "councilor_gestalt_growth_exp_gain": 1.0
    },
@@ -23285,7 +23285,7 @@
    "id": "fruitful_coop_country_mod",
    "file": "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt",
    "name": "Flourishing Trade",
-   "desc": "Applying economic pressure on [root.GetAAnPreFTLLower] [root.GetPreFTLLower] country has proven advantageous. For us.",
+   "desc": "Applying economic pressure on a pre-FTL country has proven advantageous. For us.",
    "modifier": {
     "planet_jobs_trade_produces_mult": 0.05
    },
@@ -23297,7 +23297,7 @@
    "id": "preftl_hagglers_mod",
    "file": "common/static_modifiers/18_static_modifiers_first_contact_dlc.txt",
    "name": "Predictive Trading Algorithms",
-   "desc": "Our studies of the [preftl_hagglers_country.GetName] [GetPreFTLUpperPlural] and their aggressive trading practices have produced some compelling economic models.",
+   "desc": "Our studies of the [preftl_hagglers_country.GetName] Pre-FTLs and their aggressive trading practices have produced some compelling economic models.",
    "modifier": {
     "planet_jobs_trade_produces_mult": 0.15
    },
@@ -32190,7 +32190,7 @@
    "id": "resilient_hive",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Resilient Consciousness",
-   "desc": "We focus on traits that enhance physical endurance and adaptability, ensuring the [GetGestaltEntityName]'s survival in hostile environments.",
+   "desc": "We focus on traits that enhance physical endurance and adaptability, ensuring the Collective's survival in hostile environments.",
    "modifier": {
     "pop_environment_tolerance": 0.05
    },
@@ -32202,7 +32202,7 @@
    "id": "cognizant_hive",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Cognizant Consciousness",
-   "desc": "We prioritize mental capacity and [GetIndividualName] coordination, fostering better decision-making and operational efficiency.",
+   "desc": "We prioritize mental capacity and individual coordination, fostering better decision-making and operational efficiency.",
    "modifier": {
     "council_agenda_progress_speed": 0.05
    },
@@ -32214,7 +32214,7 @@
    "id": "pristine_lineage",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Pristine Lineage",
-   "desc": "Processing [GetIndividualNamePlural] and leadership nodes are prioritized.",
+   "desc": "Processing individuals and leadership nodes are prioritized.",
    "modifier": {
     "species_leader_exp_gain": 0.2,
     "councilor_exp_gain": 0.15
@@ -32227,7 +32227,7 @@
    "id": "breed_for_growth",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Breed for Growth",
-   "desc": "We select those traits most beneficial to fertility and the production of healthy [GetIndividualNamePlural].",
+   "desc": "We select those traits most beneficial to fertility and the production of healthy individuals.",
    "modifier": {
     "empire_size_pops_mult": -0.05,
     "logistic_growth_mult": 0.1
@@ -32240,7 +32240,7 @@
    "id": "breed_for_growth_wilderness",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Breed for Growth",
-   "desc": "We select those traits most beneficial to fertility and the production of healthy [GetIndividualNamePlural].",
+   "desc": "We select those traits most beneficial to fertility and the production of healthy individuals.",
    "modifier": {
     "empire_size_districts_mult": -0.1,
     "planet_building_build_speed_mult": 0.1
@@ -32266,7 +32266,7 @@
    "id": "infrastructural_bolstering",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Infrastructural Bolstering",
-   "desc": "The [GetGestaltEntityName]'s means of production must not be compromised in our pursuit of purity.",
+   "desc": "The Collective's means of production must not be compromised in our pursuit of purity.",
    "modifier": {
     "planet_building_build_speed_mult": 0.2
    },
@@ -32304,7 +32304,7 @@
    "id": "rigorous_examination",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Rigorous Examination",
-   "desc": "Some of these so called impurities may actually be beneficial to the [GetGestaltEntityName]. We should not be so quick to eradicate them.",
+   "desc": "Some of these so called impurities may actually be beneficial to the Collective. We should not be so quick to eradicate them.",
    "modifier": {
     "planet_pops_upkeep_mult": 0.1,
     "planet_jobs_society_research_produces_mult": 0.2
@@ -32317,7 +32317,7 @@
    "id": "rigorous_examination_wilderness",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Rigorous Examination",
-   "desc": "Some of these so called impurities may actually be beneficial to the [GetGestaltEntityName]. We should not be so quick to eradicate them.",
+   "desc": "Some of these so called impurities may actually be beneficial to the Collective. We should not be so quick to eradicate them.",
    "modifier": {
     "planet_districts_upkeep_mult": 0.1,
     "planet_jobs_society_research_produces_mult": 0.2
@@ -32541,7 +32541,7 @@
    "id": "survival_study",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Survival Study",
-   "desc": "Careful study of diseased [GetIndividualNamePlural] will lead us to a plague cure.",
+   "desc": "Careful study of diseased individuals will lead us to a plague cure.",
    "modifier": {
     "planet_jobs_society_research_produces_mult": 0.15,
     "logistic_growth_mult": -0.1
@@ -32554,7 +32554,7 @@
    "id": "survival_study_wilderness",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Survival Study",
-   "desc": "Careful study of diseased [GetIndividualNamePlural] will lead us to a plague cure.",
+   "desc": "Careful study of diseased individuals will lead us to a plague cure.",
    "modifier": {
     "planet_jobs_society_research_produces_mult": 0.15,
     "planet_building_build_speed_mult": -0.1
@@ -32774,7 +32774,7 @@
    "id": "citadel_siege_lifted",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Siege Lifted",
-   "desc": "Our valiant defenders have defeated the [GetInvadersLower]; at last our long siege is over.",
+   "desc": "Our valiant defenders have defeated the invaders; at last our long siege is over.",
    "modifier": {
     "pop_happiness": 0.2,
     "country_unity_produces_mult": 0.1,
@@ -32788,7 +32788,7 @@
    "id": "citadel_siege_lifted_machine",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Siege Lifted",
-   "desc": "Our valiant defenders have defeated the [GetInvadersLower]; at last our long siege is over.",
+   "desc": "Our valiant defenders have defeated the invaders; at last our long siege is over.",
    "modifier": {
     "country_unity_produces_mult": 0.1,
     "founder_species_growth_mult": 0.1
@@ -32801,7 +32801,7 @@
    "id": "citadel_siege_cancelled",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Siege Cancelled",
-   "desc": "The [GetInvadersLower] have been destroyed. Has our long siege at last been lifted?",
+   "desc": "The invaders have been destroyed. Has our long siege at last been lifted?",
    "modifier": {
     "pop_happiness": 0.1,
     "founder_species_growth_mult": 0.1
@@ -32814,7 +32814,7 @@
    "id": "citadel_siege_cancelled_machine",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Siege Cancelled",
-   "desc": "The [GetInvadersLower] have been destroyed. Has our long siege at last been lifted?",
+   "desc": "The invaders have been destroyed. Has our long siege at last been lifted?",
    "modifier": {
     "planet_jobs_simple_drone_produces_mult": 0.1,
     "founder_species_growth_mult": 0.1
@@ -33809,7 +33809,7 @@
    "id": "espionage_planetary_roots",
    "file": "common/static_modifiers/23_static_modifiers_biogenesis.txt",
    "name": "Planetary Roots",
-   "desc": "We have embedded a semi-aware microbiome that keeps us informed of affairs in this empire. These primitive symbionts lie ready to support our intelligence-gathering [owner.GetIndividualNamePlural] at a moment's notice.",
+   "desc": "We have embedded a semi-aware microbiome that keeps us informed of affairs in this empire. These primitive symbionts lie ready to support our intelligence-gathering individuals at a moment's notice.",
    "modifier": {
     "espionage_operation_skill_add": 1,
     "spy_network_decay_mult": -1
@@ -35597,7 +35597,7 @@
    "id": "thought_police_established",
    "file": "common/static_modifiers/24_static_modifiers_shroud.txt",
    "name": "Thought Police",
-   "desc": "Using scientific techniques to monitor the population's cognitive activity, Thought Police are detecting [Owner.GetCriminalDeviant] intent at an early stage and taking appropriate action before it manifests in actual behavior.",
+   "desc": "Using scientific techniques to monitor the population's cognitive activity, Thought Police are detecting criminal intent at an early stage and taking appropriate action before it manifests in actual behavior.",
    "modifier": {
     "planet_stability_add": 5,
     "planet_crime_mult": -0.1
@@ -35871,7 +35871,7 @@
    "id": "necrocognition_research",
    "file": "common/static_modifiers/24_static_modifiers_shroud.txt",
    "name": "Necrocognition Research",
-   "desc": "The private pastime of communicating with expired [Owner.GetSpeciesBrainPlural] is now a regulated form of public research.",
+   "desc": "The private pastime of communicating with expired brains is now a regulated form of public research.",
    "modifier": {
     "country_society_research_produces_mult": 0.1,
     "planet_researchers_upkeep_mult": 0.1
@@ -35884,7 +35884,7 @@
    "id": "resurrectionism",
    "file": "common/static_modifiers/24_static_modifiers_shroud.txt",
    "name": "Resurrectionism",
-   "desc": "Storing expired [Owner.GetSpeciesBrainPlural] for experimental communication is a popular pastime, despite the criminality it incentivizes.",
+   "desc": "Storing expired brains for experimental communication is a popular pastime, despite the criminality it incentivizes.",
    "modifier": {
     "planet_crime_mult": 0.1
    },
@@ -41791,7 +41791,7 @@
    "id": "celebrate_ideology",
    "file": "common/static_modifiers/26_static_modifiers_forceofwill.txt",
    "name": "Celebrate Ideology",
-   "desc": "By coordinating the public celebration of our state [owner.GetIdeologyType], we can strengthen adherence on this colony.",
+   "desc": "By coordinating the public celebration of our state ideology, we can strengthen adherence on this colony.",
    "modifier": {
     "colony_ideological_reach_mult": 0.1,
     "planet_pops_unity_upkeep_add": 1
@@ -42124,7 +42124,7 @@
    "id": "cultural_envoy_martyr",
    "file": "common/static_modifiers/26_static_modifiers_forceofwill.txt",
    "name": "Ideological Martyr",
-   "desc": "The destruction of our [GetCulturalEnvoyName] has met with widespread outrage throughout the population, galvanizing support for our ideological cause.",
+   "desc": "The destruction of our Cultural Envoy has met with widespread outrage throughout the population, galvanizing support for our ideological cause.",
    "modifier": {
     "pop_government_ethic_attraction": 0.1
    },

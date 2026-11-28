@@ -14187,8 +14187,8 @@
   {
    "id": "tech_cultural_envoys",
    "file": "common/technology/00_forceofwill_tech.txt",
-   "name": "[GetCulturalEnvoyNamePlural]",
-   "desc": "There are few instruments better suited to carrying our ideals across the stars than dedicated starships. By deploying [GetCulturalEnvoyNamePlural] in orbit around foreign colonies, we can gradually sway their populations through direct and carefully guided messaging.",
+   "name": "Cultural Envoys",
+   "desc": "There are few instruments better suited to carrying our ideals across the stars than dedicated starships. By deploying Cultural Envoys in orbit around foreign colonies, we can gradually sway their populations through direct and carefully guided messaging.",
    "area": "society",
    "category": [
     "statecraft"
@@ -32304,6 +32304,8 @@
   "common/scripted_triggers/08_scripted_triggers_shroud.txt:640: unknown variable @po_apply_pop_template_tier$TIER$_nb_pop",
   "common/scripted_triggers/10_scripted_triggers_forceofwill.txt:1307: unknown variable @\\[(",
   "common/scripted_triggers/10_scripted_triggers_forceofwill.txt:1320: unknown variable @\\[(",
+  "common/scripted_loc/13_scripted_loc_shroud.txt: defined_txt redefined (first in common/scripted_loc/13_scripted_loc_shroud.txt)",
+  "common/scripted_loc/15_scripted_loc_nomads.txt: GetDatabankNomadsDlc redefined (first in common/scripted_loc/15_scripted_loc_nomads.txt)",
   "tech_asteroidal_carapace: no cost"
  ]
 }

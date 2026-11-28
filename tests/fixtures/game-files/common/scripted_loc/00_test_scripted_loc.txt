@@ -1,0 +1,33 @@
+# Scripted localisation sample (T2531)
+defined_text = {
+	name = GetTestEnvoyPlural
+	text = {
+		trigger = { owner.ideology? = { is_egalitarian = yes } }
+		localization_key = test_envoy_egalitarian_plural
+	}
+	default = test_envoy_default_plural
+}
+
+define_text = {
+	name = GetTestAlias
+	default = test_alias_text
+}
+
+defined_text = {
+	name = GetEthicNoun
+	text = {
+		trigger = { is_spiritualist = yes }
+		localization_key = test_spiritualism
+	}
+	default = BLANK_STRING
+}
+
+defined_text = {
+	name = GetTestBlank
+	default = BLANK_STRING
+}
+
+defined_text = {
+	name = GetTestNoDefault
+	text = { localization_key = test_alias_text }
+}

@@ -605,7 +605,7 @@
     {
      "id": "liberation_wars",
      "name": "Liberation Wars",
-     "desc": "We must further our own interests, even when they run contrary to the interests of others.\\n\\n§EClaiming others' systems is only allowed during defensive wars or against §YGestalt Consciousness§! empires§!\\n\\nUnlocks the §Y[GetCasusBelliIdeologyName]§! Casus Belli on all empires with differing Ethics",
+     "desc": "We must further our own interests, even when they run contrary to the interests of others.\\n\\n§EClaiming others' systems is only allowed during defensive wars or against §YGestalt Consciousness§! empires§!\\n\\nUnlocks the §YIdeology§! Casus Belli on all empires with differing Ethics",
      "policy_flags": [
       "liberation_wars"
      ],

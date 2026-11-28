@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "링 월드",
     designationCategoryHabitat: "거주지",
     designationCategorySynapticLathe: "시냅스 가공기",
-    designationEcumenopolis: "도시 행성",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "Stellaris 행성 템플릿 시뮬레이터: 건물을 골라 직업과 자원을 확인하세요.",
     planetSimHeading: "행성 시뮬레이터",

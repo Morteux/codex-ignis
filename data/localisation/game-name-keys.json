@@ -1,6 +1,6 @@
 {
   "rulesetId": "stellaris-pc-4.6.0",
-  "count": 1049,
+  "count": 1051,
   "keys": {
     "authorityCorporate": "authorities/auth_corporate",
     "authorityDemocratic": "authorities/auth_democratic",
@@ -8,6 +8,7 @@
     "authorityHiveMind": "authorities/auth_hive_mind",
     "authorityImperial": "authorities/auth_imperial",
     "authorityMachineIntelligence": "authorities/auth_machine_intelligence",
+    "authorityMutualisticIntelligence": "authorities/auth_mutualistic_intelligence",
     "authorityOligarchic": "authorities/auth_oligarchic",
     "blockerAshStorms": "deposits/d_ash_storms",
     "blockerChargedAtmosphere": "deposits/d_charged_atmosphere",
@@ -483,6 +484,7 @@
     "designationCrucibleWorld": "designations/col_wilderness_forge",
     "designationEcclesiasticalCenter": "designations/col_bureau_spiritualist",
     "designationEcclesiasticalStation": "designations/col_habitat_bureau_spiritualist",
+    "designationEcumenopolis": "designations/col_ecu_mix",
     "designationEcumenopolisFactory": "designations/col_ecu_factory",
     "designationEcumenopolisFoundry": "designations/col_ecu_foundry",
     "designationEcumenopolisIndustrial": "designations/col_ecu_industrial",
@@ -897,7 +899,7 @@
     "planetModifierExtremophileLifeforms": "planet_modifiers/pm_volcanic_critters",
     "planetModifierEyeOfTheShard": "static_modifiers/shard_trophy",
     "planetModifierFilteredAtmosphericHallucinogen": "static_modifiers/atmospheric_hallucinogen_good",
-    "planetModifierFreeAtLast": "static_modifiers/free_at_last",
+    "planetModifierFreeAtLast": "static_modifiers/free_at_last_broken_shackles",
     "planetModifierFreshConsciousness": "static_modifiers/colonial_spirit_gestalt_mod",
     "planetModifierFryingFauna": "static_modifiers/pm_frying_fauna",
     "planetModifierFunghiAreFriends": "static_modifiers/funghi_friends_modifier",

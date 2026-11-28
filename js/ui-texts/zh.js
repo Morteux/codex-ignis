@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "环形世界",
     designationCategoryHabitat: "居住站",
     designationCategorySynapticLathe: "突触凝练机",
-    designationEcumenopolis: "都市星球",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "群星行星模板模拟器：选择建筑并查看其岗位和资源。",
     planetSimHeading: "行星模拟器",

@@ -13642,7 +13642,7 @@
    "id": "building_psi_corps",
    "file": "common/buildings/02_government_buildings.txt",
    "name": "Psi Corps",
-   "desc": "From all across our empire, psionic [GetIndividualNamePlural] are brought here to hone their abilities.\\n\\n§YThe Psi Corps is your [GetPsiCorpFriend]. Trust the Corps.§!",
+   "desc": "From all across our empire, psionic individuals are brought here to hone their abilities.\\n\\n§YThe Psi Corps is your friend. Trust the Corps.§!",
    "category": "government",
    "cost": {
     "minerals": 500
@@ -16716,7 +16716,7 @@
    "id": "building_foundry_1",
    "file": "common/buildings/04_manufacturing_buildings.txt",
    "name": "Alloy Foundries",
-   "desc": "The [Owner.GetAlloyProducerPlural] working in these foundries produce high-quality alloys.",
+   "desc": "The Metallurgists working in these foundries produce high-quality alloys.",
    "category": "manufacturing",
    "cost": {
     "minerals": 400
@@ -30845,7 +30845,7 @@
    "id": "building_composer_sanctum",
    "file": "common/buildings/12_event_buildings.txt",
    "name": "Sanctum of the Composer",
-   "desc": "The Sanctum is a place dedicated to communion with the Composer. [GetComposerSanctumDesc]",
+   "desc": "The Sanctum is a place dedicated to communion with the Composer. Here, flesh roams as freely as thought, allowing the Shroud to remake us beyond our means.",
    "category": "government",
    "cost": {
     "minerals": 800,
@@ -30972,7 +30972,7 @@
    "id": "building_eater_sanctum",
    "file": "common/buildings/12_event_buildings.txt",
    "name": "Sanctum of the Eater",
-   "desc": "The Sanctum is a place dedicated to communion with the Eater. Here, the Shroud prepares us for war as we plan for the next [GetEaterSanctumDesc].",
+   "desc": "The Sanctum is a place dedicated to communion with the Eater. Here, the Shroud prepares us for war as we plan for the next feast.",
    "category": "government",
    "cost": {
     "minerals": 800,
@@ -31087,7 +31087,7 @@
    "id": "building_instrument_sanctum",
    "file": "common/buildings/12_event_buildings.txt",
    "name": "Sanctum of the Instrument",
-   "desc": "The Sanctum is a place dedicated to communion with the Instrument. [GetInstrumentSanctumDesc]",
+   "desc": "The Sanctum is a place dedicated to communion with the Instrument. Here, riches are hoarded then traded away in a consumptive frenzy that brings us no closer to fulfillment.",
    "category": "government",
    "cost": {
     "minerals": 800,
@@ -31214,7 +31214,7 @@
    "id": "building_whisperers_sanctum",
    "file": "common/buildings/12_event_buildings.txt",
    "name": "Sanctum of the Whisperers",
-   "desc": "The Sanctum is a place dedicated to communion with the Whisperers. [GetWhisperersSanctumDesc]",
+   "desc": "The Sanctum is a place dedicated to communion with the Whisperers. Here, secrets are traded in hushed tones, new knowledge is brought to be sealed away, and our murmurs join the chorus.",
    "category": "government",
    "cost": {
     "minerals": 800,
@@ -61884,7 +61884,7 @@
    "id": "building_experimentation_chambers_2",
    "file": "common/buildings/23_shroud_buildings.txt",
    "name": "Experimentation Complex",
-   "desc": "A campus of top-secret technology and internment facilities, where lawbreaking [Owner.GetIndividualNamePlural] are used as subjects in experiments led by the empire's top [Owner.GetResearchers].",
+   "desc": "A campus of top-secret technology and internment facilities, where lawbreaking individuals are used as subjects in experiments led by the empire's top [Owner.GetResearchers].",
    "category": "research",
    "cost": {
     "minerals": 600,
@@ -62019,7 +62019,7 @@
    "id": "building_experimentation_chambers_3",
    "file": "common/buildings/23_shroud_buildings.txt",
    "name": "Experimentation Nexus",
-   "desc": "A network of maximum-security technology and internment centers. Teams of elite [Owner.GetResearchers] conduct pioneering experiments on [Owner.GetIndividualNamePlural] drawn from the empire's underworld.",
+   "desc": "A network of maximum-security technology and internment centers. Teams of elite [Owner.GetResearchers] conduct pioneering experiments on individuals drawn from the empire's underworld.",
    "category": "research",
    "cost": {
     "minerals": 800,
@@ -62154,7 +62154,7 @@
    "id": "building_cradle_sanctum",
    "file": "common/buildings/23_shroud_buildings.txt",
    "name": "Sanctum of the Cradle",
-   "desc": "The Sanctum is a place dedicated to communion with the Cradle. [GetCradleSanctumDesc]",
+   "desc": "The Sanctum is a place dedicated to communion with the Cradle. Here, calm is cultivated by the meeting of minds, fostering intragalactic cooperation.",
    "category": "government",
    "cost": {
     "minerals": 800,
@@ -63931,7 +63931,7 @@
   {
    "id": "building_ideological_hall",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Hall of [owner.ideology.GetEthicNoun]",
+   "name": "Hall of Ideology",
    "desc": "A local forum for meetings on matters of ideology and ethics.",
    "category": "government",
    "cost": {
@@ -64096,7 +64096,7 @@
   {
    "id": "building_ideological_institute",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Institute of [owner.ideology.GetEthicNoun]",
+   "name": "Institute of Ideology",
    "desc": "A multipurpose center for the study of ideological matters and their advancement throughout society.",
    "category": "government",
    "cost": {
@@ -64263,7 +64263,7 @@
   {
    "id": "building_ideological_citadel",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Citadel of [owner.ideology.GetEthicNoun]",
+   "name": "Citadel of Ideology",
    "desc": "An elaborate complex of meeting rooms, exhibition spaces, and educational facilities; all dedicated to ideological cultivation and commitment.",
    "category": "government",
    "cost": {
@@ -64428,7 +64428,7 @@
   {
    "id": "building_ideological_church",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Church of [owner.ideology.GetName]",
+   "name": "Church of Ideology",
    "desc": "A sacred area reserved for gatherings on matters of religion and ethics.",
    "category": "government",
    "cost": {
@@ -64593,7 +64593,7 @@
   {
    "id": "building_ideological_high_church",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "High Church of [owner.ideology.GetName]",
+   "name": "High Church of Ideology",
    "desc": "A holy place of worship dedicated to the study of religious canon and its advancement throughout society.",
    "category": "government",
    "cost": {
@@ -64760,7 +64760,7 @@
   {
    "id": "building_ideological_sanctum",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Sanctum of [owner.ideology.GetName]",
+   "name": "Sanctum of Ideology",
    "desc": "A vast edifice containing lecterns, altars, and sculptures; all dedicated to celebrating religious cultivation and devotion.",
    "category": "government",
    "cost": {
@@ -64925,7 +64925,7 @@
   {
    "id": "building_ideological_creche",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "[owner.ideology.GetEthicNoun] Creche",
+   "name": "Ideology Creche",
    "desc": "A hub for amplifying the ideological instincts of the collective.",
    "category": "government",
    "cost": {
@@ -65048,7 +65048,7 @@
   {
    "id": "building_ideological_greater_creche",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Greater [owner.ideology.GetEthicNoun] Creche",
+   "name": "Greater Ideology Creche",
    "desc": "A center for monitoring and elevating the collective's ideological adherence in all daily tasks.",
    "category": "government",
    "cost": {
@@ -65173,7 +65173,7 @@
   {
    "id": "building_ideological_grand_creche",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "Grand [owner.ideology.GetEthicNoun] Creche",
+   "name": "Grand Ideology Creche",
    "desc": "An advanced installation designed to ensure all aspects of the collective's existence are imbued with ideological meaning.",
    "category": "government",
    "cost": {
@@ -65296,7 +65296,7 @@
   {
    "id": "building_ideological_core",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "[owner.ideology.GetEthicNoun] Core",
+   "name": "Ideology Core",
    "desc": "A hub for propagating ideological directives throughout the network.",
    "category": "government",
    "cost": {
@@ -65419,7 +65419,7 @@
   {
    "id": "building_ideological_grid",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "[owner.ideology.GetEthicNoun] Grid",
+   "name": "Ideology Grid",
    "desc": "A facility for monitoring and optimizing ideological adherence across the network in all daily tasks.",
    "category": "government",
    "cost": {
@@ -65544,7 +65544,7 @@
   {
    "id": "building_ideological_nexus",
    "file": "common/buildings/25_forceofwill_buildings.txt",
-   "name": "[owner.ideology.GetEthicNoun] Nexus",
+   "name": "Ideology Nexus",
    "desc": "A powerful conduit designed to ensure all of the network's processes contribute to ideological advancement.",
    "category": "government",
    "cost": {

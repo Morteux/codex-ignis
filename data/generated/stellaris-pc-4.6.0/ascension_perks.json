@@ -106,7 +106,7 @@
    "id": "ap_mind_over_matter",
    "file": "common/ascension_perks/00_ascension_paths.txt",
    "name": "Mind Over Matter",
-   "desc": "[GetMindOverMatterDesc]",
+   "desc": "Only a fraction of the potential contained within our minds has been unlocked. The latent psionic abilities of our species are only now beginning to manifest in certain individuals.",
    "category": null,
    "modifier": null,
    "triggered_modifier": [],

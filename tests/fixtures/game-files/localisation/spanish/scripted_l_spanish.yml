@@ -1,0 +1,5 @@
+l_spanish:
+ scripted_tech:0 "[GetTestEnvoyPlural]"
+ test_envoy_default_plural:0 "Enviados de prueba"
+ scripted_ideology:0 "Ciudadela del [owner.ideology.GetEthicNoun]"
+ IDEOLOGY:0 "Ideología"

@@ -311,7 +311,7 @@ None.
 - `tech_galactic_halls` Galactic Halls
 - `tech_ideology_projection_1` Ideological Projection
 - `tech_ideology_projection_2` Ideological Amplification
-- `tech_cultural_envoys` [GetCulturalEnvoyNamePlural]
+- `tech_cultural_envoys` Cultural Envoys
 - `tech_galactic_archivism` Galactic Archivism
 - `tech_gravity_wells` Gravity Snares
 - `tech_gravity_snare_capacity_1` Micro Singularity Enhancements

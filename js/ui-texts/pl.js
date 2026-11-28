@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "Świat pierścieniowy",
     designationCategoryHabitat: "Stacja mieszkalna",
     designationCategorySynapticLathe: "Krosno synaptyczne",
-    designationEcumenopolis: "Ekumenopolis",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "Symulator szablonów planet Stellaris: wybieraj budynki i sprawdzaj ich miejsca pracy i zasoby.",
     planetSimHeading: "Symulator planet",

@@ -2592,7 +2592,7 @@
     {
      "id": "technophant",
      "name": "Technophant",
-     "desc": "Exalted interpreters of divine wetware. They guide the people toward a perfect fusion of [Owner.Species.GetFleshTypeCyberCreed] and machine.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
+     "desc": "Exalted interpreters of divine wetware. They guide the people toward a perfect fusion of flesh and machine.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
      "desc_id": "job_technophant_desc",
      "trigger": "politician_is_technophant = yes",
      "weight": 30,
@@ -4645,7 +4645,7 @@
     {
      "id": "haruspex",
      "name": "Haruspex",
-     "desc": "Evangelical mechanics and surgeons of the divine, rendering unworthy [Owner.Species.GetFleshTypeCyberCreed] and replacing it with holy cybernetics.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
+     "desc": "Evangelical mechanics and surgeons of the divine, rendering unworthy flesh and replacing it with holy cybernetics.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
      "desc_id": "haruspex",
      "trigger": "bureaucrat_is_haruspex = yes",
      "weight": 500,
@@ -20276,7 +20276,7 @@
    "id": "haruspex",
    "file": "common/pop_jobs/13_machine_age_jobs.txt",
    "name": "Haruspex",
-   "desc": "Evangelical mechanics and surgeons of the divine, rendering unworthy [Owner.Species.GetFleshTypeCyberCreed] and replacing it with holy cybernetics.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
+   "desc": "Evangelical mechanics and surgeons of the divine, rendering unworthy flesh and replacing it with holy cybernetics.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
    "category": "specialist",
    "tags": [
     "unity",
@@ -20362,7 +20362,7 @@
    "id": "technophant",
    "file": "common/pop_jobs/13_machine_age_jobs.txt",
    "name": "Technophant",
-   "desc": "Exalted interpreters of divine wetware. They guide the people toward a perfect fusion of [Owner.Species.GetFleshTypeCyberCreed] and machine.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
+   "desc": "Exalted interpreters of divine wetware. They guide the people toward a perfect fusion of flesh and machine.\\n\\n§TThis £job£ §YJob§! requires the £pop£ §HPop§! to have the §YRitualistic Implants of any Cybernetic Creed§! or §YCybernetic§! trait.§!",
    "category": "ruler",
    "tags": [
     "unity",

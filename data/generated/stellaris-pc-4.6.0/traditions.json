@@ -872,7 +872,7 @@
    "id": "tr_domestication_finish",
    "file": "common/traditions/00_domestication.txt",
    "name": "Domestication Traditions Finished",
-   "desc": "[GetDomesticationFinishEffectDesc]",
+   "desc": "Unlocks ['concept_voidlure', Voidlures]\\nSpace Fauna Ship Experience Gain: §G+$@domestication_finish_exp_bonus|0%$§!\\nAscension Perks Unlocked: §G+1§!",
    "category": "tradition_domestication",
    "kind": "finish",
    "modifier": {
@@ -2214,7 +2214,7 @@
    "id": "tr_politics_adopt",
    "file": "common/traditions/00_politics.txt",
    "name": "Politics Traditions",
-   "desc": "§G+1§! Envoy\\n£official£ Officials assigned to the §Y[GetGalCommunityOrGalImperium]§! now produce 0.1 £influence£ §YInfluence§! per §YSkill Level§!.",
+   "desc": "§G+1§! Envoy\\n£official£ Officials assigned to the §YGalactic Community§! now produce 0.1 £influence£ §YInfluence§! per §YSkill Level§!.",
    "category": "tradition_politics",
    "kind": "adopt",
    "modifier": {
@@ -2231,7 +2231,7 @@
    "id": "tr_politics_finish",
    "file": "common/traditions/00_politics.txt",
    "name": "Politics Traditions Finished",
-   "desc": "§G+10%§! £diplo_weight£ Diplomatic Weight\\nUnlocks 4 special §YResolutions§! in the §Y[GetGalCommunityOrGalImperium]§!.\\nAscension Perks Unlocked: §G+1§!",
+   "desc": "§G+10%§! £diplo_weight£ Diplomatic Weight\\nUnlocks 4 special §YResolutions§! in the §YGalactic Community§!.\\nAscension Perks Unlocked: §G+1§!",
    "category": "tradition_politics",
    "kind": "finish",
    "modifier": {
@@ -2265,7 +2265,7 @@
    "id": "tr_politics_gravitas",
    "file": "common/traditions/00_politics.txt",
    "name": "Gravitas",
-   "desc": "§G-25%§! £influence£ §YInfluence§! cost to veto or propose Resolutions\\n£official£ Officials assigned to the §Y[GetGalCommunityOrGalImperium]§! provide an additional §G2.5%§! £diplo_weight£ Diplomatic Weight per §YSkill Level§!.",
+   "desc": "§G-25%§! £influence£ §YInfluence§! cost to veto or propose Resolutions\\n£official£ Officials assigned to the §YGalactic Community§! provide an additional §G2.5%§! £diplo_weight£ Diplomatic Weight per §YSkill Level§!.",
    "category": "tradition_politics",
    "kind": "tradition",
    "modifier": {
@@ -5137,7 +5137,7 @@
    "id": "tr_psionics_psi_corps",
    "file": "common/traditions/01_psionics.txt",
    "name": "Psi Corps",
-   "desc": "[GetAllowPsiCorps]",
+   "desc": "Unlocks Building: ['building:building_psi_corps']",
    "category": "tradition_psionics",
    "kind": "tradition",
    "modifier": null,
@@ -5360,7 +5360,7 @@
    "id": "tr_psionics_shroud_psychometry",
    "file": "common/traditions/01_psionics_shroud.txt",
    "name": "Psychometry",
-   "desc": "£crime£ [GetCrimeDeviancy] from [GetTelepathSwapPluralWithIcon]: §G$@psionic_shroud_crime|0$§!",
+   "desc": "£crime£ Crime from [telepath.GetIcon] [telepath.GetNamePlural]: §G$@psionic_shroud_crime|0$§!",
    "category": "tradition_psionics_shroud",
    "kind": "tradition",
    "modifier": {

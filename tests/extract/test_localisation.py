@@ -36,6 +36,20 @@ class LocalisationReader(unittest.TestCase):
         self.assertEqual(plain(self.loc.get("tech_test_desc")), "Unlocks the Test Building (later file) and gives +5 Energy.")
         self.assertEqual(plain("§HName§! and £minerals|2£ ore"), "Name and ore")
 
+    def test_scripted_localisation_default(self):
+        # T2531: defined_text of common/scripted_loc resolved to its default text
+        self.assertEqual(self.loc.get("scripted_tech"), "Test Envoys")
+        self.assertEqual(self.loc.get("scripted_tech", "spanish"), "Enviados de prueba")
+        self.assertEqual(self.loc.get("scripted_alias"), "Alias Tester Office")  # define_text, scope, $ref$
+
+    def test_scripted_localisation_ideology_and_engine(self):
+        self.assertEqual(self.loc.get("scripted_ideology"), "Citadel of Ideology")
+        self.assertEqual(self.loc.get("scripted_ideology", "spanish"), "Ciudadela del Ideología")
+        self.assertEqual(self.loc.get("scripted_ideology_name"), "Church of Ideology")
+        # engine functions, blank defaults, no default and concept links stay as written
+        self.assertEqual(self.loc.get("scripted_engine"),
+                         "Raid on [From.GetName], [GetTestBlank] [GetTestNoDefault] ['concept_test']")
+
     def test_parse_yml(self):
         self.assertEqual(parse_yml('﻿l_german:\n key:0 "Wert"\n'), ("german", {"key": "Wert"}))
 

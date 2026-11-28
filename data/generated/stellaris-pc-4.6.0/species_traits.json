@@ -5212,7 +5212,7 @@
    "id": "trait_psionic",
    "file": "common/traits/04_species_traits.txt",
    "name": "Psionic",
-   "desc": "[This.GetPsionicTraitDesc]",
+   "desc": "§LAll members of this species possess powerful psionic abilities. They typically communicate with each other through telepathy.§!\\n",
    "cost": 0,
    "category": null,
    "allowed_archetypes": [
@@ -15575,7 +15575,7 @@
    "id": "trait_blindness",
    "file": "common/traits/17_shroud_species_traits.txt",
    "name": "Blind",
-   "desc": "Where we are going, we won't need [Species.GetEyeNamePlural] to see.",
+   "desc": "Where we are going, we won't need eyes to see.",
    "cost": null,
    "category": null,
    "allowed_archetypes": [],

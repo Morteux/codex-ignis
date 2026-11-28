@@ -448,7 +448,7 @@
    "id": "tradition_cybernetics",
    "file": "common/tradition_categories/01_cybernetics.txt",
    "name": "Cybernetics",
-   "desc": "Our future lies in the fusion of [Owner.Species.GetFleshTypeCyberCreed] and machine.",
+   "desc": "Our future lies in the fusion of flesh and machine.",
    "traditions": [
     "tr_cybernetics_transubstantiation_synthesis",
     "tr_cybernetics_metabolic_reprocessing",
@@ -576,7 +576,7 @@
    "id": "tradition_psionics",
    "file": "common/tradition_categories/01_psionics.txt",
    "name": "Psionics",
-   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] [GetNeuralSystemLoc].",
+   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] mind.",
    "traditions": [
     "tr_psionics_psi_corps",
     "tr_psionics_mind_readers",
@@ -598,7 +598,7 @@
    "id": "tradition_psionics_shroud",
    "file": "common/tradition_categories/01_psionics_shroud.txt",
    "name": "Psionics",
-   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] [GetNeuralSystemLoc].",
+   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] mind.",
    "traditions": [
     "tr_psionics_shroud_psi_corps",
     "tr_psionics_shroud_great_awakening",

@@ -270,7 +270,7 @@
    "id": "crisobj_convert_pops",
    "file": "common/crisis_objectives/00_crisis_objectives.txt",
    "name": "Convert Pops",
-   "desc": "[GetFoWConvertPopsDesc]",
+   "desc": "It is our duty to bring all citizens of the galaxy into our way of thinking. Only then can the benefits of our ideology be enjoyed by all.\\n\\n§YConvert§! pops to §YIdeology§! to gain this Willpower reward.",
    "potential": null
   },
   {
@@ -291,14 +291,14 @@
    "id": "crisobj_vassalise_empires_forceofwill",
    "file": "common/crisis_objectives/00_crisis_objectives.txt",
    "name": "Vassalize Empires",
-   "desc": "Bringing an entire society under our guidance is the surest way to ensure they reap the rewards of our [GetSpecificIdeologyType].\\n\\n§YVassalize§! empires to gain this Willpower reward.",
+   "desc": "Bringing an entire society under our guidance is the surest way to ensure they reap the rewards of our ideology.\\n\\n§YVassalize§! empires to gain this Willpower reward.",
    "potential": null
   },
   {
    "id": "crisobj_have_vassals_forceofwill",
    "file": "common/crisis_objectives/00_crisis_objectives.txt",
    "name": "Retain Vassals",
-   "desc": "Retaining the loyalty of societies that rely upon our guidance is paramount. Only through prolonged association can the true benefits of [Ideology.GetIdeologicalAdj] exchange be realized.\\n\\nRetain §YVassals§! to gain this §Yannual§! Willpower reward.",
+   "desc": "Retaining the loyalty of societies that rely upon our guidance is paramount. Only through prolonged association can the true benefits of ideological exchange be realized.\\n\\nRetain §YVassals§! to gain this §Yannual§! Willpower reward.",
    "potential": null
   }
  ],

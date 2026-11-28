@@ -33,8 +33,7 @@
    "warnings": 0,
    "icons": {
     "kept_larger": 193,
-    "unchanged": 69,
-    "new": 10
+    "unchanged": 79
    }
   },
   "crisis_levels": {
@@ -84,8 +83,7 @@
    "count": 37,
    "warnings": 9,
    "icons": {
-    "unchanged": 51,
-    "new": 1
+    "unchanged": 52
    }
   },
   "economic_categories": {
@@ -107,9 +105,8 @@
    "count": 25,
    "warnings": 0,
    "icons": {
-    "new": 8,
-    "kept_larger": 9,
-    "unchanged": 8
+    "unchanged": 16,
+    "kept_larger": 9
    }
   },
   "events": {
@@ -143,8 +140,7 @@
    "count": 173,
    "warnings": 0,
    "icons": {
-    "new": 20,
-    "replaced": 1
+    "unchanged": 21
    }
   },
   "menace_perks": {
@@ -158,8 +154,7 @@
    "count": 80,
    "warnings": 0,
    "icons": {
-    "unchanged": 118,
-    "new": 3
+    "unchanged": 121
    }
   },
   "planet_classes": {
@@ -191,9 +186,7 @@
    "count": 1506,
    "warnings": 4,
    "icons": {
-    "new": 165,
-    "unchanged": 306,
-    "replaced": 4
+    "unchanged": 475
    }
   },
   "species_traits": {
@@ -201,9 +194,7 @@
    "count": 370,
    "warnings": 0,
    "icons": {
-    "unchanged": 291,
-    "replaced": 4,
-    "new": 26
+    "unchanged": 321
    }
   },
   "static_modifiers": {
@@ -215,10 +206,9 @@
   "technologies": {
    "file": "technologies.json",
    "count": 683,
-   "warnings": 4,
+   "warnings": 6,
    "icons": {
-    "unchanged": 814,
-    "replaced": 2
+    "unchanged": 816
    }
   },
   "tradition_categories": {
@@ -249,9 +239,9 @@
   }
  },
  "icons": {
-  "new": 233,
-  "replaced": 11,
-  "unchanged": 2865,
+  "new": 0,
+  "replaced": 0,
+  "unchanged": 3109,
   "kept_larger": 202,
   "missing": 0
  }

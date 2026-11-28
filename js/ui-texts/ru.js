@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "Мир-кольцо",
     designationCategoryHabitat: "Орбитальное поселение",
     designationCategorySynapticLathe: "Синаптический станок",
-    designationEcumenopolis: "Экуменополис",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "Симулятор планетарных шаблонов Stellaris: выбирайте сооружения и проверяйте их должности и ресурсы.",
     planetSimHeading: "Симулятор планет",

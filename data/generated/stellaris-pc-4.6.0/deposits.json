@@ -18862,7 +18862,7 @@
    "id": "d_freeports",
    "file": "common/deposits/09_first_contact_deposits.txt",
    "name": "Freeport",
-   "desc": "An area dedicated to intergalactic trade with [GetPreFTLUpperPlural] countries.",
+   "desc": "An area dedicated to intergalactic trade with Pre-FTLs countries.",
    "category": "deposit_cat_rare",
    "blocker": false,
    "important": true,

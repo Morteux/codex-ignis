@@ -399,7 +399,6 @@ export const strings = {
     designationCategoryRingWorld: "Mundo-Anel",
     designationCategoryHabitat: "Habitat",
     designationCategorySynapticLathe: "Torno Sináptico",
-    designationEcumenopolis: "Ecumenópolis",
     planetSimPageTitle: "Planet_Sim · Codex Ignis",
     planetSimMetaDescription: "Simulador de modelos planetários de Stellaris: escolha construções e confira seus empregos e recursos.",
     planetSimHeading: "Simulador de planetas",

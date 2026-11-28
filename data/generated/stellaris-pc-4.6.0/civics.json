@@ -45,7 +45,7 @@
    "file": "common/governments/civics/00_civics.txt",
    "name": "Imperial Cult",
    "desc": "This society has a dominant state religion where the ruler is worshiped as a living deity.",
-   "effects": "- Ruler's §YHome Planet§! has additional [GetPriestIcon] [GetPriest] Jobs",
+   "effects": "- Ruler's §YHome Planet§! has additional £job_priest£ Priest Jobs",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -803,7 +803,7 @@
    "file": "common/governments/civics/00_civics.txt",
    "name": "Efficient Bureaucracy",
    "desc": "This society is renowned for its efficiency. Not only do the mag-trains run on time, but the colossal bureaucratic apparatus required to run an interstellar nation has been greatly streamlined.",
-   "effects": "£job_bureaucrat£ §YBureaucrats§! and §Y[GetPriestIcon] [GetPriestPlural]§! provide §Y£mod_country_edict_fund_add£ Edict Fund§! scaling with their £unity£ §YUnity§! production.",
+   "effects": "£job_bureaucrat£ §YBureaucrats§! and §Y£job_priest£ Priests§! provide §Y£mod_country_edict_fund_add£ Edict Fund§! scaling with their £unity£ §YUnity§! production.",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -2264,7 +2264,7 @@
    "file": "common/governments/civics/00_civics.txt",
    "name": "Galactic Curators",
    "desc": "The meticulous collection and preservation of historical artifacts has always fascinated this civilization. But now, with the mysteries of the galaxy at their doorstep, there is everything left to learn.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §Y[GetResearcher]§! Job Output\\n- Replaces £job_entertainer£ §YEntertainer§! Jobs with £job_historical_curator£ §YMuseum Curator§! Jobs",
+   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §YResearcher§! Job Output\\n- Replaces £job_entertainer£ §YEntertainer§! Jobs with £job_historical_curator£ §YMuseum Curator§! Jobs",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -3060,7 +3060,7 @@
    "file": "common/governments/civics/00_civics.txt",
    "name": "Path of the Self",
    "desc": "True enlightenment requires cultivation of the spirit. Only through careful meditation can one unlock the true potential of a society.",
-   "effects": "Start with Situation and Modifier: ['concept_spirit_cultivation']\\nAccess to Decision: ['concept_planetary_decision_meditation',[GetMeditationDecisionName]]",
+   "effects": "Start with Situation and Modifier: ['concept_spirit_cultivation']\\nAccess to Decision: ['concept_planetary_decision_meditation',Meditation]",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -3125,7 +3125,7 @@
    "file": "common/governments/civics/00_civics.txt",
    "name": "Megacity Architects",
    "desc": "The city is the optimal framework for civilization. This society holds true that prosperity is not found, but engineered.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_housing_2', £engineering_research£ Anti-Gravity Engineering]\\n- Has access to £decision£ §HDecision§!: ['concept_urban_expansion_frame'][GetMegacityArchitectsEffectsExtra]",
+   "effects": "- Guaranteed Research Options: ['technology:tech_housing_2', £engineering_research£ Anti-Gravity Engineering]\\n- Has access to £decision£ §HDecision§!: ['concept_urban_expansion_frame']\\n- Only one previous perk required to take the §YArcology Project§! ['concept_ascension_perk']",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -5878,7 +5878,7 @@
    "file": "common/governments/civics/02_gestalt_civics.txt",
    "name": "Caretaker Network",
    "desc": "This collective has evolved an overwhelming compulsion to take, keep, and maintain. This behavior, which aided their survival in the past, now drives them to display their gathered tokens in grand arrangement.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §Y[GetResearcher]§! Job Output",
+   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §YResearcher§! Job Output",
    "is_origin": false,
    "modification": false,
    "modifier": {
@@ -7586,7 +7586,7 @@
    "file": "common/governments/civics/02_gestalt_civics.txt",
    "name": "Caretaker Network",
    "desc": "This Machine Intelligence has a core directive in its source code: Collect and Preserve.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §Y[GetResearcher]§! Job Output",
+   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §YResearcher§! Job Output",
    "is_origin": false,
    "modification": false,
    "modifier": {
@@ -9257,7 +9257,7 @@
    "file": "common/governments/civics/03_corporate_civics.txt",
    "name": "Antiquarian Expertise",
    "desc": "There is money to be made in antiques and collectibles, which this society knows better than anyone else.  Experts in material speculation, they now look skyward for investment opportunities.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §Y[GetResearcher]§! Job Output\\n- Replaces £job_entertainer£ §YEntertainer§! Jobs with £job_historical_curator£ §YMuseum Curator§! Jobs\\n- The £building£ §YPublic Relations Firm§! Corporate Building generates additional £trade£ §YTrade§! and adds §G+200§! £job_trader£ §YTrader§! jobs to our Capital.",
+   "effects": "- Guaranteed Research Options: ['technology:tech_galactic_archivism', £society_research£Galactic Archivism]\\n- Initial ['concept_specimen', Specimens]: One §0Common§! of each Collection Category \\n- Gain £unity£ §YUnity§! each time you find a §YSpecimen§! or complete an §YArchaeological Site§! \\n- Purchases from the §YCurator Enclave§!: §G$@galactic_curators_curator_enclave_purchase_cost|%0$§!\\n- Enables the §YDecentralized Research§! Edict, increasing §YResearch Station§! Output but decreasing £job_researcher£ §YResearcher§! Job Output\\n- Replaces £job_entertainer£ §YEntertainer§! Jobs with £job_historical_curator£ §YMuseum Curator§! Jobs\\n- The £building£ §YPublic Relations Firm§! Corporate Building generates additional £trade£ §YTrade§! and adds §G+200§! £job_trader£ §YTrader§! jobs to our Capital.",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -9919,7 +9919,7 @@
    "file": "common/governments/civics/03_corporate_civics.txt",
    "name": "Divine Solutions",
    "desc": "This megacorporation capitalizes on the demand for spiritual cultivation, offering tailored enlightenment packages for any and all clients.",
-   "effects": "Start with Situation and Modifier: ['concept_spirit_cultivation']\\nAccess to Decision: ['concept_planetary_decision_meditation',[GetMeditationDecisionName]]",
+   "effects": "Start with Situation and Modifier: ['concept_spirit_cultivation']\\nAccess to Decision: ['concept_planetary_decision_meditation',Meditation]",
    "is_origin": false,
    "modification": true,
    "modifier": {
@@ -9984,7 +9984,7 @@
    "file": "common/governments/civics/03_corporate_civics.txt",
    "name": "Megacity Industries",
    "desc": "The city is the optimal machine. For this megacorp, the environment is a canvas for industry and urbanization, shaped for maximal efficiency and productivity.",
-   "effects": "- Guaranteed Research Options: ['technology:tech_housing_2', £engineering_research£ Anti-Gravity Engineering]\\n- Has access to £decision£ §HDecision§!: ['concept_urban_expansion_frame'][GetMegacityArchitectsEffectsExtra]\\n- The £building£ §YPrivate Mining Consortium§! Corporate Building generates additional £trade£ §YTrade§! and adds §G+200§! £job_trader£ §YTrader§! jobs to our Capital.",
+   "effects": "- Guaranteed Research Options: ['technology:tech_housing_2', £engineering_research£ Anti-Gravity Engineering]\\n- Has access to £decision£ §HDecision§!: ['concept_urban_expansion_frame']\\n- Only one previous perk required to take the §YArcology Project§! ['concept_ascension_perk']\\n- The £building£ §YPrivate Mining Consortium§! Corporate Building generates additional £trade£ §YTrade§! and adds §G+200§! £job_trader£ §YTrader§! jobs to our Capital.",
    "is_origin": false,
    "modification": true,
    "modifier": {

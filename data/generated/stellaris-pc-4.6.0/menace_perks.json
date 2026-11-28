@@ -483,7 +483,7 @@
   {
    "id": "menp_force_of_will_cultural_envoys",
    "file": "common/menace_perks/00_menace_perks.txt",
-   "name": "[GetCulturalEnvoyNamePlural]",
+   "name": "Cultural Envoys",
    "desc": "Our emissaries carry the spirit of our people into the stars.",
    "modifier": null,
    "potential": null,
@@ -594,8 +594,8 @@
   {
    "id": "menp_force_of_will_utopian",
    "file": "common/menace_perks/00_menace_perks.txt",
-   "name": "Utopian [Ideology.GetEthicNoun]",
-   "desc": "[GetFoWUtopianDesc]",
+   "name": "Utopian Ideology",
+   "desc": "A united galaxy will guarantee dignity and opportunity for all.",
    "modifier": null,
    "potential": null,
    "dlc": []
@@ -652,7 +652,7 @@
    "id": "menp_cosmo_ship_2",
    "file": "common/menace_perks/00_menace_perks.txt",
    "name": "Conundrumical Escorts",
-   "desc": "[Get_menp_cosmo_ship_2]",
+   "desc": "A starship of modest size that optimizes our knowledge of spacetime to enact dimensional transcendentalism, making the inside bigger than its outward shape suggests. Advanced firepower capabilities come at a reduced logistical cost compared to traditional ship designs.",
    "modifier": null,
    "potential": null,
    "dlc": []
@@ -691,7 +691,7 @@
    "id": "menp_cosmo_ship_3",
    "file": "common/menace_perks/00_menace_perks.txt",
    "name": "Puzzling Cruisers",
-   "desc": "[Get_menp_cosmo_ship_3]",
+   "desc": "Another optimized spacecraft, this time of larger dimensions, will make current Battleships look like toys.",
    "modifier": null,
    "potential": null,
    "dlc": []
@@ -730,7 +730,7 @@
    "id": "menp_cosmo_ship_4",
    "file": "common/menace_perks/00_menace_perks.txt",
    "name": "Unsurmisable Flagships",
-   "desc": "[Get_menp_cosmo_ship_4]",
+   "desc": "These formidable ships are closer to mobile fortresses than anything else, and only the most brutal assaults have a chance to damage them.",
    "modifier": null,
    "potential": null,
    "dlc": []

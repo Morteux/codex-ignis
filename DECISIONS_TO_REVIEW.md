@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2531 — Scripted localisation in the game names (2026-11-28)
+
+- [ ] The localisation reader replaces `[Function]` calls of `common/scripted_loc` with their **default** text (the game chooses among the others by triggers): `tech_cultural_envoys` is "Cultural Envoys" / "Enviados culturales" / 文化使節 (the egalitarian, materialist and spiritualist variants are not shown). This also cleans event, modifier and description texts of the 4.6.0 data (e.g. "Collective Purity Breach", "Protected Pre-FTL World").
+- [ ] The twelve Willpower ideological buildings use the game's generic word `IDEOLOGY` where the game shows the owner's ethic ("Citadel of Ideology", "Ideology Creche", "High Church of Ideology"), because `GetEthicNoun` has a blank default. In Spanish the article does not agree ("Ciudadela del Ideología"): the game's own strings are written for a masculine ethic noun ("del Materialismo"); a hand-written name per language would be needed to fix it.
+- [ ] Rebuilding the game names also picked up two keys the T2530 data added: `designationEcumenopolis` → `col_ecu_mix` ("Trade Ecumenopolis" / "Ecumenópolis comercial", was "Ecumenopolis") and `authorityMutualisticIntelligence`; the hand-written `designationEcumenopolis` of `js/ui-texts/` (de, fr, ko, pl, pt, ru, zh) was removed since the official name now covers it. `planetModifierFreeAtLast` now points at `free_at_last_broken_shackles`.
+- The 4.5.4 data and the 4.5.4 Testellaris bank are not regenerated (kept as they are); the 4.6.0 bank (T4110) will read the resolved names (the generator skipped names with `[...]`).
+
 ## T2530 — Effects of designations, civics, policies, authorities, planet modifiers and planetary features on 4.6.0 (2026-11-28)
 
 `report_differences.py` now compares these effects with the 4.6.0 game modifiers (`reports/stellaris-pc-4.6.0/`, fields `modifiers.*`). Values switched (old → new):
