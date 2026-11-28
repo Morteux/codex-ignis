@@ -1,10 +1,17 @@
 /**
  * Living standards of the empire's founder species and the pop upkeep they set (P20).
  *
- * Source: game files 4.5.4 (`common/species_rights/living_standards`, the trade of
+ * Source: game files 4.6.0 (`common/species_rights/living_standards`, the trade of
  * `common/pop_categories` and the species type traits of `common/traits`), extracted by
- * tools/extract/extract_living_standards.py into data/generated/stellaris-pc-4.5.4/living_standards.json
- * and audited in P20.1 (PLANET_SIM_GDD.md §5.3). Nothing is invented.
+ * tools/extract/extract_living_standards.py into data/generated/stellaris-pc-4.6.0/living_standards.json.
+ * First taken from 4.5.4 and audited in P20.1 (PLANET_SIM_GDD.md §5.3); T2534 compared every
+ * listed standard with 4.6.0 (upkeep, trade, political power and the happiness, output and
+ * workforce modifiers): only the description markup changed. Nothing is invented.
+ *
+ * T2534: the five standards new in 4.6.0 are not listed: Native Supremacy and Crushing need
+ * the Absolute Xenophobe / Absolute Authoritarian ethics, United Effort and Humility an active
+ * ideology tenet (Willpower), and Defect Filtering a warmonger empire; the simulator models
+ * none of these.
  *
  * The living standard is an empire-level choice: it is saved with the empire profile
  * (`livingStandardId`, optional field; missing or unavailable → the default of

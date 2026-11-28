@@ -1,10 +1,22 @@
 /**
  * Edicts that change the economy or conditions of a planet (P18).
  *
- * Source: wiki 4.5.2 "Edicts" page (Codex Ignis Wiki/v4-5-2/Edicts.md), audited
- * in P18.1 (PLANET_SIM_GDD.md §5.1). Only edicts with at least one effect this
- * simulator can compute are listed; nothing is invented. Edicts are an
- * empire-level choice: they are saved with the empire profile (`edictIds`).
+ * Source: game files 4.6.0 (`common/edicts`; values switched in T2523 and checked
+ * again in T2534: no listed edict differs, `reports/stellaris-pc-4.6.0/edicts.md`).
+ * The wiki 4.5.2 "Edicts" page (Codex Ignis Wiki/v4-5-2/Edicts.md), audited in
+ * P18.1 (PLANET_SIM_GDD.md §5.1), stays the source of the texts and modelling
+ * notes. Only edicts with at least one effect this simulator can compute are
+ * listed; nothing is invented. Edicts are an empire-level choice: they are saved
+ * with the empire profile (`edictIds`).
+ *
+ * T2534: the 12 edicts new in 4.6.0 (the eight ideology Broadcastings, Peaceful
+ * Prosperity and the three Dutiful sacrifices) are not listed: they need an active
+ * ideology tenet (Willpower), which the simulator does not model, and their effects
+ * are ideological reach, naval capacity or pop sacrifice (Peaceful Prosperity's
+ * +2.5 % workforce is multiplied by the tenet tier). The Willpower-only effects 4.6.0
+ * adds to listed edicts (ideological resistance of Information Quarantine, ethic
+ * attraction of Land of Opportunity, ideological strength of Research Subsidies)
+ * are not computed either.
  *
  * ── Format ─────────────────────────────────────────────────────────────
  * EDICTS: { id, i18nKey, kind, upkeep, requires, effects, info }
@@ -35,8 +47,8 @@
  *                                             empire's species type is listed
  *  - info: i18n keys of effects shown on the card but not computed.
  *
- * Verification: `wiki-verified` for the values transcribed from the 4.5.2
- * page; the modelling decisions above are reviewed in P14.
+ * Verification: values from the 4.6.0 game files (first transcribed from the
+ * 4.5.2 page, `wiki-verified`); the modelling decisions above are reviewed in P14.
  */
 
 import { buildingRequirementsMet, unmetRequirements } from "./building-requirements.js";
@@ -85,7 +97,7 @@ export const EDICTS = [
     effects: { conditions: { happiness: -10 } }, info: ["edictInfoTelepathCrime", "edictInfoEncryption", "edictInfoGoverningAttraction"] },
   { id: "thoughtPreEmption", i18nKey: "edictThoughtPreEmption", kind: "unity", upkeep: unity(30), requires: [GESTALT],
     effects: { jobUpkeep: { all: -0.1 }, conditions: { stability: -5 } }, info: ["edictInfoTelepathDeviancy", "edictInfoEncryption"] },
-  // Pop upkeep edicts (P20.4, game files 4.5.4: common/edicts/00_edicts.txt). "planet_pops_organics_X_upkeep_mult" only
+  // Pop upkeep edicts (P20.4, game files 4.5.4, unchanged in 4.6.0: common/edicts/00_edicts.txt). "planet_pops_organics_X_upkeep_mult" only
   // touches the species type upkeep of organic pops (food / minerals / alloys); machine pops pay energy, so it is applied
   // to every pop upkeep of those resources. The prerequisite technology (Gene Crops) counts as researched.
   { id: "nutritionalPlenitude", i18nKey: "edictNutritionalPlenitude", kind: "unity", upkeep: unity(10), requires: [NOT_GESTALT],
@@ -113,7 +125,7 @@ export const EDICTS = [
   // Campaigns
   { id: "fearCampaign", i18nKey: "edictFearCampaign", kind: "campaign", upkeep: { energy: 15 }, requires: [ethic("xenophobe")],
     effects: { resourceMult: { unity: 0.1 } }, info: ["edictInfoXenophobeAttraction"] },
-  // P20.4 (game files 4.5.4); Planetary Unification counts as researched.
+  // P20.4 (game files 4.5.4, unchanged in 4.6.0); Planetary Unification counts as researched.
   { id: "recyclingCampaign", i18nKey: "edictRecyclingCampaign", kind: "campaign", upkeep: { energy: 15 }, requires: [NOT_GESTALT],
     effects: { popUpkeep: { consumer_goods: -0.1 } } },
   // Strategic resource edicts (base cost per month, scaled by empire size)

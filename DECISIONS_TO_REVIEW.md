@@ -2,6 +2,13 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2534 — Living standards and new edicts on 4.6.0 (2026-11-28)
+
+- [ ] **Living standards: no value changes.** The 11 standards of `js/living-standard-data.js` were compared with `common/species_rights/living_standards` of 4.6.0, including the modifiers the extractor does not keep (happiness per stratum, civilian output, workforce): only the description markup of Decent Conditions, Stratified Economy, Academic Privilege, Dystopian Society and Exploited Drones changed (icons now written as `[pop_cat_ruler.GetIcon]`). The file is now tagged as 4.6.0.
+- [ ] **The five new standards are not added**: Native Supremacy (Absolute Xenophobe), Crushing (Absolute Authoritarian), United Effort (tenet of Participation, workforce bonus × tenet tier), Humility (tenet of Humility) and Defect Filtering (warmonger empires). The simulator models neither Absolute ethics (see T2532), ideology tenets nor warmonger empires. Adding them would need a tenet / Absolute ethic choice in the empire profile.
+- [ ] **The 12 new edicts are not added** (eight ideology Broadcastings: +10 % ideological reach and push; Peaceful Prosperity: −10 % naval capacity and +2.5 % workforce per tenet tier; three Dutiful sacrifices: sacrifice pops for ideology): all need an active ideology tenet and their effects are not planet economy, except Peaceful Prosperity's workforce, which depends on the tenet tier. Same for the Willpower-only effects 4.6.0 adds to listed edicts (Information Quarantine +10 % ideological resistance, Land of Opportunity +20 % government ethic attraction, Research Subsidies and Scientific Revolution ideological strength): shown nowhere, not computed.
+- Edicts and branch offices: the "wiki 4.5.2" notes of `js/edict-data.js` and `js/branch-office-data.js` now say the values follow the 4.6.0 game files (switched in T2523; the edict report has no difference and no branch office building changed between 4.5.4 and 4.6.0); the wiki stays the source of texts and modelling notes.
+
 ## T2533 — Figures of the wiki guides against 4.6.0 (2026-11-28)
 
 New data set `ship_sizes` (`tools/extract/extract_ship_sizes.py`, 320 ship sizes with their section costs). The only guide with game figures in `js/content.js` is "About the Growth Mechanic for Biological Ships" (es, en, jp); the fleet guides only name ship classes and components. The guide texts are **not changed**; for the authors:

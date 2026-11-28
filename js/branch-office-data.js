@@ -1,12 +1,14 @@
 /**
  * Branch offices placed on this planet by another (corporate) empire (P19).
  *
- * Source: wiki 4.5.2 *Holdings* → Branch offices (legal / Criminal Heritage
- * illegal corporate buildings, civic and ascension corporate buildings) and
- * *Capital building* (branch office building slots per capital, read from the
- * HTML page: the markdown drops the slot icons). Audited in P19.1
- * (PLANET_SIM_GDD.md §5.2). Every value is copied as written on the wiki and
- * stays `unverified` until P14.
+ * Source: game files 4.6.0 (`common/buildings`; values switched in T2523,
+ * `reports/stellaris-pc-4.6.0/buildings.md`). The wiki 4.5.2 *Holdings* → Branch
+ * offices (legal / Criminal Heritage illegal corporate buildings, civic and
+ * ascension corporate buildings) and *Capital building* (branch office building
+ * slots per capital, read from the HTML page: the markdown drops the slot icons)
+ * stay the source of what the game files do not give (the table layout, texts,
+ * modelling notes). Audited in P19.1 (PLANET_SIM_GDD.md §5.2); `unverified`
+ * until P14.
  *
  * The planet is the HOST (the colony). The branch office OWNER is another
  * empire: its civics only matter for the corporate buildings it can build and
@@ -42,7 +44,7 @@
  *  - upkeep / cost: as on the wiki (cost.alt = Nomadic alternative resource).
  *    Upkeep is paid by the host planet (owner decision 2026-11-20); cost is
  *    paid by the owner (shown only).
- *  - maxPerColony: copies allowed on one colony (P19.5), from the 4.5.4 game files
+ *  - maxPerColony: copies allowed on one colony (P19.5), from the game files (4.5.4, same in 4.6.0)
  *    (extractor `buildings.json`: `planet_limit`, or `base_cap_amount` for the
  *    Experimentation Offices and the Living Metal Enhancement Clinic); absent =
  *    repeatable. The illegal twin shares the limit of its legal building.
