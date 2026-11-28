@@ -27,7 +27,7 @@
   "rules": [
     "Código, comentarios, mensajes de commit y documentación del proyecto en inglés; solo `README.md` va en español.",
     "Diseño y decisiones del simulador: `PLANET_SIM_GDD.md` (es grande: lee solo las secciones que necesites). Toda decisión que tomes sin el dueño va a `DECISIONS_TO_REVIEW.md`, en una sección con el ID de la tarea, la más reciente arriba.",
-    "Datos del juego: versión 4.5.4 (`stellaris-pc-4.5.4`), instalada en `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`: léela con el extractor (sección 25), nunca la modifiques. Los datos actuales del simulador vienen de la wiki 4.5.2 hasta que se cambien (T2523). Nunca inventes cifras; si falta un dato, marca la tarea como bloqueada.",
+    "Datos del juego: el proyecto pasa a la versión 4.6.0 (`stellaris-pc-4.6.0`, decisión del dueño del 2026-11-28, T2526), instalada en `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`: léela con el extractor (sección 25), nunca la modifiques. Los datos de 4.5.4 ya generados (`data/generated/stellaris-pc-4.5.4/`, árbol tecnológico y banco de Testellaris 4.5.4) se conservan tal cual, como versión anterior. Los datos actuales del simulador vienen de la wiki 4.5.2 hasta que se cambien (T2523). Nunca inventes cifras; si falta un dato, marca la tarea como bloqueada.",
     "Todo texto nuevo de la interfaz va en `js/i18n.js` con las mismas claves en es, en y jp.",
     "Si cambias la estructura, los archivos o lo que cubren las pruebas, actualiza `README.md`.",
     "La sección 14 (verificación final de datos) va siempre la última.",

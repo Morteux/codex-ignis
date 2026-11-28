@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **160 / 175 tareas (91%)**
+> Progreso: **161 / 179 tareas (90%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -64,9 +64,9 @@ Covers the whole site: wiki (`index.html`, `js/app.js`, `js/content.js`), bingo,
   - Prueba manual: run `node tests/load-budget.mjs .`: it lists each page's size (`i18n.js` is the biggest file everywhere) and ends with "problems 0"; open `planet-sim.html` with the Network panel open: the Empire-tab icons are only requested when you open that tab.
 - [ ] **T2210** (P22.10) Add the two missing starbase screenshots of the "Diseño de naves mecánicas" article (`img/naves/Base estelar artillada.png`, `img/naves/Base estelar portahangares.png`) and drop them from `known_missing` in the smoke test
   - ❓ Bloqueada: the owner has to provide the two in-game screenshots (artillery and carrier starbase designs); they are not in the repository.
-- [ ] **T2211** (P22.11) Contrast of the word highlight colours of `js/highlight-config.js` on the dark background: #375cff (cruiser, herald, 3.8:1), #2c33ff (energy, shield, 2.8:1), #332cff (unbidden, 2.7:1), #ad208c (hardening, 3.1:1), #8900af (dark matter, psionic, 2.5:1) are under 4.5:1; lighten them keeping their hue, or keep them
+- [x] **T2211** (P22.11) Contrast of the word highlight colours of `js/highlight-config.js` on the dark background: #375cff (cruiser, herald, 3.8:1), #2c33ff (energy, shield, 2.8:1), #332cff (unbidden, 2.7:1), #ad208c (hardening, 3.1:1), #8900af (dark matter, psionic, 2.5:1) are under 4.5:1; lighten them keeping their hue, or keep them
   - Modelo: sonnet
-  - ❓ Bloqueada: the owner chose these colours (in-game class colours); lighten them for readability or keep them as they are?
+  - Owner (2026-11-28): keep the colours as they are; nothing to change (the contrast test keeps leaving `js/highlight-config.js` out).
 - [x] **T2212** (P22.12) Bingo on mobile: the `≤ 700 px` rules of `styles.css` for `.bingo-grid` and `.bingo-grid--principles` (smaller cells, 88 / 46 px) never apply because the base rules of the bingo section come later with the same specificity; move them after the base rules and check the mobile smoke tests (found in T2305)
   - Prueba manual: open `bingo.html` in device mode at 320 px wide: Origins shows 3 cells per row (2 before) and Principles 5 (4 before), with no sideways scroll.
 - [x] **T2213** (P22.13) Bingo PNG download smoke test times out: in `tests/smoke/bingo.py` the click on `#bingo-download` (origins) never fires a download within 30 s (with and without `BLOCK_REMOTE=1`), which stops `tests/policies-smoke.py` before the legal, site and extractor areas; find whether the page or the test broke and fix it (found in T1906)
@@ -160,14 +160,15 @@ Replaces the wiki as data source (the wiki cannot be scraped automatically). Pyt
   - Prueba manual: run `git -C "C:/Users/ignis/OneDrive/Documentos/StellarisAssets" log -1` (commit "Icons exported from the Stellaris 4.5.4 game files" with the 102 replaced files) and open `StellarisAssetsFileTree.txt`: it now lists `technologies/` (812 icons) and `dlc/` (50).
 - [x] **T2525** (P25.25) Advanced Logic resource icon (old T1204): export it from the game files into `resources/` of StellarisAssets and use it in `RESOURCES.advanced_logic` of `js/planet-data.js`
   - Prueba manual: after the owner pushes StellarisAssets, open the simulator on a Synaptic Lathe planet: Advanced Logic shows the blue brain icon of the game (`resources/Advanced_logic.png`) in the economy and in the Lathe building costs instead of the modifier icon.
-- [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
-  - ❓ Bloqueada: The owner has to review the T2522 reports first.
 - [ ] **T2526** (P25.26) The installed game is now 4.6.0 (Corona Borealis v4.6.0, `stellaris-pc-4.6.0`; found in T3008): every extractor run without `--game` now reads 4.6.0 (683 technologies, 4 new tech icons) while the project data is 4.5.4
-  - ❓ Bloqueada: Does the project move to 4.6.0 (regenerate `data/generated/`, the reports and the tech data file as a new version) or stay on 4.5.4 (then the 4.5.4 game files must be kept in another folder and passed with `--game`)?
+  - Owner (2026-11-28): the project moves to 4.6.0 and keeps the 4.5.4 data. Keep `data/generated/stellaris-pc-4.5.4/`, its reports and the 4.5.4 tech data and Testellaris bank as they are (nothing deleted), generate the new set `data/generated/stellaris-pc-4.6.0/` with `extract_all.py` on the installed game, with its T2522 reports, add 4.6.0 as a new tech tree version (T3302 procedure; 4.5.4 stays selectable and the comparison view of T3303 compares both) and make 4.6.0 the current version of the site (`js/data-version.js`, labels, docs and the extractor default)
 - [x] **T2527** (P25.27) DLC of every scripted trigger (found in T4111): `pdx.text.dlc()` only resolves `host_has_dlc` and `has_<name>_dlc`, so items using other scripted triggers that wrap a DLC (`has_lithoids`, `has_necroids`, `has_toxoids`, `has_infernals`, `has_ancrel`, `has_megacorp`, `has_nemesis`…) get an empty or incomplete `dlc` list (for example `civic_selective_kinship`, playable with `has_lithoids = yes`); resolve every scripted trigger of `common/scripted_triggers` that contains `host_has_dlc`, with tests, and regenerate the data. Then the Testellaris generator can drop its rule of skipping every item with an unresolved `has_… = yes` trigger
   - Prueba manual: open `data/generated/stellaris-pc-4.5.4/civics.json` and search `civic_selective_kinship`: its `dlc` is now `["Lithoids Species Pack"]`; `dlc.json` lists the 67 DLC scripted triggers in `scripted_triggers`, and `python tools/testellaris/generate_questions.py` now writes 718 questions instead of 582.
+- [ ] **T2523** (P25.23) Switch the simulator data sets to the generated data, one by one
+  - Owner (2026-11-28): switch to the generated **4.6.0** data (after T2526), one data set per commit; the owner asked to update every section, so do not wait for a review of the reports: every value that changes against today's data goes to `DECISIONS_TO_REVIEW.md` (data set, item, old → new) and the GDD where it describes a figure
 - [ ] **T2528** (P25.28) Apply the GDD §9.1 findings of T1404 with the switch to the generated data (T2523): Chemical Plants and Synthetic Crystal Plants cost 600 minerals; Waste Reprocessing Center in the `urban` and `generator` building sets and Baol Organic Plant in `farming` and `factory`; the gestalt Production Policy (Extraction / Manufacturing Focus) as ±20 % job output of simple / complex drones (step 4) instead of stratum efficiency (step 3), with its smoke checks
-  - ❓ Bloqueada: These fixes go with the switch to the generated 4.5.4 data (T2523), which waits for the owner's review of the T2522 reports (and the game version answer of T2526); may they be applied now to the 4.5.2 wiki data, ahead of T2523?
+  - Owner (2026-11-28): apply them with T2523 on the 4.6.0 data, after checking that each one still holds in 4.6.0 (drop or adjust what 4.6.0 changed and say so in `DECISIONS_TO_REVIEW.md`)
+- [ ] **T2529** (P25.29) Every other section of the site on 4.6.0 (after T2526 and T2523): wiki figures that come from the data, bingos (origins, ethics, authorities, rare and dangerous technologies, DLC: items added or removed in 4.6.0), Testellaris (T4110), the tech tree card links, the icons new in 4.6.0 exported to StellarisAssets, version labels and `README.md`; anything that cannot follow 4.6.0 is said in `DECISIONS_TO_REVIEW.md`; smoke tests
 
 ## 10 · Special planets
 Source: the 4.5.4 game files through the extractor (section 25); runs after it.
@@ -293,7 +294,7 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `civics.civic_combo.civic_imperial_cult`: "Which combination of authority and ethic allows the civic Imperial Cult?" (tier 4, correct "Imperial + Authoritarian"), with es and jp texts; `python -m unittest discover -s tests/testellaris` passes.
 - [ ] **T4103** (P41.3) Questions: ethics, government, authorities, council and leaders (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-  - ❓ Bloqueada: Ethics and authority questions are done (`q_government.py`), but council, leaders and government type names are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
+  - Owner (2026-11-28): extract the missing data (council, leaders, government type names) from the installed 4.6.0 and write the questions in the new 4.6.0 bank (see T4110); the 4.5.4 bank stays as it is
 - [x] **T4104** (P41.4) Questions: technology and research (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `technology.tech_for_blocker.d_active_volcano`: "Which technology is needed to clear the blocker Active Volcano?" with the correct answer "Deep Crust Engineering", in es, en and jp.
@@ -305,14 +306,14 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Prueba manual: open `data/testellaris/stellaris-pc-4.5.4/questions.json` and search `economy.branch_office_criminal.building_disinformation_center`: "Which of these branch office buildings can only a criminal corporation build?" with the correct answer "Disinformation Center", in es, en and jp.
 - [ ] **T4107** (P41.7) Questions: policies, edicts, decisions, traditions, ascension perks and ambition (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-  - ❓ Bloqueada: Policy, edict and ambition questions are done (`q_policies.py`), but traditions, ascension perks and decisions are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
+  - Owner (2026-11-28): extract traditions, ascension perks and decisions from the installed 4.6.0 and write the questions in the 4.6.0 bank (see T4110); the 4.5.4 bank stays as it is
 - [ ] **T4108** (P41.8) Questions: Shroud, astral rifts, artifacts, subject empires and empire modifiers (from the extractor output, written by hand where a template does not fit)
   - Modelo: sonnet
-  - ❓ Bloqueada: Shroud, astral and artifact content, subject holdings and modifier questions are done (`q_shroud.py`), but relics, astral rifts, Shroud events and subject types are in no data set of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
+  - Owner (2026-11-28): extract relics, astral rifts, Shroud events and subject types from the installed 4.6.0 and write the questions in the 4.6.0 bank (see T4110); the 4.5.4 bank stays as it is
 - [x] **T4109** (P41.9) Review of the whole bank: duplicates, ambiguous answers, balance per tier and topic, count report
   - Prueba manual: run `python tools/testellaris/review_bank.py`: it prints the table of 21 topics × 5 tiers (2375 questions, base game per tier 211 / 371 / 424 / 481 / 288), "0 duplicates, 0 ambiguous" and the balance warnings, and writes `data/testellaris/stellaris-pc-4.5.4/review.json`.
 - [ ] **T4110** (P41.10) More topics to reach thousands of questions: new extractors (one script each, added to `extract_all.py`) for species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and event texts, and their questions
-  - ❓ Bloqueada: The eight extractors are done and tested (`extract_species_traits.py` … `extract_events.py`, in `extract_all.py`; on the installed 4.6.0 they give 370 traits, 50 perks, 33 trees and 234 traditions, 1506 components, 173 megastructure stages, 6 crisis paths, 6 fallen empires and 7223 events), but their questions need the data of 4.5.4 and the installed game is 4.6.0: can you give a copy of the 4.5.4 game files to extract them (`--game`), or should the project move to 4.6.0 (T2526)?
+  - Owner (2026-11-28): also make the 4.6.0 version of Testellaris: a new bank `data/testellaris/stellaris-pc-4.6.0/` with every existing generator run on the 4.6.0 data plus the questions of these eight extractors (balanced per category and tier as in section 44; the wiki questions of section 44 copied only where 4.6.0 did not change the answer), the version selectable in the game with 4.6.0 as default, its own hall of fame `ruleset`, and `review_bank.py` for both versions
 
 ## 42 · Testellaris: game page
 - [x] **T4201** (P42.1) `testellaris.html` with the shared shell and a start screen (DLC filter), linked from the home page
@@ -341,7 +342,8 @@ Source: only the extractor output (4.5.4 game files and their localisation, incl
   - Modelo: sonnet
   - Prueba manual: open `privacy.html` and switch ES/EN/JP: a "Testellaris hall of fame" section lists the stored fields, the salted IP hash deleted after 24 hours and Vercel with MongoDB Atlas, followed by "Data stored in your browser"; the update date is 25 November 2026.
 - [ ] **T4304** (P43.4) Production setup: MongoDB Atlas free cluster, database user, `MONGODB_URI` in the Vercel project, deploy check
-  - ❓ Bloqueada: The owner has to create the Atlas account and cluster and set the variable in Vercel (the loop cannot create accounts).
+  - Owner (2026-11-28): the owner sets it up on the cluster they already use for other projects (one database per project in the same cluster); the loop only checks the deploy once the owner says the variable is set. Keep it blocked until then
+  - ❓ Bloqueada: waiting for the owner to create the database user and set `MONGODB_URI` (and `MONGODB_DB=testellaris`) in Vercel and redeploy.
 
 ## 36 · Tech tree: layout changes (owner, 2026-11-26)
 - [x] **T3601** (P36.1) Research areas as rows instead of columns: Physics, Society and Engineering stacked one under the other inside the same tree window (one scroll, zoom and pan for the three), each on a slightly tinted, semi-transparent background: blue for Physics, green for Society, orange for Engineering. Keep the tier columns and field rows inside each area, the prerequisite lines (also between areas), keyboard navigation, deep links and the mobile layout (decide whether the mobile area tabs stay); update `TECH_TREE_GDD.md` §6 and the smoke tests in `tests/smoke/tech_tree.py`
@@ -416,7 +418,9 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
 - [x] **T2704** (P27.4) Index: an `index.json` in StellarisAssets (sprite key → file, category, size, source `.gfx` / game file, game version, localised name where the game has one) and the StellarisAssets site (`index.html` / `app.js`) to browse by folder and search by key or name; point `ICONS.md` and `README.md` of this project to it; smoke test that the files the site uses exist in the index
   - Prueba manual: open the StellarisAssets page (`STELLARIS_ASSETS_BASE`): the header shows "Game files Corona Borealis v4.6.0", the folder list has every folder with its count, and searching "Martial Alliance" or `GFX_crisis_icon` finds the icons with their name, sprite key, size and, in the preview, the source texture and `.gfx` file.
 - [ ] **T2705** (P27.5) Species portrait layers (`gfx/models/portraits`, 3 221 textures, about 600 MB as PNG) left out of T2703 by T2701: export them once the owner chooses where (they would push the StellarisAssets Pages site over its 1 GB limit)
-  - ❓ Bloqueada: should the species portrait layers (bodies per colour, clothes, hair; ~600 MB as PNG) go to another repository (e.g. `StellarisPortraits`), only a subset (e.g. one colour per species) to StellarisAssets, or not be exported at all?
+  - Owner (2026-11-28): the owner asked to paginate the StellarisAssets site (T2706) so it never loads every image at once; still open: the ~600 MB of portrait layers would push the GitHub Pages site over its 1 GB limit
+  - ❓ Bloqueada: with T2706 done, does the owner still want the portrait layers in StellarisAssets despite the 1 GB Pages limit, in another repository, only a subset, or not at all?
+- [ ] **T2706** (P27.6) StellarisAssets site paginated: 10, 30, 50 or 100 items per page (a selector; remember the choice), with page controls; only the images of the current page are requested (no `src` for the others, nothing preloaded), folder filter and search work over the whole index and reset to page 1, page and size kept in the URL; commit and push in StellarisAssets
 
 ## 45 · Testellaris: question screen redesign (owner, 2026-11-26)
 - [x] **T4501** (P45.1) Question screen layout:
@@ -440,6 +444,12 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
 - [x] **T4504** (P45.4) Unity category colour: change it from yellow to the light sky blue unity has in game (take the exact colour from the game files, e.g. the unity resource colour of `interface/` or `common/`, and record the source); update GDD §5.4, the start screen, the question panel tint of T4501 and the lifeline of T4502
   - Modelo: sonnet
   - Prueba manual: abre `testellaris.html`: Unidad sale en azul celeste (`#b2f8f7`) en la lista de categorías, en el comodín Reciclaje mejorado y, al tocar una pregunta de esa categoría, en el tinte y borde del panel.
+
+## 46 · Bingo changes (owner, 2026-11-28)
+- [ ] **T4601** (P46.1) Ethics bingo: smaller cells and no names under the icons, so it takes less space; the name stays as tooltip / accessible name; the same in the PNG and on mobile; smoke tests
+  - Modelo: sonnet
+- [ ] **T4602** (P46.2) DLC bingo: the cells without a DLC icon (reserved slots, e.g. the portrait packs) show a Stellaris icon as placeholder (the game's own icon or logo from the game files, exported to StellarisAssets), also in the PNG; smoke tests
+  - Modelo: sonnet
 
 ## 15 · Official localization (all at once, before the final check)
 - [x] **T1501** (P15.1) Translation plan from the extractor localisation (T2503, T2520): every game name and text keyed by game id, which languages each page gets, how interface texts without an official string are handled
@@ -466,16 +476,16 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
   - Modelo: sonnet
   - Prueba manual: open `planet-sim.html` in JP: the tabs read 建造物 and 区域, the designation selector is headed 惑星の開発構想, the jobs summary says 職業, the planet modifiers say 惑星補正 and the civilian stratum 民間人, while the «not modelled» lines keep 自動移住確率 (指定) and 市民POP.
 
-## 14 · Final 4.5.4 data verification (last)
+## 14 · Final 4.6.0 data verification (last)
 - [ ] **T1401** (P14.1) Run `extract_all.py` on the installed game (check its version first) and use its output and the T2522 reports as the source of the final review
-  - ❓ Bloqueada: The installed game is `Corona Borealis v4.6.0` (`launcher-settings.json`), not 4.5.4, so a run now would give 4.6.0 data. Does the final review stay on 4.5.4 (then give a copy of the 4.5.4 game files for `--game`, or accept the 4.5.4 output already in `data/generated/stellaris-pc-4.5.4/` as the source) or move to 4.6.0 (T2526)?
+  - Owner (2026-11-28): the final review is on 4.6.0: run `extract_all.py` on the installed game (check it is still 4.6.0) and use that output and the 4.6.0 reports of T2526
 - [ ] **T1402** (P14.2) Review every value (jobs, buildings, districts, designations, ethics, authorities, civics, capital, resources, policies, edicts, branch offices) against them
-  - ❓ Bloqueada: Needs the source of T1401, and the values that differ (T2522 reports: 107 buildings, 46 jobs, 30 civics, 6 districts, 5 deposits…) are fixed by the switch to the generated data (T2523), which waits for the owner's review of those reports.
+  - Owner (2026-11-28): review against the 4.6.0 output of T1401 once T2523 has switched the data
 - [ ] **T1403** (P14.3) Update `verification` statuses (`unverified` → verified against the game files; add that status to `js/data-version.js` if missing)
-  - ❓ Bloqueada: A simulator collection can only be `game-data-verified` once T1402 and T2523 have made its values match the game; the status already exists in `js/data-version.js` (`game-data-verified`).
+  - Owner (2026-11-28): set the statuses after T1402 and T2523 on the 4.6.0 data
 - [x] **T1404** (P14.4) Review GDD §9 (assumptions and stacking rules)
   - Prueba manual: open `PLANET_SIM_GDD.md` §9.1: it lists what the 4.5.4 game files confirm (Agrarian Utopias +200, Optimized Nexus / Extended Hives are traditions, habitat designation locks) and what differs (crystal and chemical plants 600 minerals, Production Policy as job output), with the fixes in the new task T2528.
 - [ ] **T1405** (P14.5) Deliver the final data files
-  - ❓ Bloqueada: The final simulator data files come from T1402 and T2523 (switch to the generated data), which wait for the owner's answer on the game version (T1401, T2526) and review of the T2522 reports.
+  - Owner (2026-11-28): deliver the final 4.6.0 data files after T1402 and T2523
 - [x] **T1406** (P14.6) Review the tech tree data against the extractor output and set its `verification` status
   - Prueba manual: open `tech-tree.html`: the data version line reads «stellaris-pc-4.5.4 · Cygnus v4.5.4 (1b4f) · verified against the game files»; `python tools/extract/build_tech_data.py --data data/generated/stellaris-pc-4.5.4 --out <file>` gives the same file as `js/tech-data/stellaris-pc-4.5.4.js`.
