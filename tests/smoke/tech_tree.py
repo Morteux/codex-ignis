@@ -71,25 +71,27 @@ async def run(t):
     check("tech tree data: unique ids, area / field / tier / kind, known prerequisites and no cycles; self-tests catch broken data",
           data_check.returncode == 0 and data_check.stdout.rstrip().endswith("problems 0"), data_check.stdout[-600:] + data_check.stderr[-300:])
 
-    # T3005: the 4.5.4 data file is the current build of the extractor output, with every technology
-    real = "js/tech-data/stellaris-pc-4.5.4.js"
-    with tempfile.TemporaryDirectory() as tmp:
-        fresh = os.path.join(tmp, "tech.js")
-        build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_tech_data.py"),
-                                "--data", os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4"), "--out", fresh], capture_output=True, text=True)
-        # text mode reads CRLF and LF alike (git may check the file out with CRLF)
-        same = build.returncode == 0 and open(fresh, encoding="utf-8").read() == open(os.path.join(ROOT, real), encoding="utf-8").read()
-    check("tech tree data 4.5.4: the data file matches a fresh build of the extractor output", same, build.stdout[-200:] + build.stderr[-300:])
-    with open(os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4", "technologies.json"), encoding="utf-8") as f:
-        extracted = json.load(f)["items"]
-    rd = node_json("import {TECH_DATA as d} from './%s'; const T=d.technologies; const k=(n)=>T.filter(x=>x.kind===n).length;"
-                   "console.log(JSON.stringify({n:T.length,ids:T.map(x=>x.id),event:T.filter(x=>x.flags.includes('event')).length,"
-                   "repeatable:k('repeatable'),rep:T.filter(x=>x.repeatable).length,starter:k('starter'),rule:d.rulesetId}))" % real)
-    check("tech tree data 4.5.4: every extracted technology, event and repeatable ones included",
-          rd.get("rule") == "stellaris-pc-4.5.4" and rd.get("ids") == [x["id"] for x in extracted]
-          and rd.get("event") == sum(1 for x in extracted if x["flags"]["event"]) > 0
-          and rd.get("repeatable") == rd.get("rep") == sum(1 for x in extracted if x["flags"]["repeatable"]) > 0 and rd.get("starter", 0) > 0,
-          {k: v for k, v in rd.items() if k != "ids"})
+    # T3005: every data file is the build of its extractor output, with every technology (T2526: 4.5.4 kept, 4.6.0 current)
+    for rule in ("stellaris-pc-4.5.4", "stellaris-pc-4.6.0"):
+        real = "js/tech-data/%s.js" % rule
+        with tempfile.TemporaryDirectory() as tmp:
+            fresh = os.path.join(tmp, "tech.js")
+            build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_tech_data.py"),
+                                    "--data", os.path.join(ROOT, "data", "generated", rule), "--out", fresh], capture_output=True, text=True)
+            # text mode reads CRLF and LF alike (git may check the file out with CRLF)
+            same = build.returncode == 0 and open(fresh, encoding="utf-8").read() == open(os.path.join(ROOT, real), encoding="utf-8").read()
+        check("tech tree data %s: the data file matches a fresh build of the extractor output" % rule[13:], same, build.stdout[-200:] + build.stderr[-300:])
+        with open(os.path.join(ROOT, "data", "generated", rule, "technologies.json"), encoding="utf-8") as f:
+            extracted = json.load(f)["items"]
+        rd = node_json("import {TECH_DATA as d} from './%s'; const T=d.technologies; const k=(n)=>T.filter(x=>x.kind===n).length;"
+                       "console.log(JSON.stringify({n:T.length,ids:T.map(x=>x.id),event:T.filter(x=>x.flags.includes('event')).length,"
+                       "repeatable:k('repeatable'),rep:T.filter(x=>x.repeatable).length,starter:k('starter'),rule:d.rulesetId}))" % real)
+        check("tech tree data %s: every extracted technology, event and repeatable ones included" % rule[13:],
+              rd.get("rule") == rule and rd.get("ids") == [x["id"] for x in extracted]
+              and rd.get("event") == sum(1 for x in extracted if x["flags"]["event"]) > 0
+              and rd.get("repeatable") == rd.get("rep") == sum(1 for x in extracted if x["flags"]["repeatable"]) > 0 and rd.get("starter", 0) > 0,
+              {k: v for k, v in rd.items() if k != "ids"})
+    real = "js/tech-data/stellaris-pc-4.6.0.js"
 
     # T3007: unlocks linked to simulator ids through the game ids; every linked id exists in the simulator
     sys.path.insert(0, os.path.join(ROOT, "tools", "extract"))
@@ -110,15 +112,18 @@ async def run(t):
 
     # T3006: the technologies collection is registered with its own version, outside the simulator summary;
     # T1406: verified against the game files, in data-version.js and in js/tech-versions.js
-    ver = node_json("import {currentTechVersion as c} from './js/tech-versions.js'; console.log(JSON.stringify({v:c().verification}))")
-    check("tech tree data (T1406): the current tech version is game-data-verified", ver.get("v") == "game-data-verified", ver)
+    # T2526: 4.6.0 is current and unverified (T3302 procedure); 4.5.4 keeps its T1406 verification
+    ver = node_json("import {TECH_VERSIONS as T, currentTechVersion as c} from './js/tech-versions.js'; console.log(JSON.stringify({v:c().verification,id:c().id,all:T.map(x=>[x.id,x.verification])}))")
+    check("tech tree data (T1406, T2526): the current tech version is 4.6.0 (unverified) and 4.5.4 stays game-data-verified",
+          ver.get("id") == "stellaris-pc-4.6.0" and ver.get("v") == "unverified"
+          and ver.get("all") == [["stellaris-pc-4.5.4", "game-data-verified"], ["stellaris-pc-4.6.0", "unverified"]], ver)
     reg = node_json("import * as v from './js/data-version.js'; import {TECH_DATA as d} from './%s'; const c=v.DATA_COLLECTIONS.technologies||{};"
                     "const sim=Object.values(v.DATA_COLLECTIONS).filter(x=>!x.tool).length;"
                     "console.log(JSON.stringify({file:c.file,status:c.verification,rule:c.rulesetId===d.rulesetId,tool:c.tool,"
                     "simCount:Object.values(v.verificationSummary()).reduce((a,b)=>a+b,0),sim,tech:v.verificationSummary('tech-tree')}))" % real)
-    check("tech tree data: technologies registered in data-version.js as game-data-verified 4.5.4, not counted in the simulator summary",
-          reg.get("file") == real and reg.get("status") == "game-data-verified" and reg.get("rule") and reg.get("tool") == "tech-tree"
-          and reg.get("simCount") == reg.get("sim") and reg.get("tech") == {"game-data-verified": 1}, reg)
+    check("tech tree data: technologies registered in data-version.js as the current 4.6.0 file (unverified), not counted in the simulator summary",
+          reg.get("file") == real and reg.get("status") == "unverified" and reg.get("rule") and reg.get("tool") == "tech-tree"
+          and reg.get("simCount") == reg.get("sim") and reg.get("tech") == {"unverified": 1}, reg)
 
     # T3003: reserved icon slot — fixed-size frame, lazy image, a missing file leaves it empty with no layout shift
     pg = await t.ctx.new_page()
@@ -150,7 +155,7 @@ async def run(t):
           slots["missingEmpty"] and slots["foundLoaded"] and slots["noneEmpty"] and slots["before"] == slots["after"], slots)
     check("tech tree icon slot: icon path resolved on the assets repository", slots["url"].endswith("/technologies/x.png") and slots["url"].startswith("http"), slots["url"])
 
-    # T3008: every icon of the 4.5.4 data file is in StellarisAssets (file tree), and a local file server of that
+    # T3008: every icon of the current data file is in StellarisAssets (file tree), and a local file server of that
     # repository fills the node and card frames (skipped if the repository is not on this computer)
     tree = open(os.path.join(ROOT, "StellarisAssetsFileTree.txt"), encoding="utf-8").read().splitlines()
     start = next((i for i, line in enumerate(tree) if re.match(r"^[├└]── technologies/$", line)), len(tree))
@@ -161,7 +166,7 @@ async def run(t):
         in_tree.add(re.sub(r"^│   [├└]── ", "", line))
     icons = node_json("import {TECH_DATA as d} from './%s'; console.log(JSON.stringify([...new Set(d.technologies.map(t=>t.icon))]))" % real)
     absent = [i for i in icons if i.split("/", 1)[1] not in in_tree] if isinstance(icons, list) else icons
-    check("tech tree icons: every icon of the 4.5.4 data file is listed under technologies/ in StellarisAssetsFileTree.txt",
+    check("tech tree icons: every icon of the current data file is listed under technologies/ in StellarisAssetsFileTree.txt",
           isinstance(icons, list) and len(icons) > 600 and not absent, absent[:10] if isinstance(absent, list) else absent)
     if os.path.isdir(os.path.join(ASSETS_DIR, "technologies")):
         server = LocalServer(("127.0.0.1", 0), partial(QuietHandler, directory=ASSETS_DIR))
@@ -230,15 +235,15 @@ async def page_checks(t):
     await pg.set_viewport_size({"width": 1280, "height": 900})
     check("tech tree window (T3602): as wide as the page and much taller: 85 % of the viewport (765 px at 900), at least 24rem (384 px) and at most 64rem (1024 px)",
           abs(sizes[900][0] - 765) <= 2 and sizes[400][0] == 384 and sizes[1600][0] == 1024 and all(v[1] == v[2] for v in sizes.values()), sizes)
-    check("tech tree page: data version visible (4.5.4, game version, verified against the game files)",
-          "stellaris-pc-4.5.4" in shell["version"] and "Cygnus v4.5.4" in shell["version"] and "verified against the game files" in shell["version"], shell["version"])
+    check("tech tree page: data version visible (4.6.0, game version, verification state)",
+          "stellaris-pc-4.6.0" in shell["version"] and "Corona Borealis v4.6.0" in shell["version"] and "unverified" in shell["version"], shell["version"])
     bsc, tur = "https://bloodstainedcrow.github.io/stellaris-tech-tree/", "https://turanar.github.io/stellaris-tech-tree/index.html"
     check("tech tree page: credits section links both inspirations; the footer mentions BloodStainedCrow and links the credits",
           bsc in shell["credits"] and tur in shell["credits"] and bsc in shell["footer"] and shell["footerCredits"], shell)
     await pg.click(".lang-btn[data-lang=es]")
     es_version = await pg.evaluate("()=>document.getElementById('tech-data-version').textContent")
     await pg.click(".lang-btn[data-lang=en]")
-    check("tech tree page: the data version line follows the language", es_version.startswith("Versión de datos") and "stellaris-pc-4.5.4" in es_version, es_version)
+    check("tech tree page: the data version line follows the language", es_version.startswith("Versión de datos") and "stellaris-pc-4.6.0" in es_version, es_version)
     await pg.set_viewport_size({"width": 375, "height": 760})
     await pg.wait_for_timeout(150)
     at_top = """async ()=>{await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));const w=document.querySelector('.tech-areas').getBoundingClientRect().top;
@@ -257,7 +262,7 @@ async def page_checks(t):
     await pg.wait_for_timeout(150)
 
     # T3102: one node per technology, in its area panel, field row and tier column, with icon slot, name, tier and kind
-    grid = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+    grid = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');
       const nodes=[...document.querySelectorAll('.tech-node')];const byId=new Map(d.technologies.map(x=>[x.id,x]));
       const misplaced=nodes.filter(n=>{const x=byId.get(n.dataset.techId);const c=n.closest('.tech-cell');
         return !x||n.closest('.tech-area').dataset.area!==x.area||c.dataset.field!==x.field||+c.dataset.tier!==x.tier}).map(n=>n.dataset.techId);
@@ -274,8 +279,8 @@ async def page_checks(t):
         rare:document.querySelector('.tech-node[data-tech-id=tech_arcane_deciphering] .tech-node-meta').textContent,
         allMeta:nodes.every(n=>/^Tier \\d · \\w+$/.test(n.querySelector('.tech-node-meta').textContent)&&n.querySelector('.tech-node-name').textContent.trim()&&n.querySelector('.tech-icon-slot'))}}""")
     cols = grid.get("cols", [])
-    check("tech tree layout: one node per technology (679), each one in its area panel, field row and tier column",
-          grid["count"] == grid["total"] == grid["unique"] == 679 and not grid["misplaced"], grid)
+    check("tech tree layout: one node per technology (683), each one in its area panel, field row and tier column",
+          grid["count"] == grid["total"] == grid["unique"] == 683 and not grid["misplaced"], grid)
     check("tech tree layout: tier columns 0–5 left to right, field rows in the data file's order, nodes aligned with their tier header",
           [c["area"] for c in cols] == ["physics", "society", "engineering"]
           and all(c["tiers"] == [0, 1, 2, 3, 4, 5] and c["increasing"] and c["aligned"] and c["rows"] == c["expected"] and c["ordered"] for c in cols), cols)
@@ -288,7 +293,7 @@ async def page_checks(t):
           es_meta == ["Nivel 2 · Rara", "Nivel 0", "Láseres rojos"], es_meta)
 
     # T3103, T3601: one SVG of prerequisite lines for the three stacked areas (also between areas), ends on the node edges, redrawn on resize
-    lines_js = """async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+    lines_js = """async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');
       await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
       const byId=new Map(d.technologies.map(x=>[x.id,x]));
       const expected=d.technologies.reduce((n,x)=>n+x.prerequisites.length,0);
@@ -323,7 +328,7 @@ async def page_checks(t):
     await pg.wait_for_timeout(100)
 
     # T3104: kind colours, selected / prerequisite / unlocked-by states on nodes and lines, legend and live status
-    states_js = """async (id)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+    states_js = """async (id)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');
       await new Promise(r=>setTimeout(r,120));
       const ids=(s)=>[...document.querySelectorAll('.tech-node'+s)].map(n=>n.dataset.techId).sort();
       const x=d.technologies.find(t=>t.id===id);const deps=id?d.technologies.filter(t=>t.prerequisites.includes(id)).map(t=>t.id).sort():[];
@@ -358,7 +363,7 @@ async def page_checks(t):
           s1["lineP"] == ["tech_lasers_1>tech_lasers_2"] and s1["lineU"] == s1["expLineU"]
           and set("tech_lasers_2>" + i for i in s1["expDeps"]) <= set(s1["lineU"]) and len(s1["lineU"]) > len(s1["expDeps"]), (s1["lineP"], s1["lineU"]))
     # T3202: the whole prerequisite chain and every dependent, across areas, with the direct ones marked
-    chain_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
+    chain_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
       const depth=(id)=>{const x=byId.get(id);return x.prerequisites.length?1+Math.max(...x.prerequisites.map(depth)):0};
       const deps=(id)=>d.technologies.filter(t=>t.prerequisites.includes(id));
       const c=d.technologies.filter(t=>depth(t.id)>=3&&deps(t.id).length).sort((a,b)=>depth(b.id)-depth(a.id))[0];return c.id}""")
@@ -372,7 +377,7 @@ async def page_checks(t):
           and str(len(ch["expAnc"])) in ch["status"] and str(len(ch["expDesc"])) in ch["status"], (chain_pick, ch))
     glow = await pg.evaluate("()=>{const x=document.querySelector('.tech-node.is-prerequisite.is-direct'),y=document.querySelector('.tech-node.is-prerequisite:not(.is-direct)');return [getComputedStyle(x).boxShadow!=='none',y?getComputedStyle(y).boxShadow==='none':false]}")
     check("tech tree chain: the direct prerequisites keep the glow, the rest of the chain only the border", all(glow), glow)
-    cross = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
+    cross = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');const byId=new Map(d.technologies.map(t=>[t.id,t]));
       return d.technologies.find(t=>t.prerequisites.some(p=>byId.get(p).area!==t.area)).id}""")
     await pg.click(".tech-node[data-tech-id=%s]" % chain_pick)
     await pg.evaluate("(id)=>document.querySelector('.tech-node[data-tech-id='+id+']').scrollIntoView({block:'center',inline:'center'})", cross)
@@ -445,17 +450,17 @@ async def page_checks(t):
     check("tech tree card: clicking Blue Lasers opens its card (icon slot, name, id, tier · kind · area · field, base cost, DLC, version, description)",
           c1["shown"] and c1["id"] == "tech_lasers_2" and c1["name"] == "Blue Lasers" and c1["gameId"] == "tech_lasers_2" and c1["icon"]
           and c1["meta"] == "Tier 1 · Normal · Physics · Particles" and c1["cost"] == "1,250" and c1["dlc"] == "Base game"
-          and "stellaris-pc-4.5.4" in c1["version"] and "Cygnus v4.5.4" in c1["version"] and c1["desc"].startswith("More powerful than red lasers") and c1["inView"], c1)
-    check("tech tree card: prerequisites and leads-to as buttons, variants, effects and the draw weight as information (base 95, 2 modifiers)",
+          and "stellaris-pc-4.6.0" in c1["version"] and "Corona Borealis v4.6.0" in c1["version"] and c1["desc"].startswith("More powerful than red lasers") and c1["inView"], c1)
+    check("tech tree card: prerequisites and leads-to as buttons, variants, effects and the draw weight as information (base 95, 3 modifiers in 4.6.0)",
           c1["prereq"] == ["tech_lasers_1"] and c1["leads"] == deps and "Blue Beam Projector" in c1["variants"] and "army_damage_mult" in c1["effects"]
-          and c1["weight"] == "Base: 95" and c1["mods"] == 2, c1)
+          and c1["weight"] == "Base: 95" and c1["mods"] == 3, c1)
     await pg.click("#tech-card [data-section=prerequisites] button[data-tech-id=tech_lasers_1]")
     c2 = await pg.evaluate(card_js)
     sel2 = await pg.evaluate("()=>document.querySelector('.tech-node.is-selected')?.dataset.techId")
     check("tech tree card: a prerequisite button selects that technology and its card (Red Lasers, starter: base cost 500, game flag)",
           sel2 == "tech_lasers_1" and c2["name"] == "Red Lasers" and c2["cost"] == "500" and "Starter" in (c2["flags"] or ""), [sel2, c2["cost"], c2["flags"]])
     # T2608: concept icons of the card (ICONS.md): unlock type, build time (4.5.4 data) and effect modifiers, word as tooltip and alt
-    icon_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const c=await import('./js/tech-tree-concepts.js');
+    icon_pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');const c=await import('./js/tech-tree-concepts.js');
       const has=(x)=>!!document.querySelector('.tech-node[data-tech-id='+x.id+']');const T=d.technologies.filter(has);
       const b=T.find(x=>x.unlocks.some(u=>u.type==='building'&&c.gameBuildDays(u.id)!==null));const di=T.find(x=>x.unlocks.some(u=>u.type==='district'));
       const sp=T.find(x=>x.effects.some(l=>l.startsWith('planet_building_build_speed_mult')));const res=T.find(x=>x.effects.some(l=>/^planet_jobs_energy_produces_mult/.test(l)));
@@ -489,7 +494,7 @@ async def page_checks(t):
     await pg.click(".lang-btn[data-lang=en]")
     await pg.wait_for_timeout(80)
     check("tech tree card (T2608): the icon words follow the language (es)", any(i["alt"] == "Eficiencia de producción" for i in ies["effects"]), ies)
-    pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');const T=d.technologies;const byId=new Map(T.map(x=>[x.id,x]));
+    pick = await pg.evaluate("""async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');const T=d.technologies;const byId=new Map(T.map(x=>[x.id,x]));
       const cross=T.find(x=>x.prerequisites.some(p=>byId.get(p).area!==x.area));const notReq=T.find(x=>x.requirements.some(r=>r.not)&&x.dlc.length);
       const rep=T.find(x=>x.repeatable&&x.repeatable.levels===null);const free=T.find(x=>x.baseCost===null);
       return {cross:cross.id,crossPre:cross.prerequisites.find(p=>byId.get(p).area!==cross.area),crossArea:byId.get(cross.prerequisites.find(p=>byId.get(p).area!==cross.area)).area,
@@ -556,7 +561,7 @@ async def page_checks(t):
         fields:[...document.querySelectorAll('#tech-filter-field option')].map(o=>o.value).filter(Boolean),
         dimmed:getComputedStyle(document.querySelector('.tech-node.is-filtered-out .tech-icon-slot')||document.body).opacity,
         lineOut:document.querySelectorAll('.tech-line.is-filtered-out').length,lines:document.querySelectorAll('.tech-line').length}}"""
-    expect_js = """async (f)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');
+    expect_js = """async (f)=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');
       const fold=(x)=>x.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();const words=fold(f.query||'').split(/\\s+/).filter(Boolean);
       return d.technologies.filter(t=>(!f.area||t.area===f.area)&&(!f.field||t.field===f.field)&&(f.tier===undefined||t.tier===f.tier)&&(!f.kind||t.kind===f.kind)
         &&(!f.dlc||(f.dlc==='base'?!t.dlc.length:t.dlc.includes(f.dlc)))&&words.every(w=>fold([t.name,t.id,...t.variants.map(v=>v.name)].join(' ')).includes(w))).map(t=>t.id).sort()}"""
@@ -573,7 +578,7 @@ async def page_checks(t):
     q2 = await pg.evaluate(search_js)
     check("tech tree search: by name, case- and accent-insensitive ('LÁSÉRS' = 'lasers'), matches outlined, the rest and their lines dimmed, count and result buttons",
           q1["match"] == q1["kept"] == e1 and len(e1) >= 5 and q2["match"] == e1 and q1["has"] and float(q1["dimmed"]) < 0.3
-          and q1["count"] == "%d of 679 technologies match" % len(e1) and sorted(q1["results"]) == e1 and 0 < q1["lineOut"] < q1["lines"], (q1, e1))
+          and q1["count"] == "%d of 683 technologies match" % len(e1) and sorted(q1["results"]) == e1 and 0 < q1["lineOut"] < q1["lines"], (q1, e1))
     fold = await pg.evaluate("async ()=>{const m=await import('./js/tech-tree-search.js');return [m.foldText('Énergie Ñandú Über'),m.filterTechnologies({technologies:[{id:'x',name:'Énergie',tier:1,area:'a',field:'f',kind:'normal',dlc:[],variants:[]}]},{query:'energie',area:'',field:'',tier:'',kind:'',dlc:''}).length]}")
     check("tech tree search: the fold removes accents and case from names too ('Énergie' found by 'energie')", fold == ["energie nandu uber", 1], fold)
     await pg.fill("#tech-search", "red laser")
@@ -588,7 +593,7 @@ async def page_checks(t):
     await pg.select_option("#tech-filter-kind", "rare")
     f1 = await pg.evaluate(search_js)
     e2 = await pg.evaluate(expect_js, {"area": "society", "tier": 3, "kind": "rare"})
-    soc_fields = await pg.evaluate("async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.5.4.js');return d.fields.filter(f=>f.area==='society').map(f=>f.id)}")
+    soc_fields = await pg.evaluate("async ()=>{const {TECH_DATA:d}=await import('./js/tech-data/stellaris-pc-4.6.0.js');return d.fields.filter(f=>f.area==='society').map(f=>f.id)}")
     check("tech tree filters: area + tier + kind keep only those technologies, and the field list shows only the fields of the chosen area",
           f1["kept"] == e2 and len(e2) > 0 and f1["match"] == [] and f1["fields"] == soc_fields, (f1["kept"], e2, f1["fields"]))
     await pg.select_option("#tech-filter-field", soc_fields[0])
@@ -614,7 +619,7 @@ async def page_checks(t):
     await pg.keyboard.press("Escape")
     check("tech tree search: a result button selects the technology and opens its card; labels follow the language keeping the search; reset clears everything",
           pick == ["tech_lasers_2", "tech_lasers_2"] and es_search[0] == "Buscar" and es_search[1] == "Todos" and "tecnologías coinciden" in es_search[2]
-          and es_search[3] == "blue lasers" and not f5["has"] and len(f5["kept"]) == 679 and f5["lineOut"] == 0 and f5["count"] == "", (pick, es_search, f5["has"]))
+          and es_search[3] == "blue lasers" and not f5["has"] and len(f5["kept"]) == 683 and f5["lineOut"] == 0 and f5["count"] == "", (pick, es_search, f5["has"]))
 
     # T3204: zoom and pan (buttons, keys, Ctrl + wheel, mouse drag, arrow keys)
     zoom_js = """(area)=>{const sc=document.querySelector('.tech-areas');const g=sc.querySelector('.tech-stack');const w=sc.querySelector('.tech-zoom');
@@ -901,11 +906,11 @@ async def version_checks(t):
         pick: [v.pickTechVersion('?version=stellaris-pc-4.5.4', 'x'), v.pickTechVersion('?version=nope', null), v.pickTechVersion('', 'stale'), v.pickTechVersion('', null)]
           .map((p) => [p.version.id, p.unknownId]),
         urls: [v.versionUrl('https://h/tech-tree.html?version=old#tech_a', cur.id), v.versionUrl('https://h/tech-tree.html#tech_a', 'other')]}))""")
-    check("tech tree versions: registry of data files (4.5.4 current, the one registered in data-version.js), each file holds its own rulesetId, a mismatch is rejected",
-          reg.get("ids") == ["stellaris-pc-4.5.4"] and reg.get("current") == "stellaris-pc-4.5.4" and reg.get("files") == [True]
+    check("tech tree versions: registry of data files (4.5.4 kept, 4.6.0 current and registered in data-version.js), each file holds its own rulesetId, a mismatch is rejected",
+          reg.get("ids") == ["stellaris-pc-4.5.4", "stellaris-pc-4.6.0"] and reg.get("current") == "stellaris-pc-4.6.0" and reg.get("files") == [True, True]
           and reg.get("bad") == "rejected" and reg.get("registered"), reg)
     check("tech tree versions: version from ?version=, then the stored choice, then the current one; an unknown id falls back and is reported; the URL keeps the hash",
-          reg.get("pick") == [["stellaris-pc-4.5.4", None], ["stellaris-pc-4.5.4", "nope"], ["stellaris-pc-4.5.4", None], ["stellaris-pc-4.5.4", None]]
+          reg.get("pick") == [["stellaris-pc-4.5.4", None], ["stellaris-pc-4.6.0", "nope"], ["stellaris-pc-4.6.0", None], ["stellaris-pc-4.6.0", None]]
           and reg.get("urls") == ["https://h/tech-tree.html#tech_a", "https://h/tech-tree.html?version=other#tech_a"], reg)
 
     state_js = """()=>({options:[...document.querySelectorAll('#tech-version-select option')].map(o=>[o.value,o.textContent,o.selected]),
@@ -923,9 +928,9 @@ async def version_checks(t):
     await pg.wait_for_timeout(400)
     await pg.click(".lang-btn[data-lang=en]")
     s1 = await pg.evaluate(state_js)
-    check("tech tree versions: the selector lists the 4.5.4 version as current and selected, and the page draws its 679 technologies",
-          s1["options"] == [["stellaris-pc-4.5.4", "Stellaris PC 4.5.4 · current", True]] and s1["label"] == "Game version"
-          and s1["warning"] is None and s1["version"] == "stellaris-pc-4.5.4" and s1["nodes"] == 679, s1)
+    check("tech tree versions: the selector lists 4.5.4 and 4.6.0, the current 4.6.0 selected, and the page draws its 683 technologies",
+          sorted(s1["options"]) == [["stellaris-pc-4.5.4", "Stellaris PC 4.5.4", False], ["stellaris-pc-4.6.0", "Stellaris PC 4.6.0 · current", True]]
+          and s1["label"] == "Game version" and s1["warning"] is None and s1["version"] == "stellaris-pc-4.6.0" and s1["nodes"] == 683, s1)
     await pg.goto("file://" + ROOT + "/tech-tree.html?version=stellaris-pc-9.9.9")
     await pg.wait_for_timeout(400)
     s2 = await pg.evaluate(state_js)
@@ -933,7 +938,7 @@ async def version_checks(t):
     s2es = (await pg.evaluate(state_js))["warning"]
     await pg.click(".lang-btn[data-lang=en]")
     check("tech tree versions: an unknown ?version= shows the current data with a translated notice",
-          s2["version"] == "stellaris-pc-4.5.4" and s2["nodes"] == 679 and "stellaris-pc-9.9.9" in (s2["warning"] or "")
+          s2["version"] == "stellaris-pc-4.6.0" and s2["nodes"] == 683 and "stellaris-pc-9.9.9" in (s2["warning"] or "")
           and "does not exist" in s2["warning"] and "no existe" in (s2es or ""), (s2["warning"], s2es))
     await pg.close()
 
@@ -952,7 +957,7 @@ async def version_checks(t):
     pg.on("pageerror", lambda e: errors.append(str(e)))
     try:
         await pg.goto(base + "tech-tree.html#tech_lasers_2")
-        await wait_for_tree(pg, "stellaris-pc-4.5.4", 679, "tech_lasers_2")
+        await wait_for_tree(pg, "stellaris-pc-4.6.0", 683, "tech_lasers_2")
         s3 = await pg.evaluate(state_js)
         async with pg.expect_navigation():
             await pg.select_option("#tech-version-select", "fixture")
@@ -963,7 +968,7 @@ async def version_checks(t):
             pass
         s4 = await pg.evaluate(state_js)
         check("tech tree versions: choosing another version reloads the page with ?version= and only that data file (the fixture's 38 fake technologies), keeping the hash",
-              [o[0] for o in s3["options"]] == ["fixture", "stellaris-pc-4.5.4"] and s3["selected"] == "tech_lasers_2"
+              sorted(o[0] for o in s3["options"]) == ["fixture", "stellaris-pc-4.5.4", "stellaris-pc-4.6.0"] and s3["selected"] == "tech_lasers_2"
               and s4["search"] == "?version=fixture" and s4["hash"] == "#tech_lasers_2" and s4["version"] == "fixture"
               and "Fixture v0.0.1" in s4["line"] and s4["nodes"] == s4["fixtureNodes"] == 38 and s4["stored"] == "fixture"
               and [o[0] for o in s4["options"] if o[2]] == ["fixture"], (s3["options"], s3["selected"], {k: v for k, v in s4.items() if k != "status"}))
@@ -977,11 +982,17 @@ async def version_checks(t):
         check("tech tree versions: the card shows the fixture version, and the stored choice is used when the URL names no version",
               s5["cardVersion"] == "fixture · Fixture v0.0.1" and s6["version"] == "fixture" and s6["nodes"] == 38, (s5["cardVersion"], s6["version"], s6["nodes"]))
         async with pg.expect_navigation():
+            await pg.select_option("#tech-version-select", "stellaris-pc-4.6.0")
+        await wait_for_tree(pg, "stellaris-pc-4.6.0", 683)
+        s7 = await pg.evaluate(state_js)
+        check("tech tree versions: going back to the current version drops ?version= and draws the 4.6.0 data again",
+              s7["search"] == "" and s7["version"] == "stellaris-pc-4.6.0" and s7["nodes"] == 683 and s7["stored"] == "stellaris-pc-4.6.0", s7["search"])
+        async with pg.expect_navigation():
             await pg.select_option("#tech-version-select", "stellaris-pc-4.5.4")
         await wait_for_tree(pg, "stellaris-pc-4.5.4", 679)
-        s7 = await pg.evaluate(state_js)
-        check("tech tree versions: going back to the current version drops ?version= and draws the 4.5.4 data again",
-              s7["search"] == "" and s7["version"] == "stellaris-pc-4.5.4" and s7["nodes"] == 679 and s7["stored"] == "stellaris-pc-4.5.4", s7["search"])
+        s8 = await pg.evaluate(state_js)
+        check("tech tree versions (T2526): the previous 4.5.4 version stays selectable with its 679 technologies",
+              s8["search"] == "?version=stellaris-pc-4.5.4" and s8["version"] == "stellaris-pc-4.5.4" and s8["nodes"] == 679 and "Cygnus v4.5.4" in s8["line"], s8["line"])
         await ctx.close()
         await compare_checks(t, base, registry, errors)
     finally:
@@ -1028,19 +1039,43 @@ async def compare_checks(t, base, registry, errors):
       links:[...document.querySelectorAll('.tech-compare-link')].map(a=>[a.dataset.techId,new URL(a.href).search+new URL(a.href).hash]),
       wide:document.documentElement.scrollWidth>document.documentElement.clientWidth})"""
 
-    # only one data version: the section explains that the comparison needs a second one
+    # T2526: the real registry compares 4.5.4 → 4.6.0 (the counts come from the pure comparison of both data files)
+    real = node_json("""import {compareTechData as c} from './js/tech-tree-compare.js';
+      import {TECH_DATA as a} from './js/tech-data/stellaris-pc-4.5.4.js';
+      import {TECH_DATA as b} from './js/tech-data/stellaris-pc-4.6.0.js';
+      const d = c(a, b); console.log(JSON.stringify({added: d.added.map((x) => x.id), removed: d.removed.length, changed: d.changed.length}))""")
     pg = await t.ctx.new_page()
     pg.on("pageerror", lambda e: errors.append(str(e)))
     await pg.goto("file://" + ROOT + "/tech-tree.html")
     await pg.wait_for_timeout(400)
     await pg.click(".lang-btn[data-lang=en]")
+    c0 = await pg.evaluate(state_js)
+    await pg.click(".tech-compare-run")
+    await pg.wait_for_timeout(1200)
+    c0b = await pg.evaluate(state_js)
+    await pg.close()
+    check("tech tree compare (T2526): the page compares 4.5.4 → 4.6.0 by default and lists the 4 technologies new in 4.6.0",
+          c0["controls"] and c0["from"] == "stellaris-pc-4.5.4" and c0["to"] == "stellaris-pc-4.6.0" and len(real.get("added", [])) == 4
+          and c0b["summary"] == "Stellaris PC 4.5.4 → Stellaris PC 4.6.0: %d added · %d removed · %d changed" % (len(real["added"]), real["removed"], real["changed"])
+          and sorted(c0b["groups"].get("added", [])) == sorted(real["added"]), (c0["from"], c0["to"], c0b["summary"], real))
+
+    # only one data version: the section explains that the comparison needs a second one (registry reduced to the current entry)
+    single = re.sub(r'\n  \{\n    id: "stellaris-pc-4\.5\.4".*?\n  \},', "", registry, count=1, flags=re.S)
+    ctx = await t.browser.new_context(locale="en-US")
+    await ctx.route("https://**/*", lambda r: r.abort())
+    await ctx.route("**/js/tech-versions.js", lambda r: r.fulfill(body=single, content_type="text/javascript"))
+    pg = await ctx.new_page()
+    pg.on("pageerror", lambda e: errors.append(str(e)))
+    await pg.goto(base + "tech-tree.html")
+    await wait_for_tree(pg, "stellaris-pc-4.6.0", 683)
+    await pg.click(".lang-btn[data-lang=en]")
     c1 = await pg.evaluate(state_js)
     await pg.click(".lang-btn[data-lang=es]")
     c1es = await pg.evaluate(state_js)
     await pg.click(".lang-btn[data-lang=en]")
-    await pg.close()
+    await ctx.close()
     check("tech tree compare: with a single data version the section says the comparison waits for the next one (translated)",
-          c1["heading"] == "Compare versions" and not c1["controls"] and "only one data version (Stellaris PC 4.5.4)" in (c1["note"] or "")
+          single != registry and c1["heading"] == "Compare versions" and not c1["controls"] and "only one data version (Stellaris PC 4.6.0)" in (c1["note"] or "")
           and c1es["heading"] == "Comparar versiones" and "Solo hay una versión" in (c1es["note"] or ""), (c1, c1es["note"]))
 
     patched = registry.replace("export const TECH_VERSIONS = [", "export const TECH_VERSIONS = [\n  " + FIXTURE_NEXT_VERSION + "\n  " + FIXTURE_VERSION, 1)
@@ -1169,7 +1204,7 @@ async def i18n_checks(t):
 
 async def link_checks(t):
     """T3402: links to the tech tree from the wiki (tech mentions, Useful links) and from the simulator catalogue."""
-    data = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.5.4.js';import {TECH_UNLOCK_LINKS as l} from './js/tech-unlock-links.js';"
+    data = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.6.0.js';import {TECH_UNLOCK_LINKS as l} from './js/tech-unlock-links.js';"
                      "console.log(JSON.stringify({ids:d.technologies.map(x=>x.id),links:l}))")
     printed = subprocess.run(["node", "tools/build-tech-links.mjs", "--print"], capture_output=True, text=True, encoding="utf-8", cwd=ROOT).stdout
     stored = open(os.path.join(ROOT, "js", "tech-unlock-links.js"), encoding="utf-8").read().replace("\r\n", "\n")
@@ -1264,7 +1299,7 @@ async def sim_deeplink_checks(t, links):
     check("sim deep link (T3405): an unknown id says so", s6["n"] == 0 and "does not know (no_such_building)" in s6["notice"], s6)
     # every simulator link of the tech tree data resolves (never "unknown")
     items = [["building", i] for i in links.get("buildings", {})] + [["district", i] for i in links.get("districts", {})]
-    data_ids = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.5.4.js';"
+    data_ids = node_json("import {TECH_DATA as d} from './js/tech-data/stellaris-pc-4.6.0.js';"
                          "console.log(JSON.stringify([...new Set(d.technologies.flatMap(x=>x.unlocks).filter(u=>u.sim).map(u=>(u.sim.collection==='districts'?'district':'building')+'='+u.sim.id))]))")
     unknown = await pg.evaluate("""async (ids)=>{const m=await import('./js/planet-sim-deeplink.js');const n=document.getElementById('planet-sim-notice');const bad=[];
       for(const id of ids){n.hidden=true;const el=m.openSimDeepLink('#'+id);if(!el&&(n.hidden||/does not know/.test(n.textContent)))bad.push(id)}return bad}""", data_ids)

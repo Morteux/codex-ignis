@@ -17527,6 +17527,7 @@ StellarisAssets/
 │   ├── tech_galactic_archivism.png
 │   ├── tech_galactic_bureaucracy.png
 │   ├── tech_galactic_campaigns.png
+│   ├── tech_galactic_halls.png
 │   ├── tech_galactic_markets.png
 │   ├── tech_gargantuan_evolution.png
 │   ├── tech_gateway_activation.png

@@ -1,0 +1,716 @@
+{
+ "set": "tradition_categories",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/tradition_categories"
+ ],
+ "count": 33,
+ "items": [
+  {
+   "id": "tradition_adaptability",
+   "file": "common/tradition_categories/00_adaptability.txt",
+   "name": "Adaptability",
+   "desc": "To adapt is to survive, and surpass.",
+   "traditions": [
+    "tr_adaptability_recycling",
+    "tr_adaptability_survival_fittest",
+    "tr_adaptability_environmental_diversification",
+    "tr_adaptability_adaptive_ecology",
+    "tr_adaptability_appropriation"
+   ],
+   "adoption_bonus": "tr_adaptability_adopt",
+   "finish_bonus": "tr_adaptability_finish",
+   "tree_template": "tree_11_12",
+   "potential": "is_machine_empire = no",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_aptitude",
+   "file": "common/tradition_categories/00_aptitude.txt",
+   "name": "Aptitude",
+   "desc": "Our Empire can truly prosper under the guidance of strong leaders.",
+   "traditions": [
+    "tr_aptitude_the_empire_needs_you",
+    "tr_aptitude_specialist_training",
+    "tr_aptitude_psychological_profiling",
+    "tr_aptitude_healthcare_program",
+    "tr_aptitude_champions_of_the_empire"
+   ],
+   "adoption_bonus": "tr_aptitude_adopt",
+   "finish_bonus": "tr_aptitude_finish",
+   "tree_template": "tree_12_11",
+   "potential": "has_paragon_dlc = yes",
+   "possible": null,
+   "dlc": [
+    "Galactic Paragons"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_archivism",
+   "file": "common/tradition_categories/00_archivism.txt",
+   "name": "Archivism",
+   "desc": "The proper preservation and stowage of artifacts in this galaxy will allow future generations to understand where they truly come from.",
+   "traditions": [
+    "tr_archivism_xeno_paleontology",
+    "tr_archivism_frontier_archaeology",
+    "tr_archivism_expert_negociation",
+    "tr_archivism_flawless_display",
+    "tr_archivism_exhibition_specialization"
+   ],
+   "adoption_bonus": "tr_archivism_adopt",
+   "finish_bonus": "tr_archivism_finish",
+   "tree_template": "tree_11_12",
+   "potential": "has_grand_archive_dlc = yes",
+   "possible": null,
+   "dlc": [
+    "Grand Archive"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_mercantile",
+   "file": "common/tradition_categories/00_commerce.txt",
+   "name": "Commerce",
+   "desc": "The flourishing of our entrepreneurs paves the path to [This.GetAdj] prosperity.",
+   "traditions": [
+    "tr_mercantile_trickle_up_economics",
+    "tr_mercantile_commercial_enterprise",
+    "tr_mercantile_adaptive_economic_policies",
+    "tr_mercantile_marketplace_of_better_ideas",
+    "tr_mercantile_insider_trading"
+   ],
+   "adoption_bonus": "tr_mercantile_adopt",
+   "finish_bonus": "tr_mercantile_finish",
+   "tree_template": "tree_11_12",
+   "potential": "is_regular_empire = yes",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_diplomacy",
+   "file": "common/tradition_categories/00_diplomacy.txt",
+   "name": "Diplomacy",
+   "desc": "The surest way to destroy your enemies is to make them your friends.",
+   "traditions": [
+    "tr_diplomacy_the_federation",
+    "tr_diplomacy_entente_coordination",
+    "tr_diplomacy_diplomatic_networking",
+    "tr_diplomacy_direct_diplomacy",
+    "tr_diplomacy_eminent_diplomats"
+   ],
+   "adoption_bonus": "tr_diplomacy_adopt",
+   "finish_bonus": "tr_diplomacy_finish",
+   "tree_template": "tree_11_12",
+   "potential": "NOR = {\n\thas_valid_civic = civic_inwards_perfection\n\thas_valid_civic = civic_hive_devouring_swarm\n\thas_origin = origin_endbringers\n}",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_discovery",
+   "file": "common/tradition_categories/00_discovery.txt",
+   "name": "Discovery",
+   "desc": "Our curiosity about the universe is what got us this far, and there is still so much left to discover.",
+   "traditions": [
+    "tr_discovery_to_boldly_go",
+    "tr_discovery_databank_uplinks",
+    "tr_discovery_science_division",
+    "tr_discovery_polytechnic_education",
+    "tr_discovery_faith_in_science"
+   ],
+   "adoption_bonus": "tr_discovery_adopt",
+   "finish_bonus": "tr_discovery_finish",
+   "tree_template": "tree_11_111",
+   "potential": null,
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_domestication",
+   "file": "common/tradition_categories/00_domestication.txt",
+   "name": "Domestication",
+   "desc": "Mastery of the galaxy requires mastering the organisms within.",
+   "traditions": [
+    "tr_domestication_containment_protocols",
+    "tr_domestication_bio_repurposing",
+    "tr_domestication_astrozoology",
+    "tr_domestication_metabolic_regulation",
+    "tr_domestication_killer_instinct"
+   ],
+   "adoption_bonus": "tr_domestication_adopt",
+   "finish_bonus": "tr_domestication_finish",
+   "tree_template": "tree_12_12",
+   "potential": "has_grand_archive_dlc = yes",
+   "possible": null,
+   "dlc": [
+    "Grand Archive"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_domination",
+   "file": "common/tradition_categories/00_domination.txt",
+   "name": "Domination",
+   "desc": "If we do not impose our will on others, they will inevitably impose theirs on us.",
+   "traditions": [
+    "tr_domination_colonial_viceroys",
+    "tr_domination_imperious_architecture",
+    "tr_domination_judgment_corps",
+    "tr_domination_grand_council",
+    "tr_domination_workplace_motivators"
+   ],
+   "adoption_bonus": "tr_domination_adopt",
+   "finish_bonus": "tr_domination_finish",
+   "tree_template": "tree_21_11",
+   "potential": null,
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_enmity",
+   "file": "common/tradition_categories/00_enmity.txt",
+   "name": "Enmity",
+   "desc": "[Root.GetSpeciesNamePlural] never move so fast as when other [Root.GetSpeciesNamePlural] are setting the pace.",
+   "traditions": [
+    "tr_enmity_rise_to_the_occasion",
+    "tr_enmity_consumate_contrarian",
+    "tr_enmity_match",
+    "tr_enmity_outpace",
+    "tr_enmity_eclipse"
+   ],
+   "adoption_bonus": "tr_enmity_adopt",
+   "finish_bonus": "tr_enmity_finish",
+   "tree_template": "tree_11_111",
+   "potential": "NOR = {\n\tis_homicidal = yes\n\thas_valid_civic = civic_machine_assimilator\n\thas_valid_civic = civic_inwards_perfection\n}",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_expansion",
+   "file": "common/tradition_categories/00_expansion.txt",
+   "name": "Expansion",
+   "desc": "We must expand our civilization to new systems and planets, or risk eventual extinction.",
+   "traditions": [
+    "tr_expansion_reach_for_the_stars",
+    "tr_expansion_colonization_fever",
+    "tr_expansion_courier_network",
+    "tr_expansion_galactic_ambition",
+    "tr_expansion_a_new_life"
+   ],
+   "adoption_bonus": "tr_expansion_adopt",
+   "finish_bonus": "tr_expansion_finish",
+   "tree_template": "tree_12_11",
+   "potential": null,
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_unyielding",
+   "file": "common/tradition_categories/00_fortification.txt",
+   "name": "Fortification",
+   "desc": "The galaxy is vast and full of dangers.",
+   "traditions": [
+    "tr_unyielding_resistance_is_frugal",
+    "tr_unyielding_never_surrender",
+    "tr_unyielding_bulwark_of_harmony",
+    "tr_unyielding_defensive_zeal",
+    "tr_unyielding_fortress_doctrine"
+   ],
+   "adoption_bonus": "tr_unyielding_adopt",
+   "finish_bonus": "tr_unyielding_finish",
+   "tree_template": "tree_111_11",
+   "potential": "is_nomadic = no\nOR = {\n\thost_has_dlc = \"Apocalypse\"\n\thas_overlord_dlc = yes\n}",
+   "possible": null,
+   "dlc": [
+    "Apocalypse",
+    "Overlord"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_harmony",
+   "file": "common/tradition_categories/00_harmony.txt",
+   "name": "Harmony",
+   "desc": "Few things can match the strength of a content populace working towards a common goal.",
+   "traditions": [
+    "tr_harmony_mind_and_body",
+    "tr_harmony_kinship",
+    "tr_harmony_the_greater_good",
+    "tr_harmony_harmonious_directives",
+    "tr_harmony_utopian_dream"
+   ],
+   "adoption_bonus": "tr_harmony_adopt",
+   "finish_bonus": "tr_harmony_finish",
+   "tree_template": "tree_21_11",
+   "potential": "is_gestalt = no",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_logistics",
+   "file": "common/tradition_categories/00_logistics.txt",
+   "name": "Logistics",
+   "desc": "We will recursively optimize [This.GetAdj] logistic processes.",
+   "traditions": [
+    "tr_logistics_1",
+    "tr_logistics_2",
+    "tr_logistics_3",
+    "tr_logistics_4",
+    "tr_logistics_5"
+   ],
+   "adoption_bonus": "tr_logistics_adopt",
+   "finish_bonus": "tr_logistics_finish",
+   "tree_template": "tree_11_12",
+   "potential": "is_gestalt = yes",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_politics",
+   "file": "common/tradition_categories/00_politics.txt",
+   "name": "Politics",
+   "desc": "The Galactic stage is set, and we intend to have the leading role.",
+   "traditions": [
+    "tr_politics_quid_pro_quo",
+    "tr_politics_gravitas",
+    "tr_politics_national_agenda",
+    "tr_politics_persistent_petitioners",
+    "tr_politics_extraordinary_powers"
+   ],
+   "adoption_bonus": "tr_politics_adopt",
+   "finish_bonus": "tr_politics_finish",
+   "tree_template": "tree_11_11_21",
+   "potential": "host_has_dlc = Federations\nis_homicidal = no",
+   "possible": null,
+   "dlc": [
+    "Federations"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_prosperity",
+   "file": "common/tradition_categories/00_prosperity.txt",
+   "name": "Prosperity",
+   "desc": "There is no better indicator of the success or failure of a star nation than the strength of its economy.",
+   "traditions": [
+    "tr_prosperity_administrative_operations",
+    "tr_prosperity_sct",
+    "tr_prosperity_pursuit_of_profit",
+    "tr_prosperity_interstellar_franchising",
+    "tr_prosperity_public_works"
+   ],
+   "adoption_bonus": "tr_prosperity_adopt",
+   "finish_bonus": "tr_prosperity_finish",
+   "tree_template": "tree_12_11",
+   "potential": null,
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_statecraft",
+   "file": "common/tradition_categories/00_statecraft.txt",
+   "name": "Statecraft",
+   "desc": "A powerful Council allows our empire to be more responsive.",
+   "traditions": [
+    "tr_statecraft_constitutional_focus",
+    "tr_statecraft_inspiring_agendas",
+    "tr_statecraft_immutable_directives",
+    "tr_statecraft_amongst_peers",
+    "tr_statecraft_shared_benefits"
+   ],
+   "adoption_bonus": "tr_statecraft_adopt",
+   "finish_bonus": "tr_statecraft_finish",
+   "tree_template": "tree_111_11",
+   "potential": "has_paragon_dlc = yes",
+   "possible": null,
+   "dlc": [
+    "Galactic Paragons"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_subterfuge",
+   "file": "common/tradition_categories/00_subterfuge.txt",
+   "name": "Subterfuge",
+   "desc": "Security lies in uncovering the secrets of others, and keeping our own well-guarded. ",
+   "traditions": [
+    "tr_subterfuge_information_security",
+    "tr_subterfuge_operational_security",
+    "tr_subterfuge_nda",
+    "tr_subterfuge_double_agents",
+    "tr_subterfuge_shadow_recruits"
+   ],
+   "adoption_bonus": "tr_subterfuge_adopt",
+   "finish_bonus": "tr_subterfuge_finish",
+   "tree_template": "tree_12_12",
+   "potential": "has_nemesis = yes",
+   "possible": null,
+   "dlc": [
+    "Nemesis"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_supremacy",
+   "file": "common/tradition_categories/00_supremacy.txt",
+   "name": "Supremacy",
+   "desc": "The future of this galaxy belongs to those who are strong enough to seize it.",
+   "traditions": [
+    "tr_supremacy_master_shipwrights",
+    "tr_supremacy_fleet_logistical_corps",
+    "tr_supremacy_overwhelming_force",
+    "tr_supremacy_war_games",
+    "tr_supremacy_great_game"
+   ],
+   "adoption_bonus": "tr_supremacy_adopt",
+   "finish_bonus": "tr_supremacy_finish",
+   "tree_template": "tree_21_11",
+   "potential": null,
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_synchronicity",
+   "file": "common/tradition_categories/00_synchronicity.txt",
+   "name": "Synchronicity",
+   "desc": "Unity of mind begets unity of purpose. We must strive for synchronized action in all endeavors.",
+   "traditions": [
+    "tr_synchronicity_cloned_organs",
+    "tr_synchronicity_kinship_gestalt",
+    "tr_synchronicity_integrated_preservation",
+    "tr_synchronicity_harmonious_directives",
+    "tr_synchronicity_collective_reasoning"
+   ],
+   "adoption_bonus": "tr_synchronicity_adopt",
+   "finish_bonus": "tr_synchronicity_finish",
+   "tree_template": "tree_21_11",
+   "potential": "is_gestalt = yes",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_versatility",
+   "file": "common/tradition_categories/00_versatility.txt",
+   "name": "Versatility",
+   "desc": "A degree of flexibility is required when operating within the parameters of an unpredictable galaxy.",
+   "traditions": [
+    "tr_versatility_universal_compatibility",
+    "tr_versatility_adaptive_programming",
+    "tr_versatility_spatial_optimization",
+    "tr_versatility_material_analysis",
+    "tr_versatility_operational_proxies"
+   ],
+   "adoption_bonus": "tr_versatility_adopt",
+   "finish_bonus": "tr_versatility_finish",
+   "tree_template": "tree_11_12",
+   "potential": "is_machine_empire = yes",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_cloning",
+   "file": "common/tradition_categories/01_cloning.txt",
+   "name": "Cloning",
+   "desc": "We will clone ourselves to success.",
+   "traditions": [
+    "tr_cloning_evolutionary_extrapolation",
+    "tr_cloning_somatic_synthesization",
+    "tr_cloning_stage_1_swap",
+    "tr_cloning_stage_3_swap",
+    "tr_cloning_stage_2_swap"
+   ],
+   "adoption_bonus": "tr_cloning_adopt",
+   "finish_bonus": "tr_cloning_finish",
+   "tree_template": "tree_12_12",
+   "potential": "has_biogenesis_dlc = yes\nis_machine_empire = no\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_psionic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n\thas_purity_ascension = yes\n\thas_mutation_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_cybernetics",
+   "file": "common/tradition_categories/01_cybernetics.txt",
+   "name": "Cybernetics",
+   "desc": "Our future lies in the fusion of [Owner.Species.GetFleshTypeCyberCreed] and machine.",
+   "traditions": [
+    "tr_cybernetics_transubstantiation_synthesis",
+    "tr_cybernetics_metabolic_reprocessing",
+    "tr_cybernetics_integrated_anatomy",
+    "tr_cybernetics_augmentation_overload",
+    "tr_cybernetics_modular_cybernetics"
+   ],
+   "adoption_bonus": "tr_cybernetics_adopt",
+   "finish_bonus": "tr_cybernetics_finish",
+   "tree_template": "tree_12_11_11",
+   "potential": "is_machine_empire = no\nis_wilderness_empire = no\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_genetic_ascension = yes\n\thas_psionic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n\thas_purity_ascension = yes\n\thas_cloning_ascension = yes\n\thas_mutation_ascension = yes\n}",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_cybernetics_assimilator",
+   "file": "common/tradition_categories/01_cybernetics_assimilator.txt",
+   "name": "Cybernetics",
+   "desc": "Our future lies in the fusion of flesh and machine.",
+   "traditions": [
+    "tr_cybernetics_assimilator_inevitable_assimilation",
+    "tr_cybernetics_assimilator_metabolic_reprocessing",
+    "tr_cybernetics_assimilator_integrated_anatomy",
+    "tr_cybernetics_assimilator_augmentation_centers",
+    "tr_cybernetics_assimilator_modular_cybernetics"
+   ],
+   "adoption_bonus": "tr_cybernetics_assimilator_adopt",
+   "finish_bonus": "tr_cybernetics_assimilator_finish",
+   "tree_template": "tree_12_11_11",
+   "potential": "has_civic = civic_machine_assimilator\nhas_synthetic_ascension = no",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tradition_genetics",
+   "file": "common/tradition_categories/01_genetics.txt",
+   "name": "Genetics",
+   "desc": "What if we could obtain genetic perfection?",
+   "traditions": [
+    "tr_genetics_resequencing",
+    "tr_genetics_creation",
+    "tr_genetics_enhanced_expression",
+    "tr_genetics_retrovirus",
+    "tr_genetics_efficient_cloning"
+   ],
+   "adoption_bonus": "tr_genetics_adopt",
+   "finish_bonus": "tr_genetics_finish",
+   "tree_template": "tree_111_11",
+   "potential": "has_biogenesis_dlc = no\nis_machine_empire = no\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_psionic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n}",
+   "possible": null,
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_modularity",
+   "file": "common/tradition_categories/01_modularity.txt",
+   "name": "Modularity",
+   "desc": "Replace that which is lesser, augment it, upgrade it, perfect it.",
+   "traditions": [
+    "tr_modularity_1",
+    "tr_modularity_2",
+    "tr_modularity_3",
+    "tr_modularity_4",
+    "tr_modularity_5"
+   ],
+   "adoption_bonus": "tr_modularity_adopt",
+   "finish_bonus": "tr_modularity_finish",
+   "tree_template": "tree_12_11_11",
+   "potential": "has_machine_age_dlc = yes\nOR = {\n\tis_machine_empire = yes\n\tis_individual_machine = yes\n}\nNOR = {\n\thas_tradition = tr_nanotech_adopt\n\thas_tradition = tr_virtuality_adopt\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_psionic_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_mutation",
+   "file": "common/tradition_categories/01_mutation.txt",
+   "name": "Mutation",
+   "desc": "We will harness mutational powers.",
+   "traditions": [
+    "tr_mutation_stage_1_swap",
+    "tr_mutation_planned_polymorphism",
+    "tr_mutation_stage_2_swap",
+    "tr_mutation_stage_3_swap",
+    "tr_mutation_unnatural_selection"
+   ],
+   "adoption_bonus": "tr_mutation_adopt",
+   "finish_bonus": "tr_mutation_finish",
+   "tree_template": "tree_12_11",
+   "potential": "has_biogenesis_dlc = yes\nis_machine_empire = no\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_psionic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n\thas_purity_ascension = yes\n\thas_cloning_ascension = yes\n\thas_country_flag = clone_army_full_potential\n}",
+   "possible": null,
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_nanotech",
+   "file": "common/tradition_categories/01_nanotech.txt",
+   "name": "Nanotech",
+   "desc": "Operating in unison, the tiniest things can topple the greatest of empires.",
+   "traditions": [
+    "tr_nanotech_1",
+    "tr_nanotech_2",
+    "tr_nanotech_3",
+    "tr_nanotech_4",
+    "tr_nanotech_5"
+   ],
+   "adoption_bonus": "tr_nanotech_adopt",
+   "finish_bonus": "tr_nanotech_finish",
+   "tree_template": "tree_11_11_21",
+   "potential": "has_machine_age_dlc = yes\nOR = {\n\tis_machine_empire = yes\n\tis_individual_machine = yes\n}\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_tradition = tr_virtuality_adopt\n\thas_tradition = tr_modularity_adopt\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_psionic_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_psionics",
+   "file": "common/tradition_categories/01_psionics.txt",
+   "name": "Psionics",
+   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] [GetNeuralSystemLoc].",
+   "traditions": [
+    "tr_psionics_psi_corps",
+    "tr_psionics_mind_readers",
+    "tr_psionics_psionic_assimilation",
+    "tr_psionics_breach_shroud",
+    "tr_psionics_shrouded_encryption"
+   ],
+   "adoption_bonus": "tr_psionics_adopt",
+   "finish_bonus": "tr_psionics_finish",
+   "tree_template": "tree_21_12",
+   "potential": "has_shroud_dlc = no\nis_gestalt = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_genetic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n\thas_purity_ascension = yes\n\thas_cloning_ascension = yes\n\thas_mutation_ascension = yes\n\thas_origin = origin_mindwardens\n}",
+   "possible": null,
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_psionics_shroud",
+   "file": "common/tradition_categories/01_psionics_shroud.txt",
+   "name": "Psionics",
+   "desc": "We shall unlock the power within the [Root.GetSpeciesAdj] [GetNeuralSystemLoc].",
+   "traditions": [
+    "tr_psionics_shroud_psi_corps",
+    "tr_psionics_shroud_great_awakening",
+    "tr_psionics_shroud_telekinesis",
+    "tr_psionics_shroud_clairvoyance",
+    "tr_psionics_shroud_psychometry"
+   ],
+   "adoption_bonus": "tr_psionics_shroud_adopt",
+   "finish_bonus": "tr_psionics_shroud_finish",
+   "tree_template": "tree_11_12_21",
+   "potential": "has_shroud_dlc = yes\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_genetic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\thas_purity_ascension = yes\n\thas_cloning_ascension = yes\n\thas_mutation_ascension = yes\n\thas_origin = origin_mindwardens\n}",
+   "possible": null,
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_purity",
+   "file": "common/tradition_categories/01_purity.txt",
+   "name": "Purity",
+   "desc": "We will know what it means to be pure.",
+   "traditions": [
+    "tr_purity_genotype_regeneration",
+    "tr_purity_exemplary_genetics",
+    "tr_purity_stage_1_swap",
+    "tr_purity_stage_2_swap",
+    "tr_purity_stage_3_swap"
+   ],
+   "adoption_bonus": "tr_purity_adopt",
+   "finish_bonus": "tr_purity_finish",
+   "tree_template": "tree_11_12",
+   "potential": "has_biogenesis_dlc = yes\nis_machine_empire = no\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_psionic_ascension = yes\n\thas_synthetic_ascension = yes\n\tis_natural_design_empire = yes\n\tis_individual_machine = yes\n\thas_cloning_ascension = yes\n\thas_country_flag = clone_army_full_potential\n\thas_mutation_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_synthetics",
+   "file": "common/tradition_categories/01_synthetics.txt",
+   "name": "Synthetics",
+   "desc": "It is the dawn of a Synthetic Age.",
+   "traditions": [
+    "tr_synthetics_maintenance_protocols",
+    "tr_synthetics_optimization_algorithms",
+    "tr_synthetics_transubstatiation_synthesis",
+    "tr_synthetics_power_systems",
+    "tr_synthetics_prefabricated_components"
+   ],
+   "adoption_bonus": "tr_synthetics_adopt",
+   "finish_bonus": "tr_synthetics_finish",
+   "tree_template": "tree_11_12",
+   "potential": "OR = {\n\tAND = {\n\t\tis_regular_empire = yes\n\t\tis_individual_machine = no\n\t}\n\tAND = {\n\t\tis_machine_empire = yes\n\t\thas_machine_age_dlc = no\n\t}\n}\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_cybernetic_ascension = yes\n\thas_genetic_ascension = yes\n\thas_psionic_ascension = yes\n\tis_natural_design_empire = yes\n\thas_purity_ascension = yes\n\thas_cloning_ascension = yes\n\thas_mutation_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_virtuality",
+   "file": "common/tradition_categories/01_virtuality.txt",
+   "name": "Virtuality",
+   "desc": "Only through the sanctified clarity of data can we attain the zenith of fundamental knowledge.",
+   "traditions": [
+    "tr_virtuality_1",
+    "tr_virtuality_2",
+    "tr_virtuality_3",
+    "tr_virtuality_4",
+    "tr_virtuality_5"
+   ],
+   "adoption_bonus": "tr_virtuality_adopt",
+   "finish_bonus": "tr_virtuality_finish",
+   "tree_template": "tree_21_12",
+   "potential": "has_machine_age_dlc = yes\nOR = {\n\tis_machine_empire = yes\n\tis_individual_machine = yes\n}\nis_entropy_drinkers_empire = no\nNOR = {\n\thas_tradition = tr_nanotech_adopt\n\thas_tradition = tr_modularity_adopt\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_psionic_ascension = yes\n}",
+   "possible": null,
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tradition_dummy",
+   "file": "common/tradition_categories/02_flexible_dummy.txt",
+   "name": null,
+   "desc": null,
+   "traditions": [
+    "tr_mutation_environmental_integration",
+    "tr_purity_heightened_attributes",
+    "tr_cloning_artificial_population",
+    "tr_mutation_somatic_subversiveness",
+    "tr_purity_imperfection_remediation",
+    "tr_cloning_biochemical_composure",
+    "tr_cloning_biochemical_composure_clones",
+    "tr_mutation_nucleotide_isolation"
+   ],
+   "adoption_bonus": "tr_cloning_genomic_growth",
+   "finish_bonus": "tr_purity_optimized_neurology",
+   "tree_template": "tree_12_11",
+   "potential": "always = no",
+   "possible": null,
+   "dlc": [],
+   "icon": null
+  }
+ ],
+ "warnings": [
+  "inline_scripts/traditions/tr_stage_3_tradition_swaps:49: inline_script traditions/tr_purity_imperfection_remediation_wilderness not found",
+  "inline_scripts/traditions/tr_stage_3_tradition_swaps:49: inline_script traditions/tr_purity_imperfection_remediation_wilderness not found",
+  "inline_scripts/traditions/tr_stage_3_tradition_swaps:49: inline_script traditions/tr_purity_imperfection_remediation_wilderness not found",
+  "common/traditions/01_purity.txt:197: inline_script traditions/tr_purity_imperfection_remediation_wilderness not found",
+  "tradition_dummy: no English name"
+ ]
+}

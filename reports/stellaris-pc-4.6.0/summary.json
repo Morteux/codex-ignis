@@ -1,0 +1,203 @@
+{
+  "rulesetId": "stellaris-pc-4.6.0",
+  "sets": {
+    "ascension_perks": {
+      "game": 50,
+      "note": "no simulator data"
+    },
+    "authorities": {
+      "simulator": 7,
+      "game": 80,
+      "matched": 7,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 0,
+      "game_only": 73
+    },
+    "buildings": {
+      "simulator": 201,
+      "game": 514,
+      "matched": 198,
+      "differing": 108,
+      "differences": 292,
+      "simulator_only": 3,
+      "game_only": 316
+    },
+    "civics": {
+      "simulator": 226,
+      "game": 292,
+      "matched": 223,
+      "differing": 30,
+      "differences": 30,
+      "simulator_only": 3,
+      "game_only": 69
+    },
+    "crisis_levels": {
+      "game": 30,
+      "note": "no simulator data"
+    },
+    "crisis_objectives": {
+      "game": 42,
+      "note": "no simulator data"
+    },
+    "crisis_paths": {
+      "game": 6,
+      "note": "no simulator data"
+    },
+    "deposits": {
+      "simulator": 67,
+      "game": 592,
+      "matched": 67,
+      "differing": 5,
+      "differences": 5,
+      "simulator_only": 0,
+      "game_only": 525
+    },
+    "designations": {
+      "simulator": 53,
+      "game": 101,
+      "matched": 44,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 9,
+      "game_only": 57
+    },
+    "districts": {
+      "simulator": 21,
+      "game": 147,
+      "matched": 14,
+      "differing": 6,
+      "differences": 18,
+      "simulator_only": 7,
+      "game_only": 133
+    },
+    "dlc": {
+      "game": 37,
+      "note": "the simulator has no DLC data yet (T3502)"
+    },
+    "economic_categories": {
+      "game": 283,
+      "note": "not modelled (the simulator applies modifiers by job and resource)"
+    },
+    "edicts": {
+      "simulator": 31,
+      "game": 183,
+      "matched": 30,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 1,
+      "game_only": 153
+    },
+    "ethics": {
+      "simulator": 17,
+      "game": 25,
+      "matched": 17,
+      "differing": 8,
+      "differences": 8,
+      "simulator_only": 0,
+      "game_only": 8
+    },
+    "events": {
+      "game": 7223,
+      "note": "no simulator data"
+    },
+    "fallen_empires": {
+      "game": 6,
+      "note": "no simulator data"
+    },
+    "jobs": {
+      "simulator": 154,
+      "game": 512,
+      "matched": 131,
+      "differing": 46,
+      "differences": 125,
+      "simulator_only": 23,
+      "game_only": 381
+    },
+    "living_standards": {
+      "game": 40,
+      "note": "audited in PLANET_SIM_GDD.md \u00a75.3; the simulator data comes with P20"
+    },
+    "megastructures": {
+      "game": 173,
+      "note": "no simulator data"
+    },
+    "menace_perks": {
+      "game": 105,
+      "note": "no simulator data"
+    },
+    "origins": {
+      "simulator": 54,
+      "game": 80,
+      "matched": 54,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 0,
+      "game_only": 26
+    },
+    "planet_classes": {
+      "simulator": 21,
+      "game": 69,
+      "matched": 18,
+      "differing": 2,
+      "differences": 2,
+      "simulator_only": 3,
+      "game_only": 51
+    },
+    "planet_modifiers": {
+      "simulator": 142,
+      "game": 70,
+      "matched": 128,
+      "differing": 1,
+      "differences": 1,
+      "simulator_only": 14,
+      "game_only": 44
+    },
+    "policies": {
+      "simulator": 19,
+      "game": 230,
+      "matched": 11,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 8,
+      "game_only": 219
+    },
+    "ship_components": {
+      "game": 1506,
+      "note": "no simulator data"
+    },
+    "species_traits": {
+      "game": 370,
+      "note": "no simulator data"
+    },
+    "static_modifiers": {
+      "game": 3305,
+      "note": "not modelled (only the planet modifiers, which have their own report)"
+    },
+    "technologies": {
+      "simulator": 3,
+      "game": 683,
+      "matched": 3,
+      "differing": 0,
+      "differences": 0,
+      "simulator_only": 0,
+      "game_only": 680
+    },
+    "tradition_categories": {
+      "game": 33,
+      "note": "no simulator data"
+    },
+    "traditions": {
+      "game": 234,
+      "note": "no simulator data"
+    },
+    "zone_slots": {
+      "game": 36,
+      "note": "not modelled"
+    },
+    "zones": {
+      "game": 148,
+      "note": "the simulator models district specializations inside its districts and body types, not as a data set"
+    }
+  }
+}

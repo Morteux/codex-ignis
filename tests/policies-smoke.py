@@ -4,7 +4,9 @@ Run from the project root:  python3 tests/policies-smoke.py
 Needs: pip install playwright && playwright install chromium
 Uses the English UI (browser locale en-US) and file:// URLs.
 PLAYWRIGHT_CHROME=/path/to/chrome uses an installed Chrome instead of Playwright's Chromium.
-BLOCK_REMOTE=1 skips the remote asset images (much faster without network).
+BLOCK_REMOTE=1 (or --block-remote) skips the remote asset images (much faster without network).
+Area names as arguments (python tests/policies-smoke.py --block-remote tech_tree bingo) run only
+those areas (the simulator areas expect the ones before them).
 
 Every area is a module of tests/smoke/ with `async def run(t)`; `t` holds the browser, the
 browser context, the simulator page and the simulator helpers of tests/smoke/common.py. The
@@ -29,14 +31,15 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch(executable_path=os.environ.get("PLAYWRIGHT_CHROME") or None, args=["--allow-file-access-from-files"])
         ctx = await browser.new_context(locale="en-US")
-        if os.environ.get("BLOCK_REMOTE"): await ctx.route("https://**/*", lambda r: r.abort())  # skip remote images (faster offline)
+        if os.environ.get("BLOCK_REMOTE") or "--block-remote" in sys.argv: await ctx.route("https://**/*", lambda r: r.abort())  # skip remote images (faster offline)
         pg = await ctx.new_page()
         errors = []
         pg.on("pageerror", lambda e: errors.append(str(e)))
         await pg.goto(URL)
         await pg.wait_for_timeout(600)
         t = SimpleNamespace(browser=browser, ctx=ctx, pg=pg, errors=errors, **vars(sim_helpers(pg)))
-        for area in AREAS:
+        only = [a for a in sys.argv[1:] if not a.startswith("--")]
+        for area in [a for a in AREAS if not only or a in only]:
             await importlib.import_module("smoke." + area).run(t)
         await browser.close()
 

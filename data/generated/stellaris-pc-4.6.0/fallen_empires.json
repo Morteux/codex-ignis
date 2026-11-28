@@ -1,0 +1,137 @@
+{
+ "set": "fallen_empires",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/fallen_empires"
+ ],
+ "count": 6,
+ "items": [
+  {
+   "id": "fallen_empire_1",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "fallen_empire_02",
+   "initializer": "fallen_1",
+   "type": "fallen_empire",
+   "authority": "auth_imperial",
+   "ethics": [
+    "ethic_fanatic_materialist"
+   ],
+   "civics": [
+    "civic_lethargic_leadership",
+    "civic_empire_in_decline"
+   ],
+   "origin": "origin_fallen_empire",
+   "species_traits": [
+    "trait_cybernetic"
+   ],
+   "weight_modifier": "base = 100\nmodifier = {\n\tfactor = 99999\n\thas_origin = origin_scion\n}",
+   "possible": null,
+   "dlc": []
+  },
+  {
+   "id": "fallen_empire_2",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "fallen_empire_01",
+   "initializer": "fallen_2",
+   "type": "fallen_empire",
+   "authority": "auth_imperial",
+   "ethics": [
+    "ethic_fanatic_spiritualist"
+   ],
+   "civics": [
+    "civic_lethargic_leadership",
+    "civic_empire_in_decline"
+   ],
+   "origin": "origin_fallen_empire",
+   "species_traits": [],
+   "weight_modifier": "base = 100\nmodifier = {\n\tfactor = 99999\n\thas_origin = origin_scion\n}",
+   "possible": null,
+   "dlc": []
+  },
+  {
+   "id": "fallen_empire_3",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "fallen_empire_03",
+   "initializer": "fallen_3",
+   "type": "fallen_empire",
+   "authority": "auth_imperial",
+   "ethics": [
+    "ethic_fanatic_xenophile"
+   ],
+   "civics": [
+    "civic_lethargic_leadership",
+    "civic_empire_in_decline"
+   ],
+   "origin": "origin_fallen_empire",
+   "species_traits": [],
+   "weight_modifier": "base = 100",
+   "possible": null,
+   "dlc": []
+  },
+  {
+   "id": "fallen_empire_4",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "fallen_empire_04",
+   "initializer": "fallen_4",
+   "type": "fallen_empire",
+   "authority": "auth_imperial",
+   "ethics": [
+    "ethic_fanatic_xenophobe"
+   ],
+   "civics": [
+    "civic_lethargic_leadership",
+    "civic_empire_in_decline"
+   ],
+   "origin": "origin_fallen_empire",
+   "species_traits": [],
+   "weight_modifier": "base = 100",
+   "possible": null,
+   "dlc": []
+  },
+  {
+   "id": "fallen_machine_empire",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "fallen_machine_empire_01",
+   "initializer": "fallen_machine",
+   "type": "fallen_empire",
+   "authority": "auth_machine_intelligence",
+   "ethics": [
+    "ethic_gestalt_consciousness"
+   ],
+   "civics": [
+    "civic_machine_remnants",
+    "civic_custodian_directives"
+   ],
+   "origin": "origin_fallen_empire",
+   "species_traits": [
+    "trait_machine_unit"
+   ],
+   "weight_modifier": "base = 100",
+   "possible": null,
+   "dlc": []
+  },
+  {
+   "id": "fallen_hive_empire",
+   "file": "common/fallen_empires/00_fallen_empire.txt",
+   "graphical_culture": "biogenesis_01_fallen_empire",
+   "initializer": "fallen_hive_last_thought",
+   "type": null,
+   "authority": null,
+   "ethics": [],
+   "civics": [],
+   "origin": null,
+   "species_traits": [
+    "trait_hive_mind"
+   ],
+   "weight_modifier": "base = 100\nmodifier = {\n\tfactor = 5\n\tcountry_uses_bio_ships = yes\n}",
+   "possible": "has_biogenesis_dlc = yes",
+   "dlc": [
+    "BioGenesis"
+   ]
+  }
+ ],
+ "warnings": [
+  "fallen_hive_empire: no ethic in create_country_effect"
+ ]
+}

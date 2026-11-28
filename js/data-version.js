@@ -174,15 +174,16 @@ export const DATA_COLLECTIONS = {
     verification: VERIFICATION.UNVERIFIED
   },
   technologies: {
-    // T3006: tech tree data (tech-tree.html), generated from the 4.5.4 game files by
+    // T3006: tech tree data (tech-tree.html), generated from the game files by
     // tools/extract/build_tech_data.py. Its own game version and tool: it does not count in the
-    // simulator's verification summary. T1406: checked against the 4.5.4 extractor output (all
-    // 679 technologies match, and the builder gives the same file byte for byte).
+    // simulator's verification summary. T2526: the current version is 4.6.0 (683 technologies,
+    // not reviewed yet); the 4.5.4 file (game-data-verified in T1406) stays selectable in
+    // js/tech-versions.js.
     tool: "tech-tree",
-    rulesetId: "stellaris-pc-4.5.4",
-    file: "js/tech-data/stellaris-pc-4.5.4.js",
-    sources: ["common/technology", "common/technology/category", "common/technology/tier", "localisation/english"].map((folder) => "game files 4.5.4: " + folder),
-    verification: VERIFICATION.GAME_DATA_VERIFIED
+    rulesetId: "stellaris-pc-4.6.0",
+    file: "js/tech-data/stellaris-pc-4.6.0.js",
+    sources: ["common/technology", "common/technology/category", "common/technology/tier", "localisation/english"].map((folder) => "game files 4.6.0: " + folder),
+    verification: VERIFICATION.UNVERIFIED
   }
 };
 

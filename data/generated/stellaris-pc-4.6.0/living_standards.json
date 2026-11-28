@@ -1,0 +1,1529 @@
+{
+ "set": "living_standards",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/species_rights/living_standards",
+  "common/pop_categories",
+  "common/traits"
+ ],
+ "count": 40,
+ "species_upkeep": [
+  {
+   "id": "trait_organic",
+   "name": "Organic",
+   "desc": "Carbon based lifeforms require a steady diet of nutrients to preserve their biological functions.",
+   "allowed_archetypes": [
+    "BIOLOGICAL",
+    "PRESAPIENT"
+   ],
+   "resources": {
+    "category": "planet_pops_traits",
+    "upkeep": [
+     {
+      "trigger": "is_phototrophic = no\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "food": 1.0
+     },
+     {
+      "trigger": "is_phototrophic = yes\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "food": 0.5
+     },
+     {
+      "trigger": "has_trait = trait_cybernetic\nis_being_purged = no\nis_sapient = yes",
+      "food": -0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "trait_lithoid",
+   "name": "Lithoid",
+   "desc": "§LThis species has a silicon based biology, and consumes minerals rather than food. They are tougher than traditional organics and have slower metabolisms, making them long lived but slow to reproduce.§!\\n",
+   "allowed_archetypes": [
+    "LITHOID",
+    "PRESAPIENT"
+   ],
+   "resources": {
+    "category": "planet_pops_traits",
+    "upkeep": [
+     {
+      "trigger": "is_phototrophic = no\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "minerals": 1.0
+     },
+     {
+      "trigger": "is_phototrophic = yes\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "minerals": 0.5
+     },
+     {
+      "trigger": "has_trait = trait_cybernetic\nis_being_purged = no\nis_sapient = yes",
+      "minerals": -0.5
+     }
+    ]
+   }
+  },
+  {
+   "id": "trait_infernal",
+   "name": "Thermophile",
+   "desc": "This species evolved tissues of metallic alloys to grow and thrive on hot planets where traditional organics would cook. These alloyed cells are slower to degrade and are replaced infrequently, delaying the onset of age-related diseases. They also conduct cold temperatures, which can threaten their health in colder climates.",
+   "allowed_archetypes": [
+    "BIOLOGICAL",
+    "PRESAPIENT"
+   ],
+   "resources": {
+    "category": "planet_pops_traits",
+    "upkeep": [
+     {
+      "trigger": "is_phototrophic = no\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "alloys": 0.25
+     },
+     {
+      "trigger": "is_phototrophic = yes\nNOT = {\n\thas_trait = trait_voidling\n}\nis_being_purged = no\nis_sapient = yes",
+      "alloys": 0.125
+     },
+     {
+      "trigger": "has_trait = trait_cybernetic\nis_being_purged = no\nis_sapient = yes",
+      "alloys": -0.125
+     }
+    ]
+   }
+  },
+  {
+   "id": "trait_machine_unit",
+   "name": "Machine",
+   "desc": "§LThis species is made up of highly advanced machines.§!\\n",
+   "allowed_archetypes": [
+    "MACHINE",
+    "ROBOT"
+   ],
+   "resources": {
+    "category": "planet_pops_traits",
+    "upkeep": [
+     {
+      "trigger": "is_being_purged = no\nis_sapient = yes",
+      "energy": 1.0
+     }
+    ]
+   }
+  },
+  {
+   "id": "trait_mechanical",
+   "name": "Mechanical",
+   "desc": "§LMechanical beings are several orders of magnitude more complex than the purpose-built automatons of old, but most possess fairly limited processing capabilities.§!\\n",
+   "allowed_archetypes": [
+    "ROBOT",
+    "MACHINE"
+   ],
+   "resources": {
+    "category": "planet_pops_traits",
+    "upkeep": [
+     {
+      "trigger": "is_being_purged = no\nis_sapient = yes",
+      "energy": 1.0
+     }
+    ]
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "living_standard_disconnected_drone",
+   "file": "common/species_rights/living_standards/00_biogenesis_living_standards.txt",
+   "name": "Protection",
+   "desc": "Pops of this species can be employed in £building£ §YAlien Zoos§!",
+   "potential": "has_biogenesis_dlc = yes\nexists = from\nis_disconnected_drone_pop = yes",
+   "allow": "has_citizenship_type = {\n\ttype = citizenship_protected_drone\n\tcountry = from\n}",
+   "ai_will_do": "factor = 0",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": [
+    "BioGenesis"
+   ]
+  },
+  {
+   "id": "living_standard_symbiotic_drone",
+   "file": "common/species_rights/living_standards/00_biogenesis_living_standards.txt",
+   "name": "Symbiosis",
+   "desc": "Pops of this species can be employed as §YWorkers§!.",
+   "potential": "has_biogenesis_dlc = yes\nexists = from\nis_disconnected_drone_pop = yes",
+   "allow": "has_citizenship_type = {\n\ttype = citizenship_symbiotic_drone\n\tcountry = from\n}",
+   "ai_will_do": "factor = 0",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": [
+    "BioGenesis"
+   ]
+  },
+  {
+   "id": "living_standard_exploited_drone",
+   "file": "common/species_rights/living_standards/00_biogenesis_living_standards.txt",
+   "name": "Exploitation",
+   "desc": "Pops can be employed as §Y[pop_cat_slave_unemployment.GetIcon] [pop_cat_slave_unemployment.GetNamePlural]§! on Colonies with a £building£ §YSlave Processing Facility§!",
+   "potential": "has_biogenesis_dlc = yes\nexists = from\nis_disconnected_drone_pop = yes",
+   "allow": "has_citizenship_type = {\n\ttype = citizenship_exploited_drone\n\tcountry = from\n}",
+   "ai_will_do": "factor = 0",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": [
+    "BioGenesis"
+   ]
+  },
+  {
+   "id": "living_standard_organic_trophy",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Mandatory Pampering",
+   "desc": "This living standard enshrines a small population of organic beings as display pieces, through relentless and unyielding pampering.\\n\\n§YPops§! have §G+40%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "pop_category_bio_trophy_consumer_goods_upkeep_add": 1.0
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "owner? = {\n\tNOT = {\n\t\thas_deficit = consumer_goods\n\t}\n}\nOR = {\n\tis_pop_category = bio_trophy\n\tis_pop_category = cruise_passenger\n}",
+     "modifier": {
+      "pop_happiness": 0.4
+     }
+    },
+    {
+     "potential": "OR = {\n\towner? = {\n\t\thas_deficit = consumer_goods\n\t}\n\tNOR = {\n\t\tis_pop_category = bio_trophy\n\t\tis_pop_category = cruise_passenger\n\t}\n}",
+     "modifier": {
+      "pop_happiness": -0.4
+     }
+    },
+    {
+     "potential": "owner? = {\n\tis_hospitality_servitor_empire = yes\n}",
+     "modifier": {
+      "pop_category_cruise_passenger_consumer_goods_upkeep_add": 1
+     }
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_machine_empire = yes\n\thas_valid_civic = civic_machine_servitor\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = species_is_not_trophy\n\thas_citizenship_type = {\n\t\ttype = citizenship_organic_trophy\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {
+    "bio_trophy": {
+     "consumer_goods": 1.0
+    }
+   },
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_chemical_bliss",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Chemical Bliss",
+   "desc": "Entertainment media is made freely available as a drug regimen induces a euphoric stupor. The Pops are happy, but useless.\\n\\nIncreases £happiness£ Pop Happiness by §G40%§! unless there is a £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "pop_bonus_workforce_mult": -0.6,
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 1.0,
+    "pop_category_workers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.1
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.4
+     }
+    }
+   ],
+   "potential": "from = {\n\thas_technology = tech_subdermal_stimulation\n\tNOT = {\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_chattel_or_domestic\n\tif = {\n\t\tlimit = {\n\t\t\thas_citizenship_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = citizenship_slavery\n\t\t\t}\n\t\t}\n\t\tNOR = {\n\t\t\thas_slavery_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = slavery_normal\n\t\t\t}\n\t\t\thas_slavery_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = slavery_domestic\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 0",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 1.0
+    },
+    "workers": {
+     "consumer_goods": 1.0
+    },
+    "civilians": {
+     "consumer_goods": 0.1
+    }
+   },
+   "political_power": {},
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.5,
+    "civilian": 0.5
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_shared_burden",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Shared Burdens",
+   "desc": "Shared Burdens ensures an equitable distribution of resources between all members of society.\\n\\n§YPops§! have §G+5%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n§YUnemployed Pops§! have normal £happiness£ §YHappiness§!.\\n\\n§Y[civilian.GetIcon] [civilian.GetNamePlural]§! produce £unity£ §YUnity§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 0.4,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.4,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.4,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.4,
+    "pop_cat_ruler_political_power": 3,
+    "pop_cat_specialist_political_power": 3,
+    "pop_cat_worker_political_power": 3,
+    "pop_cat_civilian_political_power": 3,
+    "pop_civilian_bonus_workforce_mult": 0.15
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.05
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    },
+    {
+     "potential": "is_pop_category = civilian",
+     "modifier": {
+      "pop_category_civilians_unity_produces_add": 1
+     }
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\thas_valid_civic = civic_shared_burden\n}\nis_cruise_passenger = no",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_servitude_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_robot_servitude\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 1",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 0.4
+    },
+    "specialists": {
+     "consumer_goods": 0.4
+    },
+    "workers": {
+     "consumer_goods": 0.4
+    },
+    "civilians": {
+     "consumer_goods": 0.4
+    }
+   },
+   "political_power": {
+    "ruler": 3,
+    "specialist": 3,
+    "worker": 3,
+    "civilian": 3
+   },
+   "trade": {
+    "ruler": 0.25,
+    "specialist": 0.25,
+    "worker": 0.25,
+    "civilian": 0.25
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_dystopian_society",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Dystopian Society",
+   "desc": "Dystopian Society makes the ruling class the only recipient of necessities, completely neglecting the lower classes.\\n\\n[pop_cat_ruler.GetIcon] [pop_cat_ruler.GetNamePlural] have §G+25%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n[enforcer.GetIcon] [enforcer.GetNamePlural] have §G+10%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! or £mod_planet_amenities_add£ §YAmenities§! deficit.\\n\\n[pop_cat_specialist.GetIcon] [pop_cat_specialist.GetNamePlural] and [pop_cat_worker.GetIcon] [pop_cat_worker.GetNamePlural] have §R-200%§! £happiness£ §YHappiness§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.33,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.125,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.1,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.1,
+    "planet_pops_enslaved_consumer_goods_upkeep_mult": -0.5,
+    "pop_cat_ruler_political_power": 10,
+    "pop_cat_specialist_political_power": -0.25,
+    "pop_cat_worker_political_power": -0.75,
+    "pop_cat_civilian_political_power": -1,
+    "pop_civilian_bonus_workforce_mult": -0.1
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.25
+     }
+    },
+    {
+     "potential": "is_pop_category = ruler",
+     "modifier": {
+      "pop_amenities_usage_mult": 0.45
+     }
+    },
+    {
+     "potential": "NOR = {\n\tis_pop_category = ruler\n}",
+     "modifier": {
+      "pop_happiness": -2
+     }
+    },
+    {
+     "potential": "OR = {\n\tis_pop_category = specialist\n\tis_pop_category = worker\n\tis_pop_category = civilian\n\tis_pop_category = criminal\n\tis_enslaved = yes\n}",
+     "modifier": {
+      "pop_amenities_usage_base": -1,
+      "pop_entertainer_bonus_workforce_mult": -1,
+      "pop_maintenance_drone_bonus_workforce_mult": -1
+     }
+    },
+    {
+     "potential": "OR = {\n\tAND = {\n\t\tis_unemployed = yes\n\t\tis_pop_category = ruler\n\t}\n\tAND = {\n\t\texists = owner\n\t\towner = {\n\t\t\thas_deficit = consumer_goods\n\t\t}\n\t}\n}",
+     "modifier": {
+      "pop_happiness": -0.25
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nNOT = {\n\thas_resource_slavery_type = yes\n}\nfrom = {\n\thas_valid_civic = civic_dystopian_society\n}\nis_cruise_passenger = no",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = empire_is_dystopian_society\n\tfrom = {\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_undesirables_tooltip\n\tNOR = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_purge_machine\n\t\t}\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_purge\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_greater_than_ourselves\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_balance_in_the_middle\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 1",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.33
+    },
+    "specialists": {
+     "consumer_goods": 0.125
+    },
+    "workers": {
+     "consumer_goods": 0.1
+    },
+    "civilians": {
+     "consumer_goods": 0.1
+    }
+   },
+   "political_power": {
+    "ruler": 10,
+    "specialist": -0.25,
+    "worker": -0.75,
+    "civilian": -1
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.1,
+    "worker": 0.1,
+    "civilian": 0.1
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_worker_ownership",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Employee Ownership",
+   "desc": "Employee Ownership guarantees every worker a democratic share in their enterprise. Living costs and social responsibilities are distributed evenly to all members.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.5,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.5,
+    "pop_cat_ruler_political_power": 3,
+    "pop_cat_specialist_political_power": 3,
+    "pop_cat_worker_political_power": 3,
+    "pop_cat_civilian_political_power": 3
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    },
+    {
+     "potential": "exists = owner\nowner = {\n\thas_active_tradition = tr_mercantile_worker_coop_improved_ownership\n}",
+     "modifier": {
+      "pop_happiness": 0.05,
+      "pop_bonus_workforce_mult": 0.05
+     }
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_worker_coop_empire = yes\n}\nis_cruise_passenger = no",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_servitude_tooltip\n\tNOR = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_robot_servitude\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 1",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 0.5
+    },
+    "specialists": {
+     "consumer_goods": 0.5
+    },
+    "workers": {
+     "consumer_goods": 0.5
+    },
+    "civilians": {
+     "consumer_goods": 0.5
+    }
+   },
+   "political_power": {
+    "ruler": 3,
+    "specialist": 3,
+    "worker": 3,
+    "civilian": 3
+   },
+   "trade": {
+    "ruler": 0.33,
+    "specialist": 0.33,
+    "worker": 0.33,
+    "civilian": 0.33
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_utopian",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Utopian Abundance",
+   "desc": "Utopian Abundance ensures that every member of this species has access to nearly any type of luxury conceivable.\\n\\n§YPops§! have §G+20%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n§Y[civilian.GetIcon] [civilian.GetNamePlural]§! produce £unity£ §YUnity§! and £physics£ £society£ £engineering£ §YResearch Points§!.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 1.0,
+    "pop_category_workers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_civilians_consumer_goods_upkeep_add": 1.0,
+    "pop_cat_ruler_political_power": 4,
+    "pop_cat_specialist_political_power": 4,
+    "pop_cat_worker_political_power": 4,
+    "pop_cat_civilian_political_power": 4
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.2
+     }
+    },
+    {
+     "potential": "is_pop_category = civilian",
+     "modifier": {
+      "pop_category_civilians_society_research_produces_add": 0.5,
+      "pop_category_civilians_physics_research_produces_add": 0.5,
+      "pop_category_civilians_engineering_research_produces_add": 0.5,
+      "pop_category_civilians_unity_produces_add": 0.5
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_gestalt = no\n\tNOT = {\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = empire_not_egalitarian\n\tfrom = {\n\t\tis_egalitarian = yes\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 15\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_full\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_living_standard = {\n\t\t\tcountry = from\n\t\t\ttype = living_standard_utopian\n\t\t}\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 300\n\t\t\t}\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_living_standard = {\n\t\tcountry = from\n\t\ttype = living_standard_utopian\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 200\n\t\t\t}\n\t\t}\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 1.0
+    },
+    "workers": {
+     "consumer_goods": 1.0
+    },
+    "civilians": {
+     "consumer_goods": 1.0
+    }
+   },
+   "political_power": {
+    "ruler": 4,
+    "specialist": 4,
+    "worker": 4,
+    "civilian": 4
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.5,
+    "civilian": 0.5
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_good",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Social Welfare",
+   "desc": "Social Welfare strives to improve the lives of the poorer Stratas through generous social policies.\\n\\n§YPops§! have §G+5%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n§YUnemployed Pops§! have normal £happiness£ §YHappiness§!.\\n\\n§Y[civilian.GetIcon] [civilian.GetNamePlural]§! produce £unity£ §YUnity§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.5,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.5,
+    "pop_cat_ruler_political_power": 4,
+    "pop_cat_specialist_political_power": 3,
+    "pop_cat_worker_political_power": 2,
+    "pop_cat_civilian_political_power": 2
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.05
+     }
+    },
+    {
+     "potential": "is_pop_category = civilian",
+     "modifier": {
+      "pop_category_civilians_unity_produces_add": 0.5
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_gestalt = no\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tis_cruise_passenger = yes\n}\nOR = {\n\tAND = {\n\t\tis_robotic_species = yes\n\t\tOR = {\n\t\t\tspecies_rights_robot_full_rights_check = yes\n\t\t\tfrom = {\n\t\t\t\tis_individual_machine = yes\n\t\t\t}\n\t\t}\n\t}\n\tis_robotic_species = no\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_chattel_or_domestic\n\tif = {\n\t\tlimit = {\n\t\t\thas_citizenship_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = citizenship_slavery\n\t\t\t}\n\t\t}\n\t\tNOR = {\n\t\t\thas_slavery_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = slavery_normal\n\t\t\t}\n\t\t\thas_slavery_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = slavery_domestic\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"SCORCHED_HERALDS_ONLY_INF\"\n\tif = {\n\t\tlimit = {\n\t\t\tfrom = {\n\t\t\t\tis_genocidal_infernal = yes\n\t\t\t}\n\t\t}\n\t\thas_trait = trait_infernal\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 5\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_full\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\tfrom = {\n\t\tNOR = {\n\t\t\tis_pacifist = yes\n\t\t\tis_egalitarian = yes\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_living_standard = {\n\t\t\tcountry = from\n\t\t\ttype = living_standard_good\n\t\t}\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 150\n\t\t\t}\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_living_standard = {\n\t\tcountry = from\n\t\ttype = living_standard_good\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 100\n\t\t\t}\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0.25\n\tfrom = {\n\t\tis_galactic_community_member = yes\n\t}\n\tOR = {\n\t\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 0.5
+    },
+    "workers": {
+     "consumer_goods": 0.5
+    },
+    "civilians": {
+     "consumer_goods": 0.5
+    }
+   },
+   "political_power": {
+    "ruler": 4,
+    "specialist": 3,
+    "worker": 2,
+    "civilian": 2
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.33,
+    "worker": 0.33,
+    "civilian": 0.33
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_academic_privilege",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Academic Privilege",
+   "desc": "Academic Privilege prioritizes the educated Population, to the general benefit of the sciences\\n\\n[pop_cat_ruler.GetIcon] [pop_cat_ruler.GetNamePlural] and [pop_cat_specialist.GetIcon] [pop_cat_specialist.GetNamePlural] have §G+15%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n    - £mod_pop_bonus_workforce_mult£ Job Efficiency for Researcher jobs: §G+10%§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 1.0,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.25,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.25,
+    "pop_cat_ruler_political_power": 6,
+    "pop_cat_specialist_political_power": 2.5,
+    "pop_cat_worker_political_power": 0.5,
+    "pop_cat_civilian_political_power": 0.5
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "researcher_jobs_bonus_workforce_mult": 0.1,
+      "pop_cat_ruler_happiness": 0.15,
+      "pop_cat_specialist_happiness": 0.15
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_gestalt = no\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = empire_not_materialist\n\tfrom = {\n\t\tis_materialist = yes\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"SCORCHED_HERALDS_ONLY_INF\"\n\tif = {\n\t\tlimit = {\n\t\t\tfrom = {\n\t\t\t\tis_genocidal_infernal = yes\n\t\t\t}\n\t\t}\n\t\thas_trait = trait_infernal\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_balance_in_the_middle\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 10\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_full\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\tNOT = {\n\t\thas_living_standard = {\n\t\t\tcountry = from\n\t\t\ttype = living_standard_academic_privilege\n\t\t}\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 300\n\t\t\t}\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0\n\thas_living_standard = {\n\t\tcountry = from\n\t\ttype = living_standard_academic_privilege\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_monthly_income = {\n\t\t\t\tresource = minerals\n\t\t\t\tvalue > 200\n\t\t\t}\n\t\t}\n\t}\n}\nmodifier = {\n\tfactor = 0.25\n\tfrom = {\n\t\tis_galactic_community_member = yes\n\t}\n\tOR = {\n\t\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\t\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 1.0
+    },
+    "workers": {
+     "consumer_goods": 0.25
+    },
+    "civilians": {
+     "consumer_goods": 0.25
+    }
+   },
+   "political_power": {
+    "ruler": 6,
+    "specialist": 2.5,
+    "worker": 0.5,
+    "civilian": 0.5
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.2,
+    "civilian": 0.2
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_normal",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Decent Conditions",
+   "desc": "Decent Conditions ensures that most members of the species have what they need for an acceptable quality of life\\n\\n[pop_cat_ruler.GetIcon] [pop_cat_ruler.GetNamePlural] have §G+10%§! £happiness£ §YHappiness§! and [pop_cat_specialist.GetIcon] [pop_cat_specialist.GetNamePlural] have §G+5%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.5,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.25,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.25,
+    "pop_cat_ruler_political_power": 5.0,
+    "pop_cat_specialist_political_power": 2.5,
+    "pop_cat_worker_political_power": 1.5,
+    "pop_cat_civilian_political_power": 1.5
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.1,
+      "pop_cat_specialist_happiness": 0.05
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nNOT = {\n\thas_resource_slavery_type = yes\n}\nfrom = {\n\tis_gestalt = no\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"SCORCHED_HERALDS_ONLY_INF\"\n\tif = {\n\t\tlimit = {\n\t\t\tfrom = {\n\t\t\t\tis_genocidal_infernal = yes\n\t\t\t}\n\t\t}\n\t\thas_trait = trait_infernal\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_balance_in_the_middle\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 1\nmodifier = {\n\tfactor = 0.5\n\tfrom = {\n\t\tis_galactic_community_member = yes\n\t}\n\tOR = {\n\t\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\t\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 0.5
+    },
+    "workers": {
+     "consumer_goods": 0.25
+    },
+    "civilians": {
+     "consumer_goods": 0.25
+    }
+   },
+   "political_power": {
+    "ruler": 5.0,
+    "specialist": 2.5,
+    "worker": 1.5,
+    "civilian": 1.5
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.33,
+    "worker": 0.2,
+    "civilian": 0.2
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_stratified",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Stratified Economy",
+   "desc": "Stratified Economy prioritizes the ruling classes at the expense of the impoverished masses.\\n\\n[pop_cat_ruler.GetIcon] [pop_cat_ruler.GetNamePlural] have §G+15%§! £happiness£ §YHappiness§! and [pop_cat_specialist.GetIcon] [pop_cat_specialist.GetNamePlural] have §G+5%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n[pop_cat_worker.GetIcon] [pop_cat_worker.GetNamePlural], [pop_cat_civilian.GetIcon] [pop_cat_civilian.GetNamePlural], and [pop_cat_slave_unemployment.GetIcon] [pop_cat_slave_unemployment.GetNamePlural] have §R-10%§! £happiness£ §YHappiness§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.0,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.5,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.1,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.1,
+    "pop_cat_ruler_political_power": 8,
+    "pop_cat_specialist_political_power": 1.25,
+    "pop_cat_worker_political_power": -0.25,
+    "pop_cat_civilian_political_power": -0.25
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.15,
+      "pop_cat_specialist_happiness": 0.05
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "pop_cat_worker_happiness": -0.1,
+      "pop_cat_civilian_happiness": -0.1,
+      "pop_slave_happiness": -0.1
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_gestalt = no\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = empire_not_authoritarian\n\tfrom = {\n\t\tis_authoritarian = yes\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_not_battle_thralls\n\tif = {\n\t\tlimit = {\n\t\t\thas_citizenship_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = citizenship_slavery\n\t\t\t}\n\t\t}\n\t\thas_slavery_type = {\n\t\t\tcountry = from\n\t\t\ttype = slavery_military\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_greater_than_ourselves\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_balance_in_the_middle\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 5\nmodifier = {\n\tfactor = 0.2\n\tfrom = {\n\t\tis_galactic_community_member = yes\n\t}\n\tOR = {\n\t\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\t\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\t\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.0
+    },
+    "specialists": {
+     "consumer_goods": 0.5
+    },
+    "workers": {
+     "consumer_goods": 0.1
+    },
+    "civilians": {
+     "consumer_goods": 0.1
+    }
+   },
+   "political_power": {
+    "ruler": 8,
+    "specialist": 1.25,
+    "worker": -0.25,
+    "civilian": -0.25
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.33,
+    "worker": 0.1,
+    "civilian": 0.1
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_subsistence",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Basic Subsistence",
+   "desc": "Basic Subsistence offers only the most essential of goods to the Pops of this species.\\n\\n§YPops§! have §R-20%§! £happiness£ §YHappiness§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.25,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.05,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.05,
+    "pop_cat_ruler_political_power": 9.5,
+    "pop_cat_worker_political_power": -0.5,
+    "pop_cat_civilian_political_power": -1
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "pop_happiness": -0.2
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nNOT = {\n\thas_resource_slavery_type = yes\n}\nfrom = {\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nOR = {\n\tfrom = {\n\t\tis_gestalt = no\n\t}\n\thas_citizenship_type = {\n\t\ttype = citizenship_slavery\n\t\tcountry = from\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = MUST_BE_SLAVES_LIMITED_OR_DISPLACEMENT\n\tOR = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_limited\n\t\t\tcountry = from\n\t\t}\n\t\tAND = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_displacement\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "in_breach_of": "{\n\tkey = resolution_greatergood_five_year_plans\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_greater_than_ourselves\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_balance_in_the_middle\n}\n{\n\ttrigger = {\n\t\tis_gestalt = no\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 10\nmodifier = {\n\tfactor = 0\n\tfrom = {\n\t\tis_xenophobe = no\n\t\tis_gestalt = no\n\t}\n}\nmodifier = {\n\tfactor = 0.1\n\tfrom = {\n\t\tis_galactic_community_member = yes\n\t}\n\tOR = {\n\t\tis_active_resolution = \"resolution_greatergood_five_year_plans\"\n\t\tis_active_resolution = \"resolution_greatergood_greater_than_ourselves\"\n\t\tis_active_resolution = \"resolution_greatergood_balance_in_the_middle\"\n\t\tis_active_resolution = \"resolution_greatergood_universal_prosperity_mandate\"\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 0.5
+    },
+    "specialists": {
+     "consumer_goods": 0.25
+    },
+    "workers": {
+     "consumer_goods": 0.05
+    },
+    "civilians": {
+     "consumer_goods": 0.05
+    }
+   },
+   "political_power": {
+    "ruler": 9.5,
+    "worker": -0.5,
+    "civilian": -1
+   },
+   "trade": {
+    "ruler": 0.33,
+    "specialist": 0.2,
+    "worker": 0.1,
+    "civilian": 0.1
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_livestock",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Livestock",
+   "desc": "£pop£ §HLivestock Pops§! cannot be employed to produce resources, but are instead kept around to increase the £food£ §HFood§! supply.\\n\\nInstead, Lithoid Livestock produce £minerals£ §HMinerals§! and Thermophile Livestock produce £alloys£ §HAlloys§!.\\n\\nLivestock can be kept in §HAlien Zoos§! to provide £mod_planet_amenities_add£ §YAmenities§!.",
+   "potential": "exists = from\nhas_citizenship_type = {\n\tcountry = from\n\ttype = citizenship_slavery\n}\nhas_slavery_type = {\n\tcountry = from\n\ttype = slavery_livestock\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = species_is_not_livestock\n\thas_slavery_type = {\n\t\tcountry = from\n\t\ttype = slavery_livestock\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_matrix",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Grid Amalgamation",
+   "desc": "A long-term alternative to Chemical Processing, where enough of the organic population survives the process to continue to power our energy grid indefinitely.",
+   "potential": "exists = from\nhas_citizenship_type = {\n\tcountry = from\n\ttype = citizenship_slavery\n}\nhas_slavery_type = {\n\tcountry = from\n\ttype = slavery_matrix\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = species_is_not_matrix\n\thas_slavery_type = {\n\t\tcountry = from\n\t\ttype = slavery_matrix\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_matrix_guided_sapience",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Sapient Specimens",
+   "desc": "£pop£ §HSpecimen Pops§! cannot be employed to produce resources, but are instead kept around to produce £unity£ §YUnity§! and reduce housing usage.",
+   "potential": "exists = from\nhas_citizenship_type = {\n\tcountry = from\n\ttype = citizenship_slavery\n}\nhas_slavery_type = {\n\tcountry = from\n\ttype = slavery_matrix_guided_sapience\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = species_is_not_matrix_guided_sapience\n\thas_slavery_type = {\n\t\tcountry = from\n\t\ttype = slavery_matrix_guided_sapience\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_servitude",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Servitude",
+   "desc": "These machines are held in absolute servitude by their organic masters, and can be used or discarded at their whim.",
+   "potential": "exists = from\nfrom = {\n\tis_gestalt = no\n}\nOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nis_cruise_passenger = no",
+   "allow": "custom_tooltip = {\n\tfail_text = requires_servitude\n\thas_citizenship_type = {\n\t\ttype = citizenship_robot_servitude\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 0",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_hive_mind",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Drone",
+   "desc": "While it may have little use for luxuries, a drone population still requires a great deal of resources to sustain itself.",
+   "potential": "exists = from\nfrom = {\n\thas_ethic = ethic_gestalt_consciousness\n}\nOR = {\n\tNOT = {\n\t\thas_trait = trait_mechanical\n\t}\n\tNOT = {\n\t\tfrom = {\n\t\t\thas_origin = origin_shroud_forged\n\t\t}\n\t}\n}\nis_cruise_passenger = no",
+   "allow": "if = {\n\tlimit = {\n\t\tfrom = {\n\t\t\tis_hive_empire = yes\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = species_is_not_hive\n\t\thas_trait = trait_hive_mind\n\t}\n}\nelse_if = {\n\tlimit = {\n\t\tfrom = {\n\t\t\tis_machine_empire = yes\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = species_is_not_machine\n\t\tOR = {\n\t\t\thas_trait = trait_machine_unit\n\t\t\thas_trait = trait_mechanical\n\t\t\tAND = {\n\t\t\t\tfrom = {\n\t\t\t\t\tOR = {\n\t\t\t\t\t\thas_civic = civic_machine_assimilator\n\t\t\t\t\t\thas_ascension_perk = ap_mechromancy\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\thas_trait = trait_cybernetic\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 1",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_decadent",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Decadent Lifestyle",
+   "desc": "Decadent Lifestyle prioritizes more resources and luxuries for privileged members of society.\\n\\n§YPops§! have §G+20%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.\\n\\n§Y[civilian.GetIcon] [civilian.GetNamePlural]§! provide £mod_logistic_growth_mult£ §YPop Growth (or Assembly) Speed§! scaling with their percentage of the £colony£ Colony population. This requires free £housing£ Housing and £mod_planet_amenities_add£ §YAmenities§!, and no £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.33,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.66,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.33,
+    "pop_category_civilians_consumer_goods_upkeep_add": 1.33,
+    "pop_amenities_usage_base": 0.5,
+    "pop_cat_ruler_political_power": 7,
+    "pop_cat_specialist_political_power": 2
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}\nis_pop_category = civilian",
+     "modifier": {
+      "pop_amenities_usage_base": 0.5
+     },
+     "key": "job_fe_hedonist_plural"
+    },
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.2,
+      "pop_cat_specialist_happiness": 0.2,
+      "pop_cat_worker_happiness": 0.2,
+      "pop_cat_civilian_happiness": 0.2
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\tis_pleasure_seeker_empire = yes\n}\nfrom = {\n\tNOR = {\n\t\thas_valid_civic = civic_shared_burden\n\t\tis_worker_coop_empire = yes\n\t\thas_valid_civic = civic_dystopian_society\n\t}\n}\nOR = {\n\tfrom = {\n\t\tis_gestalt = no\n\t}\n\thas_citizenship_type = {\n\t\ttype = citizenship_slavery\n\t\tcountry = from\n\t}\n}\nNOR = {\n\thas_trait = trait_hive_mind\n\tAND = {\n\t\tfrom = {\n\t\t\tis_individual_machine = no\n\t\t}\n\t\thas_trait = trait_machine_unit\n\t}\n\tis_shackled_robot_species_rights = yes\n\tis_cruise_passenger = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = is_slaves_tooltip\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_slavery\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = is_purged_not_neutered\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge_machine\n\t\t\t\t}\n\t\t\t\thas_citizenship_type = {\n\t\t\t\t\tcountry = from\n\t\t\t\t\ttype = citizenship_purge\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tOR = {\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_neutering\n\t\t\t}\n\t\t\thas_purge_type = {\n\t\t\t\tcountry = from\n\t\t\t\ttype = purge_cosmogenesis_lathe_resettle\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 10",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.33
+    },
+    "specialists": {
+     "consumer_goods": 0.66
+    },
+    "workers": {
+     "consumer_goods": 0.33
+    },
+    "civilians": {
+     "consumer_goods": 1.33
+    }
+   },
+   "political_power": {
+    "ruler": 7,
+    "specialist": 2
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.5,
+    "civilian": 0.5
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_protected",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Protected",
+   "desc": "These units are protected by the collective, even though they are not a part of it. The §HMachine Intelligence§! can make great use of their unique skills, but their additional needs may increase over time.",
+   "pop_group_modifier": {
+    "pop_category_drones_consumer_goods_upkeep_add": 0.5
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "exists = owner\nowner = {\n\tOR = {\n\t\tany_situation = {\n\t\t\tis_situation_type = situation_shroud_forged\n\t\t\tsituation_progress >= 1800\n\t\t}\n\t\thas_country_flag = finish_shroud_forged_liberation_flag\n\t}\n}",
+     "modifier": {
+      "pop_category_drones_consumer_goods_upkeep_add": 0.5
+     }
+    }
+   ],
+   "potential": "exists = from\nfrom = {\n\thas_authority = auth_machine_intelligence\n\thas_origin = origin_shroud_forged\n}\nexists = this\nhas_citizenship_type = {\n\tcountry = from\n\ttype = citizenship_shroud_touched\n}\nis_cruise_passenger = no",
+   "allow": "",
+   "ai_will_do": "factor = 10",
+   "pop_upkeep": {
+    "drones": {
+     "consumer_goods": 0.5
+    }
+   },
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_defect_filtering",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Defect Filtering",
+   "desc": "Defect Filtering ensures that weaknesses are identified and discarded at the earliest opportunity, in the interest of a higher quality society overall.\\n\\n§Y£pops£ Pops§! have §G+5%§! £happiness£ §YHappiness§! and §G+10%§! £mod_pop_bonus_workforce_mult£ Job Efficiency, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "defect_filtering_pop_group_modifier": 1
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.05,
+      "pop_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "potential": "from? = {\n\tis_warmongers_empire = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 10",
+   "_text": "modifier = {\n\tfounder_species_growth_mult = -0.1\n}",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.2,
+    "civilian": 0.2
+   },
+   "dlc": []
+  },
+  {
+   "id": "living_standard_none",
+   "file": "common/species_rights/living_standards/00_living_standards.txt",
+   "name": "Non-Existent",
+   "desc": "This species is in the process of being purged, and Pops from it will have no Upkeep cost.",
+   "potential": "is_cruise_crew = no\nis_cruise_passenger = no",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = species_is_neutered_displaced\n\tOR = {\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_purge_machine\n\t\t}\n\t\thas_citizenship_type = {\n\t\t\tcountry = from\n\t\t\ttype = citizenship_purge\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 10",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_cruise_passenger",
+   "file": "common/species_rights/living_standards/00_nomads_living_standards.txt",
+   "name": "All Inclusive",
+   "desc": "This living standard ensures that no needs go unsatisfied and no whim ignored.\\n\\n§YPops§! have §G+20%§! £happiness£ §YHappiness§!, unless there is a £consumer_goods£ §YConsumer Goods§! deficit.",
+   "pop_group_modifier": {
+    "pop_category_cruise_passenger_consumer_goods_upkeep_add": 1,
+    "pop_cat_cruise_passenger_political_power": 14,
+    "pop_cat_cruise_passenger_unemployment_political_power": 9
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_happiness": 0.2
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {}
+    }
+   ],
+   "potential": "has_nomads_dlc = yes\nexists = from\nfrom = {\n\thas_origin = origin_forever_cruise\n\tNOT = {\n\t\thas_valid_civic = civic_machine_servitor\n\t}\n}\nhas_citizenship_type = {\n\ttype = citizenship_cruise_passenger\n\tcountry = from\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {
+    "cruise_passenger": {
+     "consumer_goods": 1
+    }
+   },
+   "political_power": {
+    "cruise_passenger": 14,
+    "cruise_passenger_unemployment": 9
+   },
+   "trade": {
+    "cruise_passenger_display": 0.5,
+    "cruise_passenger": 0.5,
+    "cruise_passenger_unemployment": 0.5
+   },
+   "dlc": [
+    "Nomads"
+   ]
+  },
+  {
+   "id": "living_standard_cruise_economy_passenger",
+   "file": "common/species_rights/living_standards/00_nomads_living_standards.txt",
+   "name": "Package Deal",
+   "desc": "Sign up for the tour of a lifetime and see the stars.\\n\\n§R£pop£ §YPops§! cannot work First Class Passenger Jobs.§!",
+   "pop_group_modifier": {
+    "pop_category_cruise_passenger_consumer_goods_upkeep_add": 0.75,
+    "pop_cat_cruise_passenger_political_power": 9,
+    "pop_cat_cruise_passenger_unemployment_political_power": 9
+   },
+   "potential": "has_nomads_dlc = yes\nexists = from\nfrom = {\n\thas_origin = origin_forever_cruise\n\tNOT = {\n\t\thas_valid_civic = civic_machine_servitor\n\t}\n}\nhas_citizenship_type = {\n\ttype = citizenship_cruise_passenger\n\tcountry = from\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {
+    "cruise_passenger": {
+     "consumer_goods": 0.75
+    }
+   },
+   "political_power": {
+    "cruise_passenger": 9,
+    "cruise_passenger_unemployment": 9
+   },
+   "trade": {
+    "cruise_passenger_display": 0.25,
+    "cruise_passenger": 0.25,
+    "cruise_passenger_unemployment": 0.25
+   },
+   "dlc": [
+    "Nomads"
+   ]
+  },
+  {
+   "id": "living_standard_deassimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Hive Dissociation",
+   "desc": "This species is undergoing a difficult physiological separation from a Hive Mind.",
+   "pop_group_modifier": {},
+   "potential": "exists = from\nhas_trait = trait_hive_mind\nfrom = {\n\tNOT = {\n\t\thas_ethic = ethic_gestalt_consciousness\n\t}\n\tcan_perform_genetic_assimilation = yes\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_ego_assimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Identity Sublimation",
+   "desc": "This species is becoming one with the unified mind.",
+   "pop_group_modifier": {
+    "pop_happiness": -0.5
+   },
+   "potential": "has_psionic_species_trait = no\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tis_hive_empire = yes\n\tcan_perform_genetic_assimilation = yes\n\tNOT = {\n\t\thas_civic = civic_hive_devouring_swarm\n\t}\n\tNOT = {\n\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = yes\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_ego_assimilation_psionic",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Identity Sublimation",
+   "desc": "This species is becoming one with the unified mind.\\n\\n§RDue to the destruction of the individual ego, any Psionic traits will be removed.§!",
+   "pop_group_modifier": {
+    "pop_happiness": -0.5
+   },
+   "potential": "has_psionic_species_trait = yes\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tis_hive_empire = yes\n\tcan_perform_genetic_assimilation = yes\n\tNOT = {\n\t\thas_civic = civic_hive_devouring_swarm\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = yes\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_cyborg_ego_assimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Identity Sublimation",
+   "desc": "This species is becoming one with the unified mind.",
+   "pop_group_modifier": {
+    "pop_happiness": -0.5
+   },
+   "potential": "has_psionic_species_trait = no\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tOR = {\n\t\tAND = {\n\t\t\tis_hive_empire = yes\n\t\t\tOR = {\n\t\t\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t\t\t\tAND = {\n\t\t\t\t\thas_origin = origin_nomadic_purger\n\t\t\t\t\toverlord? = {\n\t\t\t\t\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tNOT = {\n\t\t\t\thas_civic = civic_hive_devouring_swarm\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\tis_machine_empire = yes\n\t\t\thas_valid_civic = civic_machine_assimilator\n\t\t\tprev = {\n\t\t\t\tNOT = {\n\t\t\t\t\thas_trait = trait_cybernetic\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = yes\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_cyborg_ego_assimilation_psionic",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Identity Sublimation",
+   "desc": "This species is becoming one with the unified mind.\\n\\n§RDue to the destruction of the individual ego, any Psionic traits will be removed.§!",
+   "pop_group_modifier": {
+    "pop_happiness": -0.5
+   },
+   "potential": "has_psionic_species_trait = yes\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tOR = {\n\t\tAND = {\n\t\t\tis_hive_empire = yes\n\t\t\tOR = {\n\t\t\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t\t\t\tAND = {\n\t\t\t\t\thas_origin = origin_nomadic_purger\n\t\t\t\t\toverlord? = {\n\t\t\t\t\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tNOT = {\n\t\t\t\thas_civic = civic_hive_devouring_swarm\n\t\t\t}\n\t\t}\n\t\tAND = {\n\t\t\tis_machine_empire = yes\n\t\t\thas_valid_civic = civic_machine_assimilator\n\t\t\tprev = {\n\t\t\t\tNOT = {\n\t\t\t\t\thas_trait = trait_cybernetic\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "in_breach_of": "{\n\ttrigger = {\n\t\tis_gestalt = yes\n\t}\n\tkey = resolution_greatergood_universal_prosperity_mandate\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_tech_assimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Transubstantiation Synthesis",
+   "desc": "This species is melding with the machine.",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "exists = from\nfrom = {\n\tOR = {\n\t\tAND = {\n\t\t\tOR = {\n\t\t\t\tis_machine_empire = yes\n\t\t\t\tis_individual_machine = yes\n\t\t\t}\n\t\t\tprev = {\n\t\t\t\tOR = {\n\t\t\t\t\thas_trait = trait_mechanical\n\t\t\t\t\thas_trait = trait_machine_unit\n\t\t\t\t\thas_trait = trait_cybernetic\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\thas_country_flag = synth_assimilation\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_cyborg_assimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Transubstantiation Synthesis",
+   "desc": "This species is melding with the machine.",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "has_psionic_species_trait = no\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tAND = {\n\t\tis_hive_empire = no\n\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_cyborg_assimilation_psionic",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Transubstantiation Synthesis",
+   "desc": "This species is melding with the machine.\\n\\n§RDue to incompatibility with Cybernetic implants, any Psionic traits will be removed.§!",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "has_psionic_species_trait = yes\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n}\nexists = from\nfrom = {\n\tAND = {\n\t\tis_hive_empire = no\n\t\thas_tradition = tr_cybernetics_transubstantiation_synthesis\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_psi_assimilation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Transcendent Awakening",
+   "desc": "This species is awakening to its psionic potential.",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "NOT = {\n\thas_trait = trait_cybernetic\n}\nexists = from\nfrom = {\n\tOR = {\n\t\thas_tradition = tr_psionics_psionic_assimilation\n\t\thas_tradition = tr_psionics_shroud_great_awakening\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}\nif = {\n\tlimit = {\n\t\tfrom = {\n\t\t\thas_civic = civic_machine_assimilator\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = ASSIMILATORS_ORGANIC_NO_ASSIMILATE\n\t\tis_organic_species = no\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_psi_assimilation_cyborg",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Transcendent Awakening",
+   "desc": "This species is awakening to its psionic potential.\\n\\n§RTo achieve purity of spirit and body, all Cybernetic traits will be removed.§!",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "has_trait = trait_cybernetic\nexists = from\nfrom = {\n\tOR = {\n\t\thas_tradition = tr_psionics_psionic_assimilation\n\t\thas_tradition = tr_psionics_shroud_great_awakening\n\t}\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": []
+  },
+  {
+   "id": "living_standard_shroud_inoculation",
+   "file": "common/species_rights/living_standards/01_assimilation_living_standards.txt",
+   "name": "Shroud Inoculation",
+   "desc": "This species is being inoculated against the harmful effects of psi-radiation.\\n\\n§RTo prevent further harm, any Psionic traits will be removed.§!",
+   "pop_group_modifier": {
+    "pop_happiness": -0.25
+   },
+   "potential": "has_shroud_dlc = yes\nhas_psionic_species_trait = yes\nNOR = {\n\thas_trait = trait_mechanical\n\thas_trait = trait_machine_unit\n\thas_trait = trait_hive_mind\n}\nexists = from\nfrom = {\n\thas_modifier = destroyers_of_the_lost_modifier\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_BE_ASSIMILATING\n\thas_citizenship_type = {\n\t\ttype = citizenship_assimilation\n\t\tcountry = from\n\t}\n}",
+   "ai_will_do": "factor = 100",
+   "pop_upkeep": {},
+   "political_power": {},
+   "trade": {},
+   "dlc": [
+    "Shadows of the Shroud"
+   ]
+  },
+  {
+   "id": "living_standard_native_supremacy",
+   "file": "common/species_rights/living_standards/02_forceofwill_living_standards.txt",
+   "name": "Native Supremacy",
+   "desc": "Native Supremacy ensures elevated resources and political power for one species above all others.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1.5,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.75,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.5,
+    "pop_cat_ruler_political_power": 10,
+    "pop_cat_specialist_political_power": 5,
+    "pop_cat_worker_political_power": 3,
+    "pop_cat_civilian_political_power": 3,
+    "pop_bonus_workforce_mult": 0.1,
+    "bonus_pop_growth": 0.1
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.2,
+      "pop_cat_specialist_happiness": 0.2,
+      "pop_cat_worker_happiness": 0.2,
+      "pop_cat_civilian_happiness": 0.2,
+      "pop_happiness": 0.1
+     }
+    }
+   ],
+   "potential": "has_force_of_will_dlc = yes\nfrom? = {\n\thas_ethic = ethic_absolute_xenophobe\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = too_alien\n\tis_same_species = from.species\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 10",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1.5
+    },
+    "specialists": {
+     "consumer_goods": 0.75
+    },
+    "workers": {
+     "consumer_goods": 0.5
+    },
+    "civilians": {
+     "consumer_goods": 0.5
+    }
+   },
+   "political_power": {
+    "ruler": 10,
+    "specialist": 5,
+    "worker": 3,
+    "civilian": 3
+   },
+   "trade": {
+    "ruler": 0.75,
+    "specialist": 0.5,
+    "worker": 0.4,
+    "civilian": 0.4
+   },
+   "dlc": [
+    "Willpower"
+   ]
+  },
+  {
+   "id": "living_standard_crushing",
+   "file": "common/species_rights/living_standards/02_forceofwill_living_standards.txt",
+   "name": "Crushing",
+   "desc": "Crushing pushes our workers and slaves to their physical limits. Not all will survive.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 1,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.3,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.05,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.05,
+    "pop_cat_ruler_political_power": 8,
+    "pop_cat_specialist_political_power": 1.25,
+    "pop_cat_worker_political_power": -0.25,
+    "pop_cat_civilian_political_power": -0.25,
+    "pop_cat_worker_bonus_workforce_mult": 0.25,
+    "pop_slave_bonus_workforce_mult": 0.25
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "NAND = {\n\texists = owner\n\towner = {\n\t\thas_deficit = consumer_goods\n\t}\n}",
+     "modifier": {
+      "pop_cat_ruler_happiness": 0.2,
+      "pop_cat_specialist_happiness": 0.05,
+      "pop_cat_worker_happiness": -0.1,
+      "pop_cat_civilian_happiness": -0.1,
+      "pop_slave_happiness": -0.1
+     }
+    }
+   ],
+   "potential": "has_force_of_will_dlc = yes\nfrom? = {\n\thas_ethic = ethic_absolute_authoritarian\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "ai_will_do": "factor = 10",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 1
+    },
+    "specialists": {
+     "consumer_goods": 0.3
+    },
+    "workers": {
+     "consumer_goods": 0.05
+    },
+    "civilians": {
+     "consumer_goods": 0.05
+    }
+   },
+   "political_power": {
+    "ruler": 8,
+    "specialist": 1.25,
+    "worker": -0.25,
+    "civilian": -0.25
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.33,
+    "worker": 0.1,
+    "civilian": 0.1
+   },
+   "dlc": [
+    "Willpower"
+   ]
+  },
+  {
+   "id": "living_standard_united_effort",
+   "file": "common/species_rights/living_standards/02_forceofwill_living_standards.txt",
+   "name": "United Effort",
+   "desc": "United Effort ensures that every member of this species works their hardest for the common good, from the upper echelons to the rank and file.\\n\\nJob Efficiency for [pop_cat_ruler.GetIcon] [pop_cat_ruler.GetNamePlural] and [pop_cat_worker.GetIcon] [pop_cat_worker.GetNamePlural]: §G+[From.GetUnitedEffortWorkforceValue]%§!",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.5,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.5,
+    "pop_cat_ruler_happiness": 0.2,
+    "pop_cat_specialist_happiness": 0.2,
+    "pop_cat_worker_happiness": 0.2,
+    "pop_cat_ruler_political_power": 4,
+    "pop_cat_specialist_political_power": 4,
+    "pop_cat_worker_political_power": 4
+   },
+   "triggered_pop_group_modifier": [
+    {
+     "potential": "exists = owner",
+     "modifier": {
+      "pop_cat_worker_bonus_workforce_mult": 0.05,
+      "pop_cat_ruler_bonus_workforce_mult": 0.05,
+      "_text": "mult = owner.value:tenet_tier_as_exponent_of_factor|FACTOR|2|TENET_KEY|tenet_participation|"
+     }
+    }
+   ],
+   "potential": "has_force_of_will_dlc = yes\nfrom? = {\n\tis_gestalt = no\n\thas_active_tenet = tenet_participation\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 0.5
+    },
+    "specialists": {
+     "consumer_goods": 0.5
+    },
+    "workers": {
+     "consumer_goods": 0.5
+    }
+   },
+   "political_power": {
+    "ruler": 4,
+    "specialist": 4,
+    "worker": 4
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.5,
+    "worker": 0.5,
+    "civilian": 0.5
+   },
+   "dlc": [
+    "Willpower"
+   ]
+  },
+  {
+   "id": "living_standard_humility",
+   "file": "common/species_rights/living_standards/02_forceofwill_living_standards.txt",
+   "name": "Humility",
+   "desc": "Humility emphasizes modesty and respect in politics so that the voices of all are heard.",
+   "pop_group_modifier": {
+    "pop_category_rulers_consumer_goods_upkeep_add": 0.5,
+    "pop_category_specialists_consumer_goods_upkeep_add": 0.25,
+    "pop_category_workers_consumer_goods_upkeep_add": 0.1,
+    "pop_category_civilians_consumer_goods_upkeep_add": 0.1,
+    "pop_cat_ruler_political_power": 5,
+    "pop_cat_specialist_political_power": 2.5,
+    "pop_cat_worker_political_power": 1.5,
+    "pop_cat_civilian_political_power": 1.5
+   },
+   "potential": "has_force_of_will_dlc = yes\nfrom? = {\n\thas_active_tenet = tenet_humility\n}",
+   "allow": "hidden_trigger = {\n\texists = from\n}\ncustom_tooltip = {\n\tfail_text = SPECIES_MUST_NOT_BE_ASSIMILATING\n\tNOT = {\n\t\thas_citizenship_type = {\n\t\t\ttype = citizenship_assimilation\n\t\t\tcountry = from\n\t\t}\n\t}\n}",
+   "pop_upkeep": {
+    "rulers": {
+     "consumer_goods": 0.5
+    },
+    "specialists": {
+     "consumer_goods": 0.25
+    },
+    "workers": {
+     "consumer_goods": 0.1
+    },
+    "civilians": {
+     "consumer_goods": 0.1
+    }
+   },
+   "political_power": {
+    "ruler": 5,
+    "specialist": 2.5,
+    "worker": 1.5,
+    "civilian": 1.5
+   },
+   "trade": {
+    "ruler": 0.5,
+    "specialist": 0.33,
+    "worker": 0.2,
+    "civilian": 0.2
+   },
+   "dlc": [
+    "Willpower"
+   ]
+  }
+ ],
+ "warnings": []
+}

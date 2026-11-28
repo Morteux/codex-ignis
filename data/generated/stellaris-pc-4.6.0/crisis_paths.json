@@ -1,0 +1,150 @@
+{
+ "set": "crisis_paths",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/crisis_paths"
+ ],
+ "count": 6,
+ "items": [
+  {
+   "id": "behemoth_path",
+   "file": "common/crisis_paths/00_behemoth_paths.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "feral_insight",
+   "levels": [
+    "crisis_behemoth_level_1",
+    "crisis_behemoth_level_2",
+    "crisis_behemoth_level_3",
+    "crisis_behemoth_level_4",
+    "crisis_behemoth_level_5"
+   ],
+   "objectives": [
+    "crisobj_build_bioships",
+    "crisobj_breed_fauna",
+    "crisobj_kill_bioships",
+    "crisobj_kill_space_fauna",
+    "crisobj_cap_fauna",
+    "crisobj_build_behemoth_egg",
+    "crisobj_birth_behemoth",
+    "crisobj_behemoth_rage"
+   ]
+  },
+  {
+   "id": "cosmogenesis_path",
+   "file": "common/crisis_paths/00_cosmogenesis_paths.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "advanced_logic",
+   "levels": [
+    "crisis_cosmogenesis_level_1",
+    "crisis_cosmogenesis_level_2",
+    "crisis_cosmogenesis_level_3",
+    "crisis_cosmogenesis_level_4",
+    "crisis_cosmogenesis_level_5"
+   ],
+   "objectives": [
+    "crisobj_research_tech",
+    "crisobj_research_thesis",
+    "crisobj_have_scholarium_vassals",
+    "crisobj_neural_chips",
+    "crisobj_have_science_nexuses",
+    "crisobj_galcom_science_resolution"
+   ]
+  },
+  {
+   "id": "defender_path",
+   "file": "common/crisis_paths/00_defender_path.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "integrity",
+   "levels": [
+    "crisis_defender_level_1",
+    "crisis_defender_level_2",
+    "crisis_defender_level_3",
+    "crisis_defender_level_4",
+    "crisis_defender_level_5"
+   ],
+   "objectives": [
+    "crisobj_defensive_pacts",
+    "crisobj_federated",
+    "crisobj_not_in_aggressive_war",
+    "crisobj_galcom_activity",
+    "crisobj_destroy_crisis_ships",
+    "crisobj_destroy_crisis_countries"
+   ]
+  },
+  {
+   "id": "force_of_will_path",
+   "file": "common/crisis_paths/00_force_of_will_paths.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "willpower",
+   "levels": [
+    "crisis_force_of_will_level_1",
+    "crisis_force_of_will_level_2",
+    "crisis_force_of_will_level_3",
+    "crisis_force_of_will_level_4",
+    "crisis_force_of_will_level_5"
+   ],
+   "objectives": [
+    "crisobj_convert_pops",
+    "crisobj_vassalise_empires_forceofwill",
+    "crisobj_have_vassals_forceofwill",
+    "crisobj_positive_ideological_strength_gain",
+    "crisobj_win_ideological_war"
+   ]
+  },
+  {
+   "id": "hyperthermia_path",
+   "file": "common/crisis_paths/00_infernals_paths.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "entropy_crystals",
+   "levels": [
+    "crisis_hyperthermia_level_1",
+    "crisis_hyperthermia_level_2",
+    "crisis_hyperthermia_level_3",
+    "crisis_hyperthermia_level_4",
+    "crisis_hyperthermia_level_5"
+   ],
+   "objectives": [
+    "crisobj_own_volcanics",
+    "crisobj_create_volcanics",
+    "crisobj_own_red_stars",
+    "crisobj_create_red_stars",
+    "crisobj_planet_firestorm",
+    "crisobj_lens_beam_impact",
+    "crisobj_entropy_starbase"
+   ]
+  },
+  {
+   "id": "nemesis_path",
+   "file": "common/crisis_paths/00_nemesis_paths.txt",
+   "name": null,
+   "desc": null,
+   "crisis_currency": "menace",
+   "levels": [
+    "crisis_level_1",
+    "crisis_level_2",
+    "crisis_level_3",
+    "crisis_level_4",
+    "crisis_level_5"
+   ],
+   "objectives": [
+    "crisobj_destroy_empires",
+    "crisobj_destroy_enemy_ships",
+    "crisobj_destroy_starbases",
+    "crisobj_purge_pops",
+    "crisobj_destroy_worlds",
+    "crisobj_conquer_worlds",
+    "crisobj_vassalise_empires",
+    "crisobj_have_vassals",
+    "crisobj_perform_upsetting_operations",
+    "crisobj_be_in_breach_of_galcom_law"
+   ]
+  }
+ ],
+ "warnings": []
+}

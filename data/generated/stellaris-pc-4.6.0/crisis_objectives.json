@@ -1,0 +1,306 @@
+{
+ "set": "crisis_objectives",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/crisis_objectives"
+ ],
+ "count": 42,
+ "items": [
+  {
+   "id": "crisobj_destroy_empires",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Empires",
+   "desc": "Few things disrupt the galactic balance as much as the annihilation of entire civilizations.\\n\\nDestroy other empires to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_destroy_enemy_ships",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Enemy Ships",
+   "desc": "Destructive battle is a proven and efficient way to wreak havoc and upset balance.\\n\\nDestroy enemy ships to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_destroy_starbases",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Starbases",
+   "desc": "Starbases are the anchor points of empires. Unmoor them, and the empires are doomed to lose control.\\n\\nDestroy starbases to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_purge_pops",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Purge or Assimilate Pops",
+   "desc": "An enemy is only a threat as long as it is alive - or an enemy.\\n\\nPurge or Assimilate Pops to gain this Menace reward for each 100 Pops Purged or Assimilated.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_destroy_worlds",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Worlds",
+   "desc": "Take Scorched Earth tactics to a whole other level.\\n\\nReduce planetary surfaces to rubble using §YArmageddon Bombardment§! - or use the Colossus' §YWorld Cracker§! weapon - to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_conquer_worlds",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Conquer Worlds",
+   "desc": "Crushing the enemy's morale can be more efficient than crushing them outright.\\n\\nConquer enemy worlds to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_vassalise_empires",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Vassalize Empires",
+   "desc": "As long as they contribute rather than thwart, there is room for subjects in our dominion.\\n\\nVassalize empires to gain this Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_have_vassals",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Retain Vassals",
+   "desc": "Their obedience stands as testament to our flawless dominion.\\n\\nRetain Vassals to gain this §Yannual§! Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_perform_upsetting_operations",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Perform Disruptive Operations",
+   "desc": "Hurting our enemies from the inside has proven to be an excellent complement to traditional force projection.\\n\\nPerform certain disruptive Operations to gain this Menace Reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_be_in_breach_of_galcom_law",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Be In Breach of Galactic Community Law",
+   "desc": "The audacity of that pathetic bunch of feeble bureaucrats - we will not submit!\\n\\nBe §YIn Breach§! of Galactic Community law to gain this §Yannual§! Menace reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_neural_chips",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Employ Neural Chips",
+   "desc": "The scale of our research is such that sacrifices must be made to accommodate it.\\n\\nUse pops as §YNeural Chips§! in the §YSynaptic Lathe§! to gain Advanced Logic.\\n\\nThe output of §YNeural Chips§! scales up with the number of pops on the §YSynaptic Lathe§! and can be further boosted through districts and buildings.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_research_tech",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Research New Technologies",
+   "desc": "With every new discovery, no matter how small, we gain insights into the inner workings of reality.\\n\\nResearch technologies to gain this Advanced Logic reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_research_thesis",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Research Applied Infinity Theses",
+   "desc": "Large-scale experiments to alter the rules that govern the behavior of reality will yield precious data.\\n\\nResearch these rare technologies to gain this Advanced Logic reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_have_scholarium_vassals",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Retain Scholarium Vassals",
+   "desc": "Research-focused subjects can help us in our quest for absolute knowledge.\\n\\nRetain §YScholarium Vassals§! to gain this §Yannual§! Advanced Logic reward.",
+   "potential": "has_overlord_dlc = yes"
+  },
+  {
+   "id": "crisobj_have_science_nexuses",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Control Science Nexuses",
+   "desc": "Located far from any gravitational anomaly, this state-of-the-art research facility is used to ascertain unspoiled spacetime data.\\n\\nControl fully upgraded §YScience Nexus§! megastructures to gain this §Yannual§! Advanced Logic reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_galcom_science_resolution",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Secure Galactic Community Support",
+   "desc": "Convincing the members of the Galactic Community that our research is essential would go a long way toward fulfilling our plans.\\n\\nMake the §YGalactic Community§! adopt Unchained Knowledge §YResolutions§! to gain this §Yannual§! Advanced Logic reward.",
+   "potential": "has_federations_dlc = yes"
+  },
+  {
+   "id": "crisobj_build_bioships",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Build Biological Ships",
+   "desc": "Having mastered the cultivation of biological ships, we now refine and expand these processes. This ongoing symbiosis yields ever-greater perks, enhancing our fleets and bolstering our dominion over the living cosmos.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_breed_fauna",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Breed Space Fauna",
+   "desc": "Having mastered the breeding of Space Fauna, we now refine and expand these processes. This ongoing symbiosis yields ever-greater perks, enhancing our fleets and bolstering our dominion over the living cosmos.",
+   "potential": "is_homicidal = no\nhas_grand_archive_dlc = yes"
+  },
+  {
+   "id": "crisobj_kill_bioships",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Biological Ships",
+   "desc": "Enemy biological ships interfere with our biological dominance. We must act decisively, destroying them to neutralize their threat to our supremacy.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_kill_space_fauna",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Kill Space Fauna",
+   "desc": "Hostile Space Fauna threatens our biological dominance. We must act decisively, destroying them to neutralize their threat to our supremacy.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_cap_fauna",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Capture Space Fauna",
+   "desc": "Untamed Space Fauna act as rogue elements, posing a unique challenge. We must act decisively, capturing these entities to exploit their potential in order to ensure our supremacy.",
+   "potential": "is_homicidal = no\nhas_grand_archive_dlc = yes"
+  },
+  {
+   "id": "crisobj_build_behemoth_egg",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Grow Behemoth Eggs",
+   "desc": "Growing supersized zygotes is a crucial step in our elevation beyond the trivialities of planet-based life.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_birth_behemoth",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Birth Behemoths",
+   "desc": "In the vastness of space, colossal lifeforms are taking shape under our watchful guidance. These behemoths, born of our ambition and mastery, will emerge as titanic forces, reshaping the balance of power in our favor.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_behemoth_rage",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Behemoth Raging",
+   "desc": "Unleashed upon the stars, our Behemoths rampage with primal fury, leaving devastation in their wake. Their uncontrolled wrath is a testament to our power, a force of nature that answers only to our will, when we choose to exert it.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_own_volcanics",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Own Volcanic Worlds",
+   "desc": "Rising system heat fuels increased volcanism, perfect for advancing our fiery mission. We should prioritize colonizing §YVolcanic Worlds§! to stay ahead.\\n\\nProvides passive §YCrystallized Entropy§! income each year, scaling with the number of §YVolcanic World§! colonies.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_create_volcanics",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Create Volcanic Worlds",
+   "desc": "Spreading planetary volcanism across the galaxy will fuel our Entropy Crystal economy. With the right terraforming techniques, we can trigger sustained volcanic activity wherever we choose.\\n\\nTerraform a planet into a §YVolcanic World§!",
+   "potential": null
+  },
+  {
+   "id": "crisobj_own_red_stars",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Own Red Stars",
+   "desc": "We should prioritize operating in systems around red stars. Their vast emission surfaces are ideal for harvesting thermal energy.\\n\\nProvides passive §YCrystallized Entropy§! income each month, scaling with each §YClass M Star§! or §YClass M Red Giant§! in systems we occupy.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_create_red_stars",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Create Red Stars",
+   "desc": "By channeling Entropy Crystals, we can swell stars into Red Giants, fueling the rise of our blazing new empire.\\n\\nStars terraformed by §YConduits§! become §YClass M Red Giant§!",
+   "potential": null
+  },
+  {
+   "id": "crisobj_planet_firestorm",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Planetary Arson",
+   "desc": "It is time to teach our rivals the true meaning of supremacy, with a firestorm bombardment that will leave their world in ashes.\\n\\nBombard a colony with §YFirestorm§! to inflict §R100% devastation§!",
+   "potential": null
+  },
+  {
+   "id": "crisobj_lens_beam_impact",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Disrupt Ships",
+   "desc": "Cold and temperate worlds serve us no purpose. We must reshape them, by melting their surfaces into forms more suited to our needs.\\n\\nUse the £ship_xl_slot£ §YLensed Paralyzer§! weapon, equipped on §YConduits§! and §YEmber Battleships§!, to bombard enemy worlds.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_entropy_starbase",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Own Gravitational Centrifuges",
+   "desc": "Gravitational Centrifuges will help us gather more Crystallized Entropy. \\n\\nConstruct the §YGravitational Centrifuge§! starbase building in §Ymulti-star§! or §YBlack Hole§! systems.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_defensive_pacts",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Form Alliances",
+   "desc": "Power lies in unity. Our cause is just, but justice without allies cannot endure. We cannot protect a galaxy that does not want to be protected, so we must seek those who share our values and will fight beside us, heart to heart and mind to mind.\\n\\nForm §YDefensive Pacts§! or grant §YFederation Association Status§! to gain this §Yannual§! Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_federated",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Be part of a Federation",
+   "desc": "The bonds of a federation are not easily undone. Cooperation and harmony with like-minded empires will lift us all into a new age of prosperity.\\n\\nJoin or Create a §YFederation§! to gain this §Yannual§! Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_not_in_aggressive_war",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Do not take part in Wars of Aggression",
+   "desc": "We are guardians, not aggressors; only in standing firm do we earn the galaxy's trust.\\n\\nDo not §YAttack§! or join the §YAttacking§! side in any war to gain this §Ymonthly§! Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_galcom_activity",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Contribute to the Galactic Community",
+   "desc": "The Galactic Community's democratic framework is our best means of forging unity. Through it, we may become a single shield, one strong enough to withstand any threat, yet tempered by respect for the autonomy of its members.\\n\\nSupport successful §YResolutions§! in the Galactic Community to gain this Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_destroy_crisis_ships",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Destroy Crisis Ships",
+   "desc": "Strength should be our last resort, but there can be no quarter given to the enemies of the galaxy.\\n\\nDestroy ships owned by a §YCrisis§! to gain this Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_destroy_crisis_countries",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Vanquish Crises",
+   "desc": "We do not seek war, but we will not suffer those who imperil the galaxy. If forced, we will ensure these despoilers are remembered only as a lesson.\\n\\nDestroy §YCrisis Empires§! to gain this Valor reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_convert_pops",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Convert Pops",
+   "desc": "[GetFoWConvertPopsDesc]",
+   "potential": null
+  },
+  {
+   "id": "crisobj_positive_ideological_strength_gain",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Have Positive Ideological Strength Gain",
+   "desc": "If we are to spread our values to others, we must first ensure our own commitment remains unwavering.\\n\\nEvery §Ymonth§! we gain Willpower equal to our monthly §HIdeological Strength§! gain, rounded up.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_win_ideological_war",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Win an Ideological War",
+   "desc": "Powers of persuasion have their limits. Sometimes, necessary change must be imposed by force. Those who most stubbornly obstruct our progress will have to learn the hard way.\\n\\nWin an §YIdeological War§! to gain this Willpower reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_vassalise_empires_forceofwill",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Vassalize Empires",
+   "desc": "Bringing an entire society under our guidance is the surest way to ensure they reap the rewards of our [GetSpecificIdeologyType].\\n\\n§YVassalize§! empires to gain this Willpower reward.",
+   "potential": null
+  },
+  {
+   "id": "crisobj_have_vassals_forceofwill",
+   "file": "common/crisis_objectives/00_crisis_objectives.txt",
+   "name": "Retain Vassals",
+   "desc": "Retaining the loyalty of societies that rely upon our guidance is paramount. Only through prolonged association can the true benefits of [Ideology.GetIdeologicalAdj] exchange be realized.\\n\\nRetain §YVassals§! to gain this §Yannual§! Willpower reward.",
+   "potential": null
+  }
+ ],
+ "warnings": []
+}

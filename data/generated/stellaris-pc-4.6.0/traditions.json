@@ -1,0 +1,6072 @@
+{
+ "set": "traditions",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/traditions"
+ ],
+ "count": 234,
+ "items": [
+  {
+   "id": "tr_adaptability_adopt",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Adaptability Traditions",
+   "desc": null,
+   "category": "tradition_adaptability",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_wilderness_empire = no",
+     "modifier": {
+      "pop_housing_usage_mult": -0.1
+     }
+    },
+    {
+     "potential": "is_wilderness_empire = yes",
+     "modifier": {
+      "building_time_mult": -0.1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_finish",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Adaptability Traditions Finished",
+   "desc": "Increases §YColony Designation Bonuses§! for all colony types.[GetSettlingEmbarkationFinish]",
+   "category": "tradition_adaptability",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_recycling",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Enhanced Recycling",
+   "desc": "§YBuilding§! and §YDistrict§! £rare_crystals£ £exotic_gases£ £volatile_motes£ §YStrategic Resource§! §YCost§! and §YUpkeep§! reduced by §G-15%§!.",
+   "category": "tradition_adaptability",
+   "kind": "tradition",
+   "modifier": {
+    "planet_structures_volatile_motes_upkeep_mult": -0.15,
+    "planet_structures_exotic_gases_upkeep_mult": -0.15,
+    "planet_structures_rare_crystals_upkeep_mult": -0.15,
+    "planet_structures_volatile_motes_cost_mult": -0.15,
+    "planet_structures_exotic_gases_cost_mult": -0.15,
+    "planet_structures_rare_crystals_cost_mult": -0.15
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_survival_fittest",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Survival of the Fittest",
+   "desc": "§YOrbital Bombardment Damage§! reduced by §G25%§! and §YDefense Army Damage§! increased by §G+25%§!.",
+   "category": "tradition_adaptability",
+   "kind": "tradition",
+   "modifier": {
+    "planet_orbital_bombardment_damage": -0.25,
+    "army_defense_damage_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_adaptability_recycling",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_adaptability_survival_fittest_nomad",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "shipsize_civilian_arkship_tier_1_hull_mult": 0.25,
+      "shipsize_civilian_arkship_tier_2_hull_mult": 0.25,
+      "shipsize_civilian_arkship_tier_3_hull_mult": 0.25,
+      "shipsize_science_arkship_tier_1_hull_mult": 0.25,
+      "shipsize_science_arkship_tier_2_hull_mult": 0.25,
+      "shipsize_science_arkship_tier_3_hull_mult": 0.25,
+      "shipsize_military_arkship_tier_1_hull_mult": 0.25,
+      "shipsize_military_arkship_tier_2_hull_mult": 0.25,
+      "shipsize_military_arkship_tier_3_hull_mult": 0.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_environmental_diversification",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Environmental Diversification",
+   "desc": "§YHabitability§! increased by §G+10%§!.",
+   "category": "tradition_adaptability",
+   "kind": "tradition",
+   "modifier": {
+    "pop_environment_tolerance": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_adaptive_ecology",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Adaptive Ecology",
+   "desc": "All our colonies gain §Y1 Free Building Slot§!.",
+   "category": "tradition_adaptability",
+   "kind": "tradition",
+   "modifier": {
+    "planet_non_artificial_max_districts_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_adaptability_environmental_diversification",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_adaptability_adaptive_ecology_void",
+     "trigger": "OR = {\n\thas_void_dweller_origin = yes\n\tis_nomadic = yes\n}",
+     "modifier": {
+      "planet_artificial_max_districts_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_adaptability_appropriation",
+   "file": "common/traditions/00_adaptability.txt",
+   "name": "Appropriation",
+   "desc": null,
+   "category": "tradition_adaptability",
+   "kind": "tradition",
+   "modifier": {
+    "pop_resettlement_cost_mult": -0.5,
+    "planet_resettlement_unemployed_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_adaptability_environmental_diversification",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_adaptability_appropriation_egalitarian",
+     "trigger": "is_egalitarian = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_adaptability_appropriation_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "terraform_speed_mult": 0.25
+     }
+    },
+    {
+     "name": "tr_adaptability_appropriation_nomads",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "starbase_modules_cost_mult": -0.3
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_adopt",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Aptitude Traditions",
+   "desc": "Leader Starting Traits: §G+1§!",
+   "category": "tradition_aptitude",
+   "kind": "adopt",
+   "modifier": {
+    "leader_trait_selection_options_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_finish",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Aptitude Traditions Finished",
+   "desc": null,
+   "category": "tradition_aptitude",
+   "kind": "finish",
+   "modifier": {
+    "leader_initial_traits_add": 1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tevery_owned_leader = {\n\t\tlimit = {\n\t\t\tis_leader_tier = leader_tier_default\n\t\t}\n\t\tadd_trait = {\n\t\t\ttrait = random_common\n\t\t\tshow_message = yes\n\t\t}\n\t}\n\tevery_pool_leader = {\n\t\tadd_trait = {\n\t\t\ttrait = random_common\n\t\t\tshow_message = no\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_the_empire_needs_you",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "The Empire Needs You!",
+   "desc": null,
+   "category": "tradition_aptitude",
+   "kind": "tradition",
+   "modifier": {
+    "leaders_cost_mult": -0.25,
+    "country_leader_pool_size": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_aptitude_the_empire_needs_you_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_aptitude_the_empire_needs_you_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_specialist_training",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Specialist Training",
+   "desc": null,
+   "category": "tradition_aptitude",
+   "kind": "tradition",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_aptitude_specialist_training_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": {}
+    },
+    {
+     "name": "tr_aptitude_specialist_training_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_psychological_profiling",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Psychological Profiling",
+   "desc": null,
+   "category": "tradition_aptitude",
+   "kind": "tradition",
+   "modifier": {
+    "negative_traits_country": -1,
+    "country_commander_cap_add": 1,
+    "country_official_cap_add": 1,
+    "country_scientist_cap_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_aptitude_the_empire_needs_you",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_aptitude_psychological_profiling_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_aptitude_psychological_profiling_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_healthcare_program",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Healthcare Program",
+   "desc": null,
+   "category": "tradition_aptitude",
+   "kind": "tradition",
+   "modifier": {
+    "leader_lifespan_mult": 0.1,
+    "leaders_upkeep_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_aptitude_the_empire_needs_you",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_aptitude_healthcare_program_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_aptitude_healthcare_program_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_aptitude_champions_of_the_empire",
+   "file": "common/traditions/00_aptitude.txt",
+   "name": "Champions of the Empire",
+   "desc": "Per £commander£ Commander and £general£ General level\\n    Naval Capacity: §G+2§!\\nPer £official£ Official level\\n    Empire Size: §G-2§!\\nPer £scientist£ Scientist level\\n    Leader Experience Gain: §G+0.5%§!",
+   "category": "tradition_aptitude",
+   "kind": "tradition",
+   "modifier": {
+    "leader_skill_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_aptitude_specialist_training",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_aptitude_champions_of_the_empire_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_aptitude_champions_of_the_empire_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_adopt",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Archivism Traditions",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "adopt",
+   "modifier": {
+    "country_exhibit_unlocking_cost_mult": -0.5,
+    "ship_anomaly_generation_chance_mult": 0.05
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "add_research_option = tech_galactic_archivism",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_finish",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Archivism Traditions Finished",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "finish",
+   "modifier": {
+    "specimens_produces_mult": 0.15,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = grand_archive.4200\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_xeno_paleontology",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Xeno-Paleontology",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "tradition",
+   "modifier": {
+    "ship_archaeological_site_excavation_speed_mult": 0.3,
+    "ship_archaeological_site_clues_add": 1,
+    "scientist_exp_gain": 0.3
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_expert_negociation",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Expert Negotiation",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "tradition",
+   "modifier": {
+    "country_specimen_selling_cost_mult": 2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = grand_archive.4210\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_archivism_expert_negociation_homicidal",
+     "trigger": "is_homicidal = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_frontier_archaeology",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Frontier Archaeology",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "tradition",
+   "modifier": {
+    "ship_science_speed_mult": 0.35,
+    "ship_science_upkeep_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_archivism_xeno_paleontology",
+   "on_enabled": "hidden_effect = {\n\tartifact_analysis_give_xeno_geology_specimen = {\n\t\tORIGIN = tr_archivism_frontier_archaeology\n\t}\n}",
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "ship_science_speed_mult": 0.35,
+      "ship_science_upkeep_mult": -0.5
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_flawless_display",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Flawless Display",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_archivism_expert_negociation",
+   "on_enabled": "artifact_analysis_give_aesthetic_wonders_specimen = {\n\tORIGIN = tr_archivism_flawless_display\n}\nhidden_effect = {\n\tcountry_event = {\n\t\tid = grand_archive.4220\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_archivism_exhibition_specialization",
+   "file": "common/traditions/00_archivism.txt",
+   "name": "Exhibition Specialization",
+   "desc": null,
+   "category": "tradition_archivism",
+   "kind": "tradition",
+   "modifier": {
+    "country_specimen_storage_cooldown_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_archivism_expert_negociation",
+   "on_enabled": "hidden_effect = {\n\tartifact_analysis_give_historical_items_specimen = {\n\t\tORIGIN = tr_archivism_exhibition_specialization\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_adopt",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Diplomacy Traditions",
+   "desc": "§YUnlocks Edict:§! Diplomatic Grants",
+   "category": "tradition_diplomacy",
+   "kind": "adopt",
+   "modifier": {
+    "diplomacy_influence_upkeep_mult": -0.5,
+    "diplomacy_influence_cost_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_finish",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Diplomacy Traditions Finished",
+   "desc": null,
+   "category": "tradition_diplomacy",
+   "kind": "finish",
+   "modifier": {
+    "federation_experience_add": 2,
+    "diplo_weight_mult": 0.1,
+    "country_official_cap_add": 1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_force_of_will_dlc = yes\n\t}\n\tcustom_tooltip = tr_diplomacy_sow_peace_tt\n\tset_country_flag = has_sow_peace_access\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_the_federation",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "The Federation",
+   "desc": "§HUnlocks Diplomacy:§! Form Federation\\n§YEnvoy Capacity§! are increased by §G1§!.",
+   "category": "tradition_diplomacy",
+   "kind": "tradition",
+   "modifier": {
+    "cohesion_add": 1,
+    "envoys_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "if = {\n\tlimit = {\n\t\tNOT = {\n\t\t\thas_technology = tech_federation_code\n\t\t}\n\t}\n\tadd_tech_progress = {\n\t\ttech = tech_federation_code\n\t\tprogress = 0.25\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_entente_coordination",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Entente Coordination",
+   "desc": "The amount we contribute towards the §YFederation Naval Capacity§! counts for twice as much.",
+   "category": "tradition_diplomacy",
+   "kind": "tradition",
+   "modifier": {
+    "federation_naval_cap_contribution_mult": 1.0,
+    "country_border_friction_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_diplomacy_the_federation",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "federation_naval_cap_contribution_mult": 1.0,
+      "nomadic_contract_value_mult": 0.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_diplomatic_networking",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Diplomatic Networking",
+   "desc": "Embassies: §G+3§! £unity£ §YUnity§!\\nAllows Advanced Diplomatic Actions without an Embassy",
+   "category": "tradition_diplomacy",
+   "kind": "tradition",
+   "modifier": {
+    "_text": "custom_tooltip = tr_diplomacy_diplomatic_networking_desc"
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "ideological_resistance_mult": -0.05
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_diplomacy_diplomatic_networking_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_direct_diplomacy",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Direct Diplomacy",
+   "desc": null,
+   "category": "tradition_diplomacy",
+   "kind": "tradition",
+   "modifier": {
+    "country_trust_cap_add": 50,
+    "country_trust_growth": 0.33
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_diplomacy_diplomatic_networking",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_diplomacy_eminent_diplomats",
+   "file": "common/traditions/00_diplomacy.txt",
+   "name": "Eminent Diplomats",
+   "desc": "Diplomatic Acceptance: §G+5§!\\nEnvoys §YImproving Relations§! have a §G1%§! chance each month of acquiring a §YFavor§!.",
+   "category": "tradition_diplomacy",
+   "kind": "tradition",
+   "modifier": {
+    "diplo_action_acceptance_add": 5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_diplomacy_diplomatic_networking",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_diplomacy_eminent_diplomats_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_adopt",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Discovery Traditions",
+   "desc": "§YUnlocks Edict:§! Map the Stars\\n§YAnomaly Research Speed§! increased by §G+20%§!.",
+   "category": "tradition_discovery",
+   "kind": "adopt",
+   "modifier": {
+    "ship_anomaly_research_speed_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_finish",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Discovery Traditions Finished",
+   "desc": null,
+   "category": "tradition_discovery",
+   "kind": "finish",
+   "modifier": {
+    "all_technology_research_speed": 0.1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_federations_finish",
+     "trigger": "has_federations_dlc = yes",
+     "modifier": {
+      "all_technology_research_speed": 0.1,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_to_boldly_go",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "To Boldly Go",
+   "desc": "§YSurvey Speed§! increased by §G+35%§! and §YScience Ship Disengage Chance§! increased by §G+50%§!.",
+   "category": "tradition_discovery",
+   "kind": "tradition",
+   "modifier": {
+    "science_ship_survey_speed": 0.35,
+    "shipclass_science_ship_disengage_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_to_boldly_go_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_discovery_to_boldly_go_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_databank_uplinks",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Databank Uplinks",
+   "desc": "§YUnlocks Edict:§! Research Subsidies\\n§YResources Produced from Research Stations§! increased by §G20%§!.\\n§YResearch from Starbase Constructions§! increased by §G20%§!.",
+   "category": "tradition_discovery",
+   "kind": "tradition",
+   "modifier": {
+    "station_researchers_produces_mult": 0.2,
+    "starbase_constructions_physics_research_produces_mult": 0.2,
+    "starbase_constructions_society_research_produces_mult": 0.2,
+    "starbase_constructions_engineering_research_produces_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_discovery_to_boldly_go",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_databank_uplinks_nomads",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "starbase_collected_system_physics_research_mult": 0.2,
+      "starbase_collected_system_society_research_mult": 0.2,
+      "starbase_collected_system_engineering_research_mult": 0.2
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_science_division",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Science Division",
+   "desc": "§YResearch Alternatives§! increased by §Y1§! and §YScientist Level Cap§! increased by §Y2§!.",
+   "category": "tradition_discovery",
+   "kind": "tradition",
+   "modifier": {
+    "num_tech_alternatives_add": 1,
+    "country_scientist_cap_add": 1,
+    "scientist_initial_skill": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_science_division_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_discovery_science_division_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_polytechnic_education",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Polytechnic Education",
+   "desc": "§YLeader Experience Gain§! increased by §G+25%§! and §YLeader Level Cap§! increased by §Y1§!.",
+   "category": "tradition_discovery",
+   "kind": "tradition",
+   "modifier": {
+    "scientist_exp_gain": 0.2,
+    "leader_scientists_upkeep_mult": -0.15
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_discovery_science_division",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_polytechnic_education_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_discovery_polytechnic_education_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_discovery_faith_in_science",
+   "file": "common/traditions/00_discovery.txt",
+   "name": "Entertainment Labs",
+   "desc": null,
+   "category": "tradition_discovery",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_discovery_polytechnic_education",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_discovery_faith_in_science_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_discovery_faith_in_science_hive",
+     "trigger": "is_hive_empire = yes\nis_wilderness_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_discovery_faith_in_science_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_adopt",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Domestication Traditions",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "adopt",
+   "modifier": {
+    "planet_farmers_produces_mult": 0.2,
+    "starbase_shipyard_space_fauna_build_cost_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_technology = tech_alien_cloning",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_finish",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Domestication Traditions Finished",
+   "desc": "[GetDomesticationFinishEffectDesc]",
+   "category": "tradition_domestication",
+   "kind": "finish",
+   "modifier": {
+    "space_fauna_experience_gain_mult": 0.5,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "if = {\n\tlimit = {\n\t\tNOT = {\n\t\t\thas_origin = origin_primal_calling\n\t\t}\n\t}\n\tcountry_event = {\n\t\tid = grand_archive.7010\n\t\tdays = 1\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_containment_protocols",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Containment Protocols",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "tradition",
+   "modifier": {
+    "country_vivarium_max_capacity_mult": 0.25,
+    "country_capture_chance_add": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "custom_tooltip = tr_domestication_containment_protocols_tt\nset_country_flag = containment_protocols_unlocked",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_bio_repurposing",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Bio-Repurposing",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "tradition",
+   "modifier": {
+    "planet_clear_blocker_speed_mult": 0.33
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_reanimator = yes\nis_nomadic = no",
+     "modifier": {
+      "planet_clear_blocker_speed_mult": 0.33,
+      "space_fauna_reanimation_cost_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_domestication_bio_repurposing_nomads",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "ship_tiyanki_food_produces_add": 1,
+      "ship_amoeba_food_produces_add": 1,
+      "ship_crystalline_entity_minerals_produces_add": 1,
+      "ship_cutholoid_minerals_produces_add": 1,
+      "ship_voidworm_energy_produces_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_astrozoology",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Astrozoology",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "tradition",
+   "modifier": {
+    "space_fauna_monthly_increased_breeding_chance_add": 1,
+    "space_fauna_culling_reward_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_domestication_containment_protocols",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_metabolic_regulation",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Metabolic Regulation",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "tradition",
+   "modifier": {
+    "logistic_growth_mult": 0.05,
+    "starbase_shipyard_space_fauna_build_speed_mult": 0.15
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_domestication_containment_protocols\nhas_tradition = tr_domestication_bio_repurposing",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "OR = {\n\tis_machine_empire = yes\n\tis_individual_machine = yes\n}",
+     "modifier": {
+      "planet_pop_assembly_mult": 0.05,
+      "starbase_shipyard_space_fauna_build_speed_mult": 0.15
+     }
+    },
+    {
+     "name": null,
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "building_time_mult": -0.05,
+      "starbase_shipyard_space_fauna_build_speed_mult": 0.15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domestication_killer_instinct",
+   "file": "common/traditions/00_domestication.txt",
+   "name": "Killer Instinct",
+   "desc": null,
+   "category": "tradition_domestication",
+   "kind": "tradition",
+   "modifier": {
+    "space_fauna_ship_damage_mult": 0.15,
+    "space_fauna_ship_speed_mult": 0.15
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_domestication_bio_repurposing",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domestication_killer_instinct_homicidal",
+     "trigger": "is_homicidal = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_adopt",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Domination Traditions",
+   "desc": null,
+   "category": "tradition_domination",
+   "kind": "adopt",
+   "modifier": {
+    "planet_jobs_worker_produces_mult": 0.05,
+    "pop_slave_bonus_workforce_mult": 0.05,
+    "pop_slave_political_power": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_gestalt = yes",
+     "modifier": {
+      "pop_amenities_usage_no_happiness_mult": -0.15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_finish",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Domination Traditions Finished",
+   "desc": null,
+   "category": "tradition_domination",
+   "kind": "finish",
+   "modifier": {
+    "empire_size_pops_mult": -0.05,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_federations_finish",
+     "trigger": "has_federations_dlc = yes\nis_wilderness_empire = no",
+     "modifier": {
+      "empire_size_pops_mult": -0.05,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": "tr_domination_federations_wilderness_finish",
+     "trigger": "is_wilderness_empire = yes\nhas_federations_dlc = yes",
+     "modifier": {
+      "empire_size_districts_mult": -0.05,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": null,
+     "trigger": "is_wilderness_empire = yes\nhas_federations_dlc = no",
+     "modifier": {
+      "empire_size_districts_mult": -0.05,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_colonial_viceroys",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Colonial Viceroys",
+   "desc": null,
+   "category": "tradition_domination",
+   "kind": "tradition",
+   "modifier": {
+    "country_traditions_influence_produces_add": 0.5,
+    "country_official_cap_add": 1,
+    "official_initial_skill": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_colonial_viceroys_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_colonial_viceroys_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_imperious_architecture",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Imperious Architecture",
+   "desc": "£building£ §YCapital Buildings§! provide £housing£ §YHousing§! and §Y[politician.GetIcon] [politician.GetName]§! Jobs scaling with Tier.",
+   "category": "tradition_domination",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_imperious_architecture_worker_coop",
+     "trigger": "is_worker_coop_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_synaptic_extensions",
+     "trigger": "is_hive_empire = yes\nis_wilderness_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_imperious_architecture_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_modular_depot",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "empire_size_districts_mult": -0.15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_grand_council",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Privy Council",
+   "desc": null,
+   "category": "tradition_domination",
+   "kind": "tradition",
+   "modifier": {
+    "councilor_exp_gain": 0.2,
+    "country_edict_fund_add": 50
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_domination_imperious_architecture\nhas_tradition = tr_domination_colonial_viceroys",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_multi_thread",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_synaptic_network",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_judgment_corps",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Judgment Corps",
+   "desc": "§YUnlocks Edict:§! Enhanced Surveillance",
+   "category": "tradition_domination",
+   "kind": "tradition",
+   "modifier": {
+    "planet_enforcers_unity_produces_add": 1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_psi_corps_tradition = yes",
+     "modifier": {
+      "planet_telepaths_unity_produces_add": 0.5
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_trust_officers",
+     "trigger": "is_regular_empire = yes\nOR = {\n\tis_egalitarian = yes\n\tAND = {\n\t\tis_authoritarian = no\n\t\tis_xenophobe = no\n\t}\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_domination_deviancy_protocols",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "planet_crime_no_happiness_add": -10
+     }
+    },
+    {
+     "name": "tr_domination_divergence_supression",
+     "trigger": "is_hive_empire = yes",
+     "modifier": {
+      "planet_crime_no_happiness_add": -10
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_domination_workplace_motivators",
+   "file": "common/traditions/00_domination.txt",
+   "name": "Workplace Motivators",
+   "desc": "§YUnlocks Edict:§! Extended Shifts",
+   "category": "tradition_domination",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_worker_produces_mult": 0.05,
+    "pop_slave_bonus_workforce_mult": 0.05
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_domination_judgment_corps",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_domination_drone_network",
+     "trigger": "is_gestalt = yes\nis_wilderness_empire = no",
+     "modifier": {
+      "planet_jobs_simple_drone_produces_mult": 0.05
+     }
+    },
+    {
+     "name": "tr_domination_wilderness_network",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "planet_jobs_simple_drone_produces_mult": 0.05
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_adopt",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Enmity Traditions",
+   "desc": "Per Neighboring Rival:\\n    £mod_logistic_growth_mult£ Pop Growth: §G$@enmity_rival_growth|0=+%$§!\\n    £mod_planet_pop_assembly_mult£ Pop Assembly: §G$@enmity_rival_growth|0=+%$§!\\n    £mod_bonus_pop_growth_mult£ Monthly Organic Pop Growth Multiplier: §G$@enmity_rival_growth|0=+%$§!",
+   "category": "tradition_enmity",
+   "kind": "adopt",
+   "modifier": {
+    "max_rivalries": 1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "max_ideological_rivalries": 1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_force_of_will_dlc = yes\n\t}\n\tcustom_tooltip = tr_enmity_adopt_desc_willpower\n}\nelse = {\n\tcustom_tooltip = tr_enmity_adopt_desc\n}",
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_nomadic = yes\nhas_force_of_will_dlc = no",
+     "modifier": {
+      "max_rivalries": 1
+     }
+    },
+    {
+     "name": null,
+     "trigger": "is_nomadic = yes\nhas_force_of_will_dlc = yes",
+     "modifier": {
+      "max_rivalries": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_finish",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Enmity Finished",
+   "desc": "Unlocks the ['policy:diplomatic_stance:diplo_stance_animosity'] Diplomatic Stance.",
+   "category": "tradition_enmity",
+   "kind": "finish",
+   "modifier": {
+    "envoys_add": 1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_rise_to_the_occasion",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Rise to the Occasion",
+   "desc": null,
+   "category": "tradition_enmity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "country_official_cap_add": 1,
+      "country_commander_cap_add": 1,
+      "country_scientist_cap_add": 1,
+      "_text": "mult = value:rise_to_the_occasion_value"
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "has_force_of_will_dlc = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_consumate_contrarian",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Consummate Contrarian",
+   "desc": null,
+   "category": "tradition_enmity",
+   "kind": "tradition",
+   "modifier": {
+    "diplo_weight_opposing_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_enmity_rise_to_the_occasion",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "diplo_weight_opposing_mult": 0.5,
+      "ideological_resistance_mult": 0.05,
+      "ideological_resistance_vs_rival_mult": 0.05
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_match",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Match",
+   "desc": null,
+   "category": "tradition_enmity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_rival_superior_in_category = {\n\tCATEGORY = fleet\n}",
+     "modifier": {
+      "starbase_shipyard_build_speed_mult": 0.1,
+      "starbase_shipyard_build_cost_mult": -0.05
+     }
+    },
+    {
+     "potential": "is_rival_superior_in_category = {\n\tCATEGORY = technology\n}",
+     "modifier": {
+      "planet_researchers_upkeep_mult": -0.15
+     }
+    },
+    {
+     "potential": "is_rival_superior_in_category = {\n\tCATEGORY = economy\n}",
+     "modifier": {
+      "worker_and_simple_drone_cat_bonus_workforce_mult": 0.1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "has_force_of_will_dlc = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_outpace",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Outpace",
+   "desc": null,
+   "category": "tradition_enmity",
+   "kind": "tradition",
+   "modifier": {
+    "damage_vs_rival_mult": 0.15
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "damage_vs_ideological_rival_mult": 0.15
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_enmity_match",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_enmity_eclipse",
+   "file": "common/traditions/00_enmity.txt",
+   "name": "Eclipse",
+   "desc": null,
+   "category": "tradition_enmity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_enmity_outpace",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_force_of_will_dlc = yes\n\t}\n\tcustom_tooltip = tr_enmity_eclipse_effect_willpower\n}\nelse = {\n\tcustom_tooltip = tr_enmity_eclipse_effect\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_adopt",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Expansion Traditions",
+   "desc": null,
+   "category": "tradition_expansion",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_wilderness_empire = no\nis_nomadic = no",
+     "modifier": {
+      "planet_colony_development_speed_mult": 0.25,
+      "megastructures_habitat_alloys_upkeep_mult": -0.2,
+      "planet_districts_hab_alloys_upkeep_mult": -0.2
+     }
+    },
+    {
+     "potential": "is_wilderness_empire = yes\nis_nomadic = no",
+     "modifier": {
+      "terraform_speed_mult": 0.25,
+      "starbases_upkeep_mult": -0.2
+     }
+    },
+    {
+     "potential": "is_nomadic = yes",
+     "modifier": {
+      "megastructure_build_speed_mult": 0.25,
+      "starbase_waystations_upkeep_mult": -0.2,
+      "starbase_waystations_modules_upkeep_mult": -0.2
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_finish",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Expansion Traditions Finished",
+   "desc": null,
+   "category": "tradition_expansion",
+   "kind": "finish",
+   "modifier": {
+    "planet_non_artificial_max_districts_add": 1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_finish_void",
+     "trigger": "has_void_dweller_origin = yes",
+     "modifier": {
+      "habitat_max_districts_add": 1,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": "tr_expansion_finish_nomad",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "planet_artificial_max_districts_add": 1,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_colonization_fever",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Colonization Fever",
+   "desc": "New colonies start with §G100§! additional £pop£ §HPops§!.",
+   "category": "tradition_expansion",
+   "kind": "tradition",
+   "modifier": {
+    "colony_start_urban_districts_add": 1,
+    "planet_colony_development_speed_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_colonization_fever_nomad",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "empire_size_colonies_mult": -0.25,
+      "megastructures_arkships_cost_mult": -0.05,
+      "starbase_arkship_upgrades_cost_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_expansion_colonization_fever_machine",
+     "trigger": "is_machine_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_colonization_fever_hive",
+     "trigger": "is_hive_empire = yes\nis_wilderness_empire = no\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_colonization_fever_wilderness",
+     "trigger": "is_wilderness_empire = yes\nis_nomadic = no",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_a_new_life",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "A New Life",
+   "desc": "£pop£ §YPop Growth Speed§! increased by §G+10%§!.",
+   "category": "tradition_expansion",
+   "kind": "tradition",
+   "modifier": {
+    "founder_species_growth_mult": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_expansion_colonization_fever",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_a_new_life_nomad",
+     "trigger": "is_gestalt = no\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_a_new_life_machine",
+     "trigger": "is_machine_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_a_new_life_machine_nomad",
+     "trigger": "is_machine_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_a_new_life_hive",
+     "trigger": "is_hive_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_a_new_life_hive_nomad",
+     "trigger": "is_hive_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_a_new_life_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_courier_network",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Courier Network",
+   "desc": "§YEmpire Size§! from §YSystems§! and §YColonies§! is reduced by §G25%§!.",
+   "category": "tradition_expansion",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_nomadic = no",
+     "modifier": {
+      "empire_size_systems_mult": -0.15,
+      "empire_size_colonies_mult": -0.15
+     }
+    },
+    {
+     "potential": "is_nomadic = yes",
+     "modifier": {
+      "starbase_stockpile_capacity_mult": 0.25,
+      "ship_starbase_stockpile_collection_rate_mult": 0.25
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_expansion_reach_for_the_stars",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_courier_network_machine",
+     "trigger": "is_machine_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_courier_network_hive",
+     "trigger": "is_hive_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_courier_network_wilderness",
+     "trigger": "is_wilderness_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_courier_network_nomad",
+     "trigger": "is_gestalt = no\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_courier_network_machine_nomad",
+     "trigger": "is_machine_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_courier_network_hive_nomad",
+     "trigger": "is_hive_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_reach_for_the_stars",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Reach for the Stars",
+   "desc": null,
+   "category": "tradition_expansion",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_nomadic = no",
+     "modifier": {
+      "country_starbase_influence_cost_mult": -0.1
+     }
+    },
+    {
+     "potential": "is_nomadic = yes",
+     "modifier": {
+      "megastructures_waystations_cost_mult": -0.1,
+      "starbase_waystations_cost_mult": -0.1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_reach_for_the_stars_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_reach_for_the_stars_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_expansion_galactic_ambition",
+   "file": "common/traditions/00_expansion.txt",
+   "name": "Galactic Ambition",
+   "desc": "§YStation Upkeep§! reduced by §G20%§!.",
+   "category": "tradition_expansion",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_nomadic = no",
+     "modifier": {
+      "starbases_upkeep_mult": -0.2
+     }
+    },
+    {
+     "potential": "is_nomadic = yes",
+     "modifier": {
+      "country_starbase_capacity_mult": 0.5
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_expansion_reach_for_the_stars",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_expansion_galactic_ambition_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_galactic_ambition_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_expansion_galactic_ambition_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_adopt",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Harmony Traditions",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "adopt",
+   "modifier": {
+    "planet_pops_upkeep_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_finish",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Harmony Traditions Finished",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "finish",
+   "modifier": {
+    "planetary_ascension_effect_mult": 0.25,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_harmony_federations_finish",
+     "trigger": "has_federations_dlc = yes",
+     "modifier": {
+      "planetary_ascension_effect_mult": 0.25,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_the_greater_good",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "The Greater Good",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "tradition",
+   "modifier": {
+    "pop_government_ethic_attraction": 0.25,
+    "planet_crime_add": -10
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "ideological_faction_attraction_mult": 0.075
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_kinship",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Kinship",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "tradition",
+   "modifier": {
+    "empire_size_pops_mult": -0.05,
+    "refugee_attraction": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_harmony_kinship_shared_burdens",
+     "trigger": "OR = {\n\thas_valid_civic = civic_shared_burden\n\tis_worker_coop_empire = yes\n}",
+     "modifier": {
+      "leaders_upkeep_mult": -0.2,
+      "empire_size_pops_mult": -0.05,
+      "refugee_attraction": 0.2
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_utopian_dream",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Utopian Dream",
+   "desc": "£stability£ §YStability§! increased by §G5%§! on all our colonies.",
+   "category": "tradition_harmony",
+   "kind": "tradition",
+   "modifier": {
+    "planet_stability_add": 3,
+    "planetary_ascension_cost_mult": -0.1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "ideological_reach_mult": 0.05
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_harmony_the_greater_good",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_harmonious_directives",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Harmonious Directives",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "tradition",
+   "modifier": {
+    "country_edict_fund_add": 50
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_harmony_kinship\nhas_tradition = tr_harmony_mind_and_body",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_harmony_mind_and_body",
+   "file": "common/traditions/00_harmony.txt",
+   "name": "Mind and Body",
+   "desc": null,
+   "category": "tradition_harmony",
+   "kind": "tradition",
+   "modifier": {
+    "leader_lifespan_add": 10,
+    "negative_traits_country": -1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_harmony_unity_of_self",
+     "trigger": "has_origin = origin_necrophage",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_adopt",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Logistics Traditions",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "adopt",
+   "modifier": {
+    "pop_logistics_drone_bonus_workforce_mult": 0.05
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_finish",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Logistics Traditions Finished",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "finish",
+   "modifier": {
+    "country_trade_produces_mult": 0.1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_1",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Nested Coordination",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "tradition",
+   "modifier": {
+    "planet_traders_trade_produces_add": 2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_2",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Distributed Delivery Systems",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_logistics_1",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_3",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Autonomous Maintenance",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "tradition",
+   "modifier": {
+    "planet_maintenance_drones_trade_produces_add": 1,
+    "planet_structures_upkeep_mult": -0.05
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_4",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Galactic Exchange Efficiencies",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "tradition",
+   "modifier": {
+    "country_trade_fee": -0.1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes\nis_megacorp = yes",
+     "modifier": {
+      "ideological_reach_mult": 0.05
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_logistics_3",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_logistics_5",
+   "file": "common/traditions/00_logistics.txt",
+   "name": "Predictive Resupply Patterns",
+   "desc": null,
+   "category": "tradition_logistics",
+   "kind": "tradition",
+   "modifier": {
+    "ships_logistics_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_logistics_3",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_adopt",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Commerce Traditions",
+   "desc": null,
+   "category": "tradition_mercantile",
+   "kind": "adopt",
+   "modifier": {
+    "planet_traders_upkeep_mult": -0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_mercantile_nomads_adopt",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "planet_traders_upkeep_mult": -0.1,
+      "nomadic_contract_value_mult": 0.15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_finish",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Commerce Traditions Finished",
+   "desc": null,
+   "category": "tradition_mercantile",
+   "kind": "finish",
+   "modifier": {
+    "country_trade_produces_mult": 0.1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_mercantile_federations_finish",
+     "trigger": "has_federations_dlc = yes",
+     "modifier": {
+      "country_trade_produces_mult": 0.1,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_trickle_up_economics",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Trickle Up Economics",
+   "desc": "£trade£ §YTrade§! per 100 §Y[civilian.GetIcon] [civilian.GetNamePlural]§!: §G+1§!\\n£mod_planet_amenities_add£ §YAmenities§! per 100 §Y[civilian.GetIcon] [civilian.GetNamePlural]§!: §G+100§!\\n£consumer_goods£ §YConsumer Goods§! Upkeep per 100 §Y[civilian.GetIcon] [civilian.GetNamePlural]§!: §R+0.1§!",
+   "category": "tradition_mercantile",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pops_trade_produces_mult": 0.15
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_commercial_enterprise",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Commercial Enterprise",
+   "desc": "£mod_planet_amenities_add£ §YAmenities§! per 100 §Y[trader.GetIcon] [trader.GetNamePlural]§!: §G+200§!\\n£district£ §YCity Districts§! with a £zone£ §YCommercial Nexus§!, and £building£ §YTrade Buildings§!, receive additional §Y[trader.GetIcon] [trader.GetName]§! Jobs.",
+   "category": "tradition_mercantile",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_mercantile_trickle_up_economics",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_adaptive_economic_policies",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Adaptive Economic Policies",
+   "desc": "Unlocks §YConsumer Benefits§! and §YMarketplace of Ideas§! §YTrade Policies§!, which allow us to convert a portion of our £trade£ §YTrade§! into £consumer_goods£ §YConsumer Goods§! or £unity£ §YUnity§!.",
+   "category": "tradition_mercantile",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_mercantile_worker_coop_improved_ownership",
+     "trigger": "is_worker_coop_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_mercantile_trade_fleets",
+     "trigger": "has_federation = yes\nfederation = {\n\thas_federation_perk = trade_federation_passive\n}",
+     "modifier": {
+      "federation_naval_cap_contribution_mult": 0.5
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_marketplace_of_better_ideas",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Marketplace of Better Ideas",
+   "desc": null,
+   "category": "tradition_mercantile",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_trade_produces_mult": 0.1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes\nis_megacorp = yes",
+     "modifier": {
+      "ideological_reach_mult": 0.05
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_mercantile_adaptive_economic_policies",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mercantile_insider_trading",
+   "file": "common/traditions/00_mercantile.txt",
+   "name": "Insider Trading",
+   "desc": null,
+   "category": "tradition_mercantile",
+   "kind": "tradition",
+   "modifier": {
+    "country_trade_fee": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_mercantile_adaptive_economic_policies",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_adopt",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Politics Traditions",
+   "desc": "§G+1§! Envoy\\n£official£ Officials assigned to the §Y[GetGalCommunityOrGalImperium]§! now produce 0.1 £influence£ §YInfluence§! per §YSkill Level§!.",
+   "category": "tradition_politics",
+   "kind": "adopt",
+   "modifier": {
+    "envoys_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "is_galactic_community_formed = yes",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_finish",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Politics Traditions Finished",
+   "desc": "§G+10%§! £diplo_weight£ Diplomatic Weight\\nUnlocks 4 special §YResolutions§! in the §Y[GetGalCommunityOrGalImperium]§!.\\nAscension Perks Unlocked: §G+1§!",
+   "category": "tradition_politics",
+   "kind": "finish",
+   "modifier": {
+    "diplo_weight_mult": 0.1,
+    "ascension_perks_add": 1,
+    "_text": "custom_tooltip = tr_politics_finish_desc"
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_quid_pro_quo",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Quid Pro Quo",
+   "desc": "Whenever a Resolution that you supported passes, gain 1 §YFavor§! on the empire that proposed it.",
+   "category": "tradition_politics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_gravitas",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Gravitas",
+   "desc": "§G-25%§! £influence£ §YInfluence§! cost to veto or propose Resolutions\\n£official£ Officials assigned to the §Y[GetGalCommunityOrGalImperium]§! provide an additional §G2.5%§! £diplo_weight£ Diplomatic Weight per §YSkill Level§!.",
+   "category": "tradition_politics",
+   "kind": "tradition",
+   "modifier": {
+    "resolutions_cost_mult": -0.25,
+    "diplo_weight_delegate_mult": 0.025
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_national_agenda",
+   "file": "common/traditions/00_politics.txt",
+   "name": "National Agenda",
+   "desc": "Whenever a resolution you propose passes, gain 18 months worth of £unity£ §YUnity§!.",
+   "category": "tradition_politics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_politics_quid_pro_quo",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_persistent_petitioners",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Persistent Petitioners",
+   "desc": "After a resolution is passed by another empire, gain §G+25%§! £diplo_weight£ Diplomatic Weight until one of your own resolutions passes.",
+   "category": "tradition_politics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_politics_gravitas",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_politics_extraordinary_powers",
+   "file": "common/traditions/00_politics.txt",
+   "name": "Extraordinary Powers",
+   "desc": "§G-25%§! £time£ §YCooldown§! on Council Actions (Emergency Measures and Veto).",
+   "category": "tradition_politics",
+   "kind": "tradition",
+   "modifier": {
+    "veto_cooldown_mult": -0.25,
+    "emergency_measures_cooldown_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_politics_national_agenda\nhas_tradition = tr_politics_persistent_petitioners",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_adopt",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Prosperity Traditions",
+   "desc": null,
+   "category": "tradition_prosperity",
+   "kind": "adopt",
+   "modifier": {
+    "station_gatherers_produces_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_adopt_nomad",
+     "trigger": "is_nomadic = yes\nis_eager_explorer_empire = no",
+     "modifier": {
+      "arkship_harvest_resources_produces_mult": 0.1,
+      "starbase_stockpile_capacity_mult": 0.25,
+      "shipsize_nomads_constructor_stockpile_capacity_mult": 0.25
+     }
+    },
+    {
+     "name": "tr_prosperity_adopt_nomad_eager_explorer",
+     "trigger": "is_nomadic = yes\nis_eager_explorer_empire = yes",
+     "modifier": {
+      "arkship_harvest_resources_produces_mult": 0.1,
+      "starbase_stockpile_capacity_mult": 0.25,
+      "shipsize_nomads_constructor_stockpile_capacity_mult": 0.25,
+      "shipsize_nomads_engineer_vessel_stockpile_capacity_mult": 0.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_finish",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Prosperity Traditions Finished",
+   "desc": null,
+   "category": "tradition_prosperity",
+   "kind": "finish",
+   "modifier": {
+    "stations_produces_mult": 0.25,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_finish_nomad",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "arkship_harvest_resources_produces_mult": 0.15,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_sct",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Standard Construction Templates",
+   "desc": "§YBuildings§! and §YDistricts§! have their §YBuild Cost§! reduced by §G10%§! and §YBuild Speed§! increased by §G+25%§!.",
+   "category": "tradition_prosperity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_structures_cost_mult": -0.1,
+    "planet_building_build_speed_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_sct_machine",
+     "trigger": "is_nomadic = no\nOR = {\n\tis_machine_empire = yes\n\tAND = {\n\t\tis_hive_empire = yes\n\t\tis_wilderness_empire = no\n\t}\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_sct_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_sct_nomads",
+     "trigger": "is_nomadic = yes\nis_machine_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_sct_machine_nomads",
+     "trigger": "is_nomadic = yes\nis_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_administrative_operations",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Administrative Operations",
+   "desc": "§YBuilding Upkeep§! and §YDistrict Upkeep§! reduced by §G10%§!.",
+   "category": "tradition_prosperity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_structures_upkeep_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_administrative_operations_hive",
+     "trigger": "is_hive_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_administrative_operations_machine",
+     "trigger": "is_machine_empire = yes\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_administrative_operations_nomads",
+     "trigger": "is_nomadic = yes\nis_machine_empire = no\nis_hive_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_administrative_operations_machine_nomads",
+     "trigger": "is_machine_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_administrative_operations_hive_nomads",
+     "trigger": "is_hive_empire = yes\nis_nomadic = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_public_works",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Public Works Division",
+   "desc": "§YCity Districts§! provide §Y100§! additional £housing£ §YHousing§!.\\nRing World §YCity Segments§! and Ecumenopolis §YResidential Arcologies§! also provide additional £housing£ §YHousing§!.",
+   "category": "tradition_prosperity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_prosperity_sct",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_extended_hives",
+     "trigger": "is_hive_empire = yes\nhas_void_dweller_origin = no\nis_wilderness_empire = no\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_optimized_nexus",
+     "trigger": "is_machine_empire = yes\nhas_void_dweller_origin = no\nis_nomadic = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_void_works",
+     "trigger": "has_void_dweller_origin = yes",
+     "modifier": {
+      "habitat_max_districts_add": 1
+     }
+    },
+    {
+     "name": "tr_prosperity_public_works_nomads",
+     "trigger": "is_nomadic = yes",
+     "modifier": {
+      "planet_artificial_max_districts_add": 1
+     }
+    },
+    {
+     "name": "tr_prosperity_public_works_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_interstellar_franchising",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "Interstellar Franchising",
+   "desc": null,
+   "category": "tradition_prosperity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_upkeep_mult": -0.05
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes\nis_megacorp = yes",
+     "modifier": {
+      "_text": "custom_tooltip = prosperity_interstellar_franchising_effect"
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_prosperity_administrative_operations",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_efficiency_algorithms",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "planet_jobs_upkeep_mult": -0.05
+     }
+    },
+    {
+     "name": "tr_prosperity_efficiency_instincts",
+     "trigger": "is_hive_empire = yes",
+     "modifier": {
+      "planet_jobs_upkeep_mult": -0.05
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_prosperity_pursuit_of_profit",
+   "file": "common/traditions/00_prosperity.txt",
+   "name": "The Pursuit of Profit",
+   "desc": null,
+   "category": "tradition_prosperity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_produces_mult": 0.05
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_prosperity_administrative_operations",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_prosperity_creative_collectives",
+     "trigger": "is_egalitarian = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_prosperity_hive_neural_signal_boosters",
+     "trigger": "is_hive_empire = yes",
+     "modifier": {
+      "planet_jobs_produces_mult": 0.05
+     }
+    },
+    {
+     "name": "tr_prosperity_pursuit_of_profit_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "planet_jobs_produces_mult": 0.05
+     }
+    },
+    {
+     "name": "tr_prosperity_peak_performance",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "planet_jobs_produces_mult": 0.05
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_adopt",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Statecraft Traditions",
+   "desc": null,
+   "category": "tradition_statecraft",
+   "kind": "adopt",
+   "modifier": {
+    "country_edict_fund_add": 50
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_finish",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Statecraft Traditions Finished",
+   "desc": null,
+   "category": "tradition_statecraft",
+   "kind": "finish",
+   "modifier": {
+    "empire_size_mult": -0.05,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_constitutional_focus",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Constitutional Focus",
+   "desc": null,
+   "category": "tradition_statecraft",
+   "kind": "tradition",
+   "modifier": {
+    "council_agenda_progress_speed": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_statecraft_constitutional_focus_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_statecraft_constitutional_focus_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_inspiring_agendas",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Inspiring Agendas",
+   "desc": "§YUnlocks Agenda:§! Rightful Claims\\n§YUnlocks Agenda:§! Oppose the Fallen",
+   "category": "tradition_statecraft",
+   "kind": "tradition",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_statecraft_constitutional_focus",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_statecraft_inspiring_agendas_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_statecraft_inspiring_agendas_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_immutable_directives",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Immutable Directives",
+   "desc": null,
+   "category": "tradition_statecraft",
+   "kind": "tradition",
+   "modifier": {
+    "council_agenda_finishing_effect_duration_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_statecraft_inspiring_agendas",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_amongst_peers",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Amongst Peers",
+   "desc": null,
+   "category": "tradition_statecraft",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_statecraft_amongst_peers_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_statecraft_amongst_peers_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_statecraft_shared_benefits",
+   "file": "common/traditions/00_statecraft.txt",
+   "name": "Shared Benefits",
+   "desc": "Whenever an §YAgenda§! is Launched:\\n    All Councilors gain $@statecraft_amongst_peers_exp_reward|G0$ Experience per Skill Level",
+   "category": "tradition_statecraft",
+   "kind": "tradition",
+   "modifier": {
+    "councilor_skill_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_statecraft_amongst_peers",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_statecraft_shared_benefits_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_statecraft_shared_benefits_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_adopt",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Subterfuge Traditions",
+   "desc": "§YSubterfuge§!-related technologies appear at §Y5§! times the normal rate.",
+   "category": "tradition_subterfuge",
+   "kind": "adopt",
+   "modifier": {
+    "espionage_operation_cost_mult": -0.25,
+    "intel_decryption_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_finish",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Subterfuge Traditions Finished",
+   "desc": "Successful §YOperations§! refund §G50%§! of their Infiltration Level Cost.\\nAscension Perks Unlocked: §G+1§!",
+   "category": "tradition_subterfuge",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_subterfuge_cloaking_finish",
+     "trigger": "has_first_contact_dlc = yes\nhas_shroud_dlc = no",
+     "modifier": {
+      "ship_cloaking_strength_add": 1,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": "tr_subterfuge_cloaking_finish",
+     "trigger": "has_first_contact_dlc = yes\nhas_shroud_dlc = yes",
+     "modifier": {
+      "ship_cloaking_strength_add": 1,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": null,
+     "trigger": "has_first_contact_dlc = no\nhas_shroud_dlc = yes",
+     "modifier": {
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_information_security",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Information Security",
+   "desc": null,
+   "category": "tradition_subterfuge",
+   "kind": "tradition",
+   "modifier": {
+    "intel_encryption_add": 1,
+    "ship_evasion_add": 5
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_nda",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Non-Disclosure Agreement",
+   "desc": null,
+   "category": "tradition_subterfuge",
+   "kind": "tradition",
+   "modifier": {
+    "espionage_hostile_operation_difficulty_add": 1,
+    "espionage_hostile_operation_cost_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_subterfuge_information_security",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_subterfuge_nda_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_subterfuge_nda_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_operational_security",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Operational Security",
+   "desc": null,
+   "category": "tradition_subterfuge",
+   "kind": "tradition",
+   "modifier": {
+    "intel_decryption_add": 1,
+    "espionage_operation_skill_add": 2,
+    "ship_tracking_add": 10
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_subterfuge_operational_security_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_double_agents",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Double Agents",
+   "desc": null,
+   "category": "tradition_subterfuge",
+   "kind": "tradition",
+   "modifier": {
+    "envoys_add": 1,
+    "spy_network_levels_add": 10,
+    "_text": "show_only_custom_tooltip = no\ncustom_tooltip = tr_subterfuge_double_agents_effect"
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_subterfuge_information_security\nhas_tradition = tr_subterfuge_operational_security",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_subterfuge_shadow_recruits",
+   "file": "common/traditions/00_subterfuge.txt",
+   "name": "Shadow Recruits",
+   "desc": null,
+   "category": "tradition_subterfuge",
+   "kind": "tradition",
+   "modifier": {
+    "spy_network_daily_value_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_subterfuge_operational_security",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_adopt",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "Supremacy Traditions",
+   "desc": null,
+   "category": "tradition_supremacy",
+   "kind": "adopt",
+   "modifier": {
+    "country_naval_cap_add": 20,
+    "army_damage_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_finish",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "Supremacy Traditions Finished",
+   "desc": "Unlocks the §YWar Doctrines§! Policies.\\nAscension Perks Unlocked: §G+1§!",
+   "category": "tradition_supremacy",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_fleet_logistical_corps",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "Fleet Logistics Corps",
+   "desc": "§YShip Upkeep§! reduced by §G10%§! and §YNaval Capacity§! increased by §G20%§!.",
+   "category": "tradition_supremacy",
+   "kind": "tradition",
+   "modifier": {
+    "ships_upkeep_mult": -0.1,
+    "country_naval_cap_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_supremacy_fleet_logistical_corps_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_supremacy_fleet_logistical_corps_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_master_shipwrights",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "Master Shipwrights",
+   "desc": "§YShip Build Speed§! increased by §G+25%§!.",
+   "category": "tradition_supremacy",
+   "kind": "tradition",
+   "modifier": {
+    "starbase_shipyard_build_speed_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_supremacy_master_shipwrights_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_supremacy_master_shipwrights_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_war_games",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "War Games",
+   "desc": "§YFleet Command Limit§! increased by §G+20§! and §YAdmiral Level Cap§! is increased by §Y2§!.",
+   "category": "tradition_supremacy",
+   "kind": "tradition",
+   "modifier": {
+    "command_limit_mult": 0.1,
+    "country_commander_cap_add": 1,
+    "commander_initial_skill": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_supremacy_master_shipwrights\nhas_tradition = tr_supremacy_fleet_logistical_corps",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_supremacy_war_games_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_supremacy_war_games_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_overwhelming_force",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "Overwhelming Force",
+   "desc": "§YShip Fire Rate§! increased by §G+10%§! and §YOrbital Bombardment Damage§! increased by §G+20%§!.",
+   "category": "tradition_supremacy",
+   "kind": "tradition",
+   "modifier": {
+    "ship_orbital_bombardment_mult": 0.2,
+    "ship_fire_rate_mult": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_supremacy_great_game",
+   "file": "common/traditions/00_supremacy.txt",
+   "name": "The Great Game",
+   "desc": null,
+   "category": "tradition_supremacy",
+   "kind": "tradition",
+   "modifier": {
+    "ship_damage_against_starbases_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_supremacy_overwhelming_force",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_supremacy_great_game_hive",
+     "trigger": "has_valid_civic = civic_hive_devouring_swarm",
+     "modifier": null
+    },
+    {
+     "name": "tr_supremacy_great_game_machine",
+     "trigger": "has_valid_civic = civic_machine_terminator",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_adopt",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Synchronicity Traditions",
+   "desc": "Unlocks Agenda: Growth Revision\\nUnlocks Agenda: Cognitive Revision\\nUnlocks Agenda: Regulatory Revision\\nUnlocks Agenda: Legion Revision\\nPop Upkeep: §G-10%§!",
+   "category": "tradition_synchronicity",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_wilderness_empire = no",
+     "modifier": {
+      "planet_pops_upkeep_mult": -0.1
+     }
+    },
+    {
+     "potential": "is_wilderness_empire = yes",
+     "modifier": {
+      "planet_districts_upkeep_mult": -0.1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_finish",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Synchronicity Traditions Finished",
+   "desc": null,
+   "category": "tradition_synchronicity",
+   "kind": "finish",
+   "modifier": {
+    "planetary_ascension_effect_mult": 0.25,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synchronicity_machine_finish",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "planetary_ascension_effect_mult": 0.25,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_integrated_preservation",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Integrated Preservation",
+   "desc": "§Y[evaluator.GetNamePlural]§! reduce §YDeviancy§! by §G3§!\\nAutomatic Resettlement Chance: §G+30%§!",
+   "category": "tradition_synchronicity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_resettlement_unemployed_mult": 0.3
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synchronicity_instinctive_synchronization",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_kinship_gestalt",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Synchronized Agents",
+   "desc": "§YLeader Upkeep§! reduced by §G20%§!.",
+   "category": "tradition_synchronicity",
+   "kind": "tradition",
+   "modifier": {
+    "leaders_upkeep_mult": -0.2,
+    "empire_size_pops_mult": -0.05,
+    "refugee_attraction": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synchronicity_kinship_wilderness",
+     "trigger": null,
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_collective_reasoning",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Collective Reasoning",
+   "desc": null,
+   "category": "tradition_synchronicity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_stability_add": 3,
+    "planetary_ascension_cost_mult": -0.1
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_force_of_will_dlc = yes",
+     "modifier": {
+      "ideological_reach_mult": 0.05
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_synchronicity_integrated_preservation",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_harmonious_directives",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Flexible Thought Routines",
+   "desc": null,
+   "category": "tradition_synchronicity",
+   "kind": "tradition",
+   "modifier": {
+    "country_edict_fund_add": 50,
+    "restored_node_bonus_skill": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_synchronicity_kinship_gestalt\nhas_tradition = tr_synchronicity_cloned_organs",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synchronicity_harmonious_directives_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "country_edict_fund_add": 50,
+      "restored_node_bonus_skill": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synchronicity_cloned_organs",
+   "file": "common/traditions/00_synchronicity.txt",
+   "name": "Cloned Organs",
+   "desc": null,
+   "category": "tradition_synchronicity",
+   "kind": "tradition",
+   "modifier": {
+    "leader_lifespan_add": 10,
+    "negative_traits_country": -1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synchronicity_self_preservation",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_synchronicity_unity_of_mind",
+     "trigger": "has_origin = origin_necrophage",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_adopt",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Fortification Traditions",
+   "desc": null,
+   "category": "tradition_unyielding",
+   "kind": "adopt",
+   "modifier": {
+    "country_starbase_capacity_add": 2,
+    "starbase_upgrade_speed_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_finish",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Fortification Traditions Finished",
+   "desc": null,
+   "category": "tradition_unyielding",
+   "kind": "finish",
+   "modifier": {
+    "starbase_defense_platform_capacity_mult": 0.5,
+    "starbases_upkeep_mult": -0.2,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_unyielding_federations_finish",
+     "trigger": "has_federations_dlc = yes",
+     "modifier": {
+      "starbase_defense_platform_capacity_mult": 0.5,
+      "starbases_upkeep_mult": -0.2,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_resistance_is_frugal",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Resistance is Frugal",
+   "desc": "£defense_army£ §YDefense Armies§! now produce §Y0.5§! £unity£ Unity.",
+   "category": "tradition_unyielding",
+   "kind": "tradition",
+   "modifier": {
+    "army_defense_health_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_unyielding_resistance_is_frugal_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_unyielding_resistance_is_frugal_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_never_surrender",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Never Surrender",
+   "desc": null,
+   "category": "tradition_unyielding",
+   "kind": "tradition",
+   "modifier": {
+    "planet_orbital_bombardment_damage": -0.25,
+    "country_war_exhaustion_mult": -0.25,
+    "country_hostile_claim_influence_cost_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_unyielding_resistance_is_frugal",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_unyielding_never_surrender_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_bulwark_of_harmony",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Bulwark of Harmony",
+   "desc": "While in a defensive war with another empire, §YShip Build Speed§! is increased by §G+33%§!. In addition, the §YShip Fire Rate§! is increased by §G+15%§! for ships within your borders.",
+   "category": "tradition_unyielding",
+   "kind": "tradition",
+   "modifier": {
+    "starbase_defensive_war_ship_build_speed_mult": 0.33,
+    "ship_home_territory_fire_rate_mult": 0.15
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_unyielding_never_surrender",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_unyielding_bulwark_of_harmony_hive",
+     "trigger": "is_hive_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_unyielding_bulwark_of_harmony_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_defensive_zeal",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Defensive Zeal",
+   "desc": "§YStarbases§! and §YDefense Platforms§! have their §YHull Points§! and §YDamage§! increased by §G33%§!.",
+   "category": "tradition_unyielding",
+   "kind": "tradition",
+   "modifier": {
+    "shipclass_starbase_damage_mult": 0.33,
+    "shipclass_starbase_hull_mult": 0.33,
+    "shipclass_military_station_damage_mult": 0.33,
+    "shipclass_military_station_hull_mult": 0.33
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_unyielding_fortress_doctrine",
+   "file": "common/traditions/00_unyielding.txt",
+   "name": "Fortress Doctrine",
+   "desc": null,
+   "category": "tradition_unyielding",
+   "kind": "tradition",
+   "modifier": {
+    "country_starbase_capacity_add": 2,
+    "starbase_upgrade_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_unyielding_defensive_zeal",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_unyielding_fortress_doctrine_nemesis",
+     "trigger": "has_nemesis = yes\nis_gestalt = no",
+     "modifier": {
+      "country_starbase_capacity_add": 2,
+      "starbase_upgrade_cost_mult": -0.5,
+      "hostile_operation_sabotage_starbase_difficulty_add": 4
+     }
+    },
+    {
+     "name": "tr_unyielding_fortress_doctrine_hive",
+     "trigger": "has_nemesis = no\nis_hive_empire = yes",
+     "modifier": {
+      "country_starbase_capacity_add": 2,
+      "starbase_upgrade_cost_mult": -0.5
+     }
+    },
+    {
+     "name": "tr_unyielding_fortress_doctrine_hive_nemesis",
+     "trigger": "has_nemesis = yes\nis_hive_empire = yes",
+     "modifier": {
+      "country_starbase_capacity_add": 2,
+      "starbase_upgrade_cost_mult": -0.5,
+      "hostile_operation_sabotage_starbase_difficulty_add": 4
+     }
+    },
+    {
+     "name": "tr_unyielding_fortress_doctrine_machine",
+     "trigger": "has_nemesis = no\nis_machine_empire = yes",
+     "modifier": {
+      "country_starbase_capacity_add": 2,
+      "starbase_upgrade_cost_mult": -0.5
+     }
+    },
+    {
+     "name": "tr_unyielding_fortress_doctrine_machine_nemesis",
+     "trigger": "has_nemesis = yes\nis_machine_empire = yes",
+     "modifier": {
+      "country_starbase_capacity_add": 2,
+      "starbase_upgrade_cost_mult": -0.5,
+      "hostile_operation_sabotage_starbase_difficulty_add": 4
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_adopt",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Versatility Traditions",
+   "desc": null,
+   "category": "tradition_versatility",
+   "kind": "adopt",
+   "modifier": {
+    "planet_pop_assemblers_upkeep_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_finish",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Versatility Traditions Finished",
+   "desc": null,
+   "category": "tradition_versatility",
+   "kind": "finish",
+   "modifier": {
+    "planet_pop_assemblers_energy_upkeep_add": 1,
+    "planet_pop_assembly_mult": 0.1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_versatility_finish_individual_machine",
+     "trigger": "is_individual_machine = yes",
+     "modifier": {
+      "ascension_perks_add": 1,
+      "pop_amenities_usage_mult": -0.15,
+      "planet_crime_add": -15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_universal_compatibility",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Universal Compatibility",
+   "desc": null,
+   "category": "tradition_versatility",
+   "kind": "tradition",
+   "modifier": {
+    "country_synthetic_trust_cap_add": 50,
+    "envoys_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_adaptive_programming",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Adaptive Programming",
+   "desc": "§YMarket Fee§! reduced by §G10%§!.",
+   "category": "tradition_versatility",
+   "kind": "tradition",
+   "modifier": {
+    "country_trade_fee": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_versatility_universal_compatibility",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_spatial_optimization",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Spatial Optimization",
+   "desc": "£pop£ §YPop Housing Usage§! reduced by §G10%§!.",
+   "category": "tradition_versatility",
+   "kind": "tradition",
+   "modifier": {
+    "pop_amenities_usage_no_happiness_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_material_analysis",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Material Analysis",
+   "desc": "§YUpkeep§! of all £job£ §YPop Jobs§! is reduced by §G5%§!.",
+   "category": "tradition_versatility",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_upkeep_mult": -0.05
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_versatility_spatial_optimization",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_versatility_operational_proxies",
+   "file": "common/traditions/00_versatility.txt",
+   "name": "Operational Proxies",
+   "desc": null,
+   "category": "tradition_versatility",
+   "kind": "tradition",
+   "modifier": {
+    "planet_maintenance_drones_unity_produces_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_versatility_spatial_optimization",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_adopt",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Cloning Traditions",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "adopt",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_EVOLUTION\n\thas_country_flag = cloning_tradition_unlocked\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\tNOT = {\n\t\t\thas_technology = tech_cloning\n\t\t}\n\t}\n\tgive_technology = {\n\t\ttech = tech_cloning\n\t\tmessage = no\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_cloning_adopt_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_finish",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Cloning Traditions Finished",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = timeline.80\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tis_hive_empire = no\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = bio.175\n\t\t}\n\t}\n\telse = {\n\t\tcountry_event = {\n\t\t\tid = bio.190\n\t\t}\n\t}\n\tluminary_speech_effect = yes\n}",
+   "swaps": [
+    {
+     "name": "tr_cloning_finish_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_evolutionary_extrapolation",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Evolutionary Extrapolation",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "tradition",
+   "modifier": {
+    "category_biology_research_speed_mult": 0.15,
+    "planet_buildings_clone_vats_upkeep_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_somatic_synthesization",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Somatic Synthesization",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "tradition",
+   "modifier": {
+    "BIOLOGICAL_species_trait_points_add": 4,
+    "BIOLOGICAL_species_trait_picks_add": 2,
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_cloning_somatic_synthesization_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {
+      "BIOLOGICAL_species_trait_points_add": 4,
+      "BIOLOGICAL_species_trait_picks_add": 2,
+      "modify_species_cost_mult": -0.5
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_stage_1_swap",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Flexible Tradition I",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cloning_evolutionary_extrapolation",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_purity",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "empire_size_districts_mult": -0.25,
+      "empire_size_colonies_mult": -0.25
+     }
+    },
+    {
+     "name": "tr_genetic_stage_1_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "planet_pops_upkeep_mult": -0.1,
+      "pop_amenities_usage_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_cloning_genomic_growth_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_1_mutation_swap",
+     "trigger": "is_mutation_authority = no\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration",
+     "trigger": "is_mutation_authority = yes\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    },
+    {
+     "name": "tr_mutation_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = no\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = yes\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_stage_2_swap",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Flexible Tradition II",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cloning_somatic_synthesization",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_2_purity_swap",
+     "trigger": "OR = {\n\thas_country_flag = genetic_ascension_stage_2_purity\n\tis_wilderness_empire = yes\n}",
+     "modifier": {
+      "leader_initial_traits_add": 1,
+      "leader_starting_age_mult": -0.25,
+      "negative_traits_country": -1
+     }
+    },
+    {
+     "name": "tr_genetic_stage_2_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = no\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential\nis_cloning_authority = no",
+     "modifier": {}
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = yes\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones_clone_army",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nis_cloning_authority = yes\nhas_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_2_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_mutation",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    },
+    {
+     "name": "tr_mutation_somatic_subversiveness_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_stage_3_swap",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Flexible Tradition III",
+   "desc": null,
+   "category": "tradition_cloning",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cloning_evolutionary_extrapolation\nhas_tradition = tr_cloning_somatic_synthesization",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_3_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = no\nis_wilderness_empire = no",
+     "modifier": {
+      "subspecies_integration_add": 25,
+      "pop_purge_speed": 0.33,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_xenophile",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = yes",
+     "modifier": {
+      "subspecies_integration_add": 50,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_3_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_cloning_artificial_population_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_genetic_stage_3_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_mutation\nNOT = {\n\thas_origin = origin_evolutionary_predators\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_mutation_nucleotide_isolation_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_genomic_growth",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Genomic Growth",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pops_upkeep_mult": -0.1,
+    "pop_amenities_usage_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_artificial_population",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Artificial Population",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "pop_government_ethic_attraction": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_biochemical_composure",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Biochemical Composure",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": "hidden_effect = {\n\tgive_backup_clones_effect = yes\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cloning_biochemical_composure_clones",
+   "file": "common/traditions/01_cloning.txt",
+   "name": "Regenerative Cloning",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_gestalt = yes",
+     "modifier": {
+      "councilor_skill_add": 2
+     }
+    }
+   ],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_adopt",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Cybernetic Traditions",
+   "desc": "Starts a §YSituation§! to grant the founding species the §YCybernetic§! trait",
+   "category": "tradition_cybernetics",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\tis_hive_empire = no\n\t\tNOR = {\n\t\t\thas_origin = origin_cybernetic_creed\n\t\t\thas_origin = origin_unplugged\n\t\t}\n\t}\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_technology = tech_integrated_cybernetics\n}\nelse_if = {\n\tlimit = {\n\t\tis_hive_empire = no\n\t\thas_origin = origin_cybernetic_creed\n\t}\n\thas_technology = tech_integrated_cybernetics\n}\nelse_if = {\n\tlimit = {\n\t\thas_origin = origin_unplugged\n\t}\n\thas_technology = tech_integrated_cybernetics\n\tOR = {\n\t\tcustom_tooltip = {\n\t\t\ttext = \"hard_reset_not_embraced_cybernetics\"\n\t\t\thas_country_flag = is_cyberized\n\t\t}\n\t\tAND = {\n\t\t\thas_ascension_perk = ap_the_flesh_is_weak\n\t\t\tcustom_tooltip = {\n\t\t\t\ttext = \"hard_reset_embraced_neither\"\n\t\t\t\tNOR = {\n\t\t\t\t\thas_country_flag = is_cyberized\n\t\t\t\t\thas_country_flag = is_decyberized\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\nelse_if = {\n\tlimit = {\n\t\tis_hive_empire = yes\n\t\tNOT = {\n\t\t\thas_origin = origin_cybernetic_creed\n\t\t}\n\t}\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_technology = tech_integrated_cybernetics\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_machine_age_dlc = yes\n\t\tNOR = {\n\t\t\thas_origin = origin_cybernetic_creed\n\t\t\thas_origin = origin_unplugged\n\t\t}\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = cyber.1\n\t\t}\n\t}\n}\nelse_if = {\n\tlimit = {\n\t\thas_machine_age_dlc = yes\n\t\thas_origin = origin_cybernetic_creed\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = machine_age.100\n\t\t}\n\t}\n}\nelse = {\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = utopia.2500\n\t\t}\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_cybernetics_adopt_utopia",
+     "trigger": "has_machine_age_dlc = no\nis_hive_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_adopt_hive",
+     "trigger": "is_hive_empire = yes\nhas_machine_age_dlc = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_adopt_hive_utopia",
+     "trigger": "is_hive_empire = yes\nhas_machine_age_dlc = no",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_finish",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Cybernetic Traditions Finished",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "finish",
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "OR = {\n\thas_machine_age_dlc = no\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": {
+      "cyborg_pop_bonus_workforce_mult": 0.1,
+      "BIOLOGICAL_species_trait_picks_add": 1,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\trefresh_portraits = character\n\tif = {\n\t\tlimit = {\n\t\t\thas_machine_age_dlc = yes\n\t\t\tOR = {\n\t\t\t\thas_country_flag = cybernetics_traditions_unlocked\n\t\t\t\thas_origin = origin_unplugged\n\t\t\t}\n\t\t\tNOT = {\n\t\t\t\thas_origin = origin_cybernetic_creed\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = cyber.500\n\t\t\tdays = 180\n\t\t}\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\thas_machine_age_dlc = no\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = timeline.78\n\t\t}\n\t}\n\tluminary_speech_effect = yes\n}",
+   "swaps": [
+    {
+     "name": "tr_cybernetics_finish_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_finish_hive",
+     "trigger": "is_hive_empire = yes\nhas_machine_age_dlc = yes\nhas_country_flag = cybernetics_traditions_unlocked",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_finish_hive_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = yes\nNOT = {\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_transubstantiation_synthesis",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Transubstantiation Synthesis",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\thas_machine_age_dlc = no\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tis_cyborg_empire = yes\n\t\t}\n\t}\n\telse = {\n\t\tcustom_tooltip = {\n\t\t\tfail_text = REQUIRES_CYBORG_EMPIRE_UTOPIA\n\t\t\tis_cyborg_empire = yes\n\t\t}\n\t}\n}",
+   "on_enabled": "hidden_effect = {\n\trefresh_portraits = character\n}",
+   "swaps": [
+    {
+     "name": "tr_cybernetics_organ_harvesting",
+     "trigger": "is_homicidal = yes\nOR = {\n\thas_machine_age_dlc = no\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_organ_harvesting_nomads",
+     "trigger": "is_homicidal = yes\nis_nomadic = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_transubstantiation_synthesis_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_homicidal = no\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_organ_harvesting_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_homicidal = yes\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_metabolic_reprocessing",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Metabolic Reprocessing",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pops_cyborgs_upkeep_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_transubstantiation_synthesis",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_cybernetics_metabolic_reprocessing_hive",
+     "trigger": "is_hive_empire = yes\nOR = {\n\thas_machine_age_dlc = no\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": {
+      "planet_pops_cyborgs_upkeep_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_cybernetics_metabolic_reprocessing_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = no\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_metabolic_reprocessing_hive_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = yes\nNOT = {\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_integrated_anatomy",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Integrated Anatomy",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "tradition",
+   "modifier": {
+    "ROBOT_species_trait_picks_add": 1,
+    "ROBOT_species_trait_points_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_transubstantiation_synthesis",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_cybernetics_integrated_anatomy_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_augmentation_overload",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Augmentation Overload",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_metabolic_reprocessing",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_cybernetics_augmentation_centers",
+     "trigger": "has_machine_age_dlc = no\nis_hive_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_synaptic_sub_processing",
+     "trigger": "is_hive_empire = yes\nOR = {\n\thas_machine_age_dlc = no\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": {
+      "empire_size_districts_mult": -0.15
+     }
+    },
+    {
+     "name": "tr_cybernetics_augmentation_overload_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = no\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_synaptic_sub_processing_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = yes\nNOT = {\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_modular_cybernetics",
+   "file": "common/traditions/01_cybernetics.txt",
+   "name": "Modular Cybernetics",
+   "desc": null,
+   "category": "tradition_cybernetics",
+   "kind": "tradition",
+   "modifier": {
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "BIOLOGICAL_species_trait_points_add": 1,
+      "_text": "mult = modifier:ROBOT_species_trait_points_add"
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "BIOLOGICAL_species_trait_picks_add": 1,
+      "_text": "mult = modifier:ROBOT_species_trait_picks_add"
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_cybernetics_integrated_anatomy",
+   "on_enabled": "hidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tany_pre_ftl_within_border = {\n\t\t\t\thas_country_flag = fotd_seperatist_country@root\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = origin.6096\n\t\t\tdays = 3\n\t\t}\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_cybernetics_modular_cybernetics_hive",
+     "trigger": "is_hive_empire = yes\nOR = {\n\thas_machine_age_dlc = no\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": {
+      "modify_species_cost_mult": -0.5,
+      "BIOLOGICAL_species_trait_points_add": 3
+     }
+    },
+    {
+     "name": "tr_cybernetics_modular_cybernetics_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = no\nNOR = {\n\thas_country_flag = cybernetics_traditions_unlocked\n\thas_origin = origin_unplugged\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cybernetics_modular_cybernetics_hive_situation",
+     "trigger": "has_machine_age_dlc = yes\nis_hive_empire = yes\nNOT = {\n\thas_country_flag = cybernetics_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_adopt",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Cybernetic Traditions",
+   "desc": "Assimilating £pop£ §HOrganic Pops§! now generates £engineering£ §YEngineering Research§!.\\n§YResources§! generated from Assimilating £pop£ §HOrganic Pops§! are increased.",
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_ascension_perk = ap_organo_machine_interfacing_assimilator\nhas_technology = tech_integrated_cybernetics",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_machine_age_dlc = yes\n\t\thas_civic = civic_machine_assimilator\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = cyber.2010\n\t\t\tdays = 2\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_finish",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Cybernetic Traditions Finished",
+   "desc": null,
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "finish",
+   "modifier": {
+    "cyborg_pop_bonus_workforce_mult": 0.1,
+    "MACHINE_species_trait_picks_add": 2,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = timeline.85\n\t}\n}\nif = {\n\tlimit = {\n\t\thas_country_flag = driven_cybernetics\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = cyber.2015\n\t\t\tdays = 2\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_inevitable_assimilation",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Inevitable Assimilation",
+   "desc": "Allows the Assimilation of £pop£ §HHive-Minded Pops§!.",
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "tradition",
+   "modifier": {
+    "auto_mod_monthly_add": 100
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_metabolic_reprocessing",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Metabolic Reprocessing",
+   "desc": "Cyborg Upkeep: §G-10%§!\\nEmpire Size from Cyborg Pops: §G-10%§!",
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pops_cyborgs_upkeep_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_assimilator_inevitable_assimilation",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_integrated_anatomy",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Integrated Anatomy",
+   "desc": "Unlocks §YCybernetic§! Traits for Species Modification.",
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_assimilator_inevitable_assimilation",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_augmentation_centers",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Augmentation Centers",
+   "desc": "Unlocks Building: ['building:building_augmentation_center']",
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_cybernetics_assimilator_metabolic_reprocessing",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_cybernetics_assimilator_modular_cybernetics",
+   "file": "common/traditions/01_cybernetics_assimilator.txt",
+   "name": "Modular Cybernetics",
+   "desc": null,
+   "category": "tradition_cybernetics_assimilator",
+   "kind": "tradition",
+   "modifier": {
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "BIOLOGICAL_species_trait_points_add": 1,
+      "_text": "mult = modifier:MACHINE_species_trait_points_add"
+     }
+    },
+    {
+     "potential": "always = yes",
+     "modifier": {
+      "BIOLOGICAL_species_trait_picks_add": 1,
+      "_text": "mult = modifier:MACHINE_species_trait_picks_add"
+     }
+    }
+   ],
+   "possible": "has_tradition = tr_cybernetics_assimilator_integrated_anatomy",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_adopt",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Genetic Traditions",
+   "desc": null,
+   "category": "tradition_genetics",
+   "kind": "adopt",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": "has_ascension_perk = ap_engineered_evolution\nhas_technology = tech_gene_tailoring",
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = utopia.2700\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_finish",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Genetic Traditions Finished",
+   "desc": null,
+   "category": "tradition_genetics",
+   "kind": "finish",
+   "modifier": {
+    "planet_buildings_clone_vats_upkeep_mult": -0.33,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = utopia.2703\n\t}\n\tluminary_speech_effect = yes\n}",
+   "swaps": [
+    {
+     "name": "tr_genetics_finish_extra_traits",
+     "trigger": "has_genetic_dlc = yes",
+     "modifier": {
+      "planet_buildings_clone_vats_upkeep_mult": -0.33,
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_resequencing",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Genetic Resequencing",
+   "desc": "Can remove §YPositive§! Traits and add §YNegative§! Traits with Species Modification",
+   "category": "tradition_genetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_creation",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Engineered Genesis",
+   "desc": "Can §Yalter§! Pop §Yappearance§! with Species Modification\\nAllows the Assimilation of Pops into or out of a §YHive-Mind§!",
+   "category": "tradition_genetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_genetics_resequencing",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_enhanced_expression",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Allelic Expression",
+   "desc": "Unlocks §YAdvanced§! Traits for Species Modification",
+   "category": "tradition_genetics",
+   "kind": "tradition",
+   "modifier": {
+    "BIOLOGICAL_species_trait_points_add": 6,
+    "BIOLOGICAL_species_trait_picks_add": 2,
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_genetics_creation",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_retrovirus",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Retroviral Manipulation",
+   "desc": null,
+   "category": "tradition_genetics",
+   "kind": "tradition",
+   "modifier": {
+    "pop_environment_tolerance": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_genetics_efficient_cloning",
+   "file": "common/traditions/01_genetics.txt",
+   "name": "Stem Cell Stimulation",
+   "desc": "['building:building_clone_vats'] produce an additional §G+1.5§! §YMonthly Organic Pop Growth§!",
+   "category": "tradition_genetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_genetics_retrovirus",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_adopt",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "Modularity Traditions",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "adopt",
+   "modifier": {
+    "planet_metallurgists_sr_living_metal_produces_add": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_TRANSFORMATION\n\thas_country_flag = modularity_traditions_unlocked\n}",
+   "on_enabled": "hidden_effect = {\n\tupdate_node_portraits_if_gestalt_effect = yes\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_finish",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "Modularity Traditions Finished",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "finish",
+   "modifier": {
+    "planet_jobs_upkeep_mult": -0.15,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = cybernetics.5080\n\t}\n\tcountry_event = {\n\t\tid = timeline.82\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_1",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "High-Speed Replacements",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_jobs_worker_produces_mult": 0.1,
+    "auto_mod_monthly_add": 400
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_modularity_adopt",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_2",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "Liquid Metal Joints",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pop_assemblers_sr_living_metal_upkeep_add": 0.15
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_modularity_1",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_modularity_2_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": {
+      "planet_pop_assemblers_sr_living_metal_upkeep_add": 0.15
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_3",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "Pacification Modules",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "tradition",
+   "modifier": {
+    "planet_stability_add": 5,
+    "army_damage_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_modularity_1",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_modularity_3_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": {
+      "planet_stability_add": 5,
+      "army_damage_mult": 0.5
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_4",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "High-Level Enhancements",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_modularity_2",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "has_valid_civic = civic_machine_servitor",
+     "modifier": {
+      "planet_bio_trophies_unity_produces_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_modularity_5",
+   "file": "common/traditions/01_modularity.txt",
+   "name": "Advanced Tools",
+   "desc": null,
+   "category": "tradition_modularity",
+   "kind": "tradition",
+   "modifier": {
+    "MACHINE_species_trait_points_add": 4,
+    "MACHINE_species_trait_picks_add": 4,
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_modularity_3",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_adopt",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Mutation Traditions",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_EVOLUTION\n\thas_country_flag = mutation_tradition_unlocked\n}",
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = timeline.80\n\t}\n\tspecies = {\n\t\tchange_species_characteristics = {\n\t\t\tadd_trait = trait_adaptive_mutations\n\t\t\tadd_traits_at_start_of_list = yes\n\t\t}\n\t}\n\tevery_owned_species = {\n\t\tlimit = {\n\t\t\tis_subspecies = root\n\t\t}\n\t\tchange_species_characteristics = {\n\t\t\tadd_trait = trait_adaptive_mutations\n\t\t\tadd_traits_at_start_of_list = yes\n\t\t}\n\t}\n\tupdate_node_portraits_if_gestalt_effect = yes\n\tluminary_speech_effect = yes\n}",
+   "swaps": [
+    {
+     "name": "tr_mutation_adopt_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_finish",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Mutation Traditions Finished",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tis_hive_empire = no\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = bio.180\n\t\t}\n\t}\n\telse = {\n\t\tcountry_event = {\n\t\t\tid = bio.195\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_stage_1_swap",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Flexible Tradition I",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_purity",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "empire_size_districts_mult": -0.25,
+      "empire_size_colonies_mult": -0.25
+     }
+    },
+    {
+     "name": "tr_genetic_stage_1_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "planet_pops_upkeep_mult": -0.1,
+      "pop_amenities_usage_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_cloning_genomic_growth_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_1_mutation_swap",
+     "trigger": "is_mutation_authority = no\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration",
+     "trigger": "is_mutation_authority = yes\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    },
+    {
+     "name": "tr_mutation_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = no\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = yes\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_stage_2_swap",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Flexible Tradition II",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_mutation_stage_1_swap",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_2_purity_swap",
+     "trigger": "OR = {\n\thas_country_flag = genetic_ascension_stage_2_purity\n\tis_wilderness_empire = yes\n}",
+     "modifier": {
+      "leader_initial_traits_add": 1,
+      "leader_starting_age_mult": -0.25,
+      "negative_traits_country": -1
+     }
+    },
+    {
+     "name": "tr_genetic_stage_2_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = no\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential\nis_cloning_authority = no",
+     "modifier": {}
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = yes\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones_clone_army",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nis_cloning_authority = yes\nhas_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_2_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_mutation",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    },
+    {
+     "name": "tr_mutation_somatic_subversiveness_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_stage_3_swap",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Flexible Tradition III",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_mutation_stage_1_swap",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_3_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = no\nis_wilderness_empire = no",
+     "modifier": {
+      "subspecies_integration_add": 25,
+      "pop_purge_speed": 0.33,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_xenophile",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = yes",
+     "modifier": {
+      "subspecies_integration_add": 50,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_3_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_cloning_artificial_population_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_genetic_stage_3_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_mutation\nNOT = {\n\thas_origin = origin_evolutionary_predators\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_mutation_nucleotide_isolation_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_planned_polymorphism",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Planned Polymorphism",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "tradition",
+   "modifier": {
+    "auto_mod_monthly_add": 200
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_mutation_planned_polymorphism_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {
+      "auto_mod_monthly_add": 200
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_unnatural_selection",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Unnatural Selection",
+   "desc": null,
+   "category": "tradition_mutation",
+   "kind": "tradition",
+   "modifier": {
+    "BIOLOGICAL_species_trait_points_add": 4,
+    "BIOLOGICAL_species_trait_picks_add": 4,
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_mutation_planned_polymorphism",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_mutation_unnatural_selection_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_environmental_integration",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Environmental Integration",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "habitability_ceil_uncapped_add": 0.5
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": "hidden_effect = {\n\tspecies = {\n\t\tset_habitability_trait = {\n\t\t\ttrait = trait_auto_hab_preference\n\t\t}\n\t}\n\tevery_owned_species = {\n\t\tlimit = {\n\t\t\tis_subspecies = root\n\t\t}\n\t\tset_habitability_trait = {\n\t\t\ttrait = trait_auto_hab_preference\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_somatic_subversiveness",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Somatic Subversiveness",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "leader_skill_add": 1,
+    "species_leader_exp_gain": 0.1,
+    "leader_lifespan_mult": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_mutation_nucleotide_isolation",
+   "file": "common/traditions/01_mutation.txt",
+   "name": "Nucleotide Isolation",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_adopt",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Nanotech Traditions",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_TRANSFORMATION\n\thas_country_flag = nanotech_traditions_unlocked\n}",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_finish",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Nanotech Traditions Finished",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "finish",
+   "modifier": {
+    "empire_size_colonies_mult": -0.5,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = timeline.83\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_1",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Aggregation Systems",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "tradition",
+   "modifier": {
+    "planet_farmers_food_produces_add": -1,
+    "planet_farmers_nanites_produces_add": 0.2,
+    "planet_miners_minerals_produces_add": -1,
+    "planet_miners_nanites_produces_add": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_2",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Molecular Reconfiguration",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "add_research_option = tech_nanite_transmutation\nadd_tech_progress = {\n\ttech = tech_nanite_transmutation\n\tprogress = 0.33\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_3",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Unbridled Consumption",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_nanotech_1",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_nanotech_3_nomad",
+     "trigger": "is_nomadic = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_4",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Flood of Supremacy",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_nanotech_2",
+   "on_enabled": "add_research_option = tech_nanite_repair_system\nadd_research_option = tech_nanite_autocannon\nadd_research_option = tech_nanite_flak_batteries\nadd_tech_progress = {\n\ttech = tech_nanite_repair_system\n\tprogress = 0.25\n}\nadd_tech_progress = {\n\ttech = tech_nanite_autocannon\n\tprogress = 0.25\n}\nadd_tech_progress = {\n\ttech = tech_nanite_flak_batteries\n\tprogress = 0.25\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_nanotech_5",
+   "file": "common/traditions/01_nanotech.txt",
+   "name": "Nanite Augmentations",
+   "desc": null,
+   "category": "tradition_nanotech",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_nanotech_3\nhas_tradition = tr_nanotech_4",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_adopt",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Psionic Traditions",
+   "desc": null,
+   "category": "tradition_psionics",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\tOR = {\n\t\t\thas_origin = origin_shroudwalker_apprentice\n\t\t\thas_country_flag = ratling_country\n\t\t}\n\t}\n\thas_technology = tech_psionic_theory\n}\nelse = {\n\thas_ascension_perk = ap_mind_over_matter\n\thas_technology = tech_psionic_theory\n}",
+   "on_enabled": "country_event = {\n\tid = utopia.2600\n}",
+   "swaps": [
+    {
+     "name": "tr_psionics_adopt_shroudwalker",
+     "trigger": "has_origin = origin_shroudwalker_apprentice",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_finish",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Psionic Traditions Finished",
+   "desc": "Unlocks a §YSpecial Project§! to form a Covenant.\\nEdict Fund: §G+50§!\\nAscension Perks Unlocked: §G+1§!",
+   "category": "tradition_psionics",
+   "kind": "finish",
+   "modifier": {
+    "edicts_upkeep_mult": -0.1,
+    "shroud_delve_cooldown": -0.2,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\thas_country_flag = has_shroud_patron\n\t\t\tNOT = {\n\t\t\t\thas_country_flag = covenant_end_of_the_cycle\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = utopia.2658\n\t\t\tdays = 360\n\t\t}\n\t\tset_country_flag = confirmation_incoming\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tany_planet_within_border = {\n\t\t\t\thas_planet_flag = fotd_seperatist_planet@root\n\t\t\t\towner = {\n\t\t\t\t\thas_country_flag = fotd_seperatist_country@root\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = origin.6110\n\t\t\tdays = 5\n\t\t\trandom = 2\n\t\t}\n\t}\n\tluminary_speech_effect = yes\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_psi_corps",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Psi Corps",
+   "desc": "[GetAllowPsiCorps]",
+   "category": "tradition_psionics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_mind_readers",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Mind Readers",
+   "desc": null,
+   "category": "tradition_psionics",
+   "kind": "tradition",
+   "modifier": {
+    "add_base_country_intel": 10,
+    "_text": "custom_tooltip = tr_psionics_mind_readers_tooltip"
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_psionic_assimilation",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Great Awakening",
+   "desc": "All §YLatent Psionic§! species will unlock their full psionic potential.\\nAllows §YPsionic Assimilation§! of other species, unlocking their latent abilities.\\n[GetPsionicAssimilationEffectShroud]",
+   "category": "tradition_psionics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_psi_corps\nhas_tradition = tr_psionics_mind_readers",
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = utopia.2650\n\t}\n\tcountry_event = {\n\t\tid = enclave.7000\n\t\tdays = 360\n\t\trandom = 720\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_breach_shroud",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Breach the Shroud",
+   "desc": "Unlocks a §YSpecial Project§! to Breach the Shroud.\\nJob Efficiency for Psionic Pops per 100 [telepath.GetIcon] [telepath.GetNamePlural]: §G+5%§!",
+   "category": "tradition_psionics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_psionic_assimilation",
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = utopia.2655\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shrouded_encryption",
+   "file": "common/traditions/01_psionics.txt",
+   "name": "Shrouded Communications",
+   "desc": null,
+   "category": "tradition_psionics",
+   "kind": "tradition",
+   "modifier": {
+    "intel_decryption_add": 2,
+    "intel_encryption_add": 2
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_psionic_assimilation",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_adopt",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Psionic Traditions",
+   "desc": "Starts a §YSituation§! to grant the founding species the §YPsionic§! trait.",
+   "category": "tradition_psionics_shroud",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\tOR = {\n\t\t\thas_origin = origin_shroudwalker_apprentice\n\t\t\thas_origin = origin_endbringers\n\t\t\thas_country_flag = ratling_country\n\t\t\thas_country_flag = finish_shroud_forged_liberation_flag\n\t\t}\n\t}\n\thas_technology = tech_psionic_theory\n}\nelse = {\n\thas_ascension_perk = ap_mind_over_matter\n\thas_technology = tech_psionic_theory\n\tif = {\n\t\tlimit = {\n\t\t\thas_origin = origin_shroud_forged\n\t\t}\n\t\tcustom_tooltip = tr_psionics_shroud_forged_requirement\n\t}\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_origin = origin_endbringers\n\t}\n\tcountry_event = {\n\t\tid = shroud.8310\n\t}\n}\nelse = {\n\tcountry_event = {\n\t\tid = shroud.2750\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_psionics_adopt_shroudwalker",
+     "trigger": "has_origin = origin_shroudwalker_apprentice",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_finish",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Psionic Traditions",
+   "desc": "§YUnlocks Edict: §!Sight Beyond Sight",
+   "category": "tradition_psionics_shroud",
+   "kind": "finish",
+   "modifier": {
+    "empire_size_penalty_mult": -0.1,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tany_planet_within_border = {\n\t\t\t\thas_planet_flag = fotd_seperatist_planet@root\n\t\t\t\towner = {\n\t\t\t\t\thas_country_flag = fotd_seperatist_country@root\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = origin.6110\n\t\t\tdays = 5\n\t\t\trandom = 2\n\t\t}\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\thas_origin = origin_legendary_leader_dictatorial\n\t\t\t\tAND = {\n\t\t\t\t\thas_country_flag = paragon_origin_reformists_gone\n\t\t\t\t\thas_origin = origin_legendary_leader_imperial\n\t\t\t\t}\n\t\t\t}\n\t\t\tNOT = {\n\t\t\t\thas_country_flag = luminary_ascension_path\n\t\t\t}\n\t\t\texists = ruler\n\t\t\truler = {\n\t\t\t\thas_leader_flag = paragon_origin_legendary_leader\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = paragon.5201\n\t\t\tdays = 3600\n\t\t\trandom = 7200\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_psi_corps",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Psi Corps",
+   "desc": null,
+   "category": "tradition_psionics_shroud",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_psionics_shroud_psi_corps_situation",
+     "trigger": "has_breached_shroud = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_psionics_endbringers_cult",
+     "trigger": "has_origin = origin_endbringers",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_great_awakening",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Great Awakening",
+   "desc": null,
+   "category": "tradition_psionics_shroud",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_shroud_psi_corps\ncustom_tooltip = {\n\tfail_text = \"require_breach_shroud_stage_2\"\n\tOR = {\n\t\tany_situation = {\n\t\t\tis_situation_type = situation_breach_shroud\n\t\t\tNOT = {\n\t\t\t\tcurrent_stage = stage_1\n\t\t\t}\n\t\t}\n\t\tany_situation = {\n\t\t\tis_situation_type = situation_breach_shroud_endbringers\n\t\t\tNOT = {\n\t\t\t\tcurrent_stage = stage_1\n\t\t\t}\n\t\t}\n\t\tNOR = {\n\t\t\tany_situation = {\n\t\t\t\tis_situation_type = situation_breach_shroud\n\t\t\t}\n\t\t\tany_situation = {\n\t\t\t\tis_situation_type = situation_breach_shroud_endbringers\n\t\t\t}\n\t\t}\n\t}\n}",
+   "on_enabled": "hidden_effect = {\n\tturn_main_species_to_psionic = yes\n\tupdate_node_portraits_if_gestalt_effect = yes\n\tupdate_every_leader_from_psionic_countries = yes\n\trefresh_portraits = character\n\tcountry_event = {\n\t\tid = enclave.7000\n\t\tdays = 360\n\t\trandom = 720\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_psionics_shroud_great_awakening_situation",
+     "trigger": "has_breached_shroud = no\nis_country_type = default",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_telekinesis",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Telekinesis",
+   "desc": "Psionic Pops Habitability: §G+$@telekinesis_mult|0%$§!\\nPsionic Pops Happiness: §G+$@telekinesis_mult|0%$§!",
+   "category": "tradition_psionics_shroud",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_shroud_great_awakening",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_psionics_shroud_telekinesis_gestalt",
+     "trigger": "is_gestalt = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_psionics_shroud_telekinesis_situation",
+     "trigger": "is_gestalt = no\nNOT = {\n\thas_country_flag = psionic_traditions_unlocked\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_psionics_shroud_telekinesis_gestalt_situation",
+     "trigger": "is_gestalt = yes\nNOT = {\n\thas_country_flag = psionic_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_clairvoyance",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Clairvoyance",
+   "desc": "Sensor Range from §YPsionic Commanders§!: $@clairvoyance_sensor_range|0=+$",
+   "category": "tradition_psionics_shroud",
+   "kind": "tradition",
+   "modifier": {
+    "add_base_country_intel": 10,
+    "intel_decryption_add": 2,
+    "intel_encryption_add": 2
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_shroud_great_awakening",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_psionics_shroud_clairvoyance_situation",
+     "trigger": "NOT = {\n\thas_country_flag = psionic_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_psionics_shroud_psychometry",
+   "file": "common/traditions/01_psionics_shroud.txt",
+   "name": "Psychometry",
+   "desc": "£crime£ [GetCrimeDeviancy] from [GetTelepathSwapPluralWithIcon]: §G$@psionic_shroud_crime|0$§!",
+   "category": "tradition_psionics_shroud",
+   "kind": "tradition",
+   "modifier": {
+    "psionic_specialist_pop_bonus_workforce_mult": 0.05
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_psionics_shroud_telekinesis\nhas_tradition = tr_psionics_shroud_clairvoyance",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_psionics_shroud_psychometry_grand_archive",
+     "trigger": "has_grand_archive_dlc = yes\nhas_country_flag = psionic_traditions_unlocked",
+     "modifier": {
+      "psionic_specialist_pop_bonus_workforce_mult": 0.05,
+      "historical_item_specimens_produces_mult": 0.25
+     }
+    },
+    {
+     "name": "tr_psionics_shroud_psychometry_situation",
+     "trigger": "has_grand_archive_dlc = no\nNOT = {\n\thas_country_flag = psionic_traditions_unlocked\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_psionics_shroud_psychometry_situation_grand_achive",
+     "trigger": "has_grand_archive_dlc = yes\nNOT = {\n\thas_country_flag = psionic_traditions_unlocked\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_adopt",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Purity Traditions",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "adopt",
+   "modifier": {
+    "leader_lifespan_mult": 0.2
+   },
+   "triggered_modifier": [],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_EVOLUTION\n\thas_country_flag = purity_tradition_unlocked\n}",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_finish",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Purity Traditions Finished",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = timeline.80\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tis_hive_empire = no\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = bio.170\n\t\t}\n\t}\n\telse = {\n\t\tcountry_event = {\n\t\t\tid = bio.185\n\t\t}\n\t}\n\tluminary_speech_effect = yes\n}",
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "ascension_perks_add": 1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_genotype_regeneration",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Genotype Regeneration",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "tradition",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_purity_genotype_regeneration_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_exemplary_genetics",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Exemplary Genetics",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "tradition",
+   "modifier": {
+    "BIOLOGICAL_species_trait_points_add": 6,
+    "BIOLOGICAL_species_trait_picks_add": 2,
+    "modify_species_cost_mult": -0.5
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_purity_genotype_regeneration",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_stage_1_swap",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Flexible Tradition I",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_purity",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_1_purity_swap",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": {
+      "empire_size_districts_mult": -0.25,
+      "empire_size_colonies_mult": -0.25
+     }
+    },
+    {
+     "name": "tr_genetic_stage_1_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_1_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "planet_pops_upkeep_mult": -0.1,
+      "pop_amenities_usage_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_cloning_genomic_growth_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_1_mutation_swap",
+     "trigger": "is_mutation_authority = no\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration",
+     "trigger": "is_mutation_authority = yes\nhas_country_flag = genetic_ascension_stage_1_mutation",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    },
+    {
+     "name": "tr_mutation_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = no\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 0.5
+     }
+    },
+    {
+     "name": "tr_mutation_empowered_environmental_integration_evo_pred",
+     "trigger": "is_mutation_authority = yes\nhas_origin = origin_evolutionary_predators",
+     "modifier": {
+      "habitability_ceil_uncapped_add": 1.25
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_stage_2_swap",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Flexible Tradition II",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_purity_stage_1_swap",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_2_purity_swap",
+     "trigger": "OR = {\n\thas_country_flag = genetic_ascension_stage_2_purity\n\tis_wilderness_empire = yes\n}",
+     "modifier": {
+      "leader_initial_traits_add": 1,
+      "leader_starting_age_mult": -0.25,
+      "negative_traits_country": -1
+     }
+    },
+    {
+     "name": "tr_genetic_stage_2_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = no\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential\nis_cloning_authority = no",
+     "modifier": {}
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_cloning\nis_cloning_authority = yes\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_cloning_biochemical_composure_clones_clone_army",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nis_cloning_authority = yes\nhas_country_flag = clone_army_full_potential",
+     "modifier": {}
+    },
+    {
+     "name": "tr_genetic_stage_2_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_2_mutation",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    },
+    {
+     "name": "tr_mutation_somatic_subversiveness_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {
+      "leader_skill_add": 1,
+      "species_leader_exp_gain": 0.1,
+      "leader_lifespan_mult": 0.1
+     }
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_stage_3_swap",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Flexible Tradition III",
+   "desc": null,
+   "category": "tradition_purity",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_purity_stage_1_swap",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_genetic_stage_3_purity_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = no\nis_wilderness_empire = no",
+     "modifier": {
+      "subspecies_integration_add": 25,
+      "pop_purge_speed": 0.33,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_xenophile",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_purity\nis_xenophile = yes",
+     "modifier": {
+      "subspecies_integration_add": 50,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    },
+    {
+     "name": "tr_genetic_stage_3_cloning_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_cloning\nNOT = {\n\thas_country_flag = clone_army_full_potential\n}",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_cloning_artificial_population_clone_army",
+     "trigger": "has_country_flag = clone_army_full_potential",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "name": "tr_genetic_stage_3_mutation_swap",
+     "trigger": "has_country_flag = genetic_ascension_stage_3_mutation\nNOT = {\n\thas_origin = origin_evolutionary_predators\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_mutation_nucleotide_isolation_evo_pred",
+     "trigger": "has_origin = origin_evolutionary_predators",
+     "modifier": {}
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_optimized_neurology",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Optimized Neurology",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "leader_initial_traits_add": 1,
+    "leader_starting_age_mult": -0.25,
+    "negative_traits_country": -1
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": "hidden_effect = {\n\tevery_owned_leader = {\n\t\tlimit = {\n\t\t\tis_leader_tier = leader_tier_default\n\t\t}\n\t\tadd_trait = {\n\t\t\ttrait = random_common\n\t\t\tshow_message = no\n\t\t}\n\t}\n\tevery_pool_leader = {\n\t\tadd_trait = {\n\t\t\ttrait = random_common\n\t\t\tshow_message = no\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_heightened_attributes",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Heightened Attributes",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_purity_imperfection_remediation",
+   "file": "common/traditions/01_purity.txt",
+   "name": "Imperfection Remediation",
+   "desc": null,
+   "category": "tradition_dummy",
+   "kind": "tradition",
+   "modifier": {
+    "subspecies_integration_add": 25,
+    "pop_purge_speed": 0.33,
+    "empire_size_pops_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "always = no",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_purity_imperfection_remediation_xenophile",
+     "trigger": "OR = {\n\tis_xenophile = yes\n}",
+     "modifier": {
+      "subspecies_integration_add": 50,
+      "empire_size_pops_mult": -0.1
+     }
+    },
+    {
+     "name": "tr_purity_imperfection_remediation_wilderness",
+     "trigger": "is_wilderness_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_adopt",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Synthetic Traditions",
+   "desc": "Starts a §YSituation§! to transform the founding species into a §YMechanical§! species.",
+   "category": "tradition_synthetics",
+   "kind": "adopt",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\thas_origin = origin_synthetic_fertility\n\t}\n\thas_technology = tech_synthetic_workers\n}\nelse_if = {\n\tlimit = {\n\t\thas_machine_age_dlc = yes\n\t\tis_machine_empire = no\n\t\tis_individual_machine = no\n\t}\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_technology = tech_synthetic_workers\n}\nelse = {\n\tif = {\n\t\tlimit = {\n\t\t\tis_machine_empire = no\n\t\t}\n\t\thas_ascension_perk = ap_synthetic_evolution\n\t\thas_technology = tech_synthetic_workers\n\t}\n\telse = {\n\t\thas_ascension_perk = ap_synthetic_age\n\t\thas_technology = tech_robomodding_m\n\t}\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\tNOT = {\n\t\t\thas_technology = tech_synthetic_leaders\n\t\t}\n\t}\n\tadd_tech_progress = {\n\t\ttech = tech_synthetic_leaders\n\t\tprogress = 0.1\n\t}\n}\nhidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\thas_origin = origin_synthetic_fertility\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = machine_age.3125\n\t\t}\n\t}\n\telse = {\n\t\tcountry_event = {\n\t\t\tid = synth.1\n\t\t}\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tany_planet_within_border = {\n\t\t\t\thas_planet_flag = fotd_seperatist_planet@root\n\t\t\t\towner = {\n\t\t\t\t\thas_country_flag = fotd_seperatist_country@root\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = origin.6099\n\t\t\tdays = 5\n\t\t\trandom = 2\n\t\t}\n\t}\n}",
+   "swaps": [
+    {
+     "name": null,
+     "trigger": "has_machine_age_dlc = no\nis_machine_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_synthetics_adopt_machine",
+     "trigger": "OR = {\n\thas_machine_age_dlc = no\n\tis_machine_empire = yes\n}",
+     "modifier": {
+      "pop_environment_tolerance": 0.25
+     }
+    }
+   ],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_finish",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Synthetic Traditions Finished",
+   "desc": null,
+   "category": "tradition_synthetics",
+   "kind": "finish",
+   "modifier": {
+    "ROBOT_species_trait_picks_add": 2,
+    "ROBOT_species_trait_points_add": 2,
+    "modify_species_cost_mult": -0.5,
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\trefresh_portraits = character\n\tif = {\n\t\tlimit = {\n\t\t\thas_machine_age_dlc = yes\n\t\t\thas_country_flag = synthetics_traditions_unlocked\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = synth.500\n\t\t\tdays = 180\n\t\t}\n\t}\n\telse = {\n\t\tcountry_event = {\n\t\t\tid = timeline.79\n\t\t}\n\t}\n}",
+   "swaps": [
+    {
+     "name": "tr_synthetics_finish_machine",
+     "trigger": "is_machine_empire = yes",
+     "modifier": {
+      "MACHINE_species_trait_picks_add": 2,
+      "MACHINE_species_trait_points_add": 2,
+      "modify_species_cost_mult": -0.5,
+      "ascension_perks_add": 1
+     }
+    },
+    {
+     "name": "tr_synthetics_finish_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_maintenance_protocols",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Maintenance Protocols",
+   "desc": null,
+   "category": "tradition_synthetics",
+   "kind": "tradition",
+   "modifier": {
+    "pop_amenities_usage_robotic_mult": -0.1
+   },
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\thas_machine_age_dlc = no\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tis_synthetic_empire = yes\n\t\t}\n\t}\n\telse = {\n\t\tcustom_tooltip = {\n\t\t\tfail_text = REQUIRES_SYNTHETIC_EMPIRE_UTOPIA\n\t\t\tis_synthetic_empire = yes\n\t\t}\n\t}\n}",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synthetics_maintenance_protocols_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_optimization_algorithms",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Optimization Algorithms",
+   "desc": null,
+   "category": "tradition_synthetics",
+   "kind": "tradition",
+   "modifier": {
+    "robotic_pop_bonus_workforce_mult": 0.1
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_synthetics_maintenance_protocols",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synthetics_optimization_algorithms_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_transubstatiation_synthesis",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Transubstantiation Synthesis",
+   "desc": "Grants access to the §YAssimilation§! Citizenship §YSpecies Right§!, allowing future additions to the populace to be turned into §YSynths§!.",
+   "category": "tradition_synthetics",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "if = {\n\tlimit = {\n\t\thas_machine_age_dlc = no\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tis_synthetic_empire = yes\n\t\t}\n\t}\n\telse = {\n\t\tcustom_tooltip = {\n\t\t\tfail_text = REQUIRES_SYNTHETIC_EMPIRE_UTOPIA\n\t\t\tis_synthetic_empire = yes\n\t\t}\n\t}\n}",
+   "on_enabled": "set_country_flag = synth_assimilation",
+   "swaps": [
+    {
+     "name": "tr_synthetics_solid_state_actuators",
+     "trigger": "OR = {\n\tAND = {\n\t\thas_machine_age_dlc = yes\n\t\thas_valid_civic = civic_fanatic_purifiers\n\t\thas_country_flag = synthetics_traditions_unlocked\n\t}\n\tAND = {\n\t\thas_machine_age_dlc = no\n\t\thas_valid_civic = civic_fanatic_purifiers\n\t}\n\tAND = {\n\t\thas_machine_age_dlc = no\n\t\tis_machine_empire = yes\n\t}\n}",
+     "modifier": {
+      "leader_lifespan_mult": 0.2
+     }
+    },
+    {
+     "name": "tr_synthetics_solid_state_actuators_virtual",
+     "trigger": "AND = {\n\thas_valid_civic = civic_fanatic_purifiers\n\thas_country_flag = synth_virtual\n}",
+     "modifier": {
+      "leaders_cost_mult": -0.15,
+      "leaders_upkeep_mult": -0.15
+     }
+    },
+    {
+     "name": "tr_synthetics_transubstatiation_synthesis_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n\thas_valid_civic = civic_fanatic_purifiers\n}",
+     "modifier": null
+    },
+    {
+     "name": "tr_synthetics_solid_state_actuators_situation",
+     "trigger": "has_machine_age_dlc = yes\nhas_valid_civic = civic_fanatic_purifiers\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}",
+     "modifier": null
+    }
+   ],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_power_systems",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Efficient Power Systems",
+   "desc": null,
+   "category": "tradition_synthetics",
+   "kind": "tradition",
+   "modifier": {
+    "planet_pops_robotics_upkeep_mult": -0.25,
+    "planet_pop_assemblers_upkeep_mult": -0.25
+   },
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_synthetics_transubstatiation_synthesis",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synthetics_power_systems_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}\nis_machine_empire = no",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_synthetics_prefabricated_components",
+   "file": "common/traditions/01_synthetics.txt",
+   "name": "Prefabricated Components",
+   "desc": null,
+   "category": "tradition_synthetics",
+   "kind": "tradition",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_synthetics_transubstatiation_synthesis",
+   "on_enabled": null,
+   "swaps": [
+    {
+     "name": "tr_synthetics_prefabricated_components_situation",
+     "trigger": "has_machine_age_dlc = yes\nNOR = {\n\thas_country_flag = synthetics_traditions_unlocked\n\thas_origin = origin_synthetic_fertility\n}\nis_machine_empire = no",
+     "modifier": null
+    },
+    {
+     "name": "tr_synthetics_prefabricated_components_machine",
+     "trigger": "has_machine_age_dlc = no\nis_machine_empire = yes",
+     "modifier": null
+    }
+   ],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_adopt",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Virtuality Traditions",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "adopt",
+   "modifier": {
+    "intel_decryption_add": 2,
+    "intel_encryption_add": 2,
+    "planet_metallurgists_alloys_produces_mult": -0.15
+   },
+   "triggered_modifier": [
+    {
+     "potential": "country_uses_consumer_goods = yes",
+     "modifier": {
+      "planet_artisans_consumer_goods_produces_mult": -0.15
+     }
+    }
+   ],
+   "possible": "custom_tooltip = {\n\tfail_text = REQUIRES_FINISHED_TRANSFORMATION\n\thas_country_flag = virtuality_traditions_unlocked\n}",
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = cybernetics.5035\n\t}\n\tupdate_node_portraits_if_gestalt_effect = yes\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_finish",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Virtuality Traditions Finished",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "finish",
+   "modifier": {
+    "ascension_perks_add": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = cybernetics.5046\n\t}\n\tcountry_event = {\n\t\tid = timeline.84\n\t}\n\tupdate_node_portraits_if_gestalt_effect = yes\n\tevery_owned_planet = {\n\t\tcarrier_event = {\n\t\t\tid = cybernetics.2026\n\t\t}\n\t}\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_1",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Clustered Capacity",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = cybernetics.5040\n\t}\n\tupdate_node_portraits_if_gestalt_effect = yes\n}",
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_2",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Data-Driven Logic Loops",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "tradition",
+   "modifier": {
+    "planet_researchers_upkeep_mult": -0.1,
+    "planet_bureaucrats_upkeep_mult": -0.1,
+    "leaders_upkeep_mult": -0.15,
+    "empire_size_pops_mult": -0.1,
+    "empire_size_colonies_mult": 1
+   },
+   "triggered_modifier": [],
+   "possible": null,
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_3",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Capacity Synchronization",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "tradition",
+   "modifier": {},
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_virtuality_1\nhas_tradition = tr_virtuality_2",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_4",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Productivity Simulations",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_virtuality_3",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "tr_virtuality_5",
+   "file": "common/traditions/01_virtuality.txt",
+   "name": "Advanced Server Maintenance",
+   "desc": null,
+   "category": "tradition_virtuality",
+   "kind": "tradition",
+   "modifier": null,
+   "triggered_modifier": [],
+   "possible": "has_tradition = tr_virtuality_3",
+   "on_enabled": null,
+   "swaps": [],
+   "dlc": [],
+   "icon": null
+  }
+ ],
+ "warnings": []
+}

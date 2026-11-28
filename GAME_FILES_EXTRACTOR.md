@@ -40,15 +40,15 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 
 **Game folder**: `--game DIR`, else the `STELLARIS_GAME_DIR` environment variable, else `D:/Program Files (x86)/Steam/steamapps/common/Stellaris`.
 
-**Version**: `launcher-settings.json` → `rawVersion` (`v4.5.4`) gives the `rulesetId` `stellaris-pc-4.5.4` (`stellaris-pc-` + the version without the `v`). Every output carries it, and the output folder is named after it, so two game versions never mix.
+**Version**: `launcher-settings.json` → `rawVersion` (`v4.6.0`) gives the `rulesetId` `stellaris-pc-4.6.0` (`stellaris-pc-` + the version without the `v`). Every output carries it, and the output folder is named after it, so two game versions never mix. The project is on 4.6.0 since T2526 (the installed game); the 4.5.4 output (`data/generated/stellaris-pc-4.5.4/`, `reports/stellaris-pc-4.5.4/`) is kept as the previous version.
 
 **Data**: `data/generated/<rulesetId>/<set>.json` (or `--out DIR`), UTF-8, keys in the game's order:
 
 ```json
 {
   "set": "jobs",
-  "rulesetId": "stellaris-pc-4.5.4",
-  "gameVersion": "Cygnus v4.5.4 (1b4f)",
+  "rulesetId": "stellaris-pc-4.6.0",
+  "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
   "sources": ["common/pop_jobs"],
   "count": 250,
   "items": [ { "id": "miner", "file": "common/pop_jobs/03_worker_jobs.txt", "name": "Miner", ... } ],

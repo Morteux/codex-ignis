@@ -1,0 +1,1160 @@
+{
+ "set": "menace_perks",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/menace_perks"
+ ],
+ "count": 105,
+ "items": [
+  {
+   "id": "menp_objectives",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Menace Objectives",
+   "desc": "Through the disruption of our reality do we ascend to another.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_undertaker",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Undertaker",
+   "desc": "Imagine a species full of vibrant life and unbridled potential - now make it §Rstop§!.",
+   "modifier": {
+    "pop_purge_speed": 5.0
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_intimidation",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Intimidation",
+   "desc": "There is always another option. It is death.",
+   "modifier": {
+    "country_subject_acceptance_add": 25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_base_breaker",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Base Breaker",
+   "desc": "Overwhelming firepower provides perspective - the ability to see a supposed fortress for what it is: a sitting duck.",
+   "modifier": {
+    "ship_damage_against_starbases_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_relentless_aggression",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Relentless Aggression",
+   "desc": "An attacker who never tires breaks the enemy's spirit long before their walls.",
+   "modifier": {
+    "country_war_exhaustion_mult": -0.75
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_easily_replaced",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Easily Replaced",
+   "desc": "A higher quota is best met by increased production.",
+   "modifier": {
+    "starbase_shipyard_build_speed_mult": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_death_from_above",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Death From Above",
+   "desc": "Our fleets will blot out the sun. As many suns as it takes.",
+   "modifier": {
+    "ship_orbital_bombardment_mult": 0.2
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_ruthless_raiders",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Misconfigured Thrusters",
+   "desc": "If a ship cannot be reliably piloted, its movements cannot be reliably predicted.",
+   "modifier": {
+    "shipsize_crisis_corvette_evasion_mult": 0.15,
+    "shipsize_crisis_corvette_disengage_chance_mult": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_ship_chipper",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Targeted Severing",
+   "desc": "The making of a ship betrays its unmaking. There is little essential variance in the designs sprung from the galaxy's shipyards; we know them all.",
+   "modifier": {
+    "ship_weapon_damage": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_flyswatter",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Flyswatter",
+   "desc": "No folly is beneath our notice, no trespass undeserving of retribution.",
+   "modifier": {
+    "shipsize_crisis_destroyer_tracking_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_mobile_bulwark",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Harsh Priorities",
+   "desc": "Only a scant few systems are required for the continued operation of a Menacing Cruiser under fire, and should be prioritized. Nonessential resources - sapient or otherwise - need not be protected.",
+   "modifier": {
+    "shipsize_crisis_cruiser_hull_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_paid_in_ambition",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Paid in Ambition",
+   "desc": "Honor, glory, sadism - there is always a currency more easily minted.",
+   "modifier": {
+    "ships_upkeep_mult": -0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_crisis_corvette",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Menacing Corvette",
+   "desc": "To think that the wretches' fleets imagine themselves harried already...",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_crisis_destroyer",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Menacing Destroyer",
+   "desc": "A crueler hunter for a crueler age.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_crisis_cruiser",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Menacing Cruiser",
+   "desc": "A crushing weight.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_star_eater",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Eclipse & Apocalypse",
+   "desc": "For far too long has the light shone on our enemies. No longer will they be able to look to the stars for inspiration.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_megastructure",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Aetherophasic Engine",
+   "desc": "The Aetherophasic Engine will rip apart the barriers that exist between this world and the Shroud.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_objectives",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Valor",
+   "desc": "Valor is earned through steadfast action in defense of the galaxy. It is not given, but earned, proof that we act not in self-interest, but for the protection of all.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_opinion_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Noble Hearts",
+   "desc": "To lead, we must be known, not through fear, but through hope. We will invest in outreach that uplifts, informs, and builds trust across the stars.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_galcom_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Inspired Orators",
+   "desc": "A speech is only as good as its orator. We must tailor our words to reach the hearts and minds of our peers - however alien they may appear to us.",
+   "modifier": {
+    "diplo_weight_mult": 0.2,
+    "envoys_add": 1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_federation_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Stalwart Allies",
+   "desc": "Federal administration is a powerful tool that can be leveraged for the benefit of all our allies.",
+   "modifier": {
+    "ship_federation_territory_speed_mult": 0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_crisis_damage_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Defiance",
+   "desc": "Our spirit is strong, and we won't back down from a fight for fear of getting hurt.",
+   "modifier": {
+    "damage_vs_country_type_synth_queen_mult": 0.15,
+    "damage_vs_country_type_awakened_synth_queen_mult": 0.15,
+    "damage_vs_country_type_synth_queen_convoys_mult": 0.15,
+    "damage_vs_country_type_synth_queen_outposts_mult": 0.15,
+    "damage_vs_country_type_swarm_mult": 0.15,
+    "damage_vs_country_type_extradimensional_mult": 0.15,
+    "damage_vs_country_type_extradimensional_2_mult": 0.15,
+    "damage_vs_country_type_extradimensional_3_mult": 0.15,
+    "damage_vs_country_type_ai_empire_mult": 0.15,
+    "damage_vs_country_type_gray_goo_mult": 0.15,
+    "damage_vs_player_crisis_mult": 0.15,
+    "damage_vs_country_type_voidworms_mult": 0.15,
+    "damage_vs_country_type_voidworms_crisis_mult": 0.15,
+    "damage_vs_country_type_voidworms_treasure_hunters_mult": 0.15,
+    "damage_vs_country_type_frenzied_voidworms_mult": 0.15,
+    "damage_vs_country_type_awakened_marauders_mult": 0.15,
+    "_text": "custom_tooltip = unlocks_defender_crisis_damage_1"
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_galcom_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Political Leaders",
+   "desc": "Our influence grows, and with it, our ability to enact change in the Galactic Community. Our allies trust us, and we must strive to honor their faith.",
+   "modifier": {
+    "country_influence_produces_mult": 0.2,
+    "emergency_measures_cooldown_mult": -0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_federation_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Comrades in Arms",
+   "desc": "We protect the galaxy, but it is good to know that others protect us too. By relying upon each other, we all become stronger.",
+   "modifier": {
+    "ship_federation_territory_fire_rate_mult": 0.15
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_crisis_damage_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Dutiful Fervor",
+   "desc": "The Galaxy believes in us, and we are not about to let them down.",
+   "modifier": {
+    "ship_shield_mult": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_opinion_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Champions of the Galaxy",
+   "desc": "Symbolism has long shaped the course of empires. To dispel any lingering doubt as to our purpose, we must forge unmistakable emblems behind which the entire galaxy can rally.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_research_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Cerebellum Initiative",
+   "desc": "Knowledge may be power, but true strength lies in its exchange. By sharing knowledge with our allies, we show that power need not divide. Used wisely, it unites us in common purpose.",
+   "modifier": {
+    "research_sharing_mult": 0.2
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_defense_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Fortified Stations",
+   "desc": "Our fleets are our main weapon, but not the only one. Enemies can be halted upon the anvil of our stations so the hammer of our armada can strike them.",
+   "modifier": {
+    "defensive_stations_hull_mult": 0.15,
+    "defensive_stations_armor_mult": 0.1,
+    "defensive_stations_shield_hardening_add": 0.15,
+    "_text": "custom_tooltip = menp_defender_defense_1_tt"
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_crisis_damage_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Revered Martyrs",
+   "desc": "There is no virtue in seeking death, but in accepting its possibility for a just cause, there is honor. Victory in the defense of the galaxy demands sacrifice, and those who give their lives for others must never be forgotten.",
+   "modifier": {
+    "damage_vs_country_type_synth_queen_mult": 0.25,
+    "damage_vs_country_type_awakened_synth_queen_mult": 0.25,
+    "damage_vs_country_type_synth_queen_convoys_mult": 0.25,
+    "damage_vs_country_type_synth_queen_outposts_mult": 0.25,
+    "damage_vs_country_type_swarm_mult": 0.25,
+    "damage_vs_country_type_extradimensional_mult": 0.25,
+    "damage_vs_country_type_extradimensional_2_mult": 0.25,
+    "damage_vs_country_type_extradimensional_3_mult": 0.25,
+    "damage_vs_country_type_ai_empire_mult": 0.25,
+    "damage_vs_country_type_gray_goo_mult": 0.25,
+    "damage_vs_player_crisis_mult": 0.25,
+    "damage_vs_country_type_voidworms_mult": 0.25,
+    "damage_vs_country_type_voidworms_crisis_mult": 0.25,
+    "damage_vs_country_type_voidworms_treasure_hunters_mult": 0.25,
+    "damage_vs_country_type_frenzied_voidworms_mult": 0.25,
+    "damage_vs_country_type_awakened_marauders_mult": 0.25,
+    "_text": "custom_tooltip = unlocks_defender_crisis_damage_3"
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_opinion_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Beacon of Unity",
+   "desc": "We have proven ourselves in the eyes of the galaxy. Citizens across countless worlds know in their heart that we will fight until the bitter end to protect them.",
+   "modifier": {},
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_custodian",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Highest Office",
+   "desc": "With extraordinary power comes extraordinary responsibility. The mantle of Custodianship is a burden borne for the common good. These powers must never be wielded for ambition, but to draw forth the galaxy's highest ideals.",
+   "modifier": {},
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_defense_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Unshakeable Resolve",
+   "desc": "In the face of certain annihilation, we do not stand because we are stronger. We stand because we must.",
+   "modifier": {
+    "ship_military_station_small_upkeep_mult": -0.15,
+    "shipclass_military_station_build_speed_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_crisis_damage_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "By Any Means Necessary",
+   "desc": "There are rules of war we have broken, and with full knowledge of the cost. When the current crisis is over, we will be judged. Until then, we do what we must to ensure a galaxy remains to judge us.",
+   "modifier": {
+    "damage_vs_country_type_synth_queen_mult": 0.35,
+    "damage_vs_country_type_awakened_synth_queen_mult": 0.35,
+    "damage_vs_country_type_synth_queen_convoys_mult": 0.35,
+    "damage_vs_country_type_synth_queen_outposts_mult": 0.35,
+    "damage_vs_country_type_swarm_mult": 0.35,
+    "damage_vs_country_type_extradimensional_mult": 0.35,
+    "damage_vs_country_type_extradimensional_2_mult": 0.35,
+    "damage_vs_country_type_extradimensional_3_mult": 0.35,
+    "damage_vs_country_type_ai_empire_mult": 0.35,
+    "damage_vs_country_type_gray_goo_mult": 0.35,
+    "damage_vs_player_crisis_mult": 0.35,
+    "damage_vs_country_type_voidworms_mult": 0.35,
+    "damage_vs_country_type_voidworms_crisis_mult": 0.35,
+    "damage_vs_country_type_voidworms_treasure_hunters_mult": 0.35,
+    "damage_vs_country_type_frenzied_voidworms_mult": 0.35,
+    "damage_vs_country_type_awakened_marauders_mult": 0.35,
+    "_text": "custom_tooltip = unlocks_defender_crisis_damage_4"
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_galcom_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Harmonized Strategy",
+   "desc": "Defense is always veiled in secrecy, but in the situation that is ours, the galaxy must band together to devise the best way to fend off its mortal enemies.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_research_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "No Secrets",
+   "desc": "The selfish secrecy that pushes us to occult our technological progress cannot be tolerated anymore. The stronger our allies, the stronger we are.",
+   "modifier": {
+    "research_sharing_mult": 0.3,
+    "planet_researchers_produces_mult": 0.1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_defender_defense_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Defenders of the Galaxy",
+   "desc": "We will fight for every star. We will fight for every world. We will fight for every life. We will fight for every inch of our home!",
+   "modifier": {
+    "ship_friendly_territory_fire_rate_mult": 0.25,
+    "ship_friendly_territory_evasion_mult": 0.15
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_conviction",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Conviction",
+   "desc": "Doubt has no place in our grand design.",
+   "modifier": {
+    "pop_government_ethic_attraction": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_propagation",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Propagation",
+   "desc": "Let others recognize the path ahead, then walk alongside us.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_persuasion",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Persuasion",
+   "desc": "Diplomacy opens doors that force never could.",
+   "modifier": {
+    "envoys_add": 2,
+    "country_trust_cap_add": 25,
+    "envoy_improve_relations_mult": 0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_ethical_authority",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Ethical Authority",
+   "desc": "Our moral principles grant legitimacy to our rule.",
+   "modifier": {
+    "monthly_loyalty_from_subjects": 1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_cultural_envoys",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "[GetCulturalEnvoyNamePlural]",
+   "desc": "Our emissaries carry the spirit of our people into the stars.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_galactic_awareness",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Galactic Awareness",
+   "desc": "Knowledge of the wider galaxy guides our decisions.",
+   "modifier": {
+    "intel_encryption_add": 3,
+    "add_base_country_intel": 25,
+    "ship_sensor_range_add": 10
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_manifest_destiny",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Manifest Destiny",
+   "desc": "Expansion is not only our ambition, it is our destiny.",
+   "modifier": {
+    "country_base_influence_produces_add": 2,
+    "shipsize_cultural_envoy_ship_speed_mult": 0.25,
+    "ideological_push_mult": 0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_golden_age",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Golden Age",
+   "desc": "We stand at the height of prosperity and achievement.",
+   "modifier": {
+    "pop_happiness": 0.25,
+    "country_consumer_goods_produces_mult": 0.25,
+    "country_physics_tech_research_speed": 0.25,
+    "country_society_tech_research_speed": 0.25,
+    "country_engineering_tech_research_speed": 0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_preparation",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Preparation",
+   "desc": "Vigilance and discipline keep us prepared for all possible futures.",
+   "modifier": {
+    "starbase_upgrade_speed_mult": 0.5,
+    "starbase_upgrade_cost_mult": -0.5,
+    "country_starbase_capacity_add": 5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_proselytization",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Proselytization",
+   "desc": "We seek to share our truth with all who will listen.",
+   "modifier": {
+    "cultural_envoy_conversion_rate_add": 50
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_codification",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Codification",
+   "desc": "Order is preserved through clear and enduring law.",
+   "modifier": {
+    "additional_tenet_add": 1,
+    "ideological_strength_bonus_mult": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_negotiation",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Negotiation",
+   "desc": "We achieve through dialogue what others attempt through war.",
+   "modifier": {
+    "diplomacy_influence_upkeep_mult": -0.25,
+    "adopted_ideology_upkeep_mult": -0.25,
+    "diplo_action_acceptance_add": 10
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_dominion",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Dominion",
+   "desc": "Our ethical authority extends wherever our banner flies.",
+   "modifier": {
+    "empire_size_systems_mult": -0.25,
+    "empire_size_pops_mult": -0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_utopian",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Utopian [Ideology.GetEthicNoun]",
+   "desc": "[GetFoWUtopianDesc]",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_force_of_will_unification",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Unification",
+   "desc": "Divided peoples become stronger under a common purpose.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_objectives",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Advanced Logic",
+   "desc": "Advanced Logic represents our understanding of the laws that govern reality and our power to influence them.",
+   "modifier": {
+    "country_physics_research_produces_mult": 0.1,
+    "planet_physicists_upkeep_mult": 0.03
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_buildings_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Perfect Arcologies",
+   "desc": "Fallen Empires may have forgotten how to replicate their advanced technology, but our minds will uncover the bygone secrets of their golden age.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_techs_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Non-Baryonic Energy",
+   "desc": "Learning how to harness the energy of antibaryonic particles is the next step in the evolution of ultra-compact power generation.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_features_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Wetware",
+   "desc": "Colossal in scale, the Synaptic Lathe is a reservoir computer. The processing power of our population's networked minds is used to compute and store data. The benefits are obvious, but some misguided species may view the transmutation of individuals into computing chips as morally questionable.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_ship_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Conundrumical Escorts",
+   "desc": "[Get_menp_cosmo_ship_2]",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_buildings_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Advanced Harvesting",
+   "desc": "The resource generation capabilities of Fallen Empires have long baffled us. Not anymore.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_techs_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Antibaryonic Advances",
+   "desc": "Our growing understanding of dark matter and its applications will open new avenues of technological progress.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_features_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Gravitational Tools",
+   "desc": "Gravity and spacetime shape the universe. Starting with gravity, we will master tools to power our ascension.\\n",
+   "modifier": {
+    "country_society_research_produces_mult": 0.1,
+    "planet_biologists_upkeep_mult": 0.03
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_ship_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Puzzling Cruisers",
+   "desc": "[Get_menp_cosmo_ship_3]",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_buildings_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Complex Infrastructures",
+   "desc": "Now that we have begun to unravel the veil of mystery surrounding Fallen Empires, we must keep continue to pull the thread. In time, the secrets of their technology will come undone.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_techs_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Exotic Antibaryons",
+   "desc": "Using dark matter in defensive technology and encryption will enable us to create nullifying fields and robust communication channels.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_features_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Eternal Expansion",
+   "desc": "Precise and incredibly minute alterations in gravity allow us to inject commands into the code of reality. Extreme caution is imperative as we learn the applications of this new and incredible tool.\\n",
+   "modifier": {
+    "country_engineering_research_produces_mult": 0.1,
+    "planet_engineers_upkeep_mult": 0.03
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_ship_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Unsurmisable Flagships",
+   "desc": "[Get_menp_cosmo_ship_4]",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_buildings_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Golden Age",
+   "desc": "The insights of Fallen Empires into dimensional manipulation are astonishing. With every discovery, even their most arcane technology begins to seem simplistic.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_techs_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Armor and Armaments",
+   "desc": "Our latest technological advancements should enable us to fashion deadlier weapons and more formidable armor for our ships.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_features_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Rulebreaker",
+   "desc": "Recent experiments confirm that our edits to reality are only temporary. More significant alterations will be necessary to anchor these changes.",
+   "modifier": {
+    "country_physics_research_produces_mult": 0.1,
+    "planet_physicists_upkeep_mult": 0.03
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_buildings_5",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Memory and Creation",
+   "desc": "The secrets of Fallen Empires, at last uncovered, will usher in a new age for our people.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_techs_5",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Nanoswarms",
+   "desc": "With every shift in perspective, new opportunities present themselves. Change on the smallest scale can have massive consequences.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_cosmo_features_5",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Void Voyager",
+   "desc": "Large-scale travel to different universes is a daunting task. We must engineer a spacecraft that can not only pierce the fabric of spacetime but also survive the journey.\\n\\n§RFallen Empires will try to stop us!§!",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_objectives",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Feral Insight",
+   "desc": "Examining Behemoth behavior will aid our ultimate goal of transcendence. We will shed the biological restrictions that govern planet-born life.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_bioship_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Harder Chitin",
+   "desc": "Enduring the harshness of space requires a thick exterior. External fortitude will ensure survival even in the bleakest of conditions.",
+   "modifier": {
+    "shipclass_military_hull_mult": 0.1,
+    "ship_armor_hardening_add": 0.2
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_society_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Accelerated Field Trials",
+   "desc": "Lab experiments are a good starting point but real progress will require practical, high-risk testing in the field.",
+   "modifier": {
+    "planet_farmers_society_research_produces_add": 1.5,
+    "planet_farmers_energy_upkeep_add": 0.5,
+    "planet_farmers_minerals_upkeep_add": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_food_1",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Supersized Crops",
+   "desc": "Sating the ravenous appetite of a Behemoth is an uphill battle. Producing genetically modified food on a huge scale is a start.",
+   "modifier": {
+    "country_resource_max_food_add": 100000
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_egg",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Cyclopean Hatcheries",
+   "desc": "A colossal egg demands nothing less than a titanic hatching facility. This orbital hatchery must be positioned at a deliberate distance from the star to accommodate the vast proportions needed to cradle a Behemoth.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_bioship_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Better Glandular Stimulation",
+   "desc": "With purpose built probes we are artificially stimulating the endocrine glands of the Behemoth to produce growth hormones for accelerated development.",
+   "modifier": {
+    "bioship_growth_progress_mult": 0.3,
+    "command_limit_mult": 0.5
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_society_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Transversal Enquiries",
+   "desc": "At the intersection of natural selection and bio-engineering, an incomparable force is born.",
+   "modifier": {
+    "country_society_tech_research_speed": 0.15,
+    "planet_biologists_upkeep_mult": 0.05
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_food_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Nutrient Overload",
+   "desc": "Sating the ravenous appetite of a Behemoth may well prove impossible. Producing genetically modified food on a massive scale is only the start.",
+   "modifier": {
+    "planet_farmers_food_produces_add": 3,
+    "planet_farmers_minerals_upkeep_add": 1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_hatchling",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Gargantuan Brood",
+   "desc": "A litter of Behemoths spans star systems. Our galactic neighbors will respect the autonomy of our spawn, or they will become food.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_bioships_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Faster Growth Cycles",
+   "desc": "Expediting the development of giant space fauna is crucial to our ultimate goal. We will ensure our infrastructure grows in parallel.",
+   "modifier": {
+    "starbase_shipyard_build_alloys_cost_mult": -0.95,
+    "starbase_shipyard_build_speed_mult": 0.15
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_society_3",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Bio-Engineering Mastery",
+   "desc": "Through rigorous trial and error we have developed our scientific prowess. Now we position ourselves as the galaxy's most prominent bio-engineers.",
+   "modifier": {
+    "category_biology_research_speed_mult": 0.25,
+    "planet_biologists_upkeep_mult": 0.075
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_mind_control",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Deep Thought Shaping",
+   "desc": "Our collective intellect is stirring, longing for something bigger and better. Our ambition knows no bounds.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_hatchling_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Unbridled Growth",
+   "desc": "The beast is untethered. The creature that was once a mere hatchling is fast becoming a savage, unrelenting force of nature.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_bioship_4",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Stronger Organisms",
+   "desc": "Fueled by ravenous hunger and unyielding rage, the behemoths are reaching a chaotic level of power. Their biological weapon is primed, prepared to wreak havoc on foes and bystanders alike.",
+   "modifier": {
+    "ship_fire_rate_mult": 0.15
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_mutation_research",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Behemoth Mutations",
+   "desc": "We will rearrange the genetic material of the behemoths as they continue to grow, encouraging the most beneficial physiological traits.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_mind_control_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Apex Specimen Deployment",
+   "desc": "The pinnacle of genetic perfection will not be confined to our existing borders. It must be shared with the galaxy.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_mind_meld",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Mind Meld",
+   "desc": "Our mind to the Behemoth, the Behemoth's mind to ours. Its rage becomes our own. We are willingly consumed, and as the beast gorges itself on our collective consciousness, we feel its fury. It becomes us, and we become beast.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_primal_roar",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Primal Roar",
+   "desc": "It courses through us, searing, tearing, burning. A rage, a primal roar. The galaxy will burn in the flames of our fury.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_ever_hungry",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Ever Hungry",
+   "desc": "We are in agony, the constant need to feed becoming our sole motivation for existing. There is a pit within us that can never be filled, no matter how much we consume. We require nothing short of a galaxy-sized feast to quell this pain.",
+   "modifier": {
+    "the_cradle_of_souls_attunement_mult": -0.25
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_behemoth_egg_2",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Ravenous Progeny",
+   "desc": "Our spawn will gorge on the carcass of the galaxy. Their hunger knows no end. Through the infinity of time, they shall feast.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_crystals",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Crystallized Entropy",
+   "desc": "§YCrystallized Entropy§! mark a breakthrough in controlled energy destabilization. With this volatile resource at our command, we can reshape the galactic order itself.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_harnessing",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Entropy Harnessing",
+   "desc": "Integrating §YCrystallized Entropy§! synthesis into our industry allows for more efficient use of this volatile resource, aligning our technical focus with strategic goals.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_crucible",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Galactic Crucible",
+   "desc": "This proposed Crucible would serve as a central engine for harnessing stellar entropy. With the ability to crystallize and transport it, the Crucible could become a beacon of our fiery power, spreading it across the stars.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_conc_entropy",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Concentrated Entropy",
+   "desc": "Conduits are vital to expanding our power at this stage. Increasing Crucible output will accelerate our march toward a brighter, burning future.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_radiant",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Radiant Ambitions",
+   "desc": "Being the spark that ignites the galaxy leaves no time for second-guessing or bureaucracy. We can't afford to lose time remodelling countless systems. To achieve our goals, we must dramatically increase our construction capacity.",
+   "modifier": {
+    "country_megastructure_build_cap_add": 1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_ignition",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Forced Ignition",
+   "desc": "Sometimes, pushing harder isn't enough. We need to take our technology to the next level and exploit its full potential. It's time to minimize safeguards and maximize output.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_cruiser",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Ember Cruiser",
+   "desc": "Equipped with cutting-edge technology, these vessels convert volatile heat flux into directed annihilation, reducing our enemies to charred cinders.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_flames",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Engulfing Flames",
+   "desc": "The utopia we envision leaves no room for opposition to our goals. Any who try to stop us will quickly learn that resistance will be met with a rain of fire upon their homeworlds.",
+   "modifier": {
+    "ship_orbital_bombardment_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_coronal",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Coronal Venting",
+   "desc": "Our Conduits currently dissipate massive heat to remain stable. By venting that heat into surrounding space, we could turn the Conduits into devastating weapons against our enemies.",
+   "modifier": {
+    "conduit_spawnrate_add": -10
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_reactors",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Heliofusion Reactors",
+   "desc": "Harnessing §YCrystallized Entropy§! in military tech unlocks propulsion systems of unparalleled power. Our ships will blaze across the stars like never before.",
+   "modifier": {
+    "shipsize_ember_cruiser_speed_mult": 0.3,
+    "shipsize_ember_battleship_speed_mult": 0.3
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_solarflare",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Artificial Solar Flare",
+   "desc": "There was a period when parts of the galaxy lay beyond our grasp. That illusion is ending. Soon, swarms of our Conduits will saturate the stars, bringing calibrated devastation to all who oppose us.",
+   "modifier": {
+    "conduit_spawnrate_add": -10
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_armada",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Blazing Armada",
+   "desc": "As the galaxy consolidates against us, mobilization becomes imperative. Every citizen must now contribute to sustaining the energy front, fanning the flames of our ascendancy.",
+   "modifier": {
+    "country_war_exhaustion_mult": -0.5,
+    "job_researcher_naval_cap_add": 1,
+    "job_metallurgist_naval_cap_add": 1
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_battleship",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Ember Battleship",
+   "desc": "With gun barrels as hot as the firestorm that is about to engulf the galaxy, these large ships will make up the bulk of our defensive forces around the Crucible.",
+   "modifier": null,
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_critical_mass",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Critical Mass",
+   "desc": "Increasing the entropic activity in a star's outer shell causes the star to pour forth a swell of radiation. This is causing entire systems to heat up more rapidly.",
+   "modifier": {
+    "conduit_spawnrate_add": -20
+   },
+   "potential": null,
+   "dlc": []
+  },
+  {
+   "id": "menp_hyperthermia_ammunition",
+   "file": "common/menace_perks/00_menace_perks.txt",
+   "name": "Infused Ammunition",
+   "desc": "A refinement in munitions design: standard ordnance is now augmented with micro-scale entropy cores, releasing destabilized thermal surges upon impact. The result is markedly enhanced destruction.",
+   "modifier": {
+    "shipsize_ember_cruiser_weapon_damage": 0.25,
+    "shipsize_ember_battleship_weapon_damage": 0.25
+   },
+   "potential": null,
+   "dlc": []
+  }
+ ],
+ "warnings": []
+}

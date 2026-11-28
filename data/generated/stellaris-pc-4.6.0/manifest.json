@@ -1,0 +1,167 @@
+{
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "date": "2026-11-28",
+ "sets": {
+  "ascension_perks": {
+   "file": "ascension_perks.json",
+   "count": 50,
+   "warnings": 0
+  },
+  "authorities": {
+   "file": "authorities.json",
+   "count": 8,
+   "warnings": 0
+  },
+  "buildings": {
+   "file": "buildings.json",
+   "count": 514,
+   "warnings": 0
+  },
+  "civics": {
+   "file": "civics.json",
+   "count": 292,
+   "warnings": 0
+  },
+  "crisis_levels": {
+   "file": "crisis_levels.json",
+   "count": 30,
+   "warnings": 0
+  },
+  "crisis_objectives": {
+   "file": "crisis_objectives.json",
+   "count": 42,
+   "warnings": 0
+  },
+  "crisis_paths": {
+   "file": "crisis_paths.json",
+   "count": 6,
+   "warnings": 0
+  },
+  "deposits": {
+   "file": "deposits.json",
+   "count": 592,
+   "warnings": 24
+  },
+  "designations": {
+   "file": "designations.json",
+   "count": 101,
+   "warnings": 0
+  },
+  "districts": {
+   "file": "districts.json",
+   "count": 147,
+   "warnings": 0
+  },
+  "dlc": {
+   "file": "dlc.json",
+   "count": 37,
+   "warnings": 9
+  },
+  "economic_categories": {
+   "file": "economic_categories.json",
+   "count": 283,
+   "warnings": 0
+  },
+  "edicts": {
+   "file": "edicts.json",
+   "count": 183,
+   "warnings": 0
+  },
+  "ethics": {
+   "file": "ethics.json",
+   "count": 25,
+   "warnings": 0
+  },
+  "events": {
+   "file": "events.json",
+   "count": 7223,
+   "warnings": 0
+  },
+  "fallen_empires": {
+   "file": "fallen_empires.json",
+   "count": 6,
+   "warnings": 1
+  },
+  "jobs": {
+   "file": "jobs.json",
+   "count": 369,
+   "warnings": 0
+  },
+  "living_standards": {
+   "file": "living_standards.json",
+   "count": 40,
+   "warnings": 0
+  },
+  "megastructures": {
+   "file": "megastructures.json",
+   "count": 173,
+   "warnings": 0
+  },
+  "menace_perks": {
+   "file": "menace_perks.json",
+   "count": 105,
+   "warnings": 0
+  },
+  "origins": {
+   "file": "origins.json",
+   "count": 80,
+   "warnings": 0
+  },
+  "planet_classes": {
+   "file": "planet_classes.json",
+   "count": 69,
+   "warnings": 2
+  },
+  "planet_modifiers": {
+   "file": "planet_modifiers.json",
+   "count": 70,
+   "warnings": 15
+  },
+  "policies": {
+   "file": "policies.json",
+   "count": 61,
+   "warnings": 0
+  },
+  "ship_components": {
+   "file": "ship_components.json",
+   "count": 1506,
+   "warnings": 4
+  },
+  "species_traits": {
+   "file": "species_traits.json",
+   "count": 370,
+   "warnings": 0
+  },
+  "static_modifiers": {
+   "file": "static_modifiers.json",
+   "count": 3305,
+   "warnings": 0
+  },
+  "technologies": {
+   "file": "technologies.json",
+   "count": 683,
+   "warnings": 4
+  },
+  "tradition_categories": {
+   "file": "tradition_categories.json",
+   "count": 33,
+   "warnings": 5
+  },
+  "traditions": {
+   "file": "traditions.json",
+   "count": 234,
+   "warnings": 0
+  },
+  "zone_slots": {
+   "file": "zone_slots.json",
+   "count": 36,
+   "warnings": 0
+  },
+  "zones": {
+   "file": "zones.json",
+   "count": 148,
+   "warnings": 1
+  }
+ }
+}

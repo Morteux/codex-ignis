@@ -2,10 +2,10 @@
 
 Design rules and decisions of the tech tree. Pending work lives in `tasks.md` (sections 30–34); finished tasks are in git. Replaces the old Spanish plan `tech_tree.md` (same content, phases moved to `tasks.md`).
 
-- **Ruleset:** Stellaris PC 4.5.4 "Cygnus" (`stellaris-pc-4.5.4`), read from the installed game files (owner, 2026-11-22). The final data review (T1406) checked it against the 4.5.4 extractor output: `game-data-verified`.
+- **Ruleset:** Stellaris PC 4.6.0 "Corona Borealis" (`stellaris-pc-4.6.0`, 683 technologies), read from the installed game files (owner, 2026-11-28, T2526), `unverified`. The previous version, 4.5.4 "Cygnus" (679 technologies), stays selectable; the final data review (T1406) checked it against the 4.5.4 extractor output: `game-data-verified`.
 - **Scope:** only `tech-tree.html` and its modules. The planet simulator has its own GDD (`PLANET_SIM_GDD.md`).
 - **Rule #1 (as in the simulator):** never invent rules, numbers or names. Data comes from the game files (§4.1); missing or ambiguous data → the task is marked blocked with the question.
-- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: data verification (T1406), the interface in the seven new languages (T1505) and the decision on moving to a newer game version (T2526: the installed game is 4.6.0, the data is 4.5.4).
+- **Status:** finished (2026-11-25): data, page, exploration, versions and integration (`tasks.md` sections 30–34). Pending: data verification (T1406), the interface in the seven new languages (T1505) and the review of the 4.6.0 data (added in T2526 next to the 4.5.4 data).
 
 ## 1. Goal
 Turn the technology data of the game into an **explorable tech tree** inside Codex Ignis: see the technologies by area, field and tier, follow prerequisites and what each one unlocks, search and filter, and consult **previous versions** of the tree as the game is updated.

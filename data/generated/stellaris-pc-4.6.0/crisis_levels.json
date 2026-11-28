@@ -1,0 +1,445 @@
+{
+ "set": "crisis_levels",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/crisis_levels"
+ ],
+ "count": 30,
+ "items": [
+  {
+   "id": "crisis_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UConcern§!",
+   "desc": "Crisis Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_objectives",
+    "menp_undertaker",
+    "menp_intimidation"
+   ],
+   "allow": null,
+   "order": 0
+  },
+  {
+   "id": "crisis_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§URisk§!",
+   "desc": "Crisis Level 2",
+   "required_crisis_currency": 1000,
+   "perks": [
+    "menp_crisis_corvette",
+    "menp_base_breaker",
+    "menp_relentless_aggression"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_level_2_req_clear_tooltip\n\tfail_text = crisis_level_2_req_tooltip\n\thas_country_flag = crisis_special_project_1_complete\n}\nhidden_trigger = {\n\tNOT = {\n\t\thas_active_event = { crisis.4120 }\n\t}\n}",
+   "order": 1
+  },
+  {
+   "id": "crisis_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UDanger§!",
+   "desc": "Crisis Level 3",
+   "required_crisis_currency": 2000,
+   "perks": [
+    "menp_crisis_destroyer",
+    "menp_easily_replaced",
+    "menp_death_from_above",
+    "menp_ruthless_raiders"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_level_3_req_clear_tooltip\n\tfail_text = crisis_level_3_req_tooltip\n\thas_country_flag = crisis_special_project_2_complete\n}\nhidden_trigger = {\n\tNOT = {\n\t\thas_active_event = { crisis.4125 }\n\t}\n}",
+   "order": 2
+  },
+  {
+   "id": "crisis_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UCalamity§!",
+   "desc": "Crisis Level 4",
+   "required_crisis_currency": 5000,
+   "perks": [
+    "menp_crisis_cruiser",
+    "menp_ship_chipper",
+    "menp_flyswatter"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_level_4_req_clear_tooltip\n\tfail_text = crisis_level_4_req_tooltip\n\thas_country_flag = crisis_special_project_3_complete\n}\nhidden_trigger = {\n\tNOT = {\n\t\thas_active_event = { crisis.4130 }\n\t}\n}",
+   "order": 3
+  },
+  {
+   "id": "crisis_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UExistential Threat§!",
+   "desc": "Crisis Level 5",
+   "required_crisis_currency": 10000,
+   "perks": [
+    "menp_megastructure",
+    "menp_star_eater",
+    "menp_mobile_bulwark",
+    "menp_paid_in_ambition"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_level_5_req_clear_tooltip\n\tfail_text = crisis_level_5_req_tooltip\n\thas_country_flag = crisis_special_project_4_complete\n}\nhidden_trigger = {\n\tNOT = {\n\t\thas_active_event = { crisis.4135 }\n\t}\n}\nis_subject = no\ncustom_tooltip = {\n\tfail_text = requires_waystation_aetherophasic_anchor\n\tOR = {\n\t\tis_nomadic = no\n\t\tany_owned_nonprimary_starbase = {\n\t\t\tis_waystation_starbase = yes\n\t\t\thas_starbase_module = waystation_aetherophasic_anchor\n\t\t}\n\t}\n}",
+   "order": 4
+  },
+  {
+   "id": "crisis_defender_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AAspirant§!",
+   "desc": "Ambition Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_defender_objectives",
+    "menp_defender_opinion_1",
+    "menp_defender_galcom_1",
+    "menp_defender_federation_1"
+   ],
+   "allow": null,
+   "order": 5
+  },
+  {
+   "id": "crisis_defender_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AGuardian§!",
+   "desc": "Ambition Level 2",
+   "required_crisis_currency": 2000,
+   "perks": [
+    "menp_defender_crisis_damage_1",
+    "menp_defender_galcom_3",
+    "menp_defender_galcom_2",
+    "menp_defender_federation_2"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = defender_level_2_req_clear_tooltip\n\tfail_text = defender_level_2_req_tooltip\n\thas_country_flag = crisis_special_project_1_complete\n}\nis_galactic_community_member = yes",
+   "order": 6
+  },
+  {
+   "id": "crisis_defender_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AChampion§!",
+   "desc": "Ambition Level 3",
+   "required_crisis_currency": 6000,
+   "perks": [
+    "menp_defender_crisis_damage_2",
+    "menp_defender_research_1",
+    "menp_defender_defense_1"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = defender_level_3_req_clear_tooltip\n\tfail_text = defender_level_3_req_tooltip\n\thas_country_flag = crisis_special_project_2_complete\n}\nis_part_of_galactic_council = yes\nhidden_trigger = {\n\thas_global_flag = galacic_council_announced\n}",
+   "order": 7
+  },
+  {
+   "id": "crisis_defender_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AHero§!",
+   "desc": "Ambition Level 4",
+   "required_crisis_currency": 18000,
+   "perks": [
+    "menp_defender_crisis_damage_3",
+    "menp_defender_opinion_2",
+    "menp_defender_custodian",
+    "menp_defender_defense_2"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = defender_level_4_req_clear_tooltip\n\tfail_text = defender_level_4_req_tooltip\n\tis_galactic_custodian = yes\n}",
+   "order": 8
+  },
+  {
+   "id": "crisis_defender_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§ALegend§!",
+   "desc": "Ambition Level 5",
+   "required_crisis_currency": 45000,
+   "perks": [
+    "menp_defender_crisis_damage_4",
+    "menp_defender_opinion_3",
+    "menp_defender_research_2",
+    "menp_defender_defense_3"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = defender_level_5_req_clear_tooltip\n\tfail_text = defender_level_5_req_tooltip\n\tOR = {\n\t\thas_crisis = yes\n\t\tany_country = {\n\t\t\tis_level_5_player_crisis = yes\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tsuccess_text = defender_level_4_req_clear_tooltip\n\tfail_text = defender_level_4_req_tooltip\n\tis_galactic_custodian = yes\n}",
+   "order": 9
+  },
+  {
+   "id": "crisis_force_of_will_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§ASeeds of Unity§!",
+   "desc": "Ambition Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_force_of_will_conviction",
+    "menp_force_of_will_propagation",
+    "menp_force_of_will_persuasion"
+   ],
+   "allow": null,
+   "order": 10
+  },
+  {
+   "id": "crisis_force_of_will_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AGrowing Consensus§!",
+   "desc": "Ambition Level 2",
+   "required_crisis_currency": 1000,
+   "perks": [
+    "menp_force_of_will_ethical_authority",
+    "menp_force_of_will_cultural_envoys",
+    "menp_force_of_will_galactic_awareness"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = force_of_will_level_2_req_clear_tooltip\n\tfail_text = force_of_will_level_2_req_tooltip\n\thas_country_flag = ambition_special_project_1_complete\n}\ncustom_tooltip = {\n\tfail_text = requires_absolute_ethic\n\tis_absolute = yes\n}",
+   "order": 11
+  },
+  {
+   "id": "crisis_force_of_will_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§ARising Movement§!",
+   "desc": "Ambition Level 3",
+   "required_crisis_currency": 2000,
+   "perks": [
+    "menp_force_of_will_manifest_destiny",
+    "menp_force_of_will_golden_age",
+    "menp_force_of_will_preparation"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = force_of_will_level_3_req_clear_tooltip\n\tfail_text = force_of_will_level_3_req_tooltip\n\thas_country_flag = ambition_special_project_2_complete\n}",
+   "order": 12
+  },
+  {
+   "id": "crisis_force_of_will_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AGalactic Mandate§!",
+   "desc": "Ambition Level 4",
+   "required_crisis_currency": 5000,
+   "perks": [
+    "menp_force_of_will_proselytization",
+    "menp_force_of_will_codification",
+    "menp_force_of_will_negotiation"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = force_of_will_level_4_req_clear_tooltip\n\tfail_text = force_of_will_level_4_req_tooltip\n\thas_country_flag = ambition_special_project_3_complete\n}",
+   "order": 13
+  },
+  {
+   "id": "crisis_force_of_will_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§AUtopia§!",
+   "desc": "Ambition Level 5",
+   "required_crisis_currency": 10000,
+   "perks": [
+    "menp_force_of_will_dominion",
+    "menp_force_of_will_utopian",
+    "menp_force_of_will_unification"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = force_of_will_level_5_req_clear_tooltip\n\tfail_text = force_of_will_level_5_req_tooltip\n\thas_country_flag = ambition_special_project_4_complete\n}\nideology? = {\n\tgalactic_strength >= 0.3\n}",
+   "order": 14
+  },
+  {
+   "id": "crisis_cosmogenesis_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UConcern§!",
+   "desc": "Crisis Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_cosmo_features_1",
+    "menp_cosmo_buildings_1",
+    "menp_cosmo_techs_1",
+    "menp_cosmo_objectives"
+   ],
+   "allow": null,
+   "order": 15
+  },
+  {
+   "id": "crisis_cosmogenesis_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§URisk§!",
+   "desc": "Crisis Level 2",
+   "required_crisis_currency": 4000,
+   "perks": [
+    "menp_cosmo_ship_2",
+    "menp_cosmo_buildings_2",
+    "menp_cosmo_techs_2",
+    "menp_cosmo_features_2"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = cosmogenesis_level_2_req_clear_tooltip\n\tfail_text = cosmogenesis_level_2_req_tooltip\n\thas_technology = tech_cosmogenesis_crisis_1\n}",
+   "order": 16
+  },
+  {
+   "id": "crisis_cosmogenesis_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UDanger§!",
+   "desc": "Crisis Level 3",
+   "required_crisis_currency": 10000,
+   "perks": [
+    "menp_cosmo_ship_3",
+    "menp_cosmo_buildings_3",
+    "menp_cosmo_techs_3",
+    "menp_cosmo_features_3"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = cosmogenesis_level_3_req_clear_tooltip\n\tfail_text = cosmogenesis_level_3_req_tooltip\n\thas_technology = tech_cosmogenesis_crisis_2\n}",
+   "order": 17
+  },
+  {
+   "id": "crisis_cosmogenesis_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UCalamity§!",
+   "desc": "Crisis Level 4",
+   "required_crisis_currency": 22000,
+   "perks": [
+    "menp_cosmo_ship_4",
+    "menp_cosmo_buildings_4",
+    "menp_cosmo_techs_4",
+    "menp_cosmo_features_4"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = cosmogenesis_level_4_req_clear_tooltip\n\tfail_text = cosmogenesis_level_4_req_tooltip\n\thas_technology = tech_cosmogenesis_crisis_3\n}\ncustom_tooltip = {\n\tfail_text = cosmogenesis_aborted_tt\n\tNOT = {\n\t\thas_country_flag = cosmogenesis_aborted\n\t}\n}",
+   "order": 18
+  },
+  {
+   "id": "crisis_cosmogenesis_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§UExistential Threat§!",
+   "desc": "Crisis Level 5",
+   "required_crisis_currency": 60000,
+   "perks": [
+    "menp_cosmo_features_5",
+    "menp_cosmo_buildings_5",
+    "menp_cosmo_techs_5"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = cosmogenesis_level_5_req_clear_tooltip\n\tfail_text = cosmogenesis_level_5_req_tooltip\n\thas_technology = tech_cosmogenesis_crisis_4\n}\ncustom_tooltip = {\n\tsuccess_text = cosmogenesis_level_5_req_clear_tooltip_2\n\tfail_text = cosmogenesis_level_5_req_tooltip_2\n\tcheck_variable = {\n\t\twhich = applied_infinity_thesis\n\t\tvalue >= 2\n\t}\n}\ncustom_tooltip = {\n\tfail_text = cosmogenesis_aborted_tt\n\tNOT = {\n\t\thas_country_flag = cosmogenesis_aborted\n\t}\n}\nis_subject = no",
+   "order": 19
+  },
+  {
+   "id": "crisis_behemoth_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§HConcern§!",
+   "desc": "Crisis Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_behemoth_objectives",
+    "menp_behemoth_egg",
+    "menp_behemoth_society_1",
+    "menp_behemoth_food_1"
+   ],
+   "allow": null,
+   "order": 20
+  },
+  {
+   "id": "crisis_behemoth_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§HRisk§!",
+   "desc": "Crisis Level 2",
+   "required_crisis_currency": 2000,
+   "perks": [
+    "menp_behemoth_hatchling",
+    "menp_behemoth_bioship_2",
+    "menp_behemoth_society_2",
+    "menp_behemoth_food_2"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_egg_built\n\tfail_text = crisis_egg_required\n\thas_country_flag = behemoth_egg_built\n}",
+   "order": 21
+  },
+  {
+   "id": "crisis_behemoth_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§HDanger§!",
+   "desc": "Crisis Level 3",
+   "required_crisis_currency": 6000,
+   "perks": [
+    "menp_behemoth_bioship_1",
+    "menp_behemoth_bioships_3",
+    "menp_behemoth_society_3"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_egg_hatched\n\tfail_text = crisis_hatchling_required\n\thas_country_flag = behemoth_egg_hatched\n}",
+   "order": 22
+  },
+  {
+   "id": "crisis_behemoth_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§HCalamity§!",
+   "desc": "Crisis Level 4",
+   "required_crisis_currency": 18000,
+   "perks": [
+    "menp_behemoth_hatchling_2",
+    "menp_behemoth_bioship_4",
+    "menp_behemoth_mutation_research"
+   ],
+   "allow": "custom_tooltip = {\n\tsuccess_text = crisis_level_2_req_clear_tooltip\n\tfail_text = crisis_level_2_req_tooltip\n\thas_country_flag = crisis_special_project_3_complete\n}",
+   "order": 23
+  },
+  {
+   "id": "crisis_behemoth_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§HExistential Threat§!",
+   "desc": "Crisis Level 5",
+   "required_crisis_currency": 45000,
+   "perks": [
+    "menp_behemoth_mind_meld",
+    "menp_behemoth_primal_roar",
+    "menp_behemoth_ever_hungry",
+    "menp_behemoth_egg_2"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_level_5_req_clear_tooltip\n\tfail_text = behemoth_crisis_level_5_req_tooltip\n\thas_country_flag = crisis_special_project_4_complete\n}",
+   "order": 24
+  },
+  {
+   "id": "crisis_hyperthermia_level_1",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§RConcern§!",
+   "desc": "Crisis Level 1",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_hyperthermia_crystals",
+    "menp_hyperthermia_harnessing",
+    "menp_hyperthermia_crucible"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_lv1_tt\n\tfail_text = crisis_hyperthermia_lv1_req_tt\n\thas_country_flag = Hyperthermia_Lv1_unlocked\n}",
+   "order": 25
+  },
+  {
+   "id": "crisis_hyperthermia_level_2",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§RRisk§!",
+   "desc": "Crisis Level 2",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_hyperthermia_radiant",
+    "menp_hyperthermia_conc_entropy",
+    "menp_hyperthermia_ignition"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_lv2_tt\n\tfail_text = crisis_hyperthermia_lv2_req_tt\n\thas_country_flag = Hyperthermia_Lv2_unlocked\n}",
+   "order": 26
+  },
+  {
+   "id": "crisis_hyperthermia_level_3",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§RDanger§!",
+   "desc": "Crisis Level 3",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_hyperthermia_cruiser",
+    "menp_hyperthermia_coronal",
+    "menp_hyperthermia_flames"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_lv3_tt\n\tfail_text = crisis_hyperthermia_lv3_req_tt\n\thas_country_flag = Hyperthermia_Lv3_unlocked\n}",
+   "order": 27
+  },
+  {
+   "id": "crisis_hyperthermia_level_4",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§RCalamity§!",
+   "desc": "Crisis Level 4",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_hyperthermia_reactors",
+    "menp_hyperthermia_solarflare",
+    "menp_hyperthermia_armada"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_lv4_tt\n\tfail_text = crisis_hyperthermia_lv4_req_tt\n\thas_country_flag = Hyperthermia_Lv4_unlocked\n}\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_dec_lv4_tt\n\tfail_text = crisis_hyperthermia_lv4_dec_req_tt\n\thas_country_flag = Hyperthermia_Lv4_project\n}\ncustom_tooltip = {\n\tfail_text = crisis_hyperthermia_already_ongoing\n\tNOT = {\n\t\thas_global_flag = Hyperthermia_ongoing\n\t}\n}\ncustom_tooltip = {\n\tfail_text = crisis_hyperthermia_already_happened\n\tNOT = {\n\t\thas_global_flag = Hyperthermia_happened\n\t}\n}",
+   "order": 28
+  },
+  {
+   "id": "crisis_hyperthermia_level_5",
+   "file": "common/crisis_levels/00_crisis_levels.txt",
+   "name": "§RExistential Threat§!",
+   "desc": "Crisis Level 5",
+   "required_crisis_currency": 0,
+   "perks": [
+    "menp_hyperthermia_battleship",
+    "menp_hyperthermia_critical_mass",
+    "menp_hyperthermia_ammunition"
+   ],
+   "allow": "is_subject = no\ncustom_tooltip = {\n\tsuccess_text = crisis_hyperthermia_lv5_tt\n\tfail_text = crisis_hyperthermia_lv5_req_tt\n\thas_country_flag = Hyperthermia_Lv5_unlocked\n}\ncustom_tooltip = {\n\tfail_text = crisis_hyperthermia_already_ongoing\n\tNOT = {\n\t\thas_global_flag = Hyperthermia_ongoing\n\t}\n}\ncustom_tooltip = {\n\tfail_text = crisis_hyperthermia_already_happened\n\tNOT = {\n\t\thas_global_flag = Hyperthermia_happened\n\t}\n}",
+   "order": 29
+  }
+ ],
+ "warnings": []
+}

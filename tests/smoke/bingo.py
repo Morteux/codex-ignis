@@ -9,6 +9,14 @@ PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 DOWNLOAD_STATE_JS = "()=>({pending:[...document.querySelectorAll('#bingo-grid img')].filter(i=>!i.complete).map(i=>i.src.split('/').pop()),disabled:document.querySelector('#bingo-download').disabled,status:document.querySelector('#bingo-download-status').textContent})"
 
 
+def built_from(module):
+    """data/generated/<rulesetId>/ folder named in the header of a generated module (T2526: the
+    newest folder is not always the one a module was built from)."""
+    with open(module, encoding="utf-8") as f:
+        ruleset = re.search(r"data/generated/([^/]+)/", f.readline()).group(1)
+    return os.path.join(ROOT, "data", "generated", ruleset)
+
+
 async def download_png(page, name, timeout=30000):
     """Clicks #bingo-download and returns (first 24 bytes, file name, status text), or None after a
     FAIL check with diagnostics if no download comes (P22.13: never stop the whole suite)."""
@@ -62,7 +70,7 @@ async def run(t):
     # T2402: origins in the in-game order, generated from the extractor's origins.json (T2511)
     order_file = os.path.join(ROOT, "js", "bingo-origin-order.js")
     fresh = os.path.join(tempfile.gettempdir(), "bingo-origin-order-smoke.js")
-    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_origin_order.py"), "--out", fresh], capture_output=True, text=True)
+    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_origin_order.py"), "--out", fresh, "--data", built_from(order_file)], capture_output=True, text=True)
     same = build.returncode == 0 and open(fresh, encoding="utf-8").read() == open(order_file, encoding="utf-8").read()
     if os.path.exists(fresh):
         os.remove(fresh)
@@ -160,7 +168,8 @@ async def run(t):
     check("bingo: a variant cell is marked on its own (not its base authority)", await bingo.evaluate("()=>[...document.querySelectorAll('#bingo-grid .bingo-card')].map((c,i)=>c.classList.contains('is-marked')?i:-1).filter(i=>i>=0)") == [10])
     # T3501: rare and dangerous technologies bingo, generated from technologies.json
     fresh_items, fresh_strings = (os.path.join(tempfile.gettempdir(), n) for n in ("bingo-game-items-smoke.js", "i18n-bingo-game-smoke.js"))
-    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_bingo_game_items.py"), "--out-items", fresh_items, "--out-strings", fresh_strings], capture_output=True, text=True)
+    build = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "extract", "build_bingo_game_items.py"), "--out-items", fresh_items, "--out-strings", fresh_strings,
+                            "--data", built_from(os.path.join(ROOT, "js", "bingo-game-items.js"))], capture_output=True, text=True)
     same = build.returncode == 0 and all(open(a, encoding="utf-8").read() == open(os.path.join(ROOT, "js", b), encoding="utf-8").read()
                                          for a, b in ((fresh_items, "bingo-game-items.js"), (fresh_strings, "i18n-bingo-game.js")))
     for path in (fresh_items, fresh_strings):

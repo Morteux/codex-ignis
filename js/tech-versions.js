@@ -19,6 +19,13 @@ export const TECH_VERSIONS = [
     // T1406: rebuilt from data/generated/stellaris-pc-4.5.4/ byte for byte; every technology
     // matches the extractor output (name, area, field, tier, cost, prerequisites, DLC, icon).
     verification: "game-data-verified",
+  },
+  {
+    id: "stellaris-pc-4.6.0",
+    label: "Stellaris PC 4.6.0",
+    file: "./tech-data/stellaris-pc-4.6.0.js",
+    // T2526: built from data/generated/stellaris-pc-4.6.0/ (683 technologies); not reviewed yet.
+    verification: "unverified",
     isCurrent: true,
   },
 ];

@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2526 — The project moves to the 4.6.0 game files (2026-11-28)
+
+- [ ] **Every 4.6.0 set is committed**, also the ones the 4.5.4 folder never had (species traits, ascension perks, traditions, ship components, megastructures, crises, fallen empires and events, 6.9 MB): `extract_all.py` writes them and the Testellaris generator (T4110) needs them.
+- [ ] **The 4.6.0 tech data is `unverified`** (T3302 procedure), although it is a byte-identical build of the extractor output like the `game-data-verified` 4.5.4 file; the final data review (section 14) decides.
+- [ ] **Shared icon folder**: StellarisAssets keeps one file per icon name, so the six technology icons redrawn in 4.6.0 (`tech_power_plant_1`–`4`, `tech_xeno_diplomacy`, `tech_xeno_relations`) replace the 4.5.4 ones for both versions of the tree; `tech_galactic_halls` is new (the other three new techs reuse existing icons).
+- [ ] **Simulator registry not moved yet**: `DATA_VERSIONS` of `js/data-version.js` stays on the 4.5.2 wiki data until T2523 switches the data sets, so a saved planet is never labelled with a version its numbers do not come from; only the `technologies` collection moved to 4.6.0.
+- [ ] **`js/tech-unlock-links.js` follows the current tech version** (4.6.0): rebuilt with `tools/build-tech-links.mjs`.
+- [ ] **Bingos stay on 4.5.4 until T2529**: their generated modules name the data folder they were built from, and the smoke test rebuilds them from that folder (not from the newest one).
+- [ ] **Smoke runner**: area names as arguments (`python tests/policies-smoke.py --block-remote tech_tree`) run only those areas, to test one page at a time.
+
 ## T1404 — GDD §9 reviewed against the 4.5.4 game files (2026-11-27)
 
 - [ ] **Source of the review**: the 4.5.4 extractor output already in `data/generated/stellaris-pc-4.5.4/` (the installed game is now 4.6.0, so T1401 could not rerun it on 4.5.4). Findings in `PLANET_SIM_GDD.md` §9.1.

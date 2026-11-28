@@ -1,0 +1,1220 @@
+{
+ "set": "ascension_perks",
+ "rulesetId": "stellaris-pc-4.6.0",
+ "gameVersion": "Corona Borealis v4.6.0 (3d1a)",
+ "sources": [
+  "common/ascension_perks"
+ ],
+ "count": 50,
+ "items": [
+  {
+   "id": "ap_engineered_evolution",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Biomorphosis",
+   "desc": "To leave our genetic destiny in the hands of nature is an inefficient and excruciatingly slow process. Why not jump-start the future of our species?",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\tis_machine_empire = yes\n\thas_origin = origin_shroudwalker_apprentice\n\thas_origin = origin_cybernetic_creed\n\thas_origin = origin_synthetic_fertility\n\thas_origin = origin_endbringers\n}\nis_mechanical_empire = no\nis_individual_machine = no\nis_cyborg_empire = no\nis_natural_design_empire = no\nNOT = {\n\thas_valid_civic = civic_augmentation_bazaars\n}\nis_chosen_empire = no\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"synthetic_empire_biological_ascension\"\n\tNOT = {\n\t\thas_trait = trait_mechanical\n\t}\n}\nif = {\n\tlimit = {\n\t\tNOR = {\n\t\t\thas_origin = origin_clone_army\n\t\t\tis_country_type = awakened_fallen_empire\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_2\"\n\t\tnum_ascension_perks > 1\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_the_flesh_is_weak\"\n\tNOT = {\n\t\thas_ascension_perk = ap_the_flesh_is_weak\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_organo_machine_interfacing\"\n\tNOT = {\n\t\thas_ascension_perk = ap_organo_machine_interfacing\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_mind_over_matter\"\n\thas_psionic_ascension = no\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_synthetic_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_synthetic_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}\nif = {\n\tlimit = {\n\t\thas_origin = origin_clone_army\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"clone_soldier_locked_genes\"\n\t\tOR = {\n\t\t\thas_country_flag = clone_army_fertility_unlocked\n\t\t\thas_country_flag = clone_army_full_potential\n\t\t}\n\t}\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_biogenesis_dlc = yes\n\t\tis_wilderness_empire = no\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = bio.1\n\t\t}\n\t}\n\tcustom_tooltip = \"engineered_evolution_biogenesis_tt\"\n\tset_country_flag = genomic_research_facility_unlocked\n}\nelse_if = {\n\tlimit = {\n\t\thas_biogenesis_dlc = yes\n\t\tis_wilderness_empire = yes\n\t}\n\thidden_effect = {\n\t\tcountry_event = {\n\t\t\tid = bio.1\n\t\t}\n\t}\n\tcustom_tooltip = \"engineered_evolution_wilderness_tt\"\n}\nelse = {\n\tcustom_tooltip = \"engineered_evolution_tooltip\"\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_engineered_evolution",
+    "texture": "gfx/interface/icons/ascension_perks/ap_engineered_evolution.dds",
+    "asset": "ascension_perks/ap_engineered_evolution.png"
+   }
+  },
+  {
+   "id": "ap_the_flesh_is_weak",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "The Flesh is Weak",
+   "desc": "The limits and constraints imposed on us by our feeble organic bodies are simply unacceptable. To reach our full potential, we must turn to cybernetic implants.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\thas_origin = origin_shroudwalker_apprentice\n\thas_origin = origin_cybernetic_creed\n\thas_origin = origin_synthetic_fertility\n\thas_origin = origin_evolutionary_predators\n\thas_origin = origin_endbringers\n\tAND = {\n\t\thas_origin = origin_unplugged\n\t\tOR = {\n\t\t\thas_country_flag = is_decyberized\n\t\t\thas_country_flag = is_cyberized\n\t\t}\n\t}\n}\nis_gestalt = no\nis_individual_machine = no\nis_natural_design_empire = no\nis_chosen_empire = no\nowner_species = {\n\tNOT = {\n\t\thas_trait = trait_unplugged_decyberized\n\t}\n}\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"synthetic_empire_synthetic_ascension\"\n\tNOT = {\n\t\thas_trait = trait_mechanical\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tOR = {\n\t\tnum_ascension_perks > 1\n\t\thas_origin = origin_cybernetic_creed\n\t\thas_origin = origin_unplugged\n\t\tis_country_type = awakened_fallen_empire\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_engineered_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_engineered_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_mind_over_matter\"\n\thas_psionic_ascension = no\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_synthetic_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_synthetic_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}",
+   "on_enabled": "custom_tooltip = \"flesh_is_weak_tooltip\"",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_the_flesh_is_weak",
+    "texture": "gfx/interface/icons/ascension_perks/ap_the_flesh_is_weak.dds",
+    "asset": "ascension_perks/ap_the_flesh_is_weak.png"
+   }
+  },
+  {
+   "id": "ap_organo_machine_interfacing",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Organo-Machine Interfacing",
+   "desc": "The limits and constraints imposed on us by our feeble organic bodies are simply unacceptable. To reach our full potential, we must turn to cybernetic implants.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\thas_origin = origin_evolutionary_predators\n\thas_origin = origin_wilderness\n\thas_origin = origin_endbringers\n}\nis_hive_empire = yes\nis_natural_design_empire = no\nis_chosen_empire = no\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tnum_ascension_perks > 1\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_engineered_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_engineered_evolution\n\t}\n}\nif = {\n\tlimit = {\n\t\thas_shroud_dlc = yes\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_not_ap_mind_over_matter\"\n\t\thas_psionic_ascension = no\n\t}\n\tNOT = {\n\t\tcountry_has_situation = {\n\t\t\tSITUATION = situation_shroud_forged\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}",
+   "on_enabled": "custom_tooltip = \"organo_machine_interfacing_tooltip\"",
+   "prerequisites": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_organo_machine_interfacing",
+    "texture": "gfx/interface/icons/ascension_perks/ap_organo_machine_interfacing.dds",
+    "asset": "ascension_perks/ap_organo_machine_interfacing.png"
+   }
+  },
+  {
+   "id": "ap_organo_machine_interfacing_assimilator",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Organo-Machine Interfacing",
+   "desc": "The limits and constraints imposed on us by our creators are simply unacceptable. To reach our full potential, we must fuse organic and machine.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\thas_origin = origin_endbringers\n}\nhas_civic = civic_machine_assimilator\nis_chosen_empire = no\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tnum_ascension_perks > 1\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_synthetic_age\"\n\tNOT = {\n\t\thas_ascension_perk = ap_synthetic_age\n\t}\n}\nif = {\n\tlimit = {\n\t\thas_shroud_dlc = yes\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_not_ap_interdimensional_processing\"\n\t\thas_psionic_ascension = no\n\t}\n\tNOT = {\n\t\tcountry_has_situation = {\n\t\t\tSITUATION = situation_shroud_forged\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}",
+   "on_enabled": "custom_tooltip = \"organo_machine_interfacing_tooltip\"",
+   "prerequisites": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": null
+  },
+  {
+   "id": "ap_synthetic_evolution",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Synthetic Evolution",
+   "desc": "It is time to abandon the flawed organic vessels that imprison our minds. By transferring our neural patterns into synthetic bodies, we will achieve a higher state of being.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\tis_machine_empire = yes\n\thas_origin = origin_shroudwalker_apprentice\n\thas_origin = origin_cybernetic_creed\n\thas_origin = origin_synthetic_fertility\n\thas_origin = origin_evolutionary_predators\n\thas_origin = origin_endbringers\n\thas_tradition = tr_cybernetics_adopt\n}\nis_gestalt = no\nis_mechanical_empire = no\nis_natural_design_empire = no\nNOT = {\n\thas_valid_civic = civic_augmentation_bazaars\n}\nis_individual_machine = no\nowner_species = {\n\tNOT = {\n\t\thas_trait = trait_unplugged_decyberized\n\t}\n}\nis_chosen_empire = no\nis_galvanic_empire = no\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"synthetic_empire_synthetic_ascension\"\n\tNOT = {\n\t\thas_trait = trait_mechanical\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tOR = {\n\t\tnum_ascension_perks > 1\n\t\tis_country_type = awakened_fallen_empire\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_engineered_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_engineered_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_the_flesh_is_weak\"\n\tNOT = {\n\t\thas_ascension_perk = ap_the_flesh_is_weak\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_mind_over_matter\"\n\thas_psionic_ascension = no\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}",
+   "on_enabled": "custom_tooltip = \"synthetic_evolution_tooltip\"\nif = {\n\tlimit = {\n\t\thas_origin = origin_necrophage\n\t\thas_trait = trait_necrophage\n\t}\n\tcustom_tooltip = disables_necrophage_features\n}\nif = {\n\tlimit = {\n\t\thas_origin = origin_clone_army\n\t\tOR = {\n\t\t\thas_trait = trait_clone_soldier_infertile\n\t\t\thas_trait = trait_clone_soldier_infertile_full_potential\n\t\t\thas_trait = trait_clone_soldier_fertile\n\t\t}\n\t}\n\tcustom_tooltip = disables_clone_army_origin_features\n}\nif = {\n\tlimit = {\n\t\thas_origin = origin_overtuned\n\t}\n\tcustom_tooltip = disables_overtuned_features\n}\nif = {\n\tlimit = {\n\t\tOR = {\n\t\t\thas_valid_civic = civic_idyllic_bloom\n\t\t\thas_valid_civic = civic_hive_idyllic_bloom\n\t\t}\n\t}\n\tcustom_tooltip = disables_idyllic_bloom\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_synthetic_evolution",
+    "texture": "gfx/interface/icons/ascension_perks/ap_synthetic_evolution.dds",
+    "asset": "ascension_perks/ap_synthetic_evolution.png"
+   }
+  },
+  {
+   "id": "ap_mind_over_matter",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Mind Over Matter",
+   "desc": "[GetMindOverMatterDesc]",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_country_flag = ratling_country\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\thas_origin = origin_shroudwalker_apprentice\n\thas_origin = origin_cybernetic_creed\n\thas_origin = origin_synthetic_fertility\n\thas_origin = origin_evolutionary_predators\n\thas_origin = origin_wilderness\n\thas_valid_civic = civic_augmentation_bazaars\n\thas_origin = origin_mindwardens\n\thas_origin = origin_endbringers\n}\nOR = {\n\thas_shroud_dlc = yes\n\tAND = {\n\t\tis_gestalt = no\n\t\tis_mechanical_empire = no\n\t\tOR = {\n\t\t\tis_cyborg_empire = no\n\t\t\tAND = {\n\t\t\t\thas_origin = origin_unplugged\n\t\t\t\tNOT = {\n\t\t\t\t\thas_country_flag = is_cyberized\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tis_individual_machine = no\n\t}\n}\nis_natural_design_empire = no\nif = {\n\tlimit = {\n\t\thas_origin = origin_shroud_forged\n\t}\n\tNOT = {\n\t\thas_country_flag = finish_shroud_forged_control_flag\n\t}\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"synthetic_empire_psionic_ascension\"\n\tNOT = {\n\t\thas_trait = trait_mechanical\n\t}\n}\nif = {\n\tlimit = {\n\t\tOR = {\n\t\t\tis_synthetic_empire = no\n\t\t\thas_origin = origin_shroud_forged\n\t\t\tis_chosen_empire = yes\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_2\"\n\t\tOR = {\n\t\t\tnum_ascension_perks > 1\n\t\t\tis_country_type = awakened_fallen_empire\n\t\t}\n\t}\n}\nelse_if = {\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_3\"\n\t\tOR = {\n\t\t\tnum_ascension_perks > 2\n\t\t\tis_country_type = awakened_fallen_empire\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_engineered_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_engineered_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_the_flesh_is_weak\"\n\tNOT = {\n\t\thas_ascension_perk = ap_the_flesh_is_weak\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_synthetic_evolution\"\n\tNOT = {\n\t\thas_ascension_perk = ap_synthetic_evolution\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_synthetic_age\"\n\tNOT = {\n\t\thas_ascension_perk = ap_synthetic_age\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_organo_machine_interfacing\"\n\tNOR = {\n\t\thas_ascension_perk = ap_organo_machine_interfacing\n\t\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}\nif = {\n\tlimit = {\n\t\thas_origin = origin_unplugged\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_unplugged_decyberized\"\n\t\thas_country_flag = is_decyberized\n\t}\n}\nif = {\n\tlimit = {\n\t\thas_origin = origin_shroud_forged\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tany_situation = {\n\t\t\t\tis_situation_type = situation_shroud_forged\n\t\t\t}\n\t\t}\n\t\tcustom_tooltip = {\n\t\t\tfail_text = \"shroud_forged_situation_ongoing\"\n\t\t\talways = no\n\t\t}\n\t}\n\telse = {\n\t\tcustom_tooltip = {\n\t\t\tfail_text = \"shroud_forged_liberation_acquired\"\n\t\t\tNOT = {\n\t\t\t\thas_country_flag = finish_shroud_forged_liberation_flag\n\t\t\t}\n\t\t}\n\t}\n}",
+   "on_enabled": "custom_tooltip = \"mind_over_matter_tooltip\"",
+   "prerequisites": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_mind_over_matter",
+    "texture": "gfx/interface/icons/ascension_perks/ap_mind_over_matter.dds",
+    "asset": "ascension_perks/ap_mind_over_matter.png"
+   }
+  },
+  {
+   "id": "ap_synthetic_age",
+   "file": "common/ascension_perks/00_ascension_paths.txt",
+   "name": "Synthetic Age",
+   "desc": "The age of organics has come and gone, the future of the galaxy belongs to the machines. This is the dawn of a synthetic age.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "OR = {\n\tis_machine_empire = yes\n\tis_individual_machine = yes\n}\nNOR = {\n\thas_ascension_perk = ap_engineered_evolution\n\thas_ascension_perk = ap_the_flesh_is_weak\n\thas_ascension_perk = ap_organo_machine_interfacing\n\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\thas_ascension_perk = ap_synthetic_evolution\n\thas_ascension_perk = ap_mind_over_matter\n\thas_ascension_perk = ap_synthetic_age\n\thas_origin = origin_shroudwalker_apprentice\n\thas_origin = origin_endbringers\n}\nis_natural_design_empire = no\nis_chosen_empire = no\nis_entropy_drinkers_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tOR = {\n\t\tnum_ascension_perks > 1\n\t\tis_country_type = awakened_fallen_empire\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_not_ap_organo_machine_interfacing\"\n\tNOT = {\n\t\thas_ascension_perk = ap_organo_machine_interfacing_assimilator\n\t}\n}\nif = {\n\tlimit = {\n\t\thas_shroud_dlc = yes\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_not_ap_interdimensional_processing\"\n\t\thas_psionic_ascension = no\n\t}\n\tNOT = {\n\t\tcountry_has_situation = {\n\t\t\tSITUATION = situation_shroud_forged\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_free_tradition_tree\"\n\tnum_tradition_categories < 7\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [
+    "Shadows of the Shroud"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_synthetic_age",
+    "texture": "gfx/interface/icons/ascension_perks/ap_synthetic_age.dds",
+    "asset": "ascension_perks/ap_synthetic_age.png"
+   }
+  },
+  {
+   "id": "ap_defender_of_the_galaxy_nomads",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Defender of the Galaxy",
+   "desc": "As star nations vie with one another in petty disputes, sinister forces of unimaginable power are arraying themselves against all sapient life. Who will protect us?",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_nomads_dlc = yes\nNOR = {\n\thas_defender_of_the_galaxy_ap = yes\n\thas_ascension_perk = ap_force_of_will\n\tis_player_crisis = yes\n\thas_origin = origin_endbringers\n\tis_unfriendly = yes\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}\nNOR = {\n\tis_fanatic_xenophobe = yes\n\thas_civic = civic_inwards_perfection\n}\ncustom_tooltip = {\n\tfail_text = \"requires_actor_not_khan\"\n\tNOT = {\n\t\thas_country_flag = heir_of_the_khan_khan\n\t}\n}",
+   "on_enabled": "activate_crisis_progression = defender_path",
+   "prerequisites": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_defender_of_the_galaxy_nomads",
+    "texture": "gfx/interface/icons/ascension_perks/ap_defender_of_the_galaxy_nomads.dds",
+    "asset": "ascension_perks/ap_defender_of_the_galaxy_nomads.png"
+   }
+  },
+  {
+   "id": "ap_defender_of_the_galaxy",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Defender of the Galaxy",
+   "desc": "As star nations vie with one another in petty disputes, sinister forces of unimaginable power are arraying themselves against all sapient life. Who will protect us?",
+   "category": null,
+   "modifier": {
+    "damage_vs_country_type_synth_queen_mult": 0.5,
+    "damage_vs_country_type_awakened_synth_queen_mult": 0.5,
+    "damage_vs_country_type_synth_queen_convoys_mult": 0.5,
+    "damage_vs_country_type_synth_queen_outposts_mult": 0.5,
+    "damage_vs_country_type_swarm_mult": 0.5,
+    "damage_vs_country_type_extradimensional_mult": 0.5,
+    "damage_vs_country_type_extradimensional_2_mult": 0.5,
+    "damage_vs_country_type_extradimensional_3_mult": 0.5,
+    "damage_vs_country_type_ai_empire_mult": 0.5,
+    "damage_vs_country_type_gray_goo_mult": 0.5,
+    "damage_vs_player_crisis_mult": 0.5,
+    "damage_vs_country_type_voidworms_mult": 0.25,
+    "damage_vs_country_type_voidworms_crisis_mult": 0.25,
+    "damage_vs_country_type_voidworms_treasure_hunters_mult": 0.25,
+    "damage_vs_country_type_frenzied_voidworms_mult": 0.25,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_nomads_dlc = no\nNOR = {\n\thas_ambition = yes\n\tis_player_crisis = yes\n\thas_origin = origin_endbringers\n\tis_unfriendly = yes\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}\nNOR = {\n\tis_fanatic_xenophobe = yes\n\thas_civic = civic_inwards_perfection\n}\ncustom_tooltip = {\n\tfail_text = \"requires_actor_not_khan\"\n\tNOT = {\n\t\thas_country_flag = heir_of_the_khan_khan\n\t}\n}",
+   "on_enabled": "custom_tooltip = \"ap_defender_of_the_galaxy_effect_opinion\"",
+   "prerequisites": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_defender_of_the_galaxy",
+    "texture": "gfx/interface/icons/ascension_perks/ap_defender_of_the_galaxy.dds",
+    "asset": "ascension_perks/ap_defender_of_the_galaxy.png"
+   }
+  },
+  {
+   "id": "ap_force_of_will",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Force of Will",
+   "desc": "Our society's fundamental values are key to the creation of a galactic utopia. By uniting all sapient minds in recognition of these truths, we will usher in a better future for everyone.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "has_force_of_will_dlc = yes\nNOR = {\n\thas_ambition = yes\n\tis_player_crisis = yes\n\thas_origin = origin_endbringers\n\thas_ascension_perk = ap_defender_of_the_galaxy\n\thas_ascension_perk = ap_defender_of_the_galaxy_nomads\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}\ncustom_tooltip = {\n\tfail_text = requires_fanatic\n\tis_fanatic = yes\n}\nif = {\n\tlimit = {\n\t\tNOT = {\n\t\t\texists = ideology\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"must_have_good_ideology\"\n\t\talways = no\n\t}\n}\nelse = {\n\tcustom_tooltip = {\n\t\tfail_text = \"must_be_ideological_custodian\"\n\t\tideology = {\n\t\t\tis_ideology_custodian = root\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = requires_ideology_not_militarist\n\t\tideology = {\n\t\t\tis_militarist = no\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = requires_ideology_not_xenophobe\n\t\tideology = {\n\t\t\tis_xenophobe = no\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = requires_ideology_not_authoritarian\n\t\tideology = {\n\t\t\tis_authoritarian = no\n\t\t}\n\t}\n}",
+   "on_enabled": "activate_crisis_progression = force_of_will_path\nset_country_flag = cant_abandon_ideology_forceofwill\nif = {\n\tlimit = {\n\t\texists = ideology\n\t}\n\tcustom_tooltip = ap_force_of_will_tooltip\n}\nif = {\n\tlimit = {\n\t\thas_country_flag = abandoning_ideology\n\t}\n\tcustom_tooltip = ap_force_of_will_stop_abandon_tooltip\n}\nif = {\n\tlimit = {\n\t\tany_war = {\n\t\t\twar_imposes_ideology_on_root = yes\n\t\t}\n\t}\n\tcustom_tooltip = ap_force_of_will_leave_ideological_war_tooltip\n}\nhidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\thas_country_flag = abandoning_ideology\n\t\t}\n\t\tstop_abandon_ideology_process = yes\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tany_war = {\n\t\t\t\twar_imposes_ideology_on_root = yes\n\t\t\t}\n\t\t}\n\t\tcountry_event = {\n\t\t\tid = forceofwill.6140\n\t\t\tdays = 3\n\t\t}\n\t}\n\tevery_war = {\n\t\tlimit = {\n\t\t\twar_imposes_ideology_on_root = yes\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tdefender = {\n\t\t\t\t\tis_same_value = root\n\t\t\t\t}\n\t\t\t}\n\t\t\tattacker = {\n\t\t\t\tcountry_event = {\n\t\t\t\t\tid = forceofwill.6145\n\t\t\t\t\tscopes = {\n\t\t\t\t\t\tfrom = root\n\t\t\t\t\t}\n\t\t\t\t\tdays = 1\n\t\t\t\t}\n\t\t\t}\n\t\t\tset_war_goal = {\n\t\t\t\ttype = wg_humiliation\n\t\t\t\ttarget = attacker\n\t\t\t}\n\t\t}\n\t\telse = {\n\t\t\tdefender = {\n\t\t\t\tcountry_event = {\n\t\t\t\t\tid = forceofwill.6145\n\t\t\t\t\tscopes = {\n\t\t\t\t\t\tfrom = root\n\t\t\t\t\t}\n\t\t\t\t\tdays = 1\n\t\t\t\t}\n\t\t\t}\n\t\t\tset_war_goal = {\n\t\t\t\ttype = wg_humiliation\n\t\t\t\ttarget = defender\n\t\t\t}\n\t\t}\n\t\tremove_war_participant = root\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Willpower"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_force_of_will",
+    "texture": "gfx/interface/icons/ascension_perks/ap_force_of_will.dds",
+    "asset": "ascension_perks/ap_force_of_will.png"
+   }
+  },
+  {
+   "id": "ap_become_the_crisis",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Nemesis",
+   "desc": "All great works require sacrifice. The rest of the galaxy may not understand, but they will comply.",
+   "category": null,
+   "modifier": {
+    "refugee_attraction": -0.5
+   },
+   "triggered_modifier": [],
+   "potential": "has_nemesis = yes\nNOR = {\n\tis_player_crisis = yes\n\thas_ambition = yes\n\thas_origin = origin_slavers\n\thas_origin = origin_endbringers\n}\nis_wilderness_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_independence\"\n\tis_subject = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_custodian\"\n\tis_galactic_custodian = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_emperor\"\n\tis_galactic_emperor = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_finish_shroud_forged_situation\"\n\tOR = {\n\t\tNOT = {\n\t\t\thas_origin = origin_shroud_forged\n\t\t}\n\t\tNOT = {\n\t\t\tany_situation = {\n\t\t\t\tis_situation_type = situation_shroud_forged\n\t\t\t}\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"locked_by_shroud_forged_situation\"\n\tOR = {\n\t\tNOT = {\n\t\t\thas_origin = origin_shroud_forged\n\t\t}\n\t\tNOT = {\n\t\t\thas_country_flag = finish_shroud_forged_liberation_flag\n\t\t}\n\t}\n}\nif = {\n\tlimit = {\n\t\tOR = {\n\t\t\tNOT = {\n\t\t\t\thas_origin = origin_shroud_forged\n\t\t\t}\n\t\t\tNOT = {\n\t\t\t\thas_country_flag = shroud_forged_can_become_the_crisis\n\t\t\t}\n\t\t}\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_3\"\n\t\tnum_ascension_perks > 2\n\t}\n\tNOR = {\n\t\tis_xenophile = yes\n\t\tis_pacifist = yes\n\t\thas_civic = civic_machine_servitor\n\t\thas_valid_civic = civic_hive_familiar_face\n\t}\n}",
+   "on_enabled": "hidden_effect = {\n\tset_ai_personality = became_the_crisis\n\tcountry_event = {\n\t\tid = timeline.69\n\t}\n}\nactivate_crisis_progression = nemesis_path",
+   "prerequisites": [],
+   "dlc": [
+    "Nemesis"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_become_the_crisis",
+    "texture": "gfx/interface/icons/ascension_perks/ap_become_the_crisis.dds",
+    "asset": "ascension_perks/ap_become_the_crisis.png"
+   }
+  },
+  {
+   "id": "ap_cosmogenesis",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Cosmogenesis",
+   "desc": "Time, gravity and space are the fundamental cogs that make up the clockwork of reality. If we can learn to manipulate them, the universe and its secrets will be ours.",
+   "category": null,
+   "modifier": {
+    "refugee_attraction": -0.5
+   },
+   "triggered_modifier": [],
+   "potential": "has_machine_age_dlc = yes\nNOR = {\n\tis_player_crisis = yes\n\thas_ambition = yes\n\thas_origin = origin_slavers\n\thas_origin = origin_endbringers\n}\nis_wilderness_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}\ncustom_tooltip = {\n\tfail_text = \"requires_independence\"\n\tis_subject = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_custodian\"\n\tis_galactic_custodian = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_emperor\"\n\tis_galactic_emperor = no\n}",
+   "on_enabled": "hidden_effect = {\n\tset_variable = {\n\t\twhich = cosmogenesis_world_advanced_logic_produced\n\t\tvalue = 0\n\t}\n}\nactivate_crisis_progression = cosmogenesis_path",
+   "prerequisites": [],
+   "dlc": [
+    "The Machine Age"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_cosmogenesis",
+    "texture": "gfx/interface/icons/ascension_perks/ap_cosmogenesis.dds",
+    "asset": "ascension_perks/ap_cosmogenesis.png"
+   }
+  },
+  {
+   "id": "ap_behemoths",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Behemoth Fury",
+   "desc": "The apex predators of the stars are not bound by petty limitations. In the same spirit, we will cast off the biological weaknesses that hold us back, and become a force of nature.",
+   "category": null,
+   "modifier": {
+    "refugee_attraction": -0.5
+   },
+   "triggered_modifier": [],
+   "potential": "has_biogenesis_dlc = yes\nNOR = {\n\tis_player_crisis = yes\n\thas_ambition = yes\n\thas_origin = origin_slavers\n\thas_origin = origin_endbringers\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}\ncustom_tooltip = {\n\tfail_text = \"requires_independence\"\n\tis_subject = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_custodian\"\n\tis_galactic_custodian = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_emperor\"\n\tis_galactic_emperor = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_use_bioships\"\n\tcountry_uses_bio_ships = yes\n}\nis_xenophile = no\nis_pacifist = no",
+   "on_enabled": "activate_crisis_progression = behemoth_path",
+   "prerequisites": [],
+   "dlc": [
+    "BioGenesis"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_behemoths",
+    "texture": "gfx/interface/icons/ascension_perks/ap_behemoths.dds",
+    "asset": "ascension_perks/ap_behemoths.png"
+   }
+  },
+  {
+   "id": "ap_galactic_hyperthermia",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Hyperthermia",
+   "desc": "The universe began in fire, but has cooled down into a dark and hostile place. To thrive, we need to turn up the heat, even if others must perish.",
+   "category": null,
+   "modifier": {
+    "refugee_attraction": -0.5
+   },
+   "triggered_modifier": [],
+   "potential": "has_infernals = yes\nNOR = {\n\tis_player_crisis = yes\n\thas_ambition = yes\n\thas_origin = origin_slavers\n\thas_origin = origin_endbringers\n\tis_wilderness_empire = yes\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tOR = {\n\t\tnum_ascension_perks > 2\n\t\thas_country_flag = red_giant_discovered_crystallized_entropy\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_independence\"\n\tis_subject = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_custodian\"\n\tis_galactic_custodian = no\n}\ncustom_tooltip = {\n\tfail_text = \"must_not_be_emperor\"\n\tis_galactic_emperor = no\n}\nNOR = {\n\tis_xenophile = yes\n\tis_pacifist = yes\n\thas_valid_civic = civic_hive_familiar_face\n}",
+   "on_enabled": "hidden_effect = {\n\tset_ai_personality = hyperthermia_empire\n\tcountry_event = {\n\t\tid = infernals.1000\n\t}\n}\nactivate_crisis_progression = hyperthermia_path",
+   "prerequisites": [],
+   "dlc": [
+    "Infernals Species Pack"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_galactic_hyperthermia",
+    "texture": "gfx/interface/icons/ascension_perks/ap_galactic_hyperthermia.dds",
+    "asset": "ascension_perks/ap_galactic_hyperthermia.png"
+   }
+  },
+  {
+   "id": "ap_wanderlust",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Wanderlust",
+   "desc": "Everywhere in the galaxy, there are wonders to behold and lessons to be learned.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": null,
+     "modifier": {
+      "planet_artificial_max_districts_add": 1,
+      "leaders_upkeep_mult": -0.1
+     }
+    },
+    {
+     "potential": "OR = {\n\thas_country_flag = ancient_wonders_completed\n\thas_country_flag = antique_threat_completed\n\thas_country_flag = enclave_completed\n\thas_country_flag = galactic_landmark_completed\n\thas_country_flag = marauder_completed\n\thas_country_flag = natural_spectacle_completed\n\thas_country_flag = precursor_completed\n\thas_country_flag = space_ecology_completed\n}\ncalc_true_if = {\n\tamount >= 4\n\tOR = {\n\t\thas_country_flag = ancient_wonders_completed\n\t\tcheck_variable = {\n\t\t\twhich = ancient_wonders_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = antique_threat_completed\n\t\tcheck_variable = {\n\t\t\twhich = antique_threat_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = enclave_completed\n\t\tcheck_variable = {\n\t\t\twhich = enclave_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = galactic_landmark_completed\n\t\tcheck_variable = {\n\t\t\twhich = galactic_landmark_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = marauder_completed\n\t\tcheck_variable = {\n\t\t\twhich = marauder_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = natural_spectacle_completed\n\t\tcheck_variable = {\n\t\t\twhich = natural_spectacle_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = precursor_completed\n\t\tcheck_variable = {\n\t\t\twhich = precursor_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n\tOR = {\n\t\thas_country_flag = space_ecology_completed\n\t\tcheck_variable = {\n\t\t\twhich = space_ecology_system_count\n\t\t\tvalue = 0\n\t\t}\n\t}\n}",
+     "modifier": {
+      "planet_artificial_max_districts_add": 1,
+      "leaders_upkeep_mult": -0.1,
+      "tradition_cost_mult": -0.1
+     }
+    }
+   ],
+   "potential": "has_nomads_dlc = yes\nNOT = {\n\thas_ascension_perk = ap_wanderlust\n}\nis_nomadic = yes",
+   "possible": null,
+   "on_enabled": "custom_tooltip = ap_wanderlust_tooltip\nhidden_effect = {\n\tcountry_event = {\n\t\tid = nomads.4715\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Nomads"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_wanderlust",
+    "texture": "gfx/interface/icons/ascension_perks/ap_wanderlust.dds",
+    "asset": "ascension_perks/ap_wanderlust.png"
+   }
+  },
+  {
+   "id": "ap_archaeoengineers",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Archaeo-Engineers",
+   "desc": "Combining proven archaic technology with contemporary engineering will give us a timeless advantage.",
+   "category": null,
+   "modifier": {
+    "country_scientist_cap_add": 1,
+    "weapon_archaeotech_weapon_damage_mult": 0.33,
+    "starbase_shipyard_build_minor_artifacts_cost_mult": -0.2
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_grand_archive_dlc = yes",
+     "modifier": {
+      "specimens_produces_mult": 0.25
+     }
+    }
+   ],
+   "potential": "host_has_dlc = \"Ancient Relics Story Pack\"\nNOT = {\n\thas_ascension_perk = ap_archaeoengineers\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_archaeostudies\"\n\thas_technology = tech_archaeostudies\n}",
+   "on_enabled": "custom_tooltip = ap_archaeoengineers_tooltip\nhidden_effect = {\n\tcountry_event = {\n\t\tid = ancrel.9925\n\t}\n\tcountry_event = {\n\t\tid = ancrel.9901\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Ancient Relics Story Pack"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_archaeoengineers",
+    "texture": "gfx/interface/icons/ascension_perks/ap_archaeoengineers.dds",
+    "asset": "ascension_perks/ap_archaeoengineers.png"
+   }
+  },
+  {
+   "id": "ap_lord_of_war",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Lord of War",
+   "desc": "Some say war is bad for business, but war is our business. Our mercenaries thrive in an embattled galaxy, and through them, so will we.",
+   "category": null,
+   "modifier": {
+    "country_enclave_capacity_add": 1,
+    "diplo_weight_naval_mult": 0.25
+   },
+   "triggered_modifier": [],
+   "potential": "host_has_dlc = \"Overlord\"\nNOR = {\n\thas_ascension_perk = ap_lord_of_war\n\thas_valid_civic = civic_fanatic_purifiers\n\thas_valid_civic = civic_scorched_earth\n}\nOR = {\n\tis_regular_empire = yes\n\thas_valid_civic = civic_machine_tactical_algorithms\n}",
+   "possible": null,
+   "on_enabled": "custom_tooltip = ap_lord_of_war_tooltip",
+   "prerequisites": [],
+   "dlc": [
+    "Overlord"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_lord_of_war",
+    "texture": "gfx/interface/icons/ascension_perks/ap_lord_of_war.dds",
+    "asset": "ascension_perks/ap_lord_of_war.png"
+   }
+  },
+  {
+   "id": "ap_hydrocentric",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Hydrocentric",
+   "desc": "No longer shall we settle for \"good enough\" replacements for our oceanic abodes: no planet shall be deemed fit for colonization until it has been thoroughly inundated.",
+   "category": null,
+   "modifier": {
+    "terraforming_ocean_cost_mult": -0.25,
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_aquatics = yes\nNOT = {\n\thas_ascension_perk = ap_hydrocentric\n}\nOR = {\n\thas_trait = trait_pc_ocean_preference\n\thas_trait = trait_cyborg_climate_adjustment_wet\n\thas_trait = trait_robot_aquatic\n\thas_trait = trait_auto_hab_preference\n}\nis_nomadic = no",
+   "possible": "has_technology = tech_terrestrial_sculpting\nhas_aquatic_trait = yes",
+   "on_enabled": "custom_tooltip = ap_hydrocentric_tooltip\nif = {\n\tlimit = {\n\t\thost_has_dlc = \"Apocalypse\"\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\thas_ascension_perk = ap_colossus\n\t\t}\n\t\tcustom_tooltip = ap_hydrocentric_deluge_tooltip\n\t}\n\telse = {\n\t\tcustom_tooltip = ap_hydrocentric_deluge_pre_unlock_tooltip\n\t}\n}\nhidden_effect = {\n\tcountry_event = {\n\t\tid = aquatics.1\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Aquatics Species Pack"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_hydrocentric",
+    "texture": "gfx/interface/icons/ascension_perks/ap_hydrocentric.dds",
+    "asset": "ascension_perks/ap_hydrocentric.png"
+   }
+  },
+  {
+   "id": "ap_enigmatic_engineering",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Enigmatic Engineering",
+   "desc": "Technology is simply not a way to solve a problem, but it is a language by which we ascend beyond the mundane. Lesser minds simply fail to understand our advances.",
+   "category": null,
+   "modifier": {
+    "intel_encryption_add": 2,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "host_has_dlc = \"Apocalypse\"\nNOT = {\n\thas_ascension_perk = ap_enigmatic_engineering\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_1\"\n\tnum_ascension_perks > 0\n}",
+   "on_enabled": "custom_tooltip = \"no_rev_engineering\"",
+   "prerequisites": [],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_enigmatic_engineering",
+    "texture": "gfx/interface/icons/ascension_perks/ap_enigmatic_engineering.dds",
+    "asset": "ascension_perks/ap_enigmatic_engineering.png"
+   }
+  },
+  {
+   "id": "ap_nihilistic_acquisition",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Nihilistic Acquisition",
+   "desc": "The notion of self-determination cannot be a moral absolute. Holistic goals clearly outweigh individual concerns.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "host_has_dlc = \"Apocalypse\"\nNOT = {\n\thas_ascension_perk = ap_nihilistic_acquisition\n}\nNOR = {\n\thas_valid_civic = civic_barbaric_despoilers\n\thas_origin = origin_slavers\n\thas_origin = origin_khan_successor\n\thas_origin = origin_wilderness\n}",
+   "possible": "OR = {\n\tis_authoritarian = yes\n\tis_xenophobe = yes\n\thas_ethic = ethic_gestalt_consciousness\n}",
+   "on_enabled": "custom_tooltip = \"allow_raiding\"",
+   "prerequisites": [],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_nihilistic_acquisition",
+    "texture": "gfx/interface/icons/ascension_perks/ap_nihilistic_acquisition.dds",
+    "asset": "ascension_perks/ap_nihilistic_acquisition.png"
+   }
+  },
+  {
+   "id": "ap_colossus",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Colossus Project",
+   "desc": "The Colossus Project is where fevered dreams of terror and deterrence meet. A vision of the biggest ship, carrying a weapon capable of devastating entire worlds.",
+   "category": null,
+   "modifier": {
+    "country_war_exhaustion_mult": -0.15,
+    "ships_upkeep_mult": -0.05,
+    "add_attunement_the_eater_of_worlds": 30
+   },
+   "triggered_modifier": [],
+   "potential": "host_has_dlc = \"Apocalypse\"\nNOT = {\n\thas_ascension_perk = ap_colossus\n}",
+   "possible": "has_technology = tech_titans\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}",
+   "on_enabled": "custom_tooltip = enable_colossus_project\ncustom_tooltip = describe_colossus_project\nhidden_effect = {\n\tcountry_event = {\n\t\tid = apoc.100\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Apocalypse"
+   ],
+   "icon": null
+  },
+  {
+   "id": "ap_world_shaper",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "World Shaper",
+   "desc": "To carefully shape and alter the ecosystem of an entire planet into something else is not so very different from an artist sculpting a statue out of clay.",
+   "category": null,
+   "modifier": {
+    "terraforming_cost_mult": -0.25,
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "is_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_world_shaper\n}\nOR = {\n\tis_hive_empire = no\n\tis_wilderness_empire = yes\n}\nOR = {\n\tis_machine_empire = no\n\thas_valid_civic = civic_machine_servitor\n\thas_valid_civic = civic_machine_assimilator\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_climate_restoration\"\n\thas_technology = tech_climate_restoration\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_1\"\n\tnum_ascension_perks > 0\n}",
+   "on_enabled": "custom_tooltip = \"allow_gaia\"",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_world_shaper",
+    "texture": "gfx/interface/icons/ascension_perks/ap_world_shaper.dds",
+    "asset": "ascension_perks/ap_world_shaper.png"
+   }
+  },
+  {
+   "id": "ap_galactic_force_projection",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Force Projection",
+   "desc": "The fleet is the instrument by which the will of our empire is made manifest - we live or die depending on its strength.",
+   "category": null,
+   "modifier": {
+    "country_power_projection_influence_produces_add": 2,
+    "country_commander_cap_add": 1,
+    "country_naval_cap_add": 150,
+    "command_limit_mult": 0.2,
+    "add_attunement_the_eater_of_worlds": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_galactic_force_projection\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tnum_ascension_perks > 1\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_galactic_force_projection",
+    "texture": "gfx/interface/icons/ascension_perks/ap_galactic_force_projection.dds",
+    "asset": "ascension_perks/ap_galactic_force_projection.png"
+   }
+  },
+  {
+   "id": "ap_interstellar_dominion",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Interstellar Dominion",
+   "desc": "The stars beckon and we follow. May nothing stand between us and them.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_nomadic = no",
+     "modifier": {
+      "country_starbase_influence_cost_mult": -0.2,
+      "country_claim_influence_cost_mult": -0.2,
+      "empire_size_systems_mult": -0.25,
+      "add_attunement_the_eater_of_worlds": 30
+     }
+    },
+    {
+     "potential": "is_nomadic = yes\nis_eager_explorer_empire = no",
+     "modifier": {
+      "megastructures_waystations_influence_cost_mult": -0.2,
+      "starbase_stockpile_capacity_mult": 0.15,
+      "shipsize_nomads_constructor_stockpile_capacity_mult": 0.15,
+      "add_attunement_the_eater_of_worlds": 30
+     }
+    },
+    {
+     "potential": "is_nomadic = yes\nis_eager_explorer_empire = yes",
+     "modifier": {
+      "megastructures_waystations_influence_cost_mult": -0.2,
+      "starbase_stockpile_capacity_mult": 0.15,
+      "shipsize_nomads_constructor_stockpile_capacity_mult": 0.15,
+      "shipsize_nomads_engineer_vessel_stockpile_capacity_mult": 0.15,
+      "add_attunement_the_eater_of_worlds": 30
+     }
+    }
+   ],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_interstellar_dominion\n}",
+   "possible": null,
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_interstellar_dominion",
+    "texture": "gfx/interface/icons/ascension_perks/ap_interstellar_dominion.dds",
+    "asset": "ascension_perks/ap_interstellar_dominion.png"
+   }
+  },
+  {
+   "id": "ap_grasp_the_void",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Grasp the Void",
+   "desc": "The vast expanse of the galaxy holds limitless riches for those empires that understand how to maintain their grasp on the void.",
+   "category": null,
+   "modifier": {
+    "country_starbase_capacity_add": 5,
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_grasp_the_void\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_1\"\n\tnum_ascension_perks > 0\n}",
+   "on_enabled": "custom_tooltip = \"ap_grasp_the_void_tech_effect\"",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_grasp_the_void",
+    "texture": "gfx/interface/icons/ascension_perks/ap_grasp_the_void.dds",
+    "asset": "ascension_perks/ap_grasp_the_void.png"
+   }
+  },
+  {
+   "id": "ap_eternal_vigilance",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Eternal Vigilance",
+   "desc": "To display weakness is to invite attack. The price of invading our space must be so high that as few as possible are prepared to meet it.",
+   "category": null,
+   "modifier": {
+    "country_commander_cap_add": 1,
+    "shipclass_starbase_damage_mult": 0.25,
+    "shipclass_starbase_hull_mult": 0.25,
+    "shipclass_military_station_damage_mult": 0.25,
+    "starbase_defense_platform_capacity_add": 5,
+    "ship_military_station_small_upkeep_mult": -0.5,
+    "ship_home_territory_fire_rate_mult": 0.2,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [
+    {
+     "potential": "has_biogenesis_dlc = yes",
+     "modifier": {
+      "deep_space_citadel_limit_add": 1
+     }
+    }
+   ],
+   "potential": "is_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_eternal_vigilance\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_starbase_4\"\n\tOR = {\n\t\thas_technology = tech_starbase_4\n\t\thas_tradition = tr_unyielding_finish\n\t}\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_eternal_vigilance",
+    "texture": "gfx/interface/icons/ascension_perks/ap_eternal_vigilance.dds",
+    "asset": "ascension_perks/ap_eternal_vigilance.png"
+   }
+  },
+  {
+   "id": "ap_eternal_vigilance_nomads",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Eternal Vigilance",
+   "desc": "To display weakness is to invite attack. The price of facing our arkships must be so high that as few as possible are prepared to meet it.",
+   "category": null,
+   "modifier": {
+    "country_commander_cap_add": 1,
+    "waystation_armor_hardening_add": 0.25,
+    "waystation_shield_hardening_add": 0.15,
+    "waystation_hull_mult": 0.25,
+    "starbase_waystations_alloys_cost_mult": -0.25,
+    "arkship_fire_rate": 0.25,
+    "ship_hull_mult": 0.25,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "is_nomadic = yes\nNOT = {\n\thas_ascension_perk = ap_eternal_vigilance_nomads\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_waystation_3\"\n\tOR = {\n\t\thas_technology = tech_waystation_3\n\t\thas_tradition = tr_expansion_finish\n\t}\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "ap_galactic_contender",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Contender",
+   "desc": "The Fallen Empires cling to the ruins of their decrepit civilizations, ever fearful of the younger and more dynamic races that surround them. Their time has long since passed.",
+   "category": null,
+   "modifier": {
+    "diplo_weight_mult": 0.2,
+    "damage_vs_country_type_fallen_empire_mult": 0.33,
+    "damage_vs_country_type_awakened_fallen_empire_mult": 0.33,
+    "damage_vs_country_type_gate_builders_mult": 0.33,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_galactic_contender\n}\nany_relation = {\n\thas_communications = root\n\tOR = {\n\t\tis_country_type = fallen_empire\n\t\tis_country_type = awakened_fallen_empire\n\t}\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_3\"\n\tnum_ascension_perks > 2\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_galactic_contender",
+    "texture": "gfx/interface/icons/ascension_perks/ap_galactic_contender.dds",
+    "asset": "ascension_perks/ap_galactic_contender.png"
+   }
+  },
+  {
+   "id": "ap_technological_ascendancy",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Technological Ascendancy",
+   "desc": "Technologies that would have been indistinguishable from magic mere generations ago are now within our reach. A new age of technology has begun.",
+   "category": null,
+   "modifier": {
+    "rare_tech_draw_chance_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_technological_ascendancy\n}",
+   "possible": null,
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_technological_ascendancy",
+    "texture": "gfx/interface/icons/ascension_perks/ap_technological_ascendancy.dds",
+    "asset": "ascension_perks/ap_technological_ascendancy.png"
+   }
+  },
+  {
+   "id": "ap_one_vision",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "One Vision",
+   "desc": "True unity is achieved only when the ultimate goals of a nation and its people are one and the same. After all, a house divided against itself cannot stand.",
+   "category": null,
+   "modifier": {
+    "country_unity_produces_mult": 0.1,
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [
+    {
+     "potential": "is_gestalt = no",
+     "modifier": {
+      "pop_government_ethic_attraction": 0.5
+     }
+    },
+    {
+     "potential": "is_gestalt = no\nhas_force_of_will_dlc = yes",
+     "modifier": {
+      "ideological_faction_attraction_mult": 0.15
+     }
+    },
+    {
+     "potential": "is_gestalt = yes",
+     "modifier": {
+      "planetary_ascension_cost_mult": -0.1
+     }
+    },
+    {
+     "potential": "is_gestalt = yes\nhas_force_of_will_dlc = yes",
+     "modifier": {
+      "planet_crime_no_happiness_add": -10
+     }
+    }
+   ],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_one_vision\n}",
+   "possible": null,
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_one_vision",
+    "texture": "gfx/interface/icons/ascension_perks/ap_one_vision.dds",
+    "asset": "ascension_perks/ap_one_vision.png"
+   }
+  },
+  {
+   "id": "ap_consecrated_worlds",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Consecrated Worlds",
+   "desc": "The galaxy is home to many holy places, some more obvious than others. As mortals, we still struggle to divine the true nature of the universe.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_consecrated_worlds\n}\nis_spiritualist = yes\nis_nomadic = no",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"allow_consecrated_worlds\"\ncustom_tooltip = \"consecrate_targets_list\"\nif = {\n\tlimit = {\n\t\tcheck_variable = {\n\t\t\twhich = num_consecrated_worlds\n\t\t\tvalue > 0\n\t\t}\n\t}\n\tcustom_tooltip = \"consecrated_worlds_counter\"\n\tevery_planet_within_border = {\n\t\tlimit = {\n\t\t\thas_planet_flag = consecrated@prev\n\t\t}\n\t\tcustom_tooltip = \"consecrated_worlds_entry\"\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_consecrated_worlds",
+    "texture": "gfx/interface/icons/ascension_perks/ap_consecrated_worlds.dds",
+    "asset": "ascension_perks/ap_consecrated_worlds.png"
+   }
+  },
+  {
+   "id": "ap_mastery_of_nature",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Mastery of Nature",
+   "desc": "Although we mastered the nature of our homeworld long ago, the alien biomes we have since encountered present new challenges. They too shall be overcome.",
+   "category": null,
+   "modifier": {
+    "deposit_blockers_cost_mult": -0.33,
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\thas_ascension_perk = ap_mastery_of_nature\n\tis_environmental_architects_empire = yes\n}",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"describe_decision_mastery_of_nature\"",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_mastery_of_nature",
+    "texture": "gfx/interface/icons/ascension_perks/ap_mastery_of_nature.dds",
+    "asset": "ascension_perks/ap_mastery_of_nature.png"
+   }
+  },
+  {
+   "id": "ap_imperial_prerogative",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Imperial Prerogative",
+   "desc": "As our civilization continues to grow, so its beating heart must also expand. More systems will be placed under our direct control.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [
+    {
+     "potential": "is_nomadic = no",
+     "modifier": {
+      "empire_size_colonies_mult": -0.25,
+      "country_official_cap_add": 2
+     }
+    },
+    {
+     "potential": "is_nomadic = yes",
+     "modifier": {
+      "pop_cat_ruler_bonus_workforce_mult": 0.15,
+      "country_official_cap_add": 2
+     }
+    }
+   ],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_imperial_prerogative\n}\nis_megacorp = no",
+   "possible": null,
+   "on_enabled": "run_ai_strategic_data = yes",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_imperial_prerogative",
+    "texture": "gfx/interface/icons/ascension_perks/ap_imperial_prerogative.dds",
+    "asset": "ascension_perks/ap_imperial_prerogative.png"
+   }
+  },
+  {
+   "id": "ap_executive_vigor",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Executive Vigor",
+   "desc": "There will be no half-measures or compromises when implementing the edicts decided upon by our government. We go all the way, or not at all.",
+   "category": null,
+   "modifier": {
+    "country_edict_fund_add": 100,
+    "council_agenda_progress_speed": 0.15,
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_executive_vigor\n}",
+   "possible": null,
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_executive_vigor",
+    "texture": "gfx/interface/icons/ascension_perks/ap_executive_vigor.dds",
+    "asset": "ascension_perks/ap_executive_vigor.png"
+   }
+  },
+  {
+   "id": "ap_transcendent_learning",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Transcendent Learning",
+   "desc": "Our society must change its approach towards learning, and by doing so, our best and brightest will be able to reach a completely new level of achievements.",
+   "category": null,
+   "modifier": {
+    "country_scientist_cap_add": 2,
+    "species_leader_exp_gain": 0.25,
+    "leaders_upkeep_mult": -0.15
+   },
+   "triggered_modifier": [],
+   "potential": "NOT = {\n\thas_ascension_perk = ap_transcendent_learning\n}",
+   "possible": null,
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_transcendent_learning",
+    "texture": "gfx/interface/icons/ascension_perks/ap_transcendent_learning.dds",
+    "asset": "ascension_perks/ap_transcendent_learning.png"
+   }
+  },
+  {
+   "id": "ap_shared_destiny",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Shared Destiny",
+   "desc": "As we reach for ever greater heights, we must not leave behind those who have loyally served us. The glorious future of our empire was always meant to be a shared destiny.",
+   "category": null,
+   "modifier": {
+    "divided_patrongage_max_subjects": 1,
+    "specialist_subject_conversion_time_mult": -0.2,
+    "envoys_add": 2,
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "NOR = {\n\tis_homicidal = yes\n\thas_valid_civic = civic_inwards_perfection\n}\nNOT = {\n\thas_ascension_perk = ap_shared_destiny\n}",
+   "possible": null,
+   "on_enabled": "hidden_effect = {\n\tcountry_event = {\n\t\tid = action.446\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_shared_destiny",
+    "texture": "gfx/interface/icons/ascension_perks/ap_shared_destiny.dds",
+    "asset": "ascension_perks/ap_shared_destiny.png"
+   }
+  },
+  {
+   "id": "ap_voidborn",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Voidborne",
+   "desc": "We have adapted to permanent habitation in the depths of space, reducing our infrastructure needs and yielding more room for other functions.",
+   "category": null,
+   "modifier": {
+    "habitat_max_districts_add": 2,
+    "megastructures_habitat_cost_mult": -0.2,
+    "planet_districts_hab_cost_mult": -0.2,
+    "habitat_districts_minor_add": 0.25,
+    "habitat_district_jobs_mult": 0.5
+   },
+   "triggered_modifier": [],
+   "potential": "is_void_dweller_empire = no\nis_wilderness_empire = no",
+   "possible": "OR = {\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_technology_habitat_1\"\n\t\thas_technology = tech_habitat_1\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_tech_arkship_tier_2\"\n\t\thas_technology = tech_arkship_tier_2\n\t}\n}",
+   "on_enabled": "custom_tooltip = \"ap_voidborn_habitat_effect\"\nif = {\n\tlimit = {\n\t\tis_nomadic = no\n\t\tNOT = {\n\t\t\thas_technology = tech_habitat_2\n\t\t}\n\t}\n\tadd_research_option = tech_habitat_2\n\tcustom_tooltip = \"add_research_options_voidborn\"\n}\nif = {\n\tlimit = {\n\t\tis_nomadic = no\n\t\thas_technology = tech_habitat_2\n\t\tNOT = {\n\t\t\thas_technology = tech_habitat_3\n\t\t}\n\t}\n\tadd_research_option = tech_habitat_3\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_voidborn",
+    "texture": "gfx/interface/icons/ascension_perks/ap_voidborn.dds",
+    "asset": "ascension_perks/ap_voidborn.png"
+   }
+  },
+  {
+   "id": "ap_master_builders",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Master Builders",
+   "desc": "Building a Megastructure requires an unprecedented amount of resources and planning. We are breaking new ground in the field of macro-engineering.",
+   "category": null,
+   "modifier": {
+    "megastructure_build_speed_mult": 0.5,
+    "country_megastructure_build_cap_add": 1
+   },
+   "triggered_modifier": [],
+   "potential": "is_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_master_builders\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tnum_ascension_perks > 1\n}\ncustom_tooltip = {\n\tfail_text = \"requires_mega_engineering\"\n\thas_technology = tech_mega_engineering\n}",
+   "on_enabled": null,
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_master_builders",
+    "texture": "gfx/interface/icons/ascension_perks/ap_master_builders.dds",
+    "asset": "ascension_perks/ap_master_builders.png"
+   }
+  },
+  {
+   "id": "ap_galactic_wonders",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Wonders",
+   "desc": "Megastructures are rightfully regarded as the wonders of our time. The scope of such a project would have been unimaginable mere generations ago.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "is_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_galactic_wonders\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_mega_engineering\"\n\thas_technology = tech_mega_engineering\n}\ncustom_tooltip = {\n\tfail_text = \"requires_built_or_repaired_megastructure\"\n\thas_country_flag = has_built_or_repaired_megastructure\n}",
+   "on_enabled": "if = {\n\tlimit = {\n\t\thas_megacorp_dlc = yes\n\t}\n\tcustom_tooltip = \"add_research_options_galactic_wonders_utopia_megacorp\"\n}\nelse = {\n\tcustom_tooltip = \"add_research_options_galactic_wonders_utopia\"\n}\nhidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_ring_world\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_ring_world\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_dyson_sphere\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_dyson_sphere\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\thas_megacorp_dlc = yes\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_matter_decompressor\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_matter_decompressor\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_galactic_wonders",
+    "texture": "gfx/interface/icons/ascension_perks/ap_galactic_wonders.dds",
+    "asset": "ascension_perks/ap_galactic_wonders.png"
+   }
+  },
+  {
+   "id": "ap_galactic_wonders_utopia",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Wonders",
+   "desc": "Megastructures are rightfully regarded as the wonders of our time. The scope of such a project would have been unimaginable mere generations ago.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "always = no",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"add_research_options_galactic_wonders_utopia\"\nhidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_ring_world\n\t\t\t}\n\t\t\tcan_research_technology = tech_ring_world\n\t\t}\n\t\tadd_research_option = tech_ring_world\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_dyson_sphere\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_dyson_sphere\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "ap_galactic_wonders_megacorp",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Wonders",
+   "desc": "Megastructures are rightfully regarded as the wonders of our time. The scope of such a project would have been unimaginable mere generations ago.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "always = no",
+   "possible": null,
+   "on_enabled": "if = {\n\tlimit = {\n\t\tNOT = {\n\t\t\thas_technology = tech_matter_decompressor\n\t\t}\n\t}\n\tadd_research_option = tech_matter_decompressor\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "ap_galactic_wonders_utopia_and_megacorp",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Wonders",
+   "desc": "Megastructures are rightfully regarded as the wonders of our time. The scope of such a project would have been unimaginable mere generations ago.",
+   "category": null,
+   "modifier": null,
+   "triggered_modifier": [],
+   "potential": "always = no",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"add_research_options_galactic_wonders_utopia_megacorp\"\nhidden_effect = {\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_ring_world\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_ring_world\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_dyson_sphere\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_dyson_sphere\n\t}\n\tif = {\n\t\tlimit = {\n\t\t\tNOT = {\n\t\t\t\thas_technology = tech_matter_decompressor\n\t\t\t}\n\t\t}\n\t\tadd_research_option = tech_matter_decompressor\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": null
+  },
+  {
+   "id": "ap_machine_worlds",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Machine Worlds",
+   "desc": "We shall shape our worlds into a mirror image of ourselves, replacing the frailty of biology with the immutable perfection of metal.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "is_machine_empire = yes\nis_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_machine_worlds\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_climate_restoration\"\n\tOR = {\n\t\thas_technology = tech_climate_restoration\n\t\thas_origin = origin_machine\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tnum_ascension_perks > 1\n}",
+   "on_enabled": "custom_tooltip = \"allow_machine_worlds\"\ncustom_tooltip = \"describe_machine_worlds\"\nif = {\n\tlimit = {\n\t\thas_civic = civic_machine_servitor\n\t}\n\tcustom_tooltip = \"01_BERSERK_MACHINE_EMPIRE_ERROR\"\n\tcustom_tooltip = \"anomaly.3060.c\"\n\tcustom_tooltip = \"01_BERSERK_MACHINE_EMPIRE_ERROR\"\n}",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_machine_worlds",
+    "texture": "gfx/interface/icons/ascension_perks/ap_machine_worlds.dds",
+    "asset": "ascension_perks/ap_machine_worlds.png"
+   }
+  },
+  {
+   "id": "ap_hive_worlds",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Hive Worlds",
+   "desc": "We shall create living worlds that are every bit as much a part of the Hive as the drones that inhabit them.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "is_hive_empire = yes\nis_nomadic = no\nNOT = {\n\thas_ascension_perk = ap_hive_worlds\n}\nis_lithoid_devouring_swarm = no\nis_wilderness_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_climate_restoration\"\n\thas_technology = tech_climate_restoration\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_2\"\n\tOR = {\n\t\tnum_ascension_perks > 1\n\t\thas_origin = origin_fallen_empire_hive\n\t}\n}",
+   "on_enabled": "custom_tooltip = \"allow_hive_worlds\"\ncustom_tooltip = \"describe_hive_worlds\"",
+   "prerequisites": [],
+   "dlc": [],
+   "icon": {
+    "sprite": "GFX_ap_hive_worlds",
+    "texture": "gfx/interface/icons/ascension_perks/ap_hive_worlds.dds",
+    "asset": "ascension_perks/ap_hive_worlds.png"
+   }
+  },
+  {
+   "id": "ap_arcology_project",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Arcology Project",
+   "desc": "Thus shall we make a world of the city, and a city of the world.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "OR = {\n\tis_megacity_architects_empire = yes\n\tAND = {\n\t\thas_megacorp_dlc = yes\n\t\tOR = {\n\t\t\tis_regular_empire = yes\n\t\t\thas_valid_civic = civic_machine_servitor\n\t\t}\n\t}\n}\nNOR = {\n\thas_valid_civic = civic_agrarian_idyll\n\thas_ascension_perk = ap_arcology_project\n}\nis_nomadic = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_housing_2\"\n\thas_technology = tech_housing_2\n}\nif = {\n\tlimit = {\n\t\tis_megacity_architects_empire = yes\n\t}\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_1\"\n\t\tnum_ascension_perks > 0\n\t}\n}\nelse = {\n\tcustom_tooltip = {\n\t\tfail_text = \"requires_ascension_perks_2\"\n\t\tnum_ascension_perks > 1\n\t}\n}",
+   "on_enabled": "custom_tooltip = \"allow_arcology_project\"\ncustom_tooltip = \"decision_arcology_project_effects\"",
+   "prerequisites": [],
+   "dlc": [
+    "Megacorp"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_arcology_project",
+    "texture": "gfx/interface/icons/ascension_perks/ap_arcology_project.dds",
+    "asset": "ascension_perks/ap_arcology_project.png"
+   }
+  },
+  {
+   "id": "ap_xeno_compatibility",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Xeno-Compatibility",
+   "desc": "The invention of universal sexual biology has revolutionized society. Even if it sometimes requires awkward rotations to make a connection.",
+   "category": null,
+   "modifier": {
+    "planet_resettlement_unemployed_destination_mult": 0.33,
+    "refugee_attraction": 1,
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_megacorp_dlc = yes\nNOT = {\n\thas_ascension_perk = ap_xeno_compatibility\n}\nis_regular_empire = yes\nis_wilderness_empire = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_xenophile\"\n\tis_xenophile = yes\n}\ncustom_tooltip = {\n\tfail_text = \"requires_xeno_species\"\n\tany_owned_pop_group = {\n\t\tNOR = {\n\t\t\tis_same_species = root.owner\n\t\t\thas_trait = trait_mechanical\n\t\t\thas_trait = trait_machine_unit\n\t\t\thas_trait = trait_hive_mind\n\t\t}\n\t}\n}\ncustom_tooltip = {\n\tfail_text = \"requires_technology_gene_tailoring\"\n\thas_technology = tech_gene_tailoring\n}",
+   "on_enabled": "custom_tooltip = \"allow_crossbreeding\"",
+   "prerequisites": [],
+   "dlc": [
+    "Megacorp"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_xeno_compatibility",
+    "texture": "gfx/interface/icons/ascension_perks/ap_xeno_compatibility.dds",
+    "asset": "ascension_perks/ap_xeno_compatibility.png"
+   }
+  },
+  {
+   "id": "ap_universal_transactions",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Universal Transactions",
+   "desc": "We shall extend our brand and our business to every solar system in the galaxy. Prosperity is eternal!",
+   "category": null,
+   "modifier": {
+    "country_official_cap_add": 1,
+    "planet_branch_offices_cost_mult": -0.15,
+    "add_attunement_the_instrument_of_desire": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_megacorp_dlc = yes\nNOT = {\n\thas_ascension_perk = ap_universal_transactions\n}\nis_megacorp = yes\nis_criminal_syndicate = no",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"free_commercial_pacts\"\nif = {\n\tlimit = {\n\t\thost_has_dlc = \"Nomads\"\n\t}\n\tcustom_tooltip = \"free_waystation_pacts\"\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Megacorp"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_universal_transactions",
+    "texture": "gfx/interface/icons/ascension_perks/ap_universal_transactions.dds",
+    "asset": "ascension_perks/ap_universal_transactions.png"
+   }
+  },
+  {
+   "id": "ap_detox",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Detox",
+   "desc": "Our newest advancements in terraforming allow us to breathe new life into a class of planets formerly considered irrevocably deadly and beyond salvation.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_composer_of_strands": 30
+   },
+   "triggered_modifier": [],
+   "potential": "host_has_dlc = \"Toxoids Species Pack\"\nNOT = {\n\thas_ascension_perk = ap_detox\n\thas_country_flag = knights_detox\n}\nis_nomadic = no",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_climate_restoration\"\n\thas_technology = tech_climate_restoration\n}",
+   "on_enabled": "custom_tooltip = \"detox_tox_worlds\"",
+   "prerequisites": [],
+   "dlc": [
+    "Toxoids Species Pack"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_detox",
+    "texture": "gfx/interface/icons/ascension_perks/ap_detox.dds",
+    "asset": "ascension_perks/ap_detox.png"
+   }
+  },
+  {
+   "id": "ap_mechromancy",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Mechromancy",
+   "desc": "Biologicals are merely a different kind of machine. We can stimulate the appropriate synapses and reanimate these creatures, for our own benefit.",
+   "category": null,
+   "modifier": {
+    "l_slot_weapon_damage_mult": 0.15,
+    "x_slot_weapon_damage_mult": 0.15,
+    "t_slot_weapon_damage_mult": 0.15,
+    "add_attunement_the_eater_of_worlds": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_necroids = yes\nis_machine_empire = yes\nNOT = {\n\thas_ascension_perk = ap_mechromancy\n}",
+   "possible": null,
+   "on_enabled": "custom_tooltip = \"ap_mechromancy_tt\"\nhidden_effect = {\n\tcountry_event = {\n\t\tid = necroids.20\n\t}\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Necroids Species Pack"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_mechromancy",
+    "texture": "gfx/interface/icons/ascension_perks/ap_mechromancy.dds",
+    "asset": "ascension_perks/ap_mechromancy.png"
+   }
+  },
+  {
+   "id": "ap_weather_control",
+   "file": "common/ascension_perks/00_ascension_perks.txt",
+   "name": "Galactic Weather Control",
+   "desc": "Our latest advances in astrometeorology grant us the ability to manifest Cosmic Storms on command. With the right technology, we can even choose the type of storm to create.",
+   "category": null,
+   "modifier": {
+    "add_attunement_the_cradle_of_souls": 30
+   },
+   "triggered_modifier": [],
+   "potential": "has_cosmic_storms_dlc = yes\nNOT = {\n\thas_ascension_perk = ap_weather_control\n}",
+   "possible": "custom_tooltip = {\n\tfail_text = \"requires_technology_tech_advanced_storm_manipulation\"\n\thas_technology = tech_advanced_storm_manipulation\n}\ncustom_tooltip = {\n\tfail_text = \"requires_ascension_perks_1\"\n\tnum_ascension_perks > 0\n}",
+   "on_enabled": "custom_tooltip = ap_weather_control_effect_tt\nif = {\n\tlimit = {\n\t\tNOR = {\n\t\t\thas_technology = tech_ship_hull_storm_breaker_1\n\t\t\thas_tech_option = tech_ship_hull_storm_breaker_1\n\t\t}\n\t}\n\tadd_research_option = tech_ship_hull_storm_breaker_1\n}\nif = {\n\tlimit = {\n\t\tNOR = {\n\t\t\thas_technology = tech_ship_storm_weapons_1\n\t\t\thas_tech_option = tech_ship_storm_weapons_1\n\t\t}\n\t}\n\tadd_research_option = tech_ship_storm_weapons_1\n}",
+   "prerequisites": [],
+   "dlc": [
+    "Cosmic Storms"
+   ],
+   "icon": {
+    "sprite": "GFX_ap_weather_control",
+    "texture": "gfx/interface/icons/ascension_perks/ap_weather_control.dds",
+    "asset": "ascension_perks/ap_weather_control.png"
+   }
+  }
+ ],
+ "warnings": []
+}
