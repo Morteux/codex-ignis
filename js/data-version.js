@@ -3,8 +3,9 @@
  * simulador de planetas.
  *
  * ── Versión ─────────────────────────────────────────────────────────────
- * Por ahora solo existe un conjunto de datos: Stellaris PC 4.5.2 "Cygnus"
- * (decisión de Morteux: TODOS los datos se etiquetan como 4.5.2). El
+ * T2530: the current data set is Stellaris PC 4.6.0 "Corona Borealis" (each
+ * collection says its own version; the ones not compared yet keep 4.5.2
+ * "Cygnus", the earlier data set, kept as a legacy version for imports). El
  * selector de versión de la barra de resumen se alimenta de este registro,
  * así que añadir otra versión en el futuro es añadir una entrada aquí.
  *
@@ -54,15 +55,28 @@ export const VERIFICATION_I18N_KEYS = {
 };
 
 /** Registro de versiones: id -> { id, label, game, version, codename, isCurrent }. `label` es un nombre propio y no se traduce. */
+// T2530: the simulator data follows the 4.6.0 game files, so saved planets and empires are stamped with 4.6.0. The
+// 4.5.2 entry stays so that the files saved before still import as a supported version (they load with the current
+// data); `legacy` versions are not offered in the version selector.
 export const DATA_VERSIONS = [
   {
+    id: "stellaris-pc-4.6.0",
+    label: "Stellaris PC 4.6.0 — Corona Borealis (Current Dataset)",
+    game: "Stellaris",
+    platform: "PC",
+    version: "4.6.0",
+    codename: "Corona Borealis",
+    isCurrent: true
+  },
+  {
     id: "stellaris-pc-4.5.2",
-    label: "Stellaris PC 4.5.2 — Cygnus (Current Dataset)",
+    label: "Stellaris PC 4.5.2 — Cygnus (previous dataset)",
     game: "Stellaris",
     platform: "PC",
     version: "4.5.2",
     codename: "Cygnus",
-    isCurrent: true
+    isCurrent: false,
+    legacy: true
   }
 ];
 
@@ -122,12 +136,17 @@ export const DATA_COLLECTIONS = {
   },
   resources: {
     file: "js/planet-data.js",
+    // T2530: names and icons of the 4.5.2 wiki, not compared with the game files.
+    rulesetId: "stellaris-pc-4.5.2",
     sources: [WIKI + "Resources"],
     verification: VERIFICATION.UNVERIFIED
   },
   designations: {
     file: "js/designation-data.js",
-    sources: [WIKI + "Designation"],
+    // T2530: effects compared with the 4.6.0 game files (report_differences.py, modifiers) and switched where they
+    // differed (DECISIONS_TO_REVIEW.md); the wiki pages stay as the source of texts and modelling notes.
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/colony_types", "common/static_modifiers"]), WIKI + "Designation"],
     verification: VERIFICATION.UNVERIFIED
   },
   ethics: {
@@ -140,17 +159,26 @@ export const DATA_COLLECTIONS = {
   },
   authorities: {
     file: "js/empire-data.js",
-    sources: [WIKI + "Government"],
+    // T2530: effects compared with the 4.6.0 game files (report_differences.py, modifiers) and switched where they
+    // differed (DECISIONS_TO_REVIEW.md); the wiki pages stay as the source of texts and modelling notes.
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/governments/authorities"]), WIKI + "Government"],
     verification: VERIFICATION.UNVERIFIED
   },
   civicRules: {
     file: "js/civic-rules.js",
+    // T2530: the simulator models no civic effect (only requirements, from the wiki 4.5.2): nothing to compare with the
+    // 4.6.0 modifiers; the requirements stay the 4.5.2 ones until they are compared (task T2535).
+    rulesetId: "stellaris-pc-4.5.2",
     sources: ["Civics", "Hive_mind_civics", "Machine_intelligence_civics", "Corporate_civics"].map((page) => WIKI + page),
     verification: VERIFICATION.UNVERIFIED
   },
   policies: {
     file: "js/policy-data.js",
-    sources: [WIKI + "Economic_policies", WIKI + "Diplomatic_policies"],
+    // T2530: effects compared with the 4.6.0 game files (report_differences.py, modifiers) and switched where they
+    // differed (DECISIONS_TO_REVIEW.md); the wiki pages stay as the source of texts and modelling notes.
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/policies"]), WIKI + "Economic_policies", WIKI + "Diplomatic_policies"],
     // P16.10: tasas de cambio y efectos revisados contra las páginas 4.5.2; los requisitos de tradición/federación/origen siguen sin modelarse (ver policy-data.js).
     verification: VERIFICATION.WIKI_VERIFIED
   },
@@ -183,6 +211,8 @@ export const DATA_COLLECTIONS = {
   },
   stackingRules: {
     file: "js/stacking-rules.js",
+    // T2530: the game files do not give how the engine stacks modifiers (GDD §9.1); the same rules serve 4.6.0.
+    rulesetId: "stellaris-pc-4.5.2",
     // La wiki no da la fórmula de apilado: las reglas son las del propio simulador (todo aditivo) y están pendientes de la verificación con los archivos del juego.
     sources: [WIKI + "Jobs", WIKI + "Empire_modifiers"],
     verification: VERIFICATION.UNVERIFIED
@@ -198,8 +228,25 @@ export const DATA_COLLECTIONS = {
   },
   celestialTypes: {
     file: "js/celestial-data.js",
+    rulesetId: "stellaris-pc-4.5.2",
     // No hay una página de la wiki dedicada a tipos de planeta entre las aportadas: la lista sale de los iconos de la carpeta planets/ de la API de assets.
     sources: ["https://morteux.github.io/StellarisAssets/planets/"],
+    verification: VERIFICATION.UNVERIFIED
+  },
+  planetModifiers: {
+    file: "js/planet-modifier-data.js",
+    // T2530: effects compared with the 4.6.0 game files (report_differences.py, modifiers) and switched where they
+    // differed (DECISIONS_TO_REVIEW.md); the wiki pages stay as the source of texts and modelling notes.
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/planet_modifiers", "common/static_modifiers"]), WIKI + "Planet_modifiers"],
+    verification: VERIFICATION.UNVERIFIED
+  },
+  planetaryFeatures: {
+    file: "js/planetary-features-data.js",
+    // T2530: effects compared with the 4.6.0 game files (report_differences.py, modifiers) and switched where they
+    // differed (DECISIONS_TO_REVIEW.md); the wiki pages stay as the source of texts and modelling notes.
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/deposits"]), WIKI + "Planetary_features"],
     verification: VERIFICATION.UNVERIFIED
   },
   technologies: {

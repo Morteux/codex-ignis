@@ -34,8 +34,9 @@ import { CURRENT_RULESET_ID } from "./data-version.js";
 
 const rule = (combine, floor, stacking, appliesTo, pool) => ({ combine, floor, stacking, appliesTo, ...(pool ? { pool } : {}) });
 
+// T2530: the same rules for 4.6.0 (the stamp of new saves) and 4.5.2 (planets saved before); see the end of the object.
 const STACKING_RULES = {
-  "stellaris-pc-4.5.2": {
+  "stellaris-pc-4.6.0": {
     jobFlat: rule("add", null, "modifierStackJobFlat", "jobUnitOutput"),
     jobEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
     stratumEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
@@ -55,10 +56,11 @@ const STACKING_RULES = {
     popOutput: rule("add", null, "modifierStackPopOutput", "pops")
   }
 };
+STACKING_RULES["stellaris-pc-4.5.2"] = STACKING_RULES["stellaris-pc-4.6.0"];
 
 /** Orden en que computeTotals() aplica los pasos (claves i18n de la lista del panel). */
 const CALCULATION_ORDER = {
-  "stellaris-pc-4.5.2": ["modifierOrder1", "modifierOrder2", "modifierOrder3", "modifierOrder4", "modifierOrder4a", "modifierOrder4b", "modifierOrder5", "modifierOrder6", "modifierOrder7"]
+  "stellaris-pc-4.6.0": ["modifierOrder1", "modifierOrder2", "modifierOrder3", "modifierOrder4", "modifierOrder4a", "modifierOrder4b", "modifierOrder5", "modifierOrder6", "modifierOrder7"]
 };
 
 export function getStackingRules(rulesetId) {

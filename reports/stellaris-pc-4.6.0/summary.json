@@ -6,20 +6,20 @@
       "note": "no simulator data"
     },
     "authorities": {
-      "simulator": 7,
+      "simulator": 8,
       "game": 80,
-      "matched": 7,
+      "matched": 8,
       "differing": 0,
       "differences": 0,
       "simulator_only": 0,
-      "game_only": 73
+      "game_only": 72
     },
     "buildings": {
       "simulator": 201,
       "game": 514,
       "matched": 198,
       "differing": 82,
-      "differences": 243,
+      "differences": 242,
       "simulator_only": 3,
       "game_only": 316
     },
@@ -56,11 +56,11 @@
     "designations": {
       "simulator": 53,
       "game": 101,
-      "matched": 44,
-      "differing": 0,
-      "differences": 0,
-      "simulator_only": 9,
-      "game_only": 57
+      "matched": 53,
+      "differing": 6,
+      "differences": 6,
+      "simulator_only": 0,
+      "game_only": 48
     },
     "districts": {
       "simulator": 21,
@@ -127,13 +127,13 @@
       "note": "no simulator data"
     },
     "origins": {
-      "simulator": 54,
+      "simulator": 57,
       "game": 80,
-      "matched": 54,
+      "matched": 57,
       "differing": 0,
       "differences": 0,
       "simulator_only": 0,
-      "game_only": 26
+      "game_only": 23
     },
     "planet_classes": {
       "simulator": 21,
@@ -147,20 +147,20 @@
     "planet_modifiers": {
       "simulator": 142,
       "game": 70,
-      "matched": 128,
+      "matched": 131,
       "differing": 0,
       "differences": 0,
-      "simulator_only": 14,
-      "game_only": 44
+      "simulator_only": 11,
+      "game_only": 41
     },
     "policies": {
       "simulator": 19,
       "game": 230,
-      "matched": 11,
+      "matched": 19,
       "differing": 0,
       "differences": 0,
-      "simulator_only": 8,
-      "game_only": 219
+      "simulator_only": 0,
+      "game_only": 211
     },
     "ship_components": {
       "game": 1506,

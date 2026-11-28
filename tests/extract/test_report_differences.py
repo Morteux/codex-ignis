@@ -63,6 +63,31 @@ class ReportDifferences(unittest.TestCase):
         finally:
             shutil.rmtree(tmp)
 
+    def test_effect_modifiers(self):
+        """T2530: simulator effects as game modifier keys, and the game modifiers of the families the simulator models."""
+        self.assertEqual(rd.sim_modifiers("designations", {"jobEfficiency": {"miner": 0.15}, "jobResourcePct": {"all": 15}}),
+                         {"job_efficiency:miner": 0.15, "planet_jobs_produces_mult": 0.15})
+        self.assertEqual(rd.sim_modifiers("planet_modifiers", {"effects": {"jobResourcePct": {"physics": 10}, "conditions": {"happiness": -5},
+                                                                           "maxDistricts": {"agriculture": -3}, "jobCategoryFlat": [{"category": "technicians", "resource": "society", "perJob": 1}]}}),
+                         {"planet_jobs_physics_research_produces_mult": 0.1, "pop_happiness": -0.05, "district_farming_max_add": -3,
+                          "planet_technician_society_research_produces_add": 1})
+        self.assertEqual(rd.sim_modifiers("authorities", {"effects": [{"label": "councilorSkill", "value": 2}]}), {"councilor_skill_add": 2})
+        saved = dict(rd.CTX)
+        try:
+            rd.CTX.update({"job_map": {"miner": "miner", "mining_drone": "mining_drone", "scrap_miner": "scrap_miner"}, "econ": {},
+                           "static": {"miner_jobs_bonus_workforce_mult": {"modifier": {"pop_miner_bonus_workforce_mult": 1, "pop_mining_drone_bonus_workforce_mult": 1}}},
+                           "game_swaps": {"miner": ["scrap_miner"]}, "sim_swaps": {"scrap_miner"}})
+            # the workforce group is expanded to its jobs; the simulator's own swap inherits it; fleet modifiers are not compared
+            self.assertEqual(rd.game_modifiers("designations", {"planet_modifier": {"miner_jobs_bonus_workforce_mult": 0.15, "ship_speed_mult": 0.1}}),
+                             {"job_efficiency:miner": 0.15, "job_efficiency:mining_drone": 0.15})
+            # the Thermotechnic Forum is the agriculture cap; a deposit's job bonus comes with its technology
+            self.assertEqual(rd.game_modifiers("deposits", {"planet_modifier": {"district_polytechnic_max_add": 2}, "triggered_planet_modifier": [
+                {"potential": "owner = { has_technology = tech_mine_exotic_gases }", "modifier": {"planet_miners_exotic_gases_produces_add": 0.05}}]}),
+                {"district_farming_max_add": 2, "planet_miners_exotic_gases_produces_add": 0.05})
+        finally:
+            rd.CTX.clear()
+            rd.CTX.update(saved)
+
     def test_simulator_dump(self):
         """The dump of the real simulator data has every module the report reads."""
         sim = rd.load_simulator()

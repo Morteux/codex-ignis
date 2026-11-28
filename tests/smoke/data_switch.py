@@ -104,3 +104,37 @@ async def run(t):
     ebad = [k for k, v in m["empire-data.js"]["ETHIC_ICONS"].items() if not k.startswith("fanatic") and k != "gestaltConsciousness"
             and v != icons.get("ethic_" + "".join("_" + c.lower() if c.isupper() else c for c in k))]
     check("data switch (T2523): the moderate ethic icons are the ones of the 4.6.0 game files", not ebad, ebad)
+
+    # T2530: effects of designations, policies, authorities, planet modifiers and planetary features compared with the
+    # 4.6.0 modifiers (report_differences.py) and switched; collections tagged and the save stamp moved to 4.6.0.
+    switched_effects = ["designations", "authorities", "policies", "planetModifiers", "planetaryFeatures"]
+    wrong = [c for c in switched_effects if collections.get(c, {}).get("rulesetId") != RULESET or not any(s.startswith("game files 4.6.0") for s in collections[c]["sources"])]
+    check("data switch (T2530): designations, authorities, policies, planet modifiers and planetary features are tagged stellaris-pc-4.6.0", not wrong, wrong)
+    data_dir = os.path.join(ROOT, "data", "generated", RULESET)
+    sets = {}
+    for f in os.listdir(data_dir):
+        if f.endswith(".json") and f != "manifest.json":
+            with open(os.path.join(data_dir, f), encoding="utf-8") as fh:
+                d = json.load(fh)
+            sets[d["set"]] = d
+    rd.set_context(sim, sets)
+    items = rd.sim_items(sim)
+    left = {}
+    for set_name in rd.EFFECT_SETS:
+        pairs, _ = rd.match(set_name, items[set_name], rd.game_items(set_name, sets[set_name], sets))
+        for s, g, _how in pairs:
+            if g:
+                diffs = [d[0] for d in rd.compare(set_name, s, g) if d[0].startswith("modifiers.")]
+                if diffs:
+                    left[s.id] = diffs
+    # documented in DECISIONS_TO_REVIEW.md (T2530): not switched
+    known = {"tranquilWorld": ["modifiers.job_efficiency:synapse_drone"], "nanotechWorld": ["modifiers.planet_jobs_worker_produces_mult"]}
+    check("data switch (T2530): no modelled effect differs from the 4.6.0 game modifiers (except the two documented ones)", left == known, left)
+    des = {x["id"]: x["jobEfficiency"] for x in m["designation-data.js"]["DESIGNATIONS"]}
+    check("data switch (T2530): switched values, e.g. Nest World +15 % traders, Resort World +15 % entertainers, Tech-World +15 % Experiment Engineers",
+          des["nestWorld"].get("trader") == 0.15 and des["resortWorld"] == {"entertainer": 0.15} and des["techWorld"].get("experiment_engineer") == 0.15,
+          (des["nestWorld"], des["resortWorld"], des["techWorld"]))
+    script = ("import {CURRENT_RULESET_ID as c, checkRuleset, stampRuleset} from './js/data-version.js';"
+              "console.log(JSON.stringify([c, stampRuleset({}).rulesetId, checkRuleset({rulesetId:'stellaris-pc-4.5.2'}).status]));")
+    stamp = json.loads(subprocess.run(["node", "--input-type=module", "-e", script], cwd=ROOT, capture_output=True, text=True, check=True).stdout)
+    check("data switch (T2530): saved planets are stamped stellaris-pc-4.6.0 and files saved with 4.5.2 still import", stamp == [RULESET, RULESET, "ok"], stamp)

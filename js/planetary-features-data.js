@@ -99,8 +99,8 @@ export const STRATEGIC_DEPOSITS = [
   { id: "crystallineCaverns", i18nKey: "featureCrystallineCaverns", img: "planetary_features/D_crystalline_caverns.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.05 }, bodies: NATURAL_NOT_VOLCANIC },
   { id: "crystalForest", i18nKey: "featureCrystalForest", img: "planetary_features/D_crystal_forest.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
   { id: "crystalReef", i18nKey: "featureCrystalReef", img: "planetary_features/D_crystal_reef.png", caps: { mining: 3 }, unlocks: "rareCrystalExtraction", jobBonus: { category: "miners", resource: "rare_crystals", perJob: 0.1 }, bodies: NATURAL_NOT_VOLCANIC },
-  { id: "fumaroles", i18nKey: "featureFumaroles", img: "planetary_features/D_gaseous_eruption.png", caps: { mining: 3 }, unlocks: "exoticGasCapture", jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.2 }, bodies: ["volcanic"] },
-  { id: "stiflingAtmosphere", i18nKey: "featureStiflingAtmosphere", img: "planetary_features/D_tempestous_mountain.png", caps: { mining: 3 }, unlocks: "volatileMotesHarvesting", jobBonus: { category: "miners", resource: "volatile_motes", perJob: 0.2 }, bodies: ["volcanic"] }
+  { id: "fumaroles", i18nKey: "featureFumaroles", img: "planetary_features/D_gaseous_eruption.png", caps: { mining: 3 }, unlocks: "exoticGasCapture", jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.05 }, bodies: ["volcanic"] },
+  { id: "stiflingAtmosphere", i18nKey: "featureStiflingAtmosphere", img: "planetary_features/D_tempestous_mountain.png", caps: { mining: 3 }, unlocks: "volatileMotesHarvesting", jobBonus: { category: "miners", resource: "volatile_motes", perJob: 0.05 }, bodies: ["volcanic"] }
 ];
 
 /**
@@ -138,8 +138,8 @@ export const BLOCKERS = [
   blazingScourge("chargedAtmosphere", "blockerChargedAtmosphere", "D_tempestous_mountain.png", { flat: { energy: 5 } }),
   blazingScourge("largeVolcano", "blockerLargeVolcano", "D_active_volcano.png", { flat: { unity: 5 } }),
   blazingScourge("seasonalLavaFlooding", "blockerSeasonalLavaFlooding", "D_lava_flooding.png", { flat: { minerals: 5 } }),
-  blazingScourge("toxicAtmosphere", "blockerToxicAtmosphere", "D_unpleasant_atmosphere_blocker.png", { jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.25 } }),
-  blazingScourge("ashStorms", "blockerAshStorms", "D_ash_storms.png", { jobBonus: { category: "technicians", resource: "volatile_motes", perJob: 0.25 } }),
+  blazingScourge("toxicAtmosphere", "blockerToxicAtmosphere", "D_unpleasant_atmosphere_blocker.png", { jobBonus: { category: "miners", resource: "exotic_gases", perJob: 0.05 } }),
+  blazingScourge("ashStorms", "blockerAshStorms", "D_ash_storms.png", { jobBonus: { category: "technicians", resource: "volatile_motes", perJob: 0.05 } }),
   { id: "naniteHarvestBasin", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerNaniteHarvestBasin", img: "planetary_features/D_buried_lithoids.png", requires: [{ type: "unmodelled", i18nKey: "reqExtractNanitesSituation" }], flat: { nanites: 0.5 } },
   { id: "shroudstone", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerShroudstone", img: "planetary_features/D_shroudstone.png", requires: [{ type: "unmodelled", i18nKey: "reqAuraOfStrands" }], flat: { zro: 1 } },
   { id: "ruinedSanctumOfTheDreamer", bodies: DEPOSIT_FEATURE_BODIES, i18nKey: "blockerRuinedSanctumOfTheDreamer", img: "planetary_features/D_ruined_sanctum_of_the_lost.png", requires: [{ type: "unmodelled", i18nKey: "reqConquerMindwardens" }], flat: { zro: 1 } }

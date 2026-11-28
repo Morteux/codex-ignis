@@ -317,7 +317,8 @@ export const AUTHORITY_EFFECTS = {
   democratic: [pct("factionApproval", 0.1), flat("recruitableLeaders", 1)],
   oligarchic: [flat("councilorSkill", 2)],
   dictatorial: [pct("rulerExperience", 0.25), flat("recruitableLeaders", -1)],
-  imperial: [pct("capitalSystemResources", 0.1), flat("recruitableLeaders", -1)],
+  // T2530: the 4.6.0 auth_imperial has no capital system resources bonus (only -1 leader pool).
+  imperial: [flat("recruitableLeaders", -1)],
   corporate: [flat("availableEnvoys", 1), pct("tradeFromJobsAndContracts", 0.1, TRADE_MULT), pct("empireSizeFromPlanets", 0.5)],
   machineIntelligence: [pct("colonyDevelopmentSpeed", 0.25), pct("miningStationResources", 0.1), flat("mechanicalPopAssembly", 1)],
   hiveMind: [pct("popGrowthSpeed", 0.25), pct("empireSizeEffect", -0.25)],

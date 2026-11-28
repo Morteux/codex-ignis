@@ -40,7 +40,8 @@ let currentLang = getLang();
 function renderDataVersion(state) {
   if (!dataVersionSelect) return;
   dataVersionSelect.replaceChildren();
-  DATA_VERSIONS.forEach((version) => {
+  // T2530: legacy versions (4.5.2) are only listed for a planet stamped with them.
+  DATA_VERSIONS.filter((version) => !version.legacy || version.id === state.rulesetId).forEach((version) => {
     const option = document.createElement("option");
     option.value = version.id;
     option.textContent = version.label;

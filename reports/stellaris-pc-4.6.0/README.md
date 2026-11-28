@@ -9,14 +9,14 @@ Game values that only apply under a condition (nomadic costs, gestalt jobs, trig
 | Data set | Simulator | Game | Matched | With differences | Only simulator | Only game |
 |---|---|---|---|---|---|---|
 | ascension_perks | — | 50 | — | — | — | no simulator data |
-| [authorities](authorities.md) | 7 | 80 | 7 | 0 | 0 | 73 |
+| [authorities](authorities.md) | 8 | 80 | 8 | 0 | 0 | 72 |
 | [buildings](buildings.md) | 201 | 514 | 198 | 82 | 3 | 316 |
 | [civics](civics.md) | 226 | 292 | 223 | 30 | 3 | 69 |
 | crisis_levels | — | 30 | — | — | — | no simulator data |
 | crisis_objectives | — | 42 | — | — | — | no simulator data |
 | crisis_paths | — | 6 | — | — | — | no simulator data |
 | [deposits](deposits.md) | 67 | 592 | 67 | 0 | 0 | 525 |
-| [designations](designations.md) | 53 | 101 | 44 | 0 | 9 | 57 |
+| [designations](designations.md) | 53 | 101 | 53 | 6 | 0 | 48 |
 | [districts](districts.md) | 21 | 147 | 14 | 6 | 7 | 133 |
 | dlc | — | 37 | — | — | — | the simulator has no DLC data yet (T3502) |
 | economic_categories | — | 283 | — | — | — | not modelled (the simulator applies modifiers by job and resource) |
@@ -28,10 +28,10 @@ Game values that only apply under a condition (nomadic costs, gestalt jobs, trig
 | living_standards | — | 40 | — | — | — | audited in PLANET_SIM_GDD.md §5.3; the simulator data comes with P20 |
 | megastructures | — | 173 | — | — | — | no simulator data |
 | menace_perks | — | 105 | — | — | — | no simulator data |
-| [origins](origins.md) | 54 | 80 | 54 | 0 | 0 | 26 |
+| [origins](origins.md) | 57 | 80 | 57 | 0 | 0 | 23 |
 | [planet_classes](planet_classes.md) | 21 | 69 | 18 | 1 | 3 | 51 |
-| [planet_modifiers](planet_modifiers.md) | 142 | 70 | 128 | 0 | 14 | 44 |
-| [policies](policies.md) | 19 | 230 | 11 | 0 | 8 | 219 |
+| [planet_modifiers](planet_modifiers.md) | 142 | 70 | 131 | 0 | 11 | 41 |
+| [policies](policies.md) | 19 | 230 | 19 | 0 | 0 | 211 |
 | ship_components | — | 1506 | — | — | — | no simulator data |
 | species_traits | — | 370 | — | — | — | no simulator data |
 | static_modifiers | — | 3305 | — | — | — | not modelled (only the planet modifiers, which have their own report) |

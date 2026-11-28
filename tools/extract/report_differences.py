@@ -23,6 +23,18 @@ PREFIXES = {
     "ethics": ["ethic_"], "planet_classes": ["pc_"], "planet_modifiers": ["pm_", ""], "deposits": ["d_"],
     "edicts": ["", "edict_"], "policies": [""],
 }
+# T2530: simulator ids whose game item has another id and a name shared by several game items (variants per
+# authority, the nomad copies...) or a different name: matched to this game id first.
+GAME_ID_ALIASES = {
+    "designations": {"unificationCenter": "col_bureau", "machineNexus": "col_nexus", "ecumenopolis": "col_ecu_mix",
+                     "ecumenopolisResearch": "col_ecu_research", "ecumenopolisFoundry": "col_ecu_foundry", "ecumenopolisFactory": "col_ecu_factory",
+                     "ecumenopolisIndustrial": "col_ecu_industrial", "hydroponicsStation": "col_habitat_farming", "unificationStation": "col_habitat_bureau"},
+    "planet_modifiers": {"poorQualityMinerals": "pm_mineral_poor", "highQualityMinerals": "pm_mineral_rich", "exceptionalQualityMinerals": "pm_ultra_rich",
+                         "freeAtLast": "free_at_last_broken_shackles"},
+    "policies": {"balancedProduction": "drone_policy_balanced", "extractionFocus": "drone_policy_worker", "manufacturingFocus": "drone_policy_thinker",
+                 "cooperative": "diplo_stance_cooperative", "expansionist": "diplo_stance_expansionist", "isolationist": "diplo_stance_isolationist",
+                 "belligerent": "diplo_stance_belligerent", "supremacist": "diplo_stance_supremacist"},
+}
 # Data sets the simulator has no data for (listed in the summary only).
 NO_SIMULATOR_DATA = {
     "zones": "the simulator models district specializations inside its districts and body types, not as a data set",
@@ -89,7 +101,7 @@ def dict_diff(field, sim, game, conditional=None):
 
 
 # Game resource names → the simulator's.
-RESOURCE_ALIASES = {"physics_research": "physics", "society_research": "society", "engineering_research": "engineering", "sr_dark_matter": "dark_matter"}
+RESOURCE_ALIASES = {"physics_research": "physics", "society_research": "society", "engineering_research": "engineering", "sr_dark_matter": "dark_matter", "sr_zro": "zro"}
 # Job amenities are a planet modifier counted per pop (×100 the simulator's per-job value).
 AMENITIES_SCALE = 100
 
@@ -111,6 +123,173 @@ def conditional_values(resources, kind, sign=1):
                 if v not in out[k]:
                     out[k].append(v)
     return out
+
+
+# ---------- T2530: modifiers of the sets the simulator took from the wiki ----------
+# The simulator effects of designations, civics, policies, authorities, planet modifiers and planetary features are
+# turned into game modifier keys (sim_modifiers) and compared with the game modifiers of the matched item
+# (game_modifiers). Only the modifier families the simulator models are compared (MODELLED); the other game modifiers
+# (fleets, diplomacy, leaders...) are not differences. Job efficiency is compared per simulator job
+# ("job_efficiency:<simulator job>"): the game's `<group>_jobs_bonus_workforce_mult` static modifiers are expanded to
+# their `pop_<job>_bonus_workforce_mult` jobs and the game job ids mapped to the simulator's with the jobs matching.
+EFFECT_SETS = ("designations", "civics", "policies", "authorities", "planet_modifiers", "deposits")
+RESEARCH_GAME = {"physics": "physics_research", "society": "society_research", "engineering": "engineering_research"}
+DISTRICT_CAP_KEYS = {"generator": "district_generator_max_add", "mining": "district_mining_max_add", "agriculture": "district_farming_max_add"}
+# Game keys read as another one: the Thermotechnic Forum (agriculture group of a Volcanic World) is the simulator's
+# agriculture cap; a happiness for biological pops is the simulator's planet happiness (it has no machine pops apart).
+GAME_KEY_ALIASES = {"district_polytechnic_max_add": "district_farming_max_add", "biological_pop_happiness": "pop_happiness"}
+# "per 100 <category>" of js/planetary-features-data.js JOB_CATEGORIES → game economic category (planet_<category>_...);
+# the Thermoforgers are the miners of a Volcanic World.
+SIM_JOB_CATEGORIES = {"technicians": "technician", "thermoforgers": "miners"}
+GAME_JOB_CATEGORIES = {"technician", "miners", "farmers"}
+# Gestalt Production Policy: the simulator's worker / specialist strata are the game's simple / complex drones.
+DRONE_STRATA = {"worker": "simple_drone", "specialist": "complex_drone"}
+# Named empire effects of js/empire-data.js (AUTHORITY_EFFECTS) → game modifier keys. Effects with no game key are
+# compared under their own name, so a value the game no longer has shows as a difference.
+EMPIRE_EFFECT_KEYS = {
+    "factionApproval": "faction_approval", "recruitableLeaders": "country_leader_pool_size", "councilorSkill": "councilor_skill_add",
+    "rulerExperience": "councilor_ruler_dictatorial_exp_gain", "availableEnvoys": "envoys_add",
+    "tradeFromJobsAndContracts": "planet_jobs_trade_produces_mult", "empireSizeFromPlanets": "empire_size_colonies_mult",
+    "colonyDevelopmentSpeed": "planet_colony_development_speed_mult", "miningStationResources": "station_gatherers_produces_mult",
+    "mechanicalPopAssembly": "planet_pop_assembly_add", "popGrowthSpeed": "logistic_growth_mult", "empireSizeEffect": "empire_size_penalty_mult",
+    "empireSizeFromDistricts": "empire_size_districts_mult", "diplomaticWeightEconomy": "diplo_weight_economy_mult",
+    "capitalSystemResources": "capitalSystemResources",
+}
+MODELLED = {
+    "designations": [r"job_efficiency:.*", r"planet_jobs_(\w+_)?produces_mult", r"planet_jobs_upkeep_mult", r"pop_housing_usage_mult"],
+    "planet_modifiers": [r"planet_jobs_(\w+_)?produces_mult", r"planet_jobs_upkeep_mult", r"pop_housing_usage_mult", r"planet_[a-z_]+_produces_add",
+                         r"pop_happiness", r"planet_stability_add", r"planet_crime_add", r"planet_(housing|amenities)_(add|mult)",
+                         r"district_(generator|mining|farming)_max_add", r"pop_cat_\w+_bonus_workforce_mult"],
+    "deposits": [r"district_(generator|mining|farming)_max_add", r"planet_[a-z_]+_produces_add", r"produces:\w+"],
+    "policies": [r"planet_jobs_(\w+_)?produces_mult", r"country_(unity|trade)_produces_mult"],
+    "authorities": [re.escape(k) for k in EMPIRE_EFFECT_KEYS.values()],
+    "civics": [],
+}
+CTX = {"job_map": {}, "static": {}, "econ": {}, "game_swaps": {}, "sim_swaps": set()}  # filled by report()
+
+
+def _modelled(set_name, key):
+    per_job = re.fullmatch(r"planet_([a-z]+)_\w+_produces_add", key)
+    if per_job and per_job.group(1) not in GAME_JOB_CATEGORIES:  # "per 100 <category>" only for the simulator's categories
+        return False
+    return any(re.fullmatch(p, key) for p in MODELLED[set_name])
+
+
+def _jobs_pct(d, scale=100):
+    """jobResourcePct / jobResourceMult {all | resource: value} → planet_jobs_<resource>_produces_mult."""
+    out = {}
+    for r, v in (d or {}).items():
+        out["planet_jobs_produces_mult" if r == "all" else f"planet_jobs_{game_res(r)}_produces_mult"] = num(round(v / scale, 6))
+    return out
+
+
+def game_res(r):
+    return RESEARCH_GAME.get(r, r)
+
+
+def sim_modifiers(set_name, e):
+    """The simulator effects of an entry as game modifier keys: {key: value}."""
+    out = {}
+    eff = e.get("effects") if isinstance(e.get("effects"), dict) else e
+    if set_name == "designations":
+        for job, v in (e.get("jobEfficiency") or {}).items():
+            out[f"job_efficiency:{job}"] = num(v)
+        out.update(_jobs_pct(e.get("jobResourcePct")))
+        if e.get("jobUpkeepPct"):
+            out["planet_jobs_upkeep_mult"] = num(round(e["jobUpkeepPct"] / 100, 6))
+        if e.get("popHousingUsagePct"):
+            out["pop_housing_usage_mult"] = num(round(e["popHousingUsagePct"] / 100, 6))
+    elif set_name == "planet_modifiers":
+        out.update(_jobs_pct(eff.get("jobResourcePct")))
+        for c in eff.get("jobCategoryFlat") or []:
+            out[f"planet_{SIM_JOB_CATEGORIES.get(c['category'], c['category'])}_{game_res(c['resource'])}_produces_add"] = num(c["perJob"])
+        # happiness "if Individualist" is the planet happiness of the game (gestalt pops have none)
+        cond = {**((eff.get("conditionsByEmpire") or {}).get("individualist") or {}), **(eff.get("conditions") or {})}
+        if cond.get("happiness"):
+            out["pop_happiness"] = num(round(cond["happiness"] / 100, 6))
+        if cond.get("stability"):
+            out["planet_stability_add"] = num(cond["stability"])
+        if cond.get("crime"):
+            out["planet_crime_add"] = num(cond["crime"])
+        for k, v in (eff.get("flat") or {}).items():
+            out[f"planet_{k}_add"] = num(v)
+        for k, v in (eff.get("pct") or {}).items():
+            out[f"planet_{k}_mult"] = num(round(v / 100, 6))
+        for k, v in (eff.get("maxDistricts") or {}).items():
+            out[DISTRICT_CAP_KEYS.get(k, k)] = num(v)
+        for k, v in (eff.get("stratumOutput") or {}).items():
+            out[f"planet_jobs_{k}_produces_mult"] = num(round(v / 100, 6))
+        for k, v in (eff.get("stratumEfficiency") or {}).items():
+            out[f"pop_cat_{k}_bonus_workforce_mult"] = num(round(v / 100, 6))
+        if eff.get("jobUpkeepPct"):
+            out["planet_jobs_upkeep_mult"] = num(round(eff["jobUpkeepPct"] / 100, 6))
+        if eff.get("popHousingUsagePct"):
+            out["pop_housing_usage_mult"] = num(round(eff["popHousingUsagePct"] / 100, 6))
+    elif set_name == "deposits":
+        for k, v in (e.get("caps") or {}).items():
+            out[DISTRICT_CAP_KEYS.get(k, k)] = num(v)
+        bonus = e.get("jobBonus")
+        for c in [bonus] if isinstance(bonus, dict) else bonus or []:
+            out[f"planet_{SIM_JOB_CATEGORIES.get(c['category'], c['category'])}_{game_res(c['resource'])}_produces_add"] = num(c["perJob"])
+        for k, v in (e.get("flat") or {}).items():
+            out[f"produces:{k}"] = num(v)
+    elif set_name == "policies":
+        out.update(_jobs_pct(eff.get("jobResourceMult"), 1))
+        for k, v in (eff.get("stratumOutput") or {}).items():
+            out[f"planet_jobs_{DRONE_STRATA.get(k, k)}_produces_mult"] = num(v)
+        for k, v in (eff.get("resourceMult") or {}).items():
+            out[f"country_{k}_produces_mult"] = num(v)
+    elif set_name == "authorities":
+        for effect in e.get("effects") or []:
+            key = EMPIRE_EFFECT_KEYS.get(effect.get("label"), effect.get("label"))
+            out[key] = num(round(out.get(key, 0) + effect["value"], 6))
+    return {k: v for k, v in out.items() if v != 0}
+
+
+def game_modifiers(set_name, item):
+    """The game modifiers of an item in the families the simulator models, with the job efficiency per simulator job."""
+    mods = game_modifier_dict(item)
+    if set_name == "deposits":  # the job bonuses of strategic deposits come with their extraction technology
+        for t in item.get("triggered_planet_modifier") or []:
+            if isinstance(t, dict) and "has_technology" in str(t.get("potential")):
+                for k, v in game_modifier_dict({"modifier": t.get("modifier")}).items():
+                    mods[k] = num(round(mods.get(k, 0) + v, 6))
+    for k in list(mods):
+        alias = GAME_KEY_ALIASES.get(k)
+        if alias and alias not in mods:
+            mods[alias] = mods.pop(k)
+    for stratum, drone in DRONE_STRATA.items():  # the simulator's worker / specialist strata include the drones
+        if set_name != "policies" and mods.get(f"planet_jobs_{drone}_produces_mult") == mods.get(f"planet_jobs_{stratum}_produces_mult"):
+            mods.pop(f"planet_jobs_{drone}_produces_mult", None)
+    out = {}
+    for k, v in mods.items():
+        jobs = []
+        static = CTX["static"].get(k)
+        if k.endswith("_bonus_workforce_mult") and static and not k.startswith("pop_cat_"):
+            jobs = [m[len("pop_"):-len("_bonus_workforce_mult")] for m in game_modifier_dict(static) if m.startswith("pop_") and m.endswith("_bonus_workforce_mult")]
+        elif re.fullmatch(r"pop_(\w+)_bonus_workforce_mult", k) and not k.startswith("pop_cat_"):
+            jobs = [k[len("pop_"):-len("_bonus_workforce_mult")]]
+        if jobs:
+            # a game job swap inherits the efficiency of its job; the simulator's own swaps (JOB_SWAPS) inherit it there
+            jobs = jobs + [w for j in jobs for w in CTX["game_swaps"].get(j, [])]
+            for j in jobs:
+                sim_job = CTX["job_map"].get(j)
+                if sim_job and sim_job not in CTX["sim_swaps"]:
+                    out[f"job_efficiency:{sim_job}"] = v
+            continue
+        if set_name == "designations" and re.fullmatch(r"planet_(\w+)_produces_mult", k) and not k.startswith("planet_jobs_"):
+            # P10.6 / T1011: a job category's output (Wilderness designations) is the simulator's efficiency of its jobs;
+            # compare() keeps these only for the jobs the simulator lists ("job_efficiency~:")
+            cat = CTX["econ"].get(k[: -len("_produces_mult")]) or {}
+            for j in (cat.get("used_by") or {}).get("jobs", []) + (cat.get("used_by_descendants") or {}).get("jobs", []):
+                if CTX["job_map"].get(j):
+                    out[f"job_efficiency~:{CTX['job_map'][j]}"] = v
+            continue
+        out[k] = v
+    if set_name == "deposits":
+        for r, v in resources_dict(item.get("produces")).items():
+            out[f"produces:{r}"] = v
+    return {k: v for k, v in out.items() if _modelled(set_name, k.replace("~", ""))}
 
 
 # ---------- simulator side ----------
@@ -179,18 +358,20 @@ def sim_items(sim):
     for did, d in m["body-type-data.js"]["SPECIAL_DISTRICTS"].items():
         add("districts", did, "body-type-data.js SPECIAL_DISTRICTS", d, district_values(d))
 
+    mods = lambda set_name, entry: {"modifiers": sim_modifiers(set_name, entry)}  # T2530
     for d in m["designation-data.js"]["DESIGNATIONS"]:
-        add("designations", d["id"], "designation-data.js DESIGNATIONS", d)
+        add("designations", d["id"], "designation-data.js DESIGNATIONS", d, mods("designations", d))
     for c in m["bingo-items.js"]["PRINCIPLE_BINGO"]:
         cid = c["i18nKey"][len("civic"):] if c["i18nKey"].startswith("civic") else c["i18nKey"]
-        add("civics", cid[0].lower() + cid[1:], "bingo-items.js PRINCIPLE_BINGO", c)
+        add("civics", cid[0].lower() + cid[1:], "bingo-items.js PRINCIPLE_BINGO", c, mods("civics", c))
     for o in m["bingo-items.js"]["ORIGIN_BINGO"]:
         oid = o["i18nKey"][len("origin"):] if o["i18nKey"].startswith("origin") else o["i18nKey"]
         add("origins", oid[0].lower() + oid[1:], "bingo-items.js ORIGIN_BINGO", o)
 
     ed = m["empire-data.js"]
-    for a in ed["AUTHORITIES"]:
-        add("authorities", a["id"], "empire-data.js AUTHORITIES", a)
+    for a in ed["AUTHORITIES"] + ([ed["MUTUALISTIC_INTELLIGENCE"]] if ed.get("MUTUALISTIC_INTELLIGENCE") else []):
+        entry = {**a, "effects": ed["AUTHORITY_EFFECTS"].get(a["id"]) or []}
+        add("authorities", a["id"], "empire-data.js AUTHORITIES", a, mods("authorities", entry))
     for eid, e in ed["ETHIC_OPTIONS"].items():
         add("ethics", eid, "empire-data.js ETHIC_OPTIONS", {**e, "img": ed["ETHIC_ICONS"].get(eid)}, {"cost": e.get("cost")})
     g = ed["GESTALT_CONSCIOUSNESS"]
@@ -200,11 +381,11 @@ def sim_items(sim):
     for p in m["celestial-data.js"]["PLANET_TYPES"]:
         add("planet_classes", p["id"], "celestial-data.js PLANET_TYPES", p)
     for p in m["planet-modifier-data.js"]["PLANET_MODIFIERS"]:
-        add("planet_modifiers", p["id"], "planet-modifier-data.js PLANET_MODIFIERS", p)
+        add("planet_modifiers", p["id"], "planet-modifier-data.js PLANET_MODIFIERS", p, mods("planet_modifiers", p))
     pf = m["planetary-features-data.js"]
     for key in ("DEPOSIT_FEATURES", "STRATEGIC_DEPOSITS", "BLOCKERS"):
         for d in pf[key]:
-            add("deposits", d["id"], f"planetary-features-data.js {key}", d)
+            add("deposits", d["id"], f"planetary-features-data.js {key}", d, mods("deposits", d))
 
     for e in m["edict-data.js"]["EDICTS"]:
         v = {"upkeep": clean(e.get("upkeep"))}
@@ -213,7 +394,7 @@ def sim_items(sim):
         add("edicts", e["id"], "edict-data.js EDICTS", e, v)
     for group in sim["policyGroups"]:
         for o in group["options"]:
-            add("policies", o["id"], f"policy-data.js POLICY_GROUPS.{group['id']}", o)
+            add("policies", o["id"], f"policy-data.js POLICY_GROUPS.{group['id']}", o, mods("policies", o))
 
     # technologies: every technology the simulator data refers to (objects with a tech i18nKey)
     seen = set()
@@ -244,9 +425,21 @@ def triggered_modifier_values(item, key):
     return out
 
 
+def game_modifier_dict(item):
+    """Every modifier of a game item (planet_modifier, modifier, country_modifier; numbers only)."""
+    out = {}
+    for field in ("planet_modifier", "modifier", "country_modifier"):
+        for k, v in (item.get(field) or {}).items() if isinstance(item.get(field), dict) else []:
+            if isinstance(v, (int, float)) and not isinstance(v, bool):
+                out[k] = num(round(out.get(k, 0) + v, 6))
+    return out
+
+
 def game_values(set_name, item):
     """The game values comparable with SimItem.values (only the fields the simulator has), and the
     values that only apply under a condition: ({field: value}, {field: {key: [values]}})."""
+    if set_name in EFFECT_SETS:
+        return {"modifiers": game_modifiers(set_name, item)}, {}
     res = item.get("resources")
     if set_name == "jobs":
         net = resources_dict(item.get("produces"))
@@ -315,8 +508,11 @@ def match(set_name, sims, games):
         return cands[0] if len(cands) == 1 else None
 
     pending = []
-    for s in sims:  # pass 1: id
-        g = next((by_id[p + snake(s.id)] for p in PREFIXES.get(set_name, [""]) if p + snake(s.id) in by_id and id(by_id[p + snake(s.id)]) not in used), None)
+    aliases = GAME_ID_ALIASES.get(set_name, {})
+    for s in sims:  # pass 1: id (or its alias)
+        alias = by_id.get(aliases.get(s.id))
+        g = alias if alias is not None and id(alias) not in used else None
+        g = g or next((by_id[p + snake(s.id)] for p in PREFIXES.get(set_name, [""]) if p + snake(s.id) in by_id and id(by_id[p + snake(s.id)]) not in used), None)
         if g:
             used.add(id(g))
             pairs.append((s, g, "id"))
@@ -344,8 +540,15 @@ def compare(set_name, s, g):
     """Differences of a matched pair: [(field, simulator, game)]."""
     diffs = []
     gv, cond = game_values(set_name, g)
-    if g.get("swap_of"):  # the game swaps carry no outputs of their own
+    if g.get("swap_of") and set_name not in EFFECT_SETS:  # the game swaps carry no outputs of their own
         gv = {}
+    if "modifiers" in gv:  # T2530: job efficiency through a job category only for the jobs the simulator lists
+        sim_mods = s.values.get("modifiers") or {}
+        mods = {k: v for k, v in gv["modifiers"].items() if "~" not in k}
+        for k, v in gv["modifiers"].items():
+            if "~" in k and k.replace("~", "") in sim_mods and k.replace("~", "") not in mods:
+                mods[k.replace("~", "")] = v
+        gv = {**gv, "modifiers": mods}
     for field, sv in s.values.items():
         if field not in gv:
             continue
@@ -415,6 +618,19 @@ def set_report(set_name, ruleset, sims, data, sets):
     return "\n".join(lines) + "\n", summary
 
 
+def set_context(sim, sets):
+    """T2530: what game_modifiers needs: game job id → simulator job id (jobs matching), static and economic categories."""
+    CTX["static"] = {s["id"]: s for s in sets.get("static_modifiers", {}).get("items", [])}
+    CTX["econ"] = {c["id"]: c for c in sets.get("economic_categories", {}).get("items", [])}
+    job_map = {}
+    if "jobs" in sets:
+        pairs, _ = match("jobs", sim_items(sim)["jobs"], game_items("jobs", sets["jobs"], sets))
+        job_map = {g["id"]: s.id for s, g, _ in pairs if g}
+    CTX["job_map"] = job_map
+    CTX["game_swaps"] = {j["id"]: [w["id"] for w in j.get("swaps") or []] for j in sets.get("jobs", {}).get("items", [])}
+    CTX["sim_swaps"] = {w["id"] for w in sim.get("modules", {}).get("job-swap-data.js", {}).get("JOB_SWAPS", []) if w.get("base")}
+
+
 def newest_data_dir():
     base = f"{ROOT}/data/generated"
     dirs = sorted(d for d in os.listdir(base) if os.path.isdir(os.path.join(base, d)))
@@ -433,7 +649,6 @@ def load_simulator(path=None):
 
 def report(data_dir, out_dir, sim):
     """Writes the reports; returns {set: summary}."""
-    sims = sim_items(sim)
     summaries, ruleset, sets = {}, None, {}
     os.makedirs(out_dir, exist_ok=True)
     for file in sorted(os.listdir(data_dir)):
@@ -441,6 +656,8 @@ def report(data_dir, out_dir, sim):
             with open(os.path.join(data_dir, file), encoding="utf-8") as f:
                 data = json.load(f)
             sets[data["set"]] = data
+    set_context(sim, sets)
+    sims = sim_items(sim)
     for set_name, data in sets.items():
         ruleset = data["rulesetId"]
         if set_name not in PREFIXES:
