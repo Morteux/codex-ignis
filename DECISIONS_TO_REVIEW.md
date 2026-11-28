@@ -2,6 +2,15 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2528 — GDD §9.1 findings applied on the 4.6.0 data (2026-11-28)
+
+Every finding of T1404 still holds in the 4.6.0 game files (`data/generated/stellaris-pc-4.6.0/`), so none was dropped:
+
+- [ ] **Chemical Plants and Synthetic Crystal Plants**: 500 → 600 minerals (already switched by T2523).
+- [ ] **Waste Reprocessing Center**: building sets `origin` → `urban` and `generator` (simulator `energy`), so it can be built in Generator districts and in the urban-set slots. To keep it buildable on a city planet, the Commercial Nexus (the game's `zone_trade`, which includes `urban`) now permits `urban`; the other urban-set and `origin` permissions of the 4.6.0 zones (e.g. `origin` in `zone_trade`, `urban` in the resort zones) are not added.
+- [ ] **Baol Organic Plant**: sets `food` (`farming`) and `factory`, unchanged (already right).
+- [ ] **Production Policy** (gestalt, `drone_policy`): Extraction / Manufacturing Focus ±20 % now apply as % of the output of worker / specialist jobs (step 4, the game's `planet_jobs_simple_drone_produces_mult` / `planet_jobs_complex_drone_produces_mult`), on positive job output except amenities, with its own breakdown line "Strata"; they are no longer part of the job efficiency pool (step 3) nor listed as stratum efficiency in the jobs panel. Other `stratumOutput` modifiers (planet modifiers, branch offices) move to step 4 too.
+
 ## T2523 — Simulator data switched to the 4.6.0 game files (2026-11-28)
 
 Values changed against the 4.5.2 wiki data (data set, item: old → new; source `data/generated/stellaris-pc-4.6.0/`, compared by `reports/stellaris-pc-4.6.0/` and `tests/smoke/data_switch.py`):

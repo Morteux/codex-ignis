@@ -308,10 +308,10 @@ export function renderJobsInfo(totals, jobIds) {
   addLine(t(getLang(), "jobsInfoStaffing")(formatAmount(created), formatAmount(staffed)));
   addLine(t(getLang(), "jobsInfoScale"));
   addLine(t(getLang(), "jobsInfoControls"));
-  // Eficacia por estrato: modificadores stratumEfficiency + stratumOutput (Política de producción, tratada como eficacia).
+  // Eficacia por estrato: modificadores stratumEfficiency (T2528: the stratum output % is step 4, not efficiency).
   const byStratum = {};
   (totals.modifiers || []).forEach((modifier) => {
-    if ((modifier.category === "stratumEfficiency" || modifier.category === "stratumOutput") && modifier.stratum) {
+    if (modifier.category === "stratumEfficiency" && modifier.stratum) {
       byStratum[modifier.stratum] = (byStratum[modifier.stratum] || 0) + modifier.value;
     }
   });

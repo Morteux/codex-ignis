@@ -429,6 +429,7 @@ export function computeTotals() {
   // sobre la producción, no sobre el mantenimiento).
   const jobUnitOutputs = {};
   const jobProduced = {}; // resourceId -> producción positiva procedente de empleos (para jobResourceMult)
+  const jobProducedByStratum = {}; // T2528: stratum -> resourceId -> positive job output of that stratum (for stratumOutput)
   const empireState = getPlanetState();
   // Reglas de apilado de la versión de datos (P8.3) y valores de modificador por categoría, tomados de la lista de modificadores activos.
   const stacking = getStackingRules(empireState.rulesetId);
@@ -541,10 +542,11 @@ export function computeTotals() {
     // (+10%, -5%...) y solo afecta a la producción. El cambio de mantenimiento
     // (p. ej. -10% de mantenimiento) solo afecta al mantenimiento.
     // La eficacia de designación, edificios y estrato forma un solo montón (ver stacking-rules.js).
+    // T2528: the stratum output % (stratumOutput: Production Policy, planet modifiers, branch offices) is not efficiency:
+    // it is step 4, below (the game's planet_jobs_<stratum>_produces_mult).
     const efficiencyFactor = stackFactor(stacking.jobEfficiency, [
       ...modJobIds.flatMap((id) => modifierValues("jobEfficiency", { job: id })),
-      ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum }),
-      ...modifierValues("stratumOutput", { stratum: JOBS[jobId]?.stratum })
+      ...modifierValues("stratumEfficiency", { stratum: JOBS[jobId]?.stratum })
     ]);
     const upkeepFactor = stackFactor(stacking.jobUpkeep, [...modJobIds.flatMap((id) => modifierValues("jobUpkeep", { job: id })), ...modifierValues("jobUpkeep", { job: "all" })]);
     Object.keys(unit).forEach((resourceId) => {
@@ -565,6 +567,11 @@ export function computeTotals() {
       recordBreakdown(resourceId, "branchJobFlat", ((bonusedUnit[resourceId] || 0) - (edictUnit[resourceId] || 0)) * assigned);
       recordBreakdown(resourceId, "jobsModifier", (perJob - (bonusedUnit[resourceId] || 0)) * assigned);
       if (perJob > 0) jobProduced[resourceId] = (jobProduced[resourceId] || 0) + perJob * assigned;
+      const stratum = JOBS[jobId]?.stratum;
+      if (perJob > 0 && stratum) {
+        jobProducedByStratum[stratum] = jobProducedByStratum[stratum] || {};
+        jobProducedByStratum[stratum][resourceId] = (jobProducedByStratum[stratum][resourceId] || 0) + perJob * assigned;
+      }
     });
     if (unit.amenities && assigned) {
       amenitySources.push({ kind: "job", jobId, assignedRaw, amount: unit.amenities * assigned });
@@ -654,6 +661,16 @@ export function computeTotals() {
     if (policyFraction) addSignedResource(resourceId, fromJobs * policyFraction, "policyJobMult");
     if (celestialFraction) addSignedResource(resourceId, fromJobs * celestialFraction, "celestialJobMult");
     if (jobFraction) addSignedResource(resourceId, fromJobs * jobFraction, "jobJobMult");
+  });
+  // T2528 (GDD §9.1): "% output of <stratum> jobs" (Production Policy ±20 % simple / complex drones = worker / specialist
+  // strata, planet modifiers, branch offices) on what the jobs of that stratum produce, as the game's
+  // planet_jobs_<stratum>_produces_mult; amenities are a planet modifier in the game, not job output.
+  Object.entries(jobProducedByStratum).forEach(([stratum, produced]) => {
+    const fraction = combineFraction(stacking.stratumOutput, modifierValues("stratumOutput", { stratum }));
+    if (!fraction) return;
+    Object.entries(produced).forEach(([resourceId, amount]) => {
+      if (resourceId !== "amenities" && amount > 0) addSignedResource(resourceId, amount * fraction, "stratumJobMult");
+    });
   });
 
   // P16.12: civiles (pops sin empleo, entrada manual ×100). Producen servicios y comercio (CIVILIAN_OUTPUTS) como un empleo

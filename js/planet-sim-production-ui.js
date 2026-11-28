@@ -146,6 +146,7 @@ const BREAKDOWN_SOURCES = [
   { id: "specializationJobMult", pos: "breakdownSpecializationJobMult", neg: "breakdownSpecializationJobMult", kind: "efficiency", short: "breakdownShortSpecializations" },
   { id: "planetModifierJobMult", pos: "breakdownPlanetModifierJobMult", neg: "breakdownPlanetModifierJobMult", kind: "efficiency", short: "breakdownShortPlanetModifiers" },
   { id: "branchJobMult", pos: "breakdownBranchJobMult", neg: "breakdownBranchJobMult", kind: "efficiency", short: "breakdownShortBranch" },
+  { id: "stratumJobMult", pos: "breakdownStratumJobMult", neg: "breakdownStratumJobMult", kind: "efficiency", short: "breakdownShortStrata" },
   { id: "civilians", pos: "breakdownCivilians", neg: "breakdownCivilians" },
   { id: "livingStandardOutput", pos: "breakdownLivingStandardOutput", neg: "breakdownLivingStandardOutput" },
   { id: "neuralChips", pos: "breakdownNeuralChips", neg: "breakdownNeuralChips" },

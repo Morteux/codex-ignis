@@ -18,6 +18,8 @@
  *  - stratumOutput: { estrato: fracción } producción positiva de los empleos de
  *    ese estrato (Política de producción: menial = obrero, complejo =
  *    especialista; es la correspondencia que usa el simulador para los drones).
+ *    T2528: % of job output (step 4), the game's planet_jobs_simple_drone_produces_mult /
+ *    planet_jobs_complex_drone_produces_mult (drone_policy, 4.6.0), not job efficiency.
  *  - tradeConversion: { recurso: tasa de cambio } (Política comercial: cada
  *    recurso recibe el Comercio generado × tasa; "trade" es la parte de
  *    Comercio que se conserva).

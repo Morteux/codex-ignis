@@ -39,7 +39,8 @@ const STACKING_RULES = {
     jobFlat: rule("add", null, "modifierStackJobFlat", "jobUnitOutput"),
     jobEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
     stratumEfficiency: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
-    stratumOutput: rule("add", 0, "modifierStackJobEfficiency", "positiveJobOutput", "jobEfficiencyPool"),
+    // T2528: % of the output of a stratum's jobs (step 4, like jobResourceMult), no longer part of the efficiency pool.
+    stratumOutput: rule("add", null, "modifierStackJobResourceMult", "jobProducedResource"),
     jobUpkeep: rule("add", 0, "modifierStackJobUpkeep", "jobUpkeep"),
     jobResourceMult: rule("add", null, "modifierStackJobResourceMult", "jobProducedResource"),
     upkeepMult: rule("add", 0, "modifierStackUpkeepMult", "upkeep"),

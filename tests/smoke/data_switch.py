@@ -93,6 +93,13 @@ async def run(t):
             jbad.append((sid, swaps[sid]["output"], produced, upkeep))
     check("data switch (T2523): job swap outputs and upkeep equal the 4.6.0 game files (research swaps, Technophant, Haruspex, Culture Worker)", not jbad, jbad)
 
+    # T2528: building sets of the game files (simulator names: generator = "energy", farming = "food").
+    set_names = {"generator": "energy", "farming": "food"}
+    sets = {sid: (buildings[sid]["sets"], [set_names.get(x, x) for x in gb[gid]["building_sets"]]) for sid, gid in
+            (("waste_reprocessing_center", "building_waste_reprocessing_center"), ("baol_organic_plant", "building_baol_organic_plant"))}
+    commercial = next(o for o in m["planet-data.js"]["DISTRICTS"]["urban"]["specializationOptions"] if o["id"] == "commercialNexus")
+    check("data switch (T2528): Waste Reprocessing Center in the urban and generator sets, Baol Organic Plant in farming and factory, and the Commercial Nexus allows the urban set",
+          all(a == b for a, b in sets.values()) and "urban" in commercial["permittedSets"], (sets, commercial["permittedSets"]))
     icons = {e["id"]: (e.get("icon") or {}).get("asset") for e in ge.values()}
     ebad = [k for k, v in m["empire-data.js"]["ETHIC_ICONS"].items() if not k.startswith("fanatic") and k != "gestaltConsciousness"
             and v != icons.get("ethic_" + "".join("_" + c.lower() if c.isupper() else c for c in k))]

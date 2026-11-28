@@ -225,7 +225,8 @@ export const DISTRICTS = {
         img: "districts_specialization/District_specialization_trade.png",
         housing: -200,
         jobs: { trader: 100 },
-        permittedSets: ["trade"]
+        // T2528: the game's zone_trade also includes the "urban" set (Waste Reprocessing Center); its "origin" set is not added yet.
+        permittedSets: ["trade", "urban"]
       },
       // P10.2: research specializations (wiki 4.5.2 "District specialization"). The HTML marks the requirement with a
       // red cross: NOT available in a Habitat primary district (the markdown copy loses the cross). Research labs are
@@ -2304,7 +2305,8 @@ export const BUILDINGS = [
     colonyLimit: 1,
     upkeep: {},
     cost: {"time": 480, "items": [{"resource": "minerals", "amount": 100}]},
-    sets: ["origin"]
+    // T2528: building sets of the game files (4.6.0 common/buildings): urban and generator (the simulator's "energy").
+    sets: ["urban", "energy"]
   },
   {
     id: "auto_curating_vault",
