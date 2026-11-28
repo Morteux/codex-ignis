@@ -1,6 +1,6 @@
 # Codex Ignis — pending tasks
 
-> Progreso: **161 / 179 tareas (90%)**
+> Progreso: **162 / 179 tareas (91%)**
 
 Design rules and decisions: `PLANET_SIM_GDD.md` (planet simulator) and `TECH_TREE_GDD.md` (tech tree, sections 30–34), `GAME_FILES_EXTRACTOR.md` (section 25) and `TESTELLARIS_GDD.md` (sections 40–43).
 **Sources:** everything comes from the game files extractor (section 25); the wiki is no longer a source (owner, 2026-11-22). **Translations:** all done at the end, in one go, in section 15, from the localisation the extractor reads; no task before it adds languages or hand-translates game names (new interface texts get es/en/jp keys in `js/i18n.js`, game names in English; Testellaris questions use the official es/en/jp names). Finished phases (P0–P8 incl. P7.10, P16.1–P16.12, P9.1–P9.7, P12.1, P13.7, P17, P18 — edicts audit in GDD §5.1, P10.1 — body types audit in GDD §4.1, P10.2, P10.3, P10.4, P10.5, P10.6 except Wilderness, P10.7, P10.8 — GDD §4.2, P10.9, P10.10 — GDD §4.2, P19.1 — branch offices audit in GDD §5.2, P19.2, P19.3, P19.4, P21 — job swaps, audit in GDD §6.1) are in git history.
@@ -417,9 +417,8 @@ Goal: every 2D image of the game available in StellarisAssets, sorted in folders
   - Prueba manual: open `StellarisAssetsFileTree.txt`: it lists about 18 500 files, with new folders such as `event_pictures/`, `loading_screens/`, `portraits/`, `interface/` and `achievements/`; in StellarisAssets `manifest.json` gives the files and bytes per category, and `git -C <StellarisAssets> log` shows six T2703 commits.
 - [x] **T2704** (P27.4) Index: an `index.json` in StellarisAssets (sprite key → file, category, size, source `.gfx` / game file, game version, localised name where the game has one) and the StellarisAssets site (`index.html` / `app.js`) to browse by folder and search by key or name; point `ICONS.md` and `README.md` of this project to it; smoke test that the files the site uses exist in the index
   - Prueba manual: open the StellarisAssets page (`STELLARIS_ASSETS_BASE`): the header shows "Game files Corona Borealis v4.6.0", the folder list has every folder with its count, and searching "Martial Alliance" or `GFX_crisis_icon` finds the icons with their name, sprite key, size and, in the preview, the source texture and `.gfx` file.
-- [ ] **T2705** (P27.5) Species portrait layers (`gfx/models/portraits`, 3 221 textures, about 600 MB as PNG) left out of T2703 by T2701: export them once the owner chooses where (they would push the StellarisAssets Pages site over its 1 GB limit)
-  - Owner (2026-11-28): the owner asked to paginate the StellarisAssets site (T2706) so it never loads every image at once; still open: the ~600 MB of portrait layers would push the GitHub Pages site over its 1 GB limit
-  - ❓ Bloqueada: with T2706 done, does the owner still want the portrait layers in StellarisAssets despite the 1 GB Pages limit, in another repository, only a subset, or not at all?
+- [x] **T2705** (P27.5) Species portrait layers (`gfx/models/portraits`, 3 221 textures, about 600 MB as PNG) left out of T2703 by T2701: export them once the owner chooses where (they would push the StellarisAssets Pages site over its 1 GB limit)
+  - Owner (2026-11-28): the portrait layers are not exported (stacking them does not give the portrait: they are textures of animated 3D meshes); no full-portrait render either. Nothing to do.
 - [ ] **T2706** (P27.6) StellarisAssets site paginated: 10, 30, 50 or 100 items per page (a selector; remember the choice), with page controls; only the images of the current page are requested (no `src` for the others, nothing preloaded), folder filter and search work over the whole index and reset to page 1, page and size kept in the URL; commit and push in StellarisAssets
 
 ## 45 · Testellaris: question screen redesign (owner, 2026-11-26)
