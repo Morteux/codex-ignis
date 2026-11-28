@@ -1,0 +1,22 @@
+ship_section_template = {
+	key = "TEST_BIO_STAGE_1_swarm"
+	ship_size = test_bio_stage_1
+	resources = {
+		category = ship_sections
+		cost = {
+			food = 40
+			mult = 3.5
+		}
+	}
+}
+ship_section_template = {
+	key = "TEST_BIO_STAGE_1_picket"
+	ship_size = test_bio_stage_1
+	resources = {
+		category = ship_sections
+		cost = {
+			food = 60
+			mult = 3.5
+		}
+	}
+}

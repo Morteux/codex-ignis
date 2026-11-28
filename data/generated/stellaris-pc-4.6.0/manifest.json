@@ -189,6 +189,12 @@
     "unchanged": 475
    }
   },
+  "ship_sizes": {
+   "file": "ship_sizes.json",
+   "count": 320,
+   "warnings": 0,
+   "icons": {}
+  },
   "species_traits": {
    "file": "species_traits.json",
    "count": 370,

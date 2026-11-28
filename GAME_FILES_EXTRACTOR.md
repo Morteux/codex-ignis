@@ -92,6 +92,7 @@ Python 3.10 or newer; the only dependency is Pillow (icons).
 | `ascension_perks` (T4110) | `extract_ascension_perks.py` | `common/ascension_perks` | `gfx/interface/icons/ascension_perks` → `ascension_perks/` (new) |
 | `tradition_categories`, `traditions` (T4110) | `extract_traditions.py` | `common/tradition_categories`, `common/traditions` | `gfx/interface/icons/traditions` → `traditions/` (new) |
 | `ship_components` (T4110) | `extract_ship_components.py` | `common/component_templates` (`*_component_template` blocks by `key`; the `*.csv` weapon stats override the `.txt` values) | the component sprite → `ship_components/` (new) |
+| `ship_sizes` (T2533) | `extract_ship_sizes.py` | `common/ship_sizes` (hulls, bio-ship growth stages with `growth_required` and `upgrades_to`, stations) and `common/section_templates` (`sections` and the cheapest `section_cost`, `mult` applied: bio-ship sections turn their alloy figure into food) | none |
 | `megastructures` (T4110) | `extract_megastructures.py` | `common/megastructures` (every stage) | the `portrait` sprite → `megastructures/` (new) |
 | `crisis_paths`, `crisis_levels`, `menace_perks`, `crisis_objectives` (T4110) | `extract_crises.py` | `common/crisis_paths`, `common/crisis_levels`, `common/menace_perks`, `common/crisis_objectives` | none |
 | `fallen_empires` (T4110) | `extract_fallen_empires.py` | `common/fallen_empires` (authority, ethics, civics, origin and traits of `create_country_effect`) | none |

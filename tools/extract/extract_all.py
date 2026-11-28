@@ -28,6 +28,7 @@ EXTRACTORS = {
     "ascension_perks": ["ascension_perks"],
     "traditions": ["tradition_categories", "traditions"],
     "ship_components": ["ship_components"],
+    "ship_sizes": ["ship_sizes"],
     "megastructures": ["megastructures"],
     "crises": ["crisis_paths", "crisis_levels", "menace_perks", "crisis_objectives"],
     "fallen_empires": ["fallen_empires"],

@@ -32,6 +32,7 @@ FIELDS = {
     "tradition_categories": [((), ("potential", "possible"))],
     "traditions": [((), ("possible",))],
     "ship_components": [((), ("potential",))],
+    "ship_sizes": [((), ("potential",))],
     "megastructures": [((), ("potential", "possible"))],
     "menace_perks": [((), ("potential",))],
     "fallen_empires": [((), ("possible", "weight_modifier"))],
