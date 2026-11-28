@@ -30,7 +30,7 @@ export const PLANET_TYPES = [
   { id: "alpine", standard: true, img: "planets/Planet_alpine.png", i18nKey: "planetTypeAlpine", category: "natural" },
   { id: "volcanic", img: "planets/Planet_volcanic.png", i18nKey: "planetTypeVolcanic", category: "natural" },
   { id: "gaia", img: "planets/Planet_gaia.png", i18nKey: "planetTypeGaia", category: "natural" },
-  { id: "tomb", img: "planets/Planet_tomb.png", i18nKey: "planetTypeTomb", category: "natural" },
+  { id: "tomb", img: "planets/Planet_nuked.png", i18nKey: "planetTypeTomb", category: "natural" },
   { id: "relic", img: "planets/Planet_relic.png", i18nKey: "planetTypeRelic", category: "natural" },
   { id: "hive", img: "planets/Planet_hive.png", i18nKey: "planetTypeHive", category: "natural" },
   { id: "habitat", img: "planets/Planet_habitat.png", i18nKey: "planetTypeHabitat", category: "artificial" },

@@ -77,6 +77,8 @@ function isSupportedRuleset(id) {
 }
 
 const WIKI = "https://stellaris.paradoxwikis.com/";
+/** T2523: sources of the collections switched to the 4.6.0 game files (folders of the game read by the extractor). */
+const gameFiles460 = (folders) => folders.map((folder) => "game files 4.6.0: " + folder);
 
 /**
  * Colecciones de datos y su procedencia. `file`: dónde viven los datos.
@@ -88,22 +90,34 @@ const WIKI = "https://stellaris.paradoxwikis.com/";
 export const DATA_COLLECTIONS = {
   buildings: {
     file: "js/planet-data.js",
-    sources: ["Buildings", "Resource_buildings", "Industry_buildings", "Research_buildings", "Unity_buildings"].map((page) => WIKI + page),
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/buildings"]), ...["Buildings", "Resource_buildings", "Industry_buildings", "Research_buildings", "Unity_buildings"].map((page) => WIKI + page)],
     verification: VERIFICATION.UNVERIFIED
   },
   capitalBuildings: {
     file: "js/planet-data.js",
-    sources: [WIKI + "Capital_building"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/buildings"]), WIKI + "Capital_building"],
     verification: VERIFICATION.UNVERIFIED
   },
   districts: {
     file: "js/planet-data.js",
-    sources: [WIKI + "Districts", WIKI + "District_specialization"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/districts", "common/zones"]), WIKI + "Districts", WIKI + "District_specialization"],
     verification: VERIFICATION.UNVERIFIED
   },
   jobs: {
     file: "js/planet-data.js",
-    sources: [WIKI + "Jobs"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/pop_jobs"]), WIKI + "Jobs"],
     verification: VERIFICATION.UNVERIFIED
   },
   resources: {
@@ -118,7 +132,10 @@ export const DATA_COLLECTIONS = {
   },
   ethics: {
     file: "js/empire-data.js",
-    sources: [WIKI + "Ethics"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/ethics"]), WIKI + "Ethics"],
     verification: VERIFICATION.UNVERIFIED
   },
   authorities: {
@@ -139,20 +156,29 @@ export const DATA_COLLECTIONS = {
   },
   edicts: {
     file: "js/edict-data.js",
-    sources: [WIKI + "Edicts"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/edicts"]), WIKI + "Edicts"],
     // P18: valores transcritos de la página 4.5.2; las decisiones de modelado (tradiciones cumplidas, % de felicidad como puntos) se revisan en P14.
     verification: VERIFICATION.WIKI_VERIFIED
   },
   branchOffices: {
     file: "js/branch-office-data.js",
     // P19.1: branch office buildings placed by another (corporate) empire, slots per capital tier.
-    sources: [WIKI + "Holdings", WIKI + "Capital_building"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/buildings"]), WIKI + "Holdings", WIKI + "Capital_building"],
     verification: VERIFICATION.UNVERIFIED
   },
   jobSwaps: {
     file: "js/job-swap-data.js",
     // P21.1: every job swap of the Jobs page (base job, conditions, weight, output, stacked output changes).
-    sources: [WIKI + "Jobs"],
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/pop_jobs"]), WIKI + "Jobs"],
     verification: VERIFICATION.UNVERIFIED
   },
   stackingRules: {
@@ -164,7 +190,10 @@ export const DATA_COLLECTIONS = {
   bodyTypeRules: {
     file: "js/body-type-data.js",
     // P10.1: base modifiers, district sets, special capitals and jobs per body type (special planets).
-    sources: ["Celestial_object", "Districts", "District_specialization", "Capital_building", "Designation", "Jobs"].map((page) => WIKI + page),
+    // T2523: values switched to the 4.6.0 game files (reports/stellaris-pc-4.6.0/); the wiki pages stay as the
+    // source of what the game files do not give (texts, modelling notes). Not reviewed yet (section 14).
+    rulesetId: "stellaris-pc-4.6.0",
+    sources: [...gameFiles460(["common/districts", "common/planet_classes"]), ...["Celestial_object", "Districts", "District_specialization", "Capital_building", "Designation", "Jobs"].map((page) => WIKI + page)],
     verification: VERIFICATION.UNVERIFIED
   },
   celestialTypes: {

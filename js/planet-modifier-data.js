@@ -118,7 +118,7 @@ export const PLANET_MODIFIERS = [
   { id: "gaseousFauna", i18nKey: "planetModifierGaseousFauna", group: "event", img: "planet_modifiers/Pm_fetid_fauna.png", effects: { conditions: {"happiness": 20} }, notModelledKeys: ["planetModifierGaseousFaunaNotModelled1"] },
   { id: "hemosymbiosis", i18nKey: "planetModifierHemosymbiosis", group: "event", img: "planet_modifiers/Pm_unstable_tectonics.png", effects: { jobResourcePct: {"minerals": 10, "alloys": 10} }, notModelledKeys: ["planetModifierHemosymbiosisNotModelled1"] },
   { id: "parasiticProduction", i18nKey: "planetModifierParasiticProduction", group: "event", img: "planet_modifiers/Pm_microscopic_life.png", effects: { jobResourcePct: {"all": 15} } },
-  { id: "geothermicMetallurgy", i18nKey: "planetModifierGeothermicMetallurgy", group: "event", img: "planet_modifiers/Pm_unstable_tectonics.png", effects: { jobCategoryFlat: [{"category": "miners", "resource": "alloys", "perJob": 1.0}] } },
+  { id: "geothermicMetallurgy", i18nKey: "planetModifierGeothermicMetallurgy", group: "event", img: "planet_modifiers/Pm_molten_planet.png", effects: { jobCategoryFlat: [{"category": "miners", "resource": "alloys", "perJob": 1.0}] } },
   { id: "theRiddle", i18nKey: "planetModifierTheRiddle", group: "event", img: "planet_modifiers/Pm_engineering_research.png", effects: { jobResourcePct: {"physics": 5} } },
   { id: "playgroundOfGiants", i18nKey: "planetModifierPlaygroundOfGiants", group: "event", img: "planet_modifiers/Pm_planet_surface.png", effects: { conditions: {"happiness": 10, "crime": -5} } },
   { id: "funghiAreFriends", i18nKey: "planetModifierFunghiAreFriends", group: "event", img: "planet_modifiers/Pm_overgrowth.png", effects: { jobResourcePct: {"food": 5} } },

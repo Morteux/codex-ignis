@@ -123,7 +123,7 @@ export const BRANCH_OFFICE_BUILDINGS = [
     jobTrade: [trade(["physicist", "biologist", "engineer"], 0.1, 0.1, ["civicCorporateAstrometeorology", "civicCorporateCrowdsourcing", "civicCorporateDarkConsortium"])],
     owner: { perBranchValue: { research: 5 }, [CAPITAL_TRADERS]: ["civicCorporateAstrometeorology", "civicCorporateCrowdsourcing", "civicCorporateDarkConsortium"] },
     upkeep: { energy: 3 }, cost: cost(480, 25, 800, "exotic_gases", 80), requires: [] },
-  { id: "privateSecurityCompany", i18nKey: "branchPrivateSecurityCompany", img: "buildings/holding_overlord_garrison.png", kind: "corporate", maxPerColony: 1,
+  { id: "privateSecurityCompany", i18nKey: "branchPrivateSecurityCompany", img: "buildings/building_private_security.png", kind: "corporate", maxPerColony: 1,
     illegal: "same",
     jobs: { enforcer: 200 },
     illegalJobs: { enforcer: 100, criminal: 100 }, illegalCrime: 25,
@@ -176,7 +176,7 @@ export const BRANCH_OFFICE_BUILDINGS = [
     upkeep: { energy: 3 }, cost: cost(480, 25, 800, "alloys", 80),
     // Xeno Diplomacy technology (researched); Tier 2 capital (Planetary Administration) on the colony
     requires: [{ type: "capitalTier", min: 2, scope: "host" }] },
-  { id: "industrialSubsidiary", i18nKey: "branchIndustrialSubsidiary", img: "buildings/building_junkheap.png", kind: "corporate", maxPerColony: 1,
+  { id: "industrialSubsidiary", i18nKey: "branchIndustrialSubsidiary", img: "buildings/building_industrial_subsidiary.png", kind: "corporate", maxPerColony: 1,
     illegal: null,
     jobs: { artisan: 100, metallurgist: 100 },
     jobTrade: [trade(["metallurgist", "artisan"], 0.1, 0.1, ["civicCorporateScavengers", "civicCorporateRelentlessIndustrialists"])],

@@ -18,15 +18,15 @@ export const ETHIC_WHEEL = {
   fanaticXenophile: [5, 1], fanaticPacifist: [5, 3], fanaticMaterialist: [5, 5]
 };
 
-/** Icon of every ethic (ethics/ folder of StellarisAssets). */
+/** Icon of every ethic (ethics/ folder of StellarisAssets; T2523: the icons of the 4.6.0 game files). */
 export const ETHIC_ICONS = {
-  xenophile: "ethics/Xenophile.png", fanaticXenophile: "ethics/Fanatic_xenophile.png",
-  xenophobe: "ethics/Xenophobe.png", fanaticXenophobe: "ethics/Fanatic_xenophobe.png",
-  militarist: "ethics/Militarist.png", fanaticMilitarist: "ethics/Fanatic_militarist.png",
-  pacifist: "ethics/Pacifist.png", fanaticPacifist: "ethics/Fanatic_pacifist.png",
-  materialist: "ethics/Materialist.png", fanaticMaterialist: "ethics/Fanatic_materialist.png",
-  spiritualist: "ethics/Spiritualist.png", fanaticSpiritualist: "ethics/Fanatic_spiritualist.png",
-  egalitarian: "ethics/Egalitarian.png", fanaticEgalitarian: "ethics/Fanatic_egalitarian.png",
-  authoritarian: "ethics/Authoritarian.png", fanaticAuthoritarian: "ethics/Fanatic_authoritarian.png",
+  xenophile: "ethics/Ethic_xenophile.png", fanaticXenophile: "ethics/Fanatic_xenophile.png",
+  xenophobe: "ethics/Ethic_xenophobe.png", fanaticXenophobe: "ethics/Fanatic_xenophobe.png",
+  militarist: "ethics/Ethic_militarist.png", fanaticMilitarist: "ethics/Fanatic_militarist.png",
+  pacifist: "ethics/Ethic_pacifist.png", fanaticPacifist: "ethics/Fanatic_pacifist.png",
+  materialist: "ethics/Ethic_materialist.png", fanaticMaterialist: "ethics/Fanatic_materialist.png",
+  spiritualist: "ethics/Ethic_spiritualist.png", fanaticSpiritualist: "ethics/Fanatic_spiritualist.png",
+  egalitarian: "ethics/Ethic_egalitarian.png", fanaticEgalitarian: "ethics/Fanatic_egalitarian.png",
+  authoritarian: "ethics/Ethic_authoritarian.png", fanaticAuthoritarian: "ethics/Fanatic_authoritarian.png",
   gestaltConsciousness: "ethics/Gestalt_consciousness.png"
 };

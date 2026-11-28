@@ -83,18 +83,18 @@ export const CAPITAL_SETS = {
   { id: "planetary_administration", img: "buildings/building_capital.png", i18nKey: "buildingPlanetaryAdministration", tier: 2, housing: 1000, amenities: 1000, jobs: { politician: 200, enforcer: 100 }, defenseArmies: 4, upkeep: { energy: -5 } },
   { id: "planetary_capital", img: "buildings/building_major_capital.png", i18nKey: "buildingPlanetaryCapital", tier: 3, housing: 1500, amenities: 1500, jobs: { politician: 300, enforcer: 200 }, defenseArmies: 8, upkeep: { energy: -8 } },
   { id: "system_capital_complex", img: "buildings/building_system_capital.png", i18nKey: "buildingSystemCapitalComplex", tier: 4, housing: 2000, amenities: 2000, jobs: { politician: 400, enforcer: 300 }, defenseArmies: 16, upkeep: { energy: -10 } },
-  { id: "imperial_palace", img: "buildings/building_palace.png", i18nKey: "buildingImperialPalace", tier: 5, housing: 3000, amenities: 3000, jobs: { politician: 600, enforcer: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
+  { id: "imperial_palace", img: "buildings/building_imperial_capital.png", i18nKey: "buildingImperialPalace", tier: 5, housing: 3000, amenities: 3000, jobs: { politician: 600, enforcer: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ],
   hive: [
-  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: {} },
+  { id: "colony_shelter", img: "buildings/building_colony_shelter.png", i18nKey: "buildingColonyShelter", tier: 1, housing: 300, amenities: 300, jobs: {  }, upkeep: { energy: -1 } },
   { id: "hive_core", img: "buildings/building_hive_capital.png", i18nKey: "buildingHiveCore", tier: 2, housing: 1000, amenities: 800, jobs: { logistic_drone: 200, synapse_drone: 200, hunter_seeker_drone: 100 }, defenseArmies: 4, upkeep: { energy: -2 } },
   { id: "hive_nexus", img: "buildings/building_hive_major_capital.png", i18nKey: "buildingHiveNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { logistic_drone: 500, synapse_drone: 300, hunter_seeker_drone: 200 }, defenseArmies: 8, upkeep: { energy: -5 } },
   { id: "hive_imperial_complex", img: "buildings/building_imperial_hive_capital.png", i18nKey: "buildingHiveImperialComplex", tier: 5, housing: 3000, amenities: 3000, jobs: { logistic_drone: 700, synapse_drone: 500, hunter_seeker_drone: 400 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ],
   machine: [
   { id: "deployment_post", img: "buildings/building_deployment_post.png", i18nKey: "buildingDeploymentPost", tier: 1, housing: 300, amenities: 500, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 200 }, upkeep: { energy: -1 } },
-  { id: "administrative_array", img: "buildings/building_machine_capital.png", i18nKey: "buildingAdministrativeArray", tier: 2, housing: 1000, amenities: 1000, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 300, coordinator: 200 }, defenseArmies: 4, upkeep: { energy: -3 } },
-  { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, defenseArmies: 8, upkeep: { energy: -5 } },
+  { id: "administrative_array", img: "buildings/building_machine_capital.png", i18nKey: "buildingAdministrativeArray", tier: 2, housing: 1000, amenities: 1000, jobs: { replicator: 200, hunter_seeker_drone: 100, logistic_drone: 300, coordinator: 200 }, defenseArmies: 4, upkeep: { energy: -5 } },
+  { id: "planetary_processor", img: "buildings/building_machine_major_capital.png", i18nKey: "buildingPlanetaryProcessor", tier: 3, housing: 1500, amenities: 1500, jobs: { replicator: 200, hunter_seeker_drone: 200, logistic_drone: 400, coordinator: 300 }, defenseArmies: 8, upkeep: { energy: -8 } },
   { id: "primary_nexus", img: "buildings/building_machine_system_capital.png", i18nKey: "buildingPrimaryNexus", tier: 4, housing: 2000, amenities: 2000, jobs: { replicator: 200, hunter_seeker_drone: 300, logistic_drone: 500, coordinator: 400 }, defenseArmies: 16, upkeep: { energy: -10 } },
   { id: "machine_imperial_center", img: "buildings/building_imperial_machine_capital.png", i18nKey: "buildingMachineImperialCenter", tier: 5, housing: 3000, amenities: 3000, jobs: { replicator: 400, hunter_seeker_drone: 500, logistic_drone: 600, coordinator: 500 }, defenseArmies: 16, upkeep: { energy: -10 } }
   ],
@@ -176,7 +176,7 @@ export const DISTRICTS = {
     // no se aplica; Optimized Nexus y Extended Hives no figuran en las páginas de tecnología
     // (parecen sus variantes gestalt): tampoco se aplican hasta P14.
     housing: 1000,
-    housingByAuthority: { hiveMind: 1200, machineIntelligence: 1000 },
+    housingByAuthority: { hiveMind: 1200, machineIntelligence: 1100 },
     hiveWorldHousing: 600,
     agrarianIdyllHousing: -200,
     technologyHousing: [
@@ -755,8 +755,8 @@ export const JOB_OUTPUTS = {
   // Culto a la Muerte (principio) y Cámaras de experimentación (ética materialista)
   death_priest: { unity: 2, amenities: 4, society: 0.5, consumer_goods: -2 },
   mortal_initiate: { unity: 1, society: 0.5, amenities: 2 },
-  // "+2 Research" de la wiki = 2 de cada tipo de investigación.
-  experiment_engineer: { physics: 2, society: 2, engineering: 2, consumer_goods: -2 },
+  // T2523: 4.6.0 game files (common/pop_jobs): +1 of each research type, −1 consumer goods (−0.5 more with a science ministry, not modelled).
+  experiment_engineer: { physics: 1, society: 1, engineering: 1, consumer_goods: -1 },
   // P10.6: Thermotechnic Mentor, "+1 Research" read as +1 of each research type (same reading as above); +1 unity.
   // Its workforce-scaling bonuses are JOB_WORKFORCE_SCALING; gestalt upkeep in GESTALT_JOB_UPKEEP (Pyroclastic Drone).
   thermotechnic_mentor: { physics: 1, society: 1, engineering: 1, unity: 1, consumer_goods: -3 },
@@ -932,7 +932,9 @@ const LATHE_TECH = (i18nKey) => ({ type: "unmodelled", i18nKey });
  *  - perNeuralChips: per 100 Neural Chips (one chip job): resources ("research" = each of the three) or jobResourcePct.
  *  - infoKeys: effects the simulator does not model (purge speed, computing research speed, naval capacity...), shown.
  */
-function latheBuilding(id, img, i18nKey, strategic, extra) {
+// T2523: costs and upkeep from the 4.6.0 game files (common/buildings): 1500 alloys and 300 of the strategic resource;
+// the Validator and the Cogitator ("big" = true) cost 800 Advanced Logic and keep −8 energy and −2 of the resource.
+function latheBuilding(id, img, i18nKey, strategic, extra, big = false) {
   return {
     id,
     img: `buildings/${img}`,
@@ -940,8 +942,8 @@ function latheBuilding(id, img, i18nKey, strategic, extra) {
     category: "lathe",
     jobs: {},
     colonyLimit: 2,
-    upkeep: id === "lathe_reactor" ? { [strategic]: -4 } : { energy: -5, [strategic]: -1 },
-    cost: { time: 480, items: [{ resource: "alloys", amount: 800 }, { resource: strategic, amount: 100 }, { resource: "advanced_logic", amount: 600 }] },
+    upkeep: id === "lathe_reactor" ? { [strategic]: -4 } : big ? { energy: -8, [strategic]: -2 } : { energy: -5, [strategic]: -1 },
+    cost: { time: 480, items: [{ resource: "alloys", amount: 1500 }, { resource: strategic, amount: 300 }, { resource: "advanced_logic", amount: big ? 800 : 600 }] },
     sets: ["lathe"],
     ...extra
   };
@@ -1310,7 +1312,7 @@ export const BUILDINGS = [
     jobs: { metallurgist: 600 },
     colonyLimit: "none",
     upkeep: { energy: -8, volatile_motes: -4 },
-    cost: { time: 480, items: [{ resource: "minerals", amount: 800, when: "settled" }, { resource: "volatile_motes", amount: 200, when: "settled" }, { resource: "volatile_motes", amount: 280, when: "nomadic" }] },
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800, when: "settled" }, { resource: "volatile_motes", amount: 200, when: "settled" }, { resource: "volatile_motes", amount: 280, when: "nomadic" }] },
     sets: ["industrial", "foundry"]
   },
 
@@ -1336,7 +1338,7 @@ export const BUILDINGS = [
     jobEfficiency: { metallurgist: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, volatile_motes: -4 },
-    cost: { time: 600, items: [{ resource: "energy", amount: 800 }, { resource: "volatile_motes", amount: 200 }] },
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800 }, { resource: "volatile_motes", amount: 200 }] },
     sets: ["industrial", "foundry"]
   },
 
@@ -1351,7 +1353,7 @@ export const BUILDINGS = [
     jobs: { artisan: 200 },
     colonyLimit: "none",
     upkeep: { energy: -2 },
-    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "rare_crystals", amount: 40, when: "nomadic" }] },
+    cost: { time: 360, items: [{ resource: "minerals", amount: 400, when: "settled" }, { resource: "volatile_motes", amount: 40, when: "nomadic" }] },
     sets: ["industrial", "factory"]
   },
   {
@@ -1405,7 +1407,7 @@ export const BUILDINGS = [
     jobEfficiency: { artisan: 0.1 },
     colonyLimit: 1,
     upkeep: { energy: -8, rare_crystals: -4 },
-    cost: { time: 600, items: [{ resource: "energy", amount: 800 }, { resource: "rare_crystals", amount: 200 }] },
+    cost: { time: 600, items: [{ resource: "minerals", amount: 800 }, { resource: "rare_crystals", amount: 200 }] },
     sets: ["industrial", "factory"]
   },
 
@@ -1483,7 +1485,7 @@ export const BUILDINGS = [
   {
     id: "state_academy",
     requires: [civic("civicCivilEducation"), notDesignation("thrallWorld")],
-    img: "buildings/building_precinct_house.png",
+    img: "buildings/building_state_academy.png",
     i18nKey: "buildingStateAcademy",
     category: "civic",
     tier: 1,
@@ -1833,7 +1835,7 @@ export const BUILDINGS = [
   // ── Cadena de enlace de la Inteligencia de Máquina (requiere el capital Matriz Administrativa) ──
   {
     id: "uplink_node",
-    img: "buildings/building_citadel_uplink.png",
+    img: "buildings/building_autochthon_monument.png",
     i18nKey: "buildingUplinkNode",
     category: "unity",
     requires: [authority("machineIntelligence"), notCivic("civicMachineServitor")],
@@ -1845,7 +1847,7 @@ export const BUILDINGS = [
   },
   {
     id: "network_junction",
-    img: "buildings/building_citadel_uplink.png",
+    img: "buildings/building_heritage_site.png",
     i18nKey: "buildingNetworkJunction",
     category: "unity",
     requires: [authority("machineIntelligence"), notCivic("civicMachineServitor"), { type: "capitalTier", min: 2 }],
@@ -1859,7 +1861,7 @@ export const BUILDINGS = [
   },
   {
     id: "system_conflux",
-    img: "buildings/building_citadel_uplink.png",
+    img: "buildings/building_hypercomms_forum.png",
     i18nKey: "buildingSystemConflux",
     category: "unity",
     requires: [authority("machineIntelligence"), notCivic("civicMachineServitor"), { type: "capitalTier", min: 2 }],
@@ -1942,7 +1944,7 @@ export const BUILDINGS = [
     conditionalJobModifiers: [{"when": [{"type": "civic", "keys": ["civicCatalyticProcessing", "civicCorporateCatalyticProcessing", "civicHiveCatalyticProcessing", "civicMachineCatalyticProcessing"]}], "jobModifiers": {"metallurgist": {"food": -0.5}, "artisan": {"food": -0.5}}}],
     colonyLimit: 1,
     upkeep: {"energy": -3},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 500}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}]},
     sets: ["industrial", "factory", "foundry"]
   },
   {
@@ -1955,7 +1957,7 @@ export const BUILDINGS = [
     conditionalJobModifiers: [{"when": [{"type": "civic", "keys": ["civicCatalyticProcessing", "civicCorporateCatalyticProcessing", "civicHiveCatalyticProcessing", "civicMachineCatalyticProcessing"]}], "jobModifiers": {"metallurgist": {"food": -0.5}, "artisan": {"food": -0.5}}}],
     colonyLimit: 1,
     upkeep: {"energy": -3},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 500}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}]},
     sets: ["industrial", "factory", "foundry"]
   },
   {
@@ -1968,7 +1970,7 @@ export const BUILDINGS = [
     jobModifiers: {"metallurgist": {"alloys": 0.2}, "artisan": {"consumer_goods": 0.2}},
     colonyLimit: 1,
     upkeep: {"energy": -5, "volatile_motes": -1},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "volatile_motes", "amount": 100}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "volatile_motes", "amount": 50}]},
     sets: ["industrial", "factory", "foundry"]
   },
   {
@@ -1981,7 +1983,7 @@ export const BUILDINGS = [
     jobModifiers: {"metallurgist": {"alloys": 0.2}, "artisan": {"consumer_goods": 0.2}},
     colonyLimit: 1,
     upkeep: {"energy": -5, "volatile_motes": -1},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "volatile_motes", "amount": 100}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "volatile_motes", "amount": 50}]},
     sets: ["industrial", "factory", "foundry"]
   },
   {
@@ -1994,7 +1996,7 @@ export const BUILDINGS = [
     conditionalJobModifiers: [{"when": [{"type": "civic", "keys": ["civicCatalyticProcessing", "civicCorporateCatalyticProcessing", "civicHiveCatalyticProcessing", "civicMachineCatalyticProcessing"]}], "jobModifiers": {"metallurgist": {"food": -1.5}, "artisan": {"food": -1.5}}}],
     jobResourceMult: {"volatile_motes": 0.1, "exotic_gases": 0.1, "rare_crystals": 0.1},
     colonyLimit: 1,
-    upkeep: {"energy": -5, "minerals": -30},
+    upkeep: {"energy": -5},
     cost: {"time": 600, "items": [{"resource": "minerals", "amount": 600}, {"resource": "minor_artifacts", "amount": 200}]},
     sets: ["industrial", "factory", "foundry"]
   },
@@ -2085,7 +2087,7 @@ export const BUILDINGS = [
     jobEfficiency: {"biologist": 0.1},
     colonyLimit: 1,
     upkeep: {"energy": -8, "exotic_gases": -2},
-    cost: {"time": 600, "items": [{"resource": "minerals", "amount": 800}, {"resource": "exotic_gases", "amount": 100}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 800}, {"resource": "exotic_gases", "amount": 100}]},
     sets: ["origin"]
   },
   {
@@ -2142,8 +2144,8 @@ export const BUILDINGS = [
     jobs: {},
     jobUpkeepMult: {"physicist": -0.1, "biologist": -0.1, "engineer": -0.1},
     colonyLimit: 1,
-    upkeep: {"energy": -5, "exotic_gases": -1},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "exotic_gases", "amount": 50}]},
+    upkeep: {"energy": -5, "exotic_gases": -2},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "exotic_gases", "amount": 100}]},
     sets: ["origin"]
   },
   {
@@ -2155,8 +2157,8 @@ export const BUILDINGS = [
     jobs: {},
     jobEfficiency: {"physicist": 0.1, "biologist": 0.1, "engineer": 0.1},
     colonyLimit: 1,
-    upkeep: {"energy": -8, "exotic_gases": -2},
-    cost: {"time": 600, "items": [{"resource": "minerals", "amount": 800}, {"resource": "exotic_gases", "amount": 100}]},
+    upkeep: {"energy": -8, "exotic_gases": -4},
+    cost: {"time": 600, "items": [{"resource": "minerals", "amount": 800}, {"resource": "exotic_gases", "amount": 200}]},
     sets: ["origin"]
   },
   {
@@ -2197,7 +2199,7 @@ export const BUILDINGS = [
     jobModifiers: {"physicist": {"physics": 1}},
     colonyLimit: 1,
     upkeep: {"energy": -5},
-    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "minor_artifacts", "amount": 30}]},
+    cost: {"time": 480, "items": [{"resource": "minerals", "amount": 600}, {"resource": "minor_artifacts", "amount": 50}]},
     sets: ["origin"]
   },
   {
@@ -2363,7 +2365,7 @@ export const BUILDINGS = [
   },
   {
     id: "corporate_culture_site",
-    img: "buildings/building_commercial_forum.png",
+    img: "buildings/building_autochthon_monument.png",
     i18nKey: "buildingCorporateCultureSite",
     category: "unity",
     requires: [{"type": "authority", "ids": ["corporate"]}, {"type": "notCivic", "keys": ["civicCorporateEntropyDrinkers"]}],
@@ -2377,7 +2379,7 @@ export const BUILDINGS = [
   },
   {
     id: "business_management_nexus",
-    img: "buildings/building_affluence_center.png",
+    img: "buildings/building_heritage_site.png",
     i18nKey: "buildingBusinessManagementNexus",
     category: "unity",
     requires: [{"type": "authority", "ids": ["corporate"]}, {"type": "notCivic", "keys": ["civicCorporateEntropyDrinkers"]}, {"type": "capitalTier", "min": 2}],
@@ -2392,7 +2394,7 @@ export const BUILDINGS = [
   },
   {
     id: "synergy_forum",
-    img: "buildings/building_affluence_emporium.png",
+    img: "buildings/building_hypercomms_forum.png",
     i18nKey: "buildingSynergyForum",
     category: "unity",
     requires: [{"type": "authority", "ids": ["corporate"]}, {"type": "notCivic", "keys": ["civicCorporateEntropyDrinkers"]}, {"type": "capitalTier", "min": 3}],
@@ -2496,7 +2498,7 @@ export const BUILDINGS = [
 
   // ── P10.5: Synaptic Lathe buildings (wiki 4.5.2, Planet unique buildings) ──
   // Only on the Synaptic Lathe ("lathe" set; it uses no other building), two per building. Upkeep −5 energy and −1 of
-  // the building's strategic resource (Expanded Reactor: no energy, −4). Effects "per 100 Neural Chips" are per copy.
+  // the building's strategic resource (Expanded Reactor: no energy, −4; Validator and Cogitator: −8 and −2, 4.6.0). Effects "per 100 Neural Chips" are per copy.
   latheBuilding("lathe_reactor", "building_lathe_reactor.png", "buildingLatheReactor", "exotic_gases", {
     jobUpkeepMult: { all: -0.15 }, upkeepMult: { buildings: -0.15, districtEnergy: -0.15 }
   }),
@@ -2512,13 +2514,13 @@ export const BUILDINGS = [
   }),
   latheBuilding("lathe_validator", "building_lathe_validator.png", "buildingLatheValidator", "rare_crystals", {
     requires: [LATHE_TECH("reqTechSynapticValidator")], stability: -10, infoKeys: ["latheInfoValidator"]
-  }),
+  }, true),
   latheBuilding("lathe_overclocker", "building_lathe_overclocker.png", "buildingLatheOverclocker", "volatile_motes", {
     requires: [LATHE_TECH("reqTechSynapticOverclocker")], perNeuralChips: { research: 1, advanced_logic: 0.5 }, infoKeys: ["latheInfoOverclocker"]
   }),
   latheBuilding("lathe_cogitator", "building_lathe_cogitator.png", "buildingLatheCogitator", "volatile_motes", {
     requires: [LATHE_TECH("reqTechSynapticCogitator")], jobResourcePct: { all: -35 }, amenities: -5000, infoKeys: ["latheInfoCogitator"]
-  }),
+  }, true),
 
   // ══ T1011: Wilderness origin buildings (see WILDERNESS_BUILDINGS above) ══
   ...WILDERNESS_BUILDINGS

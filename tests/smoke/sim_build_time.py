@@ -1,6 +1,6 @@
 """Planet simulator: total build time of the planet in the fixed planet summary (T2601).
 
-Expected days are the game's base_buildtime of the 4.5.4 extractor data (js/build-time-data.js):
+Expected days are the game's base_buildtime of the 4.6.0 extractor data (T2523) (js/build-time-data.js):
 City District 480, Planetary Administration 480, Residential Arcology 600, Unspecialized Arcology 600,
 zones 360.
 """
@@ -21,7 +21,7 @@ async def run(t):
     panel = await panel_text()
     check("build time: breakdown lists the districts, the capital tier with no game time and the notes",
           "City District ×2" in panel and "960 d" in panel and "No time in the game data" in panel and "Colony Shelter" in panel
-          and "Build Queue Capacity" in panel and "No build speed modifier is applied" in panel and "stellaris-pc-4.5.4" in panel, panel)
+          and "Build Queue Capacity" in panel and "No build speed modifier is applied" in panel and "stellaris-pc-4.6.0" in panel, panel)
 
     await pg.evaluate("()=>document.querySelector('#planet-capital-upgrade').click()"); await pg.wait_for_timeout(200)
     check("build time: upgrading the capital to Planetary Administration adds its 480 days", await total() == 1440, await total())

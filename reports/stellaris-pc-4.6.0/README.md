@@ -10,27 +10,27 @@ Game values that only apply under a condition (nomadic costs, gestalt jobs, trig
 |---|---|---|---|---|---|---|
 | ascension_perks | — | 50 | — | — | — | no simulator data |
 | [authorities](authorities.md) | 7 | 80 | 7 | 0 | 0 | 73 |
-| [buildings](buildings.md) | 201 | 514 | 198 | 108 | 3 | 316 |
+| [buildings](buildings.md) | 201 | 514 | 198 | 82 | 3 | 316 |
 | [civics](civics.md) | 226 | 292 | 223 | 30 | 3 | 69 |
 | crisis_levels | — | 30 | — | — | — | no simulator data |
 | crisis_objectives | — | 42 | — | — | — | no simulator data |
 | crisis_paths | — | 6 | — | — | — | no simulator data |
-| [deposits](deposits.md) | 67 | 592 | 67 | 5 | 0 | 525 |
+| [deposits](deposits.md) | 67 | 592 | 67 | 0 | 0 | 525 |
 | [designations](designations.md) | 53 | 101 | 44 | 0 | 9 | 57 |
 | [districts](districts.md) | 21 | 147 | 14 | 6 | 7 | 133 |
 | dlc | — | 37 | — | — | — | the simulator has no DLC data yet (T3502) |
 | economic_categories | — | 283 | — | — | — | not modelled (the simulator applies modifiers by job and resource) |
 | [edicts](edicts.md) | 31 | 183 | 30 | 0 | 1 | 153 |
-| [ethics](ethics.md) | 17 | 25 | 17 | 8 | 0 | 8 |
+| [ethics](ethics.md) | 17 | 25 | 17 | 0 | 0 | 8 |
 | events | — | 7223 | — | — | — | no simulator data |
 | fallen_empires | — | 6 | — | — | — | no simulator data |
-| [jobs](jobs.md) | 154 | 512 | 131 | 46 | 23 | 381 |
+| [jobs](jobs.md) | 154 | 512 | 131 | 39 | 23 | 381 |
 | living_standards | — | 40 | — | — | — | audited in PLANET_SIM_GDD.md §5.3; the simulator data comes with P20 |
 | megastructures | — | 173 | — | — | — | no simulator data |
 | menace_perks | — | 105 | — | — | — | no simulator data |
 | [origins](origins.md) | 54 | 80 | 54 | 0 | 0 | 26 |
-| [planet_classes](planet_classes.md) | 21 | 69 | 18 | 2 | 3 | 51 |
-| [planet_modifiers](planet_modifiers.md) | 142 | 70 | 128 | 1 | 14 | 44 |
+| [planet_classes](planet_classes.md) | 21 | 69 | 18 | 1 | 3 | 51 |
+| [planet_modifiers](planet_modifiers.md) | 142 | 70 | 128 | 0 | 14 | 44 |
 | [policies](policies.md) | 19 | 230 | 11 | 0 | 8 | 219 |
 | ship_components | — | 1506 | — | — | — | no simulator data |
 | species_traits | — | 370 | — | — | — | no simulator data |

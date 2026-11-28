@@ -172,7 +172,7 @@ export const SPECIAL_DISTRICTS = {
     ],
     jobsByEmpire: { individualist: { clerk: 300 }, gestalt: { logistic_drone: 900 } },
     technologyJobs: [{ id: "antiGravityEngineering", empire: "gestalt", jobs: { logistic_drone: 300 } }],
-    upkeep: { energy: -5 }, cost: { minerals: 1000 }, time: 480
+    upkeep: { energy: -5 }, cost: { alloys: 500 }, time: 600
   },
   unspecializedArcology: {
     role: "secondaryUrban", bodies: ["city"], housing: 1500,
@@ -181,12 +181,12 @@ export const SPECIAL_DISTRICTS = {
       { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 300 },
       { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 300, excludedCivics: ["civicAgrarianIdyll"] }
     ],
-    upkeep: { energy: -5 }, cost: { alloys: 500 }, time: 480
+    upkeep: { energy: -5 }, cost: { alloys: 500 }, time: 600
   },
   // Ring World
   citySegment: {
     role: "primary", bodies: ["ringworld"], empire: "individualist", housing: 2500, agrarianIdyllHousing: -500,
-    i18nKey: "districtCitySegment", img: "districs/district_city.png",
+    i18nKey: "districtCitySegment", img: "districs/district_rw_city.png",
     technologyHousing: [
       { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 },
       { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
@@ -196,7 +196,7 @@ export const SPECIAL_DISTRICTS = {
   },
   hiveSegment: {
     role: "primary", bodies: ["ringworld"], empire: "hiveMind", housing: 3000,
-    i18nKey: "districtHiveSegment", img: "districs/district_hive.png",
+    i18nKey: "districtHiveSegment", img: "districs/district_rw_hive.png",
     technologyHousing: [{ id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500 }],
     jobs: { logistic_drone: 1500, synapse_drone: 200 },
     technologyJobs: [{ id: "antiGravityEngineering", jobs: { logistic_drone: 500 } }],
@@ -204,7 +204,7 @@ export const SPECIAL_DISTRICTS = {
   },
   nexusSegment: {
     role: "primary", bodies: ["ringworld"], empire: "machineIntelligence", housing: 2500,
-    i18nKey: "districtNexusSegment", img: "districs/district_nexus.png",
+    i18nKey: "districtNexusSegment", img: "districs/district_rw_nexus.png",
     technologyHousing: [{ id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 }, { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500 }],
     // "+200 Tech-Drones": the gestalt name of the Technician job.
     jobs: { logistic_drone: 1000, technician: 200 },
@@ -213,7 +213,7 @@ export const SPECIAL_DISTRICTS = {
   },
   unspecializedSegment: {
     role: "secondaryUrban", bodies: ["ringworld"], housing: 2500, agrarianIdyllHousing: -500,
-    i18nKey: "districtUnspecializedSegment", img: "districs/district_city.png",
+    i18nKey: "districtUnspecializedSegment", img: "districs/district_rw_city_secondary.png",
     technologyHousing: [
       { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 500 },
       { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 500, excludedCivics: ["civicAgrarianIdyll"] }
@@ -223,7 +223,7 @@ export const SPECIAL_DISTRICTS = {
   // Hive / Machine / Nanite Worlds
   unspecializedCluster: {
     role: "secondaryUrban", bodies: ["hive"], housing: 1800,
-    i18nKey: "districtUnspecializedCluster", img: "districs/district_hive.png",
+    i18nKey: "districtUnspecializedCluster", img: "districs/district_hive_secondary.png",
     // "+100 with Extended Hives" is not on any technology page (not applied).
     technologyHousing: [
       { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 100 },
@@ -232,37 +232,37 @@ export const SPECIAL_DISTRICTS = {
     upkeep: { energy: -2 }, cost: { minerals: 500 }, time: 480
   },
   unspecializedNexus: {
-    role: "secondaryUrban", bodies: ["machine", "nanite"], housing: 1000,
-    i18nKey: "districtUnspecializedNexus", img: "districs/district_nexus.png",
-    // "+100 with Optimized Nexus" is not on any technology page (not applied).
+    role: "secondaryUrban", bodies: ["machine", "nanite"], housing: 1500,
+    i18nKey: "districtUnspecializedNexus", img: "districs/district_nexus_secondary.png",
+    // 4.6.0 (district_nexus_1): +300 per technology; "+300 with Optimized Nexus" is a tradition (not applied).
     technologyHousing: [
-      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 100 },
-      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 100 }
+      { id: "weatherControlSystems", i18nKey: "techWeatherControlSystems", housing: 300 },
+      { id: "antiGravityEngineering", i18nKey: "techAntiGravityEngineering", housing: 300 }
     ],
-    upkeep: { energy: -2 }, cost: { minerals: 500 }, time: 480
+    upkeep: { energy: -5 }, cost: { minerals: 1000 }, time: 600
   },
   // Habitat
   habitationDistrict: {
     role: "primary", bodies: ["habitat"], housing: 1000,
     i18nKey: "districtHabitationDistrict", img: "districs/district_hab_housing.png",
     // "+100 with Modular Superstructures" is a tradition (not applied).
-    upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
+    upkeep: { energy: -2, alloys: -0.25 }, cost: { alloys: 150 }, time: 360
   },
   reactorDistrict: {
     role: "resource", category: "generator", bodies: ["habitat"], housing: 300,
     i18nKey: "districtReactorDistrict", img: "districs/district_hab_energy.png", jobs: { technician: 100 },
-    upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
+    upkeep: { energy: -2, alloys: -0.25 }, cost: { alloys: 150 }, time: 360
   },
   astroMiningBay: {
     role: "resource", category: "mining", bodies: ["habitat"], housing: 300,
     i18nKey: "districtAstroMiningBay", img: "districs/district_hab_mining.png", jobs: { miner: 100 },
-    upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
+    upkeep: { energy: -2, alloys: -0.25 }, cost: { alloys: 150 }, time: 360
   },
   researchDistrict: {
     // No specialization lists the Research District (District specialization page): it unlocks no building slots.
     role: "resource", category: "research", bodies: ["habitat"], housing: 300,
     i18nKey: "districtResearchDistrict", img: "districs/district_hab_science.png", jobs: { physicist: 30, biologist: 30, engineer: 30 },
-    upkeep: { energy: -2, alloys: -0.5 }, cost: { alloys: 300 }, time: 360
+    upkeep: { energy: -2, alloys: -0.25 }, cost: { alloys: 150 }, time: 360
   },
   // Volcanic World (resource districts)
   geothermalPowerplant: {
@@ -284,12 +284,12 @@ export const SPECIAL_DISTRICTS = {
   neuralGate: {
     role: "lathe", bodies: ["synapticLathe"], housing: 1500, buildingSlots: 1,
     i18nKey: "districtNeuralGate", img: "districs/district_cosmogenesis_world_science.png",
-    perNeuralChips: { research: 0.75 }, upkeep: { energy: -50 }, cost: { alloys: 800, advanced_logic: 400 }, time: 250
+    perNeuralChips: { research: 0.75 }, upkeep: { energy: -50 }, cost: { alloys: 1000, advanced_logic: 500 }, time: 250
   },
   ampliativeSpeculator: {
     role: "lathe", bodies: ["synapticLathe"], housing: 1500, buildingSlots: 1,
     i18nKey: "districtAmpliativeSpeculator", img: "districs/district_cosmogenesis_world_logic.png",
-    perNeuralChips: { advanced_logic: 0.02 }, upkeep: { energy: -50 }, cost: { alloys: 800, advanced_logic: 400 }, time: 250
+    perNeuralChips: { advanced_logic: 0.02 }, upkeep: { energy: -50 }, cost: { alloys: 1000, advanced_logic: 500 }, time: 250
   }
 };
 

@@ -97,7 +97,7 @@ async def run(t):
     check("nexus specializations: no Agricultural Focus", "energyGeneration" in opts and "mineralExtraction" in opts and "agriculturalFocus" not in opts, opts)
     await pg.evaluate("""()=>{const c=document.querySelectorAll('.planet-district-card')[1];[...c.querySelectorAll('.planet-count-btn')].find(b=>b.textContent==='+').click()}""")
     housing = await pg.evaluate("()=>document.querySelector('#planet-stat-housing').closest('.planet-header-stat').title")
-    check("housing: Unspecialized Nexus 1 x 1000", "Unspecialized Nexus 1 ×1 +1000" in housing, housing)
+    check("housing: Unspecialized Nexus 1 x 1500 (4.6.0 game files, T2523)", "Unspecialized Nexus 1 ×1 +1500" in housing, housing)
     rows = await pg.evaluate("()=>[...document.querySelectorAll('[data-condition]')].map(r=>r.dataset.condition)")
     check("machine world: housing used by pops row (-10 %)", "housingUsage" in rows, rows)
     await body("Continental World")
