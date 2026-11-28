@@ -30,7 +30,7 @@ export const strings = {
         bingoAuthoritiesDescription: "Marca las autoridades que ya has usado, también sus variantes tras cada ascensión.",
         bingoTechnologiesDescription: "Marca las tecnologías raras (marco morado) y peligrosas (marco rojo) que ya has investigado.",
         bingoDlcDescription: "Marca los DLC con los que ya has jugado: expansiones, packs de historia, de especies y de retratos.",
-        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
+        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation (same names in 4.6.0, T2529)
         authorityMemoryAggregator: "Agregador de memoria",
         authorityNeuralChorus: "Coro neuronal",
         authorityBioDemocraticCloning: "Multiplicidad armónica",
@@ -130,7 +130,7 @@ export const strings = {
         bingoAuthoritiesDescription: "Mark the authorities you have already used, also their variants after each ascension.",
         bingoTechnologiesDescription: "Mark the rare (purple frame) and dangerous (red frame) technologies you have already researched.",
         bingoDlcDescription: "Mark the DLCs you have already played with: expansions, story packs, species packs and portrait packs.",
-        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
+        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation (same names in 4.6.0, T2529)
         authorityMemoryAggregator: "Memory Aggregator",
         authorityNeuralChorus: "Neural Chorus",
         authorityBioDemocraticCloning: "Cordant Multiplicity",
@@ -228,7 +228,7 @@ export const strings = {
         bingoAuthoritiesDescription: "これまでに使ったことのある統治形態を、各アセンション後の派生形も含めてマークしましょう。",
         bingoTechnologiesDescription: "これまでに研究したことのある希少技術（紫の枠）と危険技術（赤の枠）をマークしましょう。",
         bingoDlcDescription: "これまでにプレイしたことのあるDLC（拡張、ストーリーパック、種族パック、ポートレートパック）をマークしましょう。",
-        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation
+        // Official game names of the authorities bingo (T2405), Stellaris 4.5.4 localisation (same names in 4.6.0, T2529)
         authorityMemoryAggregator: "メモリー収集者",
         authorityNeuralChorus: "神経コーラス",
         authorityBioDemocraticCloning: "合意的複製",

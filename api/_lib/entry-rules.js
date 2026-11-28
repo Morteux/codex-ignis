@@ -17,7 +17,7 @@ import { isBlockedName } from "./blocked-words.js";
 export const ENTRY_FIELDS = ["name", "score", "maxTier", "answered", "correct", "correctByTier", "dlcs", "rulesetId"];
 /** Longest raw name accepted before normalising (the normalised one has at most 10 characters). */
 export const RAW_NAME_MAX = 64;
-/** Sanity bound of the DLCs checked (26 in 4.5.4); not a game figure. */
+/** Sanity bound of the DLCs checked (27 in 4.6.0); not a game figure. */
 export const DLCS_MAX = 64;
 
 const isCount = (value) => Number.isInteger(value) && value >= 0;

@@ -2,6 +2,16 @@
 
 Decisions Claude took on its own while implementing tasks, pending the owner's review. When the owner confirms or changes one, move it to `PLANET_SIM_GDD.md` (as an owner decision) and remove it from here. Newest first.
 
+## T2529 — The other sections of the site on 4.6.0 (2026-11-28)
+
+- [ ] **Bingos**: the generated cells (rare and dangerous technologies, DLC) and the origin order are rebuilt from `data/generated/stellaris-pc-4.6.0/`. Origins: the three Willpower origins (Great Mosaic, Golden Generation, Lost Makers) get their cell, with the 4.6.0 pictures and official names; Great Mosaic uses its event picture `GFX_evt_origin_great_mosaic` (the one origins.json names). Nothing was removed in 4.6.0. DLC: Willpower added (33 cells). Rare and dangerous technologies: still 166; four of them now carry the Megacorp DLC (Matter Decompressor, Interstellar Assembly, Mega Art Installation, Strategic Coordination Center) because of the scripted DLC triggers of T2527. Authorities: no change (same 8 authorities and names).
+- [ ] **Ethics bingo**: 4.6.0 adds eight *Absolute* ethics (`ethic_absolute_<axis>`, cost 3, random weight 0, beyond the fanatic step of each axis). They are not added to the 17-cell ethics wheel: they need a place in the wheel layout, which is a design choice for the owner (new task T2532). Their icons are exported (`ethics/Absolute_*.png`).
+- [ ] **Testellaris**: stays on the 4.5.4 bank until T4110 makes the 4.6.0 one; its DLC filter uses the generated DLC list, so it now offers 27 gameplay DLCs (Willpower has no question in the 4.5.4 bank, the hall of fame entries of a full filter count 27 DLCs instead of 26).
+- [ ] **Wiki**: no wiki figure is generated from the data; the figures in the guides (`js/content.js`: ship costs, growth times…) are the authors' own texts, and the extractor has no ship size data to check them, so they are not changed (new task T2533).
+- [ ] **Tech tree**: the 4.6.0 data file is equal to a fresh build with the switched simulator data (same 139 simulator links). Names of the game that are scripted localisation (`tech_cultural_envoys` = "[GetCulturalEnvoyNamePlural]", the eight Willpower ideological buildings) show the raw script text (new task T2531).
+- [ ] **Icons**: `extract_all.py --icons` and `export_assets.py` on 4.6.0 add 233 icons to StellarisAssets (civics, Willpower DLC, absolute ethics, megastructures, origins, ship components, species traits) and replace 11; committed and pushed there, `StellarisAssetsFileTree.txt` regenerated.
+- [ ] **Not in this task** (simulator): the living standards (`js/living-standard-data.js`) are still the 4.5.4 figures, and 4.6.0 changes five standards and adds five; the 12 edicts new in 4.6.0 are not listed; the simulator notes still say "wiki 4.5.2" (new task T2534).
+
 ## T2528 — GDD §9.1 findings applied on the 4.6.0 data (2026-11-28)
 
 Every finding of T1404 still holds in the 4.6.0 game files (`data/generated/stellaris-pc-4.6.0/`), so none was dropped:

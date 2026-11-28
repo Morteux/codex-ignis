@@ -63,6 +63,10 @@ export const ORIGIN_BINGO = [
   { img: "origins/GFX_origin_fruitful.png", i18nKey: "originFruitful", origin: "origin_fruitful" },
   { img: "origins/GFX_origin_galactic_doorstep.png", i18nKey: "originGalacticDoorstep", origin: "origin_galactic_doorstep" },
   { img: "origins/GFX_origin_lost_colony.png", i18nKey: "originLostColony", origin: "origin_lost_colony" },
+  // T2529: origins added in 4.6.0 (Willpower), pictures of the 4.6.0 game files.
+  { img: "origins/GFX_evt_origin_great_mosaic.png", i18nKey: "originGreatMosaic", origin: "origin_great_mosaic" },
+  { img: "origins/GFX_origin_golden_generation.png", i18nKey: "originGoldenGeneration", origin: "origin_golden_generation" },
+  { img: "origins/GFX_origin_lost_makers.png", i18nKey: "originLostMakers", origin: "origin_lost_makers" },
 ];
 
 /**

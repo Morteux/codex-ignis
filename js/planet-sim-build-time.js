@@ -1,7 +1,7 @@
 /**
  * Planet simulator: total build time of the planet (T2601, PLANET_SIM_GDD.md §6.2).
  *
- * Adds the game build time (`base_buildtime`, days, js/build-time-data.js generated from the 4.5.4 extractor data)
+ * Adds the game build time (`base_buildtime`, days, js/build-time-data.js generated from the 4.6.0 extractor data)
  * of everything the planet has: the capital (every upgrade from its first tier), the active buildings (with the
  * earlier tiers of an upgraded building), every district copy and every chosen specialization (zone). The total is
  * sequential (one item after another): the game builds the items of a planet in one queue whose Build Queue

@@ -1,6 +1,6 @@
 {
-  "rulesetId": "stellaris-pc-4.5.4",
-  "count": 1046,
+  "rulesetId": "stellaris-pc-4.6.0",
+  "count": 1049,
   "keys": {
     "authorityCorporate": "authorities/auth_corporate",
     "authorityDemocratic": "authorities/auth_democratic",
@@ -814,6 +814,8 @@
     "originForeverCruise": "origins/origin_forever_cruise",
     "originFruitful": "origins/origin_fruitful",
     "originGalacticDoorstep": "origins/origin_galactic_doorstep",
+    "originGoldenGeneration": "origins/origin_golden_generation",
+    "originGreatMosaic": "origins/origin_great_mosaic",
     "originHegemon": "origins/origin_hegemon",
     "originHeirsOfTheKhan": "origins/origin_heirs_of_the_khan",
     "originHereBeDragons": "origins/origin_here_be_dragons",
@@ -821,6 +823,7 @@
     "originLegendaryLeader": "origins/origin_legendary_leader",
     "originLifeSeeded": "origins/origin_life_seeded",
     "originLostColony": "origins/origin_lost_colony",
+    "originLostMakers": "origins/origin_lost_makers",
     "originMechanist": "origins/origin_mechanists",
     "originMindwardens": "origins/origin_mindwardens",
     "originNecrophage": "origins/origin_necrophage",

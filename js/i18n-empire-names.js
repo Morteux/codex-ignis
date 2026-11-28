@@ -63,6 +63,9 @@ export const strings = {
         originFruitful: "Sociedad fructífera",
         originGalacticDoorstep: "Puerta galáctica",
         originLostColony: "Colonia perdida",
+        originGreatMosaic: "Gran mosaico",
+        originGoldenGeneration: "Generación dorada",
+        originLostMakers: "Creadores perdidos",
 
         // Nombres de los principios (civics) del bingo (bingo.html)
         civicAgrarianIdyll: "Idilio Agrario",
@@ -378,6 +381,9 @@ export const strings = {
         originFruitful: "Fruitful Partnership",
         originGalacticDoorstep: "Galactic Doorstep",
         originLostColony: "Lost Colony",
+        originGreatMosaic: "Great Mosaic",
+        originGoldenGeneration: "Golden Generation",
+        originLostMakers: "Lost Makers",
 
         // Principle (civic) names for the bingo (bingo.html)
         civicAgrarianIdyll: "Agrarian Idyll",
@@ -693,6 +699,9 @@ export const strings = {
         originFruitful: "実りある協力関係",
         originGalacticDoorstep: "銀河の玄関口",
         originLostColony: "消えた移民団",
+        originGreatMosaic: "偉大なるモザイク",
+        originGoldenGeneration: "黄金世代",
+        originLostMakers: "失われた創造者",
 
         // ビンゴの国是（civic）名 (bingo.html)
         civicAgrarianIdyll: "牧歌的な理想郷",

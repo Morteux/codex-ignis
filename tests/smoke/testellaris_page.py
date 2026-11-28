@@ -41,9 +41,9 @@ async def run(t):
         start:!document.querySelector('#tq-start-btn').disabled})""")
     dlc_names = sorted({d for q in bank for d in q["dlc"]})
     names = [b[0] for b in start["boxes"]]
-    check("testellaris: start screen with the shell, 3 DLC groups and 26 gameplay DLCs, all checked by default",
+    check("testellaris: start screen with the shell, 3 DLC groups and 27 gameplay DLCs (4.6.0, with Willpower: T2529), all checked by default",
           start["title"] == "Testellaris · Codex Ignis" and start["current"] == "testellaris.html" and start["groups"] == ["Expansions", "Story packs", "Species packs"]
-          and len(names) == 26 and all(b[1] for b in start["boxes"]) and set(dlc_names) <= set(names), {k: start[k] for k in ("title", "current", "groups")} | {"n": len(names), "missing": sorted(set(dlc_names) - set(names))})
+          and len(names) == 27 and all(b[1] for b in start["boxes"]) and set(dlc_names) <= set(names), {k: start[k] for k in ("title", "current", "groups")} | {"n": len(names), "missing": sorted(set(dlc_names) - set(names))})
     check("testellaris: with every DLC the whole bank is available (count per tier), no warning, Start enabled",
           ("%d (per tier: %s)" % (len(bank), " / ".join(map(str, per_tier(bank))))) in start["available"] and start["few"] and start["start"], start["available"])
     await pg.click("#tq-dlc-none")
@@ -398,8 +398,8 @@ async def name_checks(pg, small):
     entry = (stored or {}).get(RULESET, [{}])[0]
     check("testellaris hall of fame: Save keeps the score in the local top 10 (no hall of fame yet), says where, and lists it highlighted",
           not s["form"] and s["saved"].startswith("Saved in the top 10 of this browser") and s["focus"] == "tq-saved" and len(s["rows"]) == 1 and s["rows"][0][:3] == [True, "1", "宇宙の 王"]
-          and s["rows"][0][3].startswith("200 points · tier 1 · 2/2 · 26 DLC")
-          and {k: entry.get(k) for k in ("name", "score", "maxTier", "answered", "correct", "dlcs", "rulesetId")} == {"name": "宇宙の 王", "score": 200, "maxTier": 1, "answered": 2, "correct": 2, "dlcs": 26, "rulesetId": RULESET}, (s, entry))
+          and s["rows"][0][3].startswith("200 points · tier 1 · 2/2 · 27 DLC")
+          and {k: entry.get(k) for k in ("name", "score", "maxTier", "answered", "correct", "dlcs", "rulesetId")} == {"name": "宇宙の 王", "score": 200, "maxTier": 1, "answered": 2, "correct": 2, "dlcs": 27, "rulesetId": RULESET}, (s, entry))
     await pg.click("#tq-back-start")
     await pg.wait_for_function("()=>document.querySelector('#tq-top-list li')", timeout=10000)
     start_rows = await pg.evaluate("()=>[...document.querySelectorAll('#tq-top-list li .tq-top-name')].map(n=>n.textContent)")

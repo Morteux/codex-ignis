@@ -6,162 +6,253 @@
   "ascension_perks": {
    "file": "ascension_perks.json",
    "count": 50,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 44
+   }
   },
   "authorities": {
    "file": "authorities.json",
    "count": 8,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 78
+   }
   },
   "buildings": {
    "file": "buildings.json",
    "count": 514,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 432
+   }
   },
   "civics": {
    "file": "civics.json",
    "count": 292,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "kept_larger": 193,
+    "unchanged": 69,
+    "new": 10
+   }
   },
   "crisis_levels": {
    "file": "crisis_levels.json",
    "count": 30,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "crisis_objectives": {
    "file": "crisis_objectives.json",
    "count": 42,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "crisis_paths": {
    "file": "crisis_paths.json",
    "count": 6,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "deposits": {
    "file": "deposits.json",
    "count": 592,
-   "warnings": 24
+   "warnings": 24,
+   "icons": {
+    "unchanged": 147
+   }
   },
   "designations": {
    "file": "designations.json",
    "count": 101,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 44
+   }
   },
   "districts": {
    "file": "districts.json",
    "count": 147,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 63
+   }
   },
   "dlc": {
    "file": "dlc.json",
    "count": 37,
-   "warnings": 9
+   "warnings": 9,
+   "icons": {
+    "unchanged": 51,
+    "new": 1
+   }
   },
   "economic_categories": {
    "file": "economic_categories.json",
    "count": 283,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "edicts": {
    "file": "edicts.json",
    "count": 183,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 2
+   }
   },
   "ethics": {
    "file": "ethics.json",
    "count": 25,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "new": 8,
+    "kept_larger": 9,
+    "unchanged": 8
+   }
   },
   "events": {
    "file": "events.json",
    "count": 7223,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "fallen_empires": {
    "file": "fallen_empires.json",
    "count": 6,
-   "warnings": 1
+   "warnings": 1,
+   "icons": {}
   },
   "jobs": {
    "file": "jobs.json",
    "count": 369,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 228
+   }
   },
   "living_standards": {
    "file": "living_standards.json",
    "count": 40,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "megastructures": {
    "file": "megastructures.json",
    "count": 173,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "new": 20,
+    "replaced": 1
+   }
   },
   "menace_perks": {
    "file": "menace_perks.json",
    "count": 105,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "origins": {
    "file": "origins.json",
    "count": 80,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 118,
+    "new": 3
+   }
   },
   "planet_classes": {
    "file": "planet_classes.json",
    "count": 69,
-   "warnings": 2
+   "warnings": 2,
+   "icons": {
+    "unchanged": 54
+   }
   },
   "planet_modifiers": {
    "file": "planet_modifiers.json",
    "count": 70,
-   "warnings": 15
+   "warnings": 15,
+   "icons": {
+    "unchanged": 50
+   }
   },
   "policies": {
    "file": "policies.json",
    "count": 61,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 11
+   }
   },
   "ship_components": {
    "file": "ship_components.json",
    "count": 1506,
-   "warnings": 4
+   "warnings": 4,
+   "icons": {
+    "new": 165,
+    "unchanged": 306,
+    "replaced": 4
+   }
   },
   "species_traits": {
    "file": "species_traits.json",
    "count": 370,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {
+    "unchanged": 291,
+    "replaced": 4,
+    "new": 26
+   }
   },
   "static_modifiers": {
    "file": "static_modifiers.json",
    "count": 3305,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "technologies": {
    "file": "technologies.json",
    "count": 683,
-   "warnings": 4
+   "warnings": 4,
+   "icons": {
+    "unchanged": 814,
+    "replaced": 2
+   }
   },
   "tradition_categories": {
    "file": "tradition_categories.json",
    "count": 33,
-   "warnings": 5
+   "warnings": 5,
+   "icons": {}
   },
   "traditions": {
    "file": "traditions.json",
    "count": 234,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "zone_slots": {
    "file": "zone_slots.json",
    "count": 36,
-   "warnings": 0
+   "warnings": 0,
+   "icons": {}
   },
   "zones": {
    "file": "zones.json",
    "count": 148,
-   "warnings": 1
+   "warnings": 1,
+   "icons": {
+    "unchanged": 55
+   }
   }
+ },
+ "icons": {
+  "new": 233,
+  "replaced": 11,
+  "unchanged": 2865,
+  "kept_larger": 202,
+  "missing": 0
  }
 }

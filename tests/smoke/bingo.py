@@ -83,7 +83,18 @@ async def run(t):
           layout:b.layout.type,order:JSON.stringify(b.layout.order)===JSON.stringify(sorted.map(i=>i.i18nKey)),
           dom:JSON.stringify(shown)===JSON.stringify(sorted.map(i=>i.img.split('/').pop())),first:o.slice(0,3),n:o.length}}""")
     check("bingo: every origin cell names a game origin of origins.json, once", not game_order["missing"] and game_order["dupes"] == 0, game_order)
-    check("bingo: origins use the ordered layout and are shown in the in-game order", game_order["layout"] == "ordered" and game_order["order"] and game_order["dom"] and game_order["first"] == ["origin_default", "origin_default_nomads", "origin_sacred_path"], game_order)
+    check("bingo: origins use the ordered layout and are shown in the in-game order", game_order["layout"] == "ordered" and game_order["order"] and game_order["dom"] and game_order["first"] == ["origin_default", "origin_great_mosaic", "origin_default_nomads"], game_order)
+    # T2529: the bingos follow the current version (4.6.0): the generated cells and the origin order come from its data,
+    # the three Willpower origins have their cell with the official names, and the Willpower DLC has its cell.
+    v460 = await bingo.evaluate("""async()=>{const g=await import('./js/bingo-game-items.js'),o=await import('./js/bingo-origin-order.js'),
+        items=(await import('./js/bingo-items.js')).ORIGIN_BINGO,{t}=await import('./js/i18n.js');
+        const keys=['originGreatMosaic','originGoldenGeneration','originLostMakers'];
+        return {game:g.BINGO_GAME_VERSION,order:o.ORIGIN_ORDER_VERSION,origins:items.filter(i=>keys.includes(i.i18nKey)).map(i=>i.origin),
+          names:['es','en','jp'].map(l=>keys.map(k=>t(l,k))),dlc:g.DLC_BINGO.filter(d=>d.dlc==='Willpower').map(d=>d.img)}}""")
+    check("bingo (T2529): game cells and origin order generated from stellaris-pc-4.6.0, Willpower origins and DLC have their cells",
+          v460["game"] == v460["order"] == "stellaris-pc-4.6.0" and v460["origins"] == ["origin_great_mosaic", "origin_golden_generation", "origin_lost_makers"]
+          and v460["names"][1] == ["Great Mosaic", "Golden Generation", "Lost Makers"] and v460["names"][0][0] == "Gran mosaico"
+          and v460["dlc"] == ["dlc/willpower_big.png"], v460)
     await bingo.click("#bingo-grid .bingo-card >> nth=1")
     await bingo.click("#bingo-grid .bingo-card >> nth=3")
     await bingo.click("#bingo-grid .bingo-card >> nth=3")
@@ -133,7 +144,7 @@ async def run(t):
     check("bingo: authorities start with the 10 base ones, then the ascension variants named '<variant> (<base authority>)'",
           auths[0][1] == "Auth_democratic.png" and all("(" not in n for n in names[:10]) and all(n.endswith(")") and a[2] for n, a in zip(names[10:], auths[10:])) and names[10].endswith(" (" + names[0] + ")"), names[:12])
     # T2405: each icon is the game authority "auth_<cell id>", and the names are the official ones
-    generated = os.path.join(ROOT, "data", "generated", "stellaris-pc-4.5.4")
+    generated = built_from(os.path.join(ROOT, "js", "bingo-game-items.js"))  # T2529: the current version (4.6.0)
     game_auths = {}  # game id -> (icon file, base authority id)
     with open(os.path.join(generated, "authorities.json"), encoding="utf-8") as f:
         for item in json.load(f)["items"]:
